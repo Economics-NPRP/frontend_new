@@ -1,0 +1,102 @@
+import {
+	DEFAULT_THEME,
+	type MantineThemeColors,
+	type MantineBreakpointsValues,
+	MantineShadowsValues,
+} from '@mantine/core';
+
+export const breakpoints: MantineBreakpointsValues = DEFAULT_THEME.breakpoints;
+
+export const shadows: Partial<MantineShadowsValues> = {
+	lg: '6px 6px 0px 0px rgba(0, 0, 0, 0.10)',
+	md: '4px 4px 0px 0px rgba(0, 0, 0, 0.10)',
+	sm: '2px 2px 0px 0px rgba(0, 0, 0, 0.5)',
+};
+
+export const colors: MantineThemeColors = {
+	...DEFAULT_THEME.colors,
+
+	dark: [
+		'#c1c2c5',
+		'#a6a7ab',
+		'#909296',
+		'#5c5f66',
+		'#373a40',
+		'#2c2e33',
+		'#25262b',
+		'#1a1b1e',
+		'#141517',
+		'#101113',
+	],
+
+	maroon: [
+		'#f3e8eb',
+		'#dcb9c3',
+		'#c58a9c',
+		'#ad5b74',
+		'#a14460',
+		'#962c4c',
+		'#8a1538',
+		'#7c1332',
+		'#6e112d',
+		'#610f27',
+		'#530d22',
+	],
+
+	//  TODO: add actual shades
+	skyline: [
+		'#0d4261',
+		'#0d4261',
+		'#0d4261',
+		'#0d4261',
+		'#0d4261',
+		'#0d4261',
+		'#0d4261',
+		'#0d4261',
+		'#0d4261',
+		'#0d4261',
+		'#0d4261',
+	],
+
+	palm: [
+		'#129b82',
+		'#129b82',
+		'#129b82',
+		'#129b82',
+		'#129b82',
+		'#129b82',
+		'#129b82',
+		'#129b82',
+		'#129b82',
+		'#129b82',
+		'#129b82',
+	],
+
+	salmon: [
+		'#dd7877',
+		'#dd7877',
+		'#dd7877',
+		'#dd7877',
+		'#dd7877',
+		'#dd7877',
+		'#dd7877',
+		'#dd7877',
+		'#dd7877',
+		'#dd7877',
+		'#dd7877',
+	],
+
+	purple: [
+		'#8067a4',
+		'#8067a4',
+		'#8067a4',
+		'#8067a4',
+		'#8067a4',
+		'#8067a4',
+		'#8067a4',
+		'#8067a4',
+		'#8067a4',
+		'#8067a4',
+		'#8067a4',
+	],
+};
