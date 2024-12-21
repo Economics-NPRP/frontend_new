@@ -1,19 +1,9 @@
-'use client';
-
-import {
-	ActionIcon,
-	ActionIconProps,
-	Button,
-	Center,
-	Flex,
-	Group,
-	Tooltip,
-	useMantineColorScheme,
-} from '@mantine/core';
-import classes from './styles.module.css';
-import { DynamicVariants, HeaderButtonVariants, type HeaderButtonVariantType } from './constants';
 import { MouseEventHandler, useEffect, useMemo, useState } from 'react';
-import { IconArrowUpLeft, IconBox } from '@tabler/icons-react';
+
+import { ActionIcon, ActionIconProps, Tooltip, useMantineColorScheme } from '@mantine/core';
+
+import { DynamicVariants, HeaderButtonVariantType, HeaderButtonVariants } from './constants';
+import classes from './styles.module.css';
 
 export interface HeaderButtonProps extends ActionIconProps {
 	variant: HeaderButtonVariantType;
@@ -69,48 +59,5 @@ export const HeaderButton = ({ variant, className, ...props }: HeaderButtonProps
 				{icon}
 			</ActionIcon>
 		</Tooltip>
-	);
-};
-
-export const Header = () => {
-	return (
-		<Center component="header" className={classes.root}>
-			<Group className={classes.container}>
-				<Flex className={classes.left}>
-					<Button
-						component="a"
-						href="/dashboard"
-						className={classes.dashboardButton}
-						variant="light"
-						size="xs"
-						leftSection={<IconArrowUpLeft size={14} />}
-					>
-						Return to Dashboard
-					</Button>
-					<Tooltip label="Return to Marketplace Home">
-						<Button
-							component="a"
-							href="/"
-							aria-label="Home button"
-							classNames={{ root: `${classes.logo} ${classes.headerButton}`, label: classes.label }}
-							variant="transparent"
-							size="xs"
-							leftSection={<IconBox size={20} />}
-						>
-							ETS
-						</Button>
-					</Tooltip>
-					<HeaderButton variant="notifications" />
-				</Flex>
-				<Flex className={classes.search}></Flex>
-				<Flex className={classes.right}>
-					<HeaderButton className={classes.search} variant="search" />
-					<HeaderButton variant="accessibility" />
-					<HeaderButton variant="language" />
-					<HeaderButton variant="theme" />
-					<HeaderButton className={classes.user} variant="user" />
-				</Flex>
-			</Group>
-		</Center>
 	);
 };

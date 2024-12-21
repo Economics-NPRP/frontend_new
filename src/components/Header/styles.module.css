@@ -4,28 +4,24 @@
 	@apply px-2 pt-2 sm:px-4 sm:pt-4;
 
 	.container {
-		@apply h-14 w-full max-w-[1400px] md:h-16;
+		@apply h-14 w-full max-w-[1400px];
 		@apply gap-0 lg:gap-2 2xl:gap-4;
 		@apply flex-nowrap items-center justify-start;
 		@apply border border-solid border-gray-300 bg-white shadow-md sm:shadow-lg;
 
 		.headerButton {
-			@apply size-14 md:size-16;
+			@apply size-14;
 			@apply flex;
 			@apply border-y-0 border-gray-200;
 			@apply text-dark-300;
 
 			&.logo {
-				@apply w-[unset] !border-l px-6;
+				@apply w-[unset] !border-l px-4 lg:px-6;
 				@apply text-dark-600;
 
 				.label {
 					@apply heading-3;
 				}
-			}
-
-			&.search {
-				@apply !flex xs:!hidden;
 			}
 
 			&.user {
@@ -37,11 +33,30 @@
 			@apply flex-[1_1_50%] items-center justify-start;
 
 			.dashboardButton {
-				@apply mx-6;
+				@apply mx-4 lg:mx-6 text-dark-300 font-normal;
 			}
 
 			.headerButton {
 				@apply border-l-0;
+			}
+		}
+
+		.searchBar {
+			@apply gap-2;
+
+			.searchButton {
+				@apply w-80 lg:w-96 h-8;
+				@apply flex justify-center gap-2;
+				@apply bg-gray-100 rounded-sm;
+				@apply paragraph-sm;
+			}
+
+			.shortcut {
+				@apply 2xl:h-7 h-6;
+				@apply items-center;
+				@apply px-1.5 2xl:gap-[2px] xl:gap-[1px];
+				@apply rounded-sm border border-solid border-gray-300 bg-white text-dark-600;
+				@apply display-xs;
 			}
 		}
 

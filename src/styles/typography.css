@@ -36,14 +36,14 @@
 		@apply uppercase;
 	}
 
-	.display-m {
+	.display-md {
 		@apply font-sans;
 		@apply text-base;
 		@apply font-bold;
 		@apply tracking-normal;
 		@apply text-dark-600;
 	}
-	.display-s {
+	.display-sm {
 		@apply font-sans;
 		@apply text-sm;
 		@apply font-bold;
@@ -58,14 +58,14 @@
 		@apply text-dark-300;
 	}
 
-	.paragraph-m {
+	.paragraph-md {
 		@apply font-sans;
 		@apply text-base;
 		@apply font-normal;
 		@apply tracking-normal;
 		@apply text-dark-300;
 	}
-	.paragraph-s {
+	.paragraph-sm {
 		@apply font-sans;
 		@apply text-sm;
 		@apply font-normal;
@@ -87,14 +87,14 @@
 		@apply tracking-normal;
 		@apply text-dark-600;
 	}
-	.numeric-l {
+	.numeric-lg {
 		@apply font-sans;
 		@apply text-xl;
 		@apply font-bold;
 		@apply tracking-normal;
 		@apply text-dark-600;
 	}
-	.numeric-m {
+	.numeric-md {
 		@apply font-sans;
 		@apply text-base;
 		@apply font-normal;

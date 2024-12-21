@@ -1,6 +1,6 @@
+import { readFileSync } from 'fs';
 import { parse } from 'postcss';
 import { objectify } from 'postcss-js';
-import { readFileSync } from 'fs';
 import { PluginCreator } from 'tailwindcss/types/config';
 
 /**
