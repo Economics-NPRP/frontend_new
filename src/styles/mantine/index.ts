@@ -1,7 +1,8 @@
-import { createTheme, DEFAULT_THEME, mergeMantineTheme } from '@mantine/core';
-import { breakpoints, colors, shadows } from './theme';
-import { SourceSansPro, SourceSerifPro } from './fonts';
+import { DEFAULT_THEME, createTheme, mergeMantineTheme } from '@mantine/core';
+
 import { components } from './components';
+import { SourceSansPro, SourceSerifPro } from './fonts';
+import { breakpoints, colors, shadows } from './theme';
 
 export const theme = mergeMantineTheme(
 	DEFAULT_THEME,

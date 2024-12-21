@@ -1,8 +1,9 @@
-import { addCustomUtilities } from './src/styles/plugins/addCustomUtilities';
-import { breakpoints, colors, shadows } from './src/styles/mantine/theme';
+import { resolve } from 'node:path';
 import tailwindPresetMantine from 'tailwind-preset-mantine';
 import type { Config } from 'tailwindcss';
-import { resolve } from 'node:path';
+
+import { breakpoints, colors, shadows } from './src/styles/mantine/theme';
+import { addCustomUtilities } from './src/styles/plugins/addCustomUtilities';
 
 const config: Config = {
 	content: [
