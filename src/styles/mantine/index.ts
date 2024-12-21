@@ -8,8 +8,8 @@ export const theme = mergeMantineTheme(
 	createTheme({
 		fontFamily: SourceSansPro.style.fontFamily,
 		headings: { fontFamily: SourceSerifPro.style.fontFamily },
-		defaultRadius: 'xs',
-		primaryColor: 'maroon',
+		defaultRadius: 0,
+		primaryColor: 'dark',
 		primaryShade: 6,
 
 		breakpoints,

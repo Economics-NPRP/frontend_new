@@ -1,6 +1,8 @@
+import { addCustomUtilities } from './src/styles/plugins/addCustomUtilities';
 import { breakpoints, colors, shadows } from './src/styles/mantine/theme';
 import tailwindPresetMantine from 'tailwind-preset-mantine';
 import type { Config } from 'tailwindcss';
+import { resolve } from 'node:path';
 
 const config: Config = {
 	content: [
@@ -26,29 +28,6 @@ const config: Config = {
 	corePlugins: {
 		preflight: false,
 	},
-	plugins: [
-		//	@ts-expect-error - Not working for some reason
-		({ addUtilities }) => {
-			addUtilities({
-				'.heading-1': {},
-				'.heading-2': {},
-				'.heading-3': {},
-				'.heading-4': {},
-				'.heading-5': {},
-
-				'.display-m': {},
-				'.display-s': {},
-				'.display-xs': {},
-
-				'.paragraph-m': {},
-				'.paragraph-s': {},
-				'.paragraph-xs': {},
-
-				'.numeric-xl': {},
-				'.numeric-l': {},
-				'.numeric-m': {},
-			});
-		},
-	],
+	plugins: [addCustomUtilities(resolve(__dirname, './src/styles/typography.css'))],
 };
 export default config;

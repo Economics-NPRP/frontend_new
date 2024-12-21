@@ -1,14 +1,7 @@
 import { Avatar, type MantineColorScheme } from '@mantine/core';
 import { IconAccessible, IconBell, IconLanguage, IconMoon, IconSearch, IconSun } from '@tabler/icons-react';
 
-export type HeaderButtonVariantType =
-	| 'logo'
-	| 'search'
-	| 'notifications'
-	| 'accessibility'
-	| 'theme'
-	| 'language'
-	| 'user';
+export type HeaderButtonVariantType = 'search' | 'notifications' | 'accessibility' | 'theme' | 'language' | 'user';
 
 export interface HeaderButtonData {
 	tooltip: string | ((args: never) => string);
@@ -19,7 +12,7 @@ export interface HeaderButtonData {
 export const HeaderButtonVariants: Partial<Record<HeaderButtonVariantType, HeaderButtonData>> = {
 	search: {
 		tooltip: `Search for an auction`,
-		ariaLabel: `Search for an auction`,
+		ariaLabel: `Search button`,
 		icon: <IconSearch size={16} />,
 	},
 	notifications: {
@@ -38,8 +31,8 @@ export const HeaderButtonVariants: Partial<Record<HeaderButtonVariantType, Heade
 		icon: <IconLanguage size={16} />,
 	},
 	theme: {
-		tooltip: (theme: MantineColorScheme) => `Switch to ${theme} theme`,
-		ariaLabel: (theme: MantineColorScheme) => `Switch to ${theme} theme`,
+		tooltip: (theme: MantineColorScheme) => `Switch to ${theme === 'light' ? 'dark' : 'light'} theme`,
+		ariaLabel: (theme: MantineColorScheme) => `Switch to ${theme === 'light' ? 'dark' : 'light'} theme`,
 		icon: (theme: MantineColorScheme) => (theme === 'light' ? <IconSun size={16} /> : <IconMoon size={16} />),
 	},
 	user: {

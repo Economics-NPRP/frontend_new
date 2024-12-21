@@ -1,31 +1,56 @@
 .root {
 	@apply fixed left-0 top-0 z-50;
 	@apply w-screen;
-	@apply px-2 pt-2 sm:px-4 sm:pt-4 2xl:px-8 2xl:pt-8;
+	@apply px-2 pt-2 sm:px-4 sm:pt-4;
 
 	.container {
-		@apply h-14 w-full max-w-[1600px] md:h-16;
+		@apply h-14 w-full max-w-[1400px] md:h-16;
 		@apply gap-0 lg:gap-2 2xl:gap-4;
 		@apply flex-nowrap items-center justify-start;
 		@apply border border-solid border-gray-300 bg-white shadow-md sm:shadow-lg;
 
 		.headerButton {
-			@apply size-14 last:w-20 md:size-16;
+			@apply size-14 md:size-16;
 			@apply flex;
-			@apply border-y-0 border-r-0 border-gray-200 only:border-r;
+			@apply border-y-0 border-gray-200;
 			@apply text-dark-300;
+
+			&.logo {
+				@apply w-[unset] !border-l px-6;
+				@apply text-dark-600;
+
+				.label {
+					@apply heading-3;
+				}
+			}
 
 			&.search {
 				@apply !flex xs:!hidden;
 			}
+
+			&.user {
+				@apply w-20;
+			}
 		}
 
 		.left {
-			@apply flex-[1_1_50%] justify-start align-middle;
+			@apply flex-[1_1_50%] items-center justify-start;
+
+			.dashboardButton {
+				@apply mx-6;
+			}
+
+			.headerButton {
+				@apply border-l-0;
+			}
 		}
 
 		.right {
-			@apply flex-[1_1_50%] justify-end align-middle;
+			@apply flex-[1_1_50%] items-center justify-end;
+
+			.headerButton {
+				@apply border-r-0;
+			}
 		}
 	}
 }

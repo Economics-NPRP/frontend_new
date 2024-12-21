@@ -1,19 +1,39 @@
 'use client';
 
-import { ActionIcon, ActionIconProps, Center, Flex, Group, Tooltip, useComputedColorScheme } from '@mantine/core';
+import {
+	ActionIcon,
+	ActionIconProps,
+	Button,
+	Center,
+	Flex,
+	Group,
+	Tooltip,
+	useMantineColorScheme,
+} from '@mantine/core';
 import classes from './styles.module.css';
 import { DynamicVariants, HeaderButtonVariants, type HeaderButtonVariantType } from './constants';
-import { useEffect, useState } from 'react';
+import { MouseEventHandler, useEffect, useMemo, useState } from 'react';
+import { IconArrowUpLeft, IconBox } from '@tabler/icons-react';
 
 export interface HeaderButtonProps extends ActionIconProps {
 	variant: HeaderButtonVariantType;
 }
 export const HeaderButton = ({ variant, className, ...props }: HeaderButtonProps) => {
-	const computedColorScheme = useComputedColorScheme('light');
+	const { colorScheme, setColorScheme } = useMantineColorScheme();
 
 	const [tooltip, setTooltip] = useState<string>();
 	const [ariaLabel, setAriaLabel] = useState<string>();
 	const [icon, setIcon] = useState<JSX.Element>();
+
+	const onClickHandler = useMemo<MouseEventHandler<HTMLButtonElement>>(() => {
+		switch (variant) {
+			case 'theme':
+				return (() =>
+					setColorScheme(colorScheme === 'light' ? 'dark' : 'light')) as MouseEventHandler<HTMLButtonElement>;
+			default:
+				return () => {};
+		}
+	}, [variant, colorScheme]);
 
 	useEffect(() => {
 		const { tooltip, ariaLabel, icon } = HeaderButtonVariants[variant]!;
@@ -25,7 +45,7 @@ export const HeaderButton = ({ variant, className, ...props }: HeaderButtonProps
 		let args: unknown;
 		switch (variant) {
 			case 'theme':
-				args = computedColorScheme;
+				args = colorScheme;
 				break;
 			case 'language':
 				args = 'English';
@@ -35,7 +55,7 @@ export const HeaderButton = ({ variant, className, ...props }: HeaderButtonProps
 		if (typeof tooltip === 'function') setTooltip(tooltip(args as never));
 		if (typeof ariaLabel === 'function') setAriaLabel(ariaLabel(args as never));
 		if (typeof icon === 'function') setIcon(icon(args as never));
-	}, [computedColorScheme, variant]);
+	}, [colorScheme, variant]);
 
 	return (
 		<Tooltip label={tooltip}>
@@ -43,6 +63,7 @@ export const HeaderButton = ({ variant, className, ...props }: HeaderButtonProps
 				className={`${classes.headerButton} ${className}`}
 				variant="transparent"
 				aria-label={ariaLabel}
+				onClick={onClickHandler}
 				{...props}
 			>
 				{icon}
@@ -55,15 +76,39 @@ export const Header = () => {
 	return (
 		<Center component="header" className={classes.root}>
 			<Group className={classes.container}>
-				<Flex className={classes.left}>1</Flex>
-				<Flex className={classes.search}>2</Flex>
-				<Flex className={classes.right}>
-					<HeaderButton variant="search" className={classes.search} />
+				<Flex className={classes.left}>
+					<Button
+						component="a"
+						href="/dashboard"
+						className={classes.dashboardButton}
+						variant="light"
+						size="xs"
+						leftSection={<IconArrowUpLeft size={14} />}
+					>
+						Return to Dashboard
+					</Button>
+					<Tooltip label="Return to Marketplace Home">
+						<Button
+							component="a"
+							href="/"
+							aria-label="Home button"
+							classNames={{ root: `${classes.logo} ${classes.headerButton}`, label: classes.label }}
+							variant="transparent"
+							size="xs"
+							leftSection={<IconBox size={20} />}
+						>
+							ETS
+						</Button>
+					</Tooltip>
 					<HeaderButton variant="notifications" />
+				</Flex>
+				<Flex className={classes.search}></Flex>
+				<Flex className={classes.right}>
+					<HeaderButton className={classes.search} variant="search" />
 					<HeaderButton variant="accessibility" />
 					<HeaderButton variant="language" />
 					<HeaderButton variant="theme" />
-					<HeaderButton variant="user" />
+					<HeaderButton className={classes.user} variant="user" />
 				</Flex>
 			</Group>
 		</Center>
