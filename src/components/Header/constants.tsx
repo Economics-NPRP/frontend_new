@@ -1,3 +1,4 @@
+import { Locale } from '@/locales';
 import { Avatar, type MantineColorScheme } from '@mantine/core';
 import { IconAccessible, IconBell, IconLanguage, IconMoon, IconSearch, IconSun } from '@tabler/icons-react';
 
@@ -26,8 +27,8 @@ export const HeaderButtonVariants: Partial<Record<HeaderButtonVariantType, Heade
 		icon: <IconAccessible size={16} />,
 	},
 	language: {
-		tooltip: (language: string) => `Switch to Arabic`,
-		ariaLabel: (language: string) => `Switch to Arabic`,
+		tooltip: (language: Locale) => `Switch to Arabic`,
+		ariaLabel: (language: Locale) => `Switch to Arabic`,
 		icon: <IconLanguage size={16} />,
 	},
 	theme: {

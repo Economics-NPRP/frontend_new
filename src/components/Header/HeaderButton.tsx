@@ -1,5 +1,6 @@
 import { MouseEventHandler, useEffect, useMemo, useState } from 'react';
 
+import { toggleUserLocale } from '@/locales';
 import { ActionIcon, ActionIconProps, Tooltip, useMantineColorScheme } from '@mantine/core';
 
 import { DynamicVariants, HeaderButtonVariantType, HeaderButtonVariants } from './constants';
@@ -20,6 +21,8 @@ export const HeaderButton = ({ variant, className, ...props }: HeaderButtonProps
 			case 'theme':
 				return (() =>
 					setColorScheme(colorScheme === 'light' ? 'dark' : 'light')) as MouseEventHandler<HTMLButtonElement>;
+			case 'language':
+				return toggleUserLocale;
 			default:
 				return () => {};
 		}

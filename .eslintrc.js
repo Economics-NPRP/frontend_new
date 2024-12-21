@@ -10,6 +10,9 @@ module.exports = {
 		"**/*.bench.ts",
 		"**/*.stories.tsx",
 	],
+	rules: {
+		'@typescript-eslint/no-empty-object-type': 'off',
+	},
 	parser: "@typescript-eslint/parser",
 	plugins: ["@typescript-eslint"],
 };

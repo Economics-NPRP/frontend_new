@@ -27,6 +27,8 @@
 			"@/hooks/*": ["hooks/*"],
 			"@/images/*": ["images/*"],
 			"@/layouts/*": ["layouts/*"],
+			"@/locales": ["locales"],
+			"@/locales/*": ["locales/*"],
 			"@/pages/*": ["pages/*"],
 			"@/public/*": ["../public/*"],
 			"@/store": ["store"],
