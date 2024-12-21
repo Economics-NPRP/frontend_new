@@ -1,25 +1,25 @@
 .root {
 	@apply fixed left-0 top-0 z-50;
 	@apply w-screen;
-	@apply px-2 pt-2 sm:px-4 sm:pt-4;
+	@apply px-2 pt-2;
 
 	.container {
 		@apply h-14 w-full max-w-[1400px];
-		@apply gap-0 lg:gap-2 2xl:gap-4;
+		@apply gap-0;
 		@apply flex-nowrap items-center justify-start;
-		@apply border border-solid border-gray-300 dark:border-dark-400;
-		@apply bg-white dark:bg-dark-600;
-		@apply shadow-md sm:shadow-lg;
+		@apply border border-solid border-gray-300;
+		@apply bg-white;
+		@apply shadow-md;
 
 		.headerButton {
 			@apply size-14;
 			@apply flex;
-			@apply border-y-0 border-gray-200 dark:border-dark-500;
-			@apply text-dark-300 dark:text-dark-50;
+			@apply border-y-0 border-gray-200;
+			@apply text-dark-300;
 
 			&.logo {
-				@apply w-[unset] !border-l px-4 lg:px-6;
-				@apply text-dark-600 dark:text-white;
+				@apply w-[unset] !border-l px-4;
+				@apply text-dark-600;
 
 				.label {
 					@apply heading-3;
@@ -35,8 +35,8 @@
 			@apply flex-[1_1_50%] items-center justify-start;
 
 			.dashboardButton {
-				@apply mx-4 lg:mx-6;
-				@apply text-dark-300 dark:text-dark-50 dark:bg-dark-500;
+				@apply mx-4;
+				@apply text-dark-300;
 				@apply font-normal;
 			}
 
@@ -49,17 +49,17 @@
 			@apply gap-2;
 
 			.searchButton {
-				@apply w-80 lg:w-96 h-8;
+				@apply w-80 h-8;
 				@apply flex justify-center gap-2;
-				@apply bg-gray-100 dark:bg-dark-500 rounded-sm;
+				@apply bg-gray-100 rounded-sm;
 				@apply paragraph-sm;
 			}
 
 			.shortcut {
-				@apply 2xl:h-7 h-6;
+				@apply h-6;
 				@apply items-center;
-				@apply px-1.5 2xl:gap-[2px] xl:gap-[1px];
-				@apply rounded-sm border border-solid border-gray-300 dark:border-dark-400;
+				@apply px-1.5;
+				@apply rounded-sm border border-solid border-gray-300;
 				@apply text-dark-600;
 				@apply display-xs;
 			}
@@ -70,6 +70,80 @@
 
 			.headerButton {
 				@apply border-r-0;
+			}
+		}
+	}
+}
+
+* {
+	@mixin dark {
+		.root .container {
+			@apply border-dark-400 bg-dark-600;
+
+			.headerButton {
+				@apply border-dark-500 text-dark-50;
+
+				&.logo {
+					@apply text-white;
+				}
+			}
+
+			.left .dashboardButton {
+				@apply text-dark-50 bg-dark-500;
+			}
+
+			.searchBar {
+				.searchButton {
+					@apply bg-dark-500;
+				}
+
+				.shortcut {
+					@apply border-dark-400;
+				}
+			}
+		}
+	}
+
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			@apply px-4 pt-4;
+
+			.container {
+				@apply shadow-lg;
+			}
+		}
+	}
+
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root .container {
+			@apply gap-2;
+
+			.logo.headerButton {
+				@apply px-6;
+			}
+
+			.left .dashboardButton {
+				@apply mx-6;
+			}
+
+			.searchBar .searchButton {
+				@apply w-96;
+			}
+		}
+	}
+
+	@mixin larger-than $mantine-breakpoint-xl {
+		.root .container .searchBar .shortcut {
+			@apply gap-[1px];
+		}
+	}
+
+	@mixin larger-than $mantine-breakpoint-2xl {
+		.root .container {
+			@apply gap-4;
+
+			.searchBar .shortcut {
+				@apply h-7 gap-[2px];
 			}
 		}
 	}
