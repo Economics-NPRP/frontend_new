@@ -1,28 +1,11 @@
 import { ColorSchemesSwitcher } from '@/components/color-schemes-switcher';
-import {
-	AppShell,
-	AppShellHeader,
-	AppShellMain,
-	Group,
-	Text,
-	Title,
-} from '@mantine/core';
-import Image from 'next/image';
+import { AppShell, AppShellMain, Text, Title } from '@mantine/core';
+import { Header } from '@/components/Header';
 
 export default function Home() {
 	return (
 		<AppShell header={{ height: 60 }} padding="md">
-			<AppShellHeader>
-				<Group className="h-full px-md">
-					<Image
-						className="dark:invert"
-						src="https://nextjs.org/icons/next.svg"
-						alt="logo"
-						width={100}
-						height={100}
-					/>
-				</Group>
-			</AppShellHeader>
+			<Header />
 			<AppShellMain>
 				<Title className="mt-20 text-center">
 					Welcome to{' '}
