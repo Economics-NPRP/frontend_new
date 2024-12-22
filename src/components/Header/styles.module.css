@@ -76,6 +76,18 @@
 }
 
 * {
+	@mixin rtl {
+		.root .container {
+			.left .headerButton {
+				@apply border-r-0 border-l;
+			}
+
+			.right .headerButton {
+				@apply border-l-0 border-r;
+			}
+		}
+	}
+
 	@mixin dark {
 		.root .container {
 			@apply border-dark-400 bg-dark-600;

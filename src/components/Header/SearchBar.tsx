@@ -1,20 +1,24 @@
+import { useTranslations } from 'next-intl';
+
 import { Button, Center, Tooltip } from '@mantine/core';
 import { IconCommand, IconSearch } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
 export const SearchBar = () => {
+	const t = useTranslations();
+
 	return (
 		<>
 			<Center className={classes.searchBar} visibleFrom="md">
-				<Tooltip label="Open the search bar">
+				<Tooltip label={t('header.search.prompt-tooltip')}>
 					<Button
 						className={classes.searchButton}
 						variant="transparent"
 						fullWidth
 						leftSection={<IconSearch size={14} />}
 					>
-						Search for an auction...
+						{t('header.search.prompt')}...
 					</Button>
 				</Tooltip>
 				<Center className={classes.shortcut}>

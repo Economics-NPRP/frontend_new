@@ -1,9 +1,10 @@
 import { type Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
-import { getLocale, getMessages } from 'next-intl/server';
+import { getMessages } from 'next-intl/server';
 import Head from 'next/head';
 import { getLangDir } from 'rtl-detect';
 
+import { getUserLocale } from '@/locales';
 import '@/styles/globals.css';
 import { theme } from '@/styles/mantine';
 import { ColorSchemeScript, DirectionProvider, MantineProvider } from '@mantine/core';
@@ -18,7 +19,7 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const locale = await getLocale();
+	const locale = await getUserLocale();
 	const messages = await getMessages();
 	const direction = getLangDir(locale);
 

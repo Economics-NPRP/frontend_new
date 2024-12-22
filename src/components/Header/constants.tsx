@@ -12,33 +12,33 @@ export interface HeaderButtonData {
 
 export const HeaderButtonVariants: Partial<Record<HeaderButtonVariantType, HeaderButtonData>> = {
 	search: {
-		tooltip: `Search for an auction`,
-		ariaLabel: `Search button`,
+		tooltip: 'header.buttons.search-tooltip',
+		ariaLabel: 'header.buttons.search-aria',
 		icon: <IconSearch size={16} />,
 	},
 	notifications: {
-		tooltip: `Notifications`,
-		ariaLabel: `Notifications`,
+		tooltip: 'header.buttons.notifications-tooltip',
+		ariaLabel: 'header.buttons.notifications-aria',
 		icon: <IconBell size={16} />,
 	},
 	accessibility: {
-		tooltip: `Accessibility options`,
-		ariaLabel: `Accessibility options`,
+		tooltip: 'header.buttons.accessibility-tooltip',
+		ariaLabel: 'header.buttons.accessibility-aria',
 		icon: <IconAccessible size={16} />,
 	},
 	language: {
-		tooltip: (language: Locale) => `Switch to Arabic`,
-		ariaLabel: (language: Locale) => `Switch to Arabic`,
+		tooltip: (language: Locale) => `header.buttons.language-${language}-tooltip`,
+		ariaLabel: (language: Locale) => `header.buttons.language-${language}-aria`,
 		icon: <IconLanguage size={16} />,
 	},
 	theme: {
-		tooltip: (theme: MantineColorScheme) => `Switch to ${theme === 'light' ? 'dark' : 'light'} theme`,
-		ariaLabel: (theme: MantineColorScheme) => `Switch to ${theme === 'light' ? 'dark' : 'light'} theme`,
+		tooltip: (theme: MantineColorScheme) => `header.buttons.theme-${theme}-tooltip`,
+		ariaLabel: (theme: MantineColorScheme) => `header.buttons.theme-${theme}-aria`,
 		icon: (theme: MantineColorScheme) => (theme === 'light' ? <IconSun size={16} /> : <IconMoon size={16} />),
 	},
 	user: {
-		tooltip: `My Account`,
-		ariaLabel: `My Account`,
+		tooltip: `header.buttons.user-tooltip`,
+		ariaLabel: `header.buttons.user-aria`,
 		icon: <Avatar name="John Doe" color="initials" />,
 	},
 };

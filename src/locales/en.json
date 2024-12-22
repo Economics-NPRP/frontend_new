@@ -1,1 +1,36 @@
-{}
+{
+  "header": {
+    "search": {
+      "prompt": "Search for an auction",
+      "prompt-tooltip": "Open the search bar"
+    },
+    "buttons": {
+      "search-tooltip": "Search for an auction",
+      "search-aria": "Search button",
+      "notifications-tooltip": "Notifications",
+      "notifications-aria": "Notifications",
+      "accessibility-tooltip": "Accessibility options",
+      "accessibility-aria": "Accessibility options",
+      "language-en-aria": "Switch to Arabic / التبديل إلى اللغة العربية",
+      "language-ar-aria": " التبديل إلى اللغة الإنجليزية / Switch to English",
+      "language-ar-tooltip": " التبديل إلى اللغة الإنجليزية / Switch to English",
+      "language-en-tooltip": "Switch to Arabic / التبديل إلى اللغة العربية",
+      "theme-dark-tooltip": "Switch to Light Mode",
+      "theme-dark-aria": "Switch to Light Mode",
+      "theme-light-tooltip": "Switch to Dark Mode",
+      "theme-light-aria": "Switch to Dark Mode",
+      "user-tooltip": "My Profile",
+      "user-aria": "My Profile"
+    },
+    "return-to-dashboard": {
+      "tooltip": "Go back to your dashboard",
+      "long": "Return to Dashboard",
+      "short": "Dashboard",
+      "aria": "Return to dashboard button"
+    },
+    "return-to-marketplace": {
+      "tooltip": "Return to Marketplace Home",
+      "aria": "Home button"
+    }
+  }
+}

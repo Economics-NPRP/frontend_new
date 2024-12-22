@@ -1,3 +1,4 @@
+import { useLocale, useTranslations } from 'next-intl';
 import { MouseEventHandler, useEffect, useMemo, useState } from 'react';
 
 import { toggleUserLocale } from '@/locales';
@@ -10,6 +11,8 @@ export interface HeaderButtonProps extends ActionIconProps {
 	variant: HeaderButtonVariantType;
 }
 export const HeaderButton = ({ variant, className, ...props }: HeaderButtonProps) => {
+	const t = useTranslations();
+	const locale = useLocale();
 	const { colorScheme, setColorScheme } = useMantineColorScheme();
 
 	const [tooltip, setTooltip] = useState<string>();
@@ -41,21 +44,21 @@ export const HeaderButton = ({ variant, className, ...props }: HeaderButtonProps
 				args = colorScheme;
 				break;
 			case 'language':
-				args = 'English';
+				args = locale;
 				break;
 		}
 
 		if (typeof tooltip === 'function') setTooltip(tooltip(args as never));
 		if (typeof ariaLabel === 'function') setAriaLabel(ariaLabel(args as never));
 		if (typeof icon === 'function') setIcon(icon(args as never));
-	}, [colorScheme, variant]);
+	}, [locale, colorScheme, variant]);
 
 	return (
-		<Tooltip label={tooltip}>
+		<Tooltip label={t(tooltip as never)}>
 			<ActionIcon
 				className={`${classes.headerButton} ${className}`}
 				variant="transparent"
-				aria-label={ariaLabel}
+				aria-label={t(ariaLabel as never)}
 				onClick={onClickHandler}
 				{...props}
 			>
