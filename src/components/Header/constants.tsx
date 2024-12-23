@@ -1,8 +1,21 @@
 import { Locale } from '@/locales';
 import { Avatar, type MantineColorScheme } from '@mantine/core';
-import { IconAccessible, IconBell, IconLanguage, IconMoon, IconSearch, IconSun } from '@tabler/icons-react';
+import {
+	IconAccessible,
+	IconBell,
+	IconLanguage,
+	IconMoon,
+	IconSearch,
+	IconSun,
+} from '@tabler/icons-react';
 
-export type HeaderButtonVariantType = 'search' | 'notifications' | 'accessibility' | 'theme' | 'language' | 'user';
+export type HeaderButtonVariantType =
+	| 'search'
+	| 'notifications'
+	| 'accessibility'
+	| 'theme'
+	| 'language'
+	| 'user';
 
 export interface HeaderButtonData {
 	tooltip: string | ((args: never) => string);
@@ -34,7 +47,8 @@ export const HeaderButtonVariants: Partial<Record<HeaderButtonVariantType, Heade
 	theme: {
 		tooltip: (theme: MantineColorScheme) => `header.buttons.theme-${theme}-tooltip`,
 		ariaLabel: (theme: MantineColorScheme) => `header.buttons.theme-${theme}-aria`,
-		icon: (theme: MantineColorScheme) => (theme === 'light' ? <IconSun size={16} /> : <IconMoon size={16} />),
+		icon: (theme: MantineColorScheme) =>
+			theme === 'light' ? <IconSun size={16} /> : <IconMoon size={16} />,
 	},
 	user: {
 		tooltip: `header.buttons.user-tooltip`,

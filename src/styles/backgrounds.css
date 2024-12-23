@@ -1,0 +1,40 @@
+@layer utilities {
+	.bg-dot-lg {
+	}
+
+	.bg-stagger-lg {
+		background-image: radial-gradient(var(--mantine-color-gray-2) 3%, transparent 3%),
+			radial-gradient(var(--mantine-color-gray-2) 3%, transparent 3%);
+		background-position:
+			20px 20px,
+			60px 60px;
+		background-size: 80px 80px;
+		@apply bg-white;
+	}
+
+	.bg-stagger-md {
+		background-image: radial-gradient(var(--mantine-color-gray-2) 4%, transparent 4%),
+			radial-gradient(var(--mantine-color-gray-2) 4%, transparent 4%);
+		background-position:
+			15px 15px,
+			45px 45px;
+		background-size: 60px 60px;
+		@apply bg-white;
+	}
+
+	* {
+		@mixin dark {
+			.bg-stagger-lg {
+				background-image: radial-gradient(var(--mantine-color-dark-4) 2%, transparent 2%),
+					radial-gradient(var(--mantine-color-dark-4) 2%, transparent 2%) !important;
+				@apply !bg-dark-700;
+			}
+
+			.bg-stagger-md {
+				background-image: radial-gradient(var(--mantine-color-dark-4) 2%, transparent 2%),
+					radial-gradient(var(--mantine-color-dark-4) 2%, transparent 2%) !important;
+				@apply !bg-dark-700;
+			}
+		}
+	}
+}

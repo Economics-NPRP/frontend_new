@@ -1,0 +1,30 @@
+.root {
+	@apply w-screen;
+	@apply flex flex-col items-center;
+	@apply px-2 pb-2 pt-20;
+
+	.content {
+		@apply w-full max-w-[1400px];
+		@apply p-0 m-0;
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			@apply px-4 pb-4 pt-24;
+		}
+	}
+
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+			@apply pt-28;
+		}
+	}
+
+	@mixin larger-than $mantine-breakpoint-xl {
+		.root {
+			@apply pt-32;
+		}
+	}
+}

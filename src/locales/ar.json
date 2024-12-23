@@ -20,7 +20,9 @@
       "theme-light-aria": "التبديل إلى الوضع الداكن",
       "theme-light-tooltip": "التبديل إلى الوضع الداكن",
       "user-aria": "ملفي الشخصي",
-      "user-tooltip": "ملفي الشخصي"
+      "user-tooltip": "ملفي الشخصي",
+      "theme-auto-aria": "التبديل إلى الوضع الداكن",
+      "theme-auto-tooltip": "التبديل إلى الوضع اليدوي"
     },
     "return-to-dashboard": {
       "long": "العودة إلى لوحة التحكم",
@@ -31,6 +33,23 @@
     "return-to-marketplace": {
       "aria": "زر الصفحة الرئيسية",
       "tooltip": "العودة إلى الصفحة الرئيسية للسوق"
+    }
+  },
+  "marketplace": {
+    "home": {
+      "banner": {
+        "actions": {
+          "calendar": {
+            "tooltip": "افتح تقويم المزاد"
+          },
+          "explore": {
+            "text": "اكتشف المزادات",
+            "tooltip": "عرض أحدث العروض في السوق"
+          }
+        },
+        "subtitle": "المزادات الحكومية",
+        "title": "فترة المزاد القادمة"
+      }
     }
   }
 }

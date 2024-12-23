@@ -23,7 +23,9 @@ export const HeaderButton = ({ variant, className, ...props }: HeaderButtonProps
 		switch (variant) {
 			case 'theme':
 				return (() =>
-					setColorScheme(colorScheme === 'light' ? 'dark' : 'light')) as MouseEventHandler<HTMLButtonElement>;
+					setColorScheme(
+						colorScheme === 'light' ? 'dark' : 'light',
+					)) as MouseEventHandler<HTMLButtonElement>;
 			case 'language':
 				return toggleUserLocale;
 			default:
@@ -54,11 +56,11 @@ export const HeaderButton = ({ variant, className, ...props }: HeaderButtonProps
 	}, [locale, colorScheme, variant]);
 
 	return (
-		<Tooltip label={t(tooltip as never)}>
+		<Tooltip label={tooltip && t(tooltip as never)}>
 			<ActionIcon
 				className={`${classes.headerButton} ${className}`}
 				variant="transparent"
-				aria-label={t(ariaLabel as never)}
+				aria-label={ariaLabel && t(ariaLabel as never)}
 				onClick={onClickHandler}
 				{...props}
 			>

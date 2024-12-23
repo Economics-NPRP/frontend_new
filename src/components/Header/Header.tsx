@@ -40,7 +40,10 @@ export const Header = () => {
 							component="a"
 							href="/"
 							aria-label={t('header.return-to-marketplace.aria')}
-							classNames={{ root: `${classes.logo} ${classes.headerButton}`, label: classes.label }}
+							classNames={{
+								root: `${classes.logo} ${classes.headerButton}`,
+								label: classes.label,
+							}}
 							variant="transparent"
 							size="xs"
 							leftSection={<IconBox size={20} />}

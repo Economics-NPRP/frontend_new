@@ -43,6 +43,27 @@
 		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
 	}
+	.display-md-sb {
+		@apply font-sans;
+		@apply text-base;
+		@apply font-semibold;
+		@apply tracking-normal;
+		@apply text-dark-600 dark:text-white;
+	}
+	.display-md-g6 {
+		@apply font-sans;
+		@apply text-base;
+		@apply font-bold;
+		@apply tracking-normal;
+		@apply text-gray-600 dark:text-dark-200;
+	}
+	.display-md-sb-g6 {
+		@apply font-sans;
+		@apply text-base;
+		@apply font-semibold;
+		@apply tracking-normal;
+		@apply text-gray-600 dark:text-dark-200;
+	}
 	.display-sm {
 		@apply font-sans;
 		@apply text-sm;

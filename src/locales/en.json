@@ -18,7 +18,9 @@
       "theme-dark-tooltip": "Switch to Light Mode",
       "theme-dark-aria": "Switch to Light Mode",
       "theme-light-tooltip": "Switch to Dark Mode",
-      "theme-light-aria": "Switch to Dark Mode",
+      "theme-light-aria": "Switch to Manual Mode",
+      "theme-auto-tooltip": "Switch to Manual Mode",
+      "theme-auto-aria": "Switch to Dark Mode",
       "user-tooltip": "My Profile",
       "user-aria": "My Profile"
     },
@@ -31,6 +33,23 @@
     "return-to-marketplace": {
       "tooltip": "Return to Marketplace Home",
       "aria": "Home button"
+    }
+  },
+  "marketplace": {
+    "home": {
+      "banner": {
+        "subtitle": "Government Auctions",
+        "title": "Next Auction Period",
+        "actions": {
+          "calendar": {
+            "tooltip": "Open the auction calendar"
+          },
+          "explore": {
+            "tooltip": "View the latest offerings in the marketplace",
+            "text": "Explore Auctions"
+          }
+        }
+      }
     }
   }
 }
