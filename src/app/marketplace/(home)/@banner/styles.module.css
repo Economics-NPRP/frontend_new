@@ -1,0 +1,97 @@
+.root {
+	@apply relative;
+	@apply h-[360px] max-w-none;
+	@apply flex flex-col justify-center items-center;
+	@apply overflow-hidden;
+	@apply col-span-full;
+	@apply py-16;
+	@apply border border-solid border-gray-300;
+
+	> .subheading {
+		@apply display-md-sb-g6 uppercase;
+	}
+
+	> .heading {
+		@apply heading-1;
+	}
+
+	> .countdown {
+		@apply mt-8 mb-12;
+	}
+
+	> .actions {
+		@apply h-9;
+		@apply flex justify-center items-center;
+		@apply gap-2;
+
+		> .primary:hover {
+			@apply bg-dark-400;
+		}
+
+		> .secondary {
+			@apply size-9;
+			@apply bg-white;
+
+			&:hover {
+				@apply bg-gray-100;
+			}
+		}
+	}
+
+	> .bg {
+		@apply absolute top-0 left-0;
+		@apply w-full h-full max-w-none;
+		@apply pointer-events-none;
+
+		> .gradient {
+			@apply absolute top-0 left-0;
+			@apply w-full h-full;
+
+			&:first-child {
+				background: radial-gradient(
+					at left top,
+					rgba(138, 21, 56, 0.1) 0%,
+					hsla(342, 74%, 80%, 0) 50%
+				);
+			}
+
+			&:last-child {
+				background: radial-gradient(
+					at right bottom,
+					rgba(128, 103, 164, 0.1) 0%,
+					hsla(202, 76%, 80%, 0) 50%
+				);
+			}
+		}
+	}
+
+	> *:not(.bg) {
+		@apply z-10;
+	}
+}
+
+* {
+	@mixin dark {
+		.root {
+			@apply border-dark-400;
+
+			> .actions {
+				> .primary {
+					@apply bg-white text-dark-600;
+
+					&:hover {
+						@apply bg-gray-200;
+					}
+				}
+
+				> .secondary {
+					@apply bg-dark-700 border-dark-400 text-white;
+
+					&:hover {
+						@apply bg-dark-600;
+					}
+				}
+			}
+		}
+	}
+}
