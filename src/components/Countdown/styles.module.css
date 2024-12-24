@@ -1,17 +1,17 @@
 .root {
 	@apply gap-3;
 
-	.unit {
+	> .unit {
 		@apply justify-center items-center gap-2;
 
-		.value {
+		> .value {
 			@apply gap-1;
 
-			.cell {
+			> .cell {
 				@apply w-8 h-12;
 				@apply bg-dark-600;
 
-				.digit {
+				> .digit {
 					--value: '';
 
 					@apply h-[1.5em];
@@ -31,7 +31,7 @@
 			}
 		}
 
-		.label {
+		> .label {
 			@apply display-xs uppercase;
 		}
 	}
@@ -39,10 +39,10 @@
 
 * {
 	@mixin dark {
-		.unit .value .cell {
+		.unit > .value > .cell {
 			@apply bg-white;
 
-			.digit {
+			> .digit {
 				@apply text-dark-600;
 			}
 		}

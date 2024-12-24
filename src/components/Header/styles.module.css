@@ -3,7 +3,7 @@
 	@apply w-screen;
 	@apply px-2 pt-2;
 
-	.container {
+	> .container {
 		@apply h-14 w-full max-w-[1400px];
 		@apply gap-0;
 		@apply flex-nowrap items-center justify-start;
@@ -31,31 +31,31 @@
 			}
 		}
 
-		.left {
+		> .left {
 			@apply flex-[1_1_50%] items-center justify-start;
 
-			.dashboardButton {
+			> .dashboardButton {
 				@apply mx-4;
 				@apply text-dark-300;
 				@apply font-normal;
 			}
 
-			.headerButton {
+			> .headerButton {
 				@apply border-l-0;
 			}
 		}
 
-		.searchBar {
+		> .searchBar {
 			@apply gap-2;
 
-			.searchButton {
+			> .searchButton {
 				@apply w-80 h-8;
 				@apply flex justify-center gap-2;
 				@apply bg-gray-100 rounded-sm;
 				@apply paragraph-sm;
 			}
 
-			.shortcut {
+			> .shortcut {
 				@apply h-6;
 				@apply items-center;
 				@apply px-1.5;
@@ -65,10 +65,10 @@
 			}
 		}
 
-		.right {
+		> .right {
 			@apply flex-[1_1_50%] items-center justify-end;
 
-			.headerButton {
+			> .headerButton {
 				@apply border-r-0;
 			}
 		}
@@ -77,19 +77,19 @@
 
 * {
 	@mixin rtl {
-		.root .container {
-			.left .headerButton {
+		.root > .container {
+			> .left > .headerButton {
 				@apply border-r-0 border-l;
 			}
 
-			.right .headerButton {
+			> .right > .headerButton {
 				@apply border-l-0 border-r;
 			}
 		}
 	}
 
 	@mixin dark {
-		.root .container {
+		.root > .container {
 			@apply border-dark-400 bg-dark-600;
 
 			.headerButton {
@@ -100,16 +100,16 @@
 				}
 			}
 
-			.left .dashboardButton {
+			> .left > .dashboardButton {
 				@apply text-dark-50 bg-dark-500;
 			}
 
-			.searchBar {
-				.searchButton {
+			> .searchBar {
+				> .searchButton {
 					@apply bg-dark-500;
 				}
 
-				.shortcut {
+				> .shortcut {
 					@apply border-dark-400;
 				}
 			}
@@ -119,33 +119,29 @@
 	@mixin larger-than $mantine-breakpoint-sm {
 		.root {
 			@apply px-4 pt-4;
-
-			.container {
-				@apply shadow-lg;
-			}
 		}
 	}
 
 	@mixin larger-than $mantine-breakpoint-lg {
-		.root .container {
+		.root > .container {
 			@apply gap-2;
 
-			.logo.headerButton {
+			> .logo.headerButton {
 				@apply px-6;
 			}
 
-			.left .dashboardButton {
+			> .left > .dashboardButton {
 				@apply mx-6;
 			}
 
-			.searchBar .searchButton {
+			> .searchBar > .searchButton {
 				@apply w-96;
 			}
 		}
 	}
 
 	@mixin larger-than $mantine-breakpoint-xl {
-		.root .container .searchBar .shortcut {
+		.root > .container > .searchBar > .shortcut {
 			@apply gap-[1px];
 		}
 	}

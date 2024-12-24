@@ -31,8 +31,8 @@ const config: Config = {
 		preflight: false,
 	},
 	plugins: [
-		addCustomUtilities(resolve(__dirname, './src/styles/typography.css')),
 		addCustomUtilities(resolve(__dirname, './src/styles/backgrounds.css')),
+		addCustomUtilities(resolve(__dirname, './src/styles/typography.css')),
 	],
 };
 export default config;

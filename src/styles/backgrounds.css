@@ -22,6 +22,27 @@
 		@apply bg-white;
 	}
 
+	.bg-grid-lg {
+		background-image: linear-gradient(90deg, var(--mantine-color-gray-1) 1px, transparent 1px),
+			linear-gradient(180deg, var(--mantine-color-gray-1) 1px, transparent 1px);
+		background-size: 60px 60px;
+		@apply bg-white;
+	}
+
+	.bg-grid-md {
+		background-image: linear-gradient(90deg, var(--mantine-color-gray-1) 1px, transparent 1px),
+			linear-gradient(180deg, var(--mantine-color-gray-1) 1px, transparent 1px);
+		background-size: 40px 40px;
+		@apply bg-white;
+	}
+
+	.bg-grid-sm {
+		background-image: linear-gradient(90deg, var(--mantine-color-gray-1) 1px, transparent 1px),
+			linear-gradient(180deg, var(--mantine-color-gray-1) 1px, transparent 1px);
+		background-size: 20px 20px;
+		@apply bg-white;
+	}
+
 	* {
 		@mixin dark {
 			.bg-stagger-lg {
@@ -33,6 +54,36 @@
 			.bg-stagger-md {
 				background-image: radial-gradient(var(--mantine-color-dark-4) 2%, transparent 2%),
 					radial-gradient(var(--mantine-color-dark-4) 2%, transparent 2%) !important;
+				@apply !bg-dark-700;
+			}
+
+			.bg-grid-lg {
+				background-image: linear-gradient(
+						90deg,
+						var(--mantine-color-dark-5) 1px,
+						transparent 1px
+					),
+					linear-gradient(180deg, var(--mantine-color-dark-5) 1px, transparent 1px) !important;
+				@apply !bg-dark-700;
+			}
+
+			.bg-grid-md {
+				background-image: linear-gradient(
+						90deg,
+						var(--mantine-color-dark-5) 1px,
+						transparent 1px
+					),
+					linear-gradient(180deg, var(--mantine-color-dark-5) 1px, transparent 1px) !important;
+				@apply !bg-dark-700;
+			}
+
+			.bg-grid-sm {
+				background-image: linear-gradient(
+						90deg,
+						var(--mantine-color-dark-5) 1px,
+						transparent 1px
+					),
+					linear-gradient(180deg, var(--mantine-color-dark-5) 1px, transparent 1px) !important;
 				@apply !bg-dark-700;
 			}
 		}

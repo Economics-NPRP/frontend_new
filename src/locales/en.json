@@ -19,6 +19,20 @@
 						"text": "Explore Auctions"
 					}
 				}
+			},
+			"subbanner": {
+				"1": {
+					"text": "Click here to view recent activity",
+					"heading": "<mark>{value, plural, =0 {No new bids} =1 {1 new bid} other {# new bids}}</mark> for your enrolled auctions"
+				},
+				"2": {
+					"text": "Click here to create a new auction",
+					"heading": "Have excess permits? <mark>Auction them off!</mark>"
+				},
+				"3": {
+					"text": "Click here to view auction results",
+					"heading": "<mark>{value, plural, =0 {No auction} =1 {1 auction} other {# auctions}}</mark> {value, plural, =0 {has} =1 {has} other {have}} ended"
+				}
 			}
 		}
 	},

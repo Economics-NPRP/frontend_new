@@ -1,47 +1,38 @@
-.banner {
-	@apply relative;
-	@apply h-[360px] w-full max-w-none;
-	@apply flex flex-col justify-center items-center;
-	@apply overflow-clip;
-	@apply py-16;
-	@apply bg-stagger-lg;
-	@apply border border-solid border-gray-300 rounded-sm;
+.root {
+	@apply grid grid-cols-12 gap-4;
 
-	.subheading {
-		@apply display-md-sb-g6 uppercase;
-	}
+	> .banner {
+		@apply h-[360px] max-w-none;
+		@apply flex flex-col justify-center items-center;
+		@apply col-span-full;
+		@apply py-16;
+		@apply border border-solid border-gray-300;
 
-	.heading {
-		@apply heading-1;
-	}
-
-	.countdown {
-		@apply mt-8 mb-12;
-	}
-
-	.actions {
-		@apply h-9;
-		@apply flex justify-center items-center;
-		@apply gap-2;
-
-		.secondary {
-			@apply size-9;
-			@apply bg-white;
+		> .subheading {
+			@apply display-md-sb-g6 uppercase;
 		}
-	}
 
-	*:not(.bg) {
-		@apply z-10;
-	}
+		> .heading {
+			@apply heading-1;
+		}
 
-	.bg {
-		@apply absolute top-0 left-0;
-		@apply w-full h-full max-w-none;
-		@apply pointer-events-none;
+		> .countdown {
+			@apply mt-8 mb-12;
+		}
 
-		.gradient {
-			@apply absolute top-0 left-0;
-			@apply w-full h-full max-w-none;
+		> .actions {
+			@apply h-9;
+			@apply flex justify-center items-center;
+			@apply gap-2;
+
+			.secondary {
+				@apply size-9;
+				@apply bg-white;
+			}
+		}
+
+		> .bg > .gradient {
+			@apply top-0 left-0 h-full;
 
 			&:first-child {
 				background: radial-gradient(
@@ -60,15 +51,188 @@
 			}
 		}
 	}
+
+	> .subbanner {
+		@apply h-auto;
+		@apply flex flex-col justify-center items-center;
+		@apply col-span-full;
+		@apply py-4 px-8;
+		@apply border border-solid border-gray-300;
+		@apply transition-all duration-500;
+
+		> .heading {
+			@apply mt-2;
+			@apply display-md-15 text-center;
+
+			> mark {
+				@apply text-maroon-600 bg-transparent;
+			}
+		}
+
+		> .text {
+			@apply paragraph-sm text-center;
+		}
+
+		> .bg {
+			> .gradient {
+				@apply h-[50%] -top-4;
+				@apply transition-all duration-500;
+			}
+
+			> .graphic {
+				@apply absolute;
+			}
+		}
+
+		&:hover {
+			@apply shadow-md;
+
+			.gradient {
+				@apply !top-0;
+			}
+		}
+
+		&:nth-of-type(1) > .bg {
+			> .gradient {
+				background: radial-gradient(
+					at center top,
+					rgba(0, 156, 128, 0.15) 0%,
+					hsla(169, 100%, 80%, 0) 75%
+				);
+			}
+
+			> .graphic {
+				@apply border border-solid border-gray-200 rounded-full;
+
+				&:nth-child(1) {
+					@apply size-[190px] top-[54px] -left-[60px];
+				}
+
+				&:nth-child(2) {
+					@apply size-[360px] -top-[300px] left-[200px];
+				}
+
+				&:nth-child(3) {
+					@apply size-[190px] -top-[140px] left-[300px];
+				}
+			}
+		}
+
+		&:nth-of-type(2) > .bg {
+			> .gradient {
+				background: radial-gradient(
+					at center top,
+					rgba(233, 197, 107, 0.25) 0%,
+					hsla(43, 74%, 80%, 0) 75%
+				);
+			}
+
+			> .graphic {
+				@apply w-full h-[200px] -bottom-[160px];
+			}
+		}
+
+		&:nth-of-type(3) > .bg {
+			> .gradient {
+				background: radial-gradient(
+					at center top,
+					rgba(65, 148, 179, 0.2) 0%,
+					hsla(196, 47%, 80%, 0) 75%
+				);
+			}
+
+			> .graphic {
+				@apply size-[300px];
+				@apply stroke-gray-200;
+
+				&:nth-child(1) {
+					@apply -top-[250px] -left-[92px];
+					@apply rotate-[40deg];
+				}
+
+				&:nth-child(2) {
+					@apply -top-[206px] -right-[250px];
+					@apply rotate-[107deg];
+				}
+			}
+		}
+	}
+
+	> .banner,
+	> .subbanner {
+		@apply relative;
+		@apply overflow-hidden;
+
+		> *:not(.bg) {
+			@apply z-10;
+		}
+
+		> .bg {
+			@apply absolute top-0 left-0;
+			@apply w-full h-full max-w-none;
+			@apply pointer-events-none;
+
+			> .gradient {
+				@apply absolute;
+				@apply w-full;
+			}
+		}
+	}
 }
 
 * {
 	@mixin dark {
-		.banner {
-			@apply border-dark-400;
+		.root {
+			> .banner {
+				@apply border-dark-400;
 
-			.actions .secondary {
-				@apply bg-dark-700 border-dark-500 text-white;
+				> .actions > .secondary {
+					@apply bg-dark-700 border-dark-500 text-white;
+				}
+			}
+
+			> .subbanner {
+				@apply border-dark-400;
+
+				> .heading > mark {
+					@apply text-maroon-300;
+				}
+
+				.graphic {
+					@apply !border-dark-500 !stroke-dark-500;
+				}
+
+				&:nth-of-type(1) > .bg > .gradient {
+					background: radial-gradient(
+						at center top,
+						rgba(0, 156, 128, 0.2) 0%,
+						hsla(169, 100%, 80%, 0) 75%
+					);
+				}
+
+				&:nth-of-type(2) > .bg > .gradient {
+					background: radial-gradient(
+						at center top,
+						rgba(233, 197, 107, 0.15) 0%,
+						hsla(43, 74%, 80%, 0) 75%
+					);
+				}
+
+				&:nth-of-type(3) > .bg > .gradient {
+					background: radial-gradient(
+						at center top,
+						rgba(65, 148, 179, 0.25) 0%,
+						hsla(196, 47%, 80%, 0) 75%
+					);
+				}
+			}
+		}
+	}
+
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			> .subbanner {
+				@apply col-span-4;
 			}
 		}
 	}

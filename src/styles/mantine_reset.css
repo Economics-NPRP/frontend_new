@@ -1,0 +1,5 @@
+.mantine-Container-root {
+	@apply w-full max-w-none;
+	padding-inline: unset;
+	margin-inline: unset;
+}

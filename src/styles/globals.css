@@ -3,6 +3,7 @@
 /* import tailwind */
 @import 'tailwindcss/base' layer(tw_base);
 @import 'tailwindcss/components' layer(tw_components);
+@import './mantine_reset.css' layer(tw_components);
 @import 'tailwindcss/utilities' layer(tw_utilities);
 
 /* import mantine */
@@ -14,8 +15,8 @@
 		--shadow-color-2: rgba(0, 0, 0, 0.05);
 	}
 	&[data-mantine-color-scheme='dark'] {
-		--shadow-color-1: rgba(255, 255, 255, 0.03);
-		--shadow-color-2: rgba(255, 255, 255, 0.01);
+		--shadow-color-1: rgba(255, 255, 255, 0.08);
+		--shadow-color-2: rgba(255, 255, 255, 0.05);
 	}
 }
 
