@@ -7,6 +7,7 @@
 		@apply h-14 w-full max-w-[1400px];
 		@apply gap-0;
 		@apply flex-nowrap items-center justify-start;
+		@apply overflow-hidden;
 		@apply border border-solid border-gray-300;
 		@apply bg-white;
 		@apply shadow-md;
@@ -29,6 +30,10 @@
 			&.user {
 				@apply w-20;
 			}
+
+			&:hover {
+				@apply bg-gray-50;
+			}
 		}
 
 		> .left {
@@ -36,8 +41,12 @@
 
 			> .dashboardButton {
 				@apply mx-4;
-				@apply text-dark-300;
+				@apply text-dark-300 bg-gray-100;
 				@apply font-normal;
+
+				&:hover {
+					@apply bg-gray-200;
+				}
 			}
 
 			> .headerButton {
@@ -53,6 +62,10 @@
 				@apply flex justify-center gap-2;
 				@apply bg-gray-100 rounded-sm;
 				@apply paragraph-sm;
+
+				&:hover {
+					@apply bg-gray-200;
+				}
 			}
 
 			> .shortcut {
@@ -98,15 +111,27 @@
 				&.logo {
 					@apply text-white;
 				}
+
+				&:hover {
+					@apply bg-dark-400;
+				}
 			}
 
 			> .left > .dashboardButton {
 				@apply text-dark-50 bg-dark-500;
+
+				&:hover {
+					@apply bg-dark-400;
+				}
 			}
 
 			> .searchBar {
 				> .searchButton {
 					@apply bg-dark-500;
+
+					&:hover {
+						@apply bg-dark-400;
+					}
 				}
 
 				> .shortcut {

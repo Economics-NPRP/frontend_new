@@ -10,6 +10,7 @@
 			> .cell {
 				@apply w-8 h-12;
 				@apply bg-dark-600;
+				@apply transition-colors duration-150;
 
 				> .digit {
 					--value: '';
@@ -28,6 +29,10 @@
 						content: '' attr(data-content);
 					}
 				}
+
+				&:hover {
+					@apply bg-dark-400;
+				}
 			}
 		}
 
@@ -44,6 +49,10 @@
 
 			> .digit {
 				@apply text-dark-600;
+			}
+
+			&:hover {
+				@apply bg-gray-100;
 			}
 		}
 	}

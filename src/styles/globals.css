@@ -27,3 +27,8 @@
 		}
 	}
 }
+
+button,
+a {
+	@apply transition-all duration-150;
+}

@@ -25,9 +25,17 @@
 			@apply flex justify-center items-center;
 			@apply gap-2;
 
-			.secondary {
+			> .primary:hover {
+				@apply bg-dark-400;
+			}
+
+			> .secondary {
 				@apply size-9;
 				@apply bg-white;
+
+				&:hover {
+					@apply bg-gray-100;
+				}
 			}
 		}
 
@@ -186,8 +194,22 @@
 			> .banner {
 				@apply border-dark-400;
 
-				> .actions > .secondary {
-					@apply bg-dark-700 border-dark-500 text-white;
+				> .actions {
+					> .primary {
+						@apply bg-white text-dark-600;
+
+						&:hover {
+							@apply bg-gray-200;
+						}
+					}
+
+					> .secondary {
+						@apply bg-dark-700 border-dark-400 text-white;
+
+						&:hover {
+							@apply bg-dark-600;
+						}
+					}
 				}
 			}
 
