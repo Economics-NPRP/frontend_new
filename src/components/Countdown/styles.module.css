@@ -1,0 +1,50 @@
+.root {
+	@apply gap-3;
+
+	.unit {
+		@apply justify-center items-center gap-2;
+
+		.value {
+			@apply gap-1;
+
+			.cell {
+				@apply w-8 h-12;
+				@apply bg-dark-600;
+
+				.digit {
+					--value: '';
+
+					@apply h-[1.5em];
+					@apply overflow-hidden;
+					@apply numeric-xl;
+					@apply text-white;
+
+					&::after {
+						@apply relative;
+						@apply whitespace-pre text-center leading-[1.5em];
+						@apply transition-all;
+
+						top: calc(var(--value) * -1.5em);
+						content: '' attr(data-content);
+					}
+				}
+			}
+		}
+
+		.label {
+			@apply display-xs uppercase;
+		}
+	}
+}
+
+* {
+	@mixin dark {
+		.unit .value .cell {
+			@apply bg-white;
+
+			.digit {
+				@apply text-dark-600;
+			}
+		}
+	}
+}

@@ -1,5 +1,7 @@
+import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
 
+import { Countdown } from '@/components/Countdown';
 import { ColorSchemesSwitcher } from '@/components/color-schemes-switcher';
 import { ActionIcon, Button, ButtonGroup, Container, Text, Title, Tooltip } from '@mantine/core';
 import { IconArrowUpRight, IconCalendarSearch } from '@tabler/icons-react';
@@ -21,6 +23,12 @@ export default function Home() {
 				<Title className={classes.heading} order={1}>
 					{t('marketplace.home.banner.title')}
 				</Title>
+
+				<Countdown
+					className={classes.countdown}
+					targetDate={DateTime.fromObject({ year: 2024, month: 12, day: 31 }).toISO()!}
+				/>
+
 				<ButtonGroup className={classes.actions}>
 					<Tooltip label={t('marketplace.home.banner.actions.calendar.tooltip')}>
 						<ActionIcon className={classes.secondary} variant="outline">

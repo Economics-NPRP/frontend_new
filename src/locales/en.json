@@ -1,55 +1,89 @@
 {
-  "header": {
-    "search": {
-      "prompt": "Search for an auction",
-      "prompt-tooltip": "Open the search bar"
-    },
-    "buttons": {
-      "search-tooltip": "Search for an auction",
-      "search-aria": "Search button",
-      "notifications-tooltip": "Notifications",
-      "notifications-aria": "Notifications",
-      "accessibility-tooltip": "Accessibility options",
-      "accessibility-aria": "Accessibility options",
-      "language-en-aria": "Switch to Arabic / التبديل إلى اللغة العربية",
-      "language-ar-aria": " التبديل إلى اللغة الإنجليزية / Switch to English",
-      "language-ar-tooltip": " التبديل إلى اللغة الإنجليزية / Switch to English",
-      "language-en-tooltip": "Switch to Arabic / التبديل إلى اللغة العربية",
-      "theme-dark-tooltip": "Switch to Light Mode",
-      "theme-dark-aria": "Switch to Light Mode",
-      "theme-light-tooltip": "Switch to Dark Mode",
-      "theme-light-aria": "Switch to Manual Mode",
-      "theme-auto-tooltip": "Switch to Manual Mode",
-      "theme-auto-aria": "Switch to Dark Mode",
-      "user-tooltip": "My Profile",
-      "user-aria": "My Profile"
-    },
-    "return-to-dashboard": {
-      "tooltip": "Go back to your dashboard",
-      "long": "Return to Dashboard",
-      "short": "Dashboard",
-      "aria": "Return to dashboard button"
-    },
-    "return-to-marketplace": {
-      "tooltip": "Return to Marketplace Home",
-      "aria": "Home button"
-    }
-  },
-  "marketplace": {
-    "home": {
-      "banner": {
-        "subtitle": "Government Auctions",
-        "title": "Next Auction Period",
-        "actions": {
-          "calendar": {
-            "tooltip": "Open the auction calendar"
-          },
-          "explore": {
-            "tooltip": "View the latest offerings in the marketplace",
-            "text": "Explore Auctions"
-          }
-        }
-      }
-    }
-  }
+	"header": {
+		"search": {},
+		"buttons": {},
+		"return-to-dashboard": {},
+		"return-to-marketplace": {}
+	},
+	"marketplace": {
+		"home": {
+			"banner": {
+				"subtitle": "Government Auctions",
+				"title": "Next Auction Period",
+				"actions": {
+					"calendar": {
+						"tooltip": "Open the auction calendar"
+					},
+					"explore": {
+						"tooltip": "View the latest offerings in the marketplace",
+						"text": "Explore Auctions"
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"countdown": {
+			"label": {
+				"long": {
+					"years": "Years",
+					"year": "Year",
+					"quarters": "Quarters",
+					"quarter": "Quarter",
+					"months": "Months",
+					"month": "Month",
+					"weeks": "Weeks",
+					"week": "Week",
+					"days": "Days",
+					"day": "Day",
+					"hours": "Hours",
+					"hour": "Hour",
+					"minutes": "Minutes",
+					"minute": "Minute",
+					"seconds": "Seconds",
+					"second": "Second",
+					"milliseconds": "Milliseconds",
+					"millisecond": "Millisecond",
+					"empty": "—"
+				}
+			},
+			"value": "0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
+		},
+		"header": {
+			"return-to-dashboard": {
+				"aria": "Return to dashboard button",
+				"long": "Return to Dashboard",
+				"short": "Dashboard",
+				"tooltip": "Go back to your dashboard"
+			},
+			"return-to-marketplace": {
+				"aria": "Home button",
+				"tooltip": "Return to Marketplace Home"
+			},
+			"search": {
+				"prompt": "Search for an auction",
+				"prompt-tooltip": "Open the search bar"
+			},
+			"buttons": {
+				"accessibility-aria": "Accessibility options",
+				"accessibility-tooltip": "Accessibility options",
+				"language-ar-aria": " التبديل إلى اللغة الإنجليزية / Switch to English",
+				"language-ar-tooltip": " التبديل إلى اللغة الإنجليزية / Switch to English",
+				"language-en-aria": "Switch to Arabic / التبديل إلى اللغة العربية",
+				"language-en-tooltip": "Switch to Arabic / التبديل إلى اللغة العربية",
+				"notifications-aria": "Notifications",
+				"notifications-tooltip": "Notifications",
+				"search-aria": "Search button",
+				"search-tooltip": "Search for an auction",
+				"theme-auto-aria": "Switch to Dark Mode",
+				"theme-auto-tooltip": "Switch to Manual Mode",
+				"theme-dark-aria": "Switch to Light Mode",
+				"theme-dark-tooltip": "Switch to Light Mode",
+				"theme-light-aria": "Switch to Manual Mode",
+				"theme-light-tooltip": "Switch to Dark Mode",
+				"user-aria": "My Profile",
+				"user-tooltip": "My Profile"
+			}
+		}
+	}
 }

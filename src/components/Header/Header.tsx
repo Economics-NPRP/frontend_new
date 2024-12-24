@@ -16,11 +16,11 @@ export const Header = () => {
 		<Center component="header" className={classes.root}>
 			<Group className={classes.container}>
 				<Flex className={classes.left}>
-					<Tooltip label={t('header.return-to-dashboard.tooltip')}>
+					<Tooltip label={t('components.header.return-to-dashboard.tooltip')}>
 						<Button
 							component="a"
 							href="/dashboard"
-							aria-label={t('header.return-to-dashboard.aria')}
+							aria-label={t('components.header.return-to-dashboard.aria')}
 							className={classes.dashboardButton}
 							variant="light"
 							size="xs"
@@ -28,18 +28,18 @@ export const Header = () => {
 							visibleFrom="sm"
 						>
 							<Text visibleFrom="lg" inherit>
-								{t('header.return-to-dashboard.long')}
+								{t('components.header.return-to-dashboard.long')}
 							</Text>
 							<Text hiddenFrom="lg" inherit>
-								{t('header.return-to-dashboard.short')}
+								{t('components.header.return-to-dashboard.short')}
 							</Text>
 						</Button>
 					</Tooltip>
-					<Tooltip label={t('header.return-to-marketplace.tooltip')}>
+					<Tooltip label={t('components.header.return-to-marketplace.tooltip')}>
 						<Button
 							component="a"
 							href="/"
-							aria-label={t('header.return-to-marketplace.aria')}
+							aria-label={t('components.header.return-to-marketplace.aria')}
 							classNames={{
 								root: `${classes.logo} ${classes.headerButton}`,
 								label: classes.label,

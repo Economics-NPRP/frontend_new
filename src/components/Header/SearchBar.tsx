@@ -11,14 +11,14 @@ export const SearchBar = () => {
 	return (
 		<>
 			<Center className={classes.searchBar} visibleFrom="md">
-				<Tooltip label={t('header.search.prompt-tooltip')}>
+				<Tooltip label={t('components.header.search.prompt-tooltip')}>
 					<Button
 						className={classes.searchButton}
 						variant="transparent"
 						fullWidth
 						leftSection={<IconSearch size={14} />}
 					>
-						{t('header.search.prompt')}...
+						{t('components.header.search.prompt')}...
 					</Button>
 				</Tooltip>
 				<Center className={classes.shortcut}>
