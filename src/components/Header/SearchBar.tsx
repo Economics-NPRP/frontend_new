@@ -9,22 +9,21 @@ export const SearchBar = () => {
 	const t = useTranslations();
 
 	return (
-		<>
-			<Center className={classes.searchBar} visibleFrom="md">
-				<Tooltip label={t('components.header.search.prompt-tooltip')}>
-					<Button
-						className={classes.searchButton}
-						variant="transparent"
-						fullWidth
-						leftSection={<IconSearch size={14} />}
-					>
-						{t('components.header.search.prompt')}...
-					</Button>
-				</Tooltip>
-				<Center className={classes.shortcut}>
-					<IconCommand size={14} />K
-				</Center>
+		<Center className={classes.searchBar} visibleFrom="md">
+			<Tooltip label={t('components.header.search.prompt-tooltip')}>
+				<Button
+					className={classes.searchButton}
+					variant="transparent"
+					fullWidth
+					leftSection={<IconSearch size={14} />}
+				>
+					{t('components.header.search.prompt')}...
+				</Button>
+			</Tooltip>
+			<Center className={classes.shortcut}>
+				<IconCommand size={14} />
+				{t('components.header.search.shortcut')}
 			</Center>
-		</>
+		</Center>
 	);
 };

@@ -17,7 +17,7 @@ export const setUserLocale = async (locale: Locale) => {
 
 export const toggleUserLocale = async () => {
 	const locale = await getUserLocale();
-	(await cookies()).set(COOKIE_NAME, locale === 'en' ? 'ar' : 'en');
+	(await cookies()).set(COOKIE_NAME, locale === 'en' ? 'ar-QA' : 'en');
 };
 
 export default getRequestConfig(async () => {
@@ -26,5 +26,6 @@ export default getRequestConfig(async () => {
 	return {
 		locale,
 		messages: (await import(`./${locale}.json`)).default,
+		timeZone: 'Asia/Riyadh',
 	};
 });

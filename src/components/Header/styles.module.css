@@ -15,7 +15,7 @@
 		.headerButton {
 			@apply size-14;
 			@apply flex;
-			@apply border-y-0 border-gray-200;
+			@apply border-y-0 border-gray-300;
 			@apply text-dark-300;
 
 			&.logo {
@@ -88,6 +88,57 @@
 	}
 }
 
+.userDropdown {
+	@apply pt-8 pb-4 px-4;
+	@apply overflow-hidden;
+	@apply shadow-md;
+
+	> .bg {
+		@apply absolute top-0 left-0;
+		@apply w-full h-16;
+		@apply pointer-events-none;
+	}
+
+	> .details {
+		@apply w-full;
+		@apply my-4;
+
+		.subtext {
+			@apply flex items-center;
+			@apply paragraph-sm-g6;
+			@apply leading-tight;
+		}
+
+		> .id {
+			@apply flex-auto gap-0;
+
+			> .text {
+				@apply display-lg;
+				@apply leading-tight;
+			}
+		}
+
+		> .rating {
+			@apply gap-1 items-end;
+		}
+	}
+
+	> .primary {
+		@apply h-7;
+		@apply justify-center items-center;
+		@apply gap-1 mb-4;
+		@apply bg-dark-600 text-white;
+
+		&:hover {
+			@apply bg-dark-400;
+		}
+	}
+
+	> *:not(.bg) {
+		@apply relative z-10;
+	}
+}
+
 * {
 	@mixin rtl {
 		.root > .container {
@@ -106,7 +157,7 @@
 			@apply border-dark-400 bg-dark-600;
 
 			.headerButton {
-				@apply border-dark-500 text-dark-50;
+				@apply border-dark-400 text-dark-50;
 
 				&.logo {
 					@apply text-white;
@@ -136,6 +187,20 @@
 
 				> .shortcut {
 					@apply border-dark-400;
+				}
+			}
+		}
+
+		.userDropdown {
+			> .bg {
+				@apply bg-dark-600;
+			}
+
+			> .primary {
+				@apply bg-dark-400 text-white;
+
+				&:hover {
+					@apply bg-dark-300;
 				}
 			}
 		}

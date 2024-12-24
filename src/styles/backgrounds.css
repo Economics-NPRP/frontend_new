@@ -47,14 +47,14 @@
 		@mixin dark {
 			.bg-stagger-lg {
 				background-image: radial-gradient(var(--mantine-color-dark-4) 2%, transparent 2%),
-					radial-gradient(var(--mantine-color-dark-4) 2%, transparent 2%) !important;
-				@apply !bg-dark-700;
+					radial-gradient(var(--mantine-color-dark-4) 2%, transparent 2%);
+				@apply bg-dark-700;
 			}
 
 			.bg-stagger-md {
 				background-image: radial-gradient(var(--mantine-color-dark-4) 2%, transparent 2%),
-					radial-gradient(var(--mantine-color-dark-4) 2%, transparent 2%) !important;
-				@apply !bg-dark-700;
+					radial-gradient(var(--mantine-color-dark-4) 2%, transparent 2%);
+				@apply bg-dark-700;
 			}
 
 			.bg-grid-lg {
@@ -63,8 +63,8 @@
 						var(--mantine-color-dark-5) 1px,
 						transparent 1px
 					),
-					linear-gradient(180deg, var(--mantine-color-dark-5) 1px, transparent 1px) !important;
-				@apply !bg-dark-700;
+					linear-gradient(180deg, var(--mantine-color-dark-5) 1px, transparent 1px);
+				@apply bg-dark-700;
 			}
 
 			.bg-grid-md {
@@ -73,8 +73,8 @@
 						var(--mantine-color-dark-5) 1px,
 						transparent 1px
 					),
-					linear-gradient(180deg, var(--mantine-color-dark-5) 1px, transparent 1px) !important;
-				@apply !bg-dark-700;
+					linear-gradient(180deg, var(--mantine-color-dark-5) 1px, transparent 1px);
+				@apply bg-dark-700;
 			}
 
 			.bg-grid-sm {
@@ -83,8 +83,8 @@
 						var(--mantine-color-dark-5) 1px,
 						transparent 1px
 					),
-					linear-gradient(180deg, var(--mantine-color-dark-5) 1px, transparent 1px) !important;
-				@apply !bg-dark-700;
+					linear-gradient(180deg, var(--mantine-color-dark-5) 1px, transparent 1px);
+				@apply bg-dark-700;
 			}
 		}
 	}

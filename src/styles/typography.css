@@ -36,6 +36,13 @@
 		@apply uppercase;
 	}
 
+	.display-lg {
+		@apply font-sans;
+		@apply text-lg;
+		@apply font-bold;
+		@apply tracking-normal;
+		@apply text-dark-600 dark:text-white;
+	}
 	.display-md {
 		@apply font-sans;
 		@apply text-base;
@@ -122,6 +129,13 @@
 		@apply font-normal;
 		@apply tracking-normal;
 		@apply text-dark-300 dark:text-dark-50;
+	}
+	.paragraph-sm-g6 {
+		@apply font-sans;
+		@apply text-sm;
+		@apply font-normal;
+		@apply tracking-normal;
+		@apply text-gray-600 dark:text-dark-200;
 	}
 	.paragraph-xs {
 		@apply font-sans;

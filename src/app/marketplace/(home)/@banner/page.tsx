@@ -11,7 +11,7 @@ export default function Banner() {
 	const t = useTranslations();
 
 	return (
-		<Container className={`${classes.root} bg-stagger-md md:bg-stagger-lg`}>
+		<Container className={`${classes.root} bg-stagger-md`}>
 			<Container className={classes.bg}>
 				<Container className={classes.gradient} />
 				<Container className={classes.gradient} />

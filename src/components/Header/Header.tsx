@@ -7,6 +7,7 @@ import { IconArrowUpLeft, IconBox } from '@tabler/icons-react';
 
 import { HeaderButton } from './HeaderButton';
 import { SearchBar } from './SearchBar';
+import { UserProfile } from './UserProfile';
 import classes from './styles.module.css';
 
 export const Header = () => {
@@ -59,7 +60,7 @@ export const Header = () => {
 					<HeaderButton variant="accessibility" visibleFrom="xs" />
 					<HeaderButton variant="language" visibleFrom="xs" />
 					<HeaderButton variant="theme" visibleFrom="xs" />
-					<HeaderButton className={classes.user} variant="user" />
+					<UserProfile />
 				</Flex>
 			</Group>
 		</Center>
