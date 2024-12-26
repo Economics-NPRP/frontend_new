@@ -7,6 +7,14 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
   },
+  ...(process.env.NODE_ENV === 'development' && {images: {
+    dangerouslyAllowSVG: true,
+    remotePatterns: [
+      {
+        hostname: '*',
+      }
+    ]
+  }}),
 
   redirects: async () => {
     return [
