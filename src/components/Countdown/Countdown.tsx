@@ -70,19 +70,44 @@ export const Countdown = ({
 
 	const { start: startCountdown, stop: stopCountdown } = useInterval(() => {
 		const interval = Interval.fromDateTimes(DateTime.now(), targetDate);
-		if (!interval.isValid || displayOnly) return stopCountdown();
+		if (!interval.isValid || displayOnly) {
+			setValues([0, 0, 0, 0, 0, 0]);
+			setDisplayUnits(['empty', 'empty', 'empty'] as never);
+			return stopCountdown();
+		}
 
 		//	Scale the interval to the desired units (e.g., changes milliseconds to days, hours, minutes)
 		let scaledDistance: Duration;
 		if (units) scaledDistance = interval.toDuration(units);
 		else scaledDistance = interval.toDuration('milliseconds').rescale();
 
-		//	Reset milliseconds to 0 and add 2 seconds to round up the time
-		scaledDistance.set({ milliseconds: 0 });
-		scaledDistance.plus({ seconds: 2 });
+		//	Reset milliseconds to 0 and add 1 second to round up the time
+		scaledDistance = scaledDistance.set({ milliseconds: 0 }).plus({ seconds: 1 }).rescale();
+
+		//	Set all units to 0 to fix the issue when only 1 or 2 units are non-zero
+		//	For e.g., 1 day doesnt show hours and minutes
+		const offset = Duration.fromObject({
+			years: 0,
+			quarters: 0,
+			months: 0,
+			weeks: 0,
+			days: 0,
+			hours: 0,
+			minutes: 0,
+			seconds: 0,
+		});
+		scaledDistance = offset.plus(scaledDistance);
 
 		units = Object.keys(scaledDistance.toObject())
-			.filter((unit) => unit !== 'milliseconds')
+			.reduce((acc, unit) => {
+				if (unit === 'milliseconds') return acc;
+
+				const value = scaledDistance.get(unit as DateTimeUnit);
+				if (value === 0 && acc.length === 0) return acc;
+
+				acc.push(unit as DateTimeUnit);
+				return acc;
+			}, [] as DateTimeUnit[])
 			.slice(0, 3) as [DateTimeUnit, DateTimeUnit, DateTimeUnit];
 
 		setDisplayUnits(
