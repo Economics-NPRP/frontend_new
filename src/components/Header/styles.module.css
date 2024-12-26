@@ -103,12 +103,6 @@
 		@apply w-full;
 		@apply my-4;
 
-		.subtext {
-			@apply flex items-center;
-			@apply paragraph-sm-g6;
-			@apply leading-tight;
-		}
-
 		> .id {
 			@apply flex-auto gap-0;
 
@@ -120,6 +114,12 @@
 
 		> .rating {
 			@apply gap-1 items-end;
+
+			> .subtext {
+				@apply flex items-center;
+				@apply paragraph-sm-g6;
+				@apply leading-tight;
+			}
 		}
 	}
 

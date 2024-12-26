@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 
+import { Id } from '@/components/Id';
 import {
 	Avatar,
 	Container,
@@ -20,7 +21,6 @@ import {
 	IconCalendar,
 	IconChartBar,
 	IconCoins,
-	IconHash,
 	IconHelp,
 	IconHistory,
 	IconLayoutGrid,
@@ -46,10 +46,7 @@ export const UserProfile = () => {
 				<Avatar className={classes.avatar} name="John Doe" color="initials" size={'lg'} />
 				<Group className={classes.details}>
 					<Stack className={classes.id}>
-						<Text className={classes.subtext}>
-							<IconHash size={14} />{' '}
-							{t('components.header.user.details.id', { id: 123456 })}
-						</Text>
+						<Id value={123456} variant="company" />
 						<Text className={classes.text}>John Doe</Text>
 					</Stack>
 					<Stack className={classes.rating}>
