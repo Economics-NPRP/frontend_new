@@ -1,0 +1,51 @@
+.root {
+	@apply col-span-full;
+
+	> .header {
+		@apply w-full;
+
+		> .label {
+			@apply flex-auto gap-0;
+
+			> .heading {
+				@apply heading-2;
+			}
+
+			> .subheading {
+				@apply paragraph-sm-g6;
+			}
+		}
+
+		> .action:hover {
+			@apply bg-dark-400;
+		}
+	}
+
+	> .cards {
+		@apply grid grid-cols-1 gap-2;
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-xs {
+		.root {
+			> .cards {
+				@apply grid-cols-2 gap-4;
+			}
+		}
+	}
+
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			@apply col-span-7;
+		}
+	}
+
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+			> .cards {
+				@apply grid-cols-3 gap-4;
+			}
+		}
+	}
+}

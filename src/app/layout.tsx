@@ -28,7 +28,7 @@ export default async function RootLayout({
 			<Head>
 				<ColorSchemeScript />
 			</Head>
-			<body className="antialiased">
+			<body className="antialiased overflow-x-hidden">
 				<NextIntlClientProvider messages={messages}>
 					<DirectionProvider>
 						<MantineProvider theme={theme}>{children}</MantineProvider>

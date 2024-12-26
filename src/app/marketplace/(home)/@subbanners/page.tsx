@@ -21,7 +21,7 @@ export default function SubBanners() {
 				<IconBellRinging size={20} />
 				<Text className={classes.heading}>
 					{t.rich('marketplace.home.subbanner.1.heading', {
-						value: 54,
+						value: Math.round(Math.random() * 1000),
 						mark: (chunks) => <Mark className={classes.highlight}>{chunks}</Mark>,
 					})}
 				</Text>
@@ -67,7 +67,7 @@ export default function SubBanners() {
 				<IconTrophy size={20} />
 				<Text className={classes.heading}>
 					{t.rich('marketplace.home.subbanner.3.heading', {
-						value: 3,
+						value: Math.round(Math.random() * 100),
 						mark: (chunks) => <Mark className={classes.highlight}>{chunks}</Mark>,
 					})}
 				</Text>

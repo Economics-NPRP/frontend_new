@@ -18,9 +18,10 @@
 
 		> .overlay {
 			@apply absolute -bottom-8 left-0 w-full h-full;
+			@apply opacity-75;
 			@apply transition-all duration-1000;
 
-			background-image: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+			background-image: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
 		}
 	}
 
@@ -68,6 +69,11 @@
 		.root {
 			@apply border border-solid border-dark-600;
 
+			> .image > .overlay {
+				@apply opacity-90;
+				@apply -bottom-4;
+			}
+
 			> .label {
 				@apply bg-dark-600;
 
@@ -77,6 +83,12 @@
 
 				> .value {
 					@apply text-dark-100;
+				}
+			}
+
+			&:hover {
+				> .image > .overlay {
+					@apply bottom-4;
 				}
 			}
 		}
