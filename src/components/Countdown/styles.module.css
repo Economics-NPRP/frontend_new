@@ -44,15 +44,25 @@
 
 * {
 	@mixin dark {
-		.unit > .value > .cell {
+		.root > .unit > .value > .cell {
 			@apply bg-white;
 
 			> .digit {
-				@apply text-dark-600;
+				@apply text-dark-600 font-black;
 			}
 
 			&:hover {
 				@apply bg-gray-100;
+			}
+		}
+	}
+
+	@mixin rtl {
+		.root {
+			@apply flex-row-reverse;
+
+			> .unit > .value {
+				@apply flex-row-reverse;
 			}
 		}
 	}

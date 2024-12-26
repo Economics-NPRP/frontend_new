@@ -1,6 +1,6 @@
 .root {
 	@apply relative;
-	@apply h-[360px] max-w-none;
+	@apply h-[400px] max-w-none;
 	@apply flex flex-col justify-center items-center;
 	@apply overflow-hidden;
 	@apply col-span-full;
@@ -15,8 +15,12 @@
 		@apply heading-1;
 	}
 
+	> .date {
+		@apply paragraph-sm-g6;
+	}
+
 	> .countdown {
-		@apply mt-8 mb-12;
+		@apply mt-10 mb-12;
 	}
 
 	> .actions {

@@ -18,7 +18,8 @@
             "tooltip": "View the latest offerings in the marketplace",
             "text": "Explore Auctions"
           }
-        }
+        },
+        "start-date": "Starts on"
       },
       "subbanner": {
         "1": {
