@@ -1,22 +1,18 @@
 'use client';
 
-import { DateTime, DateTimeUnit, Duration, Interval } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 import { useTranslations } from 'next-intl';
-import { ComponentProps, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
+import { Digit } from '@/components/Countdown/Digit';
+import { CountdownProps, CountdownUnitsArray } from '@/components/Countdown/constants';
+import { calculateInterval } from '@/components/Countdown/helpers';
+import classes from '@/components/Countdown/styles.module.css';
 import { Group, Stack, Text } from '@mantine/core';
 import { useInterval } from '@mantine/hooks';
 import { IconPointFilled } from '@tabler/icons-react';
 
-import { Digit } from './Digit';
-import classes from './styles.module.css';
-
-export interface CountdownProps extends ComponentProps<'div'> {
-	targetDate: DateTime | string;
-	units?: [DateTimeUnit, DateTimeUnit, DateTimeUnit];
-	displayOnly?: boolean;
-}
-export const Countdown = ({
+export const LargeCountdown = ({
 	targetDate,
 	units,
 	displayOnly = false,
@@ -31,29 +27,29 @@ export const Countdown = ({
 		[targetDate],
 	);
 
-	const [displayUnits, setDisplayUnits] = useState<[DateTimeUnit, DateTimeUnit, DateTimeUnit]>(
+	const [displayUnits, setDisplayUnits] = useState<CountdownUnitsArray>(
 		units || ['hour', 'minute', 'second'],
 	);
-	const [values, setValues] = useState<[number, number, number, number, number, number]>([
+	const [values, _setValues] = useState<[number, number, number, number, number, number]>([
 		0, 0, 0, 0, 0, 0,
 	]);
 
-	const displayValues = useMemo(
-		() => (value: DateTime | Duration, units: [DateTimeUnit, DateTimeUnit, DateTimeUnit]) => {
-			if (!value) return [0, 0, 0, 0, 0, 0];
+	const setValues = useMemo(
+		() => (value?: DateTime | Duration, units?: CountdownUnitsArray) => {
+			if (!value) return _setValues([0, 0, 0, 0, 0, 0]);
 
-			setValues(
+			_setValues(
 				Array(6)
 					.fill(0)
 					.concat(
-						units
+						units!
 							.map((unit) =>
 								//	Convert value to 2-digit array, taking last 2 digits, for example:
 								//	12 -> [1, 2]
 								//	1 -> [0, 1]
 								//	2024 -> [2, 4]
 								value
-									.get(unit as Exclude<DateTimeUnit, 'week'>)
+									.get(unit as never)
 									.toString()
 									.padStart(4, '0')
 									.slice(2)
@@ -63,70 +59,27 @@ export const Countdown = ({
 							)
 							.flat(),
 					)
-					.slice(units.length * 2) as [number, number, number, number, number, number],
+					.slice(units!.length * 2) as [number, number, number, number, number, number],
 			);
 		},
 		[],
 	);
 
 	const { start: startCountdown, stop: stopCountdown } = useInterval(() => {
-		const interval = Interval.fromDateTimes(DateTime.now(), targetDate);
-		if (!interval.isValid || displayOnly) {
-			setValues([0, 0, 0, 0, 0, 0]);
+		const interval = calculateInterval(targetDate, units);
+
+		if (!interval.valid || displayOnly) {
 			setDisplayUnits(['empty', 'empty', 'empty'] as never);
+			setValues();
 			return stopCountdown();
 		}
 
-		//	Scale the interval to the desired units (e.g., changes milliseconds to days, hours, minutes)
-		let scaledDistance: Duration;
-		if (units) scaledDistance = interval.toDuration(units);
-		else scaledDistance = interval.toDuration('milliseconds').rescale();
-
-		//	Reset milliseconds to 0 and add 1 second to round up the time
-		scaledDistance = scaledDistance.set({ milliseconds: 0 }).plus({ seconds: 1 }).rescale();
-
-		//	Set all units to 0 to fix the issue when only 1 or 2 units are non-zero
-		//	For e.g., 1 day doesnt show hours and minutes
-		const offset = Duration.fromObject({
-			years: 0,
-			quarters: 0,
-			months: 0,
-			weeks: 0,
-			days: 0,
-			hours: 0,
-			minutes: 0,
-			seconds: 0,
-		});
-		scaledDistance = offset.plus(scaledDistance);
-
-		units = Object.keys(scaledDistance.toObject())
-			.reduce((acc, unit) => {
-				if (unit === 'milliseconds') return acc;
-
-				const value = scaledDistance.get(unit as DateTimeUnit);
-				if (value === 0 && acc.length === 0) return acc;
-
-				acc.push(unit as DateTimeUnit);
-				return acc;
-			}, [] as DateTimeUnit[])
-			.slice(0, 3) as [DateTimeUnit, DateTimeUnit, DateTimeUnit];
-
-		setDisplayUnits(
-			Array(3)
-				.fill('empty')
-				.concat(units)
-				.slice(units.length, 3 + units.length) as [
-				DateTimeUnit,
-				DateTimeUnit,
-				DateTimeUnit,
-			],
-		);
-
-		displayValues(scaledDistance, units);
+		setDisplayUnits(interval.units!);
+		setValues(interval.value, interval.units);
 	}, 1000);
 
 	useEffect(() => {
-		if (displayOnly) displayValues(targetDate, units || ['day', 'month', 'year']);
+		if (displayOnly) setValues(targetDate, units || ['day', 'month', 'year']);
 		else startCountdown();
 
 		return stopCountdown;

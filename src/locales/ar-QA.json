@@ -165,6 +165,27 @@
 					"weeks": "أسابيع",
 					"year": "سنة",
 					"years": "سنوات"
+				},
+				"short": {
+					"years": "س",
+					"year": "س",
+					"quarters": "ر",
+					"quarter": "ر",
+					"months": "ش",
+					"month": "ش",
+					"weeks": "أ",
+					"week": "أ",
+					"days": "ي",
+					"day": "ي",
+					"hours": "س",
+					"hour": "س",
+					"minutes": "د",
+					"minute": "د",
+					"seconds": "ث",
+					"second": "ث",
+					"milliseconds": "ملث",
+					"millisecond": "ملث",
+					"empty": ""
 				}
 			}
 		},

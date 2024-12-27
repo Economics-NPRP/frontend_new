@@ -90,6 +90,27 @@
 					"milliseconds": "Milliseconds",
 					"millisecond": "Millisecond",
 					"empty": "—"
+				},
+				"short": {
+					"years": "y",
+					"year": "y",
+					"quarters": "q",
+					"quarter": "q",
+					"months": "M",
+					"month": "M",
+					"weeks": "w",
+					"week": "w",
+					"days": "d",
+					"day": "d",
+					"hours": "h",
+					"hour": "h",
+					"minutes": "m",
+					"minute": "m",
+					"seconds": "s",
+					"second": "s",
+					"milliseconds": "ms",
+					"millisecond": "ms",
+					"empty": ""
 				}
 			},
 			"value": "0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
