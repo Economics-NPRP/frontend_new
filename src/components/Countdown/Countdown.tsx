@@ -6,6 +6,7 @@ import { ComponentProps, useEffect, useMemo, useState } from 'react';
 
 import { Group, Stack, Text } from '@mantine/core';
 import { useInterval } from '@mantine/hooks';
+import { IconPointFilled } from '@tabler/icons-react';
 
 import { Digit } from './Digit';
 import classes from './styles.module.css';
@@ -143,6 +144,11 @@ export const Countdown = ({
 				</Text>
 			</Stack>
 
+			<Stack className={classes.separator}>
+				<IconPointFilled className={classes.icon} size={10} />
+				<IconPointFilled className={classes.icon} size={10} />
+			</Stack>
+
 			<Stack className={classes.unit}>
 				<Group className={classes.value}>
 					<Digit value={values[2]} />
@@ -151,6 +157,11 @@ export const Countdown = ({
 				<Text className={classes.label}>
 					{t(`components.countdown.label.long.${displayUnits[1]}`)}
 				</Text>
+			</Stack>
+
+			<Stack className={classes.separator}>
+				<IconPointFilled className={classes.icon} size={10} />
+				<IconPointFilled className={classes.icon} size={10} />
 			</Stack>
 
 			<Stack className={classes.unit}>

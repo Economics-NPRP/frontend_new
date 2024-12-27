@@ -1,5 +1,5 @@
 .root {
-	@apply gap-3;
+	@apply gap-1;
 
 	> .unit {
 		@apply justify-center items-center gap-2;
@@ -39,6 +39,12 @@
 		> .label {
 			@apply display-xs uppercase;
 		}
+	}
+
+	> .separator {
+		@apply gap-0.5;
+		@apply heading-2;
+		@apply -translate-y-3.5;
 	}
 }
 
