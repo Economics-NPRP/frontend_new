@@ -78,19 +78,19 @@ export const UserProfile = () => {
 				<MenuDivider />
 				<MenuLabel>{t('components.header.user.marketplace')} </MenuLabel>
 				<MenuItem component="a" href="" leftSection={<IconHistory size={16} />}>
-					{t('components.header.user.bidding-history')}
+					{t('components.header.user.biddingHistory')}
 				</MenuItem>
 				<MenuItem component="a" href="" leftSection={<IconCalendar size={16} />}>
-					{t('components.header.user.auction-calendar')}
+					{t('components.header.user.auctionCalendar')}
 				</MenuItem>
 				<MenuItem leftSection={<IconBookmark size={16} />}>
-					{t('components.header.user.saved-auctions')}
+					{t('components.header.user.savedAuctions')}
 				</MenuItem>
 
 				<MenuDivider />
 				<MenuLabel>{t('components.header.user.dashboard')}</MenuLabel>
 				<MenuItem component="a" href="" leftSection={<IconLayoutGrid size={16} />}>
-					{t('components.header.user.my-dashboard')}
+					{t('components.header.user.myDashboard')}
 				</MenuItem>
 				<MenuItem component="a" href="" leftSection={<IconChartBar size={16} />}>
 					{t('components.header.user.statistics')}
@@ -104,7 +104,7 @@ export const UserProfile = () => {
 
 				<MenuDivider />
 				<MenuItem component="a" href="" leftSection={<IconHelp size={16} />}>
-					{t('components.header.user.help-center')}
+					{t('components.header.user.helpCenter')}
 				</MenuItem>
 				<MenuItem component="a" href="" leftSection={<IconSettings size={16} />}>
 					{t('components.header.user.settings')}

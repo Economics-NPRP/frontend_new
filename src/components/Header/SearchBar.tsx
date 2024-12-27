@@ -10,7 +10,7 @@ export const SearchBar = () => {
 
 	return (
 		<Center className={classes.searchBar} visibleFrom="md">
-			<Tooltip label={t('components.header.search.prompt-tooltip')}>
+			<Tooltip label={t('components.header.search.promptTooltip')}>
 				<Button
 					className={classes.searchButton}
 					variant="transparent"

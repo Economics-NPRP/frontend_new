@@ -1,9 +1,31 @@
 {
-	"header": {
-		"search": {},
-		"buttons": {},
-		"return-to-dashboard": {},
-		"return-to-marketplace": {}
+	"constants": {
+		"auctionCategory": {
+			"energy": {
+				"alt": "Image of a power plant depicting the energy category",
+				"title": "Energy"
+			},
+			"industry": {
+				"alt": "Image of a crusher machine depicting the industry category",
+				"title": "Industry"
+			},
+			"transport": {
+				"alt": "Image of traffic causing pollution depicting the transport category",
+				"title": "Transport"
+			},
+			"buildings": {
+				"alt": "Image of a HVAC system depicting the buildings category",
+				"title": "Buildings"
+			},
+			"agriculture": {
+				"alt": "Image of a farm with cows depicting the agriculture category",
+				"title": "Agriculture"
+			},
+			"waste": {
+				"alt": "Image of waste glass and plastic depicting the waste category",
+				"title": "Waste"
+			}
+		}
 	},
 	"marketplace": {
 		"home": {
@@ -19,7 +41,7 @@
 						"text": "Explore Auctions"
 					}
 				},
-				"start-date": "Starts on"
+				"startDate": "Starts on"
 			},
 			"subbanner": {
 				"1": {
@@ -43,34 +65,8 @@
 		}
 	},
 	"components": {
-		"category-card": {
-			"value": "{value, number} auctions",
-			"variants": {
-				"energy": {
-					"alt": "Image of a power plant depicting the energy category",
-					"title": "Energy"
-				},
-				"industry": {
-					"alt": "Image of a crusher machine depicting the industry category",
-					"title": "Industry"
-				},
-				"transport": {
-					"alt": "Image of traffic causing pollution depicting the transport category",
-					"title": "Transport"
-				},
-				"buildings": {
-					"alt": "Image of a HVAC system depicting the buildings category",
-					"title": "Buildings"
-				},
-				"agriculture": {
-					"alt": "Image of a farm with cows depicting the agriculture category",
-					"title": "Agriculture"
-				},
-				"waste": {
-					"alt": "Image of waste glass and plastic depicting the waste category",
-					"title": "Waste"
-				}
-			}
+		"categoryCard": {
+			"value": "{value, number} auctions"
 		},
 		"countdown": {
 			"label": {
@@ -99,40 +95,62 @@
 			"value": "0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
 		},
 		"header": {
-			"return-to-dashboard": {
+			"returnToDashboard": {
 				"aria": "Return to dashboard button",
 				"long": "Return to Dashboard",
 				"short": "Dashboard",
 				"tooltip": "Go back to your dashboard"
 			},
-			"return-to-marketplace": {
+			"returnToMarketplace": {
 				"aria": "Home button",
 				"tooltip": "Return to Marketplace Home"
 			},
 			"search": {
 				"prompt": "Search for an auction",
-				"prompt-tooltip": "Open the search bar",
+				"promptTooltip": "Open the search bar",
 				"shortcut": "K"
 			},
 			"buttons": {
-				"accessibility-aria": "Accessibility options",
-				"accessibility-tooltip": "Accessibility options",
-				"language-ar-QA-aria": " التبديل إلى اللغة الإنجليزية / Switch to English",
-				"language-ar-QA-tooltip": " التبديل إلى اللغة الإنجليزية / Switch to English",
-				"language-en-aria": "Switch to Arabic / التبديل إلى اللغة العربية",
-				"language-en-tooltip": "Switch to Arabic / التبديل إلى اللغة العربية",
-				"notifications-aria": "Notifications",
-				"notifications-tooltip": "Notifications",
-				"search-aria": "Search button",
-				"search-tooltip": "Search for an auction",
-				"theme-auto-aria": "Switch to Dark Mode",
-				"theme-auto-tooltip": "Switch to Manual Mode",
-				"theme-dark-aria": "Switch to Light Mode",
-				"theme-dark-tooltip": "Switch to Light Mode",
-				"theme-light-aria": "Switch to Manual Mode",
-				"theme-light-tooltip": "Switch to Dark Mode",
-				"user-aria": "My Profile",
-				"user-tooltip": "My Profile"
+				"accessibility": {
+					"aria": "Accessibility options",
+					"tooltip": "Accessibility options"
+				},
+				"language": {
+					"en": {
+						"aria": "Switch to Arabic / التبديل إلى اللغة العربية",
+						"tooltip": "Switch to Arabic / التبديل إلى اللغة العربية"
+					},
+					"ar-QA": {
+						"aria": " التبديل إلى اللغة الإنجليزية / Switch to English",
+						"tooltip": " التبديل إلى اللغة الإنجليزية / Switch to English"
+					}
+				},
+				"notifications": {
+					"aria": "Notifications",
+					"tooltip": "Notifications"
+				},
+				"search": {
+					"aria": "Search button",
+					"tooltip": "Search for an auction"
+				},
+				"theme": {
+					"auto": {
+						"aria": "Switch to Manual Mode",
+						"tooltip": "Switch to Manual Mode"
+					},
+					"dark": {
+						"aria": "Switch to Light Mode",
+						"tooltip": "Switch to Light Mode"
+					},
+					"light": {
+						"aria": "Switch to Dark Mode",
+						"tooltip": "Switch to Dark Mode"
+					}
+				},
+				"user": {
+					"aria": "My Profile",
+					"tooltip": "My Profile"
+				}
 			},
 			"user": {
 				"details": {
@@ -140,17 +158,17 @@
 				},
 				"profile": "Go to Profile",
 				"marketplace": "Marketplace",
-				"bidding-history": "Bidding History",
-				"auction-calendar": "Auction Calendar",
+				"biddingHistory": "Bidding History",
+				"auctionCalendar": "Auction Calendar",
 				"dashboard": "Dashboard",
-				"my-dashboard": "My Dashboard",
+				"myDashboard": "My Dashboard",
 				"statistics": "Statistics",
 				"transactions": "Transactions",
 				"permits": "Permits",
-				"help-center": "Help Center",
+				"helpCenter": "Help Center",
 				"settings": "Settings",
 				"logout": "Logout",
-				"saved-auctions": "Saved Auctions"
+				"savedAuctions": "Saved Auctions"
 			}
 		}
 	}

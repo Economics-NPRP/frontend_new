@@ -25,34 +25,34 @@ export interface HeaderButtonData {
 
 export const HeaderButtonVariants: Partial<Record<HeaderButtonVariantType, HeaderButtonData>> = {
 	search: {
-		tooltip: 'components.header.buttons.search-tooltip',
-		ariaLabel: 'components.header.buttons.search-aria',
+		tooltip: 'components.header.buttons.search.tooltip',
+		ariaLabel: 'components.header.buttons.search.aria',
 		icon: <IconSearch size={16} />,
 	},
 	notifications: {
-		tooltip: 'components.header.buttons.notifications-tooltip',
-		ariaLabel: 'components.header.buttons.notifications-aria',
+		tooltip: 'components.header.buttons.notifications.tooltip',
+		ariaLabel: 'components.header.buttons.notifications.aria',
 		icon: <IconBell size={16} />,
 	},
 	accessibility: {
-		tooltip: 'components.header.buttons.accessibility-tooltip',
-		ariaLabel: 'components.header.buttons.accessibility-aria',
+		tooltip: 'components.header.buttons.accessibility.tooltip',
+		ariaLabel: 'components.header.buttons.accessibility.aria',
 		icon: <IconAccessible size={16} />,
 	},
 	language: {
-		tooltip: (language: Locale) => `components.header.buttons.language-${language}-tooltip`,
-		ariaLabel: (language: Locale) => `components.header.buttons.language-${language}-aria`,
+		tooltip: (language: Locale) => `components.header.buttons.language.${language}.tooltip`,
+		ariaLabel: (language: Locale) => `components.header.buttons.language.${language}.aria`,
 		icon: <IconLanguage size={16} />,
 	},
 	theme: {
-		tooltip: (theme: MantineColorScheme) => `components.header.buttons.theme-${theme}-tooltip`,
-		ariaLabel: (theme: MantineColorScheme) => `components.header.buttons.theme-${theme}-aria`,
+		tooltip: (theme: MantineColorScheme) => `components.header.buttons.theme.${theme}.tooltip`,
+		ariaLabel: (theme: MantineColorScheme) => `components.header.buttons.theme.${theme}.aria`,
 		icon: (theme: MantineColorScheme) =>
 			theme === 'light' ? <IconSun size={16} /> : <IconMoon size={16} />,
 	},
 	user: {
-		tooltip: `components.header.buttons.user-tooltip`,
-		ariaLabel: `components.header.buttons.user-aria`,
+		tooltip: `components.header.buttons.user.tooltip`,
+		ariaLabel: `components.header.buttons.user.aria`,
 		icon: <Avatar name="John Doe" color="initials" />,
 	},
 };

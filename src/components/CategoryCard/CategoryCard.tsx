@@ -20,19 +20,15 @@ export const CategoryCard = ({ category, className, ...props }: CategoryCardProp
 	return (
 		<UnstyledButton className={`${classes.root} ${className}`} {...props}>
 			<Container className={classes.image}>
-				<Image
-					src={image}
-					alt={t(`components.category-card.variants.${category}.alt`)}
-					fill
-				/>
+				<Image src={image} alt={t(`constants.auctionCategory.${category}.alt`)} fill />
 				<Container className={classes.overlay} />
 			</Container>
 			<Stack className={classes.label}>
 				<Title className={classes.heading}>
-					{t(`components.category-card.variants.${category}.title`)}
+					{t(`constants.auctionCategory.${category}.title`)}
 				</Title>
 				<Text className={classes.value}>
-					{t('components.category-card.value', {
+					{t('components.categoryCard.value', {
 						value: Math.round(Math.random() * 1000),
 					})}
 				</Text>
