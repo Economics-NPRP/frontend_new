@@ -1,13 +1,34 @@
-import { AuctionCategory } from '@/types';
+import { ForwardRefExoticComponent, RefAttributes } from 'react';
 
-export interface CategoryData {
+import { AuctionCategory, ThemeColors } from '@/types';
+import {
+	Icon,
+	IconBolt,
+	IconBuildingCommunity,
+	IconBuildingFactory,
+	IconLeaf,
+	IconProps,
+	IconRecycle,
+	IconTruck,
+} from '@tabler/icons-react';
+
+export interface AuctionCategoryData {
+	Icon: ForwardRefExoticComponent<IconProps & RefAttributes<Icon>>;
 	image: string;
+	color: {
+		token?: ThemeColors;
+		hex?: string;
+	};
 }
 
-export const CategoryVariants: Partial<Record<AuctionCategory, CategoryData>> = {
+export const AuctionCategoryVariants: Partial<Record<AuctionCategory, AuctionCategoryData>> = {
 	energy: {
 		// image: 'https://images.unsplash.com/photo-1473876637954-4b493d59fd97?q=80&w=1692&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 		image: 'http://localhost:4321/imgs/carbon_dioxide.jpg',
+		Icon: IconBolt,
+		color: {
+			token: 'yellow',
+		},
 	},
 	industry: {
 		// image: 'https://plus.unsplash.com/premium_photo-1682144944581-7ed4b3e8ea93?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
@@ -18,6 +39,10 @@ export const CategoryVariants: Partial<Record<AuctionCategory, CategoryData>> = 
 		// image: 'https://images.pexels.com/photos/16045335/pexels-photo-16045335/free-photo-of-man-standing-and-working-by-machinery.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
 		// image: 'https://images.pexels.com/photos/6890325/pexels-photo-6890325.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
 		image: 'https://images.pexels.com/photos/6890378/pexels-photo-6890378.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+		Icon: IconBuildingFactory,
+		color: {
+			token: 'maroon',
+		},
 	},
 	transport: {
 		// image: 'https://images.pexels.com/photos/210182/pexels-photo-210182.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
@@ -30,16 +55,32 @@ export const CategoryVariants: Partial<Record<AuctionCategory, CategoryData>> = 
 		image: 'https://images.pexels.com/photos/10658552/pexels-photo-10658552.jpeg?auto=compress&cs=tinysrgb&w=600',
 		// image: 'https://images.pexels.com/photos/29893349/pexels-photo-29893349/free-photo-of-urban-street-scene-during-busy-twilight-hours.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
 		// image: 'https://images.pexels.com/photos/1600757/pexels-photo-1600757.jpeg?auto=compress&cs=tinysrgb&w=600',
+		Icon: IconTruck,
+		color: {
+			token: 'salmon',
+		},
 	},
 	buildings: {
 		image: 'http://localhost:4321/imgs/hfc.jpg',
+		Icon: IconBuildingCommunity,
+		color: {
+			token: 'purple',
+		},
 	},
 	agriculture: {
 		image: 'http://localhost:4321/imgs/methane.jpg',
+		Icon: IconLeaf,
+		color: {
+			token: 'palm',
+		},
 	},
 	waste: {
 		// image: 'https://images.pexels.com/photos/128421/pexels-photo-128421.jpeg?auto=compress&cs=tinysrgb&w=600',
 		// image: 'https://images.pexels.com/photos/3174350/pexels-photo-3174350.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
 		image: 'https://images.pexels.com/photos/2955032/pexels-photo-2955032.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+		Icon: IconRecycle,
+		color: {
+			token: 'skyline',
+		},
 	},
 };

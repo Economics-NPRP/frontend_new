@@ -1,1 +1,2 @@
-export * from './Category';
+export * from './AuctionCategory';
+export * from './ThemeColors';

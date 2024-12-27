@@ -1,9 +1,4 @@
-import {
-	DEFAULT_THEME,
-	type MantineBreakpointsValues,
-	MantineShadowsValues,
-	type MantineThemeColors,
-} from '@mantine/core';
+import { DEFAULT_THEME, type MantineBreakpointsValues, MantineShadowsValues } from '@mantine/core';
 
 export const breakpoints: MantineBreakpointsValues = DEFAULT_THEME.breakpoints;
 
@@ -13,7 +8,7 @@ export const shadows: Partial<MantineShadowsValues> = {
 	sm: '3px 3px 0px 0px var(--shadow-color-2)',
 };
 
-export const colors: MantineThemeColors = {
+export const colors = {
 	...DEFAULT_THEME.colors,
 
 	dark: [
