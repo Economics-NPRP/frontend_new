@@ -1,6 +1,6 @@
 'use client';
 
-import { type MantineThemeComponents, Title, Tooltip } from '@mantine/core';
+import { Anchor, type MantineThemeComponents, Title, Tooltip } from '@mantine/core';
 
 export const components: MantineThemeComponents = {
 	Title: Title.extend({

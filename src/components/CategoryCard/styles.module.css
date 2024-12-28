@@ -11,7 +11,7 @@
 		@apply h-[140px];
 		@apply overflow-hidden;
 
-		img {
+		> img {
 			@apply object-cover;
 			@apply transition-all duration-1000;
 		}

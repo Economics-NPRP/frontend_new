@@ -1,0 +1,154 @@
+.root {
+	@apply w-[360px];
+	@apply items-stretch justify-center;
+	@apply gap-0;
+	@apply bg-white;
+	@apply border border-solid border-gray-300;
+	@apply shadow-sm;
+	@apply transition-shadow duration-500;
+
+	> .header {
+		@apply h-7;
+		@apply justify-between flex-nowrap;
+		@apply bg-dark-600 text-white;
+
+		p {
+			@apply paragraph-sm-w leading-none;
+		}
+
+		> .rating,
+		> .countdown {
+			@apply h-full;
+			@apply px-2 gap-1.5;
+			@apply border-x border-y-0 border-solid border-dark-400;
+		}
+	}
+
+	> .image {
+		@apply relative;
+		@apply h-40;
+		@apply overflow-hidden;
+
+		> img {
+			@apply object-cover;
+			@apply transition-transform duration-700;
+		}
+
+		> .overlay {
+			@apply absolute -bottom-8 left-0 w-full h-full;
+			@apply opacity-50;
+			@apply transition-all duration-1000;
+
+			background-image: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+		}
+	}
+
+	> .footer {
+		@apply h-8;
+		@apply flex-nowrap;
+		@apply gap-0 p-0;
+		@apply border-y border-0 border-solid border-dark-400;
+
+		> .permits,
+		> .category {
+			@apply h-full;
+			@apply rounded-none;
+		}
+
+		> .permits {
+			@apply flex-auto;
+			@apply display-xs-13-w normal-case;
+		}
+
+		> .category {
+		}
+	}
+
+	> .label {
+		@apply flex-nowrap;
+		@apply px-4 py-4 gap-2;
+
+		> .left {
+			@apply flex-auto items-start;
+			@apply gap-0;
+
+			> .heading {
+				@apply heading-3-b;
+			}
+
+			> .company {
+				@apply text-sm leading-tight;
+				@apply text-blue-600;
+			}
+		}
+
+		> .right {
+			@apply items-end;
+			@apply gap-0;
+
+			> .price {
+				@apply gap-1;
+
+				> .value {
+					@apply numeric-lg;
+				}
+			}
+
+			> .subtext {
+				@apply paragraph-xs text-right;
+			}
+		}
+	}
+
+	&.fluid {
+		@apply w-full;
+	}
+
+	&:hover {
+		@apply shadow-md;
+
+		> .image {
+			> img {
+				@apply scale-105;
+			}
+
+			> .overlay {
+				@apply bottom-0;
+			}
+		}
+	}
+}
+
+* {
+	@mixin dark {
+		.root {
+			@apply border border-solid border-dark-400;
+
+			> .header {
+				p {
+					@apply !text-white;
+				}
+			}
+
+			> .image > .overlay {
+				@apply opacity-75;
+			}
+
+			> .footer > .permits {
+				@apply !text-white;
+			}
+
+			> .label {
+				@apply bg-dark-600;
+
+				> .heading {
+					@apply text-white;
+				}
+
+				> .value {
+					@apply text-dark-100;
+				}
+			}
+		}
+	}
+}

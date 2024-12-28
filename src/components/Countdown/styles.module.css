@@ -46,6 +46,10 @@
 		@apply heading-2;
 		@apply -translate-y-3.5;
 	}
+
+	> .text {
+		@apply leading-none;
+	}
 }
 
 * {

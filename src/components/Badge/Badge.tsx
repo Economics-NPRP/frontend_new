@@ -9,9 +9,11 @@ import { Badge, BadgeProps } from '@mantine/core';
 import classes from './styles.module.css';
 
 export const CurrencyBadge = ({ ...props }: BadgeProps) => {
+	const t = useTranslations();
+
 	return (
 		<Badge className={`${classes.root} ${classes.currency}`} variant="light" {...props}>
-			QAR
+			{t('constants.currency.QAR.symbol')}
 		</Badge>
 	);
 };

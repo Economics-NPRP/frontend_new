@@ -25,6 +25,12 @@
 				"alt": "صورة لنفايات الزجاج والبلاستيك توضح فئة النفايات",
 				"title": "يضيع"
 			}
+		},
+		"currency": {
+			"QAR": {
+				"name": "الريال القطري",
+				"symbol": "ر.ق"
+			}
 		}
 	},
 	"marketplace": {
@@ -191,6 +197,10 @@
 		},
 		"categoryCard": {
 			"value": "{value, number} مزادات"
+		},
+		"auctionCard": {
+			"permits": "{permits, number} {permits, plural, =0 {تصريح} =1 {تصريحان} other {تصاريح}} ({emissions, number} tCO2e)",
+			"minBid": "أقل عطاء فائز"
 		}
 	}
 }

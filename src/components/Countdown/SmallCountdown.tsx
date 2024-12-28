@@ -7,7 +7,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { CountdownProps, CountdownUnitsArray } from '@/components/Countdown/constants';
 import { calculateInterval } from '@/components/Countdown/helpers';
 import classes from '@/components/Countdown/styles.module.css';
-import { Group } from '@mantine/core';
+import { Group, Text } from '@mantine/core';
 import { useInterval } from '@mantine/hooks';
 
 export const SmallCountdown = ({
@@ -70,7 +70,7 @@ export const SmallCountdown = ({
 
 	return (
 		<Group className={`${classes.root} ${className}`} {...props}>
-			{value}
+			<Text className={classes.text}>{value}</Text>
 		</Group>
 	);
 };

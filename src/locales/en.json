@@ -25,6 +25,12 @@
 				"alt": "Image of waste glass and plastic depicting the waste category",
 				"title": "Waste"
 			}
+		},
+		"currency": {
+			"QAR": {
+				"symbol": "QAR",
+				"name": "Qatari Riyal"
+			}
 		}
 	},
 	"marketplace": {
@@ -191,6 +197,10 @@
 				"logout": "Logout",
 				"savedAuctions": "Saved Auctions"
 			}
+		},
+		"auctionCard": {
+			"permits": "{permits, number} {permits, plural, =0 {Permits} =1 {Permit} other {Permits}} ({emissions, number} tCO2e)",
+			"minBid": "min. winning bid"
 		}
 	}
 }

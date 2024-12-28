@@ -20,6 +20,13 @@
 		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
 	}
+	.heading-3-b {
+		@apply font-serif;
+		@apply text-lg;
+		@apply font-bold;
+		@apply tracking-normal;
+		@apply text-dark-600 dark:text-white;
+	}
 	.heading-4 {
 		@apply font-serif;
 		@apply text-sm;
@@ -94,7 +101,14 @@
 		@apply tracking-normal;
 		@apply text-dark-200 dark:text-dark-100;
 	}
-	.display-sm-d6 {
+	.display-sm-sb {
+		@apply font-sans;
+		@apply text-sm;
+		@apply font-semibold;
+		@apply tracking-normal;
+		@apply text-dark-200 dark:text-dark-100;
+	}
+	.display-sm-d3 {
 		@apply font-sans;
 		@apply text-sm;
 		@apply font-bold;
@@ -108,12 +122,44 @@
 		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
 	}
+	.display-sm-sb-d3 {
+		@apply font-sans;
+		@apply text-sm;
+		@apply font-semibold;
+		@apply tracking-normal;
+		@apply text-dark-300 dark:text-dark-50;
+	}
 	.display-xs {
 		@apply font-sans;
 		@apply text-xs;
 		@apply font-semibold;
 		@apply tracking-normal;
 		@apply text-dark-300 dark:text-dark-50;
+	}
+	.display-xs-13 {
+		@apply font-sans;
+		@apply font-semibold;
+		@apply tracking-normal;
+		@apply text-dark-300 dark:text-dark-50;
+
+		font-size: 13px;
+		line-height: 19px;
+	}
+	.display-xs-w {
+		@apply font-sans;
+		@apply text-xs;
+		@apply font-semibold;
+		@apply tracking-normal;
+		@apply text-white dark:text-dark-600;
+	}
+	.display-xs-13-w {
+		@apply font-sans;
+		@apply font-semibold;
+		@apply tracking-normal;
+		@apply text-white dark:text-dark-600;
+
+		font-size: 13px;
+		line-height: 19px;
 	}
 
 	.paragraph-md {
@@ -136,6 +182,13 @@
 		@apply font-normal;
 		@apply tracking-normal;
 		@apply text-gray-600 dark:text-dark-200;
+	}
+	.paragraph-sm-w {
+		@apply font-sans;
+		@apply text-sm;
+		@apply font-normal;
+		@apply tracking-normal;
+		@apply text-white dark:text-dark-600;
 	}
 	.paragraph-xs {
 		@apply font-sans;
