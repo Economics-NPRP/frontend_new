@@ -22,7 +22,8 @@
 
 * {
 	@mixin rtl {
-		[class*='arrow'].tabler-icon {
+		[class*='arrow'].tabler-icon,
+		[class*='chevron'].tabler-icon {
 			transform: scaleX(-1);
 		}
 	}

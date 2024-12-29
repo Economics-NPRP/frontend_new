@@ -6,3 +6,11 @@
 		@apply col-span-full;
 	}
 }
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			@apply gap-x-8 gap-y-16;
+		}
+	}
+}

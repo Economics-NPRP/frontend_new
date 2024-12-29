@@ -1,0 +1,88 @@
+.root {
+	@apply relative;
+	@apply col-span-full;
+	@apply items-stretch;
+	@apply gap-0;
+
+	> .header {
+		@apply h-20;
+		@apply items-stretch;
+		@apply gap-0;
+		@apply border border-solid border-gray-300;
+		@apply shadow-md;
+
+		> .left {
+			@apply flex-auto justify-between;
+			@apply px-8 gap-4;
+			@apply bg-dark-600;
+
+			> .dots {
+				@apply gap-2;
+				@apply text-white;
+			}
+
+			> .label {
+				@apply gap-0;
+
+				> .heading {
+					@apply heading-2-w leading-none;
+				}
+
+				> .subheading {
+					@apply paragraph-sm-g3 leading-none;
+				}
+			}
+		}
+
+		> .right {
+			@apply justify-center;
+			@apply gap-2 px-6;
+			@apply bg-white;
+
+			> .dropdown {
+				@apply w-60;
+			}
+
+			> .button {
+				@apply size-8;
+			}
+		}
+	}
+
+	> .content {
+		@apply flex-auto;
+		@apply p-8;
+	}
+
+	> .bg {
+		@apply absolute top-0 left-0;
+		@apply w-full h-full;
+
+		> .grid {
+			@apply absolute top-0 left-0;
+			@apply w-full h-full;
+			@apply !bg-transparent;
+		}
+
+		> .gradient {
+			@apply absolute top-0 left-0;
+			@apply w-full h-full;
+		}
+	}
+
+	*:not(.bg) {
+		@apply z-10;
+	}
+}
+
+* {
+	@mixin dark {
+		.root {
+			@apply bg-dark-700 border-dark-600;
+
+			> .header > .label > .title {
+				@apply text-white;
+			}
+		}
+	}
+}

@@ -44,14 +44,22 @@
 
 	> .bg {
 		@apply absolute top-0 left-0;
-		@apply w-full h-full max-w-none;
+		@apply w-full h-full;
 		@apply pointer-events-none;
 
 		> .gradient {
 			@apply absolute top-0 left-0;
 			@apply w-full h-full;
 
-			&:first-child {
+			&:nth-child(1) {
+				background: radial-gradient(
+					at center,
+					rgba(255, 255, 255, 0) 25%,
+					rgba(255, 255, 255, 1) 75%
+				);
+			}
+
+			&:nth-child(2) {
 				background: radial-gradient(
 					at left top,
 					rgba(138, 21, 56, 0.1) 0%,
@@ -59,7 +67,7 @@
 				);
 			}
 
-			&:last-child {
+			&:nth-child(3) {
 				background: radial-gradient(
 					at right bottom,
 					rgba(128, 103, 164, 0.1) 0%,
@@ -95,6 +103,14 @@
 						@apply bg-dark-600;
 					}
 				}
+			}
+
+			> .bg > .gradient:nth-child(1) {
+				background: radial-gradient(
+					at center,
+					rgba(26, 27, 30, 0) 25%,
+					rgba(26, 27, 30, 1) 75%
+				);
 			}
 		}
 	}

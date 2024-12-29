@@ -30,6 +30,13 @@ export const AuctionCard = ({ fluid, className, ...props }: AuctionCardProps) =>
 	// const targetDate = DateTime.fromObject({ year: 2024, month: 12, day: 28 });
 	const targetDate = DateTime.now().plus({ hours: 5 });
 
+	const imgs = [
+		'/imgs/industry/flare.jpg',
+		// '/imgs/transport/airplane.webp',
+		'/imgs/transport/airplane.jpg',
+	];
+	const src = imgs[Math.floor(Math.random() * imgs.length)];
+
 	return (
 		<Stack className={`${classes.root} ${fluid && 'fluid'} ${className}`} {...props}>
 			<Group className={classes.header}>
@@ -53,7 +60,7 @@ export const AuctionCard = ({ fluid, className, ...props }: AuctionCardProps) =>
 				component="a"
 				href="/marketplace/auction/123456"
 			>
-				<Image src={'/imgs/industry/flare.jpg'} alt={'Image of a power plant'} fill />
+				<Image src={src} alt={'Image of a power plant'} fill />
 				<Container className={classes.overlay} />
 			</UnstyledButton>
 			<Group className={classes.footer}>

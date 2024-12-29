@@ -1,9 +1,7 @@
 import { DateTime } from 'luxon';
-import { useTranslations } from 'next-intl';
-import { use } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 
-import { Countdown } from '@/components/Countdown';
-import { getUserLocale } from '@/locales';
+import { LargeCountdown } from '@/components/Countdown';
 import { ActionIcon, Button, ButtonGroup, Container, Text, Title, Tooltip } from '@mantine/core';
 import { IconArrowUpRight, IconCalendarSearch } from '@tabler/icons-react';
 
@@ -11,13 +9,14 @@ import classes from './styles.module.css';
 
 export default function Banner() {
 	const t = useTranslations();
-	const locale = use(getUserLocale());
+	const locale = useLocale();
 
-	const date = DateTime.fromObject({ year: 2024, month: 12, day: 27 }).setLocale(locale);
+	const date = DateTime.fromObject({ year: 2024, month: 12, day: 30 }).setLocale(locale);
 
 	return (
 		<Container className={`${classes.root} bg-stagger-md`}>
 			<Container className={classes.bg}>
+				<Container className={classes.gradient} />
 				<Container className={classes.gradient} />
 				<Container className={classes.gradient} />
 			</Container>
@@ -27,11 +26,11 @@ export default function Banner() {
 				{t('marketplace.home.banner.title')}
 			</Title>
 			<Text className={classes.date}>
-				{t('marketplace.home.banner.start-date')}{' '}
+				{t('marketplace.home.banner.startDate')}{' '}
 				{date.toLocaleString(DateTime.DATETIME_FULL)}
 			</Text>
 
-			<Countdown className={classes.countdown} targetDate={date.toISO()!} />
+			<LargeCountdown className={classes.countdown} targetDate={date.toISO()!} />
 
 			<ButtonGroup className={classes.actions}>
 				<Tooltip label={t('marketplace.home.banner.actions.calendar.tooltip')}>

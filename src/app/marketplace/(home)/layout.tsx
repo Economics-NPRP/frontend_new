@@ -9,8 +9,9 @@ export interface HomeProps {
 	subbanners: ReactNode;
 	categories: ReactNode;
 	calendar: ReactNode;
+	latest: ReactNode;
 }
-export default function Home({ banner, subbanners, categories, calendar }: HomeProps) {
+export default function Home({ banner, subbanners, categories, calendar, latest }: HomeProps) {
 	return (
 		<Container className={classes.root}>
 			<Container className={classes.banners}>
@@ -19,6 +20,7 @@ export default function Home({ banner, subbanners, categories, calendar }: HomeP
 			</Container>
 			{categories}
 			{calendar}
+			{latest}
 		</Container>
 	);
 }
