@@ -24,7 +24,7 @@ export interface AuctionCategoryData {
 export const AuctionCategoryVariants: Partial<Record<AuctionCategory, AuctionCategoryData>> = {
 	energy: {
 		// image: 'https://images.unsplash.com/photo-1473876637954-4b493d59fd97?q=80&w=1692&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-		image: 'http://localhost:4321/imgs/carbon_dioxide.jpg',
+		image: '/imgs/energy/category.jpg',
 		Icon: IconBolt,
 		color: {
 			token: 'yellow',
@@ -38,7 +38,7 @@ export const AuctionCategoryVariants: Partial<Record<AuctionCategory, AuctionCat
 		// image: 'https://images.pexels.com/photos/19233057/pexels-photo-19233057/free-photo-of-assembling-machines-in-factory.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
 		// image: 'https://images.pexels.com/photos/16045335/pexels-photo-16045335/free-photo-of-man-standing-and-working-by-machinery.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
 		// image: 'https://images.pexels.com/photos/6890325/pexels-photo-6890325.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-		image: 'https://images.pexels.com/photos/6890378/pexels-photo-6890378.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+		image: '/imgs/industry/category.jpeg',
 		Icon: IconBuildingFactory,
 		color: {
 			token: 'maroon',
@@ -52,7 +52,7 @@ export const AuctionCategoryVariants: Partial<Record<AuctionCategory, AuctionCat
 		// image: 'https://images.pexels.com/photos/23806917/pexels-photo-23806917/free-photo-of-rush-hour-traffic-in-the-downtown-at-dusk.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
 		// image: 'https://images.pexels.com/photos/11347831/pexels-photo-11347831.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
 		// image: 'https://images.pexels.com/photos/11839508/pexels-photo-11839508.jpeg?auto=compress&cs=tinysrgb&w=600',
-		image: 'https://images.pexels.com/photos/10658552/pexels-photo-10658552.jpeg?auto=compress&cs=tinysrgb&w=600',
+		image: '/imgs/transport/category.webp',
 		// image: 'https://images.pexels.com/photos/29893349/pexels-photo-29893349/free-photo-of-urban-street-scene-during-busy-twilight-hours.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
 		// image: 'https://images.pexels.com/photos/1600757/pexels-photo-1600757.jpeg?auto=compress&cs=tinysrgb&w=600',
 		Icon: IconTruck,
@@ -61,14 +61,14 @@ export const AuctionCategoryVariants: Partial<Record<AuctionCategory, AuctionCat
 		},
 	},
 	buildings: {
-		image: 'http://localhost:4321/imgs/hfc.jpg',
+		image: '/imgs/buildings/category.jpg',
 		Icon: IconBuildingCommunity,
 		color: {
 			token: 'purple',
 		},
 	},
 	agriculture: {
-		image: 'http://localhost:4321/imgs/methane.jpg',
+		image: '/imgs/agriculture/category.jpg',
 		Icon: IconLeaf,
 		color: {
 			token: 'palm',
@@ -77,7 +77,7 @@ export const AuctionCategoryVariants: Partial<Record<AuctionCategory, AuctionCat
 	waste: {
 		// image: 'https://images.pexels.com/photos/128421/pexels-photo-128421.jpeg?auto=compress&cs=tinysrgb&w=600',
 		// image: 'https://images.pexels.com/photos/3174350/pexels-photo-3174350.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-		image: 'https://images.pexels.com/photos/2955032/pexels-photo-2955032.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+		image: '/imgs/waste/category.jpeg',
 		Icon: IconRecycle,
 		color: {
 			token: 'skyline',

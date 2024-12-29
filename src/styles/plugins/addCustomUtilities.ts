@@ -14,7 +14,6 @@ export const addCustomUtilities = (filename: string): PluginCreator => {
 	return ({ addBase, addComponents, addUtilities }) => {
 		const css = readFileSync(filename, 'utf8');
 		const root = parse(css);
-		//	@ts-expect-error - Weird error
 		const jss = objectify(root);
 
 		if ('@layer base' in jss) {

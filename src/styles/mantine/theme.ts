@@ -1,4 +1,9 @@
-import { DEFAULT_THEME, type MantineBreakpointsValues, MantineShadowsValues } from '@mantine/core';
+import {
+	DEFAULT_THEME,
+	type MantineBreakpointsValues,
+	MantineColorsTuple,
+	MantineShadowsValues,
+} from '@mantine/core';
 
 export const breakpoints: MantineBreakpointsValues = DEFAULT_THEME.breakpoints;
 
@@ -22,7 +27,7 @@ export const colors = {
 		'#1a1b1e',
 		'#141517',
 		'#101113',
-	],
+	] as MantineColorsTuple,
 
 	maroon: [
 		'#f3e8eb',
@@ -36,7 +41,7 @@ export const colors = {
 		'#6e112d',
 		'#610f27',
 		'#530d22',
-	],
+	] as MantineColorsTuple,
 
 	//  TODO: add actual shades
 	skyline: [
@@ -51,7 +56,7 @@ export const colors = {
 		'#0d4261',
 		'#0d4261',
 		'#0d4261',
-	],
+	] as MantineColorsTuple,
 
 	palm: [
 		'#129b82',
@@ -65,7 +70,7 @@ export const colors = {
 		'#129b82',
 		'#129b82',
 		'#129b82',
-	],
+	] as MantineColorsTuple,
 
 	salmon: [
 		'#dd7877',
@@ -79,7 +84,7 @@ export const colors = {
 		'#dd7877',
 		'#dd7877',
 		'#dd7877',
-	],
+	] as MantineColorsTuple,
 
 	purple: [
 		'#8067a4',
@@ -93,5 +98,5 @@ export const colors = {
 		'#8067a4',
 		'#8067a4',
 		'#8067a4',
-	],
+	] as MantineColorsTuple,
 };
