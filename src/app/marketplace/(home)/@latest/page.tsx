@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl';
+
 import { AuctionCard } from '@/components/AuctionCard';
 import { ActionIcon, Container, Group, Select, Stack, Text, Title } from '@mantine/core';
 import { IconChevronLeft, IconChevronRight, IconPointFilled } from '@tabler/icons-react';
@@ -5,6 +7,8 @@ import { IconChevronLeft, IconChevronRight, IconPointFilled } from '@tabler/icon
 import classes from './styles.module.css';
 
 export default function LatestOfferings() {
+	const t = useTranslations();
+
 	return (
 		<Stack className={classes.root}>
 			<Container className={classes.bg}>
@@ -14,9 +18,11 @@ export default function LatestOfferings() {
 			<Group className={classes.header}>
 				<Group className={classes.left}>
 					<Stack className={classes.label}>
-						<Title className={classes.heading}>Latest Auctions</Title>
+						<Title className={classes.heading}>
+							{t('marketplace.home.latest.heading')}
+						</Title>
 						<Text className={classes.subheading}>
-							Explore the latest auctions available in the marketplace
+							{t('marketplace.home.latest.subheading')}
 						</Text>
 					</Stack>
 					<Group className={classes.dots}>
@@ -30,14 +36,14 @@ export default function LatestOfferings() {
 				<Group className={classes.right}>
 					<Select
 						className={classes.dropdown}
-						placeholder="Filter by category"
+						placeholder={t('marketplace.home.latest.filter.prompt')}
 						data={[
-							'Energy',
-							'Industry',
-							'Transport',
-							'Buildings',
-							'Agriculture',
-							'Waste',
+							t('constants.auctionCategory.energy.title'),
+							t('constants.auctionCategory.industry.title'),
+							t('constants.auctionCategory.transport.title'),
+							t('constants.auctionCategory.buildings.title'),
+							t('constants.auctionCategory.agriculture.title'),
+							t('constants.auctionCategory.waste.title'),
 						]}
 					/>
 					<ActionIcon className={classes.button}>

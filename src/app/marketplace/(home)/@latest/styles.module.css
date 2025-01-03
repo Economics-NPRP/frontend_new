@@ -80,8 +80,22 @@
 		.root {
 			@apply bg-dark-700 border-dark-600;
 
-			> .header > .label > .title {
-				@apply text-white;
+			> .header {
+				@apply border-dark-400;
+
+				> .left > .label {
+					> .heading {
+						@apply text-white;
+					}
+
+					> .subheading {
+						@apply text-gray-300;
+					}
+				}
+
+				> .right {
+					@apply bg-dark-500;
+				}
 			}
 		}
 	}

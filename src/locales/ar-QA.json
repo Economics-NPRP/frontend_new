@@ -1,206 +1,213 @@
 {
-	"constants": {
-		"auctionCategory": {
-			"energy": {
-				"alt": "صورة لمحطة توليد الكهرباء تصور فئة الطاقة",
-				"title": "طاقة"
-			},
-			"industry": {
-				"alt": "صورة لآلة كسارة توضح فئة الصناعة",
-				"title": "صناعة"
-			},
-			"transport": {
-				"alt": "صورة لحركة المرور المسببة للتلوث والتي تصور فئة النقل",
-				"title": "ينقل"
-			},
-			"buildings": {
-				"alt": "صورة لنظام التدفئة والتهوية وتكييف الهواء (HVAC) توضح فئة المباني",
-				"title": "المباني"
-			},
-			"agriculture": {
-				"alt": "صورة مزرعة بها أبقار تمثل فئة الزراعة",
-				"title": "زراعة"
-			},
-			"waste": {
-				"alt": "صورة لنفايات الزجاج والبلاستيك توضح فئة النفايات",
-				"title": "يضيع"
-			}
-		},
-		"currency": {
-			"QAR": {
-				"name": "الريال القطري",
-				"symbol": "ر.ق"
-			}
-		}
-	},
-	"marketplace": {
-		"home": {
-			"banner": {
-				"actions": {
-					"calendar": {
-						"tooltip": "افتح تقويم المزاد"
-					},
-					"explore": {
-						"text": "اكتشف المزادات",
-						"tooltip": "عرض أحدث العروض في السوق"
-					}
-				},
-				"subtitle": "المزادات الحكومية",
-				"title": "فترة المزاد القادمة",
-				"startDate": "يبدأ يوم"
-			},
-			"subbanner": {
-				"1": {
-					"heading": "<mark>{value, plural, =0 {لا توجد مزايدات جديدة} =1 {مزايدة جديدة واحدة} other {# مزايدات جديدة}}</mark> للمزادات المسجلة لديك",
-					"text": "انقر هنا لعرض النشاط الأخير"
-				},
-				"2": {
-					"heading": "هل لديك تصاريح زائدة؟ \n<mark>قم ببيعها بالمزاد!</mark>",
-					"text": "انقر هنا لإنشاء مزاد جديد"
-				},
-				"3": {
-					"heading": "<mark>{value, plural, =0 {لا توجد مزادات} =1 {مزاد واحد} other {# مزادات}}</mark> {value, plural, =0 {انتهى} =1 {انتهى} other {انتهت}}",
-					"text": "انقر هنا لعرض نتائج المزاد"
-				}
-			},
-			"categories": {
-				"action": "إظهار الكل",
-				"heading": "فئات المزاد",
-				"subheading": "تصفح مزاداتنا على أساس القطاع"
-			}
-		}
-	},
-	"components": {
-		"header": {
-			"returnToDashboard": {
-				"aria": "العودة إلى زر لوحة القيادة",
-				"long": "العودة إلى لوحة التحكم",
-				"short": "لوحة القيادة",
-				"tooltip": "ارجع إلى لوحة القيادة الخاصة بك"
-			},
-			"returnToMarketplace": {
-				"aria": "زر الصفحة الرئيسية",
-				"tooltip": "العودة إلى الصفحة الرئيسية للسوق"
-			},
-			"search": {
-				"prompt": "البحث عن مزاد",
-				"promptTooltip": "افتح شريط البحث",
-				"shortcut": "ن"
-			},
-			"buttons": {
-				"accessibility": {
-					"aria": "خيارات إمكانية الوصول",
-					"tooltip": "خيارات إمكانية الوصول"
-				},
-				"language": {
-					"en": {
-						"aria": "Switch to Arabic / التبديل إلى اللغة العربية",
-						"tooltip": "Switch to Arabic / التبديل إلى اللغة العربية"
-					},
-					"ar-QA": {
-						"aria": " التبديل إلى اللغة الإنجليزية / Switch to English",
-						"tooltip": " التبديل إلى اللغة الإنجليزية / Switch to English"
-					}
-				},
-				"notifications": {
-					"aria": "إشعارات",
-					"tooltip": "إشعارات"
-				},
-				"search": {
-					"aria": "زر البحث",
-					"tooltip": "البحث عن مزاد"
-				},
-				"theme": {
-					"auto": {
-						"aria": "التبديل إلى الوضع اليدوي",
-						"tooltip": "التبديل إلى الوضع اليدوي"
-					},
-					"dark": {
-						"aria": "التبديل إلى وضع الضوء",
-						"tooltip": "التبديل إلى وضع الضوء"
-					},
-					"light": {
-						"aria": "التبديل إلى الوضع الداكن",
-						"tooltip": "التبديل إلى الوضع الداكن"
-					}
-				},
-				"user": {
-					"aria": "ملفي الشخصي",
-					"tooltip": "ملفي الشخصي"
-				}
-			},
-			"user": {
-				"details": {
-					"rating": "{rating, number, ::.00} من ٥٫٠٠"
-				},
-				"auctionCalendar": "تقويم المزاد",
-				"biddingHistory": "تاريخ العطاءات",
-				"dashboard": "لوحة القيادة",
-				"helpCenter": "مركز المساعدة",
-				"logout": "تسجيل الخروج",
-				"marketplace": "السوق",
-				"myDashboard": "لوحة القيادة الخاصة بي",
-				"permits": "تصاريح",
-				"profile": "انتقل إلى الملف الشخصي",
-				"settings": "إعدادات",
-				"statistics": "إحصائيات",
-				"transactions": "المعاملات",
-				"savedAuctions": "المزادات المحفوظة"
-			}
-		},
-		"countdown": {
-			"value": "٠\n١\n٢\n٣\n٤\n٥\n٦\n٧\n٨\n٩",
-			"label": {
-				"long": {
-					"day": "يوم",
-					"days": "أيام",
-					"empty": "—",
-					"hour": "ساعة",
-					"hours": "ساعات",
-					"millisecond": "ميلي ثانية",
-					"milliseconds": "ميلي ثوانٍ",
-					"minute": "دقيقة",
-					"minutes": "دقائق",
-					"month": "شهر",
-					"months": "أشهر",
-					"quarter": "ربع",
-					"quarters": "أرباع",
-					"second": "ثانية",
-					"seconds": "ثوانٍ",
-					"week": "أسبوع",
-					"weeks": "أسابيع",
-					"year": "سنة",
-					"years": "سنوات"
-				},
-				"short": {
-					"years": "س",
-					"year": "س",
-					"quarters": "ر",
-					"quarter": "ر",
-					"months": "ش",
-					"month": "ش",
-					"weeks": "أ",
-					"week": "أ",
-					"days": "ي",
-					"day": "ي",
-					"hours": "س",
-					"hour": "س",
-					"minutes": "د",
-					"minute": "د",
-					"seconds": "ث",
-					"second": "ث",
-					"milliseconds": "ملث",
-					"millisecond": "ملث",
-					"empty": ""
-				}
-			}
-		},
-		"categoryCard": {
-			"value": "{value, number} مزادات"
-		},
-		"auctionCard": {
-			"permits": "{permits, number} {permits, plural, =0 {تصريح} =1 {تصريحان} other {تصاريح}} ({emissions, number} tCO2e)",
-			"minBid": "أقل عطاء فائز"
-		}
-	}
+  "constants": {
+    "auctionCategory": {
+      "energy": {
+        "alt": "صورة لمحطة توليد الكهرباء تصور فئة الطاقة",
+        "title": "طاقة"
+      },
+      "industry": {
+        "alt": "صورة لآلة كسارة توضح فئة الصناعة",
+        "title": "صناعة"
+      },
+      "transport": {
+        "alt": "صورة لحركة المرور المسببة للتلوث والتي تصور فئة النقل",
+        "title": "ينقل"
+      },
+      "buildings": {
+        "alt": "صورة لنظام التدفئة والتهوية وتكييف الهواء (HVAC) توضح فئة المباني",
+        "title": "المباني"
+      },
+      "agriculture": {
+        "alt": "صورة مزرعة بها أبقار تمثل فئة الزراعة",
+        "title": "زراعة"
+      },
+      "waste": {
+        "alt": "صورة لنفايات الزجاج والبلاستيك توضح فئة النفايات",
+        "title": "يضيع"
+      }
+    },
+    "currency": {
+      "QAR": {
+        "name": "الريال القطري",
+        "symbol": "ر.ق"
+      }
+    }
+  },
+  "marketplace": {
+    "home": {
+      "banner": {
+        "actions": {
+          "calendar": {
+            "tooltip": "افتح تقويم المزاد"
+          },
+          "explore": {
+            "text": "اكتشف المزادات",
+            "tooltip": "عرض أحدث العروض في السوق"
+          }
+        },
+        "subtitle": "المزادات الحكومية",
+        "title": "فترة المزاد القادمة",
+        "startDate": "يبدأ يوم"
+      },
+      "subbanner": {
+        "1": {
+          "heading": "<mark>{value, plural, =0 {لا توجد مزايدات جديدة} =1 {مزايدة جديدة واحدة} other {# مزايدات جديدة}}</mark> للمزادات المسجلة لديك",
+          "text": "انقر هنا لعرض النشاط الأخير"
+        },
+        "2": {
+          "heading": "هل لديك تصاريح زائدة؟ \n<mark>قم ببيعها بالمزاد!</mark>",
+          "text": "انقر هنا لإنشاء مزاد جديد"
+        },
+        "3": {
+          "heading": "<mark>{value, plural, =0 {لا توجد مزادات} =1 {مزاد واحد} other {# مزادات}}</mark> {value, plural, =0 {انتهى} =1 {انتهى} other {انتهت}}",
+          "text": "انقر هنا لعرض نتائج المزاد"
+        }
+      },
+      "categories": {
+        "action": "إظهار الكل",
+        "heading": "فئات المزاد",
+        "subheading": "تصفح مزاداتنا على أساس القطاع"
+      },
+      "latest": {
+        "filter": {
+          "prompt": "تصفية حسب الفئة"
+        },
+        "heading": "أحدث المزادات",
+        "subheading": "اكتشف أحدث المزادات المتاحة في السوق"
+      }
+    }
+  },
+  "components": {
+    "header": {
+      "returnToDashboard": {
+        "aria": "العودة إلى زر لوحة القيادة",
+        "long": "العودة إلى لوحة التحكم",
+        "short": "لوحة القيادة",
+        "tooltip": "ارجع إلى لوحة القيادة الخاصة بك"
+      },
+      "returnToMarketplace": {
+        "aria": "زر الصفحة الرئيسية",
+        "tooltip": "العودة إلى الصفحة الرئيسية للسوق"
+      },
+      "search": {
+        "prompt": "البحث عن مزاد",
+        "promptTooltip": "افتح شريط البحث",
+        "shortcut": "ن"
+      },
+      "buttons": {
+        "accessibility": {
+          "aria": "خيارات إمكانية الوصول",
+          "tooltip": "خيارات إمكانية الوصول"
+        },
+        "language": {
+          "en": {
+            "aria": "Switch to Arabic / التبديل إلى اللغة العربية",
+            "tooltip": "Switch to Arabic / التبديل إلى اللغة العربية"
+          },
+          "ar-QA": {
+            "aria": " التبديل إلى اللغة الإنجليزية / Switch to English",
+            "tooltip": " التبديل إلى اللغة الإنجليزية / Switch to English"
+          }
+        },
+        "notifications": {
+          "aria": "إشعارات",
+          "tooltip": "إشعارات"
+        },
+        "search": {
+          "aria": "زر البحث",
+          "tooltip": "البحث عن مزاد"
+        },
+        "theme": {
+          "auto": {
+            "aria": "التبديل إلى الوضع اليدوي",
+            "tooltip": "التبديل إلى الوضع اليدوي"
+          },
+          "dark": {
+            "aria": "التبديل إلى وضع الضوء",
+            "tooltip": "التبديل إلى وضع الضوء"
+          },
+          "light": {
+            "aria": "التبديل إلى الوضع الداكن",
+            "tooltip": "التبديل إلى الوضع الداكن"
+          }
+        },
+        "user": {
+          "aria": "ملفي الشخصي",
+          "tooltip": "ملفي الشخصي"
+        }
+      },
+      "user": {
+        "details": {
+          "rating": "{rating, number, ::.00} من ٥٫٠٠"
+        },
+        "auctionCalendar": "تقويم المزاد",
+        "biddingHistory": "تاريخ العطاءات",
+        "dashboard": "لوحة القيادة",
+        "helpCenter": "مركز المساعدة",
+        "logout": "تسجيل الخروج",
+        "marketplace": "السوق",
+        "myDashboard": "لوحة القيادة الخاصة بي",
+        "permits": "تصاريح",
+        "profile": "انتقل إلى الملف الشخصي",
+        "settings": "إعدادات",
+        "statistics": "إحصائيات",
+        "transactions": "المعاملات",
+        "savedAuctions": "المزادات المحفوظة"
+      }
+    },
+    "countdown": {
+      "value": "٠\n١\n٢\n٣\n٤\n٥\n٦\n٧\n٨\n٩",
+      "label": {
+        "long": {
+          "day": "يوم",
+          "days": "أيام",
+          "empty": "—",
+          "hour": "ساعة",
+          "hours": "ساعات",
+          "millisecond": "ميلي ثانية",
+          "milliseconds": "ميلي ثوانٍ",
+          "minute": "دقيقة",
+          "minutes": "دقائق",
+          "month": "شهر",
+          "months": "أشهر",
+          "quarter": "ربع",
+          "quarters": "أرباع",
+          "second": "ثانية",
+          "seconds": "ثوانٍ",
+          "week": "أسبوع",
+          "weeks": "أسابيع",
+          "year": "سنة",
+          "years": "سنوات"
+        },
+        "short": {
+          "years": "س",
+          "year": "س",
+          "quarters": "ر",
+          "quarter": "ر",
+          "months": "ش",
+          "month": "ش",
+          "weeks": "أ",
+          "week": "أ",
+          "days": "ي",
+          "day": "ي",
+          "hours": "س",
+          "hour": "س",
+          "minutes": "د",
+          "minute": "د",
+          "seconds": "ث",
+          "second": "ث",
+          "milliseconds": "ملث",
+          "millisecond": "ملث",
+          "empty": ""
+        }
+      }
+    },
+    "categoryCard": {
+      "value": "{value, number} مزادات"
+    },
+    "auctionCard": {
+      "permits": "{permits, number} {permits, plural, =0 {تصريح} =1 {تصريحان} other {تصاريح}} ({emissions, number} tCO2e)",
+      "minBid": "أقل عطاء فائز"
+    }
+  }
 }

@@ -36,6 +36,7 @@ export const AuctionCard = ({ fluid, className, ...props }: AuctionCardProps) =>
 		'/imgs/transport/airplane.jpg',
 	];
 	const src = imgs[Math.floor(Math.random() * imgs.length)];
+	const category = src.includes('flare') ? 'industry' : 'transport';
 
 	return (
 		<Stack className={`${classes.root} ${fluid && 'fluid'} ${className}`} {...props}>
@@ -67,7 +68,7 @@ export const AuctionCard = ({ fluid, className, ...props }: AuctionCardProps) =>
 				<Badge className={classes.permits} leftSection={<IconLicense size={14} />}>
 					{t('components.auctionCard.permits', { permits: 180, emissions: 1800 })}
 				</Badge>
-				<CategoryBadge className={classes.category} category="industry" />
+				<CategoryBadge className={classes.category} category={category} />
 			</Group>
 			<Group className={classes.label}>
 				<Stack className={classes.left}>
