@@ -6,7 +6,7 @@ import { IconChevronLeft, IconChevronRight, IconPointFilled } from '@tabler/icon
 
 import classes from './styles.module.css';
 
-export default function LatestOfferings() {
+export default function EndingSoon() {
 	const t = useTranslations();
 
 	return (
@@ -19,10 +19,10 @@ export default function LatestOfferings() {
 				<Group className={classes.left}>
 					<Stack className={classes.label}>
 						<Title className={classes.heading}>
-							{t('marketplace.home.latest.heading')}
+							{t('marketplace.home.ending.heading')}
 						</Title>
 						<Text className={classes.subheading}>
-							{t('marketplace.home.latest.subheading')}
+							{t('marketplace.home.ending.subheading')}
 						</Text>
 					</Stack>
 					<Group className={classes.dots}>
@@ -36,7 +36,7 @@ export default function LatestOfferings() {
 				<Group className={classes.right}>
 					<Select
 						className={classes.dropdown}
-						placeholder={t('marketplace.home.latest.filter.prompt')}
+						placeholder={t('marketplace.home.ending.filter.prompt')}
 						data={[
 							t('constants.auctionCategory.energy.title'),
 							t('constants.auctionCategory.industry.title'),

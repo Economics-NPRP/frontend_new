@@ -1,213 +1,213 @@
 {
-  "constants": {
-    "auctionCategory": {
-      "energy": {
-        "alt": "Image of a power plant depicting the energy category",
-        "title": "Energy"
-      },
-      "industry": {
-        "alt": "Image of a crusher machine depicting the industry category",
-        "title": "Industry"
-      },
-      "transport": {
-        "alt": "Image of traffic causing pollution depicting the transport category",
-        "title": "Transport"
-      },
-      "buildings": {
-        "alt": "Image of a HVAC system depicting the buildings category",
-        "title": "Buildings"
-      },
-      "agriculture": {
-        "alt": "Image of a farm with cows depicting the agriculture category",
-        "title": "Agriculture"
-      },
-      "waste": {
-        "alt": "Image of waste glass and plastic depicting the waste category",
-        "title": "Waste"
-      }
-    },
-    "currency": {
-      "QAR": {
-        "symbol": "QAR",
-        "name": "Qatari Riyal"
-      }
-    }
-  },
-  "marketplace": {
-    "home": {
-      "banner": {
-        "subtitle": "Government Auctions",
-        "title": "Next Auction Period",
-        "actions": {
-          "calendar": {
-            "tooltip": "Open the auction calendar"
-          },
-          "explore": {
-            "tooltip": "View the latest offerings in the marketplace",
-            "text": "Explore Auctions"
-          }
-        },
-        "startDate": "Starts on"
-      },
-      "subbanner": {
-        "1": {
-          "text": "Click here to view recent activity",
-          "heading": "<mark>{value, plural, =0 {No new bids} =1 {1 new bid} other {# new bids}}</mark> for your enrolled auctions"
-        },
-        "2": {
-          "text": "Click here to create a new auction",
-          "heading": "Have excess permits? <mark>Auction them off!</mark>"
-        },
-        "3": {
-          "text": "Click here to view auction results",
-          "heading": "<mark>{value, plural, =0 {No auction} =1 {1 auction} other {# auctions}}</mark> {value, plural, =0 {has} =1 {has} other {have}} ended"
-        }
-      },
-      "categories": {
-        "heading": "Auction Categories",
-        "subheading": "Browse through our auctions based on sector",
-        "action": "Show All"
-      },
-      "latest": {
-        "heading": "Latest Auctions",
-        "subheading": "Explore the latest auctions available in the marketplace",
-        "filter": {
-          "prompt": "Filter by category"
-        }
-      }
-    }
-  },
-  "components": {
-    "categoryCard": {
-      "value": "{value, number} auctions"
-    },
-    "countdown": {
-      "label": {
-        "long": {
-          "years": "Years",
-          "year": "Year",
-          "quarters": "Quarters",
-          "quarter": "Quarter",
-          "months": "Months",
-          "month": "Month",
-          "weeks": "Weeks",
-          "week": "Week",
-          "days": "Days",
-          "day": "Day",
-          "hours": "Hours",
-          "hour": "Hour",
-          "minutes": "Minutes",
-          "minute": "Minute",
-          "seconds": "Seconds",
-          "second": "Second",
-          "milliseconds": "Milliseconds",
-          "millisecond": "Millisecond",
-          "empty": "—"
-        },
-        "short": {
-          "years": "y",
-          "year": "y",
-          "quarters": "q",
-          "quarter": "q",
-          "months": "M",
-          "month": "M",
-          "weeks": "w",
-          "week": "w",
-          "days": "d",
-          "day": "d",
-          "hours": "h",
-          "hour": "h",
-          "minutes": "m",
-          "minute": "m",
-          "seconds": "s",
-          "second": "s",
-          "milliseconds": "ms",
-          "millisecond": "ms",
-          "empty": ""
-        }
-      },
-      "value": "0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
-    },
-    "header": {
-      "returnToDashboard": {
-        "aria": "Return to dashboard button",
-        "long": "Return to Dashboard",
-        "short": "Dashboard",
-        "tooltip": "Go back to your dashboard"
-      },
-      "returnToMarketplace": {
-        "aria": "Home button",
-        "tooltip": "Return to Marketplace Home"
-      },
-      "search": {
-        "prompt": "Search for an auction",
-        "promptTooltip": "Open the search bar",
-        "shortcut": "K"
-      },
-      "buttons": {
-        "accessibility": {
-          "aria": "Accessibility options",
-          "tooltip": "Accessibility options"
-        },
-        "language": {
-          "en": {
-            "aria": "Switch to Arabic / التبديل إلى اللغة العربية",
-            "tooltip": "Switch to Arabic / التبديل إلى اللغة العربية"
-          },
-          "ar-QA": {
-            "aria": " التبديل إلى اللغة الإنجليزية / Switch to English",
-            "tooltip": " التبديل إلى اللغة الإنجليزية / Switch to English"
-          }
-        },
-        "notifications": {
-          "aria": "Notifications",
-          "tooltip": "Notifications"
-        },
-        "search": {
-          "aria": "Search button",
-          "tooltip": "Search for an auction"
-        },
-        "theme": {
-          "auto": {
-            "aria": "Switch to Manual Mode",
-            "tooltip": "Switch to Manual Mode"
-          },
-          "dark": {
-            "aria": "Switch to Light Mode",
-            "tooltip": "Switch to Light Mode"
-          },
-          "light": {
-            "aria": "Switch to Dark Mode",
-            "tooltip": "Switch to Dark Mode"
-          }
-        },
-        "user": {
-          "aria": "My Profile",
-          "tooltip": "My Profile"
-        }
-      },
-      "user": {
-        "details": {
-          "rating": "{rating, number, ::.00} out of 5.00"
-        },
-        "profile": "Go to Profile",
-        "marketplace": "Marketplace",
-        "biddingHistory": "Bidding History",
-        "auctionCalendar": "Auction Calendar",
-        "dashboard": "Dashboard",
-        "myDashboard": "My Dashboard",
-        "statistics": "Statistics",
-        "transactions": "Transactions",
-        "permits": "Permits",
-        "helpCenter": "Help Center",
-        "settings": "Settings",
-        "logout": "Logout",
-        "savedAuctions": "Saved Auctions"
-      }
-    },
-    "auctionCard": {
-      "permits": "{permits, number} {permits, plural, =0 {Permits} =1 {Permit} other {Permits}} ({emissions, number} tCO2e)",
-      "minBid": "min. winning bid"
-    }
-  }
+	"constants": {
+		"auctionCategory": {
+			"energy": {
+				"alt": "Image of a power plant depicting the energy category",
+				"title": "Energy"
+			},
+			"industry": {
+				"alt": "Image of a crusher machine depicting the industry category",
+				"title": "Industry"
+			},
+			"transport": {
+				"alt": "Image of traffic causing pollution depicting the transport category",
+				"title": "Transport"
+			},
+			"buildings": {
+				"alt": "Image of a HVAC system depicting the buildings category",
+				"title": "Buildings"
+			},
+			"agriculture": {
+				"alt": "Image of a farm with cows depicting the agriculture category",
+				"title": "Agriculture"
+			},
+			"waste": {
+				"alt": "Image of waste glass and plastic depicting the waste category",
+				"title": "Waste"
+			}
+		},
+		"currency": {
+			"QAR": {
+				"symbol": "QAR",
+				"name": "Qatari Riyal"
+			}
+		}
+	},
+	"marketplace": {
+		"home": {
+			"banner": {
+				"subtitle": "Government Auctions",
+				"title": "Next Auction Period",
+				"actions": {
+					"calendar": {
+						"tooltip": "Open the auction calendar"
+					},
+					"explore": {
+						"tooltip": "View the latest offerings in the marketplace",
+						"text": "Explore Auctions"
+					}
+				},
+				"startDate": "Starts on"
+			},
+			"subbanner": {
+				"1": {
+					"text": "Click here to view recent activity",
+					"heading": "<mark>{value, plural, =0 {No new bids} =1 {1 new bid} other {# new bids}}</mark> for your enrolled auctions"
+				},
+				"2": {
+					"text": "Click here to create a new auction",
+					"heading": "Have excess permits? <mark>Auction them off!</mark>"
+				},
+				"3": {
+					"text": "Click here to view auction results",
+					"heading": "<mark>{value, plural, =0 {No auction} =1 {1 auction} other {# auctions}}</mark> {value, plural, =0 {has} =1 {has} other {have}} ended"
+				}
+			},
+			"categories": {
+				"heading": "Auction Categories",
+				"subheading": "Browse through our auctions based on sector",
+				"action": "Show All"
+			},
+			"ending": {
+				"heading": "Ending Soon",
+				"subheading": "These auctions are ending soon, bid now before they're gone!",
+				"filter": {
+					"prompt": "Filter by category"
+				}
+			}
+		}
+	},
+	"components": {
+		"categoryCard": {
+			"value": "{value, number} auctions"
+		},
+		"countdown": {
+			"label": {
+				"long": {
+					"years": "Years",
+					"year": "Year",
+					"quarters": "Quarters",
+					"quarter": "Quarter",
+					"months": "Months",
+					"month": "Month",
+					"weeks": "Weeks",
+					"week": "Week",
+					"days": "Days",
+					"day": "Day",
+					"hours": "Hours",
+					"hour": "Hour",
+					"minutes": "Minutes",
+					"minute": "Minute",
+					"seconds": "Seconds",
+					"second": "Second",
+					"milliseconds": "Milliseconds",
+					"millisecond": "Millisecond",
+					"empty": "—"
+				},
+				"short": {
+					"years": "y",
+					"year": "y",
+					"quarters": "q",
+					"quarter": "q",
+					"months": "M",
+					"month": "M",
+					"weeks": "w",
+					"week": "w",
+					"days": "d",
+					"day": "d",
+					"hours": "h",
+					"hour": "h",
+					"minutes": "m",
+					"minute": "m",
+					"seconds": "s",
+					"second": "s",
+					"milliseconds": "ms",
+					"millisecond": "ms",
+					"empty": ""
+				}
+			},
+			"value": "0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
+		},
+		"header": {
+			"returnToDashboard": {
+				"aria": "Return to dashboard button",
+				"long": "Return to Dashboard",
+				"short": "Dashboard",
+				"tooltip": "Go back to your dashboard"
+			},
+			"returnToMarketplace": {
+				"aria": "Home button",
+				"tooltip": "Return to Marketplace Home"
+			},
+			"search": {
+				"prompt": "Search for an auction",
+				"promptTooltip": "Open the search bar",
+				"shortcut": "K"
+			},
+			"buttons": {
+				"accessibility": {
+					"aria": "Accessibility options",
+					"tooltip": "Accessibility options"
+				},
+				"language": {
+					"en": {
+						"aria": "Switch to Arabic / التبديل إلى اللغة العربية",
+						"tooltip": "Switch to Arabic / التبديل إلى اللغة العربية"
+					},
+					"ar-QA": {
+						"aria": " التبديل إلى اللغة الإنجليزية / Switch to English",
+						"tooltip": " التبديل إلى اللغة الإنجليزية / Switch to English"
+					}
+				},
+				"notifications": {
+					"aria": "Notifications",
+					"tooltip": "Notifications"
+				},
+				"search": {
+					"aria": "Search button",
+					"tooltip": "Search for an auction"
+				},
+				"theme": {
+					"auto": {
+						"aria": "Switch to Manual Mode",
+						"tooltip": "Switch to Manual Mode"
+					},
+					"dark": {
+						"aria": "Switch to Light Mode",
+						"tooltip": "Switch to Light Mode"
+					},
+					"light": {
+						"aria": "Switch to Dark Mode",
+						"tooltip": "Switch to Dark Mode"
+					}
+				},
+				"user": {
+					"aria": "My Profile",
+					"tooltip": "My Profile"
+				}
+			},
+			"user": {
+				"details": {
+					"rating": "{rating, number, ::.00} out of 5.00"
+				},
+				"profile": "Go to Profile",
+				"marketplace": "Marketplace",
+				"biddingHistory": "Bidding History",
+				"auctionCalendar": "Auction Calendar",
+				"dashboard": "Dashboard",
+				"myDashboard": "My Dashboard",
+				"statistics": "Statistics",
+				"transactions": "Transactions",
+				"permits": "Permits",
+				"helpCenter": "Help Center",
+				"settings": "Settings",
+				"logout": "Logout",
+				"savedAuctions": "Saved Auctions"
+			}
+		},
+		"auctionCard": {
+			"permits": "{permits, number} {permits, plural, =0 {Permits} =1 {Permit} other {Permits}} ({emissions, number} tCO2e)",
+			"minBid": "min. winning bid"
+		}
+	}
 }
