@@ -31,6 +31,7 @@
 			"@/locales/*": ["locales/*"],
 			"@/pages/*": ["pages/*"],
 			"@/public/*": ["../public/*"],
+			"@/schema/*": ["schema/*"],
 			"@/store": ["store"],
 			"@/styles/*": ["styles/*"],
 			"@/tests": ["tests"],

@@ -5,6 +5,7 @@ import Head from 'next/head';
 import { getLangDir } from 'rtl-detect';
 
 import { getUserLocale } from '@/locales';
+import '@/schema/models/AuctionData';
 import '@/styles/globals.css';
 import { theme } from '@/styles/mantine';
 import { ColorSchemeScript, DirectionProvider, MantineProvider } from '@mantine/core';

@@ -1,4 +1,48 @@
 {
+	"model": {
+		"AuctionData": {
+			"isPrimaryMarket": {
+				"boolean": "Is primary market should be a boolean, received {received} instead"
+			},
+			"title": {
+				"string": "Auction title should be a string, received {received} instead",
+				"required": "Auction title is required",
+				"words": "Auction title should have at least 1 word, received {received} instead"
+			},
+			"image": {
+				"string": "Auction image should be a string, received {received} instead",
+				"url": "Auction image should be a valid URL, received {received} instead"
+			},
+			"description": {
+				"string": "Auction description should be a string, received {received} instead",
+				"words": "Auction description should have at least 3 words, received {received} instead"
+			},
+			"isVisible": {
+				"boolean": "Is visible should be a boolean, received {received} instead"
+			},
+			"hasJoined": {
+				"boolean": "Has joined should be a boolean, received {received} instead"
+			}
+		},
+		"AuctionType": {
+			"picklist": "Auction type should be 'open' or 'sealed', received {received} instead",
+			"required": "Auction type is required"
+		},
+		"PositiveNumber": {
+			"number": "{key} should be a number, received {received} instead",
+			"integer": "{key} should be an integer, received {received} instead",
+			"positive": "{key} should be a positive number, received {received} instead"
+		},
+		"Timestamp": {
+			"string": "{key} should be a string, received {received} instead",
+			"isoTimestamp": "{key} should be a valid ISO 8601 timestamp (for example: 2021-01-01T00:00:00Z), received {received} instead)"
+		},
+		"Uuid": {
+			"string": "{key} should be a string, received {received} instead",
+			"required": "{key} is required",
+			"uuid": "{key} should be a valid UUID (for example: 123e4567-e89b-12d3-a456-426614174000), received {received} instead"
+		}
+	},
 	"constants": {
 		"auctionCategory": {
 			"energy": {
