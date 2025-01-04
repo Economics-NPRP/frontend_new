@@ -11,4 +11,4 @@ export const TimestampSchema = (key: string) =>
 		transform((value) => DateTime.fromISO(value)),
 	);
 
-export type AuctionType = InferOutput<ReturnType<typeof TimestampSchema>>;
+export type Timestamp = InferOutput<ReturnType<typeof TimestampSchema>>;

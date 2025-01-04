@@ -37,6 +37,40 @@
 			"string": "{key} should be a string, received {received} instead",
 			"isoTimestamp": "{key} should be a valid ISO 8601 timestamp (for example: 2021-01-01T00:00:00Z), received {received} instead)"
 		},
+		"UserData": {
+			"name": {
+				"string": "User name should be a string, received {received} instead",
+				"required": "User name is required",
+				"words": "User name should have at least 1 words, received {received} instead"
+			},
+			"email": {
+				"string": "User email should be a string, received {received} instead",
+				"required": "User email is required",
+				"email": "User email should be a valid email, received {received} instead"
+			},
+			"phone": {
+				"string": "User phone number should be a string, received {received} instead",
+				"required": "User phone number is required",
+				"length": "User phone number should be 8 digits long, received {received} instead"
+			},
+			"image": {
+				"string": "User profile picture should be a string, received {received} instead",
+				"url": "User profile picture should be a valid URL, received {received} instead"
+			},
+			"emailVerified": {
+				"boolean": "Email verified should be a boolean, received {received} instead"
+			},
+			"phoneVerified": {
+				"boolean": "Phone verified should be a boolean, received {received} instead"
+			},
+			"isActive": {
+				"boolean": "Is active should be a boolean, received {received} instead"
+			}
+		},
+		"UserType": {
+			"picklist": "User type should be 'admin' or 'user', received {received} instead",
+			"required": "User type is required"
+		},
 		"Uuid": {
 			"string": "{key} should be a string, received {received} instead",
 			"required": "{key} is required",

@@ -7,15 +7,15 @@ import {
 	nonEmpty,
 	nullish,
 	object,
+	omit,
 	pipe,
-	safeParse,
 	string,
 	trim,
 	url,
 } from 'valibot';
 
 import { getUserLocale } from '@/locales';
-import { AuctionTypeSchema } from '@/schema/models';
+import { AuctionTypeSchema, BaseUserDataSchema } from '@/schema/models';
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
 
 const MODEL_NAME = 'AuctionData';
@@ -23,7 +23,7 @@ const MODEL_NAME = 'AuctionData';
 const locale = await getUserLocale();
 const t = await getTranslations();
 
-export const AuctionDataSchema = object({
+export const BaseAuctionDataSchema = object({
 	id: UuidSchema('id'),
 	ownerId: UuidSchema('ownerId'),
 	sectorId: UuidSchema('sectorId'),
@@ -55,10 +55,10 @@ export const AuctionDataSchema = object({
 		),
 	),
 	permits: PositiveNumberSchema('permits'),
-	bids: PositiveNumberSchema('bids'),
+	bids: PositiveNumberSchema('bids', true),
 	minBid: PositiveNumberSchema('minBid'),
-	views: PositiveNumberSchema('views'),
-	bookmarks: PositiveNumberSchema('bookmarks'),
+	views: PositiveNumberSchema('views', true),
+	bookmarks: PositiveNumberSchema('bookmarks', true),
 
 	isVisible: boolean(({ received }) => t(`model.${MODEL_NAME}.isVisible.boolean`, { received })),
 	createdAt: TimestampSchema('createdAt'),
@@ -68,106 +68,27 @@ export const AuctionDataSchema = object({
 		boolean(({ received }) => t(`model.${MODEL_NAME}.hasJoined.boolean`, { received })),
 	),
 
-	// /**
-	//  * Data about the owner of the auction
-	//  */
-	// owner				: {
-	// 	/**
-	// 	 * The id of the owner
-	// 	 */
-	// 	id					: string,
-
-	// 	/**
-	// 	 * The type of the owner
-	// 	 */
-	// 	type				: OwnerType,
-
-	// 	/**
-	// 	 * The name of the owner
-	// 	 */
-	// 	name				: string,
-
-	// 	/**
-	// 	 * The email of the owner
-	// 	 */
-	// 	email				: string,
-
-	// 	/**
-	// 	 * The phone number of the owner
-	// 	 */
-	// 	phone				: string,
-
-	// 	/**
-	// 	 * The link to the image of the owner
-	// 	 */
-	// 	image				: string,
-
-	// 	/**
-	// 	 * Is the email of the owner verified?
-	// 	 */
-	// 	emailVerified		: boolean,
-
-	// 	/**
-	// 	 * Is the phone number of the owner verified?
-	// 	 */
-	// 	phoneVerified		: boolean,
-
-	// 	/**
-	// 	 * Is the owner active?
-	// 	 */
-	// 	isActive			: boolean,
-
-	// 	/**
-	// 	 * Date time at which the owner was created, format is UTC string
-	// 	 */
-	// 	createdAt			: string,
-	// },
+	owner: BaseUserDataSchema,
 });
 
-const result = safeParse(AuctionDataSchema, {
-	id: '57e261bd-736f-4139-8672-d67d79e2d002',
-	ownerId: 'b4d0909b-842e-41b6-ba23-f990643aa669',
-	sectorId: 'b4d0909b-842e-41b6-ba23-f990643aa669',
-	type: 'open',
-	isPrimaryMarket: true,
+export const CreateAuctionDataSchema = omit(BaseAuctionDataSchema, [
+	'id',
 
-	title: 'Auction 22',
-	image: null,
-	description: 'testing auction description',
-	permits: 261,
-	bids: 0,
-	minBid: 868,
-	views: 0,
-	bookmarks: 0,
+	'bids',
+	'views',
+	'bookmarks',
 
-	isVisible: true,
-	createdAt: '2024-12-28T10:40:06.276254Z',
-	startDatetime: '2024-12-30T10:40:06.278651Z',
-	endDatetime: '2025-01-03T10:40:06.278651Z',
-	hasJoined: true,
+	'isVisible',
+	'createdAt',
+	'hasJoined',
 
-	owner: {
-		id: 'b4d0909b-842e-41b6-ba23-f990643aa669',
-		type: 'admin',
-		name: 'super_admin',
-		email: 'elite0192@gmail.com',
-		phone: '12345678',
-		image: null,
-		email_verified: false,
-		phone_verified: false,
-		is_active: true,
-		created_at: '2024-12-28T10:40:03.867019Z',
-	},
-	emission: {
-		name: 'Methane',
-		symbol: 'CH4',
-		permit_size: 1000000,
-		total_permits: 10000,
-		id: 2,
-		created_at: '2024-12-28T10:40:03.787266Z',
-	},
-});
-console.log(result);
+	'owner',
+]);
 
-export interface AuctionData extends InferOutput<typeof AuctionDataSchema> {}
-export interface AuctionDataInput extends InferInput<typeof AuctionDataSchema> {}
+export const ReadAuctionDataSchema = BaseAuctionDataSchema;
+export const UpdateAuctionDataSchema = CreateAuctionDataSchema;
+
+export interface IAuctionData extends InferOutput<typeof BaseAuctionDataSchema> {}
+export interface ICreateAuction extends InferInput<typeof CreateAuctionDataSchema> {}
+export interface IReadAuction extends InferInput<typeof ReadAuctionDataSchema> {}
+export interface IUpdateAuction extends InferInput<typeof UpdateAuctionDataSchema> {}
