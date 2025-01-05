@@ -22,6 +22,7 @@
 			"@/api/*": ["api/*"],
 			"@/components/*": ["components/*"],
 			"@/constants/*": ["constants/*"],
+			"@/lib/*": ["lib/*"],
 			"@/helpers": ["helpers"],
 			"@/helpers/*": ["helpers/*"],
 			"@/hooks/*": ["hooks/*"],
