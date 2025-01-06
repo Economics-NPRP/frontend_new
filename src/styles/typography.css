@@ -129,12 +129,26 @@
 		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
 	}
+	.display-sm-w {
+		@apply font-sans;
+		@apply text-sm;
+		@apply font-bold;
+		@apply tracking-normal;
+		@apply text-white dark:text-dark-600;
+	}
 	.display-sm-sb-d3 {
 		@apply font-sans;
 		@apply text-sm;
 		@apply font-semibold;
 		@apply tracking-normal;
 		@apply text-dark-300 dark:text-dark-50;
+	}
+	.display-sm-sb-w {
+		@apply font-sans;
+		@apply text-sm;
+		@apply font-semibold;
+		@apply tracking-normal;
+		@apply text-white dark:text-dark-600;
 	}
 	.display-xs {
 		@apply font-sans;

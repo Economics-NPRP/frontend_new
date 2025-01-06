@@ -87,7 +87,7 @@
 			@apply gap-0;
 
 			> .price {
-				@apply gap-1;
+				@apply gap-1 flex-nowrap;
 
 				> .value {
 					@apply numeric-lg;

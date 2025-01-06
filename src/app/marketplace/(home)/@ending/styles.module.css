@@ -5,53 +5,79 @@
 	@apply gap-0;
 
 	> .header {
-		@apply h-20;
-		@apply items-stretch;
 		@apply gap-0;
 		@apply border border-solid border-gray-300;
-		@apply shadow-md;
+		@apply shadow-xs;
 
-		> .left {
-			@apply flex-auto justify-between;
-			@apply px-8 gap-4;
-			@apply bg-dark-600;
+		> .top {
+			@apply h-[72px];
+			@apply items-stretch;
+			@apply gap-0;
 
-			> .dots {
-				@apply gap-2;
-				@apply text-white;
-			}
+			> .left {
+				@apply flex-auto justify-between;
+				@apply px-8 gap-4;
+				@apply bg-dark-600;
 
-			> .label {
-				@apply gap-0;
-
-				> .heading {
-					@apply heading-2-w leading-none;
+				> .dots {
+					@apply gap-2;
+					@apply text-white;
 				}
 
-				> .subheading {
-					@apply paragraph-sm-g3 leading-none;
+				> .label {
+					@apply gap-0;
+
+					> .heading {
+						@apply heading-2-w leading-none;
+					}
+
+					> .subheading {
+						@apply paragraph-sm-g3 leading-none;
+					}
+				}
+			}
+
+			> .right {
+				@apply justify-center;
+				@apply gap-2 px-6;
+				@apply bg-white;
+
+				> .dropdown {
+					@apply w-60;
+				}
+
+				> .action {
+					@apply h-8;
+
+					&.square {
+						@apply size-8;
+					}
 				}
 			}
 		}
 
-		> .right {
-			@apply justify-center;
-			@apply gap-2 px-6;
-			@apply bg-white;
+		> .progress {
+			@apply h-1;
 
-			> .dropdown {
-				@apply w-60;
-			}
-
-			> .button {
-				@apply size-8;
+			> .bar {
+				@apply bg-maroon-600;
+				@apply transition-all duration-500;
 			}
 		}
 	}
 
 	> .content {
-		@apply flex-auto;
-		@apply p-8;
+		@apply flex-nowrap;
+		@apply py-8;
+
+		> .carousel {
+			@apply w-full;
+			@apply flex-auto;
+
+			.indicator {
+				@apply -bottom-8;
+			}
+		}
 	}
 
 	> .bg {

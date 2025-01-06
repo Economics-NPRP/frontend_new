@@ -8,6 +8,7 @@ import { getUserLocale } from '@/locales';
 import '@/schema/models/AuctionData';
 import '@/styles/globals.css';
 import { theme } from '@/styles/mantine';
+import '@mantine/carousel/styles.css';
 import { ColorSchemeScript, DirectionProvider, MantineProvider } from '@mantine/core';
 
 export const metadata: Metadata = {

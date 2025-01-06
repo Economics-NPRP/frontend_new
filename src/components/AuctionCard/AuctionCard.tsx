@@ -39,7 +39,7 @@ export const AuctionCard = ({ auction, fluid, className, ...props }: AuctionCard
 	const category = src.includes('flare') ? 'industry' : 'transport';
 
 	return (
-		<Stack className={`${classes.root} ${fluid && 'fluid'} ${className}`} {...props}>
+		<Stack className={`${classes.root} ${fluid && classes.fluid} ${className}`} {...props}>
 			<Group className={classes.header}>
 				<Group className={classes.rating}>
 					<Rating
