@@ -1,11 +1,11 @@
-import { DateTime } from 'luxon';
 import { useFormatter, useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { ComponentPropsWithRef } from 'react';
+import { ComponentPropsWithRef, useMemo } from 'react';
 
 import { CategoryBadge, CurrencyBadge } from '@/components/Badge';
 import { SmallCountdown } from '@/components/Countdown';
 import { Id } from '@/components/Id';
+import { IAuctionData } from '@/schema/models';
 import {
 	Anchor,
 	Badge,
@@ -21,14 +21,14 @@ import { IconAlarm, IconLicense } from '@tabler/icons-react';
 import classes from './styles.module.css';
 
 export interface AuctionCardProps extends ComponentPropsWithRef<'div'> {
+	auction: IAuctionData;
 	fluid?: boolean;
 }
-export const AuctionCard = ({ fluid, className, ...props }: AuctionCardProps) => {
+export const AuctionCard = ({ auction, fluid, className, ...props }: AuctionCardProps) => {
 	const t = useTranslations();
 	const format = useFormatter();
 
-	// const targetDate = DateTime.fromObject({ year: 2024, month: 12, day: 28 });
-	const targetDate = DateTime.now().plus({ hours: 5 });
+	const url = useMemo(() => `/marketplace/auction/${auction.id}`, [auction.id]);
 
 	const imgs = [
 		'/imgs/industry/flare.jpg',
@@ -53,42 +53,41 @@ export const AuctionCard = ({ fluid, className, ...props }: AuctionCardProps) =>
 				</Group>
 				<Group className={classes.countdown}>
 					<IconAlarm size={14} />
-					<SmallCountdown targetDate={targetDate.toISO()!} />
+					<SmallCountdown targetDate={auction.endDatetime} />
 				</Group>
 			</Group>
-			<UnstyledButton
-				className={classes.image}
-				component="a"
-				href="/marketplace/auction/123456"
-			>
+			<UnstyledButton className={classes.image} component="a" href={url}>
 				<Image src={src} alt={'Image of a power plant'} fill />
 				<Container className={classes.overlay} />
 			</UnstyledButton>
 			<Group className={classes.footer}>
 				<Badge className={classes.permits} leftSection={<IconLicense size={14} />}>
-					{t('components.auctionCard.permits', { permits: 180, emissions: 1800 })}
+					{t('components.auctionCard.permits', {
+						permits: auction.permits,
+						emissions: 1800,
+					})}
 				</Badge>
 				<CategoryBadge className={classes.category} category={category} />
 			</Group>
 			<Group className={classes.label}>
 				<Stack className={classes.left}>
-					<Id value={123456} variant="industry" />
-					<Anchor className={classes.heading} href="/marketplace/auction/123456">
+					<Id value={auction.id} variant={category} />
+					<Anchor className={classes.heading} href={url}>
 						Flare Gas Burning
 					</Anchor>
 					<Anchor
 						className={classes.company}
 						target="_blank"
-						href="/marketplace/company/123456"
+						href={`/marketplace/company/${auction.ownerId}`}
 					>
-						QatarEnergy LNG
+						{auction.owner.name}
 					</Anchor>
 				</Stack>
 				<Stack className={classes.right}>
 					<Group className={classes.price}>
 						<CurrencyBadge />
 						<Text className={classes.value}>
-							{format.number(1000, {
+							{format.number(auction.minBid, {
 								minimumFractionDigits: 2,
 								maximumFractionDigits: 2,
 							})}

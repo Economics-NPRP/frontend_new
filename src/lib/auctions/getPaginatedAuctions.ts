@@ -7,12 +7,15 @@ import { getSession } from '@/lib/auth';
 import { AuctionType, IAuctionData, ReadAuctionDataSchema } from '@/schema/models';
 import { IOffsetPagination, OffsetPaginatedData, SortDirection } from '@/types';
 
-interface IFunctionOptions extends IOffsetPagination {
+export interface IGetPaginatedAuctionsOptions extends IOffsetPagination {
 	sortBy?: string;
 	sortDirection?: SortDirection;
 
 	ownerId?: string;
 	type?: AuctionType;
+	isPending?: boolean;
+	isLive?: boolean;
+	hasEnded?: boolean;
 }
 
 const getDefaultData: (...errors: Array<string>) => OffsetPaginatedData<IAuctionData> = (
@@ -28,9 +31,21 @@ const getDefaultData: (...errors: Array<string>) => OffsetPaginatedData<IAuction
 	resultCount: 0,
 });
 
-type IFunctionSignature = (options: IFunctionOptions) => Promise<OffsetPaginatedData<IAuctionData>>;
+type IFunctionSignature = (
+	options: IGetPaginatedAuctionsOptions,
+) => Promise<OffsetPaginatedData<IAuctionData>>;
 export const getPaginatedAuctions: IFunctionSignature = cache(
-	async ({ page, perPage, sortBy, sortDirection }) => {
+	async ({
+		page,
+		perPage,
+		sortBy,
+		sortDirection,
+		ownerId,
+		type,
+		isPending,
+		isLive,
+		hasEnded,
+	}) => {
 		const cookieHeaders = await getSession();
 		if (!cookieHeaders) return getDefaultData('You must be logged in to access this resource.');
 		const querySettings: RequestInit = {
@@ -46,6 +61,11 @@ export const getPaginatedAuctions: IFunctionSignature = cache(
 		if (perPage) queryUrl.searchParams.append('per_page', perPage.toString());
 		if (sortBy) queryUrl.searchParams.append('order_by', sortBy);
 		if (sortDirection) queryUrl.searchParams.append('order_dir', sortDirection);
+		if (ownerId) queryUrl.searchParams.append('owner', ownerId);
+		if (type) queryUrl.searchParams.append('type', type);
+		if (isPending) queryUrl.searchParams.append('is_pending', isPending.valueOf().toString());
+		if (isLive) queryUrl.searchParams.append('is_live', isLive.valueOf().toString());
+		if (hasEnded) queryUrl.searchParams.append('has_ended', hasEnded.valueOf().toString());
 
 		const response = await fetch(queryUrl, querySettings);
 		const rawData = camelCase(await response.json(), 5) as OffsetPaginatedData<unknown>; //	TODO: remove camelCase when backend is fixed

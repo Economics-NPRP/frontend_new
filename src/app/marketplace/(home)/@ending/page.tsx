@@ -2,15 +2,20 @@ import { useTranslations } from 'next-intl';
 import { use } from 'react';
 
 import { AuctionCard } from '@/components/AuctionCard';
-import { getPaginatedAuctions, preloadPaginatedAuctions } from '@/lib/auctions';
+import {
+	IGetPaginatedAuctionsOptions,
+	getPaginatedAuctions,
+	preloadPaginatedAuctions,
+} from '@/lib/auctions';
 import { ActionIcon, Container, Group, Select, Stack, Text, Title } from '@mantine/core';
 import { IconChevronLeft, IconChevronRight, IconPointFilled } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
-const QUERY_PARAMS = {
+const QUERY_PARAMS: IGetPaginatedAuctionsOptions = {
 	sortBy: 'end_datetime',
 	sortDirection: 'asc',
+	isLive: true,
 } as const;
 
 export default function EndingSoon() {
