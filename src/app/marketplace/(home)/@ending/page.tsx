@@ -1,6 +1,8 @@
 import { useTranslations } from 'next-intl';
+import { use } from 'react';
 
 import { AuctionCard } from '@/components/AuctionCard';
+import { getPaginatedAuctions } from '@/lib/auctions';
 import { ActionIcon, Container, Group, Select, Stack, Text, Title } from '@mantine/core';
 import { IconChevronLeft, IconChevronRight, IconPointFilled } from '@tabler/icons-react';
 
@@ -8,6 +10,14 @@ import classes from './styles.module.css';
 
 export default function EndingSoon() {
 	const t = useTranslations();
+
+	const paginatedAuctions = use(
+		getPaginatedAuctions({
+			sortBy: 'end_datetime',
+			sortDirection: 'asc',
+		}),
+	);
+	console.log(paginatedAuctions);
 
 	return (
 		<Stack className={classes.root}>

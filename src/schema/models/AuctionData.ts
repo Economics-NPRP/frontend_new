@@ -26,7 +26,8 @@ const t = await getTranslations();
 export const BaseAuctionDataSchema = object({
 	id: UuidSchema('id'),
 	ownerId: UuidSchema('ownerId'),
-	sectorId: UuidSchema('sectorId'),
+	//	TODO: Uncomment when sectors are added
+	// sectorId: UuidSchema('sectorId'),
 	type: AuctionTypeSchema,
 	isPrimaryMarket: boolean(({ received }) =>
 		t(`model.${MODEL_NAME}.isPrimaryMarket.boolean`, { received }),
@@ -49,9 +50,14 @@ export const BaseAuctionDataSchema = object({
 		pipe(
 			string(({ received }) => t(`model.${MODEL_NAME}.description.string`, { received })),
 			trim(),
-			minWords(locale, 1, ({ received }) =>
-				t(`model.${MODEL_NAME}.description.words`, { received }),
-			),
+			//	TODO: Uncomment when descriptions are auto generated
+			...(process.env.NODE_ENV === 'production'
+				? [
+						minWords(locale, 1, ({ received }) =>
+							t(`model.${MODEL_NAME}.description.words`, { received }),
+						),
+					]
+				: []),
 		),
 	),
 	permits: PositiveNumberSchema('permits'),
