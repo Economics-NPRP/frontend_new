@@ -2,22 +2,23 @@ import { useTranslations } from 'next-intl';
 import { use } from 'react';
 
 import { AuctionCard } from '@/components/AuctionCard';
-import { getPaginatedAuctions } from '@/lib/auctions';
+import { getPaginatedAuctions, preloadPaginatedAuctions } from '@/lib/auctions';
 import { ActionIcon, Container, Group, Select, Stack, Text, Title } from '@mantine/core';
 import { IconChevronLeft, IconChevronRight, IconPointFilled } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
+const QUERY_PARAMS = {
+	sortBy: 'end_datetime',
+	sortDirection: 'asc',
+} as const;
+
 export default function EndingSoon() {
+	preloadPaginatedAuctions(QUERY_PARAMS);
 	const t = useTranslations();
 
-	const paginatedAuctions = use(
-		getPaginatedAuctions({
-			sortBy: 'end_datetime',
-			sortDirection: 'asc',
-		}),
-	);
-	console.log(paginatedAuctions);
+	const { ok, errors, results } = use(getPaginatedAuctions(QUERY_PARAMS));
+	if (!ok && errors) throw new Error('Failed to load auctions', { cause: errors.join(', ') });
 
 	return (
 		<Stack className={classes.root}>
@@ -65,9 +66,9 @@ export default function EndingSoon() {
 				</Group>
 			</Group>
 			<Group className={classes.content}>
-				<AuctionCard />
-				<AuctionCard />
-				<AuctionCard />
+				{results.map((auction) => (
+					<AuctionCard key={auction.id} auction={auction} />
+				))}
 			</Group>
 		</Stack>
 	);

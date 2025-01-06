@@ -3,7 +3,7 @@ import { cache } from 'react';
 import 'server-only';
 import { safeParse } from 'valibot';
 
-import { verifySession } from '@/lib/auth';
+import { getSession } from '@/lib/auth';
 import { AuctionType, IAuctionData, ReadAuctionDataSchema } from '@/schema/models';
 import { IOffsetPagination, OffsetPaginatedData, SortDirection } from '@/types';
 
@@ -31,7 +31,7 @@ const getDefaultData: (...errors: Array<string>) => OffsetPaginatedData<IAuction
 type IFunctionSignature = (options: IFunctionOptions) => Promise<OffsetPaginatedData<IAuctionData>>;
 export const getPaginatedAuctions: IFunctionSignature = cache(
 	async ({ page, perPage, sortBy, sortDirection }) => {
-		const cookieHeaders = await verifySession();
+		const cookieHeaders = await getSession();
 		if (!cookieHeaders) return getDefaultData('You must be logged in to access this resource.');
 		const querySettings: RequestInit = {
 			method: 'GET',
@@ -48,7 +48,7 @@ export const getPaginatedAuctions: IFunctionSignature = cache(
 		if (sortDirection) queryUrl.searchParams.append('order_dir', sortDirection);
 
 		const response = await fetch(queryUrl, querySettings);
-		const rawData = camelCase(await response.json(), 5) as OffsetPaginatedData<unknown>;
+		const rawData = camelCase(await response.json(), 5) as OffsetPaginatedData<unknown>; //	TODO: remove camelCase when backend is fixed
 		console.log(rawData);
 
 		//	Parse results using schema and collect issues

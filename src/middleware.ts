@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-import { createSession } from '@/lib/auth';
+import { createSession, verifySession } from '@/lib/auth';
 
-export async function middleware(request: NextRequest) {
+export async function middleware(req: NextRequest) {
 	const res = NextResponse.next();
-	await createSession(request, res);
+
+	const verified = await verifySession(req, res);
+	if (!verified) await createSession(req, res);
 
 	return res;
 }
