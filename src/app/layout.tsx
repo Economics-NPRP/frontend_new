@@ -1,3 +1,4 @@
+import Providers from 'app/providers';
 import { type Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
@@ -7,9 +8,8 @@ import { getLangDir } from 'rtl-detect';
 import { getUserLocale } from '@/locales';
 import '@/schema/models/AuctionData';
 import '@/styles/globals.css';
-import { theme } from '@/styles/mantine';
 import '@mantine/carousel/styles.css';
-import { ColorSchemeScript, DirectionProvider, MantineProvider } from '@mantine/core';
+import { ColorSchemeScript } from '@mantine/core';
 
 export const metadata: Metadata = {
 	title: 'Next App Mantine Tailwind Template',
@@ -22,8 +22,8 @@ export default async function RootLayout({
 	children: React.ReactNode;
 }>) {
 	const locale = await getUserLocale();
-	const messages = await getMessages();
 	const direction = getLangDir(locale);
+	const messages = await getMessages();
 
 	return (
 		<html dir={direction} lang={locale} suppressHydrationWarning>
@@ -31,11 +31,9 @@ export default async function RootLayout({
 				<ColorSchemeScript />
 			</Head>
 			<body className="antialiased overflow-x-hidden">
-				<NextIntlClientProvider messages={messages}>
-					<DirectionProvider>
-						<MantineProvider theme={theme}>{children}</MantineProvider>
-					</DirectionProvider>
-				</NextIntlClientProvider>
+				<Providers>
+					<NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+				</Providers>
 			</body>
 		</html>
 	);

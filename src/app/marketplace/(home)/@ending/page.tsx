@@ -1,27 +1,17 @@
-import { use } from 'react';
-
-import {
-	IGetPaginatedAuctionsOptions,
-	getPaginatedAuctions,
-	preloadPaginatedAuctions,
-} from '@/lib/auctions';
+import { getPaginatedAuctions } from '@/lib/auctions';
 import { Container, Stack } from '@mantine/core';
+import { QueryClient } from '@tanstack/react-query';
 
 import { AuctionCarousel } from './Carousel';
+import { QUERY_PARAMS } from './constants';
 import classes from './styles.module.css';
 
-const QUERY_PARAMS: IGetPaginatedAuctionsOptions = {
-	perPage: 20,
-	sortBy: 'end_datetime',
-	sortDirection: 'asc',
-	isLive: true,
-} as const;
-
-export default function EndingSoon() {
-	preloadPaginatedAuctions(QUERY_PARAMS);
-
-	const { ok, errors, results } = use(getPaginatedAuctions(QUERY_PARAMS));
-	if (!ok && errors) throw new Error('Failed to load auctions', { cause: errors.join(', ') });
+export default async function EndingSoon() {
+	const queryClient = new QueryClient();
+	await queryClient.prefetchQuery({
+		queryKey: ['marketplace', '@ending'],
+		queryFn: () => getPaginatedAuctions(QUERY_PARAMS),
+	});
 
 	return (
 		<Stack className={classes.root}>
@@ -29,7 +19,7 @@ export default function EndingSoon() {
 				<Container className={`${classes.grid} bg-grid-lg`} />
 				<Container className={classes.gradient} />
 			</Container>
-			<AuctionCarousel results={results} />
+			<AuctionCarousel />
 		</Stack>
 	);
 }

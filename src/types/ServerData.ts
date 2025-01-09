@@ -1,6 +1,7 @@
 export type ServerData<T> = {
 	ok: boolean;
 	errors?: Array<string>;
+	detail?: string;
 } & T;
 
 export type OffsetPaginatedData<T> = ServerData<{

@@ -2,37 +2,78 @@
 
 import { EmblaCarouselType } from 'embla-carousel';
 import { useLocale, useTranslations } from 'next-intl';
-import { useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { getLangDir } from 'rtl-detect';
 
 import { AuctionCard } from '@/components/AuctionCard';
-import { IAuctionData } from '@/schema/models';
+import { getPaginatedAuctions } from '@/lib/auctions';
 import { Carousel, CarouselSlide } from '@mantine/carousel';
-import { ActionIcon, Button, Group, Progress, Select, Stack, Text, Title } from '@mantine/core';
+import {
+	ActionIcon,
+	Button,
+	Group,
+	Loader,
+	Progress,
+	Select,
+	Stack,
+	Text,
+	Title,
+} from '@mantine/core';
+import { useInViewport } from '@mantine/hooks';
 import {
 	IconArrowUpRight,
 	IconChevronLeft,
 	IconChevronRight,
 	IconPointFilled,
 } from '@tabler/icons-react';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
+import { QUERY_PARAMS } from './constants';
 import classes from './styles.module.css';
 
-export interface CarouselProps {
-	results: Array<IAuctionData>;
-}
-export const AuctionCarousel = ({ results }: CarouselProps) => {
+export interface CarouselProps {}
+export const AuctionCarousel = ({}: CarouselProps) => {
 	const t = useTranslations();
 	const locale = useLocale();
 	const direction = getLangDir(locale);
+	const { ref: loaderRef, inViewport: loaderVisible } = useInViewport();
+
+	const { data, isError, isSuccess, isFetchingNextPage, hasNextPage, fetchNextPage } =
+		useInfiniteQuery({
+			queryKey: ['marketplace', '@ending'],
+			queryFn: ({ pageParam }) => getPaginatedAuctions({ ...QUERY_PARAMS, page: pageParam }),
+			initialPageParam: 1,
+			getNextPageParam: (lastPage) =>
+				lastPage.page + 1 > lastPage.pageCount ? undefined : lastPage.page + 1,
+		});
+
+	useEffect(() => {
+		if (isFetchingNextPage || !loaderVisible) return;
+		fetchNextPage();
+	}, [loaderVisible]);
+
+	const auctions = useMemo(() => {
+		if (!isSuccess) return [];
+
+		return data.pages.map((group) => (
+			<Fragment key={group.page}>
+				{group.results.map((auction) => (
+					<CarouselSlide key={auction.id}>
+						<AuctionCard auction={auction} fluid />
+					</CarouselSlide>
+				))}
+			</Fragment>
+		));
+	}, [data]);
 
 	const [embla, setEmbla] = useState<EmblaCarouselType | null>(null);
-	const [progress, setProgress] = useState<number>(1);
+	const [progress, setProgress] = useState<number>(0);
 	const handlePrev = useCallback(() => embla && embla.scrollPrev(), [embla]);
 	const handleNext = useCallback(() => embla && embla.scrollNext(), [embla]);
 	const handleScroll = useCallback(
-		(index: number) => setProgress((((index + 1) * 4) / results.length) * 100),
-		[results],
+		(index: number) =>
+			embla && setProgress((((index + 1) * 4) / embla.slideNodes().length) * 100),
+		[embla, data],
 	);
 
 	//	Switch between LTR and RTL when the locale changes
@@ -100,22 +141,27 @@ export const AuctionCarousel = ({ results }: CarouselProps) => {
 				/>
 			</Stack>
 			<Group className={classes.content}>
-				<Carousel
-					classNames={{ root: classes.carousel, indicators: classes.indicator }}
-					slidesToScroll={4}
-					slideSize={'25%'}
-					slideGap={'md'}
-					align={'start'}
-					withControls={false}
-					getEmblaApi={setEmbla}
-					onSlideChange={handleScroll}
-				>
-					{results.map((auction) => (
-						<CarouselSlide key={auction.id}>
-							<AuctionCard auction={auction} fluid />
-						</CarouselSlide>
-					))}
-				</Carousel>
+				{isError && <Text className={classes.error}>Error loading auctions</Text>}
+				{isSuccess && (
+					<Carousel
+						classNames={{ root: classes.carousel, indicators: classes.indicator }}
+						slidesToScroll={4}
+						slideSize={'25%'}
+						slideGap={'md'}
+						align={'end'}
+						withControls={false}
+						getEmblaApi={setEmbla}
+						onSlideChange={handleScroll}
+					>
+						{auctions}
+						{hasNextPage && (
+							<CarouselSlide className={classes.loader} ref={loaderRef}>
+								<Loader color="maroon" />
+								<Text className={classes.text}>Loading...</Text>
+							</CarouselSlide>
+						)}
+					</Carousel>
+				)}
 			</Group>
 		</>
 	);

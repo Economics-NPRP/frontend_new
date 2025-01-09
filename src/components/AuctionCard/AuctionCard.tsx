@@ -35,8 +35,8 @@ export const AuctionCard = ({ auction, fluid, className, ...props }: AuctionCard
 		// '/imgs/transport/airplane.webp',
 		'/imgs/transport/airplane.jpg',
 	];
-	const src = imgs[Math.floor(Math.random() * imgs.length)];
-	const category = src.includes('flare') ? 'industry' : 'transport';
+	const src = useMemo(() => imgs[Math.floor(Math.random() * imgs.length)], []);
+	const category = useMemo(() => (src.includes('flare') ? 'industry' : 'transport'), []);
 
 	return (
 		<Stack className={`${classes.root} ${fluid && classes.fluid} ${className}`} {...props}>

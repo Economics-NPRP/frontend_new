@@ -1,4 +1,5 @@
-import { camelCase } from 'change-case/keys';
+'use server';
+
 import { cache } from 'react';
 import 'server-only';
 import { safeParse } from 'valibot';
@@ -58,21 +59,25 @@ export const getPaginatedAuctions: IFunctionSignature = cache(
 
 		const queryUrl = new URL('/v1/auctions/', process.env.NEXT_PUBLIC_BACKEND_URL);
 		if (page) queryUrl.searchParams.append('page', page.toString());
-		if (perPage) queryUrl.searchParams.append('per_page', perPage.toString());
-		if (sortBy) queryUrl.searchParams.append('order_by', sortBy);
-		if (sortDirection) queryUrl.searchParams.append('order_dir', sortDirection);
+		if (perPage) queryUrl.searchParams.append('perPage', perPage.toString());
+		if (sortBy) queryUrl.searchParams.append('orderBy', sortBy);
+		if (sortDirection) queryUrl.searchParams.append('orderDir', sortDirection);
 		if (ownerId) queryUrl.searchParams.append('owner', ownerId);
 		if (type) queryUrl.searchParams.append('type', type);
-		if (isPending) queryUrl.searchParams.append('is_pending', isPending.valueOf().toString());
-		if (isLive) queryUrl.searchParams.append('is_live', isLive.valueOf().toString());
-		if (hasEnded) queryUrl.searchParams.append('has_ended', hasEnded.valueOf().toString());
+		if (isPending) queryUrl.searchParams.append('isPending', isPending.valueOf().toString());
+		if (isLive) queryUrl.searchParams.append('isLive', isLive.valueOf().toString());
+		if (hasEnded) queryUrl.searchParams.append('hasEnded', hasEnded.valueOf().toString());
 
 		const response = await fetch(queryUrl, querySettings);
-		const rawData = camelCase(await response.json(), 5) as OffsetPaginatedData<unknown>; //	TODO: remove camelCase when backend is fixed
-		console.log(rawData);
+		const rawData = (await response.json()) as OffsetPaginatedData<unknown>;
+
+		//	If theres an issue, return the default data with errors
+		if (!rawData) return getDefaultData('No data was returned.');
+		if (rawData.detail) return getDefaultData(rawData.detail ?? '');
+		if (rawData.errors) return getDefaultData(...rawData.errors);
 
 		//	Parse results using schema and collect issues
-		const errors: Array<string> = rawData.errors || [];
+		const errors: Array<string> = [];
 		const results = rawData.results.reduce<Array<IAuctionData>>((acc, result) => {
 			const parseResults = safeParse(ReadAuctionDataSchema, result);
 			if (!parseResults.success) {
@@ -94,6 +99,6 @@ export const getPaginatedAuctions: IFunctionSignature = cache(
 );
 
 //	@ts-expect-error - Preload doesn't return anything but signature requires a return
-export const preloadPaginatedAuctions: IFunctionSignature = (options) => {
+export const preloadPaginatedAuctions: IFunctionSignature = async (options) => {
 	void getPaginatedAuctions(options);
 };
