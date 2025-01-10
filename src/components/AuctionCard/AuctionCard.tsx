@@ -17,6 +17,7 @@ import {
 	Group,
 	Stack,
 	Text,
+	Tooltip,
 	UnstyledButton,
 } from '@mantine/core';
 import { IconAlarm, IconHeart, IconLicense, IconShare } from '@tabler/icons-react';
@@ -111,10 +112,16 @@ export const AuctionCard = ({ auction, fluid, className, ...props }: AuctionCard
 						<Text className={classes.subtext}>
 							{t('components.auctionCard.timeLeft')}
 						</Text>
-						<SmallCountdown
-							className={classes.value}
-							targetDate={auction.endDatetime}
-						/>
+						<Tooltip
+							label={DateTime.fromISO(auction.endDatetime).toLocaleString(
+								DateTime.DATETIME_FULL,
+							)}
+						>
+							<SmallCountdown
+								className={classes.value}
+								targetDate={auction.endDatetime}
+							/>
+						</Tooltip>
 					</Stack>
 					<Divider className={classes.divider} orientation="vertical" />
 					<Stack className={classes.right}>

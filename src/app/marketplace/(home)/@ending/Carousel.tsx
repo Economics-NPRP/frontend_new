@@ -109,10 +109,10 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 		});
 	}, []);
 
-	const handleResize = useCallback(() => {
-		console.log('draggable', draggable);
-		embla?.reInit({ direction, watchDrag: draggable });
-	}, [embla, direction, draggable]);
+	const handleResize = useCallback(
+		() => embla?.reInit({ direction, watchDrag: draggable }),
+		[embla, direction, draggable],
+	);
 
 	//	Switch between LTR and RTL when the locale changes
 	useEffect(handleResize, [direction, draggable]);
