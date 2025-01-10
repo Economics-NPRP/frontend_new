@@ -61,7 +61,6 @@
 
 			> .bar {
 				@apply bg-maroon-500;
-				@apply transition-all duration-500;
 			}
 		}
 	}
@@ -73,6 +72,10 @@
 		> .carousel {
 			@apply w-full;
 			@apply flex-auto;
+
+			.viewport {
+				@apply overflow-visible;
+			}
 
 			.indicator {
 				@apply -bottom-8;
