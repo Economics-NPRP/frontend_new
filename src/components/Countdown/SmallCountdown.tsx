@@ -8,7 +8,7 @@ import { CountdownProps, CountdownUnitsArray } from '@/components/Countdown/cons
 import { calculateInterval } from '@/components/Countdown/helpers';
 import classes from '@/components/Countdown/styles.module.css';
 import { Group, Text } from '@mantine/core';
-import { useInterval } from '@mantine/hooks';
+import { useInViewport, useInterval } from '@mantine/hooks';
 
 export const SmallCountdown = ({
 	targetDate,
@@ -20,6 +20,8 @@ export const SmallCountdown = ({
 	const t = useTranslations();
 	const format = useFormatter();
 	const locale = useLocale();
+	const { ref, inViewport } = useInViewport();
+	const [value, _setValue] = useState<string>('Ended');
 
 	//	Convert the target date to a DateTime object if it is a string
 	targetDate = useMemo<DateTime>(
@@ -27,9 +29,9 @@ export const SmallCountdown = ({
 		[targetDate],
 	);
 
-	const [value, _setValue] = useState<string>('Ended');
 	const setValue = useMemo(
 		() => (value?: DateTime | Duration, units?: CountdownUnitsArray) => {
+			if (!inViewport) return;
 			if (!value) return _setValue('Ended');
 
 			_setValue(
@@ -47,10 +49,11 @@ export const SmallCountdown = ({
 					.trim(),
 			);
 		},
-		[locale],
+		[locale, inViewport],
 	);
 
-	const { start: startCountdown, stop: stopCountdown } = useInterval(() => {
+	//	Main countdown logic
+	const handleInterval = () => {
 		const interval = calculateInterval(targetDate, units);
 
 		if (!interval.valid || displayOnly) {
@@ -59,17 +62,31 @@ export const SmallCountdown = ({
 		}
 
 		setValue(interval.value, interval.units);
-	}, 1000);
+	};
+	const { start: startCountdown, stop: stopCountdown } = useInterval(handleInterval, 1000);
+
+	//	Only render the value if the component is in the viewport
+	useEffect(() => {
+		if (displayOnly) return;
+		if (!inViewport) stopCountdown();
+		else {
+			handleInterval();
+			startCountdown();
+		}
+	}, [inViewport, displayOnly]);
 
 	useEffect(() => {
 		if (displayOnly) setValue(targetDate, units);
-		else startCountdown();
+		else {
+			handleInterval();
+			startCountdown();
+		}
 
 		return stopCountdown;
 	}, [targetDate, units, displayOnly]);
 
 	return (
-		<Group className={classes.root} {...props}>
+		<Group className={classes.root} ref={ref} {...props}>
 			<Text className={`${classes.text} ${className}`}>{value}</Text>
 		</Group>
 	);
