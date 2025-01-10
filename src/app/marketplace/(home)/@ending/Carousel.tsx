@@ -18,6 +18,7 @@ import {
 	Stack,
 	Text,
 	Title,
+	useMatches,
 } from '@mantine/core';
 import {
 	IconArrowUpRight,
@@ -37,6 +38,13 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 	const t = useTranslations();
 	const locale = useLocale();
 	const direction = getLangDir(locale);
+
+	const cardsPerScreen = useMatches({
+		base: 1,
+		sm: 2,
+		md: 3,
+		xl: 4,
+	});
 
 	const { data, isError, isSuccess, isFetchingNextPage, hasNextPage, fetchNextPage } =
 		useInfiniteQuery({
@@ -148,7 +156,7 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 								{t('marketplace.home.ending.subheading')}
 							</Text>
 						</Stack>
-						<Group className={classes.dots}>
+						<Group className={classes.dots} visibleFrom="sm">
 							<IconPointFilled size={12} />
 							<IconPointFilled size={12} />
 							<IconPointFilled size={12} />
@@ -205,8 +213,8 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 							viewport: classes.viewport,
 							indicators: classes.indicator,
 						}}
-						slidesToScroll={4}
-						slideSize={'25%'}
+						slidesToScroll={cardsPerScreen}
+						slideSize={`${100 / cardsPerScreen}%`}
 						slideGap={'md'}
 						align={'end'}
 						withControls={false}

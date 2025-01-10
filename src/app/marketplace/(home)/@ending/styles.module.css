@@ -10,13 +10,12 @@
 		@apply shadow-xs;
 
 		> .top {
-			@apply h-[72px];
-			@apply items-stretch;
+			@apply items-stretch flex-col flex-nowrap;
 			@apply gap-0;
 
 			> .left {
-				@apply flex-auto justify-between;
-				@apply px-8 gap-4;
+				@apply flex-auto justify-center;
+				@apply px-8 py-4 gap-4;
 				@apply bg-dark-600;
 
 				> .dots {
@@ -26,24 +25,29 @@
 
 				> .label {
 					@apply gap-0;
+					@apply items-center;
 
 					> .heading {
 						@apply heading-2-w leading-none;
 					}
 
 					> .subheading {
-						@apply paragraph-sm-g3 leading-none;
+						@apply paragraph-sm-g3 text-center;
 					}
 				}
 			}
 
 			> .right {
-				@apply justify-center;
-				@apply gap-2 px-6;
+				@apply justify-center flex-wrap;
+				@apply gap-2 p-2;
 				@apply bg-white;
 
 				> .dropdown {
-					@apply w-60;
+					@apply flex-auto;
+
+					input {
+						@apply h-8 min-h-[unset];
+					}
 				}
 
 				> .action {
@@ -51,6 +55,10 @@
 
 					&.square {
 						@apply size-8;
+					}
+
+					&:not(.square) {
+						@apply w-full;
 					}
 				}
 			}
@@ -67,7 +75,7 @@
 
 	> .content {
 		@apply flex-nowrap;
-		@apply py-8;
+		@apply py-2;
 
 		> .carousel {
 			@apply w-full;
@@ -115,6 +123,65 @@
 }
 
 * {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			> .header > .top {
+				> .left {
+					@apply justify-between;
+
+					> .label {
+						@apply items-start;
+
+						> .subheading {
+							@apply text-left;
+						}
+					}
+				}
+			}
+
+			> .content {
+				@apply py-4;
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+			> .header > .top {
+				@apply h-[72px] flex-row;
+
+				> .left {
+					@apply py-0;
+
+					> .label > .subheading {
+						@apply leading-none;
+					}
+				}
+
+				> .right {
+					@apply px-6 py-0 flex-nowrap;
+
+					> .dropdown {
+						@apply w-40;
+					}
+
+					> .action:not(.square) {
+						@apply w-auto;
+					}
+				}
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+			> .header > .top > .right > .dropdown {
+				@apply w-60;
+			}
+
+			> .content {
+				@apply py-6;
+			}
+		}
+	}
 	@mixin dark {
 		.root {
 			@apply bg-dark-700 border-dark-600;
@@ -135,6 +202,10 @@
 
 					> .right {
 						@apply bg-dark-500;
+
+						> .dropdown input {
+							@apply border-none;
+						}
 					}
 				}
 			}

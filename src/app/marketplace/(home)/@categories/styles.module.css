@@ -3,9 +3,11 @@
 
 	> .header {
 		@apply w-full;
+		@apply flex-col flex-nowrap;
 
 		> .label {
 			@apply flex-auto gap-0;
+			@apply items-center;
 
 			> .heading {
 				@apply heading-2;
@@ -22,16 +24,26 @@
 	}
 
 	> .cards {
-		@apply grid grid-cols-1 gap-2;
+		@apply flex flex-row gap-4;
+		@apply overflow-x-auto;
 	}
 }
 
 * {
-	@mixin larger-than $mantine-breakpoint-xs {
-		.root {
-			> .cards {
-				@apply grid-cols-2 gap-4;
+	@mixin larger-than $mantine-breakpoint-2xs {
+		.root > .header {
+			@apply flex-row;
+
+			> .label {
+				@apply items-start;
 			}
+		}
+	}
+
+	@mixin larger-than $mantine-breakpoint-xs {
+		.root > .cards {
+			@apply grid grid-cols-2 gap-4;
+			@apply overflow-x-clip;
 		}
 	}
 
@@ -42,10 +54,8 @@
 	}
 
 	@mixin larger-than $mantine-breakpoint-lg {
-		.root {
-			> .cards {
-				@apply grid-cols-3 gap-4;
-			}
+		.root > .cards {
+			@apply grid-cols-3 gap-4;
 		}
 	}
 }

@@ -1,5 +1,5 @@
 .root {
-	@apply min-h-[480px];
+	@apply min-h-[320px];
 	@apply col-span-full;
 	@apply flex items-center justify-center;
 	@apply bg-dark-600 text-white;
@@ -8,7 +8,7 @@
 * {
 	@mixin larger-than $mantine-breakpoint-sm {
 		.root {
-			@apply col-span-5;
+			@apply col-span-5 min-h-[480px];
 		}
 	}
 }
