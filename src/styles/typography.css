@@ -212,6 +212,13 @@
 		@apply tracking-normal;
 		@apply text-gray-300 dark:text-dark-300;
 	}
+	.paragraph-sm-g5 {
+		@apply font-sans;
+		@apply text-sm;
+		@apply font-normal;
+		@apply tracking-normal;
+		@apply text-gray-500 dark:text-dark-200;
+	}
 	.paragraph-sm-g6 {
 		@apply font-sans;
 		@apply text-sm;
@@ -272,8 +279,8 @@
 	}
 	.numeric-md {
 		@apply font-serif;
-		@apply text-base;
-		@apply font-normal;
+		@apply text-lg;
+		@apply font-bold;
 		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
 	}

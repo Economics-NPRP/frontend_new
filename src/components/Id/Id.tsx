@@ -9,20 +9,24 @@ import classes from './styles.module.css';
 export interface IdProps extends ComponentPropsWithRef<'div'> {
 	value: string;
 	variant: IdVariantType;
+	truncate?: boolean;
 }
-export const Id = ({ value, variant, className, ...props }: IdProps) => {
+export const Id = ({ value, variant, truncate, className, ...props }: IdProps) => {
 	const prefix = useMemo(() => IdPrefixes[variant], [variant]);
+	const text = useMemo(
+		() => (truncate ? `${prefix}-${value.split('-')[0]}-...` : `${prefix}-${value}`),
+		[prefix, value],
+	);
 
 	return (
-		<Popover>
+		<Popover disabled={!truncate}>
 			<PopoverTarget>
 				<Text
-					className={`${classes.root} ${className}`}
-					title="Click to view the full ID"
+					className={`${classes.root} ${truncate && classes.truncate} ${className}`}
+					{...(truncate && { title: 'Click to view the full ID' })}
 					{...props}
 				>
-					<IconHash className={classes.icon} size={14} /> {prefix}-{value.split('-')[0]}
-					-...
+					<IconHash className={classes.icon} size={12} /> {text}
 				</Text>
 			</PopoverTarget>
 			<PopoverDropdown>

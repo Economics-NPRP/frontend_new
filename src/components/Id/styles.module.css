@@ -1,6 +1,10 @@
 .root {
-	@apply cursor-pointer;
-	@apply flex items-center;
-	@apply paragraph-sm-g6;
+	@apply flex items-center flex-nowrap;
+	@apply gap-0.5;
+	@apply paragraph-sm-g5;
 	@apply leading-none;
+
+	&.truncate {
+		@apply cursor-pointer;
+	}
 }

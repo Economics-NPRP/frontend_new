@@ -2,7 +2,7 @@
 
 import { cache } from 'react';
 import 'server-only';
-import { safeParse } from 'valibot';
+import { parse, safeParse } from 'valibot';
 
 import { getSession } from '@/lib/auth';
 import { AuctionType, IAuctionData, ReadAuctionDataSchema } from '@/schema/models';
@@ -79,13 +79,19 @@ export const getPaginatedAuctions: IFunctionSignature = cache(
 		//	Parse results using schema and collect issues
 		const errors: Array<string> = [];
 		const results = rawData.results.reduce<Array<IAuctionData>>((acc, result) => {
-			const parseResults = safeParse(ReadAuctionDataSchema, result);
-			if (!parseResults.success) {
-				console.error(...parseResults.issues);
-				errors.push(...parseResults.issues.map((issue) => issue.message));
-			} else {
-				acc.push(parseResults.output);
+			try {
+				// const parseResults = parse(ReadAuctionDataSchema, result);
+				acc.push(result);
+				// if (!parseResults.success) {
+				// 	console.error(...parseResults.issues);
+				// 	errors.push(...parseResults.issues.map((issue) => issue.message));
+				// } else {
+				// 	acc.push(parseResults.output);
+				// }
+			} catch (error) {
+				errors.push('An error occurred while parsing the data.');
 			}
+
 			return acc;
 		}, []);
 

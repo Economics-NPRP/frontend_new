@@ -69,8 +69,8 @@ export const SmallCountdown = ({
 	}, [targetDate, units, displayOnly]);
 
 	return (
-		<Group className={`${classes.root} ${className}`} {...props}>
-			<Text className={classes.text}>{value}</Text>
+		<Group className={classes.root} {...props}>
+			<Text className={`${classes.text} ${className}`}>{value}</Text>
 		</Group>
 	);
 };

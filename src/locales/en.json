@@ -104,6 +104,13 @@
 				"title": "Waste"
 			}
 		},
+		"auctionType": {
+			"open": "Open",
+			"sealed": "Sealed"
+		},
+		"auctionStatus": {
+			"ending": "Ending"
+		},
 		"currency": {
 			"QAR": {
 				"symbol": "QAR",
@@ -285,7 +292,8 @@
 		},
 		"auctionCard": {
 			"permits": "{permits, number} {permits, plural, =0 {Permits} =1 {Permit} other {Permits}} ({emissions, number} tCO2e)",
-			"minBid": "min. winning bid"
+			"minBid": "Min. Winning Bid",
+			"timeLeft": "Time Left"
 		}
 	}
 }

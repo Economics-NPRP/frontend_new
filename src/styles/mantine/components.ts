@@ -1,8 +1,13 @@
 'use client';
 
-import { type MantineThemeComponents, Title, Tooltip } from '@mantine/core';
+import { Badge, type MantineThemeComponents, Title, Tooltip } from '@mantine/core';
 
 export const components: MantineThemeComponents = {
+	Badge: Badge.extend({
+		defaultProps: {
+			px: 8,
+		},
+	}),
 	Title: Title.extend({
 		classNames: (theme, props) => {
 			return { root: `heading-${props.order}` };
