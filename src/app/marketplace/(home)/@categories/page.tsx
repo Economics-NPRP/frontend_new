@@ -21,7 +21,7 @@ export default function Categories() {
 					</Text>
 				</Stack>
 				<Button className={classes.action} rightSection={<IconArrowUpRight size={16} />}>
-					{t('marketplace.home.categories.action')}
+					{t('constants.viewAll')}
 				</Button>
 			</Group>
 

@@ -46,7 +46,11 @@ export const UserProfile = () => {
 				<Avatar className={classes.avatar} name="John Doe" color="initials" size={'lg'} />
 				<Group className={classes.details}>
 					<Stack className={classes.id}>
-						<Id value={123456} variant="company" />
+						<Id
+							value={'2e27234b-6005-4c3f-96d4-13b534019713'}
+							variant="company"
+							truncate
+						/>
 						<Text className={classes.text}>John Doe</Text>
 					</Stack>
 					<Stack className={classes.rating}>

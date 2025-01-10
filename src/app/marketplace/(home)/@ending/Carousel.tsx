@@ -39,6 +39,7 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 	const locale = useLocale();
 	const direction = getLangDir(locale);
 
+	const draggable = useMatches({ base: true, md: false });
 	const cardsPerScreen = useMatches({
 		base: 1,
 		sm: 2,
@@ -108,14 +109,19 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 		});
 	}, []);
 
+	const handleResize = useCallback(() => {
+		console.log('draggable', draggable);
+		embla?.reInit({ direction, watchDrag: draggable });
+	}, [embla, direction, draggable]);
+
 	//	Switch between LTR and RTL when the locale changes
-	useEffect(() => embla?.reInit({ direction }), [direction]);
+	useEffect(handleResize, [direction, draggable]);
 	useEffect(() => {
 		if (!embla) return;
 
 		setTweenFactor(embla);
 		handleTweenOpacity(embla);
-		const handleResize = () => embla.reInit();
+		handleResize();
 		window.addEventListener('resize', handleResize);
 		embla
 			.on('reInit', setTweenFactor)
@@ -127,7 +133,7 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 			.on('slidesChanged', handleUpdateProgress)
 			.on('slideFocus', handleTweenOpacity)
 			.on('destroy', () => window.removeEventListener('resize', handleResize));
-	}, [embla]);
+	}, [embla, handleResize, handleTweenOpacity, handleUpdateProgress, handleInfiniteScroll]);
 
 	const auctions = useMemo(() => {
 		if (!isSuccess) return [];
@@ -195,7 +201,7 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 							href="/marketplace/search"
 							rightSection={<IconArrowUpRight size={16} />}
 						>
-							View All
+							{t('constants.viewAll')}
 						</Button>
 					</Group>
 				</Group>

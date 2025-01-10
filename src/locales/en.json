@@ -116,7 +116,8 @@
 				"symbol": "QAR",
 				"name": "Qatari Riyal"
 			}
-		}
+		},
+		"viewAll": "View All"
 	},
 	"marketplace": {
 		"home": {
@@ -150,8 +151,7 @@
 			},
 			"categories": {
 				"heading": "Auction Categories",
-				"subheading": "Browse through our auctions based on sector",
-				"action": "Show All"
+				"subheading": "Browse through our auctions based on sector"
 			},
 			"ending": {
 				"heading": "Ending Soon",

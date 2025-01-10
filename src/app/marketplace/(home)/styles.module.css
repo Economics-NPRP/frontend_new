@@ -1,5 +1,5 @@
 .root {
-	@apply grid grid-cols-12 gap-8;
+	@apply grid grid-cols-12 gap-4;
 
 	> .banners {
 		@apply grid grid-cols-12 gap-4;
@@ -10,7 +10,17 @@
 * {
 	@mixin larger-than $mantine-breakpoint-sm {
 		.root {
-			@apply gap-x-8 gap-y-16;
+			@apply gap-6;
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+			@apply gap-8;
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+			@apply gap-y-12;
 		}
 	}
 }
