@@ -159,6 +159,47 @@
 				"filter": {
 					"prompt": "Filter by category"
 				}
+			},
+			"catalogue": {
+				"filters": {
+					"count": "{value, plural, =0 {} =1 {1 filter applied} other {# filters applied}}",
+					"boolean": "{value, plural, =0 {} =1 {Filter applied} other {Filter applied}}",
+					"total": "{value, plural, =0 {No filters applied} =1 {1 filter applied} other {# filters applied}}",
+					"accordion": {
+						"type": {
+							"title": "Auction Type",
+							"description": "Filter for open or sealed auctions. <a>What's the difference?</a>"
+						},
+						"status": {
+							"title": "Auction Status",
+							"description": "Find auctions that are ongoing, ended, or upcoming"
+						},
+						"sector": {
+							"title": "Sector",
+							"description": "Filter auctions by the sector they belong to"
+						},
+						"owner": {
+							"title": "Owner",
+							"description": "Search auctions from specific owners"
+						},
+						"date": {
+							"title": "Date",
+							"description": "Filter for auctions that run during a specific time period"
+						},
+						"permits": {
+							"title": "Permits Offered",
+							"description": "Filter for auctions by the number of permits they offer"
+						},
+						"minBid": {
+							"title": "Minimum Winning Bid",
+							"description": "Filter for auctions by the minimum bid required to win"
+						},
+						"price": {
+							"title": "Buy Now Price",
+							"description": "Filter for auctions by the buy now price"
+						}
+					}
+				}
 			}
 		}
 	},

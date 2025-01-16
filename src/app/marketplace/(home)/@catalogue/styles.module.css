@@ -188,76 +188,80 @@
 			}
 		}
 
-		> .accordion {
-			.chevron[data-rotate='true'] {
-				transform: rotate(45deg);
-			}
+		> form {
+			@apply contents;
 
-			.title {
-				@apply flex flex-row items-baseline gap-2;
-				@apply display-sm-sb-d6 uppercase;
-
-				> .subtitle {
-					@apply paragraph-sm-g6 normal-case;
+			> .accordion {
+				.chevron[data-rotate='true'] {
+					transform: rotate(45deg);
 				}
-			}
 
-			.content {
-				@apply flex flex-col gap-3;
-				@apply border-0 border-t border-solid border-gray-100;
+				.title {
+					@apply flex flex-row items-baseline gap-2;
+					@apply display-sm-sb-d6 uppercase;
 
-				> .description {
-					@apply mt-1;
-					@apply paragraph-sm-g6;
-
-					> a {
-						@apply text-blue-600;
-						font-size: inherit;
+					> .subtitle {
+						@apply paragraph-sm-g6 normal-case;
 					}
 				}
 
-				> .values {
-					@apply max-h-60;
-					@apply overflow-y-auto overflow-x-hidden;
-					@apply flex flex-col gap-2;
+				.content {
+					@apply flex flex-col gap-3;
+					@apply border-0 border-t border-solid border-gray-100;
 
-					&:has(.range) {
-						@apply px-2 pt-10 pb-1;
-						@apply overflow-y-hidden;
-					}
+					> .description {
+						@apply mt-1;
+						@apply paragraph-sm-g6;
 
-					> .checkbox {
-						--checkbox-color: var(--mantine-color-maroon-6) !important;
-
-						input,
-						label {
-							@apply cursor-pointer;
+						> a {
+							@apply text-blue-600;
+							font-size: inherit;
 						}
 					}
 
-					> .range {
-						--slider-color: var(--mantine-color-maroon-6) !important;
+					> .values {
+						@apply max-h-60;
+						@apply overflow-y-auto overflow-x-hidden;
+						@apply flex flex-col gap-2;
+
+						&:has(.range) {
+							@apply px-2 pt-10 pb-1;
+							@apply overflow-y-hidden;
+						}
+
+						> .checkbox {
+							--checkbox-color: var(--mantine-color-maroon-6) !important;
+
+							input,
+							label {
+								@apply cursor-pointer;
+							}
+						}
+
+						> .range {
+							--slider-color: var(--mantine-color-maroon-6) !important;
+						}
 					}
 				}
 			}
-		}
 
-		> .footer {
-			@apply justify-between flex-nowrap;
-			@apply p-4;
+			> .footer {
+				@apply justify-between flex-nowrap;
+				@apply p-4;
 
-			> .value {
-				@apply paragraph-sm-g6;
-			}
+				> .value {
+					@apply paragraph-sm-g6;
+				}
 
-			> .actions {
-				@apply gap-1 flex-nowrap;
+				> .actions {
+					@apply gap-1 flex-nowrap;
 
-				> .action {
-					@apply h-8;
+					> .action {
+						@apply h-8;
 
-					&.square {
-						@apply size-8;
+						&.square {
+							@apply size-8;
+						}
 					}
 				}
 			}
@@ -342,7 +346,7 @@
 					}
 				}
 
-				> .accordion .content {
+				> form > .accordion .content {
 					@apply border-dark-400;
 				}
 			}

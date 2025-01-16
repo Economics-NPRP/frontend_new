@@ -1,27 +1,46 @@
+import { useTranslations } from 'next-intl';
 import { useCallback, useContext, useMemo, useState } from 'react';
 
 import { SortDirection } from '@/types';
 import {
 	ActionIcon,
-	Badge,
 	Container,
 	FloatingIndicator,
 	Group,
+	Pill,
+	PillProps,
 	Select,
 	Stack,
 	Text,
 	Title,
 	Tooltip,
 } from '@mantine/core';
+import { DatesRangeValue } from '@mantine/dates';
 import { IconDownload, IconLayoutGrid, IconListDetails } from '@tabler/icons-react';
 
-import { CatalogueContext, DEFAULT_CONTEXT } from './constants';
+import { CatalogueContext, DEFAULT_CONTEXT, IAuctionFilters } from './constants';
 import classes from './styles.module.css';
 
 type ViewType = 'grid' | 'list';
 
+const FilterPill = (props: PillProps) => (
+	<Pill className={classes.badge} withRemoveButton {...props} />
+);
+
 export const Header = () => {
-	const context = useContext(CatalogueContext);
+	const t = useTranslations();
+	const {
+		page,
+		perPage,
+		sortBy,
+		sortDirection,
+		filters,
+		auctionData,
+		setPerPage,
+		setSortBy,
+		setSortDirection,
+		removeFilter,
+	} = useContext(CatalogueContext);
 
 	const [view, setView] = useState<ViewType>('grid');
 	const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
@@ -36,13 +55,62 @@ export const Header = () => {
 	);
 
 	const auctionIndex = useMemo(() => {
-		const index = (context.page - 1) * context.perPage;
+		const index = (page - 1) * perPage;
 		const end =
-			index + context.perPage > context.auctionData.totalCount
-				? context.auctionData.totalCount
-				: index + context.perPage;
+			index + perPage > auctionData.totalCount ? auctionData.totalCount : index + perPage;
 		return `${index + 1} - ${end}`;
-	}, [context.page, context.perPage, context.auctionData.totalCount]);
+	}, [page, perPage, auctionData.totalCount]);
+
+	const filterBadges = useMemo(() => {
+		const output = [];
+
+		const selectFilters = ['type', 'status', 'sector', 'owner'];
+		(Object.entries(filters) as Array<[keyof IAuctionFilters, Array<unknown>]>).forEach(
+			([key, value]) => {
+				if (!value || (Array.isArray(value) && !value.length)) return;
+				if (selectFilters.includes(key))
+					output.push(
+						...(value as Array<string>).map((val) => (
+							<FilterPill
+								key={`${key}-${val}`}
+								onRemove={() => removeFilter(key, val)}
+							>
+								{t(`marketplace.home.catalogue.filters.accordion.${key}.title`)}: "
+								{val}"
+							</FilterPill>
+						)),
+					);
+				else if (key === 'date') {
+					const [startDate, endDate] = value as DatesRangeValue;
+					output.push(
+						<FilterPill
+							key={`date-${startDate?.getMilliseconds()}-${endDate?.getMilliseconds()}`}
+							onRemove={() => removeFilter(key)}
+						>
+							{t(`marketplace.home.catalogue.filters.accordion.${key}.title`)}: "
+							{startDate?.toLocaleDateString()} - {endDate?.toLocaleDateString()}"
+						</FilterPill>,
+					);
+				} else if (key === 'permits' || key === 'minBid' || key === 'price') {
+					const [min, max] = value as [number, number];
+					output.push(
+						<FilterPill key={`${key}-${min}-${max}`} onRemove={() => removeFilter(key)}>
+							{t(`marketplace.home.catalogue.filters.accordion.${key}.title`)}: "{min}{' '}
+							- {max}"
+						</FilterPill>,
+					);
+				}
+			},
+		);
+
+		if (!output.length)
+			output.push(
+				<FilterPill key={0} withRemoveButton={false}>
+					No Filters Applied
+				</FilterPill>,
+			);
+		return output;
+	}, [filters]);
 
 	return (
 		<Stack className={classes.header}>
@@ -59,7 +127,7 @@ export const Header = () => {
 					</Title>
 					<Text className={classes.slash}>-</Text>
 					<Text className={classes.subheading}>
-						Showing <b>{auctionIndex}</b> of {context.auctionData.totalCount} auctions
+						Showing <b>{auctionIndex}</b> of {auctionData.totalCount} auctions
 					</Text>
 				</Group>
 				<Group className={classes.settings}>
@@ -67,7 +135,7 @@ export const Header = () => {
 					<Select
 						className={classes.dropdown}
 						w={180}
-						value={`${context.sortBy}-${context.sortDirection}`}
+						value={`${sortBy}-${sortDirection}`}
 						data={[
 							{ value: 'created_at-desc', label: 'Newest' },
 							{ value: 'created_at-asc', label: 'Oldest' },
@@ -82,24 +150,24 @@ export const Header = () => {
 								value ||
 								`${DEFAULT_CONTEXT.sortBy}-${DEFAULT_CONTEXT.sortDirection}`
 							).split('-');
-							context.setSortBy(sortBy);
-							context.setSortDirection(sortDirection as SortDirection);
+							setSortBy(sortBy);
+							setSortDirection(sortDirection as SortDirection);
 						}}
 					/>
 					<Text className={classes.label}>Per page:</Text>
 					<Select
 						className={classes.dropdown}
 						w={64}
-						value={context.perPage.toString()}
+						value={perPage.toString()}
 						data={['6', '12', '24']}
-						onChange={(value) => context.setPerPage(Number(value))}
+						onChange={(value) => setPerPage(Number(value))}
 					/>
 				</Group>
 			</Group>
 			<Group className={classes.row}>
 				<Group className={classes.filters}>
 					<Text className={classes.heading}>Filters:</Text>
-					<Badge className={classes.badge}>No Filters Applied</Badge>
+					{filterBadges}
 				</Group>
 				<Group>
 					<Group className={classes.viewActions} ref={setRootRef}>
