@@ -189,6 +189,11 @@ export const Filters = () => {
 								label="Fake Company I (FM-7sdf8)"
 								value="FM-7sdf8"
 							/>
+							<Checkbox
+								className={classes.checkbox}
+								label="Fake Company J (FM-2sdf3)"
+								value="FM-2sdf3"
+							/>
 						</Container>
 					</AccordionPanel>
 				</AccordionItem>

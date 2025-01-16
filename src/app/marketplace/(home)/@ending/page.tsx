@@ -9,7 +9,7 @@ import classes from './styles.module.css';
 export default async function EndingSoon() {
 	const queryClient = new QueryClient();
 	await queryClient.prefetchInfiniteQuery({
-		queryKey: ['marketplace', '@ending'],
+		queryKey: ['marketplace', '@ending', JSON.stringify(QUERY_PARAMS)],
 		queryFn: () => getPaginatedAuctions(QUERY_PARAMS),
 		initialPageParam: 1,
 	});

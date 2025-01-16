@@ -93,12 +93,6 @@
 	@apply overflow-hidden;
 	@apply shadow-md;
 
-	> .bg {
-		@apply absolute top-0 left-0;
-		@apply w-full h-16;
-		@apply pointer-events-none;
-	}
-
 	> .details {
 		@apply w-full;
 		@apply my-4;
@@ -134,8 +128,14 @@
 		}
 	}
 
+	> .bg {
+		@apply absolute top-0 left-0;
+		@apply w-full h-16;
+		@apply pointer-events-none;
+	}
+
 	> *:not(.bg) {
-		@apply relative z-10;
+		@apply relative z-20;
 	}
 }
 
