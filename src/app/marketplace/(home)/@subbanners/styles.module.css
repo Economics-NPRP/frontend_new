@@ -42,7 +42,7 @@
 	}
 
 	&:hover {
-		@apply shadow-md;
+		@apply shadow-sm;
 
 		.gradient {
 			@apply !top-0;

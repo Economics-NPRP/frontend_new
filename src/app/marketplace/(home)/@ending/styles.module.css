@@ -102,8 +102,8 @@
 	}
 
 	> .bg {
-		@apply absolute top-0 left-0;
-		@apply w-full h-full;
+		@apply absolute top-0 -left-[10%];
+		@apply w-[120%] h-full;
 
 		> .grid {
 			@apply absolute top-0 left-0;
@@ -114,10 +114,16 @@
 		> .gradient {
 			@apply absolute top-0 left-0;
 			@apply w-full h-full;
+
+			background: radial-gradient(
+				at center,
+				rgba(255, 255, 255, 0) 50%,
+				rgba(255, 255, 255, 1) 100%
+			);
 		}
 	}
 
-	*:not(.bg) {
+	> *:not(.bg) {
 		@apply z-10;
 	}
 }
@@ -147,7 +153,7 @@
 	@mixin larger-than $mantine-breakpoint-md {
 		.root {
 			> .header > .top {
-				@apply h-[72px] flex-row;
+				@apply h-20 flex-row;
 
 				> .left {
 					@apply py-0;
@@ -208,6 +214,14 @@
 						}
 					}
 				}
+			}
+
+			> .bg > .gradient {
+				background: radial-gradient(
+					at center,
+					rgba(26, 27, 30, 0) 50%,
+					rgba(26, 27, 30, 1) 100%
+				);
 			}
 		}
 	}

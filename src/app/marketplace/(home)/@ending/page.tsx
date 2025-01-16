@@ -17,7 +17,7 @@ export default async function EndingSoon() {
 	return (
 		<Stack className={classes.root}>
 			<Container className={classes.bg}>
-				<Container className={`${classes.grid} bg-grid-lg`} />
+				<Container className={`${classes.grid} bg-dot-sm`} />
 				<Container className={classes.gradient} />
 			</Container>
 			<AuctionCarousel />

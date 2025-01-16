@@ -28,9 +28,8 @@ const ENDING_SOON_THRESHOLD = 1000 * 60 * 60 * 24; // 1 day
 
 export interface AuctionCardProps extends ComponentPropsWithRef<'div'> {
 	auction: IAuctionData;
-	fluid?: boolean;
 }
-export const AuctionCard = ({ auction, fluid, className, ...props }: AuctionCardProps) => {
+export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) => {
 	const t = useTranslations();
 	const format = useFormatter();
 
@@ -58,7 +57,7 @@ export const AuctionCard = ({ auction, fluid, className, ...props }: AuctionCard
 	const category = useMemo(() => categories[Math.floor(Math.random() * categories.length)], []);
 
 	return (
-		<Stack className={`${classes.root} ${fluid && classes.fluid} ${className}`} {...props}>
+		<Stack className={`${classes.root} ${className}`} {...props}>
 			<UnstyledButton className={classes.image} component="a" href={url}>
 				<Image src={src} alt={'Image of a power plant'} fill />
 				<Container className={classes.overlay} />

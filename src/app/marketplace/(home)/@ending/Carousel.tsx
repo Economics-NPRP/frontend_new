@@ -104,6 +104,15 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 				else {
 					embla.slideNodes()[slideIndex].style.opacity = opacity;
 					embla.slideNodes()[slideIndex].style.transform = `scale(${scale})`;
+
+					//	Slides that are not in view should not be interactive
+					if (!isVisible) {
+						element.style.pointerEvents = 'none';
+						element.inert = true;
+					} else {
+						element.style.pointerEvents = 'auto';
+						element.inert = false;
+					}
 				}
 			});
 		});
@@ -142,7 +151,7 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 			<Fragment key={group.page}>
 				{group.results.map((auction) => (
 					<CarouselSlide key={auction.id}>
-						<AuctionCard auction={auction} fluid />
+						<AuctionCard auction={auction} />
 					</CarouselSlide>
 				))}
 			</Fragment>

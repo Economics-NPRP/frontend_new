@@ -1,0 +1,354 @@
+.root {
+	@apply relative;
+	@apply col-span-full;
+	@apply grid grid-cols-12 gap-4;
+
+	> .header {
+		@apply relative;
+		@apply col-span-full;
+		@apply p-6;
+		@apply overflow-hidden;
+		@apply bg-dark-600;
+		@apply border border-solid border-gray-200;
+		@apply transition-all duration-500;
+
+		> .row {
+			@apply justify-between;
+
+			> .label {
+				@apply gap-2;
+				@apply items-center;
+
+				> .heading {
+					@apply heading-2-w;
+				}
+
+				> .slash {
+					@apply text-white;
+					@apply font-serif font-bold text-2xl;
+				}
+
+				> .subheading {
+					@apply paragraph-sm-w;
+					@apply translate-y-0.5;
+				}
+			}
+
+			> .settings {
+				@apply gap-2;
+
+				> .label {
+					@apply ml-1;
+					@apply paragraph-sm-w;
+				}
+
+				> .dropdown {
+					@apply flex-auto;
+
+					input {
+						@apply h-8 min-h-[unset];
+					}
+				}
+
+				> .action {
+					@apply h-8;
+					@apply bg-white text-dark-600;
+
+					&.square {
+						@apply size-8;
+					}
+				}
+
+				> .viewActions {
+					@apply relative;
+					@apply h-8;
+					@apply px-1 gap-1;
+					@apply bg-white;
+
+					> .action {
+						@apply bg-transparent text-dark-600;
+						@apply z-10;
+
+						&[data-active='true'] {
+							@apply text-white;
+						}
+					}
+
+					> .indicator {
+						@apply bg-dark-600;
+					}
+				}
+			}
+
+			> .filters {
+				@apply gap-2;
+
+				> .heading {
+					@apply paragraph-sm-g3;
+				}
+
+				> .badge {
+					@apply bg-gray-200 text-dark-600;
+				}
+			}
+		}
+
+		> .bg {
+			@apply absolute -top-16 -left-[44rem];
+			@apply pointer-events-none;
+			@apply flex flex-row items-center justify-center;
+			@apply gap-4;
+			@apply opacity-10;
+			@apply -rotate-45;
+
+			> .graphic {
+				@apply h-32;
+				@apply bg-white;
+
+				&:nth-child(4) {
+					@apply w-2;
+				}
+
+				&:nth-child(3) {
+					@apply w-4;
+				}
+
+				&:nth-child(2) {
+					@apply w-6;
+				}
+
+				&:nth-child(1) {
+					@apply w-8;
+				}
+			}
+		}
+
+		> *:not(.bg) {
+			@apply z-10;
+		}
+
+		&:hover {
+			@apply shadow-sm;
+		}
+	}
+
+	> .filters {
+		@apply col-span-3 row-end-auto gap-0;
+		@apply self-start;
+		@apply bg-white;
+		@apply border border-solid border-gray-200;
+		@apply transition-all duration-500;
+
+		> .header {
+			@apply relative;
+			@apply overflow-hidden;
+			@apply p-6 gap-0;
+			@apply bg-dark-600;
+
+			> .heading {
+				@apply heading-2-w;
+			}
+
+			> .subheading {
+				@apply paragraph-sm-g3 text-pretty;
+			}
+
+			> .bg {
+				@apply absolute top-14 -right-44;
+				@apply pointer-events-none;
+				@apply flex flex-row items-center justify-center;
+				@apply gap-4;
+				@apply opacity-10;
+				@apply -rotate-45;
+
+				> .graphic {
+					@apply h-32;
+					@apply bg-white;
+
+					&:nth-child(1) {
+						@apply w-2;
+					}
+
+					&:nth-child(2) {
+						@apply w-4;
+					}
+
+					&:nth-child(3) {
+						@apply w-6;
+					}
+
+					&:nth-child(4) {
+						@apply w-8;
+					}
+				}
+			}
+
+			> *:not(.bg) {
+				@apply z-10;
+			}
+		}
+
+		> .accordion {
+			.chevron[data-rotate='true'] {
+				transform: rotate(45deg);
+			}
+
+			.title {
+				@apply flex flex-row items-baseline gap-2;
+				@apply display-sm-sb-d6 uppercase;
+
+				> .subtitle {
+					@apply paragraph-sm-g6 normal-case;
+				}
+			}
+
+			.content {
+				@apply flex flex-col gap-3;
+				@apply border-0 border-t border-solid border-gray-100;
+
+				> .description {
+					@apply mt-1;
+					@apply paragraph-sm-g6;
+
+					> a {
+						@apply text-blue-600;
+						font-size: inherit;
+					}
+				}
+
+				> .values {
+					@apply max-h-60;
+					@apply overflow-y-auto overflow-x-hidden;
+					@apply flex flex-col gap-2;
+
+					&:has(.range) {
+						@apply px-2 pt-10 pb-1;
+						@apply overflow-y-hidden;
+					}
+
+					> .checkbox {
+						--checkbox-color: var(--mantine-color-maroon-6) !important;
+
+						input,
+						label {
+							@apply cursor-pointer;
+						}
+					}
+
+					> .range {
+						--slider-color: var(--mantine-color-maroon-6) !important;
+					}
+				}
+			}
+		}
+
+		> .footer {
+			@apply justify-between flex-nowrap;
+			@apply p-4;
+
+			> .value {
+				@apply paragraph-sm-g6;
+			}
+
+			> .actions {
+				@apply gap-1 flex-nowrap;
+
+				> .action {
+					@apply h-8;
+
+					&.square {
+						@apply size-8;
+					}
+				}
+			}
+		}
+
+		&:hover {
+			@apply shadow-sm;
+		}
+	}
+
+	> .catalogue {
+		@apply grid grid-cols-9 gap-4 col-span-9;
+
+		> .pagination {
+			@apply col-span-full;
+			@apply justify-self-center;
+		}
+	}
+
+	> .bg {
+		@apply absolute top-0 left-0;
+		@apply w-full h-full;
+		@apply opacity-75;
+
+		> .graphic {
+			@apply absolute top-0 left-0;
+			@apply w-full h-full;
+			@apply !bg-transparent;
+		}
+	}
+
+	> *:not(.bg) {
+		@apply z-10;
+	}
+}
+
+* {
+	@mixin dark {
+		.root {
+			> .header {
+				@apply border-dark-400;
+
+				> .row {
+					> .label {
+						> .heading {
+							@apply !text-white;
+						}
+
+						> .subheading {
+							@apply !text-white;
+						}
+					}
+
+					> .settings {
+						> .label {
+							@apply !text-white;
+						}
+
+						> .action {
+							@apply bg-dark-600 text-white;
+							@apply border border-solid border-dark-400;
+						}
+					}
+
+					> .filters > .heading {
+						@apply !text-gray-300;
+					}
+				}
+			}
+
+			> .filters {
+				@apply bg-dark-500 border-dark-400;
+
+				> .header {
+					> .heading {
+						@apply !text-white;
+					}
+
+					> .subheading {
+						@apply !text-gray-300;
+					}
+				}
+
+				> .accordion .content {
+					@apply border-dark-400;
+				}
+			}
+
+			> .bg {
+				@apply opacity-100;
+			}
+		}
+	}
+}

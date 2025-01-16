@@ -1,7 +1,7 @@
 .root {
-	@apply w-[360px];
+	@apply w-full;
 	@apply items-stretch justify-center;
-	@apply gap-0;
+	@apply col-span-3 gap-0;
 	@apply bg-white;
 	@apply border border-solid border-gray-300;
 	@apply transition-shadow duration-500;
@@ -108,10 +108,6 @@
 				}
 			}
 		}
-	}
-
-	&.fluid {
-		@apply w-full;
 	}
 
 	&:hover {

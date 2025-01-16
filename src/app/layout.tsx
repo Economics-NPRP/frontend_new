@@ -1,7 +1,7 @@
 import Providers from 'app/providers';
 import { type Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, getTimeZone } from 'next-intl/server';
 import Head from 'next/head';
 import { getLangDir } from 'rtl-detect';
 
@@ -10,6 +10,8 @@ import '@/schema/models/AuctionData';
 import '@/styles/globals.css';
 import '@mantine/carousel/styles.css';
 import { ColorSchemeScript } from '@mantine/core';
+import { DatesProvider } from '@mantine/dates';
+import '@mantine/dates/styles.css';
 
 export const metadata: Metadata = {
 	title: 'Next App Mantine Tailwind Template',
@@ -24,6 +26,7 @@ export default async function RootLayout({
 	const locale = await getUserLocale();
 	const direction = getLangDir(locale);
 	const messages = await getMessages();
+	const timezone = await getTimeZone();
 
 	return (
 		<html dir={direction} lang={locale} suppressHydrationWarning>
@@ -32,7 +35,18 @@ export default async function RootLayout({
 			</Head>
 			<body className="antialiased overflow-x-hidden">
 				<Providers>
-					<NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+					<DatesProvider
+						settings={{
+							locale,
+							timezone,
+							firstDayOfWeek: 0,
+							weekendDays: [5, 6],
+						}}
+					>
+						<NextIntlClientProvider messages={messages}>
+							{children}
+						</NextIntlClientProvider>
+					</DatesProvider>
 				</Providers>
 			</body>
 		</html>

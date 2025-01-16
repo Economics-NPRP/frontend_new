@@ -1,5 +1,35 @@
 @layer utilities {
 	.bg-dot-lg {
+		background-image: radial-gradient(
+			circle at 2px 2px,
+			var(--mantine-color-gray-2) 2px,
+			transparent 0
+		);
+		background-size: 80px 80px;
+		background-position: center;
+		@apply bg-white;
+	}
+
+	.bg-dot-md {
+		background-image: radial-gradient(
+			circle at 2px 2px,
+			var(--mantine-color-gray-2) 2px,
+			transparent 0
+		);
+		background-size: 60px 60px;
+		background-position: center;
+		@apply bg-white;
+	}
+
+	.bg-dot-sm {
+		background-image: radial-gradient(
+			circle at 2px 2px,
+			var(--mantine-color-gray-2) 2px,
+			transparent 0
+		);
+		background-size: 40px 40px;
+		background-position: center;
+		@apply bg-white;
 	}
 
 	.bg-stagger-lg {
@@ -19,6 +49,16 @@
 			15px 15px,
 			45px 45px;
 		background-size: 60px 60px;
+		@apply bg-white;
+	}
+
+	.bg-stagger-sm {
+		background-image: radial-gradient(var(--mantine-color-gray-2) 5%, transparent 5%),
+			radial-gradient(var(--mantine-color-gray-2) 5%, transparent 5%);
+		background-position:
+			10px 10px,
+			30px 30px;
+		background-size: 40px 40px;
 		@apply bg-white;
 	}
 
@@ -48,6 +88,33 @@
 
 	* {
 		@mixin dark {
+			.bg-dot-lg {
+				background-image: radial-gradient(
+					circle at 1px 1px,
+					var(--mantine-color-dark-4) 1px,
+					transparent 0
+				);
+				@apply bg-dark-700;
+			}
+
+			.bg-dot-md {
+				background-image: radial-gradient(
+					circle at 1px 1px,
+					var(--mantine-color-dark-4) 1px,
+					transparent 0
+				);
+				@apply bg-dark-700;
+			}
+
+			.bg-dot-sm {
+				background-image: radial-gradient(
+					circle at 1px 1px,
+					var(--mantine-color-dark-4) 1px,
+					transparent 0
+				);
+				@apply bg-dark-700;
+			}
+
 			.bg-stagger-lg {
 				background-image: radial-gradient(var(--mantine-color-dark-4) 2%, transparent 2%),
 					radial-gradient(var(--mantine-color-dark-4) 2%, transparent 2%);
@@ -55,6 +122,12 @@
 			}
 
 			.bg-stagger-md {
+				background-image: radial-gradient(var(--mantine-color-dark-4) 2%, transparent 2%),
+					radial-gradient(var(--mantine-color-dark-4) 2%, transparent 2%);
+				@apply bg-dark-700;
+			}
+
+			.bg-stagger-sm {
 				background-image: radial-gradient(var(--mantine-color-dark-4) 2%, transparent 2%),
 					radial-gradient(var(--mantine-color-dark-4) 2%, transparent 2%);
 				@apply bg-dark-700;

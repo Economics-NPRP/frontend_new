@@ -1,11 +1,11 @@
 'use server';
 
+import { camelCase } from 'change-case/keys';
 import { cache } from 'react';
 import 'server-only';
-import { parse, safeParse } from 'valibot';
 
 import { getSession } from '@/lib/auth';
-import { AuctionType, IAuctionData, ReadAuctionDataSchema } from '@/schema/models';
+import { AuctionType, IAuctionData } from '@/schema/models';
 import { IOffsetPagination, OffsetPaginatedData, SortDirection } from '@/types';
 
 export interface IGetPaginatedAuctionsOptions extends IOffsetPagination {
@@ -69,7 +69,7 @@ export const getPaginatedAuctions: IFunctionSignature = cache(
 		if (hasEnded) queryUrl.searchParams.append('hasEnded', hasEnded.valueOf().toString());
 
 		const response = await fetch(queryUrl, querySettings);
-		const rawData = (await response.json()) as OffsetPaginatedData<unknown>;
+		const rawData = camelCase(await response.json(), 5) as OffsetPaginatedData<unknown>;
 
 		//	If theres an issue, return the default data with errors
 		if (!rawData) return getDefaultData('No data was returned.');
@@ -79,19 +79,7 @@ export const getPaginatedAuctions: IFunctionSignature = cache(
 		//	Parse results using schema and collect issues
 		const errors: Array<string> = [];
 		const results = rawData.results.reduce<Array<IAuctionData>>((acc, result) => {
-			try {
-				// const parseResults = parse(ReadAuctionDataSchema, result);
-				acc.push(result);
-				// if (!parseResults.success) {
-				// 	console.error(...parseResults.issues);
-				// 	errors.push(...parseResults.issues.map((issue) => issue.message));
-				// } else {
-				// 	acc.push(parseResults.output);
-				// }
-			} catch (error) {
-				errors.push('An error occurred while parsing the data.');
-			}
-
+			acc.push(result as IAuctionData);
 			return acc;
 		}, []);
 

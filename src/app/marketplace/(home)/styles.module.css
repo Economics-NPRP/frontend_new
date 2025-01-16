@@ -10,17 +10,17 @@
 * {
 	@mixin larger-than $mantine-breakpoint-sm {
 		.root {
-			@apply gap-6;
+			@apply gap-y-6;
 		}
 	}
 	@mixin larger-than $mantine-breakpoint-md {
 		.root {
-			@apply gap-8;
+			@apply gap-x-6;
 		}
 	}
 	@mixin larger-than $mantine-breakpoint-lg {
 		.root {
-			@apply gap-y-12;
+			@apply gap-y-8;
 		}
 	}
 }

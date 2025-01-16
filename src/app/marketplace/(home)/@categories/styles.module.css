@@ -25,7 +25,7 @@
 
 	> .cards {
 		@apply flex flex-row gap-4;
-		@apply overflow-x-auto;
+		@apply overflow-x-auto overflow-y-visible;
 	}
 }
 
@@ -43,7 +43,7 @@
 	@mixin larger-than $mantine-breakpoint-xs {
 		.root > .cards {
 			@apply grid grid-cols-2 gap-4;
-			@apply overflow-x-hidden;
+			@apply overflow-x-visible;
 		}
 	}
 
