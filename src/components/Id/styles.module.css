@@ -2,9 +2,13 @@
 	@apply flex items-center flex-nowrap;
 	@apply gap-0.5;
 	@apply paragraph-sm-g5;
-	@apply leading-none;
+	@apply leading-none whitespace-nowrap;
 
 	&.truncate {
 		@apply cursor-pointer;
+	}
+
+	svg {
+		@apply flex-shrink-0;
 	}
 }

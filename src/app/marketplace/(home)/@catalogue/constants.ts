@@ -42,6 +42,10 @@ export const DEFAULT_CONTEXT: ICatalogueContext = {
 
 	setFilters: () => {},
 	removeFilter: () => {},
+
+	isFilterModalOpen: false,
+	openFiltersModal: () => {},
+	closeFiltersModal: () => {},
 };
 
 export interface IAuctionFilters {
@@ -86,6 +90,10 @@ export interface ICatalogueContext {
 				: never
 			: never,
 	) => void;
+
+	isFilterModalOpen: boolean;
+	openFiltersModal: () => void;
+	closeFiltersModal: () => void;
 }
 
 export const CatalogueContext = createContext<ICatalogueContext>(DEFAULT_CONTEXT);

@@ -16,7 +16,7 @@ import {
 	Tooltip,
 } from '@mantine/core';
 import { DatesRangeValue } from '@mantine/dates';
-import { IconDownload, IconLayoutGrid, IconListDetails } from '@tabler/icons-react';
+import { IconDownload, IconFilter, IconLayoutGrid, IconListDetails } from '@tabler/icons-react';
 
 import { CatalogueContext, DEFAULT_CONTEXT, IAuctionFilters } from './constants';
 import classes from './styles.module.css';
@@ -40,6 +40,7 @@ export const Header = () => {
 		setSortBy,
 		setSortDirection,
 		removeFilter,
+		openFiltersModal,
 	} = useContext(CatalogueContext);
 
 	const [view, setView] = useState<ViewType>('grid');
@@ -125,7 +126,9 @@ export const Header = () => {
 					<Title className={classes.heading} order={2}>
 						Auction Catalogue
 					</Title>
-					<Text className={classes.slash}>-</Text>
+					<Text className={classes.slash} visibleFrom="md">
+						-
+					</Text>
 					<Text className={classes.subheading}>
 						Showing <b>{auctionIndex}</b> of {auctionData.totalCount} auctions
 					</Text>
@@ -201,6 +204,15 @@ export const Header = () => {
 					<Tooltip label="Download all auctions as CSV">
 						<ActionIcon className={`${classes.action} ${classes.square}`}>
 							<IconDownload size={16} />
+						</ActionIcon>
+					</Tooltip>
+					<Tooltip label="Filter auctions to find what you need">
+						<ActionIcon
+							className={`${classes.action} ${classes.square}`}
+							onClick={openFiltersModal}
+							hiddenFrom="md"
+						>
+							<IconFilter size={16} />
 						</ActionIcon>
 					</Tooltip>
 				</Group>

@@ -4,10 +4,10 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { IGetPaginatedAuctionsOptions, getPaginatedAuctions } from '@/lib/auctions';
 import { Container } from '@mantine/core';
-import { useLocalStorage } from '@mantine/hooks';
+import { useDisclosure, useLocalStorage } from '@mantine/hooks';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
-import { Filters } from './Filters';
+import { FiltersList, FiltersModal } from './Filters';
 import { Header } from './Header';
 import { List } from './List';
 import { CatalogueContext, DEFAULT_CONTEXT, ICatalogueContext } from './constants';
@@ -35,6 +35,8 @@ export default function Catalogue() {
 		setFilters((filters) => ({ ...filters, [key]: DEFAULT_CONTEXT.filters[key] }));
 	}, []);
 
+	const [opened, { open, close }] = useDisclosure(false);
+
 	const queryParams = useMemo<IGetPaginatedAuctionsOptions>(() => {
 		const { type } = filters;
 
@@ -48,8 +50,6 @@ export default function Catalogue() {
 	});
 
 	useEffect(() => data && setPageCount(data.pageCount), [data]);
-
-	useEffect(() => console.log(filters), [filters]);
 
 	return (
 		<CatalogueContext.Provider
@@ -77,6 +77,10 @@ export default function Catalogue() {
 
 				setFilters,
 				removeFilter,
+
+				isFilterModalOpen: opened,
+				openFiltersModal: open,
+				closeFiltersModal: close,
 			}}
 		>
 			<Container className={classes.root}>
@@ -84,7 +88,8 @@ export default function Catalogue() {
 					<Container className={`${classes.graphic} bg-grid-md`} />
 				</Container>
 				<Header />
-				<Filters />
+				<FiltersList />
+				<FiltersModal />
 				<List />
 			</Container>
 		</CatalogueContext.Provider>

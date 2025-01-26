@@ -6,6 +6,7 @@
 	> .header {
 		@apply relative;
 		@apply col-span-full;
+		@apply flex-col;
 		@apply p-6;
 		@apply overflow-hidden;
 		@apply bg-dark-600;
@@ -13,11 +14,11 @@
 		@apply transition-all duration-500;
 
 		> .row {
-			@apply justify-between;
+			@apply flex-col items-center;
 
 			> .label {
-				@apply gap-2;
-				@apply items-center;
+				@apply flex-col items-center;
+				@apply gap-0;
 
 				> .heading {
 					@apply heading-2-w;
@@ -246,21 +247,21 @@
 			}
 
 			> .footer {
-				@apply justify-between flex-nowrap;
+				@apply flex-col justify-between items-stretch flex-nowrap;
 				@apply p-4;
 
 				> .value {
-					@apply paragraph-sm-g6;
+					@apply paragraph-sm-g6 text-center;
 				}
 
 				> .actions {
 					@apply gap-1 flex-nowrap;
 
 					> .action {
-						@apply h-8;
+						@apply h-8 flex-auto;
 
 						&.square {
-							@apply size-8;
+							@apply size-8 flex-none;
 						}
 					}
 				}
@@ -273,7 +274,7 @@
 	}
 
 	> .catalogue {
-		@apply grid grid-cols-9 gap-4 col-span-9;
+		@apply grid grid-cols-3 gap-4 col-span-full;
 		@apply self-start;
 
 		> .pagination {
@@ -300,6 +301,50 @@
 }
 
 * {
+	@mixin larger-than $mantine-breakpoint-xs {
+		.root {
+			> .header {
+				> .row {
+					@apply flex-row justify-between;
+
+					> .label {
+						@apply flex-row gap-2;
+					}
+				}
+			}
+
+			> .catalogue {
+				@apply grid-cols-6;
+			}
+		}
+	}
+
+	@mixin larger-than $mantine-breakpoint-md {
+		.root > .catalogue {
+			@apply col-span-9;
+		}
+	}
+
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root > .catalogue {
+			@apply grid-cols-9;
+		}
+	}
+
+	@mixin larger-than $mantine-breakpoint-xl {
+		.root > .filters > form > .footer {
+			@apply flex-row justify-between items-center;
+
+			> .value {
+				@apply text-left;
+			}
+
+			> .actions > .action {
+				@apply flex-initial;
+			}
+		}
+	}
+
 	@mixin dark {
 		.root {
 			> .header {
