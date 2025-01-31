@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTimeZone } from 'next-intl/server';
 import Head from 'next/head';
 import { getLangDir } from 'rtl-detect';
+import * as v from 'valibot';
 
 import { getUserLocale } from '@/locales';
 import '@/schema/models/AuctionData';
@@ -12,6 +13,7 @@ import '@mantine/carousel/styles.css';
 import { ColorSchemeScript } from '@mantine/core';
 import { DatesProvider } from '@mantine/dates';
 import '@mantine/dates/styles.css';
+import '@valibot/i18n/ar';
 
 export const metadata: Metadata = {
 	title: 'Next App Mantine Tailwind Template',
@@ -27,6 +29,8 @@ export default async function RootLayout({
 	const direction = getLangDir(locale);
 	const messages = await getMessages();
 	const timezone = await getTimeZone();
+
+	v.setGlobalConfig({ lang: locale === 'ar-QA' ? 'ar' : 'en' });
 
 	return (
 		<html dir={direction} lang={locale} suppressHydrationWarning>

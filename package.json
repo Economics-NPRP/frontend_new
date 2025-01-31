@@ -22,6 +22,7 @@
 		"@tanstack/react-query": "^5.63.0",
 		"@typescript-eslint/eslint-plugin": "^8.18.1",
 		"@typescript-eslint/parser": "^8.18.1",
+		"@valibot/i18n": "1.0.0-beta.2",
 		"@vercel/functions": "^1.5.2",
 		"change-case": "^5.4.4",
 		"embla-carousel": "^8.5.1",
