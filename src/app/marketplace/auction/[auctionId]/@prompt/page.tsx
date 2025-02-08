@@ -1,3 +1,8 @@
+'use client';
+
+import { DateTime } from 'luxon';
+import { useContext } from 'react';
+
 import { CurrencyBadge } from '@/components/Badge';
 import { LargeCountdown } from '@/components/Countdown';
 import {
@@ -18,13 +23,21 @@ import {
 } from '@mantine/core';
 import { IconChartLine } from '@tabler/icons-react';
 
+import { AuctionDetailsContext } from '../constants';
+
 export default function Prompt() {
+	const { auctionData } = useContext(AuctionDetailsContext);
+
 	return (
 		<>
 			<Stack>
 				<Text>Ending In</Text>
-				<LargeCountdown targetDate={'2028-02-07T11:44:31.000Z'} />
-				<Text>2028-02-07T11:44:31.000Z</Text>
+				<LargeCountdown targetDate={auctionData.endDatetime} />
+				<Text>
+					{DateTime.fromISO(auctionData.endDatetime).toLocaleString(
+						DateTime.DATETIME_FULL,
+					)}
+				</Text>
 			</Stack>
 			<Stack>
 				<Text>Buy Now Price</Text>

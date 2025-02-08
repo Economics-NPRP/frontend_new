@@ -12,8 +12,11 @@ import {
 	url,
 } from 'valibot';
 
-import { AuctionTypeSchema, BaseUserDataSchema } from '@/schema/models';
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
+
+//	TODO: Check why path alias is not working
+import { AuctionTypeSchema } from './AuctionType';
+import { BaseUserDataSchema, DefaultUserData } from './UserData';
 
 export const BaseAuctionDataSchema = object({
 	id: UuidSchema(),
@@ -62,3 +65,24 @@ export interface IAuctionData extends InferOutput<typeof BaseAuctionDataSchema> 
 export interface ICreateAuction extends InferInput<typeof CreateAuctionDataSchema> {}
 export interface IReadAuction extends InferInput<typeof ReadAuctionDataSchema> {}
 export interface IUpdateAuction extends InferInput<typeof UpdateAuctionDataSchema> {}
+
+export const DefaultAuctionData: IAuctionData = {
+	id: '',
+	ownerId: '',
+	type: 'open',
+	isPrimaryMarket: false,
+	title: '',
+	image: null,
+	description: null,
+	permits: 0,
+	bids: 0,
+	minBid: 0,
+	views: 0,
+	bookmarks: 0,
+	isVisible: false,
+	createdAt: '1970-01-01T00:00:00.000Z',
+	startDatetime: '1970-01-01T00:00:00.000Z',
+	endDatetime: '1970-01-01T00:00:00.000Z',
+	hasJoined: null,
+	owner: DefaultUserData,
+};

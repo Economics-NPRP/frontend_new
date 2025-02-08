@@ -1,17 +1,17 @@
+'use client';
+
 import Image from 'next/image';
+import { useContext } from 'react';
 
 import { AuctionTypeBadge, CategoryBadge } from '@/components/Badge';
-import { getSingleAuctions } from '@/lib/auctions';
 import { Anchor, Breadcrumbs, Button, Container, Group, Stack, Text, Title } from '@mantine/core';
 import { IconArrowUpLeft, IconBox } from '@tabler/icons-react';
 
-interface PageProps {
-	params: Promise<{ auctionId: string }>;
-}
-export default async function Details({ params }: PageProps) {
-	const { auctionId } = await params;
+import { AuctionDetailsContext } from '../constants';
 
-	const auctionData = await getSingleAuctions(auctionId);
+export default function Details() {
+	const { auctionData } = useContext(AuctionDetailsContext);
+
 	return (
 		<>
 			<Group>
@@ -37,7 +37,7 @@ export default async function Details({ params }: PageProps) {
 			<Group>
 				<IconBox />
 				<Anchor href={'/marketplace/firm/bfaaf345-dd15-4ce0-ad91-6f58d1fe7a64'}>
-					{auctionData.owner.name}
+					{auctionData.owner && auctionData.owner.name}
 				</Anchor>
 			</Group>
 			<Group>

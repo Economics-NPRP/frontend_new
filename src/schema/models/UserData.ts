@@ -14,8 +14,9 @@ import {
 	url,
 } from 'valibot';
 
-import { UserTypeSchema } from '@/schema/models/UserType';
 import { TimestampSchema, UuidSchema } from '@/schema/utils';
+
+import { UserTypeSchema } from './UserType';
 
 export const BaseUserDataSchema = object({
 	id: UuidSchema(),
@@ -48,3 +49,19 @@ export interface IUserData extends InferOutput<typeof BaseUserDataSchema> {}
 export interface ICreateUser extends InferInput<typeof CreateUserDataSchema> {}
 export interface IReadUser extends InferInput<typeof ReadUserDataSchema> {}
 export interface IUpdateUser extends InferInput<typeof UpdateUserDataSchema> {}
+
+export const DefaultUserData: IUserData = {
+	id: '',
+	type: 'firm',
+
+	name: '',
+	email: '',
+	phone: '',
+	image: null,
+
+	emailVerified: false,
+	phoneVerified: false,
+
+	isActive: true,
+	createdAt: '1970-01-01T00:00:00.000Z',
+};
