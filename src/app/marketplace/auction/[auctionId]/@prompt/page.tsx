@@ -1,15 +1,39 @@
-'use client';
-
 import { CurrencyBadge } from '@/components/Badge';
 import { LargeCountdown } from '@/components/Countdown';
-import { ActionIcon, Button, Group, Modal, Stack, Text } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import {
+	ActionIcon,
+	Button,
+	Checkbox,
+	Group,
+	Progress,
+	Stack,
+	Table,
+	TableTbody,
+	TableTd,
+	TableTh,
+	TableThead,
+	TableTr,
+	Text,
+	TextInput,
+} from '@mantine/core';
 import { IconChartLine } from '@tabler/icons-react';
 
 export default function Prompt() {
-	const [opened, { open, close }] = useDisclosure(false);
 	return (
 		<>
+			<Stack>
+				<Text>Ending In</Text>
+				<LargeCountdown targetDate={'2028-02-07T11:44:31.000Z'} />
+				<Text>2028-02-07T11:44:31.000Z</Text>
+			</Stack>
+			<Stack>
+				<Text>Buy Now Price</Text>
+				<Group>
+					<CurrencyBadge />
+					<Text>1,400.00</Text>
+				</Group>
+				<Button>Buy Now</Button>
+			</Stack>
 			<Group>
 				<Stack>
 					<Text>Minimum Winning Bid</Text>
@@ -22,26 +46,97 @@ export default function Prompt() {
 					</ActionIcon>
 				</Stack>
 				<Stack>
-					<Text>Buy Now Price</Text>
 					<Group>
-						<CurrencyBadge />
-						<Text>1,400.00</Text>
+						<TextInput placeholder="000,000" />
+						<Text>Permits</Text>
+						<TextInput placeholder="Price per permit" leftSection={<CurrencyBadge />} />
+						<Text>Each</Text>
+						<Text>Total QAR 0.00</Text>
+						<Button>Add to List</Button>
 					</Group>
-				</Stack>
-				<Stack>
-					<Text>Ending In</Text>
-					<LargeCountdown targetDate={'2028-02-07T11:44:31.000Z'} />
-					<Text>2028-02-07T11:44:31.000Z</Text>
+					<Group>
+						<Text>0 permits bid</Text>
+						<Progress w={480} value={0} />
+						<Text>153 permits left</Text>
+					</Group>
+					<Table>
+						<TableThead>
+							<TableTr>
+								<TableTh></TableTh>
+								<TableTh>Number of Permits</TableTh>
+								<TableTh>Emissions (tCO2e)</TableTh>
+								<TableTh>Price per Permit</TableTh>
+								<TableTh>Sub Total</TableTh>
+							</TableTr>
+						</TableThead>
+						<TableTbody>
+							<TableTr>
+								<TableTd>
+									<Checkbox />
+								</TableTd>
+								<TableTd>1</TableTd>
+								<TableTd>1,000.00</TableTd>
+								<TableTd>
+									<CurrencyBadge />
+									10.00
+								</TableTd>
+								<TableTd>
+									<CurrencyBadge />
+									10,000.00
+								</TableTd>
+							</TableTr>
+							<TableTr>
+								<TableTd>
+									<Checkbox />
+								</TableTd>
+								<TableTd>1</TableTd>
+								<TableTd>1,000.00</TableTd>
+								<TableTd>
+									<CurrencyBadge />
+									10.00
+								</TableTd>
+								<TableTd>
+									<CurrencyBadge />
+									10,000.00
+								</TableTd>
+							</TableTr>
+							<TableTr>
+								<TableTd>
+									<Checkbox />
+								</TableTd>
+								<TableTd>1</TableTd>
+								<TableTd>1,000.00</TableTd>
+								<TableTd>
+									<CurrencyBadge />
+									10.00
+								</TableTd>
+								<TableTd>
+									<CurrencyBadge />
+									10,000.00
+								</TableTd>
+							</TableTr>
+						</TableTbody>
+					</Table>
+					<Stack>
+						<Text>Grand Total</Text>
+						<Group>
+							<Stack>
+								<Text>Permits</Text>
+								<Text>0</Text>
+							</Stack>
+							<Stack>
+								<Text>Emissions (tCO2e)</Text>
+								<Text>0</Text>
+							</Stack>
+							<Stack>
+								<Text>Bid (QAR)</Text>
+								<Text>0.00</Text>
+							</Stack>
+						</Group>
+					</Stack>
 				</Stack>
 			</Group>
-			<Group>
-				<Button>Buy Now</Button>
-				<Button onClick={open}>Place a Bid</Button>
-			</Group>
-			<Modal opened={opened} onClose={close} title={'Place a Bid'}>
-				<Text>Enter the amount you want to bid for this auction</Text>
-				<Button>Place Bid</Button>
-			</Modal>
+			<Button>Place a Bid</Button>
 		</>
 	);
 }
