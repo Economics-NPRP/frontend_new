@@ -29,7 +29,7 @@ import { AuctionDetailsContext } from '../constants';
 
 const generateBidRows = (bids: Array<IBidData>, format: ReturnType<typeof createFormatter>) =>
 	bids.map(({ id, amount, permits, timestamp, bidder }) => (
-		<TableTr>
+		<TableTr key={id}>
 			<TableTd>
 				<Anchor href={`/marketplace/company/${bidder.id}`}>{bidder.name}</Anchor>
 			</TableTd>

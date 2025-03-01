@@ -130,10 +130,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 						<Group className={classes.price}>
 							<CurrencyBadge />
 							<Text className={classes.value}>
-								{format.number(auction.minBid, {
-									minimumFractionDigits: 2,
-									maximumFractionDigits: 2,
-								})}
+								{format.number(auction.minBid, 'money')}
 							</Text>
 						</Group>
 					</Stack>

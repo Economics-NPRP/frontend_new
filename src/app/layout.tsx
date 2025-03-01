@@ -47,7 +47,17 @@ export default async function RootLayout({
 							weekendDays: [5, 6],
 						}}
 					>
-						<NextIntlClientProvider messages={messages}>
+						<NextIntlClientProvider
+							formats={{
+								number: {
+									money: {
+										minimumFractionDigits: 2,
+										maximumFractionDigits: 2,
+									},
+								},
+							}}
+							messages={messages}
+						>
 							{children}
 						</NextIntlClientProvider>
 					</DatesProvider>

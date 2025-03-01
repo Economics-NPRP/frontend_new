@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useContext } from 'react';
 
 import { AuctionTypeBadge, CategoryBadge } from '@/components/Badge';
+import { Id } from '@/components/Id';
 import { Anchor, Breadcrumbs, Button, Container, Group, Stack, Text, Title } from '@mantine/core';
 import { IconArrowUpLeft, IconBox } from '@tabler/icons-react';
 
@@ -25,6 +26,7 @@ export default function Details() {
 			<Container className="relative size-80">
 				<Image src={auctionData.image || '/'} alt={'Image of a power plant'} fill />
 			</Container>
+			<Id value={auctionData.id} variant="industry" />
 			<Title order={1}>Flare Gas Burning</Title>
 			<Group>
 				<CategoryBadge category={'industry'} />

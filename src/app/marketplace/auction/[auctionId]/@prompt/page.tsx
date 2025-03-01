@@ -1,7 +1,8 @@
 'use client';
 
 import { DateTime } from 'luxon';
-import { useContext } from 'react';
+import { useFormatter } from 'next-intl';
+import { useContext, useMemo, useState } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { LargeCountdown } from '@/components/Countdown';
@@ -10,6 +11,7 @@ import {
 	Button,
 	Checkbox,
 	Group,
+	NumberInput,
 	Progress,
 	Stack,
 	Table,
@@ -19,14 +21,57 @@ import {
 	TableThead,
 	TableTr,
 	Text,
-	TextInput,
 } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { useListState } from '@mantine/hooks';
 import { IconChartLine } from '@tabler/icons-react';
 
 import { AuctionDetailsContext } from '../constants';
 
+interface FormValues {
+	bid: number;
+	permit: number;
+}
+
 export default function Prompt() {
+	const format = useFormatter();
 	const { auctionData } = useContext(AuctionDetailsContext);
+
+	const [subtotal, setSubtotal] = useState(0);
+	const [bids, bidsHandlers] = useListState<FormValues>();
+
+	const form = useForm<FormValues>({
+		mode: 'uncontrolled',
+		onValuesChange: ({ bid, permit }) => setSubtotal(Number(bid || 0) * Number(permit || 0)),
+	});
+
+	const totalPermits = useMemo(() => bids.reduce((acc, { permit }) => acc + permit, 0), [bids]);
+	const grandTotal = useMemo(
+		() => bids.reduce((acc, { bid, permit }) => acc + bid * permit, 0),
+		[bids],
+	);
+
+	const bidsData = useMemo(
+		() =>
+			bids.map(({ bid, permit }, index) => (
+				<TableTr key={index}>
+					<TableTd>
+						<Checkbox />
+					</TableTd>
+					<TableTd>{format.number(permit)}</TableTd>
+					<TableTd>{format.number(permit * 1000)}</TableTd>
+					<TableTd>
+						<CurrencyBadge />
+						{format.number(bid, 'money')}
+					</TableTd>
+					<TableTd>
+						<CurrencyBadge />
+						{format.number(bid * permit, 'money')}
+					</TableTd>
+				</TableTr>
+			)),
+		[bids],
+	);
 
 	return (
 		<>
@@ -60,90 +105,63 @@ export default function Prompt() {
 				</Stack>
 				<Stack>
 					<Group>
-						<TextInput placeholder="000,000" />
-						<Text>Permits</Text>
-						<TextInput placeholder="Price per permit" leftSection={<CurrencyBadge />} />
-						<Text>Each</Text>
-						<Text>Total QAR 0.00</Text>
-						<Button>Add to List</Button>
+						<form onSubmit={form.onSubmit((value) => bidsHandlers.append(value))}>
+							<NumberInput
+								placeholder="000,000"
+								min={1}
+								max={auctionData.permits}
+								key={form.key('permit')}
+								{...form.getInputProps('permit')}
+							/>
+							<Text>Permits</Text>
+							<NumberInput
+								placeholder="Price per permit"
+								leftSection={<CurrencyBadge />}
+								min={1}
+								key={form.key('bid')}
+								{...form.getInputProps('bid')}
+							/>
+							<Text>Each</Text>
+							<Text>Total QAR {format.number(subtotal, 'money')}</Text>
+							<Button type="submit">Add to List</Button>
+						</form>
 					</Group>
 					<Group>
-						<Text>0 permits bid</Text>
-						<Progress w={480} value={0} />
-						<Text>153 permits left</Text>
+						<Text>{totalPermits} permits bid</Text>
+						<Progress w={480} value={(totalPermits / auctionData.permits) * 100} />
+						<Text>{auctionData.permits - totalPermits} permits left</Text>
 					</Group>
 					<Table>
 						<TableThead>
 							<TableTr>
-								<TableTh></TableTh>
+								<TableTh>
+									<Checkbox />
+								</TableTh>
 								<TableTh>Number of Permits</TableTh>
 								<TableTh>Emissions (tCO2e)</TableTh>
 								<TableTh>Price per Permit</TableTh>
 								<TableTh>Sub Total</TableTh>
 							</TableTr>
 						</TableThead>
-						<TableTbody>
-							<TableTr>
-								<TableTd>
-									<Checkbox />
-								</TableTd>
-								<TableTd>1</TableTd>
-								<TableTd>1,000.00</TableTd>
-								<TableTd>
-									<CurrencyBadge />
-									10.00
-								</TableTd>
-								<TableTd>
-									<CurrencyBadge />
-									10,000.00
-								</TableTd>
-							</TableTr>
-							<TableTr>
-								<TableTd>
-									<Checkbox />
-								</TableTd>
-								<TableTd>1</TableTd>
-								<TableTd>1,000.00</TableTd>
-								<TableTd>
-									<CurrencyBadge />
-									10.00
-								</TableTd>
-								<TableTd>
-									<CurrencyBadge />
-									10,000.00
-								</TableTd>
-							</TableTr>
-							<TableTr>
-								<TableTd>
-									<Checkbox />
-								</TableTd>
-								<TableTd>1</TableTd>
-								<TableTd>1,000.00</TableTd>
-								<TableTd>
-									<CurrencyBadge />
-									10.00
-								</TableTd>
-								<TableTd>
-									<CurrencyBadge />
-									10,000.00
-								</TableTd>
-							</TableTr>
-						</TableTbody>
+						<TableTbody>{bidsData}</TableTbody>
 					</Table>
 					<Stack>
 						<Text>Grand Total</Text>
 						<Group>
 							<Stack>
 								<Text>Permits</Text>
-								<Text>0</Text>
+								<Text>{format.number(totalPermits)}</Text>
 							</Stack>
 							<Stack>
 								<Text>Emissions (tCO2e)</Text>
-								<Text>0</Text>
+								<Text>{format.number(totalPermits * 1000)}</Text>
 							</Stack>
 							<Stack>
-								<Text>Bid (QAR)</Text>
-								<Text>0.00</Text>
+								<Text>Bid</Text>
+								<Group>
+									<CurrencyBadge />
+									<Text>{format.number(grandTotal, 'money')}</Text>
+								</Group>
 							</Stack>
 						</Group>
 					</Stack>
