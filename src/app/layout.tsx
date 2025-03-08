@@ -1,4 +1,5 @@
 import Providers from 'app/providers';
+import 'mantine-datatable/styles.layer.css';
 import { type Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTimeZone } from 'next-intl/server';
@@ -9,10 +10,8 @@ import * as v from 'valibot';
 import { getUserLocale } from '@/locales';
 import '@/schema/models/AuctionData';
 import '@/styles/globals.css';
-import '@mantine/carousel/styles.css';
 import { ColorSchemeScript } from '@mantine/core';
 import { DatesProvider } from '@mantine/dates';
-import '@mantine/dates/styles.css';
 import '@valibot/i18n/ar';
 
 export const metadata: Metadata = {
