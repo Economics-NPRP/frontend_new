@@ -12,33 +12,21 @@ import {
 	ActionIcon,
 	Alert,
 	Button,
-	Checkbox,
 	Group,
 	List,
+	Modal,
 	NumberInput,
 	Progress,
 	Stack,
-	Table,
-	TableTbody,
-	TableTd,
-	TableTh,
-	TableThead,
-	TableTr,
 	Text,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useListState } from '@mantine/hooks';
-import { IconChartLine, IconExclamationCircle, IconX } from '@tabler/icons-react';
+import { useDisclosure, useListState } from '@mantine/hooks';
+import { IconChartLine, IconExclamationCircle, IconPencil, IconX } from '@tabler/icons-react';
 
 import { AuctionDetailsContext } from '../constants';
 
-interface FormValues {
-	bid: number;
-	permit: number;
-}
-
 interface BidTableData {
-	id: number;
 	bid: number;
 	emissions: number;
 	permit: number;
@@ -50,12 +38,15 @@ export default function Prompt() {
 	const { auctionData } = useContext(AuctionDetailsContext);
 
 	const [subtotal, setSubtotal] = useState(0);
-	const [bids, bidsHandlers] = useListState<FormValues>();
+	const [bids, bidsHandlers] = useListState<BidTableData>();
 	const [selectedBids, selectedBidsHandlers] = useListState<BidTableData>();
 	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<BidTableData>>({
 		columnAccessor: 'bid',
 		direction: 'desc',
 	});
+
+	const [deletingBids, deletingBidsHandlers] = useListState<number>();
+	const [deleteModalOpened, deleteModalActions] = useDisclosure(false);
 
 	const totalPermits = useMemo(() => bids.reduce((acc, { permit }) => acc + permit, 0), [bids]);
 	const grandTotal = useMemo(
@@ -63,7 +54,7 @@ export default function Prompt() {
 		[bids],
 	);
 
-	const form = useForm<FormValues>({
+	const form = useForm<BidTableData>({
 		mode: 'uncontrolled',
 		onValuesChange: ({ bid, permit }) => setSubtotal(Number(bid || 0) * Number(permit || 0)),
 		validate: {
@@ -78,21 +69,21 @@ export default function Prompt() {
 			bid: (value) => {
 				if (!value) return 'Bid is required';
 				if (value < 1) return 'Bid must be greater than 0';
+				if (bids.some((bid) => bid.bid === value))
+					return 'You have already bid this amount. Please edit the existing bid';
 				return false;
 			},
 		},
+		transformValues: ({ bid, permit }) => ({
+			bid: Number(bid),
+			permit: Number(permit),
+			emissions: Number(permit) * 1000,
+			subtotal: Number(bid) * Number(permit),
+		}),
 	});
 
 	const bidsData = useMemo<Array<BidTableData>>(() => {
-		const transformedData = bids.map<BidTableData>(({ bid, permit }, id) => ({
-			id,
-			permit,
-			emissions: permit * 1000,
-			bid,
-			subtotal: bid * permit,
-		}));
-
-		const sortedData = sortBy(transformedData, sortStatus.columnAccessor);
+		const sortedData = sortBy(bids, sortStatus.columnAccessor);
 		return sortStatus.direction === 'asc' ? sortedData : sortedData.reverse();
 	}, [bids, sortStatus]);
 
@@ -105,12 +96,32 @@ export default function Prompt() {
 	);
 
 	const onSubmitHandler = useCallback(
-		(values: FormValues) => {
+		(values: BidTableData) => {
 			bidsHandlers.append(values);
 			form.reset();
 		},
 		[bidsHandlers],
 	);
+
+	const onStartDeleteBidHandler = useCallback(
+		(bidIds: Array<number>) => {
+			deletingBidsHandlers.setState(bidIds);
+			deleteModalActions.open();
+		},
+		[selectedBidsHandlers, deletingBidsHandlers],
+	);
+
+	const onConfirmDeleteBidHandler = useCallback(() => {
+		//	Remove the selected bids from the bids list
+		bidsHandlers.filter(({ bid }) => !deletingBids.includes(bid));
+
+		//	Deselect the selected bids
+		selectedBidsHandlers.filter(({ bid }) => !deletingBids.includes(bid));
+
+		//	Reset the deletingBids list
+		deletingBidsHandlers.setState([]);
+		deleteModalActions.close();
+	}, [selectedBidsHandlers, bidsHandlers]);
 
 	return (
 		<>
@@ -188,6 +199,22 @@ export default function Prompt() {
 							{ accessor: 'emissions', sortable: true },
 							{ accessor: 'bid', sortable: true },
 							{ accessor: 'subtotal', sortable: true },
+							{
+								accessor: 'actions',
+								render: ({ bid }) => (
+									<Group className="gap-2">
+										<ActionIcon variant="transparent">
+											<IconPencil size={16} />
+										</ActionIcon>
+										<ActionIcon
+											variant="transparent"
+											onClick={() => onStartDeleteBidHandler([bid])}
+										>
+											<IconX size={16} />
+										</ActionIcon>
+									</Group>
+								),
+							},
 						]}
 						records={bidsData}
 						striped
@@ -197,27 +224,15 @@ export default function Prompt() {
 						onSortStatusChange={setSortStatus}
 						selectedRecords={selectedBids}
 						onSelectedRecordsChange={selectedBidsHandlers.setState}
+						idAccessor="bid"
 						selectionTrigger="cell"
 					/>
-					{/* <Table>
-						<TableThead>
-							<TableTr>
-								<TableTh>
-									<Checkbox />
-								</TableTh>
-								<TableTh>Number of Permits</TableTh>
-								<TableTh>Emissions (tCO2e)</TableTh>
-								<TableTh>Price per Permit</TableTh>
-								<TableTh>Sub Total</TableTh>
-								<TableTh>
-									<ActionIcon variant="transparent">
-										<IconX size={16} />
-									</ActionIcon>
-								</TableTh>
-							</TableTr>
-						</TableThead>
-						<TableTbody>{bidsData}</TableTbody>
-					</Table> */}
+					<Button
+						disabled={selectedBids.length === 0}
+						onClick={() => onStartDeleteBidHandler(selectedBids.map(({ bid }) => bid))}
+					>
+						Delete {selectedBids.length} Bid Items
+					</Button>
 					<Stack>
 						<Text>Grand Total</Text>
 						<Group>
@@ -241,6 +256,21 @@ export default function Prompt() {
 				</Stack>
 			</Group>
 			<Button>Place a Bid</Button>
+
+			<Modal
+				title="Delete Confirmation"
+				opened={deleteModalOpened}
+				onClose={deleteModalActions.close}
+				centered
+			>
+				<Text>Are you sure you want to delete this bid?</Text>
+				<Group>
+					<Button onClick={deleteModalActions.close}>Cancel</Button>
+					<Button onClick={onConfirmDeleteBidHandler} color="red">
+						Delete
+					</Button>
+				</Group>
+			</Modal>
 		</>
 	);
 }
