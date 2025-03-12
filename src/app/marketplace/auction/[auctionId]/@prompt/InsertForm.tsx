@@ -1,5 +1,5 @@
 import { useFormatter } from 'next-intl';
-import { useCallback, useContext, useMemo } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { Alert, Button, Group, List, NumberInput, Text } from '@mantine/core';
@@ -13,8 +13,9 @@ import { BidTableData } from './types';
 export const InsertForm = () => {
 	const format = useFormatter();
 	const { auctionData } = useContext(AuctionDetailsContext);
-	const { bids, bidsHandlers, subtotal, setSubtotal, totalPermits } =
-		useContext(AuctionBiddingContext);
+	const { bids, bidsHandlers, totalPermits } = useContext(AuctionBiddingContext);
+
+	const [subtotal, setSubtotal] = useState(0);
 
 	const form = useForm<BidTableData>({
 		mode: 'uncontrolled',

@@ -26,7 +26,7 @@ export const BidTable = () => {
 		return sortStatus.direction === 'asc' ? sortedData : sortedData.reverse();
 	}, [bids, sortStatus]);
 
-	const onStartDeleteBidHandler = useCallback(
+	const onDeleteHandler = useCallback(
 		(bidIds: Array<number>) => {
 			deletingBidsHandlers.setState(bidIds);
 			deleteModalActions.open();
@@ -34,7 +34,7 @@ export const BidTable = () => {
 		[selectedBidsHandlers, deletingBidsHandlers],
 	);
 
-	const onStartEditBidHandler = useCallback((bidId: number) => {
+	const onEditHandler = useCallback((bidId: number) => {
 		setEditingBid(bidId);
 		editModalActions.open();
 	}, []);
@@ -53,13 +53,13 @@ export const BidTable = () => {
 							<Group className="gap-2">
 								<ActionIcon
 									variant="transparent"
-									onClick={() => onStartEditBidHandler(bid)}
+									onClick={() => onEditHandler(bid)}
 								>
 									<IconPencil size={16} />
 								</ActionIcon>
 								<ActionIcon
 									variant="transparent"
-									onClick={() => onStartDeleteBidHandler([bid])}
+									onClick={() => onDeleteHandler([bid])}
 								>
 									<IconX size={16} />
 								</ActionIcon>
@@ -79,8 +79,9 @@ export const BidTable = () => {
 				selectionTrigger="cell"
 			/>
 			<Button
+				color="red"
 				disabled={selectedBids.length === 0}
-				onClick={() => onStartDeleteBidHandler(selectedBids.map(({ bid }) => bid))}
+				onClick={() => onDeleteHandler(selectedBids.map(({ bid }) => bid))}
 			>
 				Delete {selectedBids.length} Bid Items
 			</Button>

@@ -20,9 +20,6 @@ export const DEFAULT_CONTEXT = {
 	},
 	setSortStatus: () => {},
 
-	subtotal: 0,
-	setSubtotal: () => {},
-
 	totalPermits: 0,
 	grandTotal: 0,
 };
@@ -46,9 +43,6 @@ export interface IAuctionBiddingContext {
 
 	sortStatus: DataTableSortStatus<BidTableData>;
 	setSortStatus: (sortStatus: DataTableSortStatus<BidTableData>) => void;
-
-	subtotal: number;
-	setSubtotal: (subtotal: number) => void;
 
 	totalPermits: number;
 	grandTotal: number;

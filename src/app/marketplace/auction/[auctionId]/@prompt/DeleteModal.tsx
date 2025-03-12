@@ -14,7 +14,7 @@ export const DeleteModal = () => {
 		deleteModalActions,
 	} = useContext(AuctionBiddingContext);
 
-	const onConfirmDeleteBidHandler = useCallback(() => {
+	const onDeleteHandler = useCallback(() => {
 		//	Remove the selected bids from the bids list
 		bidsHandlers.filter(({ bid }) => !deletingBids.includes(bid));
 
@@ -36,7 +36,7 @@ export const DeleteModal = () => {
 			<Text>Are you sure you want to delete this bid?</Text>
 			<Group>
 				<Button onClick={deleteModalActions.close}>Cancel</Button>
-				<Button onClick={onConfirmDeleteBidHandler} color="red">
+				<Button onClick={onDeleteHandler} color="red">
 					Delete
 				</Button>
 			</Group>

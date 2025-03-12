@@ -14,6 +14,7 @@ import { IconChartLine } from '@tabler/icons-react';
 import { AuctionDetailsContext } from '../constants';
 import { BidTable } from './BidTable';
 import { DeleteModal } from './DeleteModal';
+import { EditModal } from './EditModal';
 import { InsertForm } from './InsertForm';
 import { AuctionBiddingContext, DEFAULT_CONTEXT } from './constants';
 import { BidTableData } from './types';
@@ -42,7 +43,6 @@ export default function Prompt() {
 		onClose: () => setEditingBid(DEFAULT_CONTEXT.editingBid),
 	});
 
-	const [subtotal, setSubtotal] = useState(DEFAULT_CONTEXT.subtotal);
 	const totalPermits = useMemo(
 		() => bids.reduce((acc, { permit }) => acc + permit, DEFAULT_CONTEXT.totalPermits),
 		[bids],
@@ -73,9 +73,6 @@ export default function Prompt() {
 
 				sortStatus,
 				setSortStatus,
-
-				subtotal,
-				setSubtotal,
 
 				totalPermits,
 				grandTotal,
@@ -142,6 +139,7 @@ export default function Prompt() {
 			<Button>Place a Bid</Button>
 
 			<DeleteModal />
+			<EditModal />
 		</AuctionBiddingContext.Provider>
 	);
 }
