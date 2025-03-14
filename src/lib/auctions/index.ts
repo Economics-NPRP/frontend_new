@@ -1,2 +1,3 @@
 export * from './getPaginatedAuctions';
 export * from './getSingleAuction';
+export * from './joinAuction';

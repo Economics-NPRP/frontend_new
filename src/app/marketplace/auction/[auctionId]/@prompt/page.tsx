@@ -1,12 +1,10 @@
 'use client';
 
-import { DateTime } from 'luxon';
 import { DataTableSortStatus } from 'mantine-datatable';
 import { useFormatter } from 'next-intl';
 import { useContext, useMemo, useState } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
-import { LargeCountdown } from '@/components/Countdown';
 import { ActionIcon, Button, Group, Progress, Stack, Text } from '@mantine/core';
 import { useDisclosure, useListState } from '@mantine/hooks';
 import { IconChartLine } from '@tabler/icons-react';
@@ -16,6 +14,7 @@ import { BidTable } from './BidTable';
 import { DeleteModal } from './DeleteModal';
 import { EditModal } from './EditModal';
 import { InsertForm } from './InsertForm';
+import { JoinOverlay } from './JoinOverlay';
 import { AuctionBiddingContext, DEFAULT_CONTEXT } from './constants';
 import { BidTableData } from './types';
 
@@ -78,68 +77,62 @@ export default function Prompt() {
 				grandTotal,
 			}}
 		>
-			<Stack>
-				<Text>Ending In</Text>
-				<LargeCountdown targetDate={auctionData.endDatetime} />
-				<Text>
-					{DateTime.fromISO(auctionData.endDatetime).toLocaleString(
-						DateTime.DATETIME_FULL,
-					)}
-				</Text>
-			</Stack>
-			<Stack>
-				<Text>Buy Now Price</Text>
-				<Group>
-					<CurrencyBadge />
-					<Text>1,400.00</Text>
-				</Group>
-				<Button>Buy Now</Button>
-			</Stack>
-			<Group>
+			<Stack className="relative">
+				{!auctionData.hasJoined && <JoinOverlay />}
 				<Stack>
-					<Text>Minimum Winning Bid</Text>
+					<Text>Buy Now Price</Text>
 					<Group>
 						<CurrencyBadge />
-						<Text>1,105.99</Text>
+						<Text>1,400.00</Text>
 					</Group>
-					<ActionIcon>
-						<IconChartLine />
-					</ActionIcon>
+					<Button>Buy Now</Button>
 				</Stack>
-				<Stack>
-					<InsertForm />
-					<Group>
-						<Text>{totalPermits} permits bid</Text>
-						<Progress w={480} value={(totalPermits / auctionData.permits) * 100} />
-						<Text>{auctionData.permits - totalPermits} permits left</Text>
-					</Group>
-					<BidTable />
+				<Group>
 					<Stack>
-						<Text>Grand Total</Text>
+						<Text>Minimum Winning Bid</Text>
 						<Group>
-							<Stack>
-								<Text>Permits</Text>
-								<Text>{format.number(totalPermits)}</Text>
-							</Stack>
-							<Stack>
-								<Text>Emissions (tCO2e)</Text>
-								<Text>{format.number(totalPermits * 1000)}</Text>
-							</Stack>
-							<Stack>
-								<Text>Bid</Text>
-								<Group>
-									<CurrencyBadge />
-									<Text>{format.number(grandTotal, 'money')}</Text>
-								</Group>
-							</Stack>
+							<CurrencyBadge />
+							<Text>1,105.99</Text>
 						</Group>
+						<ActionIcon>
+							<IconChartLine />
+						</ActionIcon>
 					</Stack>
-				</Stack>
-			</Group>
-			<Button>Place a Bid</Button>
+					<Stack>
+						<InsertForm />
+						<Group>
+							<Text>{totalPermits} permits bid</Text>
+							<Progress w={480} value={(totalPermits / auctionData.permits) * 100} />
+							<Text>{auctionData.permits - totalPermits} permits left</Text>
+						</Group>
+						<BidTable />
+						<Stack>
+							<Text>Grand Total</Text>
+							<Group>
+								<Stack>
+									<Text>Permits</Text>
+									<Text>{format.number(totalPermits)}</Text>
+								</Stack>
+								<Stack>
+									<Text>Emissions (tCO2e)</Text>
+									<Text>{format.number(totalPermits * 1000)}</Text>
+								</Stack>
+								<Stack>
+									<Text>Bid</Text>
+									<Group>
+										<CurrencyBadge />
+										<Text>{format.number(grandTotal, 'money')}</Text>
+									</Group>
+								</Stack>
+							</Group>
+						</Stack>
+					</Stack>
+				</Group>
+				<Button>Place a Bid</Button>
 
-			<DeleteModal />
-			<EditModal />
+				<DeleteModal />
+				<EditModal />
+			</Stack>
 		</AuctionBiddingContext.Provider>
 	);
 }

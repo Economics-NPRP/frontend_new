@@ -12,6 +12,7 @@ import '@/schema/models/AuctionData';
 import '@/styles/globals.css';
 import { ColorSchemeScript } from '@mantine/core';
 import { DatesProvider } from '@mantine/dates';
+import { Notifications } from '@mantine/notifications';
 import '@valibot/i18n/ar';
 
 export const metadata: Metadata = {
@@ -57,6 +58,7 @@ export default async function RootLayout({
 							}}
 							messages={messages}
 						>
+							<Notifications />
 							{children}
 						</NextIntlClientProvider>
 					</DatesProvider>

@@ -1,9 +1,11 @@
 'use client';
 
+import { DateTime } from 'luxon';
 import Image from 'next/image';
 import { useContext } from 'react';
 
 import { AuctionTypeBadge, CategoryBadge } from '@/components/Badge';
+import { LargeCountdown } from '@/components/Countdown';
 import { Id } from '@/components/Id';
 import { Anchor, Breadcrumbs, Button, Container, Group, Stack, Text, Title } from '@mantine/core';
 import { IconArrowUpLeft, IconBox } from '@tabler/icons-react';
@@ -60,6 +62,15 @@ export default function Details() {
 					<Text>{auctionData.bookmarks}</Text>
 				</Stack>
 			</Group>
+			<Stack>
+				<Text>Ending In</Text>
+				<LargeCountdown targetDate={auctionData.endDatetime} />
+				<Text>
+					{DateTime.fromISO(auctionData.endDatetime).toLocaleString(
+						DateTime.DATETIME_FULL,
+					)}
+				</Text>
+			</Stack>
 		</>
 	);
 }
