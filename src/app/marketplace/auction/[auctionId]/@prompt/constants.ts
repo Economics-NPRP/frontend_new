@@ -27,6 +27,8 @@ export const DEFAULT_CONTEXT = {
 export interface IAuctionBiddingContext {
 	bids: BidTableData[];
 	bidsHandlers: UseListStateHandlers<BidTableData>;
+	bidConfirmationModalOpened: boolean;
+	bidConfirmationModalActions: { open: () => void; close: () => void };
 
 	selectedBids: BidTableData[];
 	selectedBidsHandlers: UseListStateHandlers<BidTableData>;
@@ -46,6 +48,8 @@ export interface IAuctionBiddingContext {
 
 	totalPermits: number;
 	grandTotal: number;
+
+	resetState: () => void;
 }
 
 //	@ts-expect-error - cannot make default context for list handlers

@@ -1,0 +1,48 @@
+'use server';
+
+import { camelCase } from 'change-case/keys';
+import { cache } from 'react';
+import 'server-only';
+
+import { getSession } from '@/lib/auth';
+import { ICreateBid } from '@/schema/models';
+import { ServerData } from '@/types';
+
+export interface IGetMyPaginatedBidsOptions {
+	auctionId: string;
+	bids: Array<ICreateBid>;
+}
+
+const getDefaultData: (...errors: Array<string>) => ServerData<{}> = (...errors) => ({
+	ok: false,
+	errors: errors,
+});
+
+type IFunctionSignature = (options: IGetMyPaginatedBidsOptions) => Promise<ServerData<{}>>;
+export const placeBid: IFunctionSignature = cache(async ({ auctionId, bids }) => {
+	const cookieHeaders = await getSession();
+	if (!cookieHeaders) return getDefaultData('You must be logged in to access this resource.');
+	const querySettings: RequestInit = {
+		method: 'POST',
+		body: JSON.stringify(bids),
+		headers: {
+			'Content-Type': 'application/json',
+			Cookie: cookieHeaders,
+		},
+	};
+
+	const queryUrl = new URL('/v1/bids/o/place/', process.env.NEXT_PUBLIC_BACKEND_URL);
+	queryUrl.searchParams.append('auctionId', auctionId);
+
+	const response = await fetch(queryUrl, querySettings);
+	const rawData = camelCase(await response.json(), 5) as ServerData<{}>;
+
+	//	If theres an issue, return the default data with errors
+	if (!rawData) return getDefaultData('No data was returned.');
+	if (rawData.detail) return getDefaultData(rawData.detail ?? '');
+	if (rawData.errors) return getDefaultData(...rawData.errors);
+
+	return {
+		ok: true,
+	};
+});

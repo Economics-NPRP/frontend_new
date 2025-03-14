@@ -15,7 +15,13 @@ export const BaseBidDataSchema = object({
 	bidder: BaseUserDataSchema,
 });
 
-export const CreateBidDataSchema = omit(BaseBidDataSchema, ['id', 'timestamp', 'bidder']);
+export const CreateBidDataSchema = omit(BaseBidDataSchema, [
+	'id',
+	'auctionId',
+	'bidderId',
+	'timestamp',
+	'bidder',
+]);
 
 export const ReadBidDataSchema = BaseBidDataSchema;
 export const UpdateBidDataSchema = CreateBidDataSchema;

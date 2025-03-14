@@ -29,7 +29,7 @@ export const JoinOverlay = () => {
 		retry: false,
 	});
 
-	const onClickHandler = useCallback(() => mutation.mutate(), []);
+	const onClickHandler = useCallback(() => mutation.mutate(), [mutation]);
 
 	return (
 		<Stack className="absolute top-0 left-0 justify-center items-center w-full h-full z-10">

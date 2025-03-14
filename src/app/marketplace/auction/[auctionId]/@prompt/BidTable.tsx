@@ -8,7 +8,10 @@ import { IconPencil, IconX } from '@tabler/icons-react';
 import { AuctionBiddingContext } from './constants';
 import { BidTableData } from './types';
 
-export const BidTable = () => {
+export interface BidTableProps {
+	readOnly?: boolean;
+}
+export const BidTable = ({ readOnly = false }: BidTableProps) => {
 	const {
 		bids,
 		selectedBids,
@@ -49,6 +52,7 @@ export const BidTable = () => {
 					{ accessor: 'subtotal', sortable: true },
 					{
 						accessor: 'actions',
+						hidden: readOnly,
 						render: ({ bid }) => (
 							<Group className="gap-2">
 								<ActionIcon
@@ -73,18 +77,20 @@ export const BidTable = () => {
 				highlightOnHover
 				sortStatus={sortStatus}
 				onSortStatusChange={setSortStatus}
-				selectedRecords={selectedBids}
-				onSelectedRecordsChange={selectedBidsHandlers.setState}
+				selectedRecords={!readOnly ? selectedBids : undefined}
+				onSelectedRecordsChange={!readOnly ? selectedBidsHandlers.setState : undefined}
 				idAccessor="bid"
 				selectionTrigger="cell"
 			/>
-			<Button
-				color="red"
-				disabled={selectedBids.length === 0}
-				onClick={() => onDeleteHandler(selectedBids.map(({ bid }) => bid))}
-			>
-				Delete {selectedBids.length} Bid Items
-			</Button>
+			{!readOnly && (
+				<Button
+					color="red"
+					disabled={selectedBids.length === 0}
+					onClick={() => onDeleteHandler(selectedBids.map(({ bid }) => bid))}
+				>
+					Delete {selectedBids.length} Bid Items
+				</Button>
+			)}
 		</>
 	);
 };

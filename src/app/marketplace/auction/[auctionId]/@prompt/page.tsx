@@ -2,7 +2,7 @@
 
 import { DataTableSortStatus } from 'mantine-datatable';
 import { useFormatter } from 'next-intl';
-import { useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { ActionIcon, Button, Group, Progress, Stack, Text } from '@mantine/core';
@@ -10,6 +10,7 @@ import { useDisclosure, useListState } from '@mantine/hooks';
 import { IconChartLine } from '@tabler/icons-react';
 
 import { AuctionDetailsContext } from '../constants';
+import { BidConfirmationModal } from './BidConfirmationModal';
 import { BidTable } from './BidTable';
 import { DeleteModal } from './DeleteModal';
 import { EditModal } from './EditModal';
@@ -22,11 +23,13 @@ export default function Prompt() {
 	const format = useFormatter();
 	const { auctionData } = useContext(AuctionDetailsContext);
 
-	const [bids, bidsHandlers] = useListState<BidTableData>(DEFAULT_CONTEXT.bids);
 	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<BidTableData>>({
 		columnAccessor: 'bid',
 		direction: 'desc',
 	});
+
+	const [bids, bidsHandlers] = useListState<BidTableData>(DEFAULT_CONTEXT.bids);
+	const [bidConfirmationModalOpened, bidConfirmationModalActions] = useDisclosure(false);
 
 	const [selectedBids, selectedBidsHandlers] = useListState<BidTableData>(
 		DEFAULT_CONTEXT.selectedBids,
@@ -51,11 +54,20 @@ export default function Prompt() {
 		[bids],
 	);
 
+	const resetState = useCallback(() => {
+		bidsHandlers.setState(DEFAULT_CONTEXT.bids);
+		selectedBidsHandlers.setState(DEFAULT_CONTEXT.selectedBids);
+		deletingBidsHandlers.setState(DEFAULT_CONTEXT.deletingBids);
+		setEditingBid(DEFAULT_CONTEXT.editingBid);
+	}, [bidsHandlers, selectedBidsHandlers, deletingBidsHandlers]);
+
 	return (
 		<AuctionBiddingContext.Provider
 			value={{
 				bids,
 				bidsHandlers,
+				bidConfirmationModalOpened,
+				bidConfirmationModalActions,
 
 				selectedBids,
 				selectedBidsHandlers,
@@ -75,6 +87,8 @@ export default function Prompt() {
 
 				totalPermits,
 				grandTotal,
+
+				resetState,
 			}}
 		>
 			<Stack className="relative">
@@ -85,7 +99,7 @@ export default function Prompt() {
 						<CurrencyBadge />
 						<Text>1,400.00</Text>
 					</Group>
-					<Button>Buy Now</Button>
+					<Button disabled={!auctionData.hasJoined}>Buy Now</Button>
 				</Stack>
 				<Group>
 					<Stack>
@@ -128,8 +142,14 @@ export default function Prompt() {
 						</Stack>
 					</Stack>
 				</Group>
-				<Button>Place a Bid</Button>
+				<Button
+					disabled={!auctionData.hasJoined || bids.length === 0}
+					onClick={bidConfirmationModalActions.open}
+				>
+					Place a Bid
+				</Button>
 
+				<BidConfirmationModal />
 				<DeleteModal />
 				<EditModal />
 			</Stack>

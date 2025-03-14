@@ -1,10 +1,10 @@
 import { ServerData } from '@/types';
 
-//	Any is used to allow for any type of return data
-//	eslint-disable-next-line
-export const throwError = async (serverData: Promise<ServerData<any>>) => {
+export const throwError = async (serverData: Promise<ServerData<{}>>) => {
 	const data = await serverData;
-	if (!data.ok)
+	if (!data.ok) {
+		console.error(data);
 		throw new Error(data.errors?.join(' ') ?? data.detail ?? 'An unknown error occurred.');
+	}
 	return data;
 };

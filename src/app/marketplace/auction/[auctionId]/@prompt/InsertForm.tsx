@@ -55,6 +55,7 @@ export const InsertForm = () => {
 
 	const onSubmitHandler = useCallback(
 		(values: BidTableData) => {
+			if (!auctionData.hasJoined) return;
 			bidsHandlers.append(values);
 			form.reset();
 		},
@@ -81,6 +82,7 @@ export const InsertForm = () => {
 						max={auctionData.permits - totalPermits}
 						name="permit"
 						key={form.key('permit')}
+						disabled={!auctionData.hasJoined}
 						{...form.getInputProps('permit')}
 					/>
 					<Text>Permits</Text>
@@ -90,11 +92,14 @@ export const InsertForm = () => {
 						min={1}
 						name="bid"
 						key={form.key('bid')}
+						disabled={!auctionData.hasJoined}
 						{...form.getInputProps('bid')}
 					/>
 					<Text>Each</Text>
 					<Text>Total QAR {format.number(subtotal, 'money')}</Text>
-					<Button type="submit">Add to List</Button>
+					<Button type="submit" disabled={!auctionData.hasJoined}>
+						Add to List
+					</Button>
 				</Group>
 			</form>
 		</>
