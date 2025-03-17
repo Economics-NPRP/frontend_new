@@ -1,0 +1,9 @@
+.title {
+	color: red;
+}
+
+.description {
+	font-size: 64px;
+
+	@apply text-red tracking-widest;
+}

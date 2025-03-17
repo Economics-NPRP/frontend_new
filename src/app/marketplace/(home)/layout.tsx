@@ -19,6 +19,7 @@ export default function Home({
 	calendar,
 	ending,
 	catalogue,
+	testing,
 }: HomeProps) {
 	return (
 		<Container className={classes.root}>
@@ -30,6 +31,7 @@ export default function Home({
 			{calendar}
 			{ending}
 			{catalogue}
+			{testing}
 		</Container>
 	);
 }
