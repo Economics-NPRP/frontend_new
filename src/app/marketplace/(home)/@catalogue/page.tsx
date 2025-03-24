@@ -1,5 +1,6 @@
 'use client';
 
+import { intersection } from 'lodash-es';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { IGetPaginatedAuctionsOptions, getPaginatedAuctions } from '@/lib/auctions';
@@ -38,9 +39,20 @@ export default function Catalogue() {
 	const [opened, { open, close }] = useDisclosure(false);
 
 	const queryParams = useMemo<IGetPaginatedAuctionsOptions>(() => {
-		const { type } = filters;
+		const { type, status } = filters;
 
-		return { page, perPage, sortBy, sortDirection, type: (type || [])[0], isLive: true };
+		const isLive = intersection(['ongoing', 'ending'], status).length > 0;
+		const hasEnded = intersection(['ended'], status).length > 0;
+
+		return {
+			page,
+			perPage,
+			sortBy,
+			sortDirection,
+			type: (type || [])[0],
+			isLive,
+			hasEnded,
+		};
 	}, [page, perPage, sortBy, sortDirection, filters]);
 
 	const { data, isLoading, isError, isSuccess } = useQuery({

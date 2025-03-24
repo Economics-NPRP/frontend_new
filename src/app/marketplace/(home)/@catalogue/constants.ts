@@ -15,7 +15,7 @@ export const DEFAULT_CONTEXT: ICatalogueContext = {
 
 	filters: {
 		type: [],
-		status: [],
+		status: ['ongoing', 'upcoming', 'ended'],
 		sector: [],
 		owner: [],
 	},
@@ -50,7 +50,7 @@ export const DEFAULT_CONTEXT: ICatalogueContext = {
 
 export interface IAuctionFilters {
 	type?: Array<AuctionType>;
-	status?: Array<'ongoing' | 'ending' | 'starting' | 'upcoming' | 'ended'>;
+	status?: Array<'ongoing' | 'upcoming' | 'ended'>;
 	sector?: Array<AuctionCategory>;
 	owner?: Array<string>;
 	date?: DatesRangeValue;

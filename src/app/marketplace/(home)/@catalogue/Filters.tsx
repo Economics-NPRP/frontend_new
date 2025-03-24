@@ -43,8 +43,6 @@ const parseFilters = (filters: IAuctionFilters) => ({
 	},
 	status: {
 		ongoing: filters.status?.includes('ongoing') || false,
-		ending: filters.status?.includes('ending') || false,
-		starting: filters.status?.includes('starting') || false,
 		upcoming: filters.status?.includes('upcoming') || false,
 		ended: filters.status?.includes('ended') || false,
 	},
@@ -189,18 +187,6 @@ const FiltersCore = () => {
 								label="Ongoing"
 								key={form.key('status.ongoing')}
 								{...form.getInputProps('status.ongoing', { type: 'checkbox' })}
-							/>
-							<Checkbox
-								className={classes.checkbox}
-								label="Ending Soon"
-								key={form.key('status.ending')}
-								{...form.getInputProps('status.ending', { type: 'checkbox' })}
-							/>
-							<Checkbox
-								className={classes.checkbox}
-								label="Starting Soon"
-								key={form.key('status.starting')}
-								{...form.getInputProps('status.starting', { type: 'checkbox' })}
 							/>
 							<Checkbox
 								className={classes.checkbox}
