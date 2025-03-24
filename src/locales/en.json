@@ -172,7 +172,13 @@
 						},
 						"status": {
 							"title": "Auction Status",
-							"description": "Find auctions that are ongoing, ended, or upcoming"
+							"description": "Find auctions that are ongoing, ended, or upcoming",
+							"options": {
+								"ongoing": "Ongoing",
+								"upcoming": "Upcoming",
+								"ended": "Ended",
+								"all": "All"
+							}
 						},
 						"sector": {
 							"title": "Sector",

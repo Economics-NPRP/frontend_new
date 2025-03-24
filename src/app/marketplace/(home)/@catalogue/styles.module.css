@@ -220,7 +220,7 @@
 						}
 					}
 
-					> .values {
+					.values {
 						@apply max-h-60;
 						@apply overflow-y-auto overflow-x-hidden;
 						@apply flex flex-col gap-2;

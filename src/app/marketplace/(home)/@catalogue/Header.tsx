@@ -18,7 +18,7 @@ import {
 import { DatesRangeValue } from '@mantine/dates';
 import { IconDownload, IconFilter, IconLayoutGrid, IconListDetails } from '@tabler/icons-react';
 
-import { CatalogueContext, DEFAULT_CONTEXT, IAuctionFilters } from './constants';
+import { CatalogueContext, DEFAULT_CONTEXT, IAuctionFilters, IAuctionStatus } from './constants';
 import classes from './styles.module.css';
 
 type ViewType = 'grid' | 'list';
@@ -65,44 +65,55 @@ export const Header = () => {
 	const filterBadges = useMemo(() => {
 		const output = [];
 
-		const selectFilters = ['type', 'status', 'sector', 'owner'];
-		(Object.entries(filters) as Array<[keyof IAuctionFilters, Array<unknown>]>).forEach(
-			([key, value]) => {
-				if (!value || (Array.isArray(value) && !value.length)) return;
-				if (selectFilters.includes(key))
+		const selectFilters = ['type', 'sector', 'owner'];
+		(
+			Object.entries(filters) as Array<
+				[keyof IAuctionFilters, Array<unknown> | IAuctionStatus]
+			>
+		).forEach(([key, value]) => {
+			if (!value || (Array.isArray(value) && !value.length)) return;
+			if (selectFilters.includes(key))
+				output.push(
+					...(value as Array<string>).map((val) => (
+						<FilterPill key={`${key}-${val}`} onRemove={() => removeFilter(key, val)}>
+							{t(`marketplace.home.catalogue.filters.accordion.${key}.title`)}: "{val}
+							"
+						</FilterPill>
+					)),
+				);
+			else if (key === 'status') {
+				const status = value as IAuctionStatus;
+				if (status !== 'all') {
 					output.push(
-						...(value as Array<string>).map((val) => (
-							<FilterPill
-								key={`${key}-${val}`}
-								onRemove={() => removeFilter(key, val)}
-							>
-								{t(`marketplace.home.catalogue.filters.accordion.${key}.title`)}: "
-								{val}"
-							</FilterPill>
-						)),
-					);
-				else if (key === 'date') {
-					const [startDate, endDate] = value as DatesRangeValue;
-					output.push(
-						<FilterPill
-							key={`date-${startDate?.getMilliseconds()}-${endDate?.getMilliseconds()}`}
-							onRemove={() => removeFilter(key)}
-						>
-							{t(`marketplace.home.catalogue.filters.accordion.${key}.title`)}: "
-							{startDate?.toLocaleDateString()} - {endDate?.toLocaleDateString()}"
-						</FilterPill>,
-					);
-				} else if (key === 'permits' || key === 'minBid' || key === 'price') {
-					const [min, max] = value as [number, number];
-					output.push(
-						<FilterPill key={`${key}-${min}-${max}`} onRemove={() => removeFilter(key)}>
-							{t(`marketplace.home.catalogue.filters.accordion.${key}.title`)}: "{min}{' '}
-							- {max}"
+						<FilterPill key={key} onRemove={() => removeFilter(key)}>
+							{t(
+								`marketplace.home.catalogue.filters.accordion.${key}.options.${status}`,
+							)}{' '}
+							Auctions
 						</FilterPill>,
 					);
 				}
-			},
-		);
+			} else if (key === 'date') {
+				const [startDate, endDate] = value as DatesRangeValue;
+				output.push(
+					<FilterPill
+						key={`date-${startDate?.getMilliseconds()}-${endDate?.getMilliseconds()}`}
+						onRemove={() => removeFilter(key)}
+					>
+						{t(`marketplace.home.catalogue.filters.accordion.${key}.title`)}: "
+						{startDate?.toLocaleDateString()} - {endDate?.toLocaleDateString()}"
+					</FilterPill>,
+				);
+			} else if (key === 'permits' || key === 'minBid' || key === 'price') {
+				const [min, max] = value as [number, number];
+				output.push(
+					<FilterPill key={`${key}-${min}-${max}`} onRemove={() => removeFilter(key)}>
+						{t(`marketplace.home.catalogue.filters.accordion.${key}.title`)}: "{min} -{' '}
+						{max}"
+					</FilterPill>,
+				);
+			}
+		});
 
 		if (!output.length)
 			output.push(

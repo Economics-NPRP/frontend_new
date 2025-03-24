@@ -14,6 +14,8 @@ import {
 	Divider,
 	Group,
 	Modal,
+	Radio,
+	RadioGroup,
 	RangeSlider,
 	RangeSliderValue,
 	Stack,
@@ -41,11 +43,7 @@ const parseFilters = (filters: IAuctionFilters) => ({
 		open: filters.type?.includes('open') || false,
 		sealed: filters.type?.includes('sealed') || false,
 	},
-	status: {
-		ongoing: filters.status?.includes('ongoing') || false,
-		upcoming: filters.status?.includes('upcoming') || false,
-		ended: filters.status?.includes('ended') || false,
-	},
+	status: filters.status,
 	sector: {
 		energy: filters.sector?.includes('energy') || false,
 		industry: filters.sector?.includes('industry') || false,
@@ -72,7 +70,7 @@ const parseRange = (value: RangeSliderValue | undefined, min: number, max: numbe
 const parseValues = (values: ReturnType<typeof parseFilters>) =>
 	({
 		type: parseCheckboxes(values.type),
-		status: parseCheckboxes(values.status),
+		status: values.status,
 		sector: parseCheckboxes(values.sector),
 		//	TODO: Add owner filter
 		date: parseDatePicker(values.date),
@@ -101,7 +99,7 @@ const FiltersCore = () => {
 
 	const numFilters = useMemo(() => {
 		const type = context.filters.type?.length || 0;
-		const status = context.filters.status?.length || 0;
+		const status = context.filters.status === 'all' ? 0 : 1;
 		const sector = context.filters.sector?.length || 0;
 		const owner = context.filters.owner?.length || 0;
 		const date = context.filters.date ? 1 : 0;
@@ -125,6 +123,41 @@ const FiltersCore = () => {
 
 	return (
 		<form onSubmit={form.onSubmit((value) => context.setFilters(value))}>
+			<Group className={classes.footer}>
+				<Text className={classes.value}>
+					{t('marketplace.home.catalogue.filters.total', {
+						value: numFilters.total,
+					})}
+				</Text>
+				<Group className={classes.actions}>
+					<Tooltip label="Clear all filters">
+						<ActionIcon
+							className={`${classes.action} ${classes.square}`}
+							onClick={handleClearFilters}
+						>
+							<IconTrash size={16} />
+						</ActionIcon>
+					</Tooltip>
+					<Tooltip label="Reset changes to filters">
+						<ActionIcon
+							className={`${classes.action} ${classes.square}`}
+							onClick={form.reset}
+						>
+							<IconArrowBackUp size={16} />
+						</ActionIcon>
+					</Tooltip>
+					<Tooltip label="Apply filter changes">
+						<Button
+							className={classes.action}
+							type="submit"
+							rightSection={<IconCheck size={16} />}
+						>
+							Apply
+						</Button>
+					</Tooltip>
+				</Group>
+			</Group>
+			<Divider />
 			<Accordion
 				classNames={{
 					root: classes.accordion,
@@ -181,27 +214,22 @@ const FiltersCore = () => {
 						<Text className={classes.description}>
 							{t('marketplace.home.catalogue.filters.accordion.status.description')}
 						</Text>
-						<Container className={classes.values}>
-							<Checkbox
-								className={classes.checkbox}
-								label="Ongoing"
-								key={form.key('status.ongoing')}
-								{...form.getInputProps('status.ongoing', { type: 'checkbox' })}
-							/>
-							<Checkbox
-								className={classes.checkbox}
-								label="Upcoming"
-								key={form.key('status.upcoming')}
-								{...form.getInputProps('status.upcoming', { type: 'checkbox' })}
-							/>
-							<Checkbox
-								className={classes.checkbox}
-								label="Ended"
-								value="ended"
-								key={form.key('status.ended')}
-								{...form.getInputProps('status.ended', { type: 'checkbox' })}
-							/>
-						</Container>
+						<RadioGroup key={form.key('status')} {...form.getInputProps('status')}>
+							<Container className={classes.values}>
+								<Radio
+									className={classes.checkbox}
+									label="Ongoing"
+									value="ongoing"
+								/>
+								<Radio
+									className={classes.checkbox}
+									label="Upcoming"
+									value="upcoming"
+								/>
+								<Radio className={classes.checkbox} label="Ended" value="ended" />
+								<Radio className={classes.checkbox} label="All" value="all" />
+							</Container>
+						</RadioGroup>
 					</AccordionPanel>
 				</AccordionItem>
 				<AccordionItem value={'sector'}>
