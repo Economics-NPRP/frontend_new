@@ -164,6 +164,14 @@
 
 			> .image > .overlay {
 				@apply opacity-50;
+
+				&.blurred {
+					@apply opacity-100;
+
+					> .text {
+						@apply !text-white/50;
+					}
+				}
 			}
 
 			> .meta {
