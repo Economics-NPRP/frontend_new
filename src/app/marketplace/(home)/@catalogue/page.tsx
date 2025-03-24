@@ -38,13 +38,26 @@ export default function Catalogue() {
 
 	const [opened, { open, close }] = useDisclosure(false);
 
-	const queryParams = useMemo<IGetPaginatedAuctionsOptions>(() => {
+	const [queryParams, setQueryParams] = useState<IGetPaginatedAuctionsOptions>({
+		page,
+		perPage,
+		sortBy,
+		sortDirection,
+		type: (filters.type || [])[0],
+		isLive: true,
+		hasEnded: true,
+	});
+
+	useEffect(() => {
 		const { type, status } = filters;
 
-		const isLive = status?.includes('ongoing') && !status?.includes('upcoming');
-		const hasEnded = status?.includes('ended') && !status?.includes('upcoming');
+		let isLive = true,
+			hasEnded = true;
+		if (status === 'ongoing') hasEnded = false;
+		else if (status === 'ended') isLive = false;
+		else if (status === 'upcoming') hasEnded = isLive = false; // TODO: seems this is not working from backend
 
-		return {
+		setQueryParams({
 			page,
 			perPage,
 			sortBy,
@@ -52,8 +65,11 @@ export default function Catalogue() {
 			type: (type || [])[0],
 			isLive,
 			hasEnded,
-		};
+		});
 	}, [page, perPage, sortBy, sortDirection, filters]);
+
+	//	Reset page if filters change
+	useEffect(() => setPage(1), [filters]);
 
 	const { data, isLoading, isError, isSuccess } = useQuery({
 		queryKey: ['marketplace', '@catalogue', JSON.stringify(queryParams)],
