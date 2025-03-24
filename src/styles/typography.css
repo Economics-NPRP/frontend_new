@@ -3,49 +3,42 @@
 		@apply font-serif;
 		@apply text-3xl;
 		@apply font-bold;
-		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
 	}
 	.heading-2 {
 		@apply font-serif;
 		@apply text-2xl;
 		@apply font-bold;
-		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
 	}
 	.heading-2-w {
 		@apply font-serif;
 		@apply text-2xl;
 		@apply font-bold;
-		@apply tracking-normal;
 		@apply text-white dark:text-dark-600;
 	}
 	.heading-3 {
 		@apply font-serif;
 		@apply text-lg;
 		@apply font-semibold;
-		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
 	}
 	.heading-3-b {
 		@apply font-serif;
 		@apply text-lg;
 		@apply font-bold;
-		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
 	}
 	.heading-3-w {
 		@apply font-serif;
 		@apply text-lg;
 		@apply font-semibold;
-		@apply tracking-normal;
 		@apply text-white dark:text-dark-600;
 	}
 	.heading-3-b-w {
 		@apply font-serif;
 		@apply text-lg;
 		@apply font-bold;
-		@apply tracking-normal;
 		@apply text-white dark:text-dark-600;
 	}
 	.heading-4 {
@@ -64,24 +57,39 @@
 		@apply uppercase;
 	}
 
+	.display-xl {
+		@apply font-sans;
+		@apply text-3xl;
+		@apply font-bold;
+		@apply text-dark-600 dark:text-white;
+	}
+	.display-xl-w {
+		@apply font-sans;
+		@apply text-3xl;
+		@apply font-bold;
+		@apply text-white/50 dark:text-dark-600;
+	}
 	.display-lg {
 		@apply font-sans;
 		@apply text-lg;
 		@apply font-bold;
-		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
+	}
+	.display-lg-w {
+		@apply font-sans;
+		@apply text-lg;
+		@apply font-bold;
+		@apply text-white dark:text-dark-600;
 	}
 	.display-md {
 		@apply font-sans;
 		@apply text-base;
 		@apply font-bold;
-		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
 	}
 	.display-md-15 {
 		@apply font-sans;
 		@apply font-bold;
-		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
 
 		font-size: 15px;
@@ -91,97 +99,83 @@
 		@apply font-sans;
 		@apply text-base;
 		@apply font-semibold;
-		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
 	}
 	.display-md-d3 {
 		@apply font-sans;
 		@apply text-base;
 		@apply font-bold;
-		@apply tracking-normal;
 		@apply text-dark-300 dark:text-dark-50;
 	}
 	.display-md-g6 {
 		@apply font-sans;
 		@apply text-base;
 		@apply font-bold;
-		@apply tracking-normal;
 		@apply text-gray-600 dark:text-dark-200;
 	}
 	.display-md-sb-g6 {
 		@apply font-sans;
 		@apply text-base;
 		@apply font-semibold;
-		@apply tracking-normal;
 		@apply text-gray-600 dark:text-dark-200;
 	}
 	.display-sm {
 		@apply font-sans;
 		@apply text-sm;
 		@apply font-bold;
-		@apply tracking-normal;
 		@apply text-dark-200 dark:text-dark-100;
 	}
 	.display-sm-sb {
 		@apply font-sans;
 		@apply text-sm;
 		@apply font-semibold;
-		@apply tracking-normal;
 		@apply text-dark-200 dark:text-dark-100;
 	}
 	.display-sm-d3 {
 		@apply font-sans;
 		@apply text-sm;
 		@apply font-bold;
-		@apply tracking-normal;
 		@apply text-dark-300 dark:text-dark-50;
 	}
 	.display-sm-d6 {
 		@apply font-sans;
 		@apply text-sm;
 		@apply font-bold;
-		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
 	}
 	.display-sm-w {
 		@apply font-sans;
 		@apply text-sm;
 		@apply font-bold;
-		@apply tracking-normal;
 		@apply text-white dark:text-dark-600;
 	}
 	.display-sm-sb-d3 {
 		@apply font-sans;
 		@apply text-sm;
 		@apply font-semibold;
-		@apply tracking-normal;
 		@apply text-dark-300 dark:text-dark-50;
 	}
 	.display-sm-sb-d6 {
 		@apply font-sans;
 		@apply text-sm;
 		@apply font-semibold;
-		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
 	}
 	.display-sm-sb-w {
 		@apply font-sans;
 		@apply text-sm;
 		@apply font-semibold;
-		@apply tracking-normal;
 		@apply text-white dark:text-dark-600;
 	}
 	.display-xs {
 		@apply font-sans;
 		@apply text-xs;
 		@apply font-semibold;
-		@apply tracking-normal;
 		@apply text-dark-300 dark:text-dark-50;
 	}
 	.display-xs-13 {
 		@apply font-sans;
 		@apply font-semibold;
-		@apply tracking-normal;
 		@apply text-dark-300 dark:text-dark-50;
 
 		font-size: 13px;
@@ -191,13 +185,11 @@
 		@apply font-sans;
 		@apply text-xs;
 		@apply font-semibold;
-		@apply tracking-normal;
 		@apply text-white dark:text-dark-600;
 	}
 	.display-xs-13-w {
 		@apply font-sans;
 		@apply font-semibold;
-		@apply tracking-normal;
 		@apply text-white dark:text-dark-600;
 
 		font-size: 13px;
@@ -208,21 +200,18 @@
 		@apply font-sans;
 		@apply text-base;
 		@apply font-normal;
-		@apply tracking-normal;
 		@apply text-dark-300 dark:text-dark-50;
 	}
 	.paragraph-md-w {
 		@apply font-sans;
 		@apply text-base;
 		@apply font-normal;
-		@apply tracking-normal;
 		@apply text-white dark:text-dark-600;
 	}
 	.paragraph-sm {
 		@apply font-sans;
 		@apply text-sm;
 		@apply font-normal;
-		@apply tracking-normal;
 		@apply text-dark-300 dark:text-dark-50;
 	}
 
@@ -230,35 +219,30 @@
 		@apply font-sans;
 		@apply text-sm;
 		@apply font-normal;
-		@apply tracking-normal;
 		@apply text-white dark:text-dark-600;
 	}
 	.paragraph-sm-g3 {
 		@apply font-sans;
 		@apply text-sm;
 		@apply font-normal;
-		@apply tracking-normal;
 		@apply text-gray-300 dark:text-dark-300;
 	}
 	.paragraph-sm-g5 {
 		@apply font-sans;
 		@apply text-sm;
 		@apply font-normal;
-		@apply tracking-normal;
 		@apply text-gray-500 dark:text-dark-200;
 	}
 	.paragraph-sm-g6 {
 		@apply font-sans;
 		@apply text-sm;
 		@apply font-normal;
-		@apply tracking-normal;
 		@apply text-gray-600 dark:text-dark-200;
 	}
 	.paragraph-xs {
 		@apply font-sans;
 		@apply text-xs;
 		@apply font-normal;
-		@apply tracking-normal;
 		@apply text-dark-300 dark:text-dark-50;
 	}
 
@@ -266,7 +250,6 @@
 		@apply font-serif;
 		@apply text-2xl;
 		@apply font-bold;
-		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
 	}
 
@@ -274,42 +257,36 @@
 		@apply font-serif;
 		@apply text-2xl;
 		@apply font-bold;
-		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
 	}
 	.numeric-xl-n {
 		@apply font-serif;
 		@apply text-2xl;
 		@apply font-normal;
-		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
 	}
 	.numeric-xl-w {
 		@apply font-serif;
 		@apply text-2xl;
 		@apply font-bold;
-		@apply tracking-normal;
 		@apply text-white dark:text-dark-600;
 	}
 	.numeric-xl-n-w {
 		@apply font-serif;
 		@apply text-2xl;
 		@apply font-normal;
-		@apply tracking-normal;
 		@apply text-white dark:text-dark-600;
 	}
 	.numeric-lg {
 		@apply font-serif;
 		@apply text-xl;
 		@apply font-bold;
-		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
 	}
 	.numeric-md {
 		@apply font-serif;
 		@apply text-lg;
 		@apply font-bold;
-		@apply tracking-normal;
 		@apply text-dark-600 dark:text-white;
 	}
 }
