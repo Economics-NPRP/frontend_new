@@ -25,7 +25,7 @@ import {
 } from '@mantine/core';
 import { IconCheck, IconCopy } from '@tabler/icons-react';
 
-import { AuctionDetailsContext } from '../constants';
+import { BidTableContext } from './constants';
 
 const generateBidRows = (bids: Array<IBidData>, format: ReturnType<typeof createFormatter>) =>
 	bids.map(({ id, amount, permits, timestamp, bidder }) => (
@@ -66,7 +66,7 @@ const generateBidRows = (bids: Array<IBidData>, format: ReturnType<typeof create
 
 export default function Bids() {
 	const { winningPage, setWinningPage, minePage, setMinePage, winningBids, myBids } =
-		useContext(AuctionDetailsContext);
+		useContext(BidTableContext);
 
 	const format = useFormatter();
 

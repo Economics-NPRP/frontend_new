@@ -1,4 +1,4 @@
-import { BidTable } from 'app/marketplace/auction/[auctionId]/@prompt/BidTable';
+import { BidTable } from 'app/marketplace/auction/[auctionId]/(details)/@prompt/BidTable';
 import { useFormatter } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { useCallback, useContext } from 'react';

@@ -1,23 +1,14 @@
 import { createContext } from 'react';
 
-import { DefaultAuctionData, IAuctionData, IBidData } from '@/schema/models';
-import { OffsetPaginatedData, ServerData } from '@/types';
+import { IBidData } from '@/schema/models';
+import { OffsetPaginatedData } from '@/types';
 
-export const DEFAULT_CONTEXT: IAuctionDetailsContext = {
+export const DEFAULT_CONTEXT: IBidTableContext = {
 	winningPage: 1,
 	setWinningPage: () => {},
 
 	minePage: 1,
 	setMinePage: () => {},
-
-	auctionData: {
-		ok: false,
-		errors: [],
-		...DefaultAuctionData,
-	},
-	isAuctionDataLoading: true,
-	isAuctionDataError: false,
-	isAuctionDataSuccess: false,
 
 	winningBids: {
 		ok: false,
@@ -48,17 +39,12 @@ export const DEFAULT_CONTEXT: IAuctionDetailsContext = {
 	isMyBidsSuccess: false,
 };
 
-export interface IAuctionDetailsContext {
+export interface IBidTableContext {
 	winningPage: number;
 	setWinningPage: (page: number) => void;
 
 	minePage: number;
 	setMinePage: (page: number) => void;
-
-	auctionData: ServerData<IAuctionData>;
-	isAuctionDataLoading?: boolean;
-	isAuctionDataError?: boolean;
-	isAuctionDataSuccess?: boolean;
 
 	winningBids: OffsetPaginatedData<IBidData>;
 	isWinningBidsLoading?: boolean;
@@ -71,4 +57,4 @@ export interface IAuctionDetailsContext {
 	isMyBidsSuccess?: boolean;
 }
 
-export const AuctionDetailsContext = createContext<IAuctionDetailsContext>(DEFAULT_CONTEXT);
+export const BidTableContext = createContext<IBidTableContext>(DEFAULT_CONTEXT);

@@ -8,7 +8,11 @@ import { getMyPaginatedBids, getPaginatedWinningBids } from '@/lib/bids/open';
 import { Stack } from '@mantine/core';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
-import { AuctionDetailsContext, DEFAULT_CONTEXT } from './constants';
+import { DEFAULT_CONTEXT as BID_TABLE_DEFAULT_CONTEXT, BidTableContext } from './@bids/constants';
+import {
+	DEFAULT_CONTEXT as AUCTION_DETAILS_DEFAULT_CONTEXT,
+	AuctionDetailsContext,
+} from './constants';
 
 export interface AuctionDetailsProps {
 	bids: ReactNode;
@@ -67,33 +71,37 @@ export default function AuctionPage({ bids, details, prompt }: AuctionDetailsPro
 	return (
 		<AuctionDetailsContext.Provider
 			value={{
-				winningPage,
-				setWinningPage,
-
-				minePage,
-				setMinePage,
-
-				auctionData: auctionData || DEFAULT_CONTEXT.auctionData,
+				auctionData: auctionData || AUCTION_DETAILS_DEFAULT_CONTEXT.auctionData,
 				isAuctionDataLoading,
 				isAuctionDataError,
 				isAuctionDataSuccess,
-
-				winningBids: winningBids || DEFAULT_CONTEXT.winningBids,
-				isWinningBidsLoading,
-				isWinningBidsError,
-				isWinningBidsSuccess,
-
-				myBids: myBids || DEFAULT_CONTEXT.myBids,
-				isMyBidsLoading,
-				isMyBidsError,
-				isMyBidsSuccess,
 			}}
 		>
-			<Stack>
-				{details}
-				{bids}
-				{prompt}
-			</Stack>
+			<BidTableContext.Provider
+				value={{
+					winningPage,
+					setWinningPage,
+
+					minePage,
+					setMinePage,
+
+					winningBids: winningBids || BID_TABLE_DEFAULT_CONTEXT.winningBids,
+					isWinningBidsLoading,
+					isWinningBidsError,
+					isWinningBidsSuccess,
+
+					myBids: myBids || BID_TABLE_DEFAULT_CONTEXT.myBids,
+					isMyBidsLoading,
+					isMyBidsError,
+					isMyBidsSuccess,
+				}}
+			>
+				<Stack>
+					{details}
+					{bids}
+					{prompt}
+				</Stack>
+			</BidTableContext.Provider>
 		</AuctionDetailsContext.Provider>
 	);
 }

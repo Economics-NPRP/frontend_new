@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { IGetPaginatedAuctionsOptions, getPaginatedAuctions } from '@/lib/auctions';
 import { Container } from '@mantine/core';

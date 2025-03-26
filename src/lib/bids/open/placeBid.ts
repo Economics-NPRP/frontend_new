@@ -8,7 +8,7 @@ import { getSession } from '@/lib/auth';
 import { ICreateBid } from '@/schema/models';
 import { ServerData } from '@/types';
 
-export interface IGetMyPaginatedBidsOptions {
+export interface IPlaceBidOptions {
 	auctionId: string;
 	bids: Array<ICreateBid>;
 }
@@ -18,7 +18,7 @@ const getDefaultData: (...errors: Array<string>) => ServerData<{}> = (...errors)
 	errors: errors,
 });
 
-type IFunctionSignature = (options: IGetMyPaginatedBidsOptions) => Promise<ServerData<{}>>;
+type IFunctionSignature = (options: IPlaceBidOptions) => Promise<ServerData<{}>>;
 export const placeBid: IFunctionSignature = cache(async ({ auctionId, bids }) => {
 	const cookieHeaders = await getSession();
 	if (!cookieHeaders) return getDefaultData('You must be logged in to access this resource.');
