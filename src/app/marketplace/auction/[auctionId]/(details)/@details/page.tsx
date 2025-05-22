@@ -26,7 +26,11 @@ export default function Details() {
 				</Breadcrumbs>
 			</Group>
 			<Container className="relative size-80">
-				<Image src={auctionData.image || '/'} alt={'Image of a power plant'} fill />
+				<Image
+					src={auctionData.image || '/imgs/industry/flare.jpg'}
+					alt={'Image of a power plant'}
+					fill
+				/>
 			</Container>
 			<Id value={auctionData.id} variant="industry" />
 			<Title order={1}>Flare Gas Burning</Title>

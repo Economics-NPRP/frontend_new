@@ -146,7 +146,7 @@ export default function Prompt() {
 					disabled={!auctionData.hasJoined || bids.length === 0}
 					onClick={bidConfirmationModalActions.open}
 				>
-					Place a Bid
+					Place Bids
 				</Button>
 
 				<BidConfirmationModal />

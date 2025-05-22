@@ -5,23 +5,20 @@ import { ReactNode, useState } from 'react';
 
 import { getSingleAuction } from '@/lib/auctions';
 import { getMyPaginatedBids, getPaginatedWinningBids } from '@/lib/bids/open';
+import { getMyOpenAuctionResults } from '@/lib/results/open/getMyOpenAuctionResults';
 import { Stack } from '@mantine/core';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
-import {
-	DEFAULT_CONTEXT as BID_TABLE_DEFAULT_CONTEXT,
-	BidTableContext,
-} from '../(details)/@bids/constants';
-import Bids from '../(details)/@bids/page';
 import {
 	DEFAULT_CONTEXT as AUCTION_RESULTS_DEFAULT_CONTEXT,
 	AuctionResultsContext,
 } from './constants';
 
 export interface AuctionResultsProps {
+	details: ReactNode;
 	ticket: ReactNode;
 }
-export default function AuctionResults({ ticket }: AuctionResultsProps) {
+export default function AuctionResults({ details, ticket }: AuctionResultsProps) {
 	const { auctionId } = useParams();
 
 	const [winningPage, setWinningPage] = useState(1);
@@ -35,6 +32,17 @@ export default function AuctionResults({ ticket }: AuctionResultsProps) {
 	} = useQuery({
 		queryKey: ['marketplace', '@catalogue', 'auctionData', auctionId],
 		queryFn: () => getSingleAuction(auctionId as string),
+		placeholderData: keepPreviousData,
+	});
+
+	const {
+		data: myOpenAuctionResults,
+		isLoading: isMyOpenAuctionResultsLoading,
+		isError: isMyOpenAuctionResultsError,
+		isSuccess: isMyOpenAuctionResultsSuccess,
+	} = useQuery({
+		queryKey: ['marketplace', '@catalogue', 'myOpenAuctionResults', auctionId],
+		queryFn: () => getMyOpenAuctionResults(auctionId as string),
 		placeholderData: keepPreviousData,
 	});
 
@@ -55,14 +63,14 @@ export default function AuctionResults({ ticket }: AuctionResultsProps) {
 	});
 
 	const {
-		data: myBids,
-		isLoading: isMyBidsLoading,
-		isError: isMyBidsError,
-		isSuccess: isMyBidsSuccess,
+		data: allBids,
+		isLoading: isAllBidsLoading,
+		isError: isAllBidsError,
+		isSuccess: isAllBidsSuccess,
 	} = useQuery({
-		queryKey: ['marketplace', '@catalogue', 'myBids', auctionId, winningPage],
+		queryKey: ['marketplace', '@catalogue', 'allBids', auctionId, winningPage],
 		queryFn: () =>
-			getMyPaginatedBids({
+			getPaginatedWinningBids({
 				auctionId: auctionId as string,
 				page: minePage,
 				perPage: 10,
@@ -73,36 +81,38 @@ export default function AuctionResults({ ticket }: AuctionResultsProps) {
 	return (
 		<AuctionResultsContext.Provider
 			value={{
+				winningPage,
+				setWinningPage,
+
+				minePage,
+				setMinePage,
+
+				winningBids: winningBids || AUCTION_RESULTS_DEFAULT_CONTEXT.winningBids,
+				isWinningBidsLoading,
+				isWinningBidsError,
+				isWinningBidsSuccess,
+
+				allBids: allBids || AUCTION_RESULTS_DEFAULT_CONTEXT.allBids,
+				isAllBidsLoading,
+				isAllBidsError,
+				isAllBidsSuccess,
+
 				auctionData: auctionData || AUCTION_RESULTS_DEFAULT_CONTEXT.auctionData,
 				isAuctionDataLoading,
 				isAuctionDataError,
 				isAuctionDataSuccess,
+
+				myOpenAuctionResults:
+					myOpenAuctionResults || AUCTION_RESULTS_DEFAULT_CONTEXT.myOpenAuctionResults,
+				isMyOpenAuctionResultsLoading,
+				isMyOpenAuctionResultsError,
+				isMyOpenAuctionResultsSuccess,
 			}}
 		>
-			<BidTableContext.Provider
-				value={{
-					winningPage,
-					setWinningPage,
-
-					minePage,
-					setMinePage,
-
-					winningBids: winningBids || BID_TABLE_DEFAULT_CONTEXT.winningBids,
-					isWinningBidsLoading,
-					isWinningBidsError,
-					isWinningBidsSuccess,
-
-					myBids: myBids || BID_TABLE_DEFAULT_CONTEXT.myBids,
-					isMyBidsLoading,
-					isMyBidsError,
-					isMyBidsSuccess,
-				}}
-			>
-				<Stack>
-					{ticket}
-					<Bids />
-				</Stack>
-			</BidTableContext.Provider>
+			<Stack>
+				{ticket}
+				{details}
+			</Stack>
 		</AuctionResultsContext.Provider>
 	);
 }
