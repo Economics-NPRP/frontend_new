@@ -51,6 +51,20 @@
 			&.inputs {
 				@apply gap-4 items-stretch;
 
+				> .otp {
+					@apply justify-center items-center gap-2;
+
+					> .input {
+						@apply w-12 h-16;
+
+						input {
+							@apply h-full;
+							@apply bg-gray-100 border-none;
+							@apply display-lg;
+						}
+					}
+				}
+
 				> .row {
 					@apply justify-between;
 				}

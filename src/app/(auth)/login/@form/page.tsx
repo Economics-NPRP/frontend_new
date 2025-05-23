@@ -2,7 +2,16 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 
-import { Anchor, Button, Checkbox, Group, Stack, Text, TextInput } from '@mantine/core';
+import {
+	Anchor,
+	Button,
+	Checkbox,
+	Group,
+	PasswordInput,
+	Stack,
+	Text,
+	TextInput,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconKey, IconMail } from '@tabler/icons-react';
 
@@ -29,7 +38,7 @@ export default function Form() {
 					key={form.key('email')}
 					{...form.getInputProps('email')}
 				/>
-				<TextInput
+				<PasswordInput
 					type="password"
 					label="Password"
 					placeholder="Enter password..."

@@ -4,23 +4,25 @@ import { IconArrowLeft, IconBox } from '@tabler/icons-react';
 import classes from '../styles.module.css';
 
 export interface HeaderProps {
-	heading?: string;
-	subheading?: string;
-	returnUrl?: string;
-	returnText?: string;
+	heading: string;
+	subheading: string;
+	returnPage?: {
+		url: string;
+		text: string;
+	};
 }
-export default function Header({ heading, subheading, returnUrl, returnText }: HeaderProps) {
+export default function Header({ heading, subheading, returnPage }: HeaderProps) {
 	return (
 		<Stack className={`${classes.header} ${classes.section}`}>
-			{returnUrl && (
+			{returnPage && (
 				<Button
 					component="a"
-					href={returnUrl}
+					href={returnPage.url}
 					variant="subtle"
 					leftSection={<IconArrowLeft size={16} />}
 					className={classes.return}
 				>
-					{returnText}
+					{returnPage.text}
 				</Button>
 			)}
 			<IconBox size={24} />
