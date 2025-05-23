@@ -12,6 +12,7 @@ const config = {
         "mantine-breakpoint-lg": "75em",
         "mantine-breakpoint-xl": "88em",
         "mantine-breakpoint-2xl": "96em",
+        "mantine-breakpoint-3xl": "112em",
       },
     },
     autoprefixer: {},

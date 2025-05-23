@@ -5,7 +5,10 @@ import {
 	MantineShadowsValues,
 } from '@mantine/core';
 
-export const breakpoints: MantineBreakpointsValues = DEFAULT_THEME.breakpoints;
+export const breakpoints: MantineBreakpointsValues = {
+	...DEFAULT_THEME.breakpoints,
+	'3xl': '1920px',
+};
 
 export const shadows: Partial<MantineShadowsValues> = {
 	lg: '6px 6px 0px 0px var(--shadow-color-1)',

@@ -1,0 +1,100 @@
+.root {
+	@apply w-screen h-screen;
+	@apply flex-nowrap place-content-center items-center lg:items-end gap-0;
+
+	> .bg {
+		@apply absolute top-0 left-0 size-full;
+		@apply hidden;
+		@apply -z-10;
+
+		> img {
+			@apply object-cover object-center;
+			@apply brightness-75;
+		}
+
+		> .overlay {
+			@apply absolute left-0 top-0 size-full;
+			@apply bg-gradient-to-b from-transparent from-25% to-black opacity-50;
+		}
+	}
+
+	> .panel {
+		@apply w-full;
+		@apply items-stretch flex-nowrap overflow-y-auto;
+		@apply gap-8 px-4;
+		@apply border-gray-300 bg-white;
+
+		.section {
+			@apply flex flex-col items-stretch;
+
+			.link {
+				@apply text-sm leading-tight;
+				@apply text-blue-600;
+			}
+
+			&.header {
+				@apply items-center gap-1 px-4 pb-4;
+
+				> .heading {
+					@apply text-center heading-2;
+				}
+
+				> .subheading {
+					@apply text-center paragraph-sm;
+				}
+			}
+
+			&.inputs {
+				@apply gap-4 items-stretch;
+
+				> .row {
+					@apply justify-between;
+				}
+			}
+
+			&.action {
+				@apply gap-2;
+
+				> .prompt {
+					@apply flex flex-row place-content-center items-baseline gap-1;
+
+					> .text {
+						@apply text-center paragraph-sm-g6;
+					}
+				}
+			}
+		}
+
+		> form {
+			@apply contents;
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			@apply px-16;
+
+			> .bg {
+				@apply block;
+			}
+
+			> .panel {
+				@apply max-h-[95vh] w-[480px];
+				@apply px-8 py-12;
+				@apply border shadow-md;
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-xl {
+		.root {
+			@apply px-32;
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-3xl {
+		.root {
+			@apply items-center;
+		}
+	}
+}
