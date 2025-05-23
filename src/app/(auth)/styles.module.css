@@ -49,7 +49,7 @@
 			}
 
 			&.inputs {
-				@apply gap-4 items-stretch;
+				@apply gap-2 items-stretch;
 
 				> .otp {
 					@apply justify-center items-center gap-2;
@@ -66,26 +66,38 @@
 				}
 
 				> .row {
-					@apply justify-between;
+					@apply justify-between mt-2;
 				}
 			}
 
 			&.action {
 				@apply gap-2;
+			}
 
-				> .prompt {
-					@apply flex flex-row place-content-center items-baseline;
-					@apply px-8 gap-1;
+			&.map {
+				@apply bg-gray-100;
+			}
 
-					> .text {
-						@apply text-center paragraph-sm-g6;
-					}
+			.prompt {
+				@apply flex flex-row place-content-center items-baseline;
+				@apply px-8 gap-1;
+
+				> .text {
+					@apply text-center paragraph-sm-g6;
 				}
 			}
 		}
 
-		> form {
+		form {
 			@apply contents;
+		}
+
+		> .row {
+			@apply flex-nowrap items-stretch gap-8;
+
+			.section {
+				@apply flex-1;
+			}
 		}
 	}
 }
@@ -103,6 +115,10 @@
 				@apply max-h-[95vh] w-[480px];
 				@apply px-8 py-12;
 				@apply border shadow-md;
+
+				&:has(.register) {
+					@apply w-[800px];
+				}
 			}
 		}
 	}

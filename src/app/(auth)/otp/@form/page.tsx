@@ -2,11 +2,9 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 
-import { Anchor, Button, Checkbox, Group, PinInput, Stack, Text, TextInput } from '@mantine/core';
+import classes from '@/pages/(auth)/styles.module.css';
+import { Anchor, Button, Group, PinInput, Stack, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconKey, IconMail } from '@tabler/icons-react';
-
-import classes from '../../styles.module.css';
 
 export default function Form() {
 	const t = useTranslations();

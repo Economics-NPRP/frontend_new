@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import Header from '../(header)/page';
+import Header from '@/pages/(auth)/(header)/page';
 
 export interface LoginProps {
 	form: ReactNode;

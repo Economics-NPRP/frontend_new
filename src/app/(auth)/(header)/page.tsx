@@ -1,7 +1,6 @@
+import classes from '@/pages/(auth)/styles.module.css';
 import { Button, Stack, Text, Title } from '@mantine/core';
 import { IconArrowLeft, IconBox } from '@tabler/icons-react';
-
-import classes from '../styles.module.css';
 
 export interface HeaderProps {
 	heading: string;

@@ -3,11 +3,11 @@
 import { useLocale, useTranslations } from 'next-intl';
 
 import classes from '@/pages/(auth)/styles.module.css';
-import { Button, Group, Stack, Text, TextInput } from '@mantine/core';
+import { Button, Stack, TextInput, Textarea } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconMail } from '@tabler/icons-react';
+import { IconBuilding, IconMail } from '@tabler/icons-react';
 
-export default function Form() {
+export default function Contact() {
 	const t = useTranslations();
 	const locale = useLocale();
 
@@ -19,6 +19,15 @@ export default function Form() {
 		<form onSubmit={form.onSubmit((value) => console.log(value))}>
 			<Stack className={`${classes.inputs} ${classes.section}`}>
 				<TextInput
+					label="Company Name"
+					placeholder="Enter company name..."
+					autoComplete="company"
+					leftSection={<IconBuilding size={16} />}
+					required
+					key={form.key('company')}
+					{...form.getInputProps('company')}
+				/>
+				<TextInput
 					type="email"
 					label="Email Address"
 					placeholder="Enter email address..."
@@ -28,15 +37,16 @@ export default function Form() {
 					key={form.key('email')}
 					{...form.getInputProps('email')}
 				/>
-			</Stack>
-
-			<Stack className={`${classes.action} ${classes.section}`}>
-				<Button type="submit">Send Email</Button>
-				<Group className={classes.prompt}>
-					<Text className={classes.text}>
-						Please note the email may take a few minutes to arrive.
-					</Text>
-				</Group>
+				<Textarea
+					label="Message"
+					placeholder="Enter message..."
+					minRows={3}
+					key={form.key('message')}
+					{...form.getInputProps('message')}
+				/>
+				<Button type="submit" className="mt-2">
+					Send
+				</Button>
 			</Stack>
 		</form>
 	);

@@ -5,9 +5,8 @@ import { useLocale, useTranslations } from 'next-intl';
 import classes from '@/pages/(auth)/styles.module.css';
 import { Button, Group, Stack, Text, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconMail } from '@tabler/icons-react';
 
-export default function Form() {
+export default function Contact() {
 	const t = useTranslations();
 	const locale = useLocale();
 
@@ -19,22 +18,19 @@ export default function Form() {
 		<form onSubmit={form.onSubmit((value) => console.log(value))}>
 			<Stack className={`${classes.inputs} ${classes.section}`}>
 				<TextInput
-					type="email"
-					label="Email Address"
-					placeholder="Enter email address..."
-					autoComplete="email"
-					leftSection={<IconMail size={16} />}
+					label="Registration Code"
+					placeholder="Enter registration code..."
 					required
-					key={form.key('email')}
-					{...form.getInputProps('email')}
+					key={form.key('code')}
+					{...form.getInputProps('code')}
 				/>
-			</Stack>
-
-			<Stack className={`${classes.action} ${classes.section}`}>
-				<Button type="submit">Send Email</Button>
+				<Button type="submit" className="mt-2">
+					Submit Code
+				</Button>
 				<Group className={classes.prompt}>
 					<Text className={classes.text}>
-						Please note the email may take a few minutes to arrive.
+						Continuing will create an account using the code provided. If you do not
+						have a code, please contact us.
 					</Text>
 				</Group>
 			</Stack>

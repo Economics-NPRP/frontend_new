@@ -1,18 +1,19 @@
 import Image from 'next/image';
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
+import classes from '@/pages/(auth)/styles.module.css';
 import { Container, Stack } from '@mantine/core';
-
-import classes from './styles.module.css';
 
 export interface AuthProps {
 	children: ReactNode;
 }
 export default function Auth({ children }: AuthProps) {
 	//	Generate random category image to show
-	const imgIndex = Math.floor(Math.random() * Object.keys(AuctionCategoryVariants).length);
-	const bgImg = Object.entries(AuctionCategoryVariants)[imgIndex][1].image;
+	const bgImg = useMemo(() => {
+		const imgIndex = Math.floor(Math.random() * Object.keys(AuctionCategoryVariants).length);
+		return Object.entries(AuctionCategoryVariants)[imgIndex][1].image;
+	}, []);
 
 	return (
 		<Stack className={classes.root}>

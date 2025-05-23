@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 
+import classes from '@/pages/(auth)/styles.module.css';
 import {
 	Anchor,
 	Button,
@@ -14,8 +15,6 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconKey, IconMail } from '@tabler/icons-react';
-
-import classes from '../../styles.module.css';
 
 export default function Form() {
 	const t = useTranslations();
@@ -64,8 +63,10 @@ export default function Form() {
 				<Button type="submit">Login</Button>
 				<Group className={classes.prompt}>
 					<Text className={classes.text}>Don't have an account? </Text>
-					<Anchor className={classes.link} href="/contact">
-						Contact us
+					<Anchor className={classes.link} href="/register">
+						{/* TODO: add register page with either contact us or add invitation code */}
+						{/* TODO: another page (/onboarding) after being invited to create password */}
+						Click here
 					</Anchor>
 				</Group>
 			</Stack>
