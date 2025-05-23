@@ -8,7 +8,7 @@ import { IconKey, IconMail } from '@tabler/icons-react';
 
 import classes from '../../styles.module.css';
 
-export default function Banner() {
+export default function Form() {
 	const t = useTranslations();
 	const locale = useLocale();
 
