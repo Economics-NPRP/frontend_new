@@ -1,9 +1,15 @@
 'use client';
 
+import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { useLocale, useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { useCallback, useState } from 'react';
 
+import { login } from '@/lib/auth/login';
 import classes from '@/pages/(auth)/styles.module.css';
+import { DefaultLoginData, ILoginData, LoginDataSchema } from '@/schema/models';
 import {
+	Alert,
 	Anchor,
 	Button,
 	Checkbox,
@@ -14,19 +20,60 @@ import {
 	TextInput,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconKey, IconMail } from '@tabler/icons-react';
+import { IconExclamationCircle, IconKey, IconMail } from '@tabler/icons-react';
 
 export default function Form() {
 	const t = useTranslations();
 	const locale = useLocale();
+	const router = useRouter();
+	const [formError, setFormError] = useState<string | null>(null);
 
-	const form = useForm({
+	const form = useForm<ILoginData>({
 		mode: 'uncontrolled',
+		initialValues: {
+			...DefaultLoginData,
+			remember: Boolean(localStorage.getItem('ets_remember_me') === 'true'),
+		},
+		validate: valibotResolver(LoginDataSchema),
+		onValuesChange: () => setFormError(null),
 	});
 
+	const handleSubmit = useCallback(
+		async (values: ILoginData) => {
+			setFormError(null);
+
+			//	Save the remember me option in localStorage
+			localStorage.setItem('ets_remember_me', String(values.remember));
+
+			//	Send login request
+			login(values)
+				.then((res) => {
+					if (res.ok) router.push('/otp');
+					else {
+						setFormError('Invalid email or password');
+					}
+				})
+				.catch((err) => {
+					console.error(err);
+					setFormError(err);
+				});
+		},
+		[form, router],
+	);
+
 	return (
-		<form onSubmit={form.onSubmit((value) => console.log(value))}>
+		<form onSubmit={form.onSubmit(handleSubmit)}>
 			<Stack className={`${classes.inputs} ${classes.section}`}>
+				{formError && (
+					<Alert
+						variant="light"
+						color="red"
+						title="There was an error logging in"
+						icon={<IconExclamationCircle />}
+					>
+						{formError}
+					</Alert>
+				)}
 				<TextInput
 					type="email"
 					label="Email Address"
@@ -64,7 +111,6 @@ export default function Form() {
 				<Group className={classes.prompt}>
 					<Text className={classes.text}>Don't have an account? </Text>
 					<Anchor className={classes.link} href="/register">
-						{/* TODO: add register page with either contact us or add invitation code */}
 						{/* TODO: another page (/onboarding) after being invited to create password */}
 						Click here
 					</Anchor>

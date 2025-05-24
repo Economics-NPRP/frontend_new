@@ -80,6 +80,9 @@ importers:
       mantine-datatable:
         specifier: ^7.17.1
         version: 7.17.1(@mantine/core@7.17.1(@mantine/hooks@7.17.1(react@18.3.1))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.17.1(react@18.3.1))(clsx@2.1.1)(react@18.3.1)
+      mantine-form-valibot-resolver:
+        specifier: ^3.0.1
+        version: 3.0.1(@mantine/form@7.17.1(react@18.3.1))(valibot@1.0.0-beta.9(typescript@5.7.3))
       next:
         specifier: ^15.0.1
         version: 15.1.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1759,6 +1762,13 @@ packages:
       '@mantine/hooks': '>=7.14'
       clsx: '>=2'
       react: '>=18.2'
+
+  mantine-form-valibot-resolver@3.0.1:
+    resolution: {integrity: sha512-CXm6yi5znCYI52/gXTbGOTCLlsS4Tu343W09FVvY/oMWRLLBoe+dDHznjECTIr9RNRc38Z/qMvQpjIcfHRcIhA==}
+    engines: {node: '>=16.6.0'}
+    peerDependencies:
+      '@mantine/form': '>=7.0.0'
+      valibot: '>=1.0.0 || ^1.0.0-beta || ^1.0.0-rc'
 
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
@@ -4412,6 +4422,11 @@ snapshots:
       '@mantine/hooks': 7.17.1(react@18.3.1)
       clsx: 2.1.1
       react: 18.3.1
+
+  mantine-form-valibot-resolver@3.0.1(@mantine/form@7.17.1(react@18.3.1))(valibot@1.0.0-beta.9(typescript@5.7.3)):
+    dependencies:
+      '@mantine/form': 7.17.1(react@18.3.1)
+      valibot: 1.0.0-beta.9(typescript@5.7.3)
 
   math-intrinsics@1.1.0: {}
 
