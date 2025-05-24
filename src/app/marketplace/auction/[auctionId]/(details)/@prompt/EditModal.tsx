@@ -67,7 +67,6 @@ export const EditModal = () => {
 
 	const onEditHandler = useCallback(
 		(values: BidTableData) => {
-			console.log('values', values);
 			bidsHandlers.applyWhere(
 				(bid) => bid.bid === editingBid,
 				() => values,

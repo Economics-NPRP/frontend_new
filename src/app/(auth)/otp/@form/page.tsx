@@ -1,22 +1,71 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { ReactElement, useCallback, useState } from 'react';
 
+import { verifyOtp } from '@/lib/auth/verifyOtp';
 import classes from '@/pages/(auth)/styles.module.css';
-import { Anchor, Button, Group, PinInput, Stack, Text } from '@mantine/core';
+import { Alert, Anchor, Button, Group, List, PinInput, Stack, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { IconExclamationCircle } from '@tabler/icons-react';
+
+interface IOTPData {
+	otp: string;
+}
 
 export default function Form() {
 	const t = useTranslations();
 	const locale = useLocale();
+	const router = useRouter();
+	const [formError, setFormError] = useState<Array<ReactElement>>([]);
 
-	const form = useForm({
+	const form = useForm<IOTPData>({
 		mode: 'uncontrolled',
 	});
 
+	const handleSubmit = useCallback(
+		async (values: IOTPData) => {
+			setFormError([]);
+
+			//	Send login request
+			verifyOtp(values.otp)
+				.then((res) => {
+					//	TODO: change url to dashboard or marketplace depending on the user type
+					if (res.ok) router.push('/marketplace');
+					else {
+						setFormError(
+							(res.errors || []).map((error, index) => (
+								<List.Item key={index}>{error}</List.Item>
+							)),
+						);
+					}
+				})
+				.catch((err) => {
+					console.error(err);
+					setFormError([
+						<List.Item key={0}>
+							There was an error logging in, please view the console for more details.
+						</List.Item>,
+					]);
+				});
+		},
+		[form, router],
+	);
+
 	return (
-		<form onSubmit={form.onSubmit((value) => console.log(value))}>
+		<form onSubmit={form.onSubmit(handleSubmit)}>
 			<Stack className={`${classes.inputs} ${classes.section}`}>
+				{formError.length > 0 && (
+					<Alert
+						variant="light"
+						color="red"
+						title="There was an error logging in"
+						icon={<IconExclamationCircle />}
+					>
+						<List>{formError}</List>
+					</Alert>
+				)}
 				<PinInput
 					type="number"
 					length={6}

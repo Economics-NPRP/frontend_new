@@ -3,7 +3,7 @@
 import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import { ReactElement, useCallback, useEffect, useState } from 'react';
 
 import { login } from '@/lib/auth/login';
 import classes from '@/pages/(auth)/styles.module.css';
@@ -14,6 +14,7 @@ import {
 	Button,
 	Checkbox,
 	Group,
+	List,
 	PasswordInput,
 	Stack,
 	Text,
@@ -26,21 +27,24 @@ export default function Form() {
 	const t = useTranslations();
 	const locale = useLocale();
 	const router = useRouter();
-	const [formError, setFormError] = useState<string | null>(null);
+	const [formError, setFormError] = useState<Array<ReactElement>>([]);
 
 	const form = useForm<ILoginData>({
 		mode: 'uncontrolled',
-		initialValues: {
-			...DefaultLoginData,
-			remember: Boolean(localStorage.getItem('ets_remember_me') === 'true'),
-		},
+		initialValues: DefaultLoginData,
 		validate: valibotResolver(LoginDataSchema),
-		onValuesChange: () => setFormError(null),
+		onValuesChange: () => setFormError([]),
+	});
+
+	//	When the page loads, check if the remember me option is set in localStorage
+	useEffect(() => {
+		const rememberMe = localStorage.getItem('ets_remember_me');
+		if (rememberMe) form.setFieldValue('remember', rememberMe === 'true');
 	});
 
 	const handleSubmit = useCallback(
 		async (values: ILoginData) => {
-			setFormError(null);
+			setFormError([]);
 
 			//	Save the remember me option in localStorage
 			localStorage.setItem('ets_remember_me', String(values.remember));
@@ -50,12 +54,20 @@ export default function Form() {
 				.then((res) => {
 					if (res.ok) router.push('/otp');
 					else {
-						setFormError('Invalid email or password');
+						setFormError(
+							(res.errors || []).map((error, index) => (
+								<List.Item key={index}>{error}</List.Item>
+							)),
+						);
 					}
 				})
 				.catch((err) => {
 					console.error(err);
-					setFormError(err);
+					setFormError([
+						<List.Item key={0}>
+							There was an error logging in, please view the console for more details.
+						</List.Item>,
+					]);
 				});
 		},
 		[form, router],
@@ -64,14 +76,14 @@ export default function Form() {
 	return (
 		<form onSubmit={form.onSubmit(handleSubmit)}>
 			<Stack className={`${classes.inputs} ${classes.section}`}>
-				{formError && (
+				{formError.length > 0 && (
 					<Alert
 						variant="light"
 						color="red"
 						title="There was an error logging in"
 						icon={<IconExclamationCircle />}
 					>
-						{formError}
+						<List>{formError}</List>
 					</Alert>
 				)}
 				<TextInput
