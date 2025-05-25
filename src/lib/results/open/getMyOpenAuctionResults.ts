@@ -32,7 +32,7 @@ export const getMyOpenAuctionResults: IFunctionSignature = cache(async (auctionI
 	};
 
 	const queryUrl = new URL('/v1/results/o/me/', process.env.NEXT_PUBLIC_BACKEND_URL);
-	queryUrl.searchParams.append('auctionId', auctionId);
+	queryUrl.searchParams.append('auction_id', auctionId);
 
 	const response = await fetch(queryUrl, querySettings);
 	const rawData = camelCase(await response.json(), 5) as ServerData<IAuctionResultsData>;

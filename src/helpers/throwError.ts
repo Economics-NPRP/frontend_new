@@ -4,7 +4,7 @@ export const throwError = async <T>(serverData: Promise<ServerData<T>>): Promise
 	const data = await serverData;
 	if (!data.ok) {
 		console.error(data);
-		throw new Error(data.errors?.join(' ') ?? data.detail ?? 'An unknown error occurred.');
+		throw new Error(JSON.stringify(data));
 	}
 	return data;
 };
