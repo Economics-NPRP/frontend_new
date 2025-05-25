@@ -23,7 +23,7 @@ export interface HeaderButtonData {
 	icon: JSX.Element | ((args: never) => JSX.Element);
 }
 
-export const HeaderButtonVariants: Partial<Record<HeaderButtonVariantType, HeaderButtonData>> = {
+export const HeaderButtonVariants: Record<HeaderButtonVariantType, HeaderButtonData> = {
 	search: {
 		tooltip: 'components.header.buttons.search.tooltip',
 		ariaLabel: 'components.header.buttons.search.aria',

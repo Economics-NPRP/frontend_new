@@ -35,8 +35,16 @@
 			&.header {
 				@apply items-center gap-1;
 
-				> .return {
-					@apply self-start mb-8;
+				> .row {
+					@apply self-stretch mb-8;
+
+					> .return {
+						@apply mr-auto;
+					}
+
+					> .actions {
+						@apply ml-auto;
+					}
 				}
 
 				> .heading {
