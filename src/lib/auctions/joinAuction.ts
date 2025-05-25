@@ -31,7 +31,6 @@ export const joinAuction: IFunctionSignature = cache(async (auctionId) => {
 	const rawData = camelCase(await response.json(), 5) as OffsetPaginatedData<unknown>;
 
 	//	If theres an issue, return the default data with errors
-	if (!rawData) return getDefaultData('No data was returned.');
 	if (rawData.detail) return getDefaultData(rawData.detail ?? '');
 	if (rawData.errors) return getDefaultData(...rawData.errors);
 
