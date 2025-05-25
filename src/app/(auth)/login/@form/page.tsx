@@ -44,6 +44,7 @@ export default function Form() {
 
 	const handleSubmit = useCallback(
 		(values: ILoginData) => {
+			form.setSubmitting(true);
 			setFormError([]);
 
 			//	Save the remember me option in localStorage
@@ -60,6 +61,7 @@ export default function Form() {
 							)),
 						);
 					}
+					form.setSubmitting(false);
 				})
 				.catch((err) => {
 					console.error('Error logging in:', err);
@@ -68,6 +70,7 @@ export default function Form() {
 							There was an error logging in, please view the console for more details.
 						</List.Item>,
 					]);
+					form.setSubmitting(false);
 				});
 		},
 		[form, router],
@@ -92,6 +95,7 @@ export default function Form() {
 					placeholder="Enter email address..."
 					autoComplete="email"
 					leftSection={<IconMail size={16} />}
+					disabled={form.submitting}
 					required
 					key={form.key('email')}
 					{...form.getInputProps('email')}
@@ -102,6 +106,7 @@ export default function Form() {
 					placeholder="Enter password..."
 					autoComplete="current-password"
 					leftSection={<IconKey size={16} />}
+					disabled={form.submitting}
 					required
 					key={form.key('password')}
 					{...form.getInputProps('password')}
@@ -119,7 +124,9 @@ export default function Form() {
 			</Stack>
 
 			<Stack className={`${classes.action} ${classes.section}`}>
-				<Button type="submit">Login</Button>
+				<Button type="submit" loading={form.submitting}>
+					Login
+				</Button>
 				<Group className={classes.prompt}>
 					<Text className={classes.text}>Don't have an account? </Text>
 					<Anchor className={classes.link} href="/register">

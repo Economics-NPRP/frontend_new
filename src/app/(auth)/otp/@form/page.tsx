@@ -26,6 +26,7 @@ export default function Form() {
 
 	const handleSubmit = useCallback(
 		(values: IOTPData) => {
+			form.setSubmitting(true);
 			setFormError([]);
 
 			//	Send login request
@@ -40,6 +41,7 @@ export default function Form() {
 							)),
 						);
 					}
+					form.setSubmitting(false);
 				})
 				.catch((err) => {
 					console.error('Error verifying OTP:', err);
@@ -48,6 +50,7 @@ export default function Form() {
 							There was an error logging in, please view the console for more details.
 						</List.Item>,
 					]);
+					form.setSubmitting(false);
 				});
 		},
 		[form, router],
@@ -70,6 +73,7 @@ export default function Form() {
 					type="number"
 					length={6}
 					placeholder="0"
+					disabled={form.submitting}
 					oneTimeCode
 					classNames={{
 						root: classes.otp,
@@ -81,7 +85,9 @@ export default function Form() {
 			</Stack>
 
 			<Stack className={`${classes.action} ${classes.section}`}>
-				<Button type="submit">Verify</Button>
+				<Button type="submit" loading={form.submitting}>
+					Verify
+				</Button>
 				<Group className={classes.prompt}>
 					<Text className={classes.text}>Didn't receive your code? </Text>
 					<Anchor className={classes.link} href="/contact">
