@@ -9,13 +9,13 @@ import {
 } from '@/types';
 
 export const DEFAULT_CONTEXT: IAuctionResultsContext = {
-	winningPage: 1,
-	setWinningPage: () => {},
+	resultsPage: 1,
+	setResultsPage: () => {},
 
-	minePage: 1,
-	setMinePage: () => {},
+	bidsPage: 1,
+	setBidsPage: () => {},
 
-	winningBids: {
+	auctionResults: {
 		ok: false,
 		errors: [],
 		results: [],
@@ -25,9 +25,9 @@ export const DEFAULT_CONTEXT: IAuctionResultsContext = {
 		perPage: 10,
 		resultCount: 0,
 	},
-	isWinningBidsLoading: true,
-	isWinningBidsError: false,
-	isWinningBidsSuccess: false,
+	isAuctionResultsLoading: true,
+	isAuctionResultsError: false,
+	isAuctionResultsSuccess: false,
 
 	allBids: {
 		ok: false,
@@ -63,16 +63,16 @@ export const DEFAULT_CONTEXT: IAuctionResultsContext = {
 };
 
 export interface IAuctionResultsContext {
-	winningPage: number;
-	setWinningPage: (page: number) => void;
+	resultsPage: number;
+	setResultsPage: (page: number) => void;
 
-	minePage: number;
-	setMinePage: (page: number) => void;
+	bidsPage: number;
+	setBidsPage: (page: number) => void;
 
-	winningBids: OffsetPaginatedData<IBidData>;
-	isWinningBidsLoading?: boolean;
-	isWinningBidsError?: boolean;
-	isWinningBidsSuccess?: boolean;
+	auctionResults: OffsetPaginatedData<IAuctionResultsData>;
+	isAuctionResultsLoading?: boolean;
+	isAuctionResultsError?: boolean;
+	isAuctionResultsSuccess?: boolean;
 
 	allBids: OffsetPaginatedData<IBidData>;
 	isAllBidsLoading?: boolean;

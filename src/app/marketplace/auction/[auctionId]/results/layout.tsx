@@ -5,8 +5,8 @@ import { ReactNode, useState } from 'react';
 
 import { throwError } from '@/helpers';
 import { getSingleAuction } from '@/lib/auctions';
-import { getMyPaginatedBids, getPaginatedWinningBids } from '@/lib/bids/open';
-import { getMyOpenAuctionResults } from '@/lib/results/open/getMyOpenAuctionResults';
+import { getPaginatedBids } from '@/lib/bids/open/getPaginatedBids';
+import { getMyOpenAuctionResults, getPaginatedOpenAuctionResults } from '@/lib/results/open';
 import { Stack } from '@mantine/core';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
@@ -16,14 +16,15 @@ import {
 } from './constants';
 
 export interface AuctionResultsProps {
+	bids: ReactNode;
 	details: ReactNode;
 	ticket: ReactNode;
 }
-export default function AuctionResults({ details, ticket }: AuctionResultsProps) {
+export default function AuctionResults({ bids, details, ticket }: AuctionResultsProps) {
 	const { auctionId } = useParams();
 
-	const [winningPage, setWinningPage] = useState(1);
-	const [minePage, setMinePage] = useState(1);
+	const [resultsPage, setResultsPage] = useState(1);
+	const [bidsPage, setBidsPage] = useState(1);
 
 	const {
 		data: auctionData,
@@ -48,17 +49,17 @@ export default function AuctionResults({ details, ticket }: AuctionResultsProps)
 	});
 
 	const {
-		data: winningBids,
-		isLoading: isWinningBidsLoading,
-		isError: isWinningBidsError,
-		isSuccess: isWinningBidsSuccess,
+		data: auctionResults,
+		isLoading: isAuctionResultsLoading,
+		isError: isAuctionResultsError,
+		isSuccess: isAuctionResultsSuccess,
 	} = useQuery({
-		queryKey: ['marketplace', '@catalogue', 'winningBids', auctionId, winningPage],
+		queryKey: ['marketplace', '@catalogue', 'openAuctionResults', auctionId, resultsPage],
 		queryFn: () =>
 			throwError(
-				getPaginatedWinningBids({
+				getPaginatedOpenAuctionResults({
 					auctionId: auctionId as string,
-					page: winningPage,
+					page: resultsPage,
 					perPage: 10,
 				}),
 			),
@@ -71,29 +72,31 @@ export default function AuctionResults({ details, ticket }: AuctionResultsProps)
 		isError: isAllBidsError,
 		isSuccess: isAllBidsSuccess,
 	} = useQuery({
-		queryKey: ['marketplace', '@catalogue', 'allBids', auctionId, winningPage],
+		queryKey: ['marketplace', '@catalogue', 'allBids', auctionId, resultsPage],
 		queryFn: () =>
-			getPaginatedWinningBids({
-				auctionId: auctionId as string,
-				page: minePage,
-				perPage: 10,
-			}),
+			throwError(
+				getPaginatedBids({
+					auctionId: auctionId as string,
+					page: bidsPage,
+					perPage: 10,
+				}),
+			),
 		placeholderData: keepPreviousData,
 	});
 
 	return (
 		<AuctionResultsContext.Provider
 			value={{
-				winningPage,
-				setWinningPage,
+				resultsPage,
+				setResultsPage,
 
-				minePage,
-				setMinePage,
+				bidsPage,
+				setBidsPage,
 
-				winningBids: winningBids || AUCTION_RESULTS_DEFAULT_CONTEXT.winningBids,
-				isWinningBidsLoading,
-				isWinningBidsError,
-				isWinningBidsSuccess,
+				auctionResults: auctionResults || AUCTION_RESULTS_DEFAULT_CONTEXT.auctionResults,
+				isAuctionResultsLoading,
+				isAuctionResultsError,
+				isAuctionResultsSuccess,
 
 				allBids: allBids || AUCTION_RESULTS_DEFAULT_CONTEXT.allBids,
 				isAllBidsLoading,
@@ -115,6 +118,7 @@ export default function AuctionResults({ details, ticket }: AuctionResultsProps)
 			<Stack>
 				{ticket}
 				{details}
+				{bids}
 			</Stack>
 		</AuctionResultsContext.Provider>
 	);
