@@ -23,7 +23,10 @@ export const login: IFunctionSignature = async ({ email, password }) => {
 		body: loginData,
 	};
 
-	const queryUrl = new URL('/v1/auth/oauth2', process.env.NEXT_PUBLIC_BACKEND_URL);
+	const queryUrl = new URL(
+		process.env.NODE_ENV === 'development' ? 'dev/auth/login' : '/v1/auth/oauth2',
+		process.env.NEXT_PUBLIC_BACKEND_URL,
+	);
 
 	const response = await fetch(queryUrl, querySettings);
 

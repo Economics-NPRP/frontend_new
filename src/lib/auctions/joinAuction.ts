@@ -25,7 +25,7 @@ export const joinAuction: IFunctionSignature = cache(async (auctionId) => {
 	};
 
 	const queryUrl = new URL('/v1/auctions/o/join/', process.env.NEXT_PUBLIC_BACKEND_URL);
-	queryUrl.searchParams.append('auctionId', auctionId);
+	queryUrl.searchParams.append('auction_id', auctionId);
 
 	const response = await fetch(queryUrl, querySettings);
 	const rawData = camelCase(await response.json(), 5) as OffsetPaginatedData<unknown>;

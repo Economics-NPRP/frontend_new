@@ -32,7 +32,7 @@ export const placeBid: IFunctionSignature = cache(async ({ auctionId, bids }) =>
 	};
 
 	const queryUrl = new URL('/v1/bids/o/place/', process.env.NEXT_PUBLIC_BACKEND_URL);
-	queryUrl.searchParams.append('auctionId', auctionId);
+	queryUrl.searchParams.append('auction_id', auctionId);
 
 	const response = await fetch(queryUrl, querySettings);
 	const rawData = camelCase(await response.json(), 5) as ServerData<{}>;

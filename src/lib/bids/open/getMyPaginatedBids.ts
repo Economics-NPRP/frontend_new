@@ -41,30 +41,36 @@ export const getMyPaginatedBids: IFunctionSignature = cache(
 		};
 
 		const queryUrl = new URL('/v1/bids/o/winning/me', process.env.NEXT_PUBLIC_BACKEND_URL);
-		queryUrl.searchParams.append('auctionId', auctionId);
+		queryUrl.searchParams.append('auction_id', auctionId);
 		if (page) queryUrl.searchParams.append('page', page.toString());
-		if (perPage) queryUrl.searchParams.append('perPage', perPage.toString());
+		if (perPage) queryUrl.searchParams.append('per_page', perPage.toString());
 
 		const response = await fetch(queryUrl, querySettings);
-		const rawData = camelCase(await response.json(), 5) as OffsetPaginatedData<unknown>;
+		const rawData = camelCase(await response.json(), 5) as
+			| OffsetPaginatedData<unknown>
+			| Array<IBidData>;
 
 		//	If theres an issue, return the default data with errors
 		if (!rawData) return getDefaultData('No data was returned.');
-		if (rawData.detail) return getDefaultData(rawData.detail ?? '');
-		if (rawData.errors) return getDefaultData(...rawData.errors);
+		if (!Array.isArray(rawData) && rawData.detail) return getDefaultData(rawData.detail ?? '');
+		if (!Array.isArray(rawData) && rawData.errors) return getDefaultData(...rawData.errors);
 
 		//	Parse results using schema and collect issues
 		const errors: Array<string> = [];
-		const results = rawData.results.reduce<Array<IBidData>>((acc, result) => {
-			acc.push(result as IBidData);
+		const results = (rawData as Array<IBidData>).reduce<Array<IBidData>>((acc, result) => {
+			acc.push(result);
 			return acc;
 		}, []);
 
 		return {
-			...rawData,
 			ok: errors.length === 0,
 			results,
 			errors,
+			perPage: results.length,
+			page: 1,
+			pageCount: 1,
+			totalCount: results.length,
+			resultCount: results.length,
 		};
 	},
 );

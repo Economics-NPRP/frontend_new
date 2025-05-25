@@ -1,3 +1,4 @@
+import { jwtDecode } from 'jwt-decode';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import 'server-only';
@@ -24,16 +25,25 @@ const extractSessionCookies = (response: Response, res: NextResponse) => {
 	let refreshToken = '';
 	let sessionExp = 0;
 	cookies.forEach(({ key, value, exp }) => {
-		if (key === 'ets_refresh_token') refreshToken = value;
-		else if (key === 'ets_access_token') {
-			accessToken = value;
-			//	Use the expiration time of the access token as session expiration time
+		if (key === 'ets_access_token') accessToken = value;
+		else if (key === 'ets_refresh_token') {
+			refreshToken = value;
+			//	Use the expiration time of the refresh token as session expiration time
 			sessionExp = exp;
 		}
 	});
 
 	const sessionCookie = `ets_access_token=${accessToken}; ets_refresh_token=${refreshToken}`;
 	res.cookies.set('ets_session', sessionCookie, {
+		httpOnly: true,
+		secure: true,
+		expires: sessionExp,
+		sameSite: 'lax',
+		path: '/',
+	});
+
+	//	Make the access token expire at the same time as the refresh token so we can reference the old one during refresh
+	res.cookies.set('ets_access_token', accessToken, {
 		httpOnly: true,
 		secure: true,
 		expires: sessionExp,
@@ -65,27 +75,42 @@ export const createSession = async (req: NextRequest, res: NextResponse) => {
 export const verifySession = async (req: NextRequest, res: NextResponse) => {
 	const accessToken = req.cookies.get('ets_access_token');
 	const refreshToken = req.cookies.get('ets_refresh_token');
+	const sessionCookie = req.cookies.get('ets_session');
 
 	//	Initial check for tokens
 	if (!accessToken || !refreshToken) return null;
+	const { exp: accessExp } = jwtDecode(accessToken.value);
+	const { exp: refreshExp } = jwtDecode(refreshToken.value);
 
-	//	Check with the server and refresh the tokens
-	const initialSessionCookie = `ets_access_token=${accessToken.value}; ets_refresh_token=${refreshToken.value}`;
-	const queryUrl = new URL('/v1/auth/refresh', process.env.NEXT_PUBLIC_BACKEND_URL);
-	const response = await fetch(queryUrl, {
-		method: 'POST',
-		headers: {
-			Cookie: initialSessionCookie,
-		},
-	});
+	//	If the access token is expired, refresh the tokens
+	if ((accessExp || 0) < Date.now() / 1000) {
+		const initialSessionCookie = `ets_access_token=${accessToken.value}; ets_refresh_token=${refreshToken.value}`;
+		const queryUrl = new URL('/v1/auth/refresh', process.env.NEXT_PUBLIC_BACKEND_URL);
+		const response = await fetch(queryUrl, {
+			method: 'POST',
+			headers: {
+				Cookie: initialSessionCookie,
+			},
+		});
+		if (!response.ok) return null;
+		return extractSessionCookies(response, res).sessionCookie;
+	}
 
-	//	If the response is not ok, return null
-	if (!response.ok) return null;
+	//	If the session cookie is not yet set, create it
+	if (!sessionCookie) {
+		const sessionCookieValue = `ets_access_token=${accessToken.value}; ets_refresh_token=${refreshToken.value}`;
+		res.cookies.set('ets_session', sessionCookieValue, {
+			httpOnly: true,
+			secure: true,
+			expires: refreshExp ? refreshExp * 1000 : Date.now(),
+			sameSite: 'lax',
+			path: '/',
+		});
+		return sessionCookieValue;
+	}
 
 	//	In all other cases, return the session cookie
-	const { sessionCookie } = extractSessionCookies(response, res);
-
-	return sessionCookie;
+	return sessionCookie?.value;
 };
 
 export const getSession = async () => {
