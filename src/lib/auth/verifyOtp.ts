@@ -18,7 +18,7 @@ export const verifyOtp: IFunctionSignature = async (otp) => {
 	const otpToken = cookieStore.get('ets_otp_token');
 	const querySettings: RequestInit = {
 		method: 'POST',
-		body: JSON.stringify({ otp }),
+		body: JSON.stringify(otp),
 		headers: {
 			'Content-Type': 'application/json',
 			Cookie: otpToken ? `ets_otp_token=${otpToken.value}` : '',

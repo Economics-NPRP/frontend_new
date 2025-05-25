@@ -42,7 +42,11 @@ export const getMyOpenAuctionResults: IFunctionSignature = cache(async (auctionI
 	if (rawData.detail) return getDefaultData(rawData.detail ?? '');
 	if (rawData.errors) return getDefaultData(...rawData.errors);
 
-	return rawData;
+	//	TODO: Validate the data using schema
+	return {
+		...rawData,
+		ok: true,
+	} as ServerData<IAuctionResultsData>;
 });
 
 //	@ts-expect-error - Preload doesn't return anything but signature requires a return

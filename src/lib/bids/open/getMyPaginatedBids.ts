@@ -40,7 +40,7 @@ export const getMyPaginatedBids: IFunctionSignature = cache(
 			},
 		};
 
-		const queryUrl = new URL('/v1/bids/o/winning/me/', process.env.NEXT_PUBLIC_BACKEND_URL);
+		const queryUrl = new URL('/v1/bids/o/winning/me', process.env.NEXT_PUBLIC_BACKEND_URL);
 		queryUrl.searchParams.append('auctionId', auctionId);
 		if (page) queryUrl.searchParams.append('page', page.toString());
 		if (perPage) queryUrl.searchParams.append('perPage', perPage.toString());

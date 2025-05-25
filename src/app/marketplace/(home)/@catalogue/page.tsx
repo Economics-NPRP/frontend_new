@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 
+import { throwError } from '@/helpers';
 import { IGetPaginatedAuctionsOptions, getPaginatedAuctions } from '@/lib/auctions';
 import { Container } from '@mantine/core';
 import { useDisclosure, useLocalStorage } from '@mantine/hooks';
@@ -73,7 +74,7 @@ export default function Catalogue() {
 
 	const { data, isLoading, isError, isSuccess } = useQuery({
 		queryKey: ['marketplace', '@catalogue', JSON.stringify(queryParams)],
-		queryFn: () => getPaginatedAuctions(queryParams),
+		queryFn: () => throwError(getPaginatedAuctions(queryParams)),
 		placeholderData: keepPreviousData,
 	});
 

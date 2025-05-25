@@ -1,3 +1,4 @@
+import { throwError } from '@/helpers';
 import { getPaginatedAuctions } from '@/lib/auctions';
 import { Container, Stack } from '@mantine/core';
 import { QueryClient } from '@tanstack/react-query';
@@ -10,7 +11,7 @@ export default async function EndingSoon() {
 	const queryClient = new QueryClient();
 	await queryClient.prefetchInfiniteQuery({
 		queryKey: ['marketplace', '@ending', JSON.stringify(QUERY_PARAMS)],
-		queryFn: () => getPaginatedAuctions(QUERY_PARAMS),
+		queryFn: () => throwError(getPaginatedAuctions(QUERY_PARAMS)),
 		initialPageParam: 1,
 	});
 

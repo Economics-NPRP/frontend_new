@@ -3,6 +3,7 @@
 import { useParams } from 'next/navigation';
 import { ReactNode, useState } from 'react';
 
+import { throwError } from '@/helpers';
 import { getSingleAuction } from '@/lib/auctions';
 import { getMyPaginatedBids, getPaginatedWinningBids } from '@/lib/bids/open';
 import { Stack } from '@mantine/core';
@@ -32,7 +33,7 @@ export default function AuctionPage({ bids, details, prompt }: AuctionDetailsPro
 		isSuccess: isAuctionDataSuccess,
 	} = useQuery({
 		queryKey: ['marketplace', '@catalogue', 'auctionData', auctionId],
-		queryFn: () => getSingleAuction(auctionId as string),
+		queryFn: () => throwError(getSingleAuction(auctionId as string)),
 		placeholderData: keepPreviousData,
 	});
 
@@ -44,11 +45,13 @@ export default function AuctionPage({ bids, details, prompt }: AuctionDetailsPro
 	} = useQuery({
 		queryKey: ['marketplace', '@catalogue', 'winningBids', auctionId, winningPage],
 		queryFn: () =>
-			getPaginatedWinningBids({
-				auctionId: auctionId as string,
-				page: winningPage,
-				perPage: 10,
-			}),
+			throwError(
+				getPaginatedWinningBids({
+					auctionId: auctionId as string,
+					page: winningPage,
+					perPage: 10,
+				}),
+			),
 		placeholderData: keepPreviousData,
 	});
 
@@ -60,11 +63,13 @@ export default function AuctionPage({ bids, details, prompt }: AuctionDetailsPro
 	} = useQuery({
 		queryKey: ['marketplace', '@catalogue', 'myBids', auctionId, winningPage],
 		queryFn: () =>
-			getMyPaginatedBids({
-				auctionId: auctionId as string,
-				page: minePage,
-				perPage: 10,
-			}),
+			throwError(
+				getMyPaginatedBids({
+					auctionId: auctionId as string,
+					page: minePage,
+					perPage: 10,
+				}),
+			),
 		placeholderData: keepPreviousData,
 	});
 

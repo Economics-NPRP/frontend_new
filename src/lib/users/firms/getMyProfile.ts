@@ -5,17 +5,21 @@ import { cache } from 'react';
 import 'server-only';
 
 import { getSession } from '@/lib/auth';
-import { DefaultAuctionData, IAuctionData } from '@/schema/models';
-import { ServerData } from '@/types';
+import { DefaultUserData, IUserData } from '@/schema/models';
+import { IOffsetPagination, ServerData } from '@/types';
 
-const getDefaultData: (...errors: Array<string>) => ServerData<IAuctionData> = (...errors) => ({
+export interface IGetMyProfileOptions extends IOffsetPagination {
+	auctionId: string;
+}
+
+const getDefaultData: (...errors: Array<string>) => ServerData<IUserData> = (...errors) => ({
 	ok: false,
 	errors: errors,
-	...DefaultAuctionData,
+	...DefaultUserData,
 });
 
-type IFunctionSignature = (uuid: string) => Promise<ServerData<IAuctionData>>;
-export const getSingleAuction: IFunctionSignature = cache(async (uuid) => {
+type IFunctionSignature = () => Promise<ServerData<IUserData>>;
+export const getMyProfile: IFunctionSignature = cache(async () => {
 	const cookieHeaders = await getSession();
 	if (!cookieHeaders) return getDefaultData('You must be logged in to access this resource.');
 	const querySettings: RequestInit = {
@@ -26,7 +30,7 @@ export const getSingleAuction: IFunctionSignature = cache(async (uuid) => {
 		},
 	};
 
-	const queryUrl = new URL(`/v1/auctions/${uuid}`, process.env.NEXT_PUBLIC_BACKEND_URL);
+	const queryUrl = new URL('/v1/users/firms/profile', process.env.NEXT_PUBLIC_BACKEND_URL);
 
 	const response = await fetch(queryUrl, querySettings);
 	const rawData = camelCase(await response.json(), 5) as ServerData<unknown>;
@@ -40,10 +44,10 @@ export const getSingleAuction: IFunctionSignature = cache(async (uuid) => {
 	return {
 		...rawData,
 		ok: true,
-	} as ServerData<IAuctionData>;
+	} as ServerData<IUserData>;
 });
 
 //	@ts-expect-error - Preload doesn't return anything but signature requires a return
-export const preloadSingleAuction: IFunctionSignature = async (options) => {
-	void getSingleAuction(options);
+export const preloadMyProfile: IFunctionSignature = async () => {
+	void getMyProfile();
 };

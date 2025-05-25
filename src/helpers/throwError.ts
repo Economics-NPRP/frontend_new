@@ -1,6 +1,6 @@
 import { ServerData } from '@/types';
 
-export const throwError = async (serverData: Promise<ServerData<{}>>) => {
+export const throwError = async <T>(serverData: Promise<ServerData<T>>): Promise<ServerData<T>> => {
 	const data = await serverData;
 	if (!data.ok) {
 		console.error(data);

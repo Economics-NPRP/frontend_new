@@ -96,6 +96,7 @@
 	> .details {
 		@apply w-full;
 		@apply my-4;
+		@apply flex-nowrap;
 
 		> .id {
 			@apply flex-auto gap-0;
@@ -136,6 +137,30 @@
 
 	> *:not(.bg) {
 		@apply relative z-20;
+	}
+
+	&.loading {
+		> .avatar {
+			@apply size-14;
+		}
+
+		> .details {
+			> .id {
+				@apply gap-2;
+
+				> .text {
+					@apply w-28 h-3;
+
+					&:last-child {
+						@apply w-40 h-5;
+					}
+				}
+			}
+
+			> .rating > .subtext {
+				@apply w-24 h-3;
+			}
+		}
 	}
 }
 
