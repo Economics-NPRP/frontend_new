@@ -5,8 +5,16 @@ import { verifySession } from '@/lib/auth';
 
 const protectedRoutes = ['/marketplace'];
 
+const otpRoute = '/otp';
+
 export async function middleware(req: NextRequest) {
 	const res = NextResponse.next();
+
+	//	If the request is for the OTP route, redirect if user doesnt have otp token
+	if (req.nextUrl.pathname.startsWith(otpRoute)) {
+		const otpToken = req.cookies.get('ets_otp_token');
+		if (!otpToken) return NextResponse.redirect(new URL('/login', req.url));
+	}
 
 	//	If this is not a protected route, return the response immediately
 	if (!protectedRoutes.some((route) => req.nextUrl.pathname.startsWith(route))) return res;

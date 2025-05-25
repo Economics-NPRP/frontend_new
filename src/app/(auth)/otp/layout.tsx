@@ -8,7 +8,6 @@ export interface OTPProps {
 export default function OTP({ form }: OTPProps) {
 	return (
 		<>
-			{/* TODO: redirect to login page if user comes here by accident */}
 			<Header
 				heading="OTP Verification"
 				subheading="Verify your identity by entering the OTP sent to your email address."

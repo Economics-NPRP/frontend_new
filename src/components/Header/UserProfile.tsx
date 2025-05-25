@@ -1,8 +1,10 @@
 import { useTranslations } from 'next-intl';
-import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCallback } from 'react';
 
 import { Id } from '@/components/Id';
 import { throwError } from '@/helpers';
+import { logout } from '@/lib/auth/logout';
 import { getMyProfile } from '@/lib/users/firms';
 import {
 	Alert,
@@ -20,6 +22,7 @@ import {
 	Stack,
 	Text,
 } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import {
 	IconArrowUpRight,
 	IconBookmark,
@@ -34,15 +37,16 @@ import {
 	IconLogout,
 	IconSettings,
 } from '@tabler/icons-react';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { HeaderButton } from './HeaderButton';
 import classes from './styles.module.css';
 
 export const UserProfile = () => {
 	const t = useTranslations();
+	const router = useRouter();
+	const queryClient = useQueryClient();
 
-	//	TODO: invalidate data when the user logs in or out
 	const {
 		data: userData,
 		error: userDataError,
@@ -55,7 +59,35 @@ export const UserProfile = () => {
 		placeholderData: keepPreviousData,
 	});
 
-	useEffect(() => console.log('User Data:', userData), [userData]);
+	//	Clear cookies and redirect to login page
+	const handleLogout = useCallback(() => {
+		logout()
+			.then((res) => {
+				if (res.ok) {
+					queryClient.invalidateQueries({
+						queryKey: ['users', 'firms', 'mine'],
+					});
+					router.push('/login');
+				} else {
+					const errors = (res.errors || []).join(' ');
+					notifications.show({
+						color: 'red',
+						title: 'There was a problem logging out',
+						message: errors,
+						position: 'bottom-center',
+					});
+				}
+			})
+			.catch((err) => {
+				console.error('Error logging out:', err);
+				notifications.show({
+					color: 'red',
+					title: 'There was a problem logging out',
+					message: err.message ?? 'An unknown error occurred.',
+					position: 'bottom-center',
+				});
+			});
+	}, [router]);
 
 	const profileLoading = (
 		<>
@@ -145,39 +177,39 @@ export const UserProfile = () => {
 
 				<MenuDivider />
 				<MenuLabel>{t('components.header.user.marketplace')} </MenuLabel>
-				<MenuItem component="a" href="" leftSection={<IconHistory size={16} />}>
+				<MenuItem component="a" href="" leftSection={<IconHistory size={16} />} disabled>
 					{t('components.header.user.biddingHistory')}
 				</MenuItem>
-				<MenuItem component="a" href="" leftSection={<IconCalendar size={16} />}>
+				<MenuItem component="a" href="" leftSection={<IconCalendar size={16} />} disabled>
 					{t('components.header.user.auctionCalendar')}
 				</MenuItem>
-				<MenuItem leftSection={<IconBookmark size={16} />}>
+				<MenuItem leftSection={<IconBookmark size={16} />} disabled>
 					{t('components.header.user.savedAuctions')}
 				</MenuItem>
 
 				<MenuDivider />
 				<MenuLabel>{t('components.header.user.dashboard')}</MenuLabel>
-				<MenuItem component="a" href="" leftSection={<IconLayoutGrid size={16} />}>
+				<MenuItem component="a" href="" leftSection={<IconLayoutGrid size={16} />} disabled>
 					{t('components.header.user.myDashboard')}
 				</MenuItem>
-				<MenuItem component="a" href="" leftSection={<IconChartBar size={16} />}>
+				<MenuItem component="a" href="" leftSection={<IconChartBar size={16} />} disabled>
 					{t('components.header.user.statistics')}
 				</MenuItem>
-				<MenuItem component="a" href="" leftSection={<IconCoins size={16} />}>
+				<MenuItem component="a" href="" leftSection={<IconCoins size={16} />} disabled>
 					{t('components.header.user.transactions')}
 				</MenuItem>
-				<MenuItem component="a" href="" leftSection={<IconLeaf size={16} />}>
+				<MenuItem component="a" href="" leftSection={<IconLeaf size={16} />} disabled>
 					{t('components.header.user.permits')}
 				</MenuItem>
 
 				<MenuDivider />
-				<MenuItem component="a" href="" leftSection={<IconHelp size={16} />}>
+				<MenuItem component="a" href="" leftSection={<IconHelp size={16} />} disabled>
 					{t('components.header.user.helpCenter')}
 				</MenuItem>
-				<MenuItem component="a" href="" leftSection={<IconSettings size={16} />}>
+				<MenuItem component="a" href="" leftSection={<IconSettings size={16} />} disabled>
 					{t('components.header.user.settings')}
 				</MenuItem>
-				<MenuItem leftSection={<IconLogout size={16} />}>
+				<MenuItem onClick={handleLogout} leftSection={<IconLogout size={16} />}>
 					{t('components.header.user.logout')}
 				</MenuItem>
 			</MenuDropdown>

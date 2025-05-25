@@ -43,7 +43,7 @@ export default function Form() {
 	});
 
 	const handleSubmit = useCallback(
-		async (values: ILoginData) => {
+		(values: ILoginData) => {
 			setFormError([]);
 
 			//	Save the remember me option in localStorage
@@ -62,7 +62,7 @@ export default function Form() {
 					}
 				})
 				.catch((err) => {
-					console.error(err);
+					console.error('Error logging in:', err);
 					setFormError([
 						<List.Item key={0}>
 							There was an error logging in, please view the console for more details.

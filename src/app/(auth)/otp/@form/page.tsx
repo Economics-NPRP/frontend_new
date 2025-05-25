@@ -25,7 +25,7 @@ export default function Form() {
 	});
 
 	const handleSubmit = useCallback(
-		async (values: IOTPData) => {
+		(values: IOTPData) => {
 			setFormError([]);
 
 			//	Send login request
@@ -42,7 +42,7 @@ export default function Form() {
 					}
 				})
 				.catch((err) => {
-					console.error(err);
+					console.error('Error verifying OTP:', err);
 					setFormError([
 						<List.Item key={0}>
 							There was an error logging in, please view the console for more details.

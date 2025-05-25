@@ -31,6 +31,9 @@ export const verifyOtp: IFunctionSignature = async (otp) => {
 	const rawData = camelCase(await response.json(), 5) as ServerData<{}>;
 
 	//	If theres an issue, return the default data with errors
+	if (response.status === 422)
+		//	TODO: change message once otp tokens dont expire within 3 minutes, change to 'please resend otp'
+		return getDefaultData('OTP code may have expired, please try logging in again.');
 	if (!rawData) return getDefaultData('No data was returned.');
 	if (rawData.detail) return getDefaultData(JSON.stringify(rawData.detail ?? ''));
 	if (rawData.errors) return getDefaultData(...rawData.errors);
