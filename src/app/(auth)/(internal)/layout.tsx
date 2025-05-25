@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import Background from '@/pages/(auth)/(background)/page';
+import Background from '@/pages/(auth)/(internal)/(components)/(background)/page';
 import classes from '@/pages/(auth)/styles.module.css';
 import { Stack } from '@mantine/core';
 

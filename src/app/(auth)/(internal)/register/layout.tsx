@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import Header from '@/pages/(auth)/(header)/page';
+import Header from '@/pages/(auth)/(internal)/(components)/(header)/page';
 import classes from '@/pages/(auth)/styles.module.css';
 import { Divider, Group } from '@mantine/core';
 
