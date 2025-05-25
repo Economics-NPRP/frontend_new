@@ -2,10 +2,10 @@ import Image from 'next/image';
 import { useMemo } from 'react';
 
 import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
-import classes from '@/pages/(auth)/styles.module.css';
+import classes from '@/pages/(auth)/(internal)/styles.module.css';
 import { Container } from '@mantine/core';
 
-export default function Background() {
+export const Background = () => {
 	//	Generate random category image to show
 	const bgImg = useMemo(() => {
 		const imgIndex = Math.floor(Math.random() * Object.keys(AuctionCategoryVariants).length);
@@ -24,4 +24,4 @@ export default function Background() {
 			<Container className={classes.overlay} />
 		</Container>
 	);
-}
+};

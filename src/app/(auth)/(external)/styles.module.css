@@ -1,0 +1,92 @@
+.root {
+	@apply w-screen h-screen;
+	@apply items-stretch justify-center;
+	@apply px-32 py-20 gap-8;
+
+	> .header {
+		@apply justify-between flex-nowrap;
+
+		> .logo {
+			@apply text-dark-600;
+
+			.label {
+				@apply heading-3;
+			}
+		}
+	}
+
+	> .content {
+		@apply my-auto gap-8;
+		@apply items-center justify-center;
+
+		.section {
+			@apply w-[480px];
+			@apply items-stretch;
+
+			&.header {
+				@apply gap-1;
+
+				> .heading {
+					@apply text-center heading-2;
+				}
+
+				> .subheading {
+					@apply text-center paragraph-sm;
+				}
+			}
+
+			&.inputs {
+				@apply gap-2;
+			}
+
+			&.action {
+				@apply gap-2;
+			}
+
+			> .details {
+				@apply p-4;
+				@apply border border-gray-300 border-solid;
+				@apply shadow-sm;
+
+				> .avatar {
+					@apply size-14;
+				}
+
+				> .column {
+					@apply gap-2;
+
+					> .heading {
+						@apply heading-3;
+					}
+
+					> .row {
+						@apply flex-nowrap gap-2;
+						@apply text-dark-300;
+
+						> .subheading {
+							@apply paragraph-sm leading-tight;
+						}
+					}
+				}
+			}
+
+			.prompt {
+				@apply flex flex-row place-content-center items-baseline;
+				@apply px-8 gap-1;
+
+				> .text {
+					@apply text-center paragraph-sm-g6;
+
+					> .link {
+						@apply text-sm leading-tight;
+						@apply text-blue-600;
+					}
+				}
+			}
+		}
+
+		form {
+			@apply contents;
+		}
+	}
+}

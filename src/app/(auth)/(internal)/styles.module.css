@@ -57,7 +57,7 @@
 			}
 
 			&.inputs {
-				@apply gap-2 items-stretch;
+				@apply gap-2;
 
 				> .otp {
 					@apply justify-center items-center gap-2;

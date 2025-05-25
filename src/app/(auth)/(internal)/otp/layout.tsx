@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import Header from '@/pages/(auth)/(internal)/(components)/(header)/page';
+import { Header } from '@/pages/(auth)/(internal)/(components)/(header)';
 
 export interface OTPProps {
 	form: ReactNode;

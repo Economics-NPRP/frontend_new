@@ -1,7 +1,5 @@
-'use client';
-
 import { HeaderButton } from '@/components/Header/HeaderButton';
-import classes from '@/pages/(auth)/styles.module.css';
+import classes from '@/pages/(auth)/(internal)/styles.module.css';
 import { Button, Group, Stack, Text, Title } from '@mantine/core';
 import { IconArrowLeft, IconBox } from '@tabler/icons-react';
 
@@ -13,7 +11,7 @@ export interface HeaderProps {
 		text: string;
 	};
 }
-export default function Header({ heading, subheading, returnPage }: HeaderProps) {
+export const Header = ({ heading, subheading, returnPage }: HeaderProps) => {
 	return (
 		<Stack className={`${classes.header} ${classes.section}`}>
 			<Group className={classes.row}>
@@ -38,4 +36,4 @@ export default function Header({ heading, subheading, returnPage }: HeaderProps)
 			<Text className={classes.subheading}>{subheading}</Text>
 		</Stack>
 	);
-}
+};

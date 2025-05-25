@@ -1,3 +1,5 @@
+'use client';
+
 import { useLocale, useTranslations } from 'next-intl';
 import { MouseEventHandler, useEffect, useMemo, useState } from 'react';
 

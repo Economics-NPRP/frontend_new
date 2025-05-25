@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 
 import { login } from '@/lib/auth/login';
-import classes from '@/pages/(auth)/styles.module.css';
+import classes from '@/pages/(auth)/(internal)/styles.module.css';
 import { DefaultLoginData, ILoginData, LoginDataSchema } from '@/schema/models';
 import {
 	Alert,

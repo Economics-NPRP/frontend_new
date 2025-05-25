@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
-import Header from '@/pages/(auth)/(internal)/(components)/(header)/page';
-import classes from '@/pages/(auth)/styles.module.css';
+import { Header } from '@/pages/(auth)/(internal)/(components)/(header)';
+import classes from '@/pages/(auth)/(internal)/styles.module.css';
 import { Divider, Group } from '@mantine/core';
 
 export interface RegisterProps {

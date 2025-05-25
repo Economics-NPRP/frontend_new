@@ -2,10 +2,10 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 
-import classes from '@/pages/(auth)/(internal)/styles.module.css';
-import { Button, Group, Stack, Text, TextInput } from '@mantine/core';
+import classes from '@/pages/(auth)/(external)/styles.module.css';
+import { Button, Group, PasswordInput, Stack, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconMail } from '@tabler/icons-react';
+import { IconKey } from '@tabler/icons-react';
 
 export default function Form() {
 	const t = useTranslations();
@@ -18,23 +18,24 @@ export default function Form() {
 	return (
 		<form onSubmit={form.onSubmit((value) => console.log(value))}>
 			<Stack className={`${classes.inputs} ${classes.section}`}>
-				<TextInput
-					type="email"
-					label="Email Address"
-					placeholder="Enter email address..."
-					autoComplete="email"
-					leftSection={<IconMail size={16} />}
+				<PasswordInput
+					type="password"
+					label="Password"
+					placeholder="Enter password..."
+					autoComplete="current-password"
+					leftSection={<IconKey size={16} />}
+					disabled={form.submitting}
 					required
-					key={form.key('email')}
-					{...form.getInputProps('email')}
+					key={form.key('password')}
+					{...form.getInputProps('password')}
 				/>
 			</Stack>
 
 			<Stack className={`${classes.action} ${classes.section}`}>
-				<Button type="submit">Send Email</Button>
+				<Button type="submit">Activate Account</Button>
 				<Group className={classes.prompt}>
 					<Text className={classes.text}>
-						Please note the email may take a few minutes to arrive.
+						Activating your account will log you in and redirect you to the marketplace.
 					</Text>
 				</Group>
 			</Stack>

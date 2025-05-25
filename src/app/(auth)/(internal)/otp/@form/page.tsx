@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ReactElement, useCallback, useState } from 'react';
 
 import { verifyOtp } from '@/lib/auth/verifyOtp';
-import classes from '@/pages/(auth)/styles.module.css';
+import classes from '@/pages/(auth)/(internal)/styles.module.css';
 import { Alert, Anchor, Button, Group, List, PinInput, Stack, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconExclamationCircle } from '@tabler/icons-react';

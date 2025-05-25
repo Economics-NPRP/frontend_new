@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 
-import classes from '@/pages/(auth)/styles.module.css';
+import classes from '@/pages/(auth)/(internal)/styles.module.css';
 import { Stack } from '@mantine/core';
 
 export default function Map() {

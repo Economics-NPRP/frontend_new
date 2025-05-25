@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
 
-import Background from '@/pages/(auth)/(internal)/(components)/(background)/page';
-import classes from '@/pages/(auth)/styles.module.css';
+import { Background } from '@/pages/(auth)/(internal)/(components)/(background)';
+import classes from '@/pages/(auth)/(internal)/styles.module.css';
 import { Stack } from '@mantine/core';
 
-export interface AuthProps {
+export interface AuthInternalProps {
 	children: ReactNode;
 }
-export default function Auth({ children }: AuthProps) {
+export default function AuthInternal({ children }: AuthInternalProps) {
 	return (
 		<Stack className={classes.root}>
 			<Background />
