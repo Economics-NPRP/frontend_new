@@ -21,7 +21,8 @@ export async function middleware(req: NextRequest) {
 
 	//	If the user is not logged in, redirect to the login page
 	const verified = await verifySession(req, res);
-	if (!verified) return NextResponse.redirect(new URL('/login', req.url));
+	if (!verified && process.env.NODE_ENV !== 'development')
+		return NextResponse.redirect(new URL('/login', req.url));
 
 	return res;
 }
