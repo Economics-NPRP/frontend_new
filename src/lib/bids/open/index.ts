@@ -1,4 +1,4 @@
-export * from './getMyPaginatedBids';
+export * from './getMyPaginatedWinningBids';
 export * from './getPaginatedBids';
 export * from './getPaginatedWinningBids';
 export * from './placeBid';

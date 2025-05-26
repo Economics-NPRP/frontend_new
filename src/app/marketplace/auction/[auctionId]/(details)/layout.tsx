@@ -5,7 +5,7 @@ import { ReactNode, useState } from 'react';
 
 import { throwError } from '@/helpers';
 import { getSingleAuction } from '@/lib/auctions';
-import { getMyPaginatedBids, getPaginatedWinningBids } from '@/lib/bids/open';
+import { getMyPaginatedWinningBids, getPaginatedWinningBids } from '@/lib/bids/open';
 import { Stack } from '@mantine/core';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
@@ -64,7 +64,7 @@ export default function AuctionPage({ bids, details, prompt }: AuctionDetailsPro
 		queryKey: ['marketplace', '@catalogue', 'myBids', auctionId, minePage],
 		queryFn: () =>
 			throwError(
-				getMyPaginatedBids({
+				getMyPaginatedWinningBids({
 					auctionId: auctionId as string,
 					page: minePage,
 					perPage: 10,

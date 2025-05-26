@@ -20,6 +20,20 @@ export const DEFAULT_CONTEXT: IAuctionResultsContext = {
 	allBidsNavDirection: 'next',
 	setAllBidsNavDirection: () => {},
 
+	myBidsKey: undefined,
+	setMyBidsKey: () => {},
+	myBidsNavDirection: 'next',
+	setMyBidsNavDirection: () => {},
+
+	winningBidsPage: 1,
+	setWinningBidsPage: () => {},
+
+	resultsPerPage: 20,
+	setResultsPerPage: () => {},
+
+	bidsPerPage: 20,
+	setBidsPerPage: () => {},
+
 	openAuctionResults: {
 		ok: false,
 		errors: [],
@@ -27,7 +41,7 @@ export const DEFAULT_CONTEXT: IAuctionResultsContext = {
 		page: 1,
 		pageCount: 1,
 		totalCount: 0,
-		perPage: 10,
+		perPage: 20,
 		resultCount: 0,
 	},
 	isOpenAuctionResultsLoading: true,
@@ -38,7 +52,7 @@ export const DEFAULT_CONTEXT: IAuctionResultsContext = {
 		ok: false,
 		errors: [],
 		results: [],
-		perPage: 10,
+		perPage: 20,
 		hasNext: false,
 		totalCount: 0,
 		isExact: true,
@@ -47,6 +61,34 @@ export const DEFAULT_CONTEXT: IAuctionResultsContext = {
 	isAllBidsLoading: true,
 	isAllBidsError: false,
 	isAllBidsSuccess: false,
+
+	myBids: {
+		ok: false,
+		errors: [],
+		results: [],
+		perPage: 20,
+		hasNext: false,
+		totalCount: 0,
+		isExact: true,
+		resultCount: 0,
+	},
+	isMyBidsLoading: true,
+	isMyBidsError: false,
+	isMyBidsSuccess: false,
+
+	winningBids: {
+		ok: false,
+		errors: [],
+		results: [],
+		page: 1,
+		pageCount: 1,
+		totalCount: 0,
+		perPage: 20,
+		resultCount: 0,
+	},
+	isWinningBidsLoading: true,
+	isWinningBidsError: false,
+	isWinningBidsSuccess: false,
 
 	allWinningBids: {
 		ok: false,
@@ -90,6 +132,20 @@ export interface IAuctionResultsContext {
 	allBidsNavDirection: NavDirection;
 	setAllBidsNavDirection: (direction: NavDirection) => void;
 
+	myBidsKey: string | undefined;
+	setMyBidsKey: (bidId: string | undefined) => void;
+	myBidsNavDirection: NavDirection;
+	setMyBidsNavDirection: (direction: NavDirection) => void;
+
+	winningBidsPage: number;
+	setWinningBidsPage: (page: number) => void;
+
+	resultsPerPage: number;
+	setResultsPerPage: (perPage: number) => void;
+
+	bidsPerPage: number;
+	setBidsPerPage: (perPage: number) => void;
+
 	openAuctionResults: OffsetPaginatedData<IAuctionResultsData>;
 	isOpenAuctionResultsLoading?: boolean;
 	isOpenAuctionResultsError?: boolean;
@@ -99,6 +155,16 @@ export interface IAuctionResultsContext {
 	isAllBidsLoading?: boolean;
 	isAllBidsError?: boolean;
 	isAllBidsSuccess?: boolean;
+
+	myBids: KeysetPaginatedData<IBidData>;
+	isMyBidsLoading?: boolean;
+	isMyBidsError?: boolean;
+	isMyBidsSuccess?: boolean;
+
+	winningBids: OffsetPaginatedData<IBidData>;
+	isWinningBidsLoading?: boolean;
+	isWinningBidsError?: boolean;
+	isWinningBidsSuccess?: boolean;
 
 	allWinningBids: OffsetPaginatedData<IBidData>;
 	isAllWinningBidsLoading?: boolean;

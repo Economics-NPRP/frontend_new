@@ -6,7 +6,6 @@ import { useContext, useMemo } from 'react';
 import { CategoryBadge, CurrencyBadge } from '@/components/Badge';
 import {
 	Anchor,
-	Breadcrumbs,
 	Button,
 	Container,
 	Group,

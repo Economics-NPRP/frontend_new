@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 
 import { ResultsTable } from '@/components/AuctionResultsTable';
 import { BidsTable } from '@/components/BidsTable';
@@ -9,6 +9,7 @@ import {
 	Container,
 	Group,
 	Radio,
+	Select,
 	Stack,
 	Tabs,
 	TabsList,
@@ -20,15 +21,40 @@ import {
 type BidsFilter = 'all' | 'contributing' | 'winning' | 'mine';
 
 export default function Bids() {
-	const { auctionData, openAuctionResults, allBids, allWinningBids, myOpenAuctionResults } =
-		useContext(AuctionResultsContext);
+	const {
+		resultsPage,
+		setResultsPage,
+		winningBidsPage,
+		setWinningBidsPage,
+		resultsPerPage,
+		setResultsPerPage,
+		bidsPerPage,
+		setBidsPerPage,
+		auctionData,
+		openAuctionResults,
+		allBids,
+		myBids,
+		winningBids,
+		allWinningBids,
+		myOpenAuctionResults,
+	} = useContext(AuctionResultsContext);
 
 	const [bidsFilter, setBidsFilter] = useState<BidsFilter>('all');
 
-	const allBidsTableData = useMemo(() => {
+	const bidsTableData = useMemo(() => {
 		if (bidsFilter === 'contributing') return myOpenAuctionResults.contributingLosingBids;
+		if (bidsFilter === 'winning') return winningBids.results;
+		if (bidsFilter === 'mine') return myBids.results;
 		return allBids.results;
-	}, [bidsFilter, allBids.results, myOpenAuctionResults.contributingLosingBids]);
+	}, [bidsFilter, allBids, myOpenAuctionResults, winningBids, myBids]);
+
+	const totalBidsCount = useMemo(() => {
+		if (bidsFilter === 'contributing')
+			return myOpenAuctionResults.contributingLosingBids.length;
+		if (bidsFilter === 'winning') return winningBids.totalCount;
+		if (bidsFilter === 'mine') return myBids.totalCount;
+		return allBids.totalCount;
+	}, [bidsFilter, allBids, myOpenAuctionResults, winningBids, myBids]);
 
 	return (
 		<Tabs defaultValue={'results'}>
@@ -44,10 +70,21 @@ export default function Bids() {
 						<Text className="paragraph-xs">Your Bids</Text>
 					</Group>
 				</Group>
+				<Text className="paragraph-sm">Per page:</Text>
+				<Select
+					w={80}
+					value={resultsPerPage.toString()}
+					data={['10', '20', '50', '100']}
+					onChange={(value) => setResultsPerPage(Number(value))}
+				/>
+				<Text className="paragraph-sm">Total Results: {openAuctionResults.totalCount}</Text>
 				<ResultsTable
 					tableData={openAuctionResults.results}
 					auctionData={auctionData}
 					paginationType="offset"
+					page={resultsPage}
+					pageCount={openAuctionResults.pageCount}
+					setPage={setResultsPage}
 				/>
 			</TabsPanel>
 
@@ -81,13 +118,24 @@ export default function Bids() {
 						<Text className="paragraph-xs">Your Bids</Text>
 					</Group>
 				</Group>
+				<Text className="paragraph-sm">Per page:</Text>
+				<Select
+					w={80}
+					value={bidsPerPage.toString()}
+					data={['10', '20', '50', '100']}
+					onChange={(value) => setBidsPerPage(Number(value))}
+				/>
+				<Text className="paragraph-sm">Total Bids: {totalBidsCount}</Text>
 				<BidsTable
-					tableData={allBidsTableData}
+					tableData={bidsTableData}
 					winningBidIds={allWinningBids.results.map((bid) => bid.id)}
 					contributingBidIds={myOpenAuctionResults.contributingLosingBids.map(
 						(bid) => bid.id,
 					)}
-					paginationType="keyset"
+					paginationType={bidsFilter === 'winning' ? 'offset' : 'keyset'}
+					page={bidsFilter === 'winning' ? winningBidsPage : undefined}
+					pageCount={bidsFilter === 'winning' ? winningBids.pageCount : undefined}
+					setPage={bidsFilter === 'winning' ? setWinningBidsPage : undefined}
 				/>
 			</TabsPanel>
 		</Tabs>

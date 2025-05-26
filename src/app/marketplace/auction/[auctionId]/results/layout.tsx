@@ -1,21 +1,19 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useContext, useState } from 'react';
 
 import { throwError } from '@/helpers';
 import { getSingleAuction } from '@/lib/auctions';
 import { getPaginatedWinningBids } from '@/lib/bids/open';
 import { getPaginatedBids } from '@/lib/bids/open/getPaginatedBids';
 import { getMyOpenAuctionResults, getPaginatedOpenAuctionResults } from '@/lib/results/open';
+import { CurrentUserContext } from '@/pages/globalContext';
 import { NavDirection } from '@/types';
 import { Stack } from '@mantine/core';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
-import {
-	DEFAULT_CONTEXT as AUCTION_RESULTS_DEFAULT_CONTEXT,
-	AuctionResultsContext,
-} from './constants';
+import { AuctionResultsContext, DEFAULT_CONTEXT } from './constants';
 
 export interface AuctionResultsProps {
 	bids: ReactNode;
@@ -24,10 +22,17 @@ export interface AuctionResultsProps {
 }
 export default function AuctionResults({ bids, details, ticket }: AuctionResultsProps) {
 	const { auctionId } = useParams();
+	const { currentUser } = useContext(CurrentUserContext);
 
-	const [resultsPage, setResultsPage] = useState(1);
+	const [resultsPage, setResultsPage] = useState(DEFAULT_CONTEXT.resultsPage);
 	const [allBidsKey, setAllBidsKey] = useState<string | undefined>(undefined);
 	const [allBidsNavDirection, setAllBidsNavDirection] = useState<NavDirection>('next');
+	const [myBidsKey, setMyBidsKey] = useState<string | undefined>(undefined);
+	const [myBidsNavDirection, setMyBidsNavDirection] = useState<NavDirection>('next');
+	const [winningBidsPage, setWinningBidsPage] = useState(DEFAULT_CONTEXT.winningBidsPage);
+
+	const [resultsPerPage, setResultsPerPage] = useState(DEFAULT_CONTEXT.resultsPerPage);
+	const [bidsPerPage, setBidsPerPage] = useState(DEFAULT_CONTEXT.bidsPerPage);
 
 	const {
 		data: auctionData,
@@ -57,13 +62,20 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 		isError: isOpenAuctionResultsError,
 		isSuccess: isOpenAuctionResultsSuccess,
 	} = useQuery({
-		queryKey: ['marketplace', '@catalogue', 'openAuctionResults', auctionId, resultsPage],
+		queryKey: [
+			'marketplace',
+			'@catalogue',
+			'openAuctionResults',
+			auctionId,
+			resultsPage,
+			resultsPerPage,
+		],
 		queryFn: () =>
 			throwError(
 				getPaginatedOpenAuctionResults({
 					auctionId: auctionId as string,
 					page: resultsPage,
-					perPage: 20,
+					perPage: resultsPerPage,
 				}),
 			),
 		placeholderData: keepPreviousData,
@@ -75,14 +87,75 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 		isError: isAllBidsError,
 		isSuccess: isAllBidsSuccess,
 	} = useQuery({
-		queryKey: ['marketplace', '@catalogue', 'allBids', auctionId, allBidsKey],
+		queryKey: [
+			'marketplace',
+			'@catalogue',
+			'allBids',
+			auctionId,
+			allBidsKey,
+			bidsPerPage,
+			allBidsNavDirection,
+		],
 		queryFn: () =>
 			throwError(
 				getPaginatedBids({
 					auctionId: auctionId as string,
 					bidId: allBidsKey,
-					perPage: 20,
+					perPage: bidsPerPage,
 					navDirection: allBidsNavDirection,
+				}),
+			),
+		placeholderData: keepPreviousData,
+	});
+
+	const {
+		data: myBids,
+		isLoading: isMyBidsLoading,
+		isError: isMyBidsError,
+		isSuccess: isMyBidsSuccess,
+	} = useQuery({
+		queryKey: [
+			'marketplace',
+			'@catalogue',
+			'myBids',
+			auctionId,
+			myBidsKey,
+			bidsPerPage,
+			myBidsNavDirection,
+		],
+		queryFn: () =>
+			throwError(
+				getPaginatedBids({
+					auctionId: auctionId as string,
+					bidderId: currentUser.id,
+					bidId: myBidsKey,
+					perPage: bidsPerPage,
+					navDirection: myBidsNavDirection,
+				}),
+			),
+		placeholderData: keepPreviousData,
+	});
+
+	const {
+		data: winningBids,
+		isLoading: isWinningBidsLoading,
+		isError: isWinningBidsError,
+		isSuccess: isWinningBidsSuccess,
+	} = useQuery({
+		queryKey: [
+			'marketplace',
+			'@catalogue',
+			'winningBids',
+			auctionId,
+			winningBidsPage,
+			bidsPerPage,
+		],
+		queryFn: () =>
+			throwError(
+				getPaginatedWinningBids({
+					auctionId: auctionId as string,
+					page: winningBidsPage,
+					perPage: bidsPerPage,
 				}),
 			),
 		placeholderData: keepPreviousData,
@@ -94,7 +167,7 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 		isError: isAllWinningBidsError,
 		isSuccess: isAllWinningBidsSuccess,
 	} = useQuery({
-		queryKey: ['marketplace', '@catalogue', 'allWinningBids', auctionId],
+		queryKey: ['marketplace', '@catalogue', 'allWinningBids', auctionId, 1, 1000000],
 		queryFn: () =>
 			throwError(
 				getPaginatedWinningBids({
@@ -117,29 +190,51 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 				allBidsNavDirection,
 				setAllBidsNavDirection,
 
-				openAuctionResults:
-					openAuctionResults || AUCTION_RESULTS_DEFAULT_CONTEXT.openAuctionResults,
+				myBidsKey,
+				setMyBidsKey,
+				myBidsNavDirection,
+				setMyBidsNavDirection,
+
+				winningBidsPage,
+				setWinningBidsPage,
+
+				resultsPerPage,
+				setResultsPerPage,
+
+				bidsPerPage,
+				setBidsPerPage,
+
+				openAuctionResults: openAuctionResults || DEFAULT_CONTEXT.openAuctionResults,
 				isOpenAuctionResultsLoading,
 				isOpenAuctionResultsError,
 				isOpenAuctionResultsSuccess,
 
-				allBids: allBids || AUCTION_RESULTS_DEFAULT_CONTEXT.allBids,
+				allBids: allBids || DEFAULT_CONTEXT.allBids,
 				isAllBidsLoading,
 				isAllBidsError,
 				isAllBidsSuccess,
 
-				allWinningBids: allWinningBids || AUCTION_RESULTS_DEFAULT_CONTEXT.allWinningBids,
+				myBids: myBids || DEFAULT_CONTEXT.myBids,
+				isMyBidsLoading,
+				isMyBidsError,
+				isMyBidsSuccess,
+
+				winningBids: winningBids || DEFAULT_CONTEXT.winningBids,
+				isWinningBidsLoading,
+				isWinningBidsError,
+				isWinningBidsSuccess,
+
+				allWinningBids: allWinningBids || DEFAULT_CONTEXT.allWinningBids,
 				isAllWinningBidsLoading,
 				isAllWinningBidsError,
 				isAllWinningBidsSuccess,
 
-				auctionData: auctionData || AUCTION_RESULTS_DEFAULT_CONTEXT.auctionData,
+				auctionData: auctionData || DEFAULT_CONTEXT.auctionData,
 				isAuctionDataLoading,
 				isAuctionDataError,
 				isAuctionDataSuccess,
 
-				myOpenAuctionResults:
-					myOpenAuctionResults || AUCTION_RESULTS_DEFAULT_CONTEXT.myOpenAuctionResults,
+				myOpenAuctionResults: myOpenAuctionResults || DEFAULT_CONTEXT.myOpenAuctionResults,
 				isMyOpenAuctionResultsLoading,
 				isMyOpenAuctionResultsError,
 				isMyOpenAuctionResultsSuccess,

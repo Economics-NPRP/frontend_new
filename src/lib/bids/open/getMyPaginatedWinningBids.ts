@@ -8,7 +8,7 @@ import { getSession } from '@/lib/auth';
 import { IBidData } from '@/schema/models';
 import { IOffsetPagination, OffsetPaginatedData } from '@/types';
 
-export interface IGetMyPaginatedBidsOptions extends IOffsetPagination {
+export interface IGetMyPaginatedWinningBidsOptions extends IOffsetPagination {
 	auctionId: string;
 }
 
@@ -26,9 +26,9 @@ const getDefaultData: (...errors: Array<string>) => OffsetPaginatedData<IBidData
 });
 
 type IFunctionSignature = (
-	options: IGetMyPaginatedBidsOptions,
+	options: IGetMyPaginatedWinningBidsOptions,
 ) => Promise<OffsetPaginatedData<IBidData>>;
-export const getMyPaginatedBids: IFunctionSignature = cache(
+export const getMyPaginatedWinningBids: IFunctionSignature = cache(
 	async ({ auctionId, page, perPage }) => {
 		const cookieHeaders = await getSession();
 		if (!cookieHeaders) return getDefaultData('You must be logged in to access this resource.');
@@ -76,6 +76,6 @@ export const getMyPaginatedBids: IFunctionSignature = cache(
 );
 
 //	@ts-expect-error - Preload doesn't return anything but signature requires a return
-export const preloadMyPaginatedBids: IFunctionSignature = async (options) => {
-	void getMyPaginatedBids(options);
+export const preloadMyPaginatedWinningBids: IFunctionSignature = async (options) => {
+	void getMyPaginatedWinningBids(options);
 };
