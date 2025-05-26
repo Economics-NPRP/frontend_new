@@ -61,7 +61,7 @@ export default function AuctionPage({ bids, details, prompt }: AuctionDetailsPro
 		isError: isMyBidsError,
 		isSuccess: isMyBidsSuccess,
 	} = useQuery({
-		queryKey: ['marketplace', '@catalogue', 'myBids', auctionId, winningPage],
+		queryKey: ['marketplace', '@catalogue', 'myBids', auctionId, minePage],
 		queryFn: () =>
 			throwError(
 				getMyPaginatedBids({

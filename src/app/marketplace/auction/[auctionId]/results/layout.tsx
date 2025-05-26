@@ -7,6 +7,7 @@ import { throwError } from '@/helpers';
 import { getSingleAuction } from '@/lib/auctions';
 import { getPaginatedBids } from '@/lib/bids/open/getPaginatedBids';
 import { getMyOpenAuctionResults, getPaginatedOpenAuctionResults } from '@/lib/results/open';
+import { NavDirection } from '@/types';
 import { Stack } from '@mantine/core';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
@@ -24,7 +25,8 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 	const { auctionId } = useParams();
 
 	const [resultsPage, setResultsPage] = useState(1);
-	const [bidsPage, setBidsPage] = useState(1);
+	const [allBidsKey, setAllBidsKey] = useState<string | undefined>(undefined);
+	const [allBidsNavDirection, setAllBidsNavDirection] = useState<NavDirection>('next');
 
 	const {
 		data: auctionData,
@@ -72,13 +74,14 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 		isError: isAllBidsError,
 		isSuccess: isAllBidsSuccess,
 	} = useQuery({
-		queryKey: ['marketplace', '@catalogue', 'allBids', auctionId, resultsPage],
+		queryKey: ['marketplace', '@catalogue', 'allBids', auctionId, allBidsKey],
 		queryFn: () =>
 			throwError(
 				getPaginatedBids({
 					auctionId: auctionId as string,
-					page: bidsPage,
+					bidId: allBidsKey,
 					perPage: 10,
+					navDirection: allBidsNavDirection,
 				}),
 			),
 		placeholderData: keepPreviousData,
@@ -90,8 +93,10 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 				resultsPage,
 				setResultsPage,
 
-				bidsPage,
-				setBidsPage,
+				allBidsKey,
+				setAllBidsKey,
+				allBidsNavDirection,
+				setAllBidsNavDirection,
 
 				auctionResults: auctionResults || AUCTION_RESULTS_DEFAULT_CONTEXT.auctionResults,
 				isAuctionResultsLoading,

@@ -1,4 +1,4 @@
-import { IBidData } from '@/schema/models';
+import { DefaultUserData, IBidData, IUserData } from '@/schema/models';
 
 export interface IAuctionResultsData {
 	auctionId: string;
@@ -8,6 +8,10 @@ export interface IAuctionResultsData {
 	totalBidsCount: number;
 	winningBidsCount: number;
 	averagePricePerPermit: number;
+	firm: IUserData;
+}
+
+export interface IMyAuctionResultsData extends Omit<IAuctionResultsData, 'firm'> {
 	auctionStatus: 'ended';
 	contributingLosingBids: Array<IBidData>;
 	clearanceBid: IBidData | null;
@@ -21,6 +25,11 @@ export const DefaultAuctionResultsData: IAuctionResultsData = {
 	totalBidsCount: 0,
 	winningBidsCount: 0,
 	averagePricePerPermit: 0,
+	firm: DefaultUserData,
+};
+
+export const DefaultMyAuctionResultsData: IMyAuctionResultsData = {
+	...DefaultAuctionResultsData,
 	auctionStatus: 'ended',
 	contributingLosingBids: [],
 	clearanceBid: null,

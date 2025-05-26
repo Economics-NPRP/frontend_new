@@ -2,8 +2,11 @@ import { createContext } from 'react';
 
 import { DefaultAuctionData, IAuctionData, IBidData } from '@/schema/models';
 import {
-	DefaultAuctionResultsData,
+	DefaultMyAuctionResultsData,
 	IAuctionResultsData,
+	IMyAuctionResultsData,
+	KeysetPaginatedData,
+	NavDirection,
 	OffsetPaginatedData,
 	ServerData,
 } from '@/types';
@@ -12,8 +15,10 @@ export const DEFAULT_CONTEXT: IAuctionResultsContext = {
 	resultsPage: 1,
 	setResultsPage: () => {},
 
-	bidsPage: 1,
-	setBidsPage: () => {},
+	allBidsKey: undefined,
+	setAllBidsKey: () => {},
+	allBidsNavDirection: 'next',
+	setAllBidsNavDirection: () => {},
 
 	auctionResults: {
 		ok: false,
@@ -33,10 +38,10 @@ export const DEFAULT_CONTEXT: IAuctionResultsContext = {
 		ok: false,
 		errors: [],
 		results: [],
-		page: 1,
-		pageCount: 1,
-		totalCount: 0,
 		perPage: 10,
+		hasNext: false,
+		totalCount: 0,
+		isExact: true,
 		resultCount: 0,
 	},
 	isAllBidsLoading: true,
@@ -55,7 +60,7 @@ export const DEFAULT_CONTEXT: IAuctionResultsContext = {
 	myOpenAuctionResults: {
 		ok: false,
 		errors: [],
-		...DefaultAuctionResultsData,
+		...DefaultMyAuctionResultsData,
 	},
 	isMyOpenAuctionResultsLoading: true,
 	isMyOpenAuctionResultsError: false,
@@ -66,15 +71,17 @@ export interface IAuctionResultsContext {
 	resultsPage: number;
 	setResultsPage: (page: number) => void;
 
-	bidsPage: number;
-	setBidsPage: (page: number) => void;
+	allBidsKey: string | undefined;
+	setAllBidsKey: (bidId: string | undefined) => void;
+	allBidsNavDirection: NavDirection;
+	setAllBidsNavDirection: (direction: NavDirection) => void;
 
 	auctionResults: OffsetPaginatedData<IAuctionResultsData>;
 	isAuctionResultsLoading?: boolean;
 	isAuctionResultsError?: boolean;
 	isAuctionResultsSuccess?: boolean;
 
-	allBids: OffsetPaginatedData<IBidData>;
+	allBids: KeysetPaginatedData<IBidData>;
 	isAllBidsLoading?: boolean;
 	isAllBidsError?: boolean;
 	isAllBidsSuccess?: boolean;
@@ -84,7 +91,7 @@ export interface IAuctionResultsContext {
 	isAuctionDataError?: boolean;
 	isAuctionDataSuccess?: boolean;
 
-	myOpenAuctionResults: ServerData<IAuctionResultsData>;
+	myOpenAuctionResults: ServerData<IMyAuctionResultsData>;
 	isMyOpenAuctionResultsLoading?: boolean;
 	isMyOpenAuctionResultsError?: boolean;
 	isMyOpenAuctionResultsSuccess?: boolean;
