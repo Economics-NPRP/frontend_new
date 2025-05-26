@@ -11,6 +11,7 @@ import { getMyOpenAuctionResults, getPaginatedOpenAuctionResults } from '@/lib/r
 import { CurrentUserContext } from '@/pages/globalContext';
 import { NavDirection } from '@/types';
 import { Stack } from '@mantine/core';
+import { useScrollIntoView } from '@mantine/hooks';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import { AuctionResultsContext, DEFAULT_CONTEXT } from './constants';
@@ -33,6 +34,8 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 
 	const [resultsPerPage, setResultsPerPage] = useState(DEFAULT_CONTEXT.resultsPerPage);
 	const [bidsPerPage, setBidsPerPage] = useState(DEFAULT_CONTEXT.bidsPerPage);
+
+	const { scrollIntoView: scrollToHistory, targetRef: historyRef } = useScrollIntoView();
 
 	const {
 		data: auctionData,
@@ -182,6 +185,9 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 	return (
 		<AuctionResultsContext.Provider
 			value={{
+				scrollToHistory,
+				historyRef,
+
 				resultsPage,
 				setResultsPage,
 

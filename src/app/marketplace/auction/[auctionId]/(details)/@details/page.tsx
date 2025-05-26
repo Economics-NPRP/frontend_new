@@ -92,7 +92,7 @@ export default function Details() {
 				</Text>
 			</Stack>
 			<Group>
-				<Title order={3}>Permits Distribution</Title>
+				<Title order={3}>Permits Available</Title>
 				{/* TODO: replace with actual auctioned and bought numbers from backend */}
 				<Progress.Root size={32} className="flex-auto">
 					<Tooltip

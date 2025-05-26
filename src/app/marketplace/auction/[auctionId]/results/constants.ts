@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { RefObject, createContext } from 'react';
 
 import { DefaultAuctionData, IAuctionData, IBidData } from '@/schema/models';
 import {
@@ -12,6 +12,9 @@ import {
 } from '@/types';
 
 export const DEFAULT_CONTEXT: IAuctionResultsContext = {
+	scrollToHistory: () => {},
+	historyRef: { current: null } as RefObject<HTMLAnchorElement>,
+
 	resultsPage: 1,
 	setResultsPage: () => {},
 
@@ -124,6 +127,10 @@ export const DEFAULT_CONTEXT: IAuctionResultsContext = {
 };
 
 export interface IAuctionResultsContext {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	scrollToHistory: (params: any) => void;
+	historyRef: RefObject<HTMLAnchorElement>;
+
 	resultsPage: number;
 	setResultsPage: (page: number) => void;
 
