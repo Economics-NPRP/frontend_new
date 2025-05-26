@@ -5,9 +5,10 @@ import { useFormatter } from 'next-intl';
 import { useCallback, useContext, useMemo, useState } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
-import { ActionIcon, Button, Group, Progress, Stack, Text } from '@mantine/core';
+import { generateTrendData } from '@/helpers';
+import { LineChart } from '@mantine/charts';
+import { Button, Group, Progress, Stack, Text } from '@mantine/core';
 import { useDisclosure, useListState } from '@mantine/hooks';
-import { IconChartLine } from '@tabler/icons-react';
 
 import { AuctionDetailsContext } from '../constants';
 import { BidConfirmationModal } from './BidConfirmationModal';
@@ -61,6 +62,19 @@ export default function Prompt() {
 		setEditingBid(DEFAULT_CONTEXT.editingBid);
 	}, [bidsHandlers, selectedBidsHandlers, deletingBidsHandlers]);
 
+	const data = useMemo(
+		() =>
+			generateTrendData({
+				points: 20,
+				trend: 'exponential',
+				noise: 0.25,
+				base: 6,
+				growth: 1.25,
+				label: 'Minimum Winning Bid',
+			}),
+		[],
+	);
+
 	return (
 		<AuctionBiddingContext.Provider
 			value={{
@@ -103,14 +117,33 @@ export default function Prompt() {
 				</Stack>
 				<Group>
 					<Stack>
+						<LineChart
+							w={320}
+							h={240}
+							data={data}
+							dataKey="x"
+							series={[{ name: 'Minimum Winning Bid', color: 'maroon.6' }]}
+							curveType="natural"
+							tickLine="xy"
+							gridAxis="xy"
+							xAxisLabel="Time"
+							yAxisLabel="Minimum Winning Bid"
+							xAxisProps={{
+								type: 'number',
+								domain: [0, 19],
+								interval: 'preserveStartEnd',
+							}}
+						/>
 						<Text>Minimum Winning Bid</Text>
 						<Group>
 							<CurrencyBadge />
-							<Text>1,105.99</Text>
+							<Text>
+								{format.number(
+									data[data.length - 1]['Minimum Winning Bid'],
+									'money',
+								)}
+							</Text>
 						</Group>
-						<ActionIcon>
-							<IconChartLine />
-						</ActionIcon>
 					</Stack>
 					<Stack>
 						<InsertForm />
