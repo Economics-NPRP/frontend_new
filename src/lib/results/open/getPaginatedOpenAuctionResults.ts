@@ -5,33 +5,38 @@ import { cache } from 'react';
 import 'server-only';
 
 import { getSession } from '@/lib/auth';
-import { IBidData } from '@/schema/models';
-import { IKeysetPagination, KeysetPaginatedData } from '@/types';
+import {
+	IAuctionResultsData,
+	IOffsetPagination,
+	OffsetPaginatedData,
+	SortDirection,
+} from '@/types';
 
-export interface IGetPaginatedBidsOptions extends IKeysetPagination {
+export interface IGetPaginatedOpenAuctionResultsOptions extends IOffsetPagination {
 	auctionId: string;
-	bidderId?: string;
-	bidId?: string;
+
+	sortBy?: string;
+	sortDirection?: SortDirection;
 }
 
-const getDefaultData: (...errors: Array<string>) => KeysetPaginatedData<IBidData> = (
+const getDefaultData: (...errors: Array<string>) => OffsetPaginatedData<IAuctionResultsData> = (
 	...errors
 ) => ({
 	ok: false,
 	errors: errors,
-	results: [] as Array<IBidData>,
-	perPage: 10,
-	hasNext: false,
+	results: [] as Array<IAuctionResultsData>,
+	page: 1,
+	pageCount: 1,
 	totalCount: 0,
-	isExact: true,
+	perPage: 10,
 	resultCount: 0,
 });
 
 type IFunctionSignature = (
-	options: IGetPaginatedBidsOptions,
-) => Promise<KeysetPaginatedData<IBidData>>;
-export const getPaginatedBids: IFunctionSignature = cache(
-	async ({ auctionId, bidderId, bidId, perPage, navDirection }) => {
+	options: IGetPaginatedOpenAuctionResultsOptions,
+) => Promise<OffsetPaginatedData<IAuctionResultsData>>;
+export const getPaginatedOpenAuctionResults: IFunctionSignature = cache(
+	async ({ auctionId, page, perPage, sortBy, sortDirection }) => {
 		const cookieHeaders = await getSession();
 		if (!cookieHeaders) return getDefaultData('You must be logged in to access this resource.');
 		const querySettings: RequestInit = {
@@ -42,15 +47,15 @@ export const getPaginatedBids: IFunctionSignature = cache(
 			},
 		};
 
-		const queryUrl = new URL('/v1/bids/o/', process.env.NEXT_PUBLIC_BACKEND_URL);
+		const queryUrl = new URL('/v1/results/o', process.env.NEXT_PUBLIC_BACKEND_URL);
 		queryUrl.searchParams.append('auction_id', auctionId);
-		if (bidderId) queryUrl.searchParams.append('bidder_id', bidderId.toString());
-		if (bidId) queryUrl.searchParams.append('bid_id', bidId.toString());
+		if (page) queryUrl.searchParams.append('page', page.toString());
 		if (perPage) queryUrl.searchParams.append('per_page', perPage.toString());
-		if (navDirection) queryUrl.searchParams.append('nav_direction', navDirection.toString());
+		if (sortBy) queryUrl.searchParams.append('order_by', sortBy);
+		if (sortDirection) queryUrl.searchParams.append('order_dir', sortDirection);
 
 		const response = await fetch(queryUrl, querySettings);
-		const rawData = camelCase(await response.json(), 5) as KeysetPaginatedData<unknown>;
+		const rawData = camelCase(await response.json(), 5) as OffsetPaginatedData<unknown>;
 
 		//	If theres an issue, return the default data with errors
 		if (!rawData) return getDefaultData('No data was returned.');
@@ -59,8 +64,8 @@ export const getPaginatedBids: IFunctionSignature = cache(
 
 		//	Parse results using schema and collect issues
 		const errors: Array<string> = [];
-		const results = rawData.results.reduce<Array<IBidData>>((acc, result) => {
-			acc.push(result as IBidData);
+		const results = rawData.results.reduce<Array<IAuctionResultsData>>((acc, result) => {
+			acc.push(result as IAuctionResultsData);
 			return acc;
 		}, []);
 
@@ -74,6 +79,6 @@ export const getPaginatedBids: IFunctionSignature = cache(
 );
 
 //	@ts-expect-error - Preload doesn't return anything but signature requires a return
-export const preloadPaginatedBids: IFunctionSignature = async (options) => {
-	void getPaginatedBids(options);
+export const preloadPaginatedOpenAuctionResults: IFunctionSignature = async (options) => {
+	void getPaginatedOpenAuctionResults(options);
 };

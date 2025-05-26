@@ -2,6 +2,7 @@
 
 import { ComponentPropsWithRef } from 'react';
 
+import GlobalContext from '@/pages/globalContext';
 import { theme } from '@/styles/mantine';
 import { DirectionProvider, MantineProvider } from '@mantine/core';
 import { QueryClient, QueryClientProvider, isServer } from '@tanstack/react-query';
@@ -34,7 +35,9 @@ export default function Providers({ children }: ProvidersProps) {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<DirectionProvider>
-				<MantineProvider theme={theme}>{children}</MantineProvider>
+				<MantineProvider theme={theme}>
+					<GlobalContext>{children}</GlobalContext>
+				</MantineProvider>
 			</DirectionProvider>
 		</QueryClientProvider>
 	);

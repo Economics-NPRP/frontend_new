@@ -1,11 +1,12 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 
 import { Id } from '@/components/Id';
-import { throwError } from '@/helpers';
 import { logout } from '@/lib/auth/logout';
-import { getMyProfile } from '@/lib/users/firms';
+import { CurrentUserContext } from '@/pages/globalContext';
 import {
 	Alert,
 	Avatar,
@@ -37,7 +38,7 @@ import {
 	IconLogout,
 	IconSettings,
 } from '@tabler/icons-react';
-import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { HeaderButton } from './HeaderButton';
 import classes from './styles.module.css';
@@ -46,18 +47,13 @@ export const UserProfile = () => {
 	const t = useTranslations();
 	const router = useRouter();
 	const queryClient = useQueryClient();
-
 	const {
-		data: userData,
-		error: userDataError,
-		isLoading: isUserDataLoading,
-		isError: isUserDataError,
-		isSuccess: isUserDataSuccess,
-	} = useQuery({
-		queryKey: ['users', 'firms', 'mine'],
-		queryFn: () => throwError(getMyProfile()),
-		placeholderData: keepPreviousData,
-	});
+		currentUser,
+		currentUserError,
+		isCurrentUserLoading,
+		isCurrentUserError,
+		isCurrentUserSuccess,
+	} = useContext(CurrentUserContext);
 
 	//	Clear cookies and redirect to login page
 	const handleLogout = useCallback(() => {
@@ -120,18 +116,23 @@ export const UserProfile = () => {
 			icon={<IconExclamationCircle />}
 			className="mb-4"
 		>
-			{userDataError?.message}
+			{currentUserError?.message}
 		</Alert>
 	);
 
 	const profileDetails = (
 		<>
 			<Container className={`${classes.bg} bg-grid-sm`} />
-			<Avatar className={classes.avatar} name={userData?.name} color="initials" size={'lg'} />
+			<Avatar
+				className={classes.avatar}
+				name={currentUser?.name}
+				color="initials"
+				size={'lg'}
+			/>
 			<Group className={classes.details}>
 				<Stack className={classes.id}>
-					<Id value={userData?.id || ''} variant="company" truncate />
-					<Text className={classes.text}>{userData?.name}</Text>
+					<Id value={currentUser?.id || ''} variant="company" truncate />
+					<Text className={classes.text}>{currentUser?.name}</Text>
 				</Stack>
 				<Stack className={classes.rating}>
 					<Rating
@@ -168,12 +169,15 @@ export const UserProfile = () => {
 			</MenuTarget>
 
 			<MenuDropdown
-				className={`${classes.userDropdown} ${isUserDataLoading ? classes.loading : ''}`}
+				className={`${classes.userDropdown} ${isCurrentUserLoading ? classes.loading : ''}`}
 			>
-				{isUserDataLoading && profileLoading}
-				{!isUserDataLoading && !isUserDataError && !isUserDataSuccess && profileLoading}
-				{isUserDataError && profileError}
-				{isUserDataSuccess && profileDetails}
+				{isCurrentUserLoading && profileLoading}
+				{!isCurrentUserLoading &&
+					!isCurrentUserError &&
+					!isCurrentUserSuccess &&
+					profileLoading}
+				{isCurrentUserError && profileError}
+				{isCurrentUserSuccess && profileDetails}
 
 				<MenuDivider />
 				<MenuLabel>{t('components.header.user.marketplace')} </MenuLabel>

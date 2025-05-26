@@ -5,21 +5,21 @@ import { cache } from 'react';
 import 'server-only';
 
 import { getSession } from '@/lib/auth';
-import { DefaultAuctionResultsData, IAuctionResultsData, ServerData } from '@/types';
+import { DefaultMyAuctionResultsData, IMyAuctionResultsData, ServerData } from '@/types';
 
 export interface IGetMyOpenAuctionResultsOptions {
 	auctionId: string;
 }
 
-const getDefaultData: (...errors: Array<string>) => ServerData<IAuctionResultsData> = (
+const getDefaultData: (...errors: Array<string>) => ServerData<IMyAuctionResultsData> = (
 	...errors
 ) => ({
-	...DefaultAuctionResultsData,
+	...DefaultMyAuctionResultsData,
 	ok: false,
 	errors: errors,
 });
 
-type IFunctionSignature = (auctionId: string) => Promise<ServerData<IAuctionResultsData>>;
+type IFunctionSignature = (auctionId: string) => Promise<ServerData<IMyAuctionResultsData>>;
 export const getMyOpenAuctionResults: IFunctionSignature = cache(async (auctionId) => {
 	const cookieHeaders = await getSession();
 	if (!cookieHeaders) return getDefaultData('You must be logged in to access this resource.');
@@ -35,7 +35,7 @@ export const getMyOpenAuctionResults: IFunctionSignature = cache(async (auctionI
 	queryUrl.searchParams.append('auction_id', auctionId);
 
 	const response = await fetch(queryUrl, querySettings);
-	const rawData = camelCase(await response.json(), 5) as ServerData<IAuctionResultsData>;
+	const rawData = camelCase(await response.json(), 5) as ServerData<IMyAuctionResultsData>;
 
 	//	If theres an issue, return the default data with errors
 	if (!rawData) return getDefaultData('No data was returned.');
@@ -46,7 +46,7 @@ export const getMyOpenAuctionResults: IFunctionSignature = cache(async (auctionI
 	return {
 		...rawData,
 		ok: true,
-	} as ServerData<IAuctionResultsData>;
+	} as ServerData<IMyAuctionResultsData>;
 });
 
 //	@ts-expect-error - Preload doesn't return anything but signature requires a return

@@ -5,7 +5,7 @@ import { ReactNode, useState } from 'react';
 
 import { throwError } from '@/helpers';
 import { getSingleAuction } from '@/lib/auctions';
-import { getMyPaginatedBids, getPaginatedWinningBids } from '@/lib/bids/open';
+import { getMyPaginatedWinningBids, getPaginatedWinningBids } from '@/lib/bids/open';
 import { Stack } from '@mantine/core';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
@@ -19,8 +19,16 @@ export interface AuctionDetailsProps {
 	bids: ReactNode;
 	details: ReactNode;
 	prompt: ReactNode;
+	suggestions: ReactNode;
+	ended: ReactNode;
 }
-export default function AuctionPage({ bids, details, prompt }: AuctionDetailsProps) {
+export default function AuctionPage({
+	bids,
+	details,
+	prompt,
+	suggestions,
+	ended,
+}: AuctionDetailsProps) {
 	const { auctionId } = useParams();
 
 	const [winningPage, setWinningPage] = useState(1);
@@ -61,10 +69,10 @@ export default function AuctionPage({ bids, details, prompt }: AuctionDetailsPro
 		isError: isMyBidsError,
 		isSuccess: isMyBidsSuccess,
 	} = useQuery({
-		queryKey: ['marketplace', '@catalogue', 'myBids', auctionId, winningPage],
+		queryKey: ['marketplace', '@catalogue', 'myBids', auctionId, minePage],
 		queryFn: () =>
 			throwError(
-				getMyPaginatedBids({
+				getMyPaginatedWinningBids({
 					auctionId: auctionId as string,
 					page: minePage,
 					perPage: 10,
@@ -105,7 +113,9 @@ export default function AuctionPage({ bids, details, prompt }: AuctionDetailsPro
 					{details}
 					{bids}
 					{prompt}
+					{suggestions}
 				</Stack>
+				{ended}
 			</BidTableContext.Provider>
 		</AuctionDetailsContext.Provider>
 	);

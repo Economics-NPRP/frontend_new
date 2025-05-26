@@ -117,5 +117,19 @@ export const getSession = async () => {
 	const cookieStore = await cookies();
 	const sessionCookie = cookieStore.get('ets_session');
 	if (!sessionCookie) return null;
+
+	//	Extract access and refresh tokens from the session cookie
+	const [accessToken, refreshToken] = sessionCookie.value
+		.split('; ')
+		.map((cookie) => cookie.split('=')[1]);
+
+	//	Verify the tokens validity
+	if (!accessToken || !refreshToken) return null;
+	const { exp: accessExp } = jwtDecode(accessToken);
+	const { exp: refreshExp } = jwtDecode(refreshToken);
+
+	//	If the access or refresh token is expired, return null
+	if ((accessExp || 0) < Date.now() / 1000 || (refreshExp || 0) < Date.now() / 1000) return null;
+
 	return sessionCookie?.value;
 };

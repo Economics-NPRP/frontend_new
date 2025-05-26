@@ -17,7 +17,6 @@ export type KeysetPaginatedData<T> = ServerData<{
 	results: Array<T>;
 	perPage: number;
 	hasNext: boolean;
-	hasPrevious: boolean;
 	totalCount: number;
 	isExact: boolean;
 	resultCount: number;

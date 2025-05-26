@@ -5,15 +5,17 @@ import { useFormatter } from 'next-intl';
 import { useCallback, useContext, useMemo, useState } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
-import { ActionIcon, Button, Group, Progress, Stack, Text } from '@mantine/core';
+import { generateTrendData } from '@/helpers';
+import { LineChart } from '@mantine/charts';
+import { Button, Group, Progress, Stack, Text } from '@mantine/core';
 import { useDisclosure, useListState } from '@mantine/hooks';
-import { IconChartLine } from '@tabler/icons-react';
 
 import { AuctionDetailsContext } from '../constants';
 import { BidConfirmationModal } from './BidConfirmationModal';
 import { BidTable } from './BidTable';
 import { DeleteModal } from './DeleteModal';
 import { EditModal } from './EditModal';
+import { EndedOverlay } from './EndedOverlay';
 import { InsertForm } from './InsertForm';
 import { JoinOverlay } from './JoinOverlay';
 import { AuctionBiddingContext, DEFAULT_CONTEXT } from './constants';
@@ -54,12 +56,33 @@ export default function Prompt() {
 		[bids],
 	);
 
+	//	TODO: also check every second if the auction is still active
+	const hasEnded = useMemo(
+		() => new Date(auctionData.endDatetime).getTime() < Date.now(),
+		[auctionData.endDatetime],
+	);
+
+	const readOnly = useMemo(() => !auctionData.hasJoined || hasEnded, [auctionData, hasEnded]);
+
 	const resetState = useCallback(() => {
 		bidsHandlers.setState(DEFAULT_CONTEXT.bids);
 		selectedBidsHandlers.setState(DEFAULT_CONTEXT.selectedBids);
 		deletingBidsHandlers.setState(DEFAULT_CONTEXT.deletingBids);
 		setEditingBid(DEFAULT_CONTEXT.editingBid);
 	}, [bidsHandlers, selectedBidsHandlers, deletingBidsHandlers]);
+
+	const data = useMemo(
+		() =>
+			generateTrendData({
+				points: 20,
+				trend: 'exponential',
+				noise: 0.25,
+				base: 6,
+				growth: 1.25,
+				label: 'Minimum Winning Bid',
+			}),
+		[],
+	);
 
 	return (
 		<AuctionBiddingContext.Provider
@@ -92,25 +115,45 @@ export default function Prompt() {
 			}}
 		>
 			<Stack className="relative">
-				{!auctionData.hasJoined && <JoinOverlay />}
+				{!auctionData.hasJoined && !hasEnded && <JoinOverlay />}
+				{hasEnded && <EndedOverlay />}
 				<Stack>
 					<Text>Buy Now Price</Text>
 					<Group>
 						<CurrencyBadge />
 						<Text>1,400.00</Text>
 					</Group>
-					<Button disabled={!auctionData.hasJoined}>Buy Now</Button>
+					<Button disabled={readOnly}>Buy Now</Button>
 				</Stack>
 				<Group>
 					<Stack>
+						<LineChart
+							w={320}
+							h={240}
+							data={data}
+							dataKey="x"
+							series={[{ name: 'Minimum Winning Bid', color: 'maroon.6' }]}
+							curveType="natural"
+							tickLine="xy"
+							gridAxis="xy"
+							xAxisLabel="Time"
+							yAxisLabel="Minimum Winning Bid"
+							xAxisProps={{
+								type: 'number',
+								domain: [0, 19],
+								interval: 'preserveStartEnd',
+							}}
+						/>
 						<Text>Minimum Winning Bid</Text>
 						<Group>
 							<CurrencyBadge />
-							<Text>1,105.99</Text>
+							<Text>
+								{format.number(
+									data[data.length - 1]['Minimum Winning Bid'],
+									'money',
+								)}
+							</Text>
 						</Group>
-						<ActionIcon>
-							<IconChartLine />
-						</ActionIcon>
 					</Stack>
 					<Stack>
 						<InsertForm />
@@ -143,7 +186,7 @@ export default function Prompt() {
 					</Stack>
 				</Group>
 				<Button
-					disabled={!auctionData.hasJoined || bids.length === 0}
+					disabled={readOnly || bids.length === 0}
 					onClick={bidConfirmationModalActions.open}
 				>
 					Place Bids
