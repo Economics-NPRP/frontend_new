@@ -15,6 +15,7 @@ import { BidConfirmationModal } from './BidConfirmationModal';
 import { BidTable } from './BidTable';
 import { DeleteModal } from './DeleteModal';
 import { EditModal } from './EditModal';
+import { EndedOverlay } from './EndedOverlay';
 import { InsertForm } from './InsertForm';
 import { JoinOverlay } from './JoinOverlay';
 import { AuctionBiddingContext, DEFAULT_CONTEXT } from './constants';
@@ -54,6 +55,14 @@ export default function Prompt() {
 		() => bids.reduce((acc, { bid, permit }) => acc + bid * permit, DEFAULT_CONTEXT.grandTotal),
 		[bids],
 	);
+
+	//	TODO: also check every second if the auction is still active
+	const hasEnded = useMemo(
+		() => new Date(auctionData.endDatetime).getTime() < Date.now(),
+		[auctionData.endDatetime],
+	);
+
+	const readOnly = useMemo(() => !auctionData.hasJoined || hasEnded, [auctionData, hasEnded]);
 
 	const resetState = useCallback(() => {
 		bidsHandlers.setState(DEFAULT_CONTEXT.bids);
@@ -106,14 +115,15 @@ export default function Prompt() {
 			}}
 		>
 			<Stack className="relative">
-				{!auctionData.hasJoined && <JoinOverlay />}
+				{!auctionData.hasJoined && !hasEnded && <JoinOverlay />}
+				{hasEnded && <EndedOverlay />}
 				<Stack>
 					<Text>Buy Now Price</Text>
 					<Group>
 						<CurrencyBadge />
 						<Text>1,400.00</Text>
 					</Group>
-					<Button disabled={!auctionData.hasJoined}>Buy Now</Button>
+					<Button disabled={readOnly}>Buy Now</Button>
 				</Stack>
 				<Group>
 					<Stack>
@@ -176,7 +186,7 @@ export default function Prompt() {
 					</Stack>
 				</Group>
 				<Button
-					disabled={!auctionData.hasJoined || bids.length === 0}
+					disabled={readOnly || bids.length === 0}
 					onClick={bidConfirmationModalActions.open}
 				>
 					Place Bids

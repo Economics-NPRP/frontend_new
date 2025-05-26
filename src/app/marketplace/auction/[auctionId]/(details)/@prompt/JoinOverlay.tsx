@@ -3,8 +3,9 @@ import { useCallback } from 'react';
 
 import { throwError } from '@/helpers';
 import { joinAuction } from '@/lib/auctions';
-import { Button, Container, Loader, Stack, Text } from '@mantine/core';
+import { Button, Container, Loader, Stack, Text, Title } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
+import { IconArrowUpRight } from '@tabler/icons-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const JoinOverlay = () => {
@@ -37,12 +38,26 @@ export const JoinOverlay = () => {
 				className="absolute top-0 left-0 w-full h-full -z-10 bg-black/30"
 				style={{ backdropFilter: 'blur(4px)' }}
 			/>
-			{mutation.isPending && <Loader />}
+			{mutation.isPending && (
+				<Stack className="bg-white items-center justify-center size-[200px]">
+					<Loader />
+				</Stack>
+			)}
 			{!mutation.isPending && (
-				<>
-					<Text>You must join the auction to place bids or purchase permits</Text>
-					<Button onClick={onClickHandler}>Join Auction</Button>
-				</>
+				<Stack className="gap-2 px-12 py-8 bg-white items-center w-[600px]">
+					<Title className="text-center heading-2">Join The Auction</Title>
+					<Text className="text-center paragraph-sm">
+						You must first join the auction to participate in the bidding process. Click
+						the button below to join.
+					</Text>
+					<Button
+						className="w-[200px] mt-4"
+						onClick={onClickHandler}
+						rightSection={<IconArrowUpRight size={16} />}
+					>
+						Join Auction
+					</Button>
+				</Stack>
 			)}
 		</Stack>
 	);

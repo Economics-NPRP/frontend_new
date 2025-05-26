@@ -20,8 +20,15 @@ export interface AuctionDetailsProps {
 	details: ReactNode;
 	prompt: ReactNode;
 	suggestions: ReactNode;
+	ended: ReactNode;
 }
-export default function AuctionPage({ bids, details, prompt, suggestions }: AuctionDetailsProps) {
+export default function AuctionPage({
+	bids,
+	details,
+	prompt,
+	suggestions,
+	ended,
+}: AuctionDetailsProps) {
 	const { auctionId } = useParams();
 
 	const [winningPage, setWinningPage] = useState(1);
@@ -108,6 +115,7 @@ export default function AuctionPage({ bids, details, prompt, suggestions }: Auct
 					{prompt}
 					{suggestions}
 				</Stack>
+				{ended}
 			</BidTableContext.Provider>
 		</AuctionDetailsContext.Provider>
 	);

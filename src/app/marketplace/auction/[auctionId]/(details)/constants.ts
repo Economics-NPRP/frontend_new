@@ -16,9 +16,9 @@ export const DEFAULT_CONTEXT: IAuctionDetailsContext = {
 
 export interface IAuctionDetailsContext {
 	auctionData: ServerData<IAuctionData>;
-	isAuctionDataLoading?: boolean;
-	isAuctionDataError?: boolean;
-	isAuctionDataSuccess?: boolean;
+	isAuctionDataLoading: boolean;
+	isAuctionDataError: boolean;
+	isAuctionDataSuccess: boolean;
 }
 
 export const AuctionDetailsContext = createContext<IAuctionDetailsContext>(DEFAULT_CONTEXT);

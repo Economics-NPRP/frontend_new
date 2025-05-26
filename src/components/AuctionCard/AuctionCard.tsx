@@ -51,7 +51,10 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 	);
 
 	const url = useMemo(() => `/marketplace/auction/${auction.id}`, [auction.id]);
-	const bidsUrl = useMemo(() => `/marketplace/auction/${auction.id}#bids`, [auction.id]);
+	const bidsUrl = useMemo(
+		() => `/marketplace/auction/${auction.id}/results#history`,
+		[auction.id],
+	);
 	const resultsUrl = useMemo(() => `/marketplace/auction/${auction.id}/results`, [auction.id]);
 
 	const imgs = [
