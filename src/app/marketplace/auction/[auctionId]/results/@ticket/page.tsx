@@ -35,8 +35,12 @@ export default function Ticket() {
 		[myOpenAuctionResults.permitsReserved, auctionData.permits],
 	);
 
+	const isEnded = useMemo(
+		() => new Date(auctionData.endDatetime).getTime() < Date.now(),
+		[auctionData.endDatetime],
+	);
 	const isWinner = useMemo(
-		() => myOpenAuctionResults.permitsReserved > 0,
+		() => myOpenAuctionResults.permitsReserved > 0 && isEnded,
 		[myOpenAuctionResults],
 	);
 

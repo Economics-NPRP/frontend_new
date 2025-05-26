@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import { useContext, useMemo } from 'react';
 
-import { Button, Container, Group, Modal, Stack, Text, Title } from '@mantine/core';
+import { Button, Group, Modal, Stack, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconArrowUpRight } from '@tabler/icons-react';
 
