@@ -1,19 +1,35 @@
 'use client';
 
 import { DateTime } from 'luxon';
+import { useFormatter } from 'next-intl';
 import Image from 'next/image';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 
 import { AuctionTypeBadge, CategoryBadge } from '@/components/Badge';
 import { LargeCountdown } from '@/components/Countdown';
 import { Id } from '@/components/Id';
-import { Anchor, Breadcrumbs, Button, Container, Group, Stack, Text, Title } from '@mantine/core';
+import {
+	Anchor,
+	Breadcrumbs,
+	Button,
+	Container,
+	Group,
+	Progress,
+	Stack,
+	Text,
+	Title,
+	Tooltip,
+} from '@mantine/core';
 import { IconArrowUpLeft, IconBox } from '@tabler/icons-react';
 
 import { AuctionDetailsContext } from '../constants';
 
 export default function Details() {
+	const format = useFormatter();
 	const { auctionData } = useContext(AuctionDetailsContext);
+
+	const bought = useMemo(() => Math.random() * 100, [auctionData.permits]);
+	const available = useMemo(() => 100 - bought, [bought]);
 
 	return (
 		<>
@@ -75,6 +91,26 @@ export default function Details() {
 					)}
 				</Text>
 			</Stack>
+			<Group>
+				<Title order={3}>Permits Distribution</Title>
+				{/* TODO: replace with actual auctioned and bought numbers from backend */}
+				<Progress.Root size={32} className="flex-auto">
+					<Tooltip
+						label={`Bought Permits - ${format.number(Math.round((bought / 100) * auctionData.permits))}`}
+					>
+						<Progress.Section value={bought} className="bg-maroon-600">
+							<Progress.Label>Bought</Progress.Label>
+						</Progress.Section>
+					</Tooltip>
+					<Tooltip
+						label={`Available Permits - ${format.number(Math.round((available / 100) * auctionData.permits))}`}
+					>
+						<Progress.Section value={available} className="bg-gray-100">
+							<Progress.Label className="text-dark-300">Available</Progress.Label>
+						</Progress.Section>
+					</Tooltip>
+				</Progress.Root>
+			</Group>
 		</>
 	);
 }
