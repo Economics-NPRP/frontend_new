@@ -5,6 +5,7 @@ import { ReactNode, useState } from 'react';
 
 import { throwError } from '@/helpers';
 import { getSingleAuction } from '@/lib/auctions';
+import { getPaginatedWinningBids } from '@/lib/bids/open';
 import { getPaginatedBids } from '@/lib/bids/open/getPaginatedBids';
 import { getMyOpenAuctionResults, getPaginatedOpenAuctionResults } from '@/lib/results/open';
 import { NavDirection } from '@/types';
@@ -51,10 +52,10 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 	});
 
 	const {
-		data: auctionResults,
-		isLoading: isAuctionResultsLoading,
-		isError: isAuctionResultsError,
-		isSuccess: isAuctionResultsSuccess,
+		data: openAuctionResults,
+		isLoading: isOpenAuctionResultsLoading,
+		isError: isOpenAuctionResultsError,
+		isSuccess: isOpenAuctionResultsSuccess,
 	} = useQuery({
 		queryKey: ['marketplace', '@catalogue', 'openAuctionResults', auctionId, resultsPage],
 		queryFn: () =>
@@ -62,7 +63,7 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 				getPaginatedOpenAuctionResults({
 					auctionId: auctionId as string,
 					page: resultsPage,
-					perPage: 10,
+					perPage: 20,
 				}),
 			),
 		placeholderData: keepPreviousData,
@@ -80,8 +81,26 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 				getPaginatedBids({
 					auctionId: auctionId as string,
 					bidId: allBidsKey,
-					perPage: 10,
+					perPage: 20,
 					navDirection: allBidsNavDirection,
+				}),
+			),
+		placeholderData: keepPreviousData,
+	});
+
+	const {
+		data: allWinningBids,
+		isLoading: isAllWinningBidsLoading,
+		isError: isAllWinningBidsError,
+		isSuccess: isAllWinningBidsSuccess,
+	} = useQuery({
+		queryKey: ['marketplace', '@catalogue', 'allWinningBids', auctionId],
+		queryFn: () =>
+			throwError(
+				getPaginatedWinningBids({
+					auctionId: auctionId as string,
+					page: 1,
+					perPage: 1000000,
 				}),
 			),
 		placeholderData: keepPreviousData,
@@ -98,15 +117,21 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 				allBidsNavDirection,
 				setAllBidsNavDirection,
 
-				auctionResults: auctionResults || AUCTION_RESULTS_DEFAULT_CONTEXT.auctionResults,
-				isAuctionResultsLoading,
-				isAuctionResultsError,
-				isAuctionResultsSuccess,
+				openAuctionResults:
+					openAuctionResults || AUCTION_RESULTS_DEFAULT_CONTEXT.openAuctionResults,
+				isOpenAuctionResultsLoading,
+				isOpenAuctionResultsError,
+				isOpenAuctionResultsSuccess,
 
 				allBids: allBids || AUCTION_RESULTS_DEFAULT_CONTEXT.allBids,
 				isAllBidsLoading,
 				isAllBidsError,
 				isAllBidsSuccess,
+
+				allWinningBids: allWinningBids || AUCTION_RESULTS_DEFAULT_CONTEXT.allWinningBids,
+				isAllWinningBidsLoading,
+				isAllWinningBidsError,
+				isAllWinningBidsSuccess,
 
 				auctionData: auctionData || AUCTION_RESULTS_DEFAULT_CONTEXT.auctionData,
 				isAuctionDataLoading,

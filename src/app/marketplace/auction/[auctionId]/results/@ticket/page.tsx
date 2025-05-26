@@ -36,12 +36,13 @@ export default function Ticket() {
 	return (
 		<>
 			<Group>
-				<Button leftSection={<IconArrowUpLeft />}>Previous Page</Button>
-				<Breadcrumbs>
-					<Anchor>Marketplace</Anchor>
-					<Anchor>Industry</Anchor>
-					<Anchor>Flare Gas Burning</Anchor>
-				</Breadcrumbs>
+				<Button
+					component="a"
+					href={`/marketplace/auction/${auctionData.id}`}
+					leftSection={<IconArrowUpLeft />}
+				>
+					Return to Auction Page
+				</Button>
 			</Group>
 			<Container className="h-screen flex justify-center items-center">
 				<Stack>

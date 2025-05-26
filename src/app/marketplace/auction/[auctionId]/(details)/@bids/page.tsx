@@ -31,6 +31,7 @@ export default function Bids() {
 			<TabsPanel value="mine">
 				<BidsTable
 					tableData={myBids.results}
+					winningBidIds={winningBids.results.map((bid) => bid.id)}
 					paginationType="offset"
 					page={minePage}
 					pageCount={myBids.pageCount}

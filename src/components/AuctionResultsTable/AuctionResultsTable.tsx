@@ -1,10 +1,11 @@
 'use client';
 
 import { createFormatter, useFormatter, useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
-import { IAuctionData } from '@/schema/models';
+import { CurrentUserContext } from '@/pages/globalContext';
+import { IAuctionData, IUserData } from '@/schema/models';
 import { IAuctionResultsData } from '@/types';
 import {
 	Anchor,
@@ -37,11 +38,12 @@ export const ResultsTable = ({
 }: ResultsTableProps) => {
 	const t = useTranslations();
 	const format = useFormatter();
+	const { currentUser } = useContext(CurrentUserContext);
 
 	const resultsData = useMemo(() => {
 		if (!tableData) return null;
-		return generateResultsRows(tableData, auctionData, format);
-	}, [tableData]);
+		return generateResultsRows(tableData, auctionData, currentUser, format);
+	}, [tableData, auctionData, currentUser, format]);
 
 	return (
 		<>
@@ -74,6 +76,7 @@ export const ResultsTable = ({
 const generateResultsRows = (
 	resultsData: Array<IAuctionResultsData>,
 	auctionData: IAuctionData,
+	currentUser: IUserData,
 	format: ReturnType<typeof createFormatter>,
 ) =>
 	resultsData.map(
@@ -85,7 +88,10 @@ const generateResultsRows = (
 			averagePricePerPermit,
 			finalBill,
 		}) => (
-			<TableTr key={`${firm.id}-${finalBill}`}>
+			<TableTr
+				key={`${firm.id}-${finalBill}`}
+				className={firm.id === currentUser.id ? 'bg-gray-50' : ''}
+			>
 				<TableTd>
 					<Anchor href={`/marketplace/company/${firm.id}`}>{firm.name}</Anchor>
 				</TableTd>

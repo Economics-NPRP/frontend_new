@@ -20,7 +20,7 @@ export const DEFAULT_CONTEXT: IAuctionResultsContext = {
 	allBidsNavDirection: 'next',
 	setAllBidsNavDirection: () => {},
 
-	auctionResults: {
+	openAuctionResults: {
 		ok: false,
 		errors: [],
 		results: [],
@@ -30,9 +30,9 @@ export const DEFAULT_CONTEXT: IAuctionResultsContext = {
 		perPage: 10,
 		resultCount: 0,
 	},
-	isAuctionResultsLoading: true,
-	isAuctionResultsError: false,
-	isAuctionResultsSuccess: false,
+	isOpenAuctionResultsLoading: true,
+	isOpenAuctionResultsError: false,
+	isOpenAuctionResultsSuccess: false,
 
 	allBids: {
 		ok: false,
@@ -47,6 +47,20 @@ export const DEFAULT_CONTEXT: IAuctionResultsContext = {
 	isAllBidsLoading: true,
 	isAllBidsError: false,
 	isAllBidsSuccess: false,
+
+	allWinningBids: {
+		ok: false,
+		errors: [],
+		results: [],
+		page: 1,
+		pageCount: 1,
+		totalCount: 0,
+		perPage: 10,
+		resultCount: 0,
+	},
+	isAllWinningBidsLoading: true,
+	isAllWinningBidsError: false,
+	isAllWinningBidsSuccess: false,
 
 	auctionData: {
 		ok: false,
@@ -76,15 +90,20 @@ export interface IAuctionResultsContext {
 	allBidsNavDirection: NavDirection;
 	setAllBidsNavDirection: (direction: NavDirection) => void;
 
-	auctionResults: OffsetPaginatedData<IAuctionResultsData>;
-	isAuctionResultsLoading?: boolean;
-	isAuctionResultsError?: boolean;
-	isAuctionResultsSuccess?: boolean;
+	openAuctionResults: OffsetPaginatedData<IAuctionResultsData>;
+	isOpenAuctionResultsLoading?: boolean;
+	isOpenAuctionResultsError?: boolean;
+	isOpenAuctionResultsSuccess?: boolean;
 
 	allBids: KeysetPaginatedData<IBidData>;
 	isAllBidsLoading?: boolean;
 	isAllBidsError?: boolean;
 	isAllBidsSuccess?: boolean;
+
+	allWinningBids: OffsetPaginatedData<IBidData>;
+	isAllWinningBidsLoading?: boolean;
+	isAllWinningBidsError?: boolean;
+	isAllWinningBidsSuccess?: boolean;
 
 	auctionData: ServerData<IAuctionData>;
 	isAuctionDataLoading?: boolean;
