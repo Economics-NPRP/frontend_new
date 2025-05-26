@@ -28,9 +28,16 @@ export const register: IFunctionSignature = async ({ registrationToken, password
 		},
 	};
 
-	const response = await fetch(`/v1/auth/register/${registrationToken}`, querySettings);
+	const queryUrl = new URL(
+		`/v1/auth/register/${registrationToken}`,
+		process.env.NEXT_PUBLIC_BACKEND_URL,
+	);
+	const response = await fetch(queryUrl, querySettings);
 
-	if (!response.ok) return getDefaultData('There was an error logging in');
+	if (!response.ok)
+		return getDefaultData(
+			'There was an error during registration, make sure the token is valid',
+		);
 	if (!response.headers || response.headers.getSetCookie().length === 0)
 		return getDefaultData('No cookies set in response');
 
