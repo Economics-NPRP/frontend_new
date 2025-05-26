@@ -18,6 +18,7 @@ import {
 	TableThead,
 	TableTr,
 } from '@mantine/core';
+import { IconArrowNarrowDown } from '@tabler/icons-react';
 
 export interface ResultsTableProps extends TableProps {
 	tableData: Array<IAuctionResultsData>;
@@ -52,7 +53,10 @@ export const ResultsTable = ({
 					<TableTr>
 						<TableTh>Firm</TableTh>
 						<TableTh>Total Bids</TableTh>
-						<TableTh>Winning Bids (% Won)</TableTh>
+						<TableTh className="flex items-center justify-between">
+							Winning Bids (% Won)
+							<IconArrowNarrowDown size={14} />
+						</TableTh>
 						<TableTh>Permits Reserved (% Reserved)</TableTh>
 						<TableTh>Avg Price/Permit</TableTh>
 						<TableTh>Final Bill</TableTh>

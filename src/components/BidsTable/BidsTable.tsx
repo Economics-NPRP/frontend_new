@@ -21,7 +21,7 @@ import {
 	TableTr,
 	Tooltip,
 } from '@mantine/core';
-import { IconCheck, IconCopy } from '@tabler/icons-react';
+import { IconArrowNarrowDown, IconCheck, IconCopy } from '@tabler/icons-react';
 
 export interface BidsTableProps extends TableProps {
 	tableData: Array<IBidData>;
@@ -57,7 +57,10 @@ export const BidsTable = ({
 				<TableThead>
 					<TableTr>
 						<TableTh>Company</TableTh>
-						<TableTh>Bid</TableTh>
+						<TableTh className="flex items-center justify-between">
+							Bid
+							<IconArrowNarrowDown size={14} />
+						</TableTh>
 						<TableTh>Permits</TableTh>
 						<TableTh>Total Bid</TableTh>
 						<TableTh>Timestamp</TableTh>
