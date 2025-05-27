@@ -10,8 +10,8 @@ import { IKeysetPagination, KeysetPaginatedData } from '@/types';
 
 export interface IGetPaginatedBidsOptions extends IKeysetPagination {
 	auctionId: string;
+	cursor?: string | null;
 	bidderId?: string;
-	bidId?: string;
 }
 
 const getDefaultData: (...errors: Array<string>) => KeysetPaginatedData<IBidData> = (
@@ -22,6 +22,9 @@ const getDefaultData: (...errors: Array<string>) => KeysetPaginatedData<IBidData
 	results: [] as Array<IBidData>,
 	perPage: 10,
 	hasNext: false,
+	hasPrev: false,
+	cursorForNextPage: null,
+	cursorForPrevPage: null,
 	totalCount: 0,
 	isExact: true,
 	resultCount: 0,
@@ -31,7 +34,7 @@ type IFunctionSignature = (
 	options: IGetPaginatedBidsOptions,
 ) => Promise<KeysetPaginatedData<IBidData>>;
 export const getPaginatedBids: IFunctionSignature = cache(
-	async ({ auctionId, bidderId, bidId, perPage, navDirection }) => {
+	async ({ auctionId, cursor, bidderId, perPage, navDirection }) => {
 		const cookieHeaders = await getSession();
 		if (!cookieHeaders) return getDefaultData('You must be logged in to access this resource.');
 		const querySettings: RequestInit = {
@@ -45,7 +48,7 @@ export const getPaginatedBids: IFunctionSignature = cache(
 		const queryUrl = new URL('/v1/bids/o/', process.env.NEXT_PUBLIC_BACKEND_URL);
 		queryUrl.searchParams.append('auction_id', auctionId);
 		if (bidderId) queryUrl.searchParams.append('bidder_id', bidderId.toString());
-		if (bidId) queryUrl.searchParams.append('bid_id', bidId.toString());
+		if (cursor) queryUrl.searchParams.append('cursor', cursor.toString());
 		if (perPage) queryUrl.searchParams.append('per_page', perPage.toString());
 		if (navDirection) queryUrl.searchParams.append('nav_direction', navDirection.toString());
 

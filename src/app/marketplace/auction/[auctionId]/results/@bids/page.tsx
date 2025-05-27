@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 
 import { ResultsTable } from '@/components/AuctionResultsTable';
 import { BidsTable } from '@/components/BidsTable';
@@ -25,8 +25,12 @@ export default function Bids() {
 		historyRef,
 		resultsPage,
 		setResultsPage,
+		setAllBidsCursor,
+		setAllBidsNavDirection,
 		winningBidsPage,
 		setWinningBidsPage,
+		setMyBidsCursor,
+		setMyBidsNavDirection,
 		resultsPerPage,
 		setResultsPerPage,
 		bidsPerPage,
@@ -56,6 +60,16 @@ export default function Bids() {
 		if (bidsFilter === 'mine') return myBids.totalCount;
 		return allBids.totalCount;
 	}, [bidsFilter, allBids, myOpenAuctionResults, winningBids, myBids]);
+
+	//	Reset page/cursor when filter or per page changes
+	useEffect(() => setResultsPage(1), [resultsPerPage]);
+	useEffect(() => {
+		setAllBidsCursor(undefined);
+		setMyBidsCursor(undefined);
+		setWinningBidsPage(1);
+	}, [bidsFilter, bidsPerPage]);
+
+	useEffect(() => console.log(allBids), [allBids]);
 
 	return (
 		<>
@@ -138,9 +152,25 @@ export default function Bids() {
 							(bid) => bid.id,
 						)}
 						paginationType={bidsFilter === 'winning' ? 'offset' : 'keyset'}
-						page={bidsFilter === 'winning' ? winningBidsPage : undefined}
-						pageCount={bidsFilter === 'winning' ? winningBids.pageCount : undefined}
-						setPage={bidsFilter === 'winning' ? setWinningBidsPage : undefined}
+						setCursor={bidsFilter === 'mine' ? setMyBidsCursor : setAllBidsCursor}
+						setNavDirection={
+							bidsFilter === 'mine' ? setMyBidsNavDirection : setAllBidsNavDirection
+						}
+						hasNext={bidsFilter === 'mine' ? myBids.hasNext : allBids.hasNext}
+						hasPrev={bidsFilter === 'mine' ? myBids.hasPrev : allBids.hasPrev}
+						cursorForNextPage={
+							bidsFilter === 'mine'
+								? myBids.cursorForNextPage
+								: allBids.cursorForNextPage
+						}
+						cursorForPrevPage={
+							bidsFilter === 'mine'
+								? myBids.cursorForPrevPage
+								: allBids.cursorForPrevPage
+						}
+						page={winningBidsPage}
+						pageCount={winningBids.pageCount}
+						setPage={setWinningBidsPage}
 					/>
 				</TabsPanel>
 			</Tabs>

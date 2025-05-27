@@ -7,10 +7,12 @@ import { useContext, useMemo } from 'react';
 import { CurrencyBadge } from '@/components/Badge';
 import { CurrentUserContext } from '@/pages/globalContext';
 import { IBidData, IUserData } from '@/schema/models';
+import { NavDirection } from '@/types';
 import {
 	ActionIcon,
 	Anchor,
 	CopyButton,
+	Group,
 	Pagination,
 	Table,
 	TableProps,
@@ -21,13 +23,27 @@ import {
 	TableTr,
 	Tooltip,
 } from '@mantine/core';
-import { IconArrowNarrowDown, IconCheck, IconCopy } from '@tabler/icons-react';
+import {
+	IconArrowNarrowDown,
+	IconCheck,
+	IconChevronLeft,
+	IconChevronRight,
+	IconCopy,
+} from '@tabler/icons-react';
 
 export interface BidsTableProps extends TableProps {
 	tableData: Array<IBidData>;
 	contributingBidIds?: Array<string>;
 	winningBidIds?: Array<string>;
 	paginationType: 'offset' | 'keyset';
+
+	setCursor?: (cursor: string | null | undefined) => void;
+	setNavDirection?: (direction: NavDirection) => void;
+	hasNext?: boolean;
+	hasPrev?: boolean;
+	cursorForNextPage?: string | null;
+	cursorForPrevPage?: string | null;
+
 	page?: number;
 	pageCount?: number;
 	setPage?: (page: number) => void;
@@ -37,6 +53,14 @@ export const BidsTable = ({
 	contributingBidIds,
 	winningBidIds,
 	paginationType,
+
+	setCursor,
+	setNavDirection,
+	hasNext,
+	hasPrev,
+	cursorForNextPage,
+	cursorForPrevPage,
+
 	page,
 	pageCount,
 	setPage,
@@ -77,6 +101,32 @@ export const BidsTable = ({
 					boundaries={3}
 					onChange={setPage}
 				/>
+			)}
+			{paginationType === 'keyset' && setCursor && setNavDirection && (
+				<Group className="gap-2">
+					<ActionIcon
+						className="size-8 border-gray-300"
+						variant="outline"
+						disabled={!hasPrev}
+						onClick={() => {
+							setCursor(cursorForPrevPage);
+							setNavDirection('prev');
+						}}
+					>
+						<IconChevronLeft size={16} />
+					</ActionIcon>
+					<ActionIcon
+						className="size-8 border-gray-300"
+						variant="outline"
+						disabled={!hasNext}
+						onClick={() => {
+							setCursor(cursorForNextPage);
+							setNavDirection('next');
+						}}
+					>
+						<IconChevronRight size={16} />
+					</ActionIcon>
+				</Group>
 			)}
 		</>
 	);
