@@ -24,9 +24,7 @@ export const login: IFunctionSignature = async ({ email, password }) => {
 	};
 
 	const queryUrl = new URL(
-		//	TODO: revert after meeting
-		// process.env.NODE_ENV === 'development' ? 'dev/auth/login' : '/v1/auth/oauth2',
-		'/v1/auth/oauth2',
+		process.env.NODE_ENV === 'development' ? 'dev/auth/login' : '/v1/auth/oauth2',
 		process.env.NEXT_PUBLIC_BACKEND_URL,
 	);
 

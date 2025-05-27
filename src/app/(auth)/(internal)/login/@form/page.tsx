@@ -54,10 +54,8 @@ export default function Form() {
 			login(values)
 				.then((res) => {
 					if (res.ok) {
-						//	TODO: revert after meeting
-						// if (process.env.NODE_ENV === 'development') router.push('/marketplace');
-						// else router.push('/otp');
-						router.push('/otp');
+						if (process.env.NODE_ENV === 'development') router.push('/marketplace');
+						else router.push('/otp');
 					} else {
 						setFormError(
 							(res.errors || []).map((error, index) => (
@@ -134,7 +132,6 @@ export default function Form() {
 				<Group className={classes.prompt}>
 					<Text className={classes.text}>Don't have an account? </Text>
 					<Anchor className={classes.link} href="/register">
-						{/* TODO: another page (/onboarding) after being invited to create password */}
 						Click here
 					</Anchor>
 				</Group>
