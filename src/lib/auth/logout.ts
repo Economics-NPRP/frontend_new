@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers';
 import 'server-only';
 
-import { extractCookies } from '@/helpers';
+import { extractSessionCookies } from '@/helpers';
 import { getSession } from '@/lib/auth';
 import { ServerData } from '@/types';
 
@@ -34,7 +34,7 @@ export const logout: IFunctionSignature = async () => {
 		return getDefaultData('No cookies set in response');
 
 	const cookieStore = await cookies();
-	extractCookies(response, (key, value, exp) => {
+	extractSessionCookies(response, (key, value, exp) => {
 		cookieStore.set(key, value, {
 			httpOnly: true,
 			secure: true,

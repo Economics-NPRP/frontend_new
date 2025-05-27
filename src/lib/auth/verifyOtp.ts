@@ -4,7 +4,7 @@ import { camelCase } from 'change-case/keys';
 import { cookies } from 'next/headers';
 import 'server-only';
 
-import { extractCookies } from '@/helpers';
+import { extractSessionCookies } from '@/helpers';
 import { ServerData } from '@/types';
 
 const getDefaultData: (...errors: Array<string>) => ServerData<{}> = (...errors) => ({
@@ -40,7 +40,7 @@ export const verifyOtp: IFunctionSignature = async (otp) => {
 		return getDefaultData('No cookies set in response');
 
 	//	Extract access and refresh tokens from the response cookies and delete otp cookie
-	extractCookies(response, (key, value, exp) => {
+	extractSessionCookies(response, (key, value, exp) => {
 		cookieStore.set(key, value, {
 			httpOnly: true,
 			secure: true,
