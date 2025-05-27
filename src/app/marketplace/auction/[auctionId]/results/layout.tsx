@@ -122,6 +122,7 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 			'@catalogue',
 			'myBids',
 			auctionId,
+			currentUser.id,
 			myBidsKey,
 			bidsPerPage,
 			myBidsNavDirection,
