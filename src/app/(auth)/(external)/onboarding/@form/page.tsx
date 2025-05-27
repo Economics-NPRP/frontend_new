@@ -39,7 +39,9 @@ export default function Form() {
 			const registrationToken = searchParams.get('token');
 			register({ registrationToken, password })
 				.then((res) => {
-					if (res.ok) router.push('/marketplace');
+					//	TODO: revert once backend returns cookies
+					// if (res.ok) router.push('/marketplace');
+					if (res.ok) router.push('/login');
 					else {
 						setFormError(
 							(res.errors || []).map((error, index) => (
