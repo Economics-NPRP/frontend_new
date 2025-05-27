@@ -132,7 +132,6 @@ export default function Form() {
 				<Group className={classes.prompt}>
 					<Text className={classes.text}>Don't have an account? </Text>
 					<Anchor className={classes.link} href="/register">
-						{/* TODO: another page (/onboarding) after being invited to create password */}
 						Click here
 					</Anchor>
 				</Group>

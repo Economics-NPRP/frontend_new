@@ -4,43 +4,51 @@ import { cookies } from 'next/headers';
 import 'server-only';
 
 import { extractSessionCookies } from '@/helpers';
-import { ILoginData } from '@/schema/models';
 import { ServerData } from '@/types';
+
+export interface IRegisterOptions {
+	registrationToken: string | null;
+	password: string;
+}
 
 const getDefaultData: (...errors: Array<string>) => ServerData<{}> = (...errors) => ({
 	ok: false,
 	errors: errors,
 });
 
-type IFunctionSignature = (options: ILoginData) => Promise<ServerData<{}>>;
-export const login: IFunctionSignature = async ({ email, password }) => {
-	const loginData = new FormData();
-	loginData.append('username', email);
-	loginData.append('password', password);
+type IFunctionSignature = (options: IRegisterOptions) => Promise<ServerData<{}>>;
+export const register: IFunctionSignature = async ({ registrationToken, password }) => {
+	if (!registrationToken) return getDefaultData('No registration token provided');
 
 	const querySettings: RequestInit = {
 		method: 'POST',
-		body: loginData,
+		body: JSON.stringify({ password }),
+		headers: {
+			'Content-Type': 'application/json',
+		},
 	};
 
 	const queryUrl = new URL(
-		process.env.NODE_ENV === 'development' ? 'dev/auth/login' : '/v1/auth/oauth2',
+		`/v1/auth/register/${registrationToken}`,
 		process.env.NEXT_PUBLIC_BACKEND_URL,
 	);
-
 	const response = await fetch(queryUrl, querySettings);
 
-	if (response.status === 401) return getDefaultData('Invalid email or password');
-	if (!response.ok) return getDefaultData('There was an error logging in');
-	if (!response.headers || response.headers.getSetCookie().length === 0)
-		return getDefaultData('No cookies set in response');
+	if (!response.ok)
+		return getDefaultData(
+			'There was an error during registration, make sure the token is valid',
+		);
+
+	//	TODO: revert once backend returns cookies
+	// if (!response.headers || response.headers.getSetCookie().length === 0)
+	// 	return getDefaultData('No cookies set in response');
 
 	const cookieStore = await cookies();
 	extractSessionCookies(response, (key, value, exp) => {
 		cookieStore.set(key, value, {
 			httpOnly: true,
 			secure: true,
-			expires: exp, // Convert milliseconds to seconds
+			expires: exp,
 			sameSite: 'lax',
 			path: '/',
 		});

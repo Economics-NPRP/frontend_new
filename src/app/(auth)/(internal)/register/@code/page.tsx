@@ -1,6 +1,8 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { useCallback } from 'react';
 
 import classes from '@/pages/(auth)/(internal)/styles.module.css';
 import { Button, Group, Stack, Text, TextInput } from '@mantine/core';
@@ -9,13 +11,25 @@ import { useForm } from '@mantine/form';
 export default function Contact() {
 	const t = useTranslations();
 	const locale = useLocale();
+	const router = useRouter();
 
-	const form = useForm({
+	const form = useForm<{ code: string }>({
 		mode: 'uncontrolled',
 	});
 
+	const handleSubmit = useCallback(
+		({ code }: { code: string }) => {
+			form.setSubmitting(true);
+
+			//	Go to onboarding page with the registration code
+			router.push(`/onboarding?token=${code}`);
+			form.setSubmitting(false);
+		},
+		[form, router],
+	);
+
 	return (
-		<form onSubmit={form.onSubmit((value) => console.log(value))}>
+		<form onSubmit={form.onSubmit(handleSubmit)}>
 			<Stack className={`${classes.inputs} ${classes.section}`}>
 				<TextInput
 					label="Registration Code"
@@ -24,7 +38,7 @@ export default function Contact() {
 					key={form.key('code')}
 					{...form.getInputProps('code')}
 				/>
-				<Button type="submit" className="mt-2">
+				<Button type="submit" className="mt-2" loading={form.submitting}>
 					Submit Code
 				</Button>
 				<Group className={classes.prompt}>
