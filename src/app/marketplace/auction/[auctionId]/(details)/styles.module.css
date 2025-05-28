@@ -1,0 +1,40 @@
+.root {
+	@apply gap-8;
+
+	> .button {
+		@apply self-start;
+	}
+}
+
+.bg {
+	@apply absolute top-0 left-0;
+	@apply w-full h-[25%] max-w-none;
+	@apply pointer-events-none;
+	@apply -z-10;
+
+	> .gradient {
+		@apply absolute;
+		@apply size-full;
+		background: linear-gradient(to top, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0) 100%);
+	}
+
+	> .graphic {
+		@apply absolute;
+		@apply size-full;
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+		}
+	}
+}

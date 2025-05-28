@@ -187,10 +187,24 @@
 		@apply font-semibold;
 		@apply text-white dark:text-dark-600;
 	}
+	.display-xs-g6 {
+		@apply font-sans;
+		@apply text-xs;
+		@apply font-semibold;
+		@apply text-gray-600 dark:text-dark-200;
+	}
 	.display-xs-13-w {
 		@apply font-sans;
 		@apply font-semibold;
 		@apply text-white dark:text-dark-600;
+
+		font-size: 13px;
+		line-height: 19px;
+	}
+	.display-xs-13-g6 {
+		@apply font-sans;
+		@apply font-semibold;
+		@apply text-gray-600 dark:text-dark-200;
 
 		font-size: 13px;
 		line-height: 19px;

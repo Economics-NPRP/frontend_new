@@ -6,7 +6,8 @@ import { ReactNode, useState } from 'react';
 import { throwError } from '@/helpers';
 import { getSingleAuction } from '@/lib/auctions';
 import { getMyPaginatedWinningBids, getPaginatedWinningBids } from '@/lib/bids/open';
-import { Stack } from '@mantine/core';
+import { Button, Container, Stack } from '@mantine/core';
+import { IconArrowUpLeft } from '@tabler/icons-react';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import { DEFAULT_CONTEXT as BID_TABLE_DEFAULT_CONTEXT, BidTableContext } from './@bids/constants';
@@ -14,20 +15,23 @@ import {
 	DEFAULT_CONTEXT as AUCTION_DETAILS_DEFAULT_CONTEXT,
 	AuctionDetailsContext,
 } from './constants';
+import classes from './styles.module.css';
 
 export interface AuctionDetailsProps {
 	bids: ReactNode;
 	details: ReactNode;
+	ended: ReactNode;
+	permits: ReactNode;
 	prompt: ReactNode;
 	suggestions: ReactNode;
-	ended: ReactNode;
 }
 export default function AuctionPage({
 	bids,
 	details,
+	ended,
+	permits,
 	prompt,
 	suggestions,
-	ended,
 }: AuctionDetailsProps) {
 	const { auctionId } = useParams();
 
@@ -109,7 +113,14 @@ export default function AuctionPage({
 					isMyBidsSuccess,
 				}}
 			>
-				<Stack>
+				<Container className={classes.bg}>
+					<Container className={`${classes.graphic} bg-grid-md`} />
+					<Container className={classes.gradient} />
+				</Container>
+				<Stack className={classes.root}>
+					<Button className={classes.button} leftSection={<IconArrowUpLeft />}>
+						Return to Catalogue
+					</Button>
 					{details}
 					{bids}
 					{prompt}

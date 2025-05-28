@@ -1,0 +1,138 @@
+.root {
+	@apply flex-nowrap gap-0 items-stretch;
+
+	> .image {
+		@apply max-h-[400px];
+		@apply relative flex-[4_4_auto];
+
+		img {
+			@apply object-cover object-center;
+		}
+	}
+
+	> .content {
+		@apply flex-[1_1_auto] px-12 gap-6;
+		@apply items-stretch flex-nowrap;
+
+		.divider > .label {
+			@apply display-xs-13-g6 uppercase;
+
+			&::before {
+				@apply flex-[unset] w-4;
+			}
+		}
+
+		> .details {
+			@apply gap-2 items-stretch flex-nowrap;
+
+			> .breadcrumbs {
+				> a {
+					@apply paragraph-sm;
+				}
+
+				> .separator {
+					@apply mx-1;
+				}
+			}
+
+			> .title {
+				@apply heading-1;
+			}
+
+			> .row {
+				@apply justify-between items-center;
+
+				> .section {
+					@apply gap-2 items-center;
+				}
+
+				> .rating {
+					@apply gap-0 items-end;
+				}
+
+				.subtext {
+					@apply paragraph-sm-g6;
+				}
+
+				&:has(.id) {
+					@apply mt-2;
+				}
+
+				> .owner {
+					@apply gap-2;
+
+					> .avatar {
+						@apply size-10;
+					}
+
+					> .link {
+						@apply text-blue-600 font-semibold;
+					}
+				}
+			}
+
+			> .description {
+				@apply paragraph-md;
+			}
+		}
+
+		> .properties {
+			@apply gap-2 items-stretch flex-nowrap;
+
+			> .table {
+				@apply gap-0;
+
+				> .row {
+					@apply h-12 flex-auto gap-0;
+
+					/* Dashed border */
+					background-image: repeating-linear-gradient(
+						90deg,
+						var(--mantine-color-gray-2) 0 12px,
+						#0000 0 24px
+					);
+					background-position: bottom;
+					background-size: 100% 1px;
+					background-repeat: repeat-x;
+
+					> .section {
+						@apply flex-[50%] h-full;
+						@apply px-6 gap-3;
+						@apply flex-nowrap items-center justify-center;
+
+						/* Dashed border */
+						background-image: repeating-linear-gradient(
+							0deg,
+							var(--mantine-color-gray-2) 0 12px,
+							#0000 0 24px
+						);
+						background-position: right;
+						background-size: 1px 100%;
+						background-repeat: repeat-y;
+
+						> .icon {
+							@apply text-gray-600;
+						}
+
+						> .key {
+							@apply display-md-sb;
+						}
+
+						> .value {
+							@apply flex-auto;
+							@apply paragraph-md text-right;
+						}
+
+						&:last-child {
+							@apply bg-none;
+						}
+					}
+
+					&:last-child {
+						@apply bg-none;
+					}
+				}
+			}
+		}
+	}
+}
