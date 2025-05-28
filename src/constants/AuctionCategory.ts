@@ -84,3 +84,5 @@ export const AuctionCategoryVariants: Partial<Record<AuctionCategory, AuctionCat
 		},
 	},
 };
+
+export const ENDING_SOON_THRESHOLD = 1000 * 60 * 60 * 24 * 3; // 3 days

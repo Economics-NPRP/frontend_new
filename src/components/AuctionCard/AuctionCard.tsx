@@ -3,7 +3,12 @@ import { useFormatter, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { ComponentPropsWithRef, useMemo } from 'react';
 
-import { AuctionTypeBadge, CategoryBadge, CurrencyBadge } from '@/components/Badge';
+import {
+	AuctionTypeBadge,
+	CategoryBadge,
+	CurrencyBadge,
+	EndingSoonBadge,
+} from '@/components/Badge';
 import { SmallCountdown } from '@/components/Countdown';
 import { Id } from '@/components/Id';
 import { IAuctionData } from '@/schema/models';
@@ -20,11 +25,9 @@ import {
 	Tooltip,
 	UnstyledButton,
 } from '@mantine/core';
-import { IconAlarm, IconHeart, IconLicense, IconShare, IconTrophy } from '@tabler/icons-react';
+import { IconHeart, IconLicense, IconShare, IconTrophy } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
-
-const ENDING_SOON_THRESHOLD = 1000 * 60 * 60 * 24 * 3; // 3 days
 
 export interface AuctionCardProps extends ComponentPropsWithRef<'div'> {
 	auction: IAuctionData;
@@ -41,13 +44,6 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 	const isUpcoming = useMemo(
 		() => DateTime.fromISO(auction.startDatetime).diffNow().milliseconds > 0,
 		[auction.startDatetime],
-	);
-
-	const isEndingSoon = useMemo(
-		() =>
-			!hasEnded &&
-			DateTime.fromISO(auction.endDatetime).diffNow().milliseconds < ENDING_SOON_THRESHOLD,
-		[auction.endDatetime],
 	);
 
 	const url = useMemo(() => `/marketplace/auction/${auction.id}`, [auction.id]);
@@ -118,11 +114,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 					</Group>
 					<Group className={classes.badges}>
 						<AuctionTypeBadge type={auction.type} />
-						{isEndingSoon && (
-							<Badge color="red" leftSection={<IconAlarm size={14} />}>
-								{t('constants.auctionStatus.ending')}
-							</Badge>
-						)}
+						<EndingSoonBadge endDatetime={auction.endDatetime} />
 					</Group>
 					<Id value={auction.id} variant={category} />
 				</Stack>

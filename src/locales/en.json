@@ -109,13 +109,20 @@
 			"sealed": "Sealed"
 		},
 		"auctionStatus": {
-			"ending": "Ending"
+			"ending": {
+				"label": "Ending",
+				"tooltip": "Ending on {date}"
+			}
 		},
 		"currency": {
 			"QAR": {
 				"symbol": "QAR",
 				"name": "Qatari Riyal"
 			}
+		},
+		"rating": {
+			"medium": "{rating, number, ::.00} out of 5.00",
+			"long": "{rating, number, ::.00} out of 5.00 ({reviews, plural, =0 {no reviews} =1 {1 review} other {# reviews}})"
 		},
 		"viewAll": "View All"
 	},
@@ -319,9 +326,6 @@
 				}
 			},
 			"user": {
-				"details": {
-					"rating": "{rating, number, ::.00} out of 5.00"
-				},
 				"profile": "Go to Profile",
 				"marketplace": "Marketplace",
 				"biddingHistory": "Bidding History",

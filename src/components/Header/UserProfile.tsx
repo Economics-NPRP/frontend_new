@@ -143,7 +143,7 @@ export const UserProfile = () => {
 						readOnly
 					/>
 					<Text className={classes.subtext}>
-						{t('components.header.user.details.rating', { rating: 4.2 })}
+						{t('constants.rating.medium', { rating: 4.2 })}
 					</Text>
 				</Stack>
 			</Group>

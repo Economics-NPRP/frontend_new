@@ -6,6 +6,10 @@
 		@apply rounded-none;
 		@apply display-sm-sb-d3;
 	}
+
+	&.ending {
+		@apply bg-red-600;
+	}
 }
 
 * {
