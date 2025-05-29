@@ -1,0 +1,115 @@
+.root {
+	@apply mt-8;
+
+	.numberInput {
+		@apply w-40;
+
+		> .wrapper {
+			@apply h-8;
+			@apply flex flex-row flex-nowrap;
+			@apply bg-white border border-solid border-gray-300;
+
+			.input {
+				@apply min-h-8 h-8 max-h-8 px-2;
+				@apply bg-transparent border-0 outline-0;
+				@apply numeric-sm-n text-center;
+			}
+
+			.section {
+				@apply relative;
+				@apply size-8;
+				@apply inset-0;
+
+				button {
+					@apply size-8;
+				}
+			}
+		}
+	}
+
+	.form {
+		@apply gap-8 justify-between items-center flex-nowrap;
+
+		> form {
+			@apply contents;
+
+			> .left {
+				@apply gap-4 items-center justify-center flex-nowrap;
+
+				> .section {
+					@apply gap-2;
+					@apply text-dark-600;
+
+					> .label {
+						@apply paragraph-md;
+					}
+				}
+			}
+
+			> .right {
+				@apply gap-1;
+
+				> .text {
+					@apply paragraph-md;
+				}
+
+				> .value {
+					@apply numeric-sm-n;
+				}
+
+				> .button {
+					@apply ml-3;
+				}
+			}
+		}
+	}
+
+	> .footer {
+		@apply px-8 py-4 gap-8;
+		@apply bg-white border border-solid border-gray-300;
+		@apply shadow-sm;
+
+		> .content {
+			@apply flex-auto;
+			@apply gap-4 items-center justify-center flex-nowrap;
+
+			> .cell {
+				@apply gap-1 items-baseline;
+
+				> .value {
+					@apply numeric-md;
+				}
+
+				> .unit {
+					@apply paragraph-sm;
+				}
+
+				&:last-child {
+					@apply items-end;
+
+					p {
+						@apply text-right;
+					}
+				}
+			}
+
+			> .slider {
+				@apply flex-auto pointer-events-none;
+
+				.thumb {
+					@apply hidden;
+				}
+			}
+		}
+
+		> .cta {
+			@apply w-[360px] h-10;
+			@apply bg-green-600;
+			@apply uppercase;
+
+			&[data-disabled='true'] {
+				@apply bg-gray-200;
+			}
+		}
+	}
+}

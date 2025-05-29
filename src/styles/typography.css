@@ -303,4 +303,16 @@
 		@apply font-bold;
 		@apply text-dark-600 dark:text-white;
 	}
+	.numeric-sm {
+		@apply font-serif;
+		@apply text-base;
+		@apply font-semibold;
+		@apply text-dark-300 dark:text-white;
+	}
+	.numeric-sm-n {
+		@apply font-serif;
+		@apply text-base;
+		@apply font-normal;
+		@apply text-dark-300 dark:text-white;
+	}
 }

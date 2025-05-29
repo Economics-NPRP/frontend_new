@@ -1,5 +1,5 @@
 import { useFormatter } from 'next-intl';
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { ComponentProps, useCallback, useContext, useMemo, useRef, useState } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { BidTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BidTable';
@@ -7,9 +7,28 @@ import {
 	AuctionBiddingContext,
 	AuctionDetailsContext,
 } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
-import { Alert, Button, Group, List, NumberInput, Text } from '@mantine/core';
+import {
+	ActionIcon,
+	Alert,
+	Button,
+	Group,
+	List,
+	NumberInput,
+	NumberInputHandlers,
+	Text,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconExclamationCircle } from '@tabler/icons-react';
+import { useInterval, useTimeout } from '@mantine/hooks';
+import {
+	IconArrowDown,
+	IconCoins,
+	IconExclamationCircle,
+	IconLeaf,
+	IconMinus,
+	IconPlus,
+} from '@tabler/icons-react';
+
+import classes from './styles.module.css';
 
 export const InsertForm = () => {
 	const format = useFormatter();
@@ -65,6 +84,53 @@ export const InsertForm = () => {
 
 	return (
 		<>
+			<Group className={classes.form}>
+				<form onSubmit={form.onSubmit(onSubmitHandler)}>
+					<Group className={classes.left}>
+						<Group className={classes.section}>
+							<IconLeaf size={16} />
+							<Text className={classes.label}>Permits to Bid</Text>
+							<BidNumberInput
+								placeholder="0"
+								max={auctionData.permits - totalPermits}
+								name="permit"
+								key={form.key('permit')}
+								disabled={!auctionData.hasJoined}
+								{...form.getInputProps('permit')}
+							/>
+						</Group>
+						<Group className={classes.section}>
+							<IconCoins size={16} />
+							<Text className={classes.label}>Price per Permit</Text>
+							<CurrencyBadge />
+							<BidNumberInput
+								placeholder="0.00"
+								name="bid"
+								key={form.key('bid')}
+								disabled={!auctionData.hasJoined}
+								decimalScale={2}
+								fixedDecimalScale
+								{...form.getInputProps('bid')}
+							/>
+						</Group>
+					</Group>
+					<Group className={classes.right}>
+						<Text className={classes.text}>Subtotal</Text>
+						<Text className={classes.value}>
+							QAR {format.number(subtotal, 'money')}
+						</Text>
+						<Button
+							className={classes.button}
+							variant="outline"
+							type="submit"
+							disabled={!auctionData.hasJoined}
+							rightSection={<IconArrowDown size={16} />}
+						>
+							Add to List
+						</Button>
+					</Group>
+				</form>
+			</Group>
 			{errorMessages.length > 0 && (
 				<Alert
 					variant="light"
@@ -75,34 +141,71 @@ export const InsertForm = () => {
 					<List>{errorMessages}</List>
 				</Alert>
 			)}
-			<form onSubmit={form.onSubmit(onSubmitHandler)}>
-				<Group>
-					<NumberInput
-						placeholder="000,000"
-						min={1}
-						max={auctionData.permits - totalPermits}
-						name="permit"
-						key={form.key('permit')}
-						disabled={!auctionData.hasJoined}
-						{...form.getInputProps('permit')}
-					/>
-					<Text>Permits</Text>
-					<NumberInput
-						placeholder="Price per permit"
-						leftSection={<CurrencyBadge />}
-						min={1}
-						name="bid"
-						key={form.key('bid')}
-						disabled={!auctionData.hasJoined}
-						{...form.getInputProps('bid')}
-					/>
-					<Text>Each</Text>
-					<Text>Total QAR {format.number(subtotal, 'money')}</Text>
-					<Button type="submit" disabled={!auctionData.hasJoined}>
-						Add to List
-					</Button>
-				</Group>
-			</form>
 		</>
+	);
+};
+
+const BidNumberInput = (props: ComponentProps<typeof NumberInput>) => {
+	const ref = useRef<NumberInputHandlers>(null);
+
+	const incrementInterval = useInterval(() => ref.current?.increment(), 50);
+	const decrementInterval = useInterval(() => ref.current?.decrement(), 50);
+
+	const handleHoldIncrement = useTimeout(() => incrementInterval.start(), 500);
+	const handleHoldDecrement = useTimeout(() => decrementInterval.start(), 500);
+
+	const handleStartIncrement = useCallback(() => {
+		ref.current?.increment();
+		handleHoldIncrement.start();
+	}, [handleHoldIncrement]);
+	const handleStartDecrement = useCallback(() => {
+		ref.current?.decrement();
+		handleHoldDecrement.start();
+	}, [handleHoldDecrement]);
+
+	const handleCancelIncrement = useCallback(() => {
+		incrementInterval.stop();
+		handleHoldIncrement.clear();
+	}, [incrementInterval, handleHoldIncrement]);
+	const handleCancelDecrement = useCallback(() => {
+		decrementInterval.stop();
+		handleHoldDecrement.clear();
+	}, [decrementInterval, handleHoldDecrement]);
+
+	return (
+		<NumberInput
+			classNames={{
+				root: classes.numberInput,
+				wrapper: classes.wrapper,
+				input: classes.input,
+				section: classes.section,
+				error: 'hidden',
+			}}
+			min={1}
+			thousandSeparator=" "
+			thousandsGroupStyle="thousand"
+			leftSection={
+				<ActionIcon
+					onMouseDown={handleStartDecrement}
+					onMouseUp={handleCancelDecrement}
+					onMouseLeave={handleCancelDecrement}
+					disabled={props.disabled}
+				>
+					<IconMinus size={16} />
+				</ActionIcon>
+			}
+			rightSection={
+				<ActionIcon
+					onMouseDown={handleStartIncrement}
+					onMouseUp={handleCancelIncrement}
+					onMouseLeave={handleCancelIncrement}
+					disabled={props.disabled}
+				>
+					<IconPlus size={16} />
+				</ActionIcon>
+			}
+			handlersRef={ref}
+			{...props}
+		/>
 	);
 };

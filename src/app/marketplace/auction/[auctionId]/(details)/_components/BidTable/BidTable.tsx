@@ -76,6 +76,7 @@ export const BidTable = ({ readOnly = false }: BidTableProps) => {
 				records={bidsData}
 				striped
 				withRowBorders
+				withColumnBorders
 				highlightOnHover
 				sortStatus={sortStatus}
 				onSortStatusChange={setSortStatus}

@@ -43,8 +43,8 @@ export default function AuctionPage({
 					Return to Catalogue
 				</Button>
 				{details}
-				{bidsDrawer}
 				{bidding}
+				{bidsDrawer}
 				{suggestions}
 			</Stack>
 			{deleteBidModal}

@@ -11,11 +11,12 @@ import {
 	AuctionDetailsContext,
 } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { LineChart } from '@mantine/charts';
-import { Button, Group, Progress, Stack, Text } from '@mantine/core';
+import { Button, Divider, Group, Progress, Slider, Stack, Text } from '@mantine/core';
 
 import { EndedOverlay } from './EndedOverlay';
 import { InsertForm } from './InsertForm';
 import { JoinOverlay } from './JoinOverlay';
+import classes from './styles.module.css';
 
 export default function Prompt() {
 	const format = useFormatter();
@@ -45,17 +46,9 @@ export default function Prompt() {
 	);
 
 	return (
-		<Stack className="relative">
+		<Stack className={classes.root}>
 			{!auctionData.hasJoined && !hasEnded && <JoinOverlay />}
 			{hasEnded && <EndedOverlay />}
-			<Stack>
-				<Text>Buy Now Price</Text>
-				<Group>
-					<CurrencyBadge />
-					<Text>1,400.00</Text>
-				</Group>
-				<Button disabled={readOnly}>Buy Now</Button>
-			</Stack>
 			<Group>
 				<Stack>
 					<LineChart
@@ -85,40 +78,43 @@ export default function Prompt() {
 				</Stack>
 				<Stack>
 					<InsertForm />
-					<Group>
-						<Text>{totalPermits} permits bid</Text>
-						<Progress w={480} value={(totalPermits / auctionData.permits) * 100} />
-						<Text>{auctionData.permits - totalPermits} permits left</Text>
-					</Group>
 					<BidTable />
-					<Stack>
-						<Text>Grand Total</Text>
-						<Group>
-							<Stack>
-								<Text>Permits</Text>
-								<Text>{format.number(totalPermits)}</Text>
-							</Stack>
-							<Stack>
-								<Text>Emissions (tCO2e)</Text>
-								<Text>{format.number(totalPermits * 1000)}</Text>
-							</Stack>
-							<Stack>
-								<Text>Bid</Text>
-								<Group>
-									<CurrencyBadge />
-									<Text>{format.number(grandTotal, 'money')}</Text>
-								</Group>
-							</Stack>
-						</Group>
-					</Stack>
 				</Stack>
 			</Group>
-			<Button
-				disabled={readOnly || bids.length === 0}
-				onClick={bidConfirmationModalActions.open}
-			>
-				Place Bids
-			</Button>
+			<Group className={classes.footer}>
+				<Group className={classes.content}>
+					<Group className={classes.cell}>
+						<Text className={classes.value}>{format.number(totalPermits)}</Text>
+						<Text className={classes.unit}>Permits Bid</Text>
+					</Group>
+					<Slider
+						classNames={{
+							root: classes.slider,
+							thumb: classes.thumb,
+						}}
+						marks={[
+							{ value: 25, label: Math.round(0.25 * auctionData.permits) },
+							{ value: 50, label: Math.round(0.5 * auctionData.permits) },
+							{ value: 75, label: Math.round(0.75 * auctionData.permits) },
+						]}
+						value={(totalPermits / auctionData.permits) * 100}
+					/>
+					<Group className={classes.cell}>
+						<Text className={classes.value}>
+							{format.number(auctionData.permits - totalPermits)}
+						</Text>
+						<Text className={classes.unit}>Permits Left</Text>
+					</Group>
+				</Group>
+				<Divider orientation="vertical" />
+				<Button
+					className={classes.cta}
+					disabled={readOnly || bids.length === 0}
+					onClick={bidConfirmationModalActions.open}
+				>
+					Place Bids
+				</Button>
+			</Group>
 		</Stack>
 	);
 }
