@@ -3,69 +3,136 @@
 import { DateTime } from 'luxon';
 import { useFormatter, useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { useContext, useMemo } from 'react';
+import { useContext, useMemo, useState } from 'react';
 
-import { AuctionTypeBadge, CategoryBadge, EndingSoonBadge } from '@/components/Badge';
+import {
+	AuctionTypeBadge,
+	CategoryBadge,
+	CurrencyBadge,
+	EndingSoonBadge,
+} from '@/components/Badge';
+import { LargeCountdown } from '@/components/Countdown';
 import { Id } from '@/components/Id';
 import {
+	ActionIcon,
 	Anchor,
 	Avatar,
 	Breadcrumbs,
+	Button,
 	Container,
 	Divider,
 	Group,
+	Slider,
 	Stack,
 	Text,
 	Title,
+	Tooltip,
 } from '@mantine/core';
 import {
-	IconBox,
+	IconAlarm,
+	IconBookmark,
+	IconBuildingBank,
 	IconChevronRight,
 	IconClock,
-	IconCloudHeart,
+	IconCoins,
 	IconDiamond,
-	IconHeartbeat,
+	IconEye,
+	IconGavel,
 	IconHourglassEmpty,
+	IconInfoCircle,
 	IconLeaf,
+	IconLicense,
+	IconShare,
+	IconShoppingBag,
 } from '@tabler/icons-react';
 
+import { BidTableContext } from '../@bids/constants';
 import { AuctionDetailsContext } from '../constants';
 import classes from './styles.module.css';
 
 export default function Details() {
 	const t = useTranslations();
 	const format = useFormatter();
-	const { auctionData } = useContext(AuctionDetailsContext);
+	const { auctionData, myOpenAuctionResults } = useContext(AuctionDetailsContext);
+	const { allBids } = useContext(BidTableContext);
+
+	const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
+
+	const bought = useMemo(() => Math.random() * 100, [auctionData.permits]);
+	const available = useMemo(() => 100 - bought, [bought]);
 
 	return (
 		<Group className={classes.root}>
-			<Container className={classes.image}>
-				<Image
-					src={auctionData.image || '/imgs/industry/flare.jpg'}
-					alt={'Image of a power plant'}
-					fill
-				/>
-			</Container>
+			<Stack className={classes.sidecontent}>
+				<Container className={classes.container}>
+					<Container className={classes.image}>
+						<Image
+							src={auctionData.image || '/imgs/industry/flare.jpg'}
+							alt={'Image of a power plant'}
+							fill
+						/>
+					</Container>
+				</Container>
+				<Group className={classes.row}>
+					<Stack className={classes.section}>
+						<Text className={classes.subtext}>Buy Now Price</Text>
+						<Group className={classes.price}>
+							<CurrencyBadge />
+							<Text className={classes.value}>
+								{format.number(auctionData.minBid + 100, 'money')}
+							</Text>
+						</Group>
+					</Stack>
+					<Stack className={classes.section}>
+						<Text className={classes.subtext}>Minimum Winning Bid</Text>
+						<Group className={classes.price}>
+							<CurrencyBadge />
+							<Text className={classes.value}>
+								{format.number(auctionData.minBid, 'money')}
+							</Text>
+						</Group>
+					</Stack>
+				</Group>
+				<Stack className={classes.countdown}>
+					<Text className={classes.title}>Ending In</Text>
+					<LargeCountdown targetDate={auctionData.endDatetime} />
+					<Text className={classes.subtext}>
+						{DateTime.fromISO(auctionData.endDatetime).toLocaleString(
+							DateTime.DATETIME_FULL,
+						)}
+					</Text>
+				</Stack>
+			</Stack>
 			<Stack className={classes.content}>
-				<Stack className={classes.details}>
-					<Breadcrumbs
-						separator={<IconChevronRight size={14} />}
-						classNames={{
-							root: classes.breadcrumbs,
-							separator: classes.separator,
-						}}
-					>
-						<Anchor href="/marketplace">Marketplace</Anchor>
-						<Anchor>Industry</Anchor>
-						<Anchor>Flare Gas Burning</Anchor>
-					</Breadcrumbs>
+				<Stack className={`${classes.details} ${classes.section}`}>
+					<Group className={classes.row}>
+						<Breadcrumbs
+							separator={<IconChevronRight size={14} />}
+							classNames={{
+								root: classes.breadcrumbs,
+								separator: classes.separator,
+							}}
+						>
+							<Anchor href="/marketplace">Marketplace</Anchor>
+							<Anchor>Industry</Anchor>
+							<Anchor>Flare Gas Burning</Anchor>
+						</Breadcrumbs>
+						<Group className={classes.cell}>
+							<ActionIcon className={classes.action} variant="outline">
+								<IconBookmark size={14} />
+							</ActionIcon>
+							<ActionIcon className={classes.action} variant="outline">
+								<IconShare size={14} />
+							</ActionIcon>
+						</Group>
+					</Group>
 					<Title className={classes.title}>Flare Gas Burning</Title>
 					<Group className={classes.row}>
-						<Group className={classes.section}>
+						<Group className={classes.cell}>
 							<CategoryBadge category={'industry'} />
 							<AuctionTypeBadge type={auctionData.type} />
 						</Group>
-						<Group className={classes.section}>
+						<Group className={classes.cell}>
 							<EndingSoonBadge endDatetime={auctionData.endDatetime} />
 						</Group>
 					</Group>
@@ -90,9 +157,9 @@ export default function Details() {
 					</Group>
 				</Stack>
 
-				<Stack className={classes.properties}>
+				<Stack className={`${classes.properties} ${classes.section}`}>
 					<Divider
-						label="Auction Details"
+						label="Details"
 						classNames={{
 							root: classes.divider,
 							label: classes.label,
@@ -100,42 +167,243 @@ export default function Details() {
 					/>
 					<Stack className={classes.table}>
 						<Group className={classes.row}>
-							<Group className={classes.section}>
-								<IconHourglassEmpty size={16} className={classes.icon} />
-								<Text className={classes.key}>Permit Lifespan</Text>
-								<Text className={classes.value}>1 year</Text>
+							<Group className={classes.cell}>
+								<IconLicense size={16} className={classes.icon} />
+								<Text className={classes.key}>Permits Offered</Text>
+								<Text className={classes.value}>
+									{format.number(auctionData.permits)} permits
+								</Text>
 							</Group>
-							<Group className={classes.section}>
+							<Group className={classes.cell}>
 								<IconLeaf size={16} className={classes.icon} />
 								<Text className={classes.key}>Emissions Per Permit</Text>
 								<Text className={classes.value}>10,000 tCO2e</Text>
 							</Group>
 						</Group>
 						<Group className={classes.row}>
-							<Group className={classes.section}>
-								<IconClock size={16} className={classes.icon} />
-								<Text className={classes.key}>Auction Start Date</Text>
-								<Text className={classes.value}>
-									{DateTime.fromISO(auctionData.startDatetime).toLocaleString(
-										DateTime.DATETIME_SHORT,
-									)}
-								</Text>
+							<Group className={classes.cell}>
+								<IconHourglassEmpty size={16} className={classes.icon} />
+								<Text className={classes.key}>Permit Lifespan</Text>
+								<Text className={classes.value}>1 year</Text>
 							</Group>
-							<Group className={classes.section}>
+							<Group className={classes.cell}>
 								<IconDiamond size={16} className={classes.icon} />
 								<Text className={classes.key}>Emission Quality</Text>
 								<Text className={classes.value}>High Quality</Text>
 							</Group>
 						</Group>
+						{!isDetailsExpanded && (
+							<Button
+								className={classes.show}
+								variant="subtle"
+								onClick={() => setIsDetailsExpanded(true)}
+							>
+								Show More
+							</Button>
+						)}
+						{isDetailsExpanded && (
+							<>
+								<Group className={classes.row}>
+									<Group className={classes.cell}>
+										<IconClock size={16} className={classes.icon} />
+										<Text className={classes.key}>Auction Start Date</Text>
+										<Text className={classes.value}>
+											{DateTime.fromISO(
+												auctionData.startDatetime,
+											).toLocaleString(DateTime.DATETIME_SHORT)}
+										</Text>
+									</Group>
+									<Group className={classes.cell}>
+										<IconAlarm size={16} className={classes.icon} />
+										<Text className={classes.key}>Auction End Date</Text>
+										<Text className={classes.value}>
+											{DateTime.fromISO(
+												auctionData.endDatetime,
+											).toLocaleString(DateTime.DATETIME_SHORT)}
+										</Text>
+									</Group>
+								</Group>
+								<Group className={classes.row}>
+									<Group className={classes.cell}>
+										<IconEye size={16} className={classes.icon} />
+										<Text className={classes.key}>Number of Views</Text>
+										<Text className={classes.value}>
+											{format.number(0)} views
+										</Text>
+									</Group>
+									<Group className={classes.cell}>
+										<IconBuildingBank size={16} className={classes.icon} />
+										<Text className={classes.key}>Number of Bidders</Text>
+										<Text className={classes.value}>
+											{format.number(0)} bidders
+										</Text>
+									</Group>
+								</Group>
+								<Group className={classes.row}>
+									<Group className={classes.cell}>
+										<IconGavel size={16} className={classes.icon} />
+										<Text className={classes.key}>Number of Bids</Text>
+										<Text className={classes.value}>
+											{format.number(allBids.totalCount)} bids
+										</Text>
+									</Group>
+									<Group className={classes.cell}>
+										<IconBookmark size={16} className={classes.icon} />
+										<Text className={classes.key}>Number of Bookmarks</Text>
+										<Text className={classes.value}>
+											{format.number(0)} bookmarks
+										</Text>
+									</Group>
+								</Group>
+								<Button
+									className={classes.show}
+									variant="subtle"
+									onClick={() => setIsDetailsExpanded(false)}
+								>
+									Show Less
+								</Button>
+							</>
+						)}
 					</Stack>
 				</Stack>
-				<Divider
-					label="Permits Available"
-					classNames={{
-						root: classes.divider,
-						label: classes.label,
-					}}
-				/>
+
+				<Stack className={`${classes.permits} ${classes.section}`}>
+					<Divider
+						label={
+							<Group className={classes.row}>
+								<Text className={classes.label}>Available Permits</Text>
+								<Tooltip
+									position="top"
+									label="How many permits have been bought and how many are still available for bidding"
+								>
+									<IconInfoCircle size={14} className={classes.info} />
+								</Tooltip>
+							</Group>
+						}
+						classNames={{
+							root: classes.divider,
+							label: classes.label,
+						}}
+					/>
+					<Group className={classes.row}>
+						<Stack className={classes.cell}>
+							<Text className={classes.key}>Bought</Text>
+							<Group className={classes.row}>
+								<Text className={classes.value}>
+									{format.number(
+										Math.round((bought / 100) * auctionData.permits),
+									)}
+								</Text>
+								<Text className={classes.unit}>permits</Text>
+							</Group>
+						</Stack>
+						<Slider
+							classNames={{
+								root: classes.slider,
+								thumb: classes.thumb,
+							}}
+							marks={[
+								{ value: 25, label: Math.round(0.25 * auctionData.permits) },
+								{ value: 50, label: Math.round(0.5 * auctionData.permits) },
+								{ value: 75, label: Math.round(0.75 * auctionData.permits) },
+							]}
+							value={bought}
+						/>
+						<Stack className={classes.cell}>
+							<Text className={classes.key}>Available</Text>
+							<Group className={classes.row}>
+								<Text className={classes.value}>
+									{format.number(
+										Math.round((available / 100) * auctionData.permits),
+									)}
+								</Text>
+								<Text className={classes.unit}>permits</Text>
+							</Group>
+						</Stack>
+					</Group>
+				</Stack>
+
+				<Stack className={`${classes.winnings} ${classes.section}`}>
+					<Divider
+						label={
+							<Group className={classes.row}>
+								<Text className={classes.label}>Your Current Winnings</Text>
+								<Tooltip
+									position="top"
+									label="Estimated number of permits you will win based on the current winning bids"
+								>
+									<IconInfoCircle size={14} className={classes.info} />
+								</Tooltip>
+							</Group>
+						}
+						classNames={{
+							root: classes.divider,
+							label: classes.label,
+						}}
+					/>
+					<Group className={classes.row}>
+						<Stack className={classes.cell}>
+							<Container className={classes.icon}>
+								<IconLicense size={16} />
+							</Container>
+							<Text className={classes.key}>Estimated # of Permits</Text>
+							<Group className={classes.row}>
+								<Text className={classes.value}>
+									{format.number(
+										Math.round(myOpenAuctionResults.permitsReserved),
+									)}
+								</Text>
+								<Text className={classes.unit}>permits</Text>
+							</Group>
+						</Stack>
+						<Divider orientation="vertical" className={classes.divider} />
+						<Stack className={classes.cell}>
+							<Container className={classes.icon}>
+								<IconLeaf size={16} />
+							</Container>
+							<Text className={classes.key}>Estimated # of Emissions</Text>
+							<Group className={classes.row}>
+								<Text className={classes.value}>
+									{format.number(
+										// TODO: Replace with actual emissions calculation
+										Math.round(myOpenAuctionResults.permitsReserved * 1000),
+									)}
+								</Text>
+								<Text className={classes.unit}>tCO2e</Text>
+							</Group>
+						</Stack>
+						<Divider orientation="vertical" className={classes.divider} />
+						<Stack className={classes.cell}>
+							<Container className={classes.icon}>
+								<IconCoins size={16} />
+							</Container>
+							<Text className={classes.key}>Estimated Final Bill</Text>
+							<Group className={classes.row}>
+								<CurrencyBadge />
+								<Text className={classes.value}>
+									{format.number(
+										Math.round(myOpenAuctionResults.finalBill),
+										'money',
+									)}
+								</Text>
+							</Group>
+						</Stack>
+					</Group>
+				</Stack>
+
+				<Container className={classes.dashed} />
+				<Group className={classes.prompt}>
+					<Button
+						className={classes.cta}
+						rightSection={<IconShoppingBag size={16} />}
+						variant="outline"
+					>
+						Buy Now
+					</Button>
+					<Button className={classes.cta} rightSection={<IconGavel size={16} />}>
+						Start Bidding
+					</Button>
+				</Group>
 			</Stack>
 		</Group>
 	);

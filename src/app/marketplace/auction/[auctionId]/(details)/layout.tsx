@@ -5,7 +5,12 @@ import { ReactNode, useState } from 'react';
 
 import { throwError } from '@/helpers';
 import { getSingleAuction } from '@/lib/auctions';
-import { getMyPaginatedWinningBids, getPaginatedWinningBids } from '@/lib/bids/open';
+import {
+	getMyPaginatedWinningBids,
+	getPaginatedBids,
+	getPaginatedWinningBids,
+} from '@/lib/bids/open';
+import { getMyOpenAuctionResults } from '@/lib/results/open';
 import { Button, Container, Stack } from '@mantine/core';
 import { IconArrowUpLeft } from '@tabler/icons-react';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
@@ -85,6 +90,34 @@ export default function AuctionPage({
 		placeholderData: keepPreviousData,
 	});
 
+	const {
+		data: allBids,
+		isLoading: isAllBidsLoading,
+		isError: isAllBidsError,
+		isSuccess: isAllBidsSuccess,
+	} = useQuery({
+		queryKey: ['marketplace', '@catalogue', 'allBids', auctionId, minePage, 1],
+		queryFn: () =>
+			throwError(
+				getPaginatedBids({
+					auctionId: auctionId as string,
+					perPage: 1,
+				}),
+			),
+		placeholderData: keepPreviousData,
+	});
+
+	const {
+		data: myOpenAuctionResults,
+		isLoading: isMyOpenAuctionResultsLoading,
+		isError: isMyOpenAuctionResultsError,
+		isSuccess: isMyOpenAuctionResultsSuccess,
+	} = useQuery({
+		queryKey: ['marketplace', '@catalogue', 'myOpenAuctionResults', auctionId],
+		queryFn: () => throwError(getMyOpenAuctionResults(auctionId as string)),
+		placeholderData: keepPreviousData,
+	});
+
 	return (
 		<AuctionDetailsContext.Provider
 			value={{
@@ -92,6 +125,12 @@ export default function AuctionPage({
 				isAuctionDataLoading,
 				isAuctionDataError,
 				isAuctionDataSuccess,
+
+				myOpenAuctionResults:
+					myOpenAuctionResults || AUCTION_DETAILS_DEFAULT_CONTEXT.myOpenAuctionResults,
+				isMyOpenAuctionResultsLoading,
+				isMyOpenAuctionResultsError,
+				isMyOpenAuctionResultsSuccess,
 			}}
 		>
 			<BidTableContext.Provider
@@ -111,6 +150,11 @@ export default function AuctionPage({
 					isMyBidsLoading,
 					isMyBidsError,
 					isMyBidsSuccess,
+
+					allBids: allBids || BID_TABLE_DEFAULT_CONTEXT.allBids,
+					isAllBidsLoading,
+					isAllBidsError,
+					isAllBidsSuccess,
 				}}
 			>
 				<Container className={classes.bg}>
@@ -118,7 +162,13 @@ export default function AuctionPage({
 					<Container className={classes.gradient} />
 				</Container>
 				<Stack className={classes.root}>
-					<Button className={classes.button} leftSection={<IconArrowUpLeft />}>
+					<Button
+						component="a"
+						// TODO: change to explore page when available
+						href="/marketplace"
+						className={classes.button}
+						leftSection={<IconArrowUpLeft />}
+					>
 						Return to Catalogue
 					</Button>
 					{details}

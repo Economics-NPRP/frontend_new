@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 import { IBidData } from '@/schema/models';
-import { OffsetPaginatedData } from '@/types';
+import { KeysetPaginatedData, OffsetPaginatedData } from '@/types';
 
 export const DEFAULT_CONTEXT: IBidTableContext = {
 	winningPage: 1,
@@ -37,6 +37,23 @@ export const DEFAULT_CONTEXT: IBidTableContext = {
 	isMyBidsLoading: true,
 	isMyBidsError: false,
 	isMyBidsSuccess: false,
+
+	allBids: {
+		ok: false,
+		errors: [],
+		results: [],
+		perPage: 1,
+		hasNext: false,
+		hasPrev: false,
+		cursorForNextPage: null,
+		cursorForPrevPage: null,
+		totalCount: 0,
+		isExact: true,
+		resultCount: 0,
+	},
+	isAllBidsLoading: true,
+	isAllBidsError: false,
+	isAllBidsSuccess: false,
 };
 
 export interface IBidTableContext {
@@ -47,14 +64,19 @@ export interface IBidTableContext {
 	setMinePage: (page: number) => void;
 
 	winningBids: OffsetPaginatedData<IBidData>;
-	isWinningBidsLoading?: boolean;
-	isWinningBidsError?: boolean;
-	isWinningBidsSuccess?: boolean;
+	isWinningBidsLoading: boolean;
+	isWinningBidsError: boolean;
+	isWinningBidsSuccess: boolean;
 
 	myBids: OffsetPaginatedData<IBidData>;
-	isMyBidsLoading?: boolean;
-	isMyBidsError?: boolean;
-	isMyBidsSuccess?: boolean;
+	isMyBidsLoading: boolean;
+	isMyBidsError: boolean;
+	isMyBidsSuccess: boolean;
+
+	allBids: KeysetPaginatedData<IBidData>;
+	isAllBidsLoading: boolean;
+	isAllBidsError: boolean;
+	isAllBidsSuccess: boolean;
 }
 
 export const BidTableContext = createContext<IBidTableContext>(DEFAULT_CONTEXT);

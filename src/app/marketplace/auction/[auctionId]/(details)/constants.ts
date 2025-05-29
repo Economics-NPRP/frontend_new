@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 import { DefaultAuctionData, IAuctionData } from '@/schema/models';
-import { ServerData } from '@/types';
+import { DefaultMyAuctionResultsData, IMyAuctionResultsData, ServerData } from '@/types';
 
 export const DEFAULT_CONTEXT: IAuctionDetailsContext = {
 	auctionData: {
@@ -12,6 +12,15 @@ export const DEFAULT_CONTEXT: IAuctionDetailsContext = {
 	isAuctionDataLoading: true,
 	isAuctionDataError: false,
 	isAuctionDataSuccess: false,
+
+	myOpenAuctionResults: {
+		ok: false,
+		errors: [],
+		...DefaultMyAuctionResultsData,
+	},
+	isMyOpenAuctionResultsLoading: true,
+	isMyOpenAuctionResultsError: false,
+	isMyOpenAuctionResultsSuccess: false,
 };
 
 export interface IAuctionDetailsContext {
@@ -19,6 +28,11 @@ export interface IAuctionDetailsContext {
 	isAuctionDataLoading: boolean;
 	isAuctionDataError: boolean;
 	isAuctionDataSuccess: boolean;
+
+	myOpenAuctionResults: ServerData<IMyAuctionResultsData>;
+	isMyOpenAuctionResultsLoading: boolean;
+	isMyOpenAuctionResultsError: boolean;
+	isMyOpenAuctionResultsSuccess: boolean;
 }
 
 export const AuctionDetailsContext = createContext<IAuctionDetailsContext>(DEFAULT_CONTEXT);

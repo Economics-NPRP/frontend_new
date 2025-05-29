@@ -25,7 +25,7 @@ import {
 	Tooltip,
 	UnstyledButton,
 } from '@mantine/core';
-import { IconHeart, IconLicense, IconShare, IconTrophy } from '@tabler/icons-react';
+import { IconBookmark, IconLicense, IconShare, IconTrophy } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -105,7 +105,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 						</Stack>
 						<Group className={classes.right}>
 							<ActionIcon className={classes.action} variant="outline">
-								<IconHeart size={14} />
+								<IconBookmark size={14} />
 							</ActionIcon>
 							<ActionIcon className={classes.action} variant="outline">
 								<IconShare size={14} />

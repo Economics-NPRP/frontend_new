@@ -106,7 +106,7 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 			allBidsCursor,
 			bidsPerPage,
 			//	TODO: either remove or uncomment this once keyset pagination bug is fixed
-			// allBidsNavDirection,
+			allBidsNavDirection,
 		],
 		queryFn: () =>
 			throwError(
@@ -114,7 +114,7 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 					auctionId: auctionId as string,
 					cursor: allBidsCursor,
 					perPage: bidsPerPage,
-					// navDirection: allBidsNavDirection,
+					navDirection: allBidsNavDirection,
 				}),
 			),
 		placeholderData: keepPreviousData,

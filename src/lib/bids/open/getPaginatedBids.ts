@@ -50,7 +50,13 @@ export const getPaginatedBids: IFunctionSignature = cache(
 		if (bidderId) queryUrl.searchParams.append('bidder_id', bidderId.toString());
 		if (cursor) queryUrl.searchParams.append('cursor', cursor.toString());
 		if (perPage) queryUrl.searchParams.append('per_page', perPage.toString());
-		if (navDirection) queryUrl.searchParams.append('nav_direction', navDirection.toString());
+		if (navDirection) {
+			queryUrl.searchParams.append('nav_direction', navDirection.toString());
+			queryUrl.searchParams.append(
+				'order_direction',
+				navDirection === 'next' ? 'asc' : 'desc',
+			);
+		}
 
 		const response = await fetch(queryUrl, querySettings);
 		const rawData = camelCase(await response.json(), 5) as KeysetPaginatedData<unknown>;

@@ -160,39 +160,39 @@ export interface IAuctionResultsContext {
 	setBidsPerPage: (perPage: number) => void;
 
 	openAuctionResults: OffsetPaginatedData<IAuctionResultsData>;
-	isOpenAuctionResultsLoading?: boolean;
-	isOpenAuctionResultsError?: boolean;
-	isOpenAuctionResultsSuccess?: boolean;
+	isOpenAuctionResultsLoading: boolean;
+	isOpenAuctionResultsError: boolean;
+	isOpenAuctionResultsSuccess: boolean;
 
 	allBids: KeysetPaginatedData<IBidData>;
-	isAllBidsLoading?: boolean;
-	isAllBidsError?: boolean;
-	isAllBidsSuccess?: boolean;
+	isAllBidsLoading: boolean;
+	isAllBidsError: boolean;
+	isAllBidsSuccess: boolean;
 
 	myBids: KeysetPaginatedData<IBidData>;
-	isMyBidsLoading?: boolean;
-	isMyBidsError?: boolean;
-	isMyBidsSuccess?: boolean;
+	isMyBidsLoading: boolean;
+	isMyBidsError: boolean;
+	isMyBidsSuccess: boolean;
 
 	winningBids: OffsetPaginatedData<IBidData>;
-	isWinningBidsLoading?: boolean;
-	isWinningBidsError?: boolean;
-	isWinningBidsSuccess?: boolean;
+	isWinningBidsLoading: boolean;
+	isWinningBidsError: boolean;
+	isWinningBidsSuccess: boolean;
 
 	allWinningBids: OffsetPaginatedData<IBidData>;
-	isAllWinningBidsLoading?: boolean;
-	isAllWinningBidsError?: boolean;
-	isAllWinningBidsSuccess?: boolean;
+	isAllWinningBidsLoading: boolean;
+	isAllWinningBidsError: boolean;
+	isAllWinningBidsSuccess: boolean;
 
 	auctionData: ServerData<IAuctionData>;
-	isAuctionDataLoading?: boolean;
-	isAuctionDataError?: boolean;
-	isAuctionDataSuccess?: boolean;
+	isAuctionDataLoading: boolean;
+	isAuctionDataError: boolean;
+	isAuctionDataSuccess: boolean;
 
 	myOpenAuctionResults: ServerData<IMyAuctionResultsData>;
-	isMyOpenAuctionResultsLoading?: boolean;
-	isMyOpenAuctionResultsError?: boolean;
-	isMyOpenAuctionResultsSuccess?: boolean;
+	isMyOpenAuctionResultsLoading: boolean;
+	isMyOpenAuctionResultsError: boolean;
+	isMyOpenAuctionResultsSuccess: boolean;
 }
 
 export const AuctionResultsContext = createContext<IAuctionResultsContext>(DEFAULT_CONTEXT);
