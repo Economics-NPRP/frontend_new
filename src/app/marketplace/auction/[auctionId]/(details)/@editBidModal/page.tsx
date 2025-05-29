@@ -1,15 +1,19 @@
+'use client';
+
 import { useFormatter } from 'next-intl';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
+import { BidTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BidTable';
+import {
+	AuctionBiddingContext,
+	AuctionDetailsContext,
+	DEFAULT_AUCTION_BIDDING_CONTEXT,
+} from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Button, Group, Modal, NumberInput, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
-import { AuctionDetailsContext } from '../constants';
-import { AuctionBiddingContext, DEFAULT_CONTEXT } from './constants';
-import { BidTableData } from './types';
-
-export const EditModal = () => {
+export default function EditModal() {
 	const format = useFormatter();
 
 	const { auctionData } = useContext(AuctionDetailsContext);
@@ -71,7 +75,7 @@ export const EditModal = () => {
 				(bid) => bid.bid === editingBid,
 				() => values,
 			);
-			setEditingBid(DEFAULT_CONTEXT.editingBid);
+			setEditingBid(DEFAULT_AUCTION_BIDDING_CONTEXT.editingBid);
 			editModalActions.close();
 			form.reset();
 		},
@@ -109,4 +113,4 @@ export const EditModal = () => {
 			</form>
 		</Modal>
 	);
-};
+}

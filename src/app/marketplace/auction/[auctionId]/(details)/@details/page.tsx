@@ -14,6 +14,10 @@ import {
 import { LargeCountdown } from '@/components/Countdown';
 import { Id } from '@/components/Id';
 import {
+	AuctionBidsContext,
+	AuctionDetailsContext,
+} from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
+import {
 	ActionIcon,
 	Anchor,
 	Avatar,
@@ -46,15 +50,13 @@ import {
 	IconShoppingBag,
 } from '@tabler/icons-react';
 
-import { BidTableContext } from '../@bids/constants';
-import { AuctionDetailsContext } from '../constants';
 import classes from './styles.module.css';
 
 export default function Details() {
 	const t = useTranslations();
 	const format = useFormatter();
 	const { auctionData, myOpenAuctionResults } = useContext(AuctionDetailsContext);
-	const { allBids } = useContext(BidTableContext);
+	const { allBids } = useContext(AuctionBidsContext);
 
 	const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
 

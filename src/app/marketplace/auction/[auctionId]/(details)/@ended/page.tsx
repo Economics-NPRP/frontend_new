@@ -7,7 +7,7 @@ import { Button, Group, Modal, Stack, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconArrowUpRight } from '@tabler/icons-react';
 
-import { AuctionDetailsContext } from '../constants';
+import { AuctionDetailsContext } from '../_components/Providers/constants';
 
 export default function EndedOverlay() {
 	const { auctionId } = useParams();

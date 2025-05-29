@@ -1,4 +1,5 @@
-import { BidTable } from 'app/marketplace/auction/[auctionId]/(details)/@prompt/BidTable';
+'use client';
+
 import { useFormatter } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { useCallback, useContext } from 'react';
@@ -6,13 +7,13 @@ import { useCallback, useContext } from 'react';
 import { CurrencyBadge } from '@/components/Badge';
 import { throwError } from '@/helpers';
 import { placeBid } from '@/lib/bids/open';
+import { BidTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BidTable';
+import { AuctionBiddingContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Button, Group, Loader, Modal, Stack, Text } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { AuctionBiddingContext } from './constants';
-
-export const BidConfirmationModal = () => {
+export default function BidConfirmationModal() {
 	const format = useFormatter();
 	const { auctionId } = useParams();
 	const queryClient = useQueryClient();
@@ -109,4 +110,4 @@ export const BidConfirmationModal = () => {
 			)}
 		</Modal>
 	);
-};
+}

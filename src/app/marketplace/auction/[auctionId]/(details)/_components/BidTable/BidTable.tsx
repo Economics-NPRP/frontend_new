@@ -1,11 +1,13 @@
+'use client';
+
 import { sortBy } from 'lodash-es';
 import { DataTable } from 'mantine-datatable';
 import { useCallback, useContext, useMemo } from 'react';
 
+import { AuctionBiddingContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { ActionIcon, Button, Group } from '@mantine/core';
 import { IconPencil, IconX } from '@tabler/icons-react';
 
-import { AuctionBiddingContext } from './constants';
 import { BidTableData } from './types';
 
 export interface BidTableProps {

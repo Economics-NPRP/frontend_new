@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { AuctionCard } from '@/components/AuctionCard';
 import { Group, Stack, Title } from '@mantine/core';
 
-import { AuctionDetailsContext } from '../constants';
+import { AuctionDetailsContext } from '../_components/Providers/constants';
 
 export default function Suggestions() {
 	const { auctionData } = useContext(AuctionDetailsContext);

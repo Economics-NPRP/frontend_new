@@ -2,13 +2,14 @@ import { useFormatter } from 'next-intl';
 import { useCallback, useContext, useMemo, useState } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
+import { BidTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BidTable';
+import {
+	AuctionBiddingContext,
+	AuctionDetailsContext,
+} from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Alert, Button, Group, List, NumberInput, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconExclamationCircle } from '@tabler/icons-react';
-
-import { AuctionDetailsContext } from '../constants';
-import { AuctionBiddingContext } from './constants';
-import { BidTableData } from './types';
 
 export const InsertForm = () => {
 	const format = useFormatter();

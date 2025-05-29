@@ -3,13 +3,12 @@
 import { useContext } from 'react';
 
 import { BidsTable } from '@/components/BidsTable';
+import { AuctionBidsContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Tabs, TabsList, TabsPanel, TabsTab } from '@mantine/core';
-
-import { BidTableContext } from './constants';
 
 export default function Bids() {
 	const { winningPage, setWinningPage, minePage, setMinePage, winningBids, myBids } =
-		useContext(BidTableContext);
+		useContext(AuctionBidsContext);
 
 	return (
 		<Tabs defaultValue={'winning'}>

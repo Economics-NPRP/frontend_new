@@ -1,10 +1,14 @@
+'use client';
+
 import { useCallback, useContext } from 'react';
 
+import {
+	AuctionBiddingContext,
+	DEFAULT_AUCTION_BIDDING_CONTEXT,
+} from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Button, Group, Modal, Text } from '@mantine/core';
 
-import { AuctionBiddingContext, DEFAULT_CONTEXT } from './constants';
-
-export const DeleteModal = () => {
+export default function DeleteModal() {
 	const {
 		bidsHandlers,
 		selectedBidsHandlers,
@@ -22,7 +26,7 @@ export const DeleteModal = () => {
 		selectedBidsHandlers.filter(({ bid }) => !deletingBids.includes(bid));
 
 		//	Reset the deletingBids list
-		deletingBidsHandlers.setState(DEFAULT_CONTEXT.deletingBids);
+		deletingBidsHandlers.setState(DEFAULT_AUCTION_BIDDING_CONTEXT.deletingBids);
 		deleteModalActions.close();
 	}, [selectedBidsHandlers, bidsHandlers]);
 
@@ -42,4 +46,4 @@ export const DeleteModal = () => {
 			</Group>
 		</Modal>
 	);
-};
+}
