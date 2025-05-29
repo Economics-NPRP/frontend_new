@@ -18,12 +18,12 @@ import classes from './styles.module.css';
 export interface AuctionTypeBadgeProps extends BadgeProps {
 	type: AuctionType;
 }
-export const AuctionTypeBadge = ({ type, ...props }: AuctionTypeBadgeProps) => {
+export const AuctionTypeBadge = ({ type, className, ...props }: AuctionTypeBadgeProps) => {
 	const t = useTranslations();
 
 	return (
 		<Badge
-			className={`${classes.root} ${classes.auctionType}`}
+			className={`${classes.root} ${classes.auctionType} ${className}`}
 			variant="light"
 			leftSection={type === 'open' ? <IconLockOpen size={14} /> : <IconLock size={14} />}
 			{...props}
@@ -33,11 +33,15 @@ export const AuctionTypeBadge = ({ type, ...props }: AuctionTypeBadgeProps) => {
 	);
 };
 
-export const CurrencyBadge = ({ ...props }: BadgeProps) => {
+export const CurrencyBadge = ({ className, ...props }: BadgeProps) => {
 	const t = useTranslations();
 
 	return (
-		<Badge className={`${classes.root} ${classes.currency}`} variant="light" {...props}>
+		<Badge
+			className={`${classes.root} ${classes.currency} ${className}`}
+			variant="light"
+			{...props}
+		>
 			{t('constants.currency.QAR.symbol')}
 		</Badge>
 	);
@@ -46,7 +50,7 @@ export const CurrencyBadge = ({ ...props }: BadgeProps) => {
 export interface CategoryBadgeProps extends BadgeProps {
 	category: AuctionCategory;
 }
-export const CategoryBadge = ({ category, ...props }: CategoryBadgeProps) => {
+export const CategoryBadge = ({ category, className, ...props }: CategoryBadgeProps) => {
 	const t = useTranslations();
 
 	const { Icon, color } = useMemo<AuctionCategoryData>(
@@ -56,7 +60,7 @@ export const CategoryBadge = ({ category, ...props }: CategoryBadgeProps) => {
 
 	return (
 		<Badge
-			className={`${classes.root} ${classes.category}}`}
+			className={`${classes.root} ${classes.category} ${className}`}
 			leftSection={<Icon size={14} />}
 			style={{ backgroundColor: colors[color.token!][6] }}
 			autoContrast
@@ -68,7 +72,7 @@ export const CategoryBadge = ({ category, ...props }: CategoryBadgeProps) => {
 };
 
 export interface EndingSoonBadgeProps extends BadgeProps, Pick<IAuctionData, 'endDatetime'> {}
-export const EndingSoonBadge = ({ endDatetime, ...props }: EndingSoonBadgeProps) => {
+export const EndingSoonBadge = ({ endDatetime, className, ...props }: EndingSoonBadgeProps) => {
 	const t = useTranslations();
 
 	const isEndingSoon = useMemo(
@@ -86,7 +90,7 @@ export const EndingSoonBadge = ({ endDatetime, ...props }: EndingSoonBadgeProps)
 				})}
 			>
 				<Badge
-					className={`${classes.root} ${classes.ending}`}
+					className={`${classes.root} ${classes.ending} ${className}`}
 					leftSection={<IconAlarm size={14} />}
 					autoContrast
 					{...props}

@@ -2,7 +2,7 @@
 	@apply flex-nowrap gap-0 items-start;
 
 	> .sidecontent {
-		@apply flex-[2_2_0] items-stretch gap-0;
+		@apply flex-[3_3_0] items-stretch gap-0;
 
 		> .container {
 			@apply p-4;
@@ -20,26 +20,33 @@
 
 		> .row {
 			@apply flex-nowrap gap-0;
+			@apply bg-dark-600;
 			@apply border border-t-0 border-solid border-gray-300;
 
 			> .section {
 				@apply flex-[50%];
 				@apply px-6 py-4 gap-0;
 				@apply flex-nowrap items-center justify-center;
+				@apply border-0 border-r border-solid border-dark-400;
 
-				&:first-of-type {
-					@apply border-0 border-r border-solid border-gray-300;
+				&:last-child {
+					@apply border-0;
 				}
 
 				> .subtext {
-					@apply paragraph-sm text-center;
+					@apply paragraph-sm-w text-center;
 				}
 
 				> .price {
 					@apply gap-2 flex-nowrap;
 
+					> .badge {
+						@apply bg-dark-400;
+						@apply text-dark-100;
+					}
+
 					> .value {
-						@apply numeric-xl;
+						@apply numeric-xl-w;
 					}
 				}
 			}
@@ -65,14 +72,23 @@
 				@apply paragraph-sm text-center;
 			}
 		}
+
+		> .prompt {
+			@apply flex-nowrap gap-2 p-4;
+			@apply border border-t-0 border-solid border-gray-300;
+
+			> .cta {
+				@apply flex-[50%] h-10;
+			}
+		}
 	}
 
 	> .content {
-		@apply flex-[3_3_0] px-12 gap-6;
+		@apply flex-[4_4_0] px-12 gap-7;
 		@apply items-stretch flex-nowrap;
 
 		> .section {
-			@apply gap-2 items-stretch flex-nowrap;
+			@apply gap-3 items-stretch flex-nowrap;
 
 			> .divider {
 				.label {
@@ -93,6 +109,8 @@
 			}
 
 			&.details {
+				@apply gap-2;
+
 				> .title {
 					@apply heading-1;
 				}
@@ -149,6 +167,8 @@
 			}
 
 			&.properties {
+				@apply -mb-3;
+
 				> .table {
 					@apply gap-0;
 
@@ -293,28 +313,6 @@
 						@apply h-8 self-center;
 					}
 				}
-			}
-		}
-
-		> .dashed {
-			@apply self-stretch h-[1px];
-
-			/* Dashed border */
-			background-image: repeating-linear-gradient(
-				90deg,
-				var(--mantine-color-gray-3) 0 8px,
-				#0000 0 16px
-			);
-			background-position: bottom;
-			background-size: 100% 1px;
-			background-repeat: repeat-x;
-		}
-
-		> .prompt {
-			@apply flex-nowrap gap-2;
-
-			> .cta {
-				@apply flex-[50%] h-10;
 			}
 		}
 	}

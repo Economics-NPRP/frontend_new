@@ -77,7 +77,7 @@ export default function Details() {
 					<Stack className={classes.section}>
 						<Text className={classes.subtext}>Buy Now Price</Text>
 						<Group className={classes.price}>
-							<CurrencyBadge />
+							<CurrencyBadge className={classes.badge} />
 							<Text className={classes.value}>
 								{format.number(auctionData.minBid + 100, 'money')}
 							</Text>
@@ -86,10 +86,17 @@ export default function Details() {
 					<Stack className={classes.section}>
 						<Text className={classes.subtext}>Minimum Winning Bid</Text>
 						<Group className={classes.price}>
-							<CurrencyBadge />
+							<CurrencyBadge className={classes.badge} />
 							<Text className={classes.value}>
 								{format.number(auctionData.minBid, 'money')}
 							</Text>
+						</Group>
+					</Stack>
+					<Stack className={classes.section}>
+						<Text className={classes.subtext}>Minimum Increment</Text>
+						<Group className={classes.price}>
+							<CurrencyBadge className={classes.badge} />
+							<Text className={classes.value}>{format.number(1, 'money')}</Text>
 						</Group>
 					</Stack>
 				</Group>
@@ -102,6 +109,18 @@ export default function Details() {
 						)}
 					</Text>
 				</Stack>
+				<Group className={classes.prompt}>
+					<Button
+						className={classes.cta}
+						rightSection={<IconShoppingBag size={16} />}
+						variant="outline"
+					>
+						Buy Now
+					</Button>
+					<Button className={classes.cta} rightSection={<IconGavel size={16} />}>
+						Start Bidding
+					</Button>
+				</Group>
 			</Stack>
 			<Stack className={classes.content}>
 				<Stack className={`${classes.details} ${classes.section}`}>
@@ -390,20 +409,6 @@ export default function Details() {
 						</Stack>
 					</Group>
 				</Stack>
-
-				<Container className={classes.dashed} />
-				<Group className={classes.prompt}>
-					<Button
-						className={classes.cta}
-						rightSection={<IconShoppingBag size={16} />}
-						variant="outline"
-					>
-						Buy Now
-					</Button>
-					<Button className={classes.cta} rightSection={<IconGavel size={16} />}>
-						Start Bidding
-					</Button>
-				</Group>
 			</Stack>
 		</Group>
 	);
