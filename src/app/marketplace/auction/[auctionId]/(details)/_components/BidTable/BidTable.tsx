@@ -108,6 +108,7 @@ export const BidTable = ({ readOnly = false, className }: BidTableProps) => {
 						accessor: 'actions',
 						hidden: readOnly,
 						cellsClassName: classes.actions,
+						width: 81,
 						render: ({ bid }) => (
 							<Group className={classes.cell}>
 								<ActionIcon

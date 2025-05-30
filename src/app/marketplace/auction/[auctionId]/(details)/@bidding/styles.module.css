@@ -5,10 +5,11 @@
 		@apply gap-4 flex-nowrap items-stretch;
 
 		> .content {
-			@apply flex-auto px-8 py-4;
+			@apply flex-auto;
 
 			> .header {
-				@apply gap-4 justify-between flex-nowrap;
+				@apply gap-32 px-8 py-6 justify-between flex-nowrap;
+				@apply bg-white border border-solid border-gray-300;
 
 				> .label {
 					@apply gap-0 items-start;
@@ -18,7 +19,7 @@
 					}
 
 					> .subtitle {
-						@apply paragraph-md;
+						@apply paragraph-md text-pretty;
 					}
 				}
 			}
@@ -206,7 +207,6 @@
 	> .footer {
 		@apply px-8 py-4 gap-8;
 		@apply bg-white border border-solid border-gray-300;
-		@apply shadow-sm;
 
 		> .content {
 			@apply flex-auto;

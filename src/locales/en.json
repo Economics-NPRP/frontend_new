@@ -243,6 +243,27 @@
 					"millisecond": "Millisecond",
 					"empty": "—"
 				},
+				"medium": {
+					"years": "Yrs",
+					"year": "Yr",
+					"quarters": "Qtrs",
+					"quarter": "Qtr",
+					"months": "Mths",
+					"month": "Mth",
+					"weeks": "Wks",
+					"week": "Wk",
+					"days": "Days",
+					"day": "Day",
+					"hours": "Hrs",
+					"hour": "Hr",
+					"minutes": "Mins",
+					"minute": "Min",
+					"seconds": "Secs",
+					"second": "Sec",
+					"milliseconds": "Msecs",
+					"millisecond": "Msec",
+					"empty": "—"
+				},
 				"short": {
 					"years": "y",
 					"year": "y",

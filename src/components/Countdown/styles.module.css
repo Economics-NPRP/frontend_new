@@ -1,11 +1,11 @@
 .root {
-	@apply gap-1;
+	@apply gap-1 flex-nowrap;
 
 	> .unit {
-		@apply justify-center items-center gap-2;
+		@apply flex-nowrap justify-center items-center gap-2;
 
 		> .value {
-			@apply gap-1;
+			@apply gap-1 flex-nowrap;
 
 			> .cell {
 				@apply w-8 h-12;
@@ -17,8 +17,7 @@
 
 					@apply h-[1.5em];
 					@apply overflow-hidden;
-					@apply numeric-xl;
-					@apply text-white;
+					@apply numeric-xl-w;
 
 					&::after {
 						@apply relative;
@@ -37,7 +36,7 @@
 		}
 
 		> .label {
-			@apply display-xs uppercase;
+			@apply display-2xs uppercase;
 		}
 	}
 
@@ -49,6 +48,36 @@
 
 	> .text {
 		@apply leading-none;
+	}
+
+	&.medium {
+		@apply gap-3;
+
+		> .unit {
+			@apply gap-1;
+
+			> .value > .cell {
+				@apply w-6 h-10;
+
+				> .digit {
+					@apply numeric-lg-w;
+					@apply h-[1.75em];
+
+					&::after {
+						@apply leading-[1.75em];
+
+						top: calc(var(--value) * -1.75em);
+					}
+				}
+			}
+			> .label {
+				@apply display-xs;
+			}
+		}
+
+		> .separator {
+			@apply hidden;
+		}
 	}
 }
 

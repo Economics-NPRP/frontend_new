@@ -9,7 +9,7 @@ import classes from '@/components/Countdown/styles.module.css';
 import { Group, Stack, Text } from '@mantine/core';
 import { IconPointFilled } from '@tabler/icons-react';
 
-export const LargeCountdown = ({
+export const MediumCountdown = ({
 	targetDate,
 	units,
 	displayOnly,
@@ -20,14 +20,14 @@ export const LargeCountdown = ({
 	const { values, displayUnits, ref } = useCountdown({ targetDate, units, displayOnly });
 
 	return (
-		<Group className={`${classes.root} ${className}`} ref={ref} {...props}>
+		<Group className={`${classes.root} ${classes.medium} ${className}`} ref={ref} {...props}>
 			<Stack className={classes.unit}>
 				<Group className={classes.value}>
 					<Digit value={values[0]} />
 					<Digit value={values[1]} />
 				</Group>
 				<Text className={classes.label}>
-					{t(`components.countdown.label.long.${displayUnits[0]}`)}
+					{t(`components.countdown.label.medium.${displayUnits[0]}`)}
 				</Text>
 			</Stack>
 
@@ -42,7 +42,7 @@ export const LargeCountdown = ({
 					<Digit value={values[3]} />
 				</Group>
 				<Text className={classes.label}>
-					{t(`components.countdown.label.long.${displayUnits[1]}`)}
+					{t(`components.countdown.label.medium.${displayUnits[1]}`)}
 				</Text>
 			</Stack>
 
@@ -57,7 +57,7 @@ export const LargeCountdown = ({
 					<Digit value={values[5]} />
 				</Group>
 				<Text className={classes.label}>
-					{t(`components.countdown.label.long.${displayUnits[2]}`)}
+					{t(`components.countdown.label.medium.${displayUnits[2]}`)}
 				</Text>
 			</Stack>
 		</Group>

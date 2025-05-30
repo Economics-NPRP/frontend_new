@@ -190,6 +190,27 @@
 					"year": "سنة",
 					"years": "سنوات"
 				},
+				"medium": {
+					"day": "يوم",
+					"days": "أيام",
+					"empty": "—",
+					"hour": "ساعة",
+					"hours": "ساعات",
+					"millisecond": "ميلي ثانية",
+					"milliseconds": "ميلي ثوانٍ",
+					"minute": "دقيقة",
+					"minutes": "دقائق",
+					"month": "شهر",
+					"months": "أشهر",
+					"quarter": "ربع",
+					"quarters": "أرباع",
+					"second": "ثانية",
+					"seconds": "ثوانٍ",
+					"week": "أسبوع",
+					"weeks": "أسابيع",
+					"year": "سنة",
+					"years": "سنوات"
+				},
 				"short": {
 					"years": "س",
 					"year": "س",

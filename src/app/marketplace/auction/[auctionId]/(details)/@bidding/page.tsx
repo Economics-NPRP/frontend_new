@@ -4,7 +4,7 @@ import { useFormatter } from 'next-intl';
 import { useContext, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
-import { SmallCountdown } from '@/components/Countdown';
+import { MediumCountdown } from '@/components/Countdown';
 import { generateTrendData } from '@/helpers';
 import { BidTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BidTable';
 import {
@@ -63,13 +63,11 @@ export default function Prompt() {
 								"Place Bids" button to submit them all at once.
 							</Text>
 						</Stack>
-						{/* TODO: replace with medium countdown when available */}
-						<SmallCountdown
+						<MediumCountdown
 							className={classes.countdown}
 							targetDate={auctionData.endDatetime}
 						/>
 					</Group>
-					<Divider />
 					<BidTable />
 				</Stack>
 				<Stack className={classes.sidebar}>
@@ -92,6 +90,7 @@ export default function Prompt() {
 						<Sparkline
 							w={140}
 							h={80}
+							color="#000000"
 							data={data.map((data) => data['Minimum Winning Bid'])}
 							curveType="natural"
 						/>
