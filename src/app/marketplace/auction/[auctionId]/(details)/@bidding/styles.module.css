@@ -112,6 +112,10 @@
 					}
 				}
 
+				> .error .list {
+					@apply text-white;
+				}
+
 				> form {
 					@apply contents;
 

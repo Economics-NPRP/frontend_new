@@ -91,89 +91,23 @@ export const InsertForm = () => {
 	);
 
 	return (
-		<>
-			<Stack className={classes.insertForm}>
-				<Stack className={classes.header}>
-					<Group className={classes.row}>
-						<Title order={3} className={classes.title}>
-							Insert Bids
-						</Title>
-						<Group className={classes.dots}>
-							<IconCircleFilled size={6} />
-							<IconCircleFilled size={6} />
-							<IconCircleFilled size={6} />
-							<IconCircleFilled size={6} />
-							<IconCircleFilled size={6} />
-						</Group>
+		<Stack className={classes.insertForm}>
+			<Stack className={classes.header}>
+				<Group className={classes.row}>
+					<Title order={3} className={classes.title}>
+						Insert Bids
+					</Title>
+					<Group className={classes.dots}>
+						<IconCircleFilled size={6} />
+						<IconCircleFilled size={6} />
+						<IconCircleFilled size={6} />
+						<IconCircleFilled size={6} />
+						<IconCircleFilled size={6} />
 					</Group>
-					<Text className={classes.description}>
-						Insert your bids to the bidding table using the form below
-					</Text>
-				</Stack>
-				<form onSubmit={form.onSubmit(onSubmitHandler)}>
-					<Stack className={classes.inputs}>
-						<Group className={classes.section}>
-							<Group className={classes.key}>
-								<IconLicense size={16} className={classes.icon} />
-								<Text className={classes.label}>Permits to Bid</Text>
-							</Group>
-							<BidNumberInput
-								placeholder="0"
-								max={auctionData.permits - totalPermits}
-								name="permit"
-								key={form.key('permit')}
-								disabled={!auctionData.hasJoined}
-								{...form.getInputProps('permit')}
-							/>
-						</Group>
-						<Group className={classes.section}>
-							<Group className={classes.key}>
-								<IconLeaf size={16} className={classes.icon} />
-								<Text className={classes.label}>Total Emissions</Text>
-							</Group>
-							<Text className={classes.value}>{format.number(emissions)} tCO2e</Text>
-						</Group>
-						<Group className={classes.section}>
-							<Group className={classes.key}>
-								<IconCoins size={16} className={classes.icon} />
-								<Text className={classes.label}>Price per Permit</Text>
-							</Group>
-							<BidNumberInput
-								placeholder="0.00"
-								name="bid"
-								key={form.key('bid')}
-								disabled={!auctionData.hasJoined}
-								decimalScale={2}
-								fixedDecimalScale
-								{...form.getInputProps('bid')}
-							/>
-						</Group>
-					</Stack>
-					<Stack className={classes.summary}>
-						<Group className={classes.row}>
-							<Text className={classes.text}>Subtotal</Text>
-							<Group className={classes.cell}>
-								<CurrencyBadge className={classes.badge} />
-								<Text className={classes.value}>
-									{format.number(subtotal, 'money')}
-								</Text>
-							</Group>
-						</Group>
-						<Button
-							className={classes.button}
-							variant="outline"
-							type="submit"
-							disabled={!auctionData.hasJoined}
-							leftSection={<IconArrowUpLeft size={16} />}
-						>
-							Add to Table
-						</Button>
-						<Text className={classes.subtext}>
-							Pressing the above button will not submit your bid. It will only add it
-							to the table on the left
-						</Text>
-					</Stack>
-				</form>
+				</Group>
+				<Text className={classes.description}>
+					Insert your bids to the bidding table using the form below
+				</Text>
 			</Stack>
 			{errorMessages.length > 0 && (
 				<Alert
@@ -181,11 +115,76 @@ export const InsertForm = () => {
 					color="red"
 					title="There was a problem adding your bid"
 					icon={<IconExclamationCircle />}
+					className={classes.error}
 				>
-					<List>{errorMessages}</List>
+					<List className={classes.list}>{errorMessages}</List>
 				</Alert>
 			)}
-		</>
+			<form onSubmit={form.onSubmit(onSubmitHandler)}>
+				<Stack className={classes.inputs}>
+					<Group className={classes.section}>
+						<Group className={classes.key}>
+							<IconLicense size={16} className={classes.icon} />
+							<Text className={classes.label}>Permits to Bid</Text>
+						</Group>
+						<BidNumberInput
+							placeholder="0"
+							max={auctionData.permits - totalPermits}
+							name="permit"
+							key={form.key('permit')}
+							disabled={!auctionData.hasJoined}
+							{...form.getInputProps('permit')}
+						/>
+					</Group>
+					<Group className={classes.section}>
+						<Group className={classes.key}>
+							<IconLeaf size={16} className={classes.icon} />
+							<Text className={classes.label}>Total Emissions</Text>
+						</Group>
+						<Text className={classes.value}>{format.number(emissions)} tCO2e</Text>
+					</Group>
+					<Group className={classes.section}>
+						<Group className={classes.key}>
+							<IconCoins size={16} className={classes.icon} />
+							<Text className={classes.label}>Price per Permit</Text>
+						</Group>
+						<BidNumberInput
+							placeholder="0.00"
+							name="bid"
+							key={form.key('bid')}
+							disabled={!auctionData.hasJoined}
+							decimalScale={2}
+							fixedDecimalScale
+							{...form.getInputProps('bid')}
+						/>
+					</Group>
+				</Stack>
+				<Stack className={classes.summary}>
+					<Group className={classes.row}>
+						<Text className={classes.text}>Subtotal</Text>
+						<Group className={classes.cell}>
+							<CurrencyBadge className={classes.badge} />
+							<Text className={classes.value}>
+								{format.number(subtotal, 'money')}
+							</Text>
+						</Group>
+					</Group>
+					<Button
+						className={classes.button}
+						variant="outline"
+						type="submit"
+						disabled={!auctionData.hasJoined}
+						leftSection={<IconArrowUpLeft size={16} />}
+					>
+						Add to Table
+					</Button>
+					<Text className={classes.subtext}>
+						Pressing the above button will not submit your bid. It will only add it to
+						the table on the left
+					</Text>
+				</Stack>
+			</form>
+		</Stack>
 	);
 };
 
