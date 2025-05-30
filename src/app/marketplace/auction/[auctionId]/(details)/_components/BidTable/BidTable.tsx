@@ -2,20 +2,26 @@
 
 import { sortBy } from 'lodash-es';
 import { DataTable } from 'mantine-datatable';
+import { useFormatter } from 'next-intl';
 import { useCallback, useContext, useMemo } from 'react';
 
+import { CurrencyBadge } from '@/components/Badge';
 import { AuctionBiddingContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
-import { ActionIcon, Button, Group } from '@mantine/core';
+import { ActionIcon, Button, Group, TableProps, Text } from '@mantine/core';
 import { IconPencil, IconX } from '@tabler/icons-react';
 
+import classes from './styles.module.css';
 import { BidTableData } from './types';
 
-export interface BidTableProps {
+export interface BidTableProps extends TableProps {
 	readOnly?: boolean;
 }
-export const BidTable = ({ readOnly = false }: BidTableProps) => {
+export const BidTable = ({ readOnly = false, className }: BidTableProps) => {
+	const format = useFormatter();
 	const {
 		bids,
+		totalPermits,
+		grandTotal,
 		selectedBids,
 		selectedBidsHandlers,
 		deletingBidsHandlers,
@@ -47,24 +53,73 @@ export const BidTable = ({ readOnly = false }: BidTableProps) => {
 	return (
 		<>
 			<DataTable
+				className={`${classes.root} ${className}`}
 				columns={[
-					{ accessor: 'permit', sortable: true },
-					{ accessor: 'emissions', sortable: true },
-					{ accessor: 'bid', sortable: true },
-					{ accessor: 'subtotal', sortable: true },
+					{
+						accessor: 'permit',
+						sortable: true,
+						title: 'Permits (% of Total)',
+						render: (record) => (
+							<Text>
+								{format.number(record.permit)} (
+								{format.number(
+									Math.round((record.permit / totalPermits) * 100),
+									'money',
+								)}
+								%)
+							</Text>
+						),
+					},
+					{
+						accessor: 'emissions',
+						sortable: true,
+						render: (record) => <Text>{format.number(record.emissions)} tCO2e</Text>,
+					},
+					{
+						accessor: 'bid',
+						sortable: true,
+						title: 'Price/Permit',
+						render: (record) => (
+							<Group className={classes.cell}>
+								<CurrencyBadge />
+								<Text>{format.number(record.bid, 'money')}</Text>
+							</Group>
+						),
+					},
+					{
+						accessor: 'subtotal',
+						sortable: true,
+						title: 'Subtotal (% of Total)',
+						render: (record) => (
+							<Group className={classes.cell}>
+								<CurrencyBadge />
+								<Text>
+									{format.number(record.subtotal, 'money')} (
+									{format.number(
+										Math.round((record.subtotal / grandTotal) * 100),
+										'money',
+									)}
+									%)
+								</Text>
+							</Group>
+						),
+					},
 					{
 						accessor: 'actions',
 						hidden: readOnly,
+						cellsClassName: classes.actions,
 						render: ({ bid }) => (
-							<Group className="gap-2">
+							<Group className={classes.cell}>
 								<ActionIcon
-									variant="transparent"
+									className={classes.button}
+									variant="filled"
 									onClick={() => onEditHandler(bid)}
 								>
 									<IconPencil size={16} />
 								</ActionIcon>
 								<ActionIcon
-									variant="transparent"
+									className={`${classes.delete} ${classes.button}`}
+									variant="filled"
 									onClick={() => onDeleteHandler([bid])}
 								>
 									<IconX size={16} />

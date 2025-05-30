@@ -1,0 +1,21 @@
+.root {
+	.cell {
+		@apply gap-1;
+
+		&:has(.button) {
+			@apply gap-0;
+
+			.button {
+				@apply size-10;
+
+				&.delete {
+					@apply bg-red-600 text-white;
+				}
+			}
+		}
+	}
+
+	.actions {
+		@apply p-0 border-0;
+	}
+}

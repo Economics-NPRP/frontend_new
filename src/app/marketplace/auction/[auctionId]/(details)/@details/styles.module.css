@@ -108,6 +108,13 @@
 				}
 			}
 
+			button.subtle,
+			a.subtle {
+				@apply h-7;
+				@apply self-center px-2 mt-2;
+				@apply paragraph-sm-g6;
+			}
+
 			&.details {
 				@apply gap-2;
 
@@ -218,15 +225,9 @@
 							}
 						}
 
-						&:last-child {
+						&:nth-last-child(2) {
 							@apply bg-none;
 						}
-					}
-
-					> .show {
-						@apply h-7;
-						@apply self-center px-2 mt-2;
-						@apply paragraph-sm-g6;
 					}
 				}
 			}

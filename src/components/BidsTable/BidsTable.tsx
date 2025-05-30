@@ -11,7 +11,6 @@ import { NavDirection } from '@/types';
 import {
 	ActionIcon,
 	Anchor,
-	CopyButton,
 	Group,
 	Pagination,
 	Table,
@@ -21,15 +20,8 @@ import {
 	TableTh,
 	TableThead,
 	TableTr,
-	Tooltip,
 } from '@mantine/core';
-import {
-	IconArrowNarrowDown,
-	IconCheck,
-	IconChevronLeft,
-	IconChevronRight,
-	IconCopy,
-} from '@tabler/icons-react';
+import { IconArrowNarrowDown, IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 
 export interface BidsTableProps extends TableProps {
 	tableData: Array<IBidData>;
@@ -88,7 +80,6 @@ export const BidsTable = ({
 						<TableTh>Permits</TableTh>
 						<TableTh>Total Bid</TableTh>
 						<TableTh>Timestamp</TableTh>
-						<TableTh></TableTh>
 					</TableTr>
 				</TableThead>
 				<TableTbody>{bidsData}</TableTbody>
@@ -160,25 +151,6 @@ const generateBidsRows = (
 					{format.number(amount * permits, 'money')}
 				</TableTd>
 				<TableTd>{DateTime.fromISO(timestamp).toRelative()}</TableTd>
-				<TableTd>
-					<CopyButton value={id} timeout={2000}>
-						{({ copied, copy }) => (
-							<Tooltip
-								label={copied ? 'Copied' : 'Copy bid ID'}
-								withArrow
-								position="right"
-							>
-								<ActionIcon
-									color={copied ? 'teal' : 'gray'}
-									variant="subtle"
-									onClick={copy}
-								>
-									{copied ? <IconCheck size={16} /> : <IconCopy size={16} />}
-								</ActionIcon>
-							</Tooltip>
-						)}
-					</CopyButton>
-				</TableTd>
 			</TableTr>
 		);
 	});

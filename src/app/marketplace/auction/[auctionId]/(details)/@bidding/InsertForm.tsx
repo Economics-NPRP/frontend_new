@@ -15,15 +15,19 @@ import {
 	List,
 	NumberInput,
 	NumberInputHandlers,
+	Stack,
 	Text,
+	Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useInterval, useTimeout } from '@mantine/hooks';
 import {
-	IconArrowDown,
+	IconArrowUpLeft,
+	IconCircleFilled,
 	IconCoins,
 	IconExclamationCircle,
 	IconLeaf,
+	IconLicense,
 	IconMinus,
 	IconPlus,
 } from '@tabler/icons-react';
@@ -36,10 +40,14 @@ export const InsertForm = () => {
 	const { bids, bidsHandlers, totalPermits } = useContext(AuctionBiddingContext);
 
 	const [subtotal, setSubtotal] = useState(0);
+	const [emissions, setEmissions] = useState(0);
 
 	const form = useForm<BidTableData>({
 		mode: 'uncontrolled',
-		onValuesChange: ({ bid, permit }) => setSubtotal(Number(bid || 0) * Number(permit || 0)),
+		onValuesChange: ({ bid, permit }) => {
+			setSubtotal(Number(bid || 0) * Number(permit || 0));
+			setEmissions(Number(permit || 0) * 1000);
+		},
 		validate: {
 			permit: (value) => {
 				if (!value) return 'Permit is required';
@@ -79,17 +87,36 @@ export const InsertForm = () => {
 			bidsHandlers.append(values);
 			form.reset();
 		},
-		[bidsHandlers],
+		[bidsHandlers, form, auctionData.hasJoined],
 	);
 
 	return (
 		<>
-			<Group className={classes.form}>
+			<Stack className={classes.insertForm}>
+				<Stack className={classes.header}>
+					<Group className={classes.row}>
+						<Title order={3} className={classes.title}>
+							Insert Bids
+						</Title>
+						<Group className={classes.dots}>
+							<IconCircleFilled size={6} />
+							<IconCircleFilled size={6} />
+							<IconCircleFilled size={6} />
+							<IconCircleFilled size={6} />
+							<IconCircleFilled size={6} />
+						</Group>
+					</Group>
+					<Text className={classes.description}>
+						Insert your bids to the bidding table using the form below
+					</Text>
+				</Stack>
 				<form onSubmit={form.onSubmit(onSubmitHandler)}>
-					<Group className={classes.left}>
+					<Stack className={classes.inputs}>
 						<Group className={classes.section}>
-							<IconLeaf size={16} />
-							<Text className={classes.label}>Permits to Bid</Text>
+							<Group className={classes.key}>
+								<IconLicense size={16} className={classes.icon} />
+								<Text className={classes.label}>Permits to Bid</Text>
+							</Group>
 							<BidNumberInput
 								placeholder="0"
 								max={auctionData.permits - totalPermits}
@@ -100,9 +127,17 @@ export const InsertForm = () => {
 							/>
 						</Group>
 						<Group className={classes.section}>
-							<IconCoins size={16} />
-							<Text className={classes.label}>Price per Permit</Text>
-							<CurrencyBadge />
+							<Group className={classes.key}>
+								<IconLeaf size={16} className={classes.icon} />
+								<Text className={classes.label}>Total Emissions</Text>
+							</Group>
+							<Text className={classes.value}>{format.number(emissions)} tCO2e</Text>
+						</Group>
+						<Group className={classes.section}>
+							<Group className={classes.key}>
+								<IconCoins size={16} className={classes.icon} />
+								<Text className={classes.label}>Price per Permit</Text>
+							</Group>
 							<BidNumberInput
 								placeholder="0.00"
 								name="bid"
@@ -113,24 +148,33 @@ export const InsertForm = () => {
 								{...form.getInputProps('bid')}
 							/>
 						</Group>
-					</Group>
-					<Group className={classes.right}>
-						<Text className={classes.text}>Subtotal</Text>
-						<Text className={classes.value}>
-							QAR {format.number(subtotal, 'money')}
-						</Text>
+					</Stack>
+					<Stack className={classes.summary}>
+						<Group className={classes.row}>
+							<Text className={classes.text}>Subtotal</Text>
+							<Group className={classes.cell}>
+								<CurrencyBadge className={classes.badge} />
+								<Text className={classes.value}>
+									{format.number(subtotal, 'money')}
+								</Text>
+							</Group>
+						</Group>
 						<Button
 							className={classes.button}
 							variant="outline"
 							type="submit"
 							disabled={!auctionData.hasJoined}
-							rightSection={<IconArrowDown size={16} />}
+							leftSection={<IconArrowUpLeft size={16} />}
 						>
-							Add to List
+							Add to Table
 						</Button>
-					</Group>
+						<Text className={classes.subtext}>
+							Pressing the above button will not submit your bid. It will only add it
+							to the table on the left
+						</Text>
+					</Stack>
 				</form>
-			</Group>
+			</Stack>
 			{errorMessages.length > 0 && (
 				<Alert
 					variant="light"

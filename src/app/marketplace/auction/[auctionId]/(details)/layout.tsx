@@ -43,6 +43,7 @@ export default function AuctionPage({
 					Return to Catalogue
 				</Button>
 				{details}
+				<Container className={classes.dashed} />
 				{bidding}
 				{bidsDrawer}
 				{suggestions}

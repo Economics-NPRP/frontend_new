@@ -215,7 +215,7 @@ export default function Details() {
 						</Group>
 						{!isDetailsExpanded && (
 							<Button
-								className={classes.show}
+								className={classes.subtle}
 								variant="subtle"
 								onClick={() => setIsDetailsExpanded(true)}
 							>
@@ -277,7 +277,7 @@ export default function Details() {
 									</Group>
 								</Group>
 								<Button
-									className={classes.show}
+									className={classes.subtle}
 									variant="subtle"
 									onClick={() => setIsDetailsExpanded(false)}
 								>
@@ -308,11 +308,11 @@ export default function Details() {
 					/>
 					<Group className={classes.row}>
 						<Stack className={classes.cell}>
-							<Text className={classes.key}>Bought</Text>
+							<Text className={classes.key}>Available</Text>
 							<Group className={classes.row}>
 								<Text className={classes.value}>
 									{format.number(
-										Math.round((bought / 100) * auctionData.permits),
+										Math.round((available / 100) * auctionData.permits),
 									)}
 								</Text>
 								<Text className={classes.unit}>permits</Text>
@@ -328,14 +328,14 @@ export default function Details() {
 								{ value: 50, label: Math.round(0.5 * auctionData.permits) },
 								{ value: 75, label: Math.round(0.75 * auctionData.permits) },
 							]}
-							value={bought}
+							value={available}
 						/>
 						<Stack className={classes.cell}>
-							<Text className={classes.key}>Available</Text>
+							<Text className={classes.key}>Bought</Text>
 							<Group className={classes.row}>
 								<Text className={classes.value}>
 									{format.number(
-										Math.round((available / 100) * auctionData.permits),
+										Math.round((bought / 100) * auctionData.permits),
 									)}
 								</Text>
 								<Text className={classes.unit}>permits</Text>
@@ -410,6 +410,14 @@ export default function Details() {
 							</Group>
 						</Stack>
 					</Group>
+					<Button
+						className={classes.subtle}
+						component="a"
+						href={`/marketplace/auction/${auctionData.id}/results`}
+						variant="subtle"
+					>
+						View Full Results
+					</Button>
 				</Stack>
 			</Stack>
 		</Group>

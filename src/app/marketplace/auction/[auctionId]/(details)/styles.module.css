@@ -4,6 +4,20 @@
 	> .button {
 		@apply self-start;
 	}
+
+	> .dashed {
+		@apply h-[1px];
+
+		/* Dashed border */
+		background-image: repeating-linear-gradient(
+			90deg,
+			var(--mantine-color-gray-2) 0 8px,
+			#0000 0 16px
+		);
+		background-position: bottom;
+		background-size: 100% 1px;
+		background-repeat: repeat-x;
+	}
 }
 
 .bg {
