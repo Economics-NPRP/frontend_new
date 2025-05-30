@@ -5,6 +5,10 @@
 		@apply self-start;
 	}
 
+	> .details {
+		@apply flex-nowrap gap-0 items-start;
+	}
+
 	> .dashed {
 		@apply h-[1px];
 

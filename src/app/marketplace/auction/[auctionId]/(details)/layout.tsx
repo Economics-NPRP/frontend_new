@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 import { Providers } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
-import { Button, Container, Stack } from '@mantine/core';
+import { Button, Container, Group, Stack } from '@mantine/core';
 import { IconArrowUpLeft } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
@@ -9,6 +9,7 @@ import classes from './styles.module.css';
 export interface AuctionDetailsProps {
 	bidConfirmationModal: ReactNode;
 	bidsDrawer: ReactNode;
+	card: ReactNode;
 	deleteBidModal: ReactNode;
 	details: ReactNode;
 	editBidModal: ReactNode;
@@ -19,6 +20,7 @@ export interface AuctionDetailsProps {
 export default function AuctionPage({
 	bidConfirmationModal,
 	bidsDrawer,
+	card,
 	deleteBidModal,
 	details,
 	editBidModal,
@@ -42,7 +44,10 @@ export default function AuctionPage({
 				>
 					Return to Catalogue
 				</Button>
-				{details}
+				<Group className={classes.details}>
+					{card}
+					{details}
+				</Group>
 				{bidding}
 				{bidsDrawer}
 				{suggestions}

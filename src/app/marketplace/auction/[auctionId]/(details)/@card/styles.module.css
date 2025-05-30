@@ -1,0 +1,81 @@
+.root {
+	@apply flex-[3_3_0] items-stretch gap-0;
+
+	> .container {
+		@apply p-4;
+		@apply border border-solid border-gray-300;
+
+		> .image {
+			@apply h-[320px];
+			@apply relative;
+
+			img {
+				@apply object-cover object-center;
+			}
+		}
+	}
+
+	> .row {
+		@apply flex-nowrap gap-0;
+		@apply bg-dark-600;
+		@apply border border-t-0 border-solid border-gray-300;
+
+		> .section {
+			@apply flex-[50%];
+			@apply px-6 py-4 gap-0;
+			@apply flex-nowrap items-center justify-center;
+			@apply border-0 border-r border-solid border-dark-400;
+
+			&:last-child {
+				@apply border-0;
+			}
+
+			> .subtext {
+				@apply paragraph-sm-w text-center;
+			}
+
+			> .price {
+				@apply gap-2 flex-nowrap;
+
+				> .badge {
+					@apply bg-dark-400;
+					@apply text-dark-100;
+				}
+
+				> .value {
+					@apply numeric-xl-w;
+				}
+			}
+		}
+	}
+
+	> .countdown {
+		@apply items-center px-6 py-4 gap-2;
+		@apply border border-t-0 border-solid border-gray-300;
+
+		background-image: repeating-linear-gradient(
+			135deg,
+			rgba(0, 0, 0, 0.01),
+			rgba(0, 0, 0, 0.01) 20px,
+			#0000 20px,
+			#0000 40px
+		);
+
+		> .title {
+			@apply display-md-sb text-center;
+		}
+
+		> .subtext {
+			@apply paragraph-sm text-center;
+		}
+	}
+
+	> .prompt {
+		@apply flex-nowrap gap-2 p-4;
+		@apply border border-t-0 border-solid border-gray-300;
+
+		> .cta {
+			@apply flex-[50%] h-10;
+		}
+	}
+}
