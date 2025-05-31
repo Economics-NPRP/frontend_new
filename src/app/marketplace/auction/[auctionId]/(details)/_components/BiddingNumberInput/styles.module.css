@@ -1,0 +1,40 @@
+.root {
+	@apply w-40;
+	@apply border-solid border border-gray-300;
+
+	> .wrapper {
+		@apply h-8;
+		@apply flex flex-row flex-nowrap;
+
+		.input {
+			@apply min-h-8 h-8 max-h-8 px-2;
+			@apply bg-transparent border-0 outline-0;
+			@apply numeric-sm-n text-center;
+		}
+
+		.section {
+			@apply relative;
+			@apply size-8;
+			@apply inset-0;
+
+			button {
+				@apply size-8;
+				@apply bg-dark-600 text-white;
+			}
+		}
+	}
+
+	&.dark {
+		@apply border-dark-400;
+
+		> .wrapper {
+			.input {
+				@apply numeric-sm-n-w;
+			}
+
+			.section button {
+				@apply bg-white text-dark-600;
+			}
+		}
+	}
+}

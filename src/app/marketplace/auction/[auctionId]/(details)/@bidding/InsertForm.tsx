@@ -1,26 +1,15 @@
 import { useFormatter } from 'next-intl';
-import { ComponentProps, useCallback, useContext, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { BidTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BidTable';
+import { BiddingNumberInput } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingNumberInput';
 import {
 	AuctionBiddingContext,
 	AuctionDetailsContext,
 } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
-import {
-	ActionIcon,
-	Alert,
-	Button,
-	Group,
-	List,
-	NumberInput,
-	NumberInputHandlers,
-	Stack,
-	Text,
-	Title,
-} from '@mantine/core';
+import { Alert, Button, Group, List, Stack, Text, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useInterval, useTimeout } from '@mantine/hooks';
 import {
 	IconArrowUpLeft,
 	IconCircleFilled,
@@ -28,8 +17,6 @@ import {
 	IconExclamationCircle,
 	IconLeaf,
 	IconLicense,
-	IconMinus,
-	IconPlus,
 } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
@@ -127,12 +114,13 @@ export const InsertForm = () => {
 							<IconLicense size={16} className={classes.icon} />
 							<Text className={classes.label}>Permits to Bid</Text>
 						</Group>
-						<BidNumberInput
+						<BiddingNumberInput
 							placeholder="0"
 							max={auctionData.permits - totalPermits}
 							name="permit"
 							key={form.key('permit')}
 							disabled={!auctionData.hasJoined}
+							dark
 							{...form.getInputProps('permit')}
 						/>
 					</Group>
@@ -148,13 +136,14 @@ export const InsertForm = () => {
 							<IconCoins size={16} className={classes.icon} />
 							<Text className={classes.label}>Price per Permit</Text>
 						</Group>
-						<BidNumberInput
+						<BiddingNumberInput
 							placeholder="0.00"
 							name="bid"
 							key={form.key('bid')}
 							disabled={!auctionData.hasJoined}
 							decimalScale={2}
 							fixedDecimalScale
+							dark
 							{...form.getInputProps('bid')}
 						/>
 					</Group>
@@ -171,7 +160,6 @@ export const InsertForm = () => {
 					</Group>
 					<Button
 						className={classes.button}
-						variant="outline"
 						type="submit"
 						disabled={!auctionData.hasJoined}
 						leftSection={<IconArrowUpLeft size={16} />}
@@ -185,70 +173,5 @@ export const InsertForm = () => {
 				</Stack>
 			</form>
 		</Stack>
-	);
-};
-
-const BidNumberInput = (props: ComponentProps<typeof NumberInput>) => {
-	const ref = useRef<NumberInputHandlers>(null);
-
-	const incrementInterval = useInterval(() => ref.current?.increment(), 50);
-	const decrementInterval = useInterval(() => ref.current?.decrement(), 50);
-
-	const handleHoldIncrement = useTimeout(() => incrementInterval.start(), 500);
-	const handleHoldDecrement = useTimeout(() => decrementInterval.start(), 500);
-
-	const handleStartIncrement = useCallback(() => {
-		ref.current?.increment();
-		handleHoldIncrement.start();
-	}, [handleHoldIncrement]);
-	const handleStartDecrement = useCallback(() => {
-		ref.current?.decrement();
-		handleHoldDecrement.start();
-	}, [handleHoldDecrement]);
-
-	const handleCancelIncrement = useCallback(() => {
-		incrementInterval.stop();
-		handleHoldIncrement.clear();
-	}, [incrementInterval, handleHoldIncrement]);
-	const handleCancelDecrement = useCallback(() => {
-		decrementInterval.stop();
-		handleHoldDecrement.clear();
-	}, [decrementInterval, handleHoldDecrement]);
-
-	return (
-		<NumberInput
-			classNames={{
-				root: classes.numberInput,
-				wrapper: classes.wrapper,
-				input: classes.input,
-				section: classes.section,
-				error: 'hidden',
-			}}
-			min={1}
-			thousandSeparator=" "
-			thousandsGroupStyle="thousand"
-			leftSection={
-				<ActionIcon
-					onMouseDown={handleStartDecrement}
-					onMouseUp={handleCancelDecrement}
-					onMouseLeave={handleCancelDecrement}
-					disabled={props.disabled}
-				>
-					<IconMinus size={16} />
-				</ActionIcon>
-			}
-			rightSection={
-				<ActionIcon
-					onMouseDown={handleStartIncrement}
-					onMouseUp={handleCancelIncrement}
-					onMouseLeave={handleCancelIncrement}
-					disabled={props.disabled}
-				>
-					<IconPlus size={16} />
-				</ActionIcon>
-			}
-			handlersRef={ref}
-			{...props}
-		/>
 	);
 };

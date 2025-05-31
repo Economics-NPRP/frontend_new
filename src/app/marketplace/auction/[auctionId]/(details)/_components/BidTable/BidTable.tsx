@@ -62,10 +62,7 @@ export const BidTable = ({ readOnly = false, className }: BidTableProps) => {
 						render: (record) => (
 							<Text>
 								{format.number(record.permit)} (
-								{format.number(
-									Math.round((record.permit / totalPermits) * 100),
-									'money',
-								)}
+								{format.number((record.permit / totalPermits) * 100, 'money')}
 								%)
 							</Text>
 						),
@@ -95,10 +92,7 @@ export const BidTable = ({ readOnly = false, className }: BidTableProps) => {
 								<CurrencyBadge />
 								<Text>
 									{format.number(record.subtotal, 'money')} (
-									{format.number(
-										Math.round((record.subtotal / grandTotal) * 100),
-										'money',
-									)}
+									{format.number((record.subtotal / grandTotal) * 100, 'money')}
 									%)
 								</Text>
 							</Group>
