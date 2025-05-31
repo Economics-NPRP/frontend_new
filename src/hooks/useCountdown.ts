@@ -8,7 +8,7 @@ import {
 } from '@/components/Countdown/constants';
 import { useInViewport, useInterval } from '@mantine/hooks';
 
-export const calculateInterval = (targetDate: DateTime, units?: CountdownUnitsArray) => {
+export const calculateCountdownInterval = (targetDate: DateTime, units?: CountdownUnitsArray) => {
 	const interval = Interval.fromDateTimes(DateTime.now(), targetDate);
 	if (!interval.isValid) return { valid: false, value: undefined, units: undefined };
 
@@ -109,7 +109,7 @@ export const useCountdown = ({ targetDate, units, displayOnly }: UseCountdownPro
 
 	//	Main countdown logic
 	const handleInterval = () => {
-		const interval = calculateInterval(targetDate, units);
+		const interval = calculateCountdownInterval(targetDate, units);
 
 		if (!interval.valid || displayOnly) {
 			setDisplayUnits(['empty', 'empty', 'empty'] as never);

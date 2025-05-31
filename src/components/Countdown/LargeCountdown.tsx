@@ -4,8 +4,8 @@ import { useTranslations } from 'next-intl';
 
 import { Digit } from '@/components/Countdown/Digit';
 import { CountdownProps } from '@/components/Countdown/constants';
-import { useCountdown } from '@/components/Countdown/helpers';
 import classes from '@/components/Countdown/styles.module.css';
+import { useCountdown } from '@/hooks';
 import { Group, Stack, Text } from '@mantine/core';
 import { IconPointFilled } from '@tabler/icons-react';
 

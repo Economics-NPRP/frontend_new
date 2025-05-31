@@ -5,8 +5,8 @@ import { useFormatter, useLocale, useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 
 import { CountdownProps, CountdownUnitsArray } from '@/components/Countdown/constants';
-import { calculateInterval } from '@/components/Countdown/helpers';
 import classes from '@/components/Countdown/styles.module.css';
+import { calculateCountdownInterval } from '@/hooks';
 import { Group, Text } from '@mantine/core';
 import { useInViewport, useInterval } from '@mantine/hooks';
 
@@ -54,7 +54,7 @@ export const SmallCountdown = ({
 
 	//	Main countdown logic
 	const handleInterval = () => {
-		const interval = calculateInterval(targetDate, units);
+		const interval = calculateCountdownInterval(targetDate, units);
 
 		if (!interval.valid || displayOnly) {
 			setValue();
