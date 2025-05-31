@@ -11,20 +11,20 @@ import { ActionIcon, Button, Group, TableProps, Text } from '@mantine/core';
 import { IconPencil, IconX } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
-import { BidTableData } from './types';
+import { BiddingTableData } from './types';
 
-export interface BidTableProps extends TableProps {
+export interface BiddingTableProps extends TableProps {
 	readOnly?: boolean;
 	displaySelectedOnly?: boolean;
 	displayDeletingOnly?: boolean;
 }
-export const BidTable = ({
+export const BiddingTable = ({
 	readOnly = false,
 	displaySelectedOnly = false,
 	displayDeletingOnly = false,
 	className,
 	...props
-}: BidTableProps) => {
+}: BiddingTableProps) => {
 	const format = useFormatter();
 	const {
 		bids,
@@ -41,7 +41,7 @@ export const BidTable = ({
 		setSortStatus,
 	} = useContext(AuctionDetailsPageContext);
 
-	const bidsData = useMemo<Array<BidTableData>>(() => {
+	const bidsData = useMemo<Array<BiddingTableData>>(() => {
 		let sortedData = [];
 		if (displaySelectedOnly) sortedData = sortBy(selectedBids, sortStatus.columnAccessor);
 		else if (displayDeletingOnly) sortedData = sortBy(deletingBids, sortStatus.columnAccessor);
@@ -50,7 +50,7 @@ export const BidTable = ({
 	}, [bids, sortStatus, selectedBids, deletingBids, displaySelectedOnly, displayDeletingOnly]);
 
 	const onDeleteHandler = useCallback(
-		(bids: Array<BidTableData>) => {
+		(bids: Array<BiddingTableData>) => {
 			deletingBidsHandlers.setState(bids);
 			deleteModalActions.open();
 		},

@@ -3,7 +3,7 @@
 import { DataTableSortStatus } from 'mantine-datatable';
 import { createContext } from 'react';
 
-import { BidTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BidTable';
+import { BidTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import { UseListStateHandlers } from '@mantine/hooks';
 
 //	@ts-expect-error - cannot make default context for list handlers

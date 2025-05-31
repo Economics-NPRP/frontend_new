@@ -3,8 +3,8 @@ import { useFormatter } from 'next-intl';
 import { useCallback, useContext, useMemo, useState } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
-import { BidTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BidTable';
 import { BiddingNumberInput } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingNumberInput';
+import { BiddingTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Alert, Button, Group, List, Stack, Text, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
@@ -27,7 +27,7 @@ export const InsertForm = () => {
 	const [subtotal, setSubtotal] = useState(0);
 	const [emissions, setEmissions] = useState(0);
 
-	const form = useForm<BidTableData>({
+	const form = useForm<BiddingTableData>({
 		mode: 'uncontrolled',
 		onValuesChange: ({ bid, permit }) => {
 			setSubtotal(Number(bid || 0) * Number(permit || 0));
@@ -67,7 +67,7 @@ export const InsertForm = () => {
 	);
 
 	const onSubmitHandler = useCallback(
-		(values: BidTableData) => {
+		(values: BiddingTableData) => {
 			if (!auction.data.hasJoined) return;
 			bidsHandlers.append(values);
 			form.reset();

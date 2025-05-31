@@ -7,7 +7,7 @@ import { useCallback, useContext } from 'react';
 import { CurrencyBadge } from '@/components/Badge';
 import { throwError } from '@/helpers';
 import { placeBid } from '@/lib/bids/open';
-import { BidTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BidTable';
+import { BiddingTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import {
 	Button,
@@ -105,7 +105,7 @@ export default function BidConfirmationModal() {
 						You are about to place the following bids, review your bids before placing
 						them. Once placed, you cannot edit or delete the bids.
 					</Text>
-					<BidTable className={classes.table} readOnly />
+					<BiddingTable className={classes.table} readOnly />
 					<Divider label="GRAND TOTAL" className={classes.divider} />
 					<Group className={classes.summary}>
 						<Stack className={classes.cell}>

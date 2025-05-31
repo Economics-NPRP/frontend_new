@@ -1,4 +1,4 @@
-export interface BidTableData {
+export interface BiddingTableData {
 	bid: number;
 	emissions: number;
 	permit: number;

@@ -3,7 +3,7 @@
 import { DataTableSortStatus } from 'mantine-datatable';
 import { useCallback, useMemo, useState } from 'react';
 
-import { BidTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BidTable';
+import { BidTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import {
 	AuctionDetailsPageContext,
 	DefaultAuctionDetailsPageContextData,

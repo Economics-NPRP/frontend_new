@@ -72,7 +72,7 @@ const Providers = ({ children }: PropsWithChildren) => (
 		<MyOpenAuctionResultsProvider>
 			<PaginatedWinningBidsProvider>
 				<MyPaginatedWinningBidsProvider>
-					<PaginatedBidsProvider defaultPerPage={1}>
+					<PaginatedBidsProvider>
 						<PageProviders>{children}</PageProviders>
 					</PaginatedBidsProvider>
 				</MyPaginatedWinningBidsProvider>

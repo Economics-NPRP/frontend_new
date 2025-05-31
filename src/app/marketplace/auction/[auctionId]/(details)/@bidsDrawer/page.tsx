@@ -1,6 +1,7 @@
 'use client';
 
 import { MyPaginatedWinningBidsContext } from 'contexts/MyPaginatedWinningBids';
+import { PaginatedBidsContext } from 'contexts/PaginatedBids';
 import { PaginatedWinningBidsContext } from 'contexts/PaginatedWinningBids';
 import { useContext } from 'react';
 
@@ -11,6 +12,7 @@ import { Drawer, Group, Tabs, TabsList, TabsPanel, TabsTab, Text, Title } from '
 import classes from './styles.module.css';
 
 export default function Bids() {
+	const paginatedBids = useContext(PaginatedBidsContext);
 	const winningBids = useContext(PaginatedWinningBidsContext);
 	const myWinningBids = useContext(MyPaginatedWinningBidsContext);
 	const { isBidsDrawerOpen, closeBidsDrawer } = useContext(AuctionDetailsPageContext);
@@ -28,7 +30,9 @@ export default function Bids() {
 						Bids Table
 					</Title>
 					<Text className={classes.subtitle}>
-						<b></b>
+						Showing {paginatedBids.perPage}{' '}
+						{paginatedBids.data.isExact ? 'of' : 'of about'}{' '}
+						{paginatedBids.data.totalCount} bids
 					</Text>
 				</Group>
 			</Group>

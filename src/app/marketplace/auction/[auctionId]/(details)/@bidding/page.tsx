@@ -7,7 +7,7 @@ import { useContext, useMemo } from 'react';
 import { CurrencyBadge } from '@/components/Badge';
 import { MediumCountdown } from '@/components/Countdown';
 import { generateTrendData } from '@/helpers';
-import { BidTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BidTable';
+import { BiddingTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Sparkline } from '@mantine/charts';
 import { Button, Divider, Group, Slider, Stack, Text, Title } from '@mantine/core';
@@ -66,7 +66,7 @@ export default function Prompt() {
 							targetDate={auction.data.endDatetime}
 						/>
 					</Group>
-					<BidTable />
+					<BiddingTable />
 				</Stack>
 				<Stack className={classes.sidebar}>
 					<Group className={classes.minBid}>

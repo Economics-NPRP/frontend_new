@@ -5,8 +5,8 @@ import { useFormatter } from 'next-intl';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
-import { BidTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BidTable';
 import { BiddingNumberInput } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingNumberInput';
+import { BidTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import {
 	AuctionDetailsPageContext,
 	DefaultAuctionDetailsPageContextData,

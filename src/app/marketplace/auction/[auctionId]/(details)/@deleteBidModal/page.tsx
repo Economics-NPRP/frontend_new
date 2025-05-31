@@ -2,7 +2,7 @@
 
 import { useCallback, useContext } from 'react';
 
-import { BidTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BidTable';
+import { BidTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import {
 	AuctionDetailsPageContext,
 	DefaultAuctionDetailsPageContextData,
