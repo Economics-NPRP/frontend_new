@@ -115,7 +115,10 @@ export default function EditModal() {
 					<Group className={classes.section}>
 						<Group className={classes.key}>
 							<IconLicense size={16} className={classes.icon} />
-							<Text className={classes.label}>Permits to Bid</Text>
+							<Text className={classes.label}>
+								Permits to Bid{' '}
+								<b>(Originally {format.number(oldBid?.permit || 0)})</b>
+							</Text>
 						</Group>
 						<BiddingNumberInput
 							placeholder="0"
@@ -129,14 +132,20 @@ export default function EditModal() {
 					<Group className={classes.section}>
 						<Group className={classes.key}>
 							<IconLeaf size={16} className={classes.icon} />
-							<Text className={classes.label}>Total Emissions</Text>
+							<Text className={classes.label}>
+								Total Emissions{' '}
+								<b>(Originally {format.number(oldBid?.emissions || 0)} tCO2e)</b>
+							</Text>
 						</Group>
 						<Text className={classes.value}>{format.number(emissions)} tCO2e</Text>
 					</Group>
 					<Group className={classes.section}>
 						<Group className={classes.key}>
 							<IconCoins size={16} className={classes.icon} />
-							<Text className={classes.label}>Price per Permit</Text>
+							<Text className={classes.label}>
+								Price per Permit{' '}
+								<b>(Originally {format.number(oldBid?.bid || 0, 'money')})</b>
+							</Text>
 						</Group>
 						<BiddingNumberInput
 							placeholder="0.00"

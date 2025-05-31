@@ -1,6 +1,6 @@
 .root {
 	> .inner > .content {
-		@apply min-w-[640px];
+		@apply min-w-[720px];
 		@apply px-16 pt-12 pb-8;
 		@apply justify-center items-center;
 
