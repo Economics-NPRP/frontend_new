@@ -13,7 +13,7 @@ import {
 } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Button, Group, Modal, Stack, Text, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconArrowUpLeft, IconCoins, IconLeaf, IconLicense } from '@tabler/icons-react';
+import { IconCoins, IconLeaf, IconLicense } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 

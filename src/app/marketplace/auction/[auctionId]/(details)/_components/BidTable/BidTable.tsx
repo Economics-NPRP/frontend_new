@@ -15,8 +15,15 @@ import { BidTableData } from './types';
 
 export interface BidTableProps extends TableProps {
 	readOnly?: boolean;
+	displaySelectedOnly?: boolean;
+	displayDeletingOnly?: boolean;
 }
-export const BidTable = ({ readOnly = false, className }: BidTableProps) => {
+export const BidTable = ({
+	readOnly = false,
+	displaySelectedOnly = false,
+	displayDeletingOnly = false,
+	className,
+}: BidTableProps) => {
 	const format = useFormatter();
 	const {
 		bids,
@@ -24,6 +31,7 @@ export const BidTable = ({ readOnly = false, className }: BidTableProps) => {
 		grandTotal,
 		selectedBids,
 		selectedBidsHandlers,
+		deletingBids,
 		deletingBidsHandlers,
 		deleteModalActions,
 		setEditingBid,
@@ -33,13 +41,16 @@ export const BidTable = ({ readOnly = false, className }: BidTableProps) => {
 	} = useContext(AuctionBiddingContext);
 
 	const bidsData = useMemo<Array<BidTableData>>(() => {
-		const sortedData = sortBy(bids, sortStatus.columnAccessor);
+		let sortedData = [];
+		if (displaySelectedOnly) sortedData = sortBy(selectedBids, sortStatus.columnAccessor);
+		else if (displayDeletingOnly) sortedData = sortBy(deletingBids, sortStatus.columnAccessor);
+		else sortedData = sortBy(bids, sortStatus.columnAccessor);
 		return sortStatus.direction === 'asc' ? sortedData : sortedData.reverse();
-	}, [bids, sortStatus]);
+	}, [bids, sortStatus, selectedBids, deletingBids, displaySelectedOnly, displayDeletingOnly]);
 
 	const onDeleteHandler = useCallback(
-		(bidIds: Array<number>) => {
-			deletingBidsHandlers.setState(bidIds);
+		(bids: Array<BidTableData>) => {
+			deletingBidsHandlers.setState(bids);
 			deleteModalActions.open();
 		},
 		[selectedBidsHandlers, deletingBidsHandlers],
@@ -103,19 +114,19 @@ export const BidTable = ({ readOnly = false, className }: BidTableProps) => {
 						hidden: readOnly,
 						cellsClassName: classes.actions,
 						width: 81,
-						render: ({ bid }) => (
+						render: (bidItem) => (
 							<Group className={classes.cell}>
 								<ActionIcon
 									className={classes.button}
 									variant="filled"
-									onClick={() => onEditHandler(bid)}
+									onClick={() => onEditHandler(bidItem.bid)}
 								>
 									<IconPencil size={16} />
 								</ActionIcon>
 								<ActionIcon
 									className={`${classes.delete} ${classes.button}`}
 									variant="filled"
-									onClick={() => onDeleteHandler([bid])}
+									onClick={() => onDeleteHandler([bidItem])}
 								>
 									<IconX size={16} />
 								</ActionIcon>
@@ -139,7 +150,7 @@ export const BidTable = ({ readOnly = false, className }: BidTableProps) => {
 				<Button
 					color="red"
 					disabled={selectedBids.length === 0}
-					onClick={() => onDeleteHandler(selectedBids.map(({ bid }) => bid))}
+					onClick={() => onDeleteHandler(selectedBids)}
 				>
 					Delete {selectedBids.length} Bid Items
 				</Button>

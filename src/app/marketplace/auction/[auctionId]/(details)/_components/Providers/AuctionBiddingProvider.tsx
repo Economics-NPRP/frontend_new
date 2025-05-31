@@ -23,7 +23,7 @@ export const AuctionBiddingProvider = ({ children }: { children: React.ReactNode
 		DEFAULT_AUCTION_BIDDING_CONTEXT.selectedBids,
 	);
 
-	const [deletingBids, deletingBidsHandlers] = useListState<number>(
+	const [deletingBids, deletingBidsHandlers] = useListState<BidTableData>(
 		DEFAULT_AUCTION_BIDDING_CONTEXT.deletingBids,
 	);
 	const [deleteModalOpened, deleteModalActions] = useDisclosure(false, {

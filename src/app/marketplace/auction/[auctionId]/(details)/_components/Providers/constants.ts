@@ -150,8 +150,8 @@ export interface IAuctionBiddingContext {
 	selectedBids: BidTableData[];
 	selectedBidsHandlers: UseListStateHandlers<BidTableData>;
 
-	deletingBids: number[];
-	deletingBidsHandlers: UseListStateHandlers<number>;
+	deletingBids: BidTableData[];
+	deletingBidsHandlers: UseListStateHandlers<BidTableData>;
 	deleteModalOpened: boolean;
 	deleteModalActions: { open: () => void; close: () => void };
 
