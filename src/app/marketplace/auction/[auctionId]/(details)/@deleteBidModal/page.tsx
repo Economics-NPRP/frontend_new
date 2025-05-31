@@ -52,7 +52,7 @@ export default function DeleteModal() {
 			<Text className={classes.description}>
 				Are you sure you want to delete the following bids? This action cannot be undone.
 			</Text>
-			<BidTable readOnly displayDeletingOnly />
+			<BidTable className={classes.table} readOnly displayDeletingOnly />
 			<Group className={classes.actions}>
 				<Button
 					className={classes.button}

@@ -23,6 +23,7 @@ export const BidTable = ({
 	displaySelectedOnly = false,
 	displayDeletingOnly = false,
 	className,
+	...props
 }: BidTableProps) => {
 	const format = useFormatter();
 	const {
@@ -63,6 +64,7 @@ export const BidTable = ({
 
 	return (
 		<>
+			{/* @ts-expect-error - data table props from library are not exposed */}
 			<DataTable
 				className={`${classes.root} ${className}`}
 				columns={[
@@ -145,6 +147,7 @@ export const BidTable = ({
 				onSelectedRecordsChange={!readOnly ? selectedBidsHandlers.setState : undefined}
 				idAccessor="bid"
 				selectionTrigger="cell"
+				{...props}
 			/>
 			{!readOnly && (
 				<Button

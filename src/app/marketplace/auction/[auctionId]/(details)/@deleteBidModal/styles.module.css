@@ -16,6 +16,10 @@
 				@apply text-center paragraph-sm;
 			}
 
+			> .table {
+				@apply min-h-[160px];
+			}
+
 			> .actions {
 				@apply mt-4 gap-2 justify-center flex-nowrap;
 
