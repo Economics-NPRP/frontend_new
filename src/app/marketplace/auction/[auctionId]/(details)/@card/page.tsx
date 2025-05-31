@@ -7,7 +7,7 @@ import { useContext } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { LargeCountdown } from '@/components/Countdown';
-import { AuctionDetailsContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
+import { SingleAuctionContext } from '@/contexts';
 import { Button, Container, Group, Stack, Text } from '@mantine/core';
 import { IconGavel, IconShoppingBag } from '@tabler/icons-react';
 
@@ -16,14 +16,14 @@ import classes from './styles.module.css';
 export default function Card() {
 	const t = useTranslations();
 	const format = useFormatter();
-	const { auctionData } = useContext(AuctionDetailsContext);
+	const auction = useContext(SingleAuctionContext);
 
 	return (
 		<Stack className={classes.root}>
 			<Container className={classes.container}>
 				<Container className={classes.image}>
 					<Image
-						src={auctionData.image || '/imgs/industry/flare.jpg'}
+						src={auction.data.image || '/imgs/industry/flare.jpg'}
 						alt={'Image of a power plant'}
 						fill
 					/>
@@ -35,7 +35,7 @@ export default function Card() {
 					<Group className={classes.price}>
 						<CurrencyBadge className={classes.badge} />
 						<Text className={classes.value}>
-							{format.number(auctionData.minBid + 100, 'money')}
+							{format.number(auction.data.minBid + 100, 'money')}
 						</Text>
 					</Group>
 				</Stack>
@@ -44,7 +44,7 @@ export default function Card() {
 					<Group className={classes.price}>
 						<CurrencyBadge className={classes.badge} />
 						<Text className={classes.value}>
-							{format.number(auctionData.minBid, 'money')}
+							{format.number(auction.data.minBid, 'money')}
 						</Text>
 					</Group>
 				</Stack>
@@ -58,9 +58,9 @@ export default function Card() {
 			</Group>
 			<Stack className={classes.countdown}>
 				<Text className={classes.title}>Ending In</Text>
-				<LargeCountdown targetDate={auctionData.endDatetime} />
+				<LargeCountdown targetDate={auction.data.endDatetime} />
 				<Text className={classes.subtext}>
-					{DateTime.fromISO(auctionData.endDatetime).toLocaleString(
+					{DateTime.fromISO(auction.data.endDatetime).toLocaleString(
 						DateTime.DATETIME_FULL,
 					)}
 				</Text>

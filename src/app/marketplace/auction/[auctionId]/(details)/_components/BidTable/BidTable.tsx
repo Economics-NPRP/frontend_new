@@ -6,7 +6,7 @@ import { useFormatter } from 'next-intl';
 import { useCallback, useContext, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
-import { AuctionBiddingContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
+import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { ActionIcon, Button, Group, TableProps, Text } from '@mantine/core';
 import { IconPencil, IconX } from '@tabler/icons-react';
 
@@ -39,7 +39,7 @@ export const BidTable = ({
 		editModalActions,
 		sortStatus,
 		setSortStatus,
-	} = useContext(AuctionBiddingContext);
+	} = useContext(AuctionDetailsPageContext);
 
 	const bidsData = useMemo<Array<BidTableData>>(() => {
 		let sortedData = [];

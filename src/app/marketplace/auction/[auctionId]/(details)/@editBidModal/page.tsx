@@ -1,5 +1,6 @@
 'use client';
 
+import { SingleAuctionContext } from 'contexts/SingleAuction';
 import { useFormatter } from 'next-intl';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
@@ -7,9 +8,8 @@ import { CurrencyBadge } from '@/components/Badge';
 import { BidTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BidTable';
 import { BiddingNumberInput } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingNumberInput';
 import {
-	AuctionBiddingContext,
-	AuctionDetailsContext,
-	DEFAULT_AUCTION_BIDDING_CONTEXT,
+	AuctionDetailsPageContext,
+	DefaultAuctionDetailsPageContextData,
 } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Button, Group, Modal, Stack, Text, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
@@ -20,7 +20,7 @@ import classes from './styles.module.css';
 export default function EditModal() {
 	const format = useFormatter();
 
-	const { auctionData } = useContext(AuctionDetailsContext);
+	const auction = useContext(SingleAuctionContext);
 	const {
 		bids,
 		bidsHandlers,
@@ -29,7 +29,7 @@ export default function EditModal() {
 		editModalOpened,
 		editModalActions,
 		totalPermits,
-	} = useContext(AuctionBiddingContext);
+	} = useContext(AuctionDetailsPageContext);
 
 	const [subtotal, setSubtotal] = useState(0);
 	const [emissions, setEmissions] = useState(0);
@@ -47,9 +47,9 @@ export default function EditModal() {
 				const oldPermitValue = oldBid?.permit || 0;
 				if (!value) return 'Permit is required';
 				if (value < 1) return 'You must bid at least 1 permit';
-				if (value > auctionData.permits) return 'You cannot bid more than permits offered';
-				if (value - oldPermitValue > auctionData.permits - totalPermits)
-					return `You cannot bid more than available permits. Please make sure to bid for less than or equal to ${auctionData.permits - totalPermits} permits`;
+				if (value > auction.data.permits) return 'You cannot bid more than permits offered';
+				if (value - oldPermitValue > auction.data.permits - totalPermits)
+					return `You cannot bid more than available permits. Please make sure to bid for less than or equal to ${auction.data.permits - totalPermits} permits`;
 				return false;
 			},
 			bid: (value) => {
@@ -83,7 +83,7 @@ export default function EditModal() {
 				(bid) => bid.bid === editingBid,
 				() => values,
 			);
-			setEditingBid(DEFAULT_AUCTION_BIDDING_CONTEXT.editingBid);
+			setEditingBid(DefaultAuctionDetailsPageContextData.editingBid);
 			editModalActions.close();
 			form.reset();
 		},
@@ -122,10 +122,10 @@ export default function EditModal() {
 						</Group>
 						<BiddingNumberInput
 							placeholder="0"
-							max={auctionData.permits - totalPermits + (oldBid?.permit || 0)}
+							max={auction.data.permits - totalPermits + (oldBid?.permit || 0)}
 							name="permit"
 							key={form.key('permit')}
-							disabled={!auctionData.hasJoined}
+							disabled={!auction.data.hasJoined}
 							{...form.getInputProps('permit')}
 						/>
 					</Group>
@@ -151,7 +151,7 @@ export default function EditModal() {
 							placeholder="0.00"
 							name="bid"
 							key={form.key('bid')}
-							disabled={!auctionData.hasJoined}
+							disabled={!auction.data.hasJoined}
 							decimalScale={2}
 							fixedDecimalScale
 							{...form.getInputProps('bid')}

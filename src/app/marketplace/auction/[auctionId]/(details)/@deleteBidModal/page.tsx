@@ -4,8 +4,8 @@ import { useCallback, useContext } from 'react';
 
 import { BidTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BidTable';
 import {
-	AuctionBiddingContext,
-	DEFAULT_AUCTION_BIDDING_CONTEXT,
+	AuctionDetailsPageContext,
+	DefaultAuctionDetailsPageContextData,
 } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Button, Group, Modal, Text, Title } from '@mantine/core';
 
@@ -19,7 +19,7 @@ export default function DeleteModal() {
 		deletingBidsHandlers,
 		deleteModalOpened,
 		deleteModalActions,
-	} = useContext(AuctionBiddingContext);
+	} = useContext(AuctionDetailsPageContext);
 
 	const onDeleteHandler = useCallback(() => {
 		//	Remove the selected bids from the bids list
@@ -29,7 +29,7 @@ export default function DeleteModal() {
 		selectedBidsHandlers.filter(({ bid }) => !deletingBids.map(({ bid }) => bid).includes(bid));
 
 		//	Reset the deletingBids list
-		deletingBidsHandlers.setState(DEFAULT_AUCTION_BIDDING_CONTEXT.deletingBids);
+		deletingBidsHandlers.setState(DefaultAuctionDetailsPageContextData.deletingBids);
 		deleteModalActions.close();
 	}, [selectedBidsHandlers, bidsHandlers]);
 

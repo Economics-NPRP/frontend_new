@@ -8,7 +8,7 @@ import { CurrencyBadge } from '@/components/Badge';
 import { throwError } from '@/helpers';
 import { placeBid } from '@/lib/bids/open';
 import { BidTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BidTable';
-import { AuctionBiddingContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
+import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import {
 	Button,
 	Container,
@@ -38,7 +38,7 @@ export default function BidConfirmationModal() {
 		totalPermits,
 		grandTotal,
 		resetState,
-	} = useContext(AuctionBiddingContext);
+	} = useContext(AuctionDetailsPageContext);
 
 	const mutation = useMutation({
 		mutationFn: () =>

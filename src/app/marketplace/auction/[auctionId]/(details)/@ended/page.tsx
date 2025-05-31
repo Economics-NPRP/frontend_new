@@ -1,9 +1,9 @@
 'use client';
 
+import { SingleAuctionContext } from 'contexts/SingleAuction';
 import { useParams } from 'next/navigation';
 import { useContext, useMemo } from 'react';
 
-import { AuctionDetailsContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Button, Group, Modal, Stack, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconArrowUpRight } from '@tabler/icons-react';
@@ -12,20 +12,20 @@ import classes from './styles.module.css';
 
 export default function EndedOverlay() {
 	const { auctionId } = useParams();
-	const { auctionData, isAuctionDataSuccess } = useContext(AuctionDetailsContext);
+	const auction = useContext(SingleAuctionContext);
 
 	const [isReadOnlyMode, { open: viewInReadOnlyMode }] = useDisclosure(false);
 
 	//	TODO: also check every second if the auction is still active
 	const hasEnded = useMemo(
-		() => new Date(auctionData.endDatetime).getTime() < Date.now(),
-		[auctionData.endDatetime],
+		() => new Date(auction.data.endDatetime).getTime() < Date.now(),
+		[auction.data.endDatetime],
 	);
 
 	return (
 		<>
 			<Modal
-				opened={isAuctionDataSuccess && hasEnded && !isReadOnlyMode}
+				opened={auction.isSuccess && hasEnded && !isReadOnlyMode}
 				onClose={viewInReadOnlyMode}
 				closeOnEscape={false}
 				closeOnClickOutside={false}

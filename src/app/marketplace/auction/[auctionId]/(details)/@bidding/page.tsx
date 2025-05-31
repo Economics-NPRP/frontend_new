@@ -1,5 +1,6 @@
 'use client';
 
+import { SingleAuctionContext } from 'contexts/SingleAuction';
 import { useFormatter } from 'next-intl';
 import { useContext, useMemo } from 'react';
 
@@ -7,13 +8,10 @@ import { CurrencyBadge } from '@/components/Badge';
 import { MediumCountdown } from '@/components/Countdown';
 import { generateTrendData } from '@/helpers';
 import { BidTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BidTable';
-import {
-	AuctionBiddingContext,
-	AuctionDetailsContext,
-} from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
+import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Sparkline } from '@mantine/charts';
 import { Button, Divider, Group, Slider, Stack, Text, Title } from '@mantine/core';
-import { IconGavel, IconTrophy } from '@tabler/icons-react';
+import { IconGavel } from '@tabler/icons-react';
 
 import { EndedOverlay } from './EndedOverlay';
 import { InsertForm } from './InsertForm';
@@ -22,17 +20,17 @@ import classes from './styles.module.css';
 
 export default function Prompt() {
 	const format = useFormatter();
-	const { auctionData } = useContext(AuctionDetailsContext);
-	const { bids, totalPermits, grandTotal, bidConfirmationModalActions } =
-		useContext(AuctionBiddingContext);
+	const auction = useContext(SingleAuctionContext);
+	const { openBidsDrawer, bids, totalPermits, grandTotal, bidConfirmationModalActions } =
+		useContext(AuctionDetailsPageContext);
 
 	//	TODO: also check every second if the auction is still active
 	const hasEnded = useMemo(
-		() => new Date(auctionData.endDatetime).getTime() < Date.now(),
-		[auctionData.endDatetime],
+		() => new Date(auction.data.endDatetime).getTime() < Date.now(),
+		[auction.data.endDatetime],
 	);
 
-	const readOnly = useMemo(() => !auctionData.hasJoined || hasEnded, [auctionData, hasEnded]);
+	const readOnly = useMemo(() => !auction.data.hasJoined || hasEnded, [auction.data, hasEnded]);
 
 	const data = useMemo(
 		() =>
@@ -49,7 +47,7 @@ export default function Prompt() {
 
 	return (
 		<Stack className={classes.root}>
-			{!auctionData.hasJoined && !hasEnded && <JoinOverlay />}
+			{!auction.data.hasJoined && !hasEnded && <JoinOverlay />}
 			{hasEnded && <EndedOverlay />}
 			<Group className={classes.body}>
 				<Stack className={classes.content}>
@@ -65,7 +63,7 @@ export default function Prompt() {
 						</Stack>
 						<MediumCountdown
 							className={classes.countdown}
-							targetDate={auctionData.endDatetime}
+							targetDate={auction.data.endDatetime}
 						/>
 					</Group>
 					<BidTable />
@@ -109,16 +107,10 @@ export default function Prompt() {
 						<Button
 							className={classes.button}
 							variant="outline"
-							rightSection={<IconTrophy size={16} />}
-						>
-							View Winning Bids
-						</Button>
-						<Button
-							className={classes.button}
-							variant="outline"
 							rightSection={<IconGavel size={16} />}
+							onClick={openBidsDrawer}
 						>
-							View Your Bids
+							View Bids
 						</Button>
 					</Group>
 					<InsertForm />
@@ -136,17 +128,19 @@ export default function Prompt() {
 							thumb: classes.thumb,
 						}}
 						marks={[
-							{ value: 25, label: Math.round(0.25 * auctionData.permits) },
-							{ value: 50, label: Math.round(0.5 * auctionData.permits) },
-							{ value: 75, label: Math.round(0.75 * auctionData.permits) },
+							{ value: 25, label: Math.round(0.25 * auction.data.permits) },
+							{ value: 50, label: Math.round(0.5 * auction.data.permits) },
+							{ value: 75, label: Math.round(0.75 * auction.data.permits) },
 						]}
 						value={
-							auctionData.permits > 0 ? (totalPermits / auctionData.permits) * 100 : 0
+							auction.data.permits > 0
+								? (totalPermits / auction.data.permits) * 100
+								: 0
 						}
 					/>
 					<Group className={classes.cell}>
 						<Text className={classes.value}>
-							{format.number(auctionData.permits - totalPermits)}
+							{format.number(auction.data.permits - totalPermits)}
 						</Text>
 						<Text className={classes.unit}>Permits Left</Text>
 					</Group>

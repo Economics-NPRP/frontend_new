@@ -1,42 +1,64 @@
 'use client';
 
+import { MyPaginatedWinningBidsContext } from 'contexts/MyPaginatedWinningBids';
+import { PaginatedWinningBidsContext } from 'contexts/PaginatedWinningBids';
 import { useContext } from 'react';
 
 import { BidsTable } from '@/components/BidsTable';
-import { AuctionBidsContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
-import { Tabs, TabsList, TabsPanel, TabsTab } from '@mantine/core';
+import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
+import { Drawer, Group, Tabs, TabsList, TabsPanel, TabsTab, Text, Title } from '@mantine/core';
+
+import classes from './styles.module.css';
 
 export default function Bids() {
-	const { winningPage, setWinningPage, minePage, setMinePage, winningBids, myBids } =
-		useContext(AuctionBidsContext);
+	const winningBids = useContext(PaginatedWinningBidsContext);
+	const myWinningBids = useContext(MyPaginatedWinningBidsContext);
+	const { isBidsDrawerOpen, closeBidsDrawer } = useContext(AuctionDetailsPageContext);
 
 	return (
-		<Tabs defaultValue={'winning'}>
-			<TabsList>
-				<TabsTab value="winning">Current Winning Bids</TabsTab>
-				<TabsTab value="mine">Your Submitted Bids</TabsTab>
-			</TabsList>
+		<Drawer
+			classNames={{ content: classes.root }}
+			opened={isBidsDrawerOpen}
+			onClose={closeBidsDrawer}
+			withCloseButton={false}
+		>
+			<Group className={classes.header}>
+				<Group className={classes.left}>
+					<Title order={2} className={classes.title}>
+						Bids Table
+					</Title>
+					<Text className={classes.subtitle}>
+						<b></b>
+					</Text>
+				</Group>
+			</Group>
+			<Tabs defaultValue={'winning'}>
+				<TabsList>
+					<TabsTab value="winning">Current Winning Bids</TabsTab>
+					<TabsTab value="mine">Your Submitted Bids</TabsTab>
+				</TabsList>
 
-			<TabsPanel value="winning">
-				<BidsTable
-					tableData={winningBids.results}
-					paginationType="offset"
-					page={winningPage}
-					pageCount={winningBids.pageCount}
-					setPage={setWinningPage}
-				/>
-			</TabsPanel>
+				<TabsPanel value="winning">
+					<BidsTable
+						tableData={winningBids.data.results}
+						paginationType="offset"
+						page={winningBids.page}
+						pageCount={winningBids.data.pageCount}
+						setPage={winningBids.setPage}
+					/>
+				</TabsPanel>
 
-			<TabsPanel value="mine">
-				<BidsTable
-					tableData={myBids.results}
-					winningBidIds={winningBids.results.map((bid) => bid.id)}
-					paginationType="offset"
-					page={minePage}
-					pageCount={myBids.pageCount}
-					setPage={setMinePage}
-				/>
-			</TabsPanel>
-		</Tabs>
+				<TabsPanel value="mine">
+					<BidsTable
+						tableData={myWinningBids.data.results}
+						winningBidIds={winningBids.data.results.map((bid) => bid.id)}
+						paginationType="offset"
+						page={myWinningBids.page}
+						pageCount={myWinningBids.data.pageCount}
+						setPage={myWinningBids.setPage}
+					/>
+				</TabsPanel>
+			</Tabs>
+		</Drawer>
 	);
 }

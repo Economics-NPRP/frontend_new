@@ -1,6 +1,13 @@
-import { ReactNode } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 
-import { Providers } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
+import {
+	MyOpenAuctionResultsProvider,
+	MyPaginatedWinningBidsProvider,
+	PaginatedBidsProvider,
+	PaginatedWinningBidsProvider,
+	SingleAuctionProvider,
+} from '@/contexts';
+import { PageProviders } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Button, Container, Group, Stack } from '@mantine/core';
 import { IconArrowUpLeft } from '@tabler/icons-react';
 
@@ -59,3 +66,17 @@ export default function AuctionPage({
 		</Providers>
 	);
 }
+
+const Providers = ({ children }: PropsWithChildren) => (
+	<SingleAuctionProvider>
+		<MyOpenAuctionResultsProvider>
+			<PaginatedWinningBidsProvider>
+				<MyPaginatedWinningBidsProvider>
+					<PaginatedBidsProvider defaultPerPage={1}>
+						<PageProviders>{children}</PageProviders>
+					</PaginatedBidsProvider>
+				</MyPaginatedWinningBidsProvider>
+			</PaginatedWinningBidsProvider>
+		</MyOpenAuctionResultsProvider>
+	</SingleAuctionProvider>
+);

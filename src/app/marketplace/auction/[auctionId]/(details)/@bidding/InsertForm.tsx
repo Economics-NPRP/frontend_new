@@ -1,13 +1,11 @@
+import { SingleAuctionContext } from 'contexts/SingleAuction';
 import { useFormatter } from 'next-intl';
 import { useCallback, useContext, useMemo, useState } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { BidTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BidTable';
 import { BiddingNumberInput } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingNumberInput';
-import {
-	AuctionBiddingContext,
-	AuctionDetailsContext,
-} from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
+import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Alert, Button, Group, List, Stack, Text, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import {
@@ -23,8 +21,8 @@ import classes from './styles.module.css';
 
 export const InsertForm = () => {
 	const format = useFormatter();
-	const { auctionData } = useContext(AuctionDetailsContext);
-	const { bids, bidsHandlers, totalPermits } = useContext(AuctionBiddingContext);
+	const auction = useContext(SingleAuctionContext);
+	const { bids, bidsHandlers, totalPermits } = useContext(AuctionDetailsPageContext);
 
 	const [subtotal, setSubtotal] = useState(0);
 	const [emissions, setEmissions] = useState(0);
@@ -39,8 +37,8 @@ export const InsertForm = () => {
 			permit: (value) => {
 				if (!value) return 'Permit is required';
 				if (value < 1) return 'You must bid at least 1 permit';
-				if (value > auctionData.permits) return 'You cannot bid more than permits offered';
-				if (value > auctionData.permits - totalPermits)
+				if (value > auction.data.permits) return 'You cannot bid more than permits offered';
+				if (value > auction.data.permits - totalPermits)
 					return 'You cannot bid more than available permits. Please check the bid table';
 				return false;
 			},
@@ -70,11 +68,11 @@ export const InsertForm = () => {
 
 	const onSubmitHandler = useCallback(
 		(values: BidTableData) => {
-			if (!auctionData.hasJoined) return;
+			if (!auction.data.hasJoined) return;
 			bidsHandlers.append(values);
 			form.reset();
 		},
-		[bidsHandlers, form, auctionData.hasJoined],
+		[bidsHandlers, form, auction.data.hasJoined],
 	);
 
 	return (
@@ -116,10 +114,10 @@ export const InsertForm = () => {
 						</Group>
 						<BiddingNumberInput
 							placeholder="0"
-							max={auctionData.permits - totalPermits}
+							max={auction.data.permits - totalPermits}
 							name="permit"
 							key={form.key('permit')}
-							disabled={!auctionData.hasJoined}
+							disabled={!auction.data.hasJoined}
 							dark
 							{...form.getInputProps('permit')}
 						/>
@@ -140,7 +138,7 @@ export const InsertForm = () => {
 							placeholder="0.00"
 							name="bid"
 							key={form.key('bid')}
-							disabled={!auctionData.hasJoined}
+							disabled={!auction.data.hasJoined}
 							decimalScale={2}
 							fixedDecimalScale
 							dark
@@ -161,7 +159,7 @@ export const InsertForm = () => {
 					<Button
 						className={classes.button}
 						type="submit"
-						disabled={!auctionData.hasJoined}
+						disabled={!auction.data.hasJoined}
 						leftSection={<IconArrowUpLeft size={16} />}
 					>
 						Add to Table
