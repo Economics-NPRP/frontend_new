@@ -2,6 +2,7 @@ import { PropsWithChildren, ReactNode } from 'react';
 
 import {
 	MyOpenAuctionResultsProvider,
+	MyPaginatedBidsProvider,
 	MyPaginatedWinningBidsProvider,
 	PaginatedBidsProvider,
 	PaginatedWinningBidsProvider,
@@ -73,7 +74,9 @@ const Providers = ({ children }: PropsWithChildren) => (
 			<PaginatedWinningBidsProvider>
 				<MyPaginatedWinningBidsProvider>
 					<PaginatedBidsProvider>
-						<PageProviders>{children}</PageProviders>
+						<MyPaginatedBidsProvider>
+							<PageProviders>{children}</PageProviders>
+						</MyPaginatedBidsProvider>
 					</PaginatedBidsProvider>
 				</MyPaginatedWinningBidsProvider>
 			</PaginatedWinningBidsProvider>

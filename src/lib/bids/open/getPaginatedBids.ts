@@ -10,7 +10,6 @@ import { IKeysetPagination, KeysetPaginatedData } from '@/types';
 
 export interface IGetPaginatedBidsOptions extends IKeysetPagination {
 	auctionId: string;
-	cursor?: string | null;
 	bidderId?: string;
 }
 

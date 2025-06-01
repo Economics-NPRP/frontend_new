@@ -1,4 +1,5 @@
 export * from './MyOpenAuctionResults';
+export * from './MyPaginatedBids';
 export * from './MyPaginatedWinningBids';
 export * from './PaginatedBids';
 export * from './PaginatedWinningBids';

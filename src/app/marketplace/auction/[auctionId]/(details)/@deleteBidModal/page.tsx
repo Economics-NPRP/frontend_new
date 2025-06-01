@@ -2,7 +2,7 @@
 
 import { useCallback, useContext } from 'react';
 
-import { BidTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
+import { BiddingTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import {
 	AuctionDetailsPageContext,
 	DefaultAuctionDetailsPageContextData,
@@ -52,7 +52,7 @@ export default function DeleteModal() {
 			<Text className={classes.description}>
 				Are you sure you want to delete the following bids? This action cannot be undone.
 			</Text>
-			<BidTable className={classes.table} readOnly displayDeletingOnly />
+			<BiddingTable className={classes.table} readOnly displayDeletingOnly />
 			<Group className={classes.actions}>
 				<Button
 					className={classes.button}

@@ -1,74 +1,205 @@
 'use client';
 
-import { DateTime } from 'luxon';
-import { createFormatter, useFormatter, useTranslations } from 'next-intl';
-import { useContext, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
+import { useCallback, useContext, useMemo, useState } from 'react';
 
-import { CurrencyBadge } from '@/components/Badge';
+import { generateBidsRows, generateLegend } from '@/components/BidsTable/helpers';
+import { BidsFilter } from '@/components/BidsTable/types';
 import { CurrentUserContext } from '@/pages/globalContext';
-import { IBidData, IUserData } from '@/schema/models';
-import { NavDirection } from '@/types';
+import { IBidData } from '@/schema/models';
+import { KeysetPaginatedContextState, OffsetPaginatedContextState } from '@/types';
 import {
 	ActionIcon,
-	Anchor,
 	Group,
-	Pagination,
+	Menu,
+	Radio,
+	Select,
+	Stack,
 	Table,
 	TableProps,
 	TableTbody,
-	TableTd,
 	TableTh,
 	TableThead,
 	TableTr,
+	Text,
+	Title,
 } from '@mantine/core';
-import { IconArrowNarrowDown, IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
+import {
+	IconAdjustments,
+	IconArrowNarrowDown,
+	IconChevronLeft,
+	IconChevronRight,
+	IconX,
+} from '@tabler/icons-react';
+
+import classes from './styles.module.css';
 
 export interface BidsTableProps extends TableProps {
-	tableData: Array<IBidData>;
+	bids: KeysetPaginatedContextState<IBidData>;
+	winningBids?: OffsetPaginatedContextState<IBidData>;
+	myPaginatedBids?: KeysetPaginatedContextState<IBidData>;
 	contributingBidIds?: Array<string>;
-	winningBidIds?: Array<string>;
-	paginationType: 'offset' | 'keyset';
 
-	setCursor?: (cursor: string | null | undefined) => void;
-	setNavDirection?: (direction: NavDirection) => void;
-	hasNext?: boolean;
-	hasPrev?: boolean;
-	cursorForNextPage?: string | null;
-	cursorForPrevPage?: string | null;
-
-	page?: number;
-	pageCount?: number;
-	setPage?: (page: number) => void;
+	withCloseButton?: boolean;
+	onClose?: () => void;
 }
 export const BidsTable = ({
-	tableData,
+	bids,
+	winningBids,
+	myPaginatedBids,
 	contributingBidIds,
-	winningBidIds,
-	paginationType,
 
-	setCursor,
-	setNavDirection,
-	hasNext,
-	hasPrev,
-	cursorForNextPage,
-	cursorForPrevPage,
-
-	page,
-	pageCount,
-	setPage,
+	withCloseButton,
+	onClose,
 	...props
 }: BidsTableProps) => {
 	const t = useTranslations();
-	const format = useFormatter();
 	const { currentUser } = useContext(CurrentUserContext);
 
+	const [bidsFilter, setBidsFilter] = useState<BidsFilter>('all');
+
+	//	Generate the table rows
 	const bidsData = useMemo(() => {
-		if (!tableData) return null;
-		return generateBidsRows(tableData, contributingBidIds, winningBidIds, currentUser, format);
-	}, [tableData, contributingBidIds, winningBidIds, currentUser, format]);
+		if (!bids) return null;
+		return generateBidsRows({
+			bids,
+			winningBids,
+			myPaginatedBids,
+			contributingBidIds,
+			bidsFilter,
+			currentUser,
+		});
+	}, [bids, winningBids, myPaginatedBids, contributingBidIds, bidsFilter, currentUser]);
+
+	//	Generate the legend based on the bids filter
+	const legend = useMemo(() => {
+		if (!bids) return null;
+		return generateLegend(bidsFilter);
+	}, [bids, bidsFilter]);
+
+	const currentContextState = useMemo(() => {
+		if (bidsFilter === 'winning' && winningBids) return winningBids;
+		if (bidsFilter === 'mine' && myPaginatedBids) return myPaginatedBids;
+		return bids;
+	}, [bids, winningBids, myPaginatedBids, bidsFilter]);
+
+	const handleSetPerPage = useCallback(
+		(value: string | null) => {
+			bids.setPerPage(Number(value));
+			if (winningBids) winningBids.setPerPage(Number(value));
+			if (myPaginatedBids) myPaginatedBids.setPerPage(Number(value));
+		},
+		[bids, winningBids, myPaginatedBids],
+	);
+
+	const isExact = useMemo(() => {
+		if (bidsFilter === 'winning' && winningBids) return true;
+		if (bidsFilter === 'mine' && myPaginatedBids) return myPaginatedBids.data.isExact;
+		return bids.data.isExact;
+	}, [bidsFilter, bids.data.isExact, myPaginatedBids?.data.isExact]);
+
+	const hasPrev = useMemo(() => {
+		if (bidsFilter === 'winning' && winningBids) return winningBids.data.page > 1;
+		if (bidsFilter === 'mine' && myPaginatedBids) return myPaginatedBids.data.hasPrev;
+		return bids.data.hasPrev;
+	}, [bidsFilter, bids.data.hasPrev, winningBids?.data.page, myPaginatedBids?.data.hasPrev]);
+
+	const hasNext = useMemo(() => {
+		if (bidsFilter === 'winning' && winningBids)
+			return winningBids.data.page < winningBids.data.pageCount;
+		if (bidsFilter === 'mine' && myPaginatedBids) return myPaginatedBids.data.hasNext;
+		return bids.data.hasNext;
+	}, [
+		bidsFilter,
+		bids.data.hasNext,
+		winningBids?.data.page,
+		winningBids?.data.pageCount,
+		myPaginatedBids?.data.hasNext,
+	]);
+
+	const handlePrevPage = useCallback(() => {
+		if (!hasPrev) return;
+		if (bidsFilter === 'winning' && winningBids) winningBids.setPage(winningBids.data.page - 1);
+		else if (bidsFilter === 'mine' && myPaginatedBids)
+			myPaginatedBids.setCursor(myPaginatedBids.data.cursorForPrevPage);
+		else bids.setCursor(bids.data.cursorForPrevPage);
+	}, [bids, winningBids, myPaginatedBids, bidsFilter, hasPrev]);
+
+	const handleNextPage = useCallback(() => {
+		if (!hasNext) return;
+		if (bidsFilter === 'winning' && winningBids) winningBids.setPage(winningBids.data.page + 1);
+		else if (bidsFilter === 'mine' && myPaginatedBids)
+			myPaginatedBids.setCursor(myPaginatedBids.data.cursorForNextPage);
+		else bids.setCursor(bids.data.cursorForNextPage);
+	}, [bids, winningBids, myPaginatedBids, bidsFilter, hasNext]);
 
 	return (
-		<>
+		<Stack className={classes.root}>
+			<Stack className={classes.header}>
+				<Group className={classes.row}>
+					<Group className={classes.label}>
+						<Title order={2} className={classes.title}>
+							Bids Table
+						</Title>
+						<Text className={classes.subtitle}>
+							Showing{' '}
+							{Math.min(
+								currentContextState.perPage,
+								currentContextState.data.totalCount,
+							)}{' '}
+							{isExact ? 'of' : 'of about'} {currentContextState.data.totalCount} bids
+						</Text>
+					</Group>
+					<Group className={classes.settings}>
+						<Text className={classes.label}>Per page:</Text>
+						<Select
+							className={classes.dropdown}
+							w={80}
+							value={currentContextState.perPage.toString()}
+							data={['10', '20', '50', '100']}
+							onChange={handleSetPerPage}
+							allowDeselect={false}
+						/>
+						<Menu>
+							<Menu.Target>
+								<ActionIcon className={classes.button}>
+									<IconAdjustments size={16} />
+								</ActionIcon>
+							</Menu.Target>
+							<Menu.Dropdown>
+								<Radio.Group
+									label="Bids Filter"
+									value={bidsFilter}
+									onChange={(value) => setBidsFilter(value as BidsFilter)}
+								>
+									<Stack>
+										<Radio value="all" label="Show all bids" />
+										<Radio
+											value="contributing"
+											label="Only show bids contributing to your final bill"
+										/>
+										{winningBids && (
+											<Radio value="winning" label="Only show winning bids" />
+										)}
+										<Radio value="mine" label="Only show your bids" />
+									</Stack>
+								</Radio.Group>
+							</Menu.Dropdown>
+						</Menu>
+						{withCloseButton && (
+							<ActionIcon className={classes.button} onClick={onClose}>
+								<IconX size={16} />
+							</ActionIcon>
+						)}
+					</Group>
+				</Group>
+				<Group className={classes.row}>
+					<Group className={classes.filters}>
+						<Text className={classes.label}>Filters:</Text>
+					</Group>
+					<Group className={classes.legend}>{legend}</Group>
+				</Group>
+			</Stack>
 			<Table highlightOnHover {...props}>
 				<TableThead>
 					<TableTr>
@@ -84,73 +215,24 @@ export const BidsTable = ({
 				</TableThead>
 				<TableTbody>{bidsData}</TableTbody>
 			</Table>
-			{paginationType === 'offset' && page && pageCount && pageCount > 1 && setPage && (
-				<Pagination
-					value={page}
-					total={pageCount}
-					siblings={2}
-					boundaries={3}
-					onChange={setPage}
-				/>
-			)}
-			{paginationType === 'keyset' && setCursor && setNavDirection && (
-				<Group className="gap-2">
-					<ActionIcon
-						className="size-8 border-gray-300"
-						variant="outline"
-						disabled={!hasPrev}
-						onClick={() => {
-							setCursor(cursorForPrevPage);
-							setNavDirection('prev');
-						}}
-					>
-						<IconChevronLeft size={16} />
-					</ActionIcon>
-					<ActionIcon
-						className="size-8 border-gray-300"
-						variant="outline"
-						disabled={!hasNext}
-						onClick={() => {
-							setCursor(cursorForNextPage);
-							setNavDirection('next');
-						}}
-					>
-						<IconChevronRight size={16} />
-					</ActionIcon>
-				</Group>
-			)}
-		</>
+			<Group className="gap-2">
+				<ActionIcon
+					className="size-8 border-gray-300"
+					variant="outline"
+					disabled={!hasPrev}
+					onClick={handlePrevPage}
+				>
+					<IconChevronLeft size={16} />
+				</ActionIcon>
+				<ActionIcon
+					className="size-8 border-gray-300"
+					variant="outline"
+					disabled={!hasNext}
+					onClick={handleNextPage}
+				>
+					<IconChevronRight size={16} />
+				</ActionIcon>
+			</Group>
+		</Stack>
 	);
 };
-
-const generateBidsRows = (
-	bidsData: Array<IBidData>,
-	contributingBidIds: Array<string> | undefined,
-	winningBidIds: Array<string> | undefined,
-	currentUser: IUserData,
-	format: ReturnType<typeof createFormatter>,
-) =>
-	bidsData.map(({ id, amount, permits, timestamp, bidder }) => {
-		let bgColor = '';
-		if (contributingBidIds && contributingBidIds.includes(id)) bgColor = 'bg-blue-50';
-		else if (winningBidIds && winningBidIds.includes(id)) bgColor = 'bg-yellow-50';
-		else if (bidder.id === currentUser.id) bgColor = 'bg-gray-50';
-
-		return (
-			<TableTr key={id} className={bgColor}>
-				<TableTd>
-					<Anchor href={`/marketplace/company/${bidder.id}`}>{bidder.name}</Anchor>
-				</TableTd>
-				<TableTd>
-					<CurrencyBadge />
-					{format.number(amount, 'money')}
-				</TableTd>
-				<TableTd>{format.number(permits)}</TableTd>
-				<TableTd>
-					<CurrencyBadge />
-					{format.number(amount * permits, 'money')}
-				</TableTd>
-				<TableTd>{DateTime.fromISO(timestamp).toRelative()}</TableTd>
-			</TableTr>
-		);
-	});

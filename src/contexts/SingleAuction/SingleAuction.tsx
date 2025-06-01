@@ -9,9 +9,9 @@ import { getSingleAuction } from '@/lib/auctions';
 import { DefaultAuctionData, IAuctionData } from '@/schema/models';
 import { ServerContextState, getDefaultContextState } from '@/types';
 
-interface IContext extends ServerContextState<IAuctionData> {}
+export interface ISingleAuctionContext extends ServerContextState<IAuctionData> {}
 const DefaultData = getDefaultContextState(DefaultAuctionData);
-const Context = createContext<IContext>(DefaultData);
+const Context = createContext<ISingleAuctionContext>(DefaultData);
 
 export const SingleAuctionProvider = ({ children }: PropsWithChildren) => {
 	const { auctionId } = useParams();
@@ -27,5 +27,4 @@ export const SingleAuctionProvider = ({ children }: PropsWithChildren) => {
 	);
 };
 
-export type { IContext as ISingleAuctionContext };
 export { DefaultData as DefaultSingleAuctionContextData, Context as SingleAuctionContext };

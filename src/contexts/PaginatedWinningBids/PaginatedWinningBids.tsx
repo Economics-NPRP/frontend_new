@@ -13,9 +13,9 @@ import {
 	getDefaultOffsetPaginatedContextState,
 } from '@/types';
 
-interface IContext extends OffsetPaginatedContextState<IBidData> {}
+export interface IPaginatedWinningBidsContext extends OffsetPaginatedContextState<IBidData> {}
 const DefaultData = getDefaultOffsetPaginatedContextState<IBidData>();
-const Context = createContext<IContext>(DefaultData);
+const Context = createContext<IPaginatedWinningBidsContext>(DefaultData);
 
 export const PaginatedWinningBidsProvider = ({
 	defaultPage,
@@ -45,7 +45,6 @@ export const PaginatedWinningBidsProvider = ({
 	);
 };
 
-export type { IContext as IPaginatedWinningBidsContext };
 export {
 	DefaultData as DefaultPaginatedWinningBidsContextData,
 	Context as PaginatedWinningBidsContext,

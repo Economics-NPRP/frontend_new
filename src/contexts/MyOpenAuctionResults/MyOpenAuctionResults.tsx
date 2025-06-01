@@ -13,9 +13,9 @@ import {
 	getDefaultContextState,
 } from '@/types';
 
-interface IContext extends ServerContextState<IMyAuctionResultsData> {}
+export interface IMyOpenAuctionResultsContext extends ServerContextState<IMyAuctionResultsData> {}
 const DefaultData = getDefaultContextState(DefaultMyAuctionResultsData);
-const Context = createContext<IContext>(DefaultData);
+const Context = createContext<IMyOpenAuctionResultsContext>(DefaultData);
 
 export const MyOpenAuctionResultsProvider = ({ children }: PropsWithChildren) => {
 	const { auctionId } = useParams();
@@ -31,7 +31,6 @@ export const MyOpenAuctionResultsProvider = ({ children }: PropsWithChildren) =>
 	);
 };
 
-export type { IContext as IMyOpenAuctionResultsContext };
 export {
 	DefaultData as DefaultMyOpenAuctionResultsContextData,
 	Context as MyOpenAuctionResultsContext,
