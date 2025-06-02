@@ -80,4 +80,41 @@
 			}
 		}
 	}
+
+	> .table {
+		@apply flex-1 overflow-y-auto;
+
+		.empty {
+			@apply items-center justify-center h-[320px];
+
+			> .icon {
+				@apply size-11 rounded-full bg-gray-100 text-gray-500;
+				@apply flex justify-center items-center;
+			}
+
+			> .text {
+				@apply paragraph-sm-g6;
+			}
+		}
+	}
+
+	> .pagination {
+		@apply gap-2 justify-center;
+
+		> .button {
+			@apply size-8 border-gray-300;
+		}
+	}
+}
+
+.filterMenu {
+	@apply px-6 py-4;
+
+	.label {
+		@apply display-md-sb mb-4;
+	}
+
+	.options {
+		@apply gap-4;
+	}
 }

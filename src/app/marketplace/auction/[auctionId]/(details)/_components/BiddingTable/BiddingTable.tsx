@@ -147,6 +147,7 @@ export const BiddingTable = ({
 				onSelectedRecordsChange={!readOnly ? selectedBidsHandlers.setState : undefined}
 				idAccessor="bid"
 				selectionTrigger="cell"
+				noRecordsText='No bids added yet. Use the "Insert Bids" form on the side to add bids.'
 				{...props}
 			/>
 			{!readOnly && (

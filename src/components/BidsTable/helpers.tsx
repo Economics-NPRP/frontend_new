@@ -1,3 +1,5 @@
+import { ReactElement } from 'react';
+
 import { BidsTableRow } from '@/components/BidsTable/Row';
 import { BidsFilter } from '@/components/BidsTable/types';
 import { IBidData, IUserData } from '@/schema/models';
@@ -21,7 +23,7 @@ export const generateBidsRows = ({
 	contributingBidIds,
 	bidsFilter,
 	currentUser,
-}: GenerateBidsRowsParams) => {
+}: GenerateBidsRowsParams): Array<ReactElement> => {
 	switch (bidsFilter) {
 		case 'all':
 			return bids.data.results.map((bid) => {
@@ -36,7 +38,7 @@ export const generateBidsRows = ({
 				return <BidsTableRow bid={bid} key={id} className={bgColor} />;
 			});
 		case 'winning':
-			if (!winningBids) return null;
+			if (!winningBids) return [];
 			return winningBids.data.results.map((bid) => {
 				const { id, bidder } = bid;
 
@@ -46,7 +48,7 @@ export const generateBidsRows = ({
 				return <BidsTableRow bid={bid} key={id} className={bgColor} />;
 			});
 		case 'mine':
-			if (!myPaginatedBids) return null;
+			if (!myPaginatedBids) return [];
 			return myPaginatedBids.data.results.map((bid) => {
 				const { id } = bid;
 
@@ -58,7 +60,7 @@ export const generateBidsRows = ({
 				return <BidsTableRow bid={bid} key={id} className={bgColor} />;
 			});
 		default:
-			return null;
+			return [];
 	}
 };
 

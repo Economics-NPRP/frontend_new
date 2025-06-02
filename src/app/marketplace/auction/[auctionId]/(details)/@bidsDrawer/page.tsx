@@ -3,7 +3,7 @@
 import { MyPaginatedBidsContext } from 'contexts/MyPaginatedBids';
 import { PaginatedBidsContext } from 'contexts/PaginatedBids';
 import { PaginatedWinningBidsContext } from 'contexts/PaginatedWinningBids';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 
 import { BidsTable } from '@/components/BidsTable';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
@@ -19,7 +19,7 @@ export default function Bids() {
 
 	return (
 		<Drawer
-			classNames={{ content: classes.root }}
+			classNames={{ content: classes.root, body: classes.body }}
 			opened={isBidsDrawerOpen}
 			onClose={closeBidsDrawer}
 			withCloseButton={false}
@@ -30,6 +30,7 @@ export default function Bids() {
 				myPaginatedBids={myPaginatedBids}
 				withCloseButton
 				onClose={closeBidsDrawer}
+				className={classes.table}
 			/>
 		</Drawer>
 	);

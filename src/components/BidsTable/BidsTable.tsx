@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useRef, useState } from 'react';
 
 import { generateBidsRows, generateLegend } from '@/components/BidsTable/helpers';
 import { BidsFilter } from '@/components/BidsTable/types';
@@ -10,8 +10,10 @@ import { IBidData } from '@/schema/models';
 import { KeysetPaginatedContextState, OffsetPaginatedContextState } from '@/types';
 import {
 	ActionIcon,
+	Container,
 	Group,
 	Menu,
+	Pill,
 	Radio,
 	Select,
 	Stack,
@@ -29,6 +31,7 @@ import {
 	IconArrowNarrowDown,
 	IconChevronLeft,
 	IconChevronRight,
+	IconDatabaseOff,
 	IconX,
 } from '@tabler/icons-react';
 
@@ -51,9 +54,12 @@ export const BidsTable = ({
 
 	withCloseButton,
 	onClose,
+
+	className,
 	...props
 }: BidsTableProps) => {
 	const t = useTranslations();
+	const tableContainerRef = useRef<HTMLDivElement>(null);
 	const { currentUser } = useContext(CurrentUserContext);
 
 	const [bidsFilter, setBidsFilter] = useState<BidsFilter>('all');
@@ -70,6 +76,24 @@ export const BidsTable = ({
 			currentUser,
 		});
 	}, [bids, winningBids, myPaginatedBids, contributingBidIds, bidsFilter, currentUser]);
+
+	//	Generate the filter badges
+	const filterBadges = useMemo(() => {
+		if (!bids) return null;
+		if (bidsFilter === 'all') return <Pill>No Filter Applied</Pill>;
+		if (bidsFilter === 'winning')
+			return (
+				<Pill onRemove={() => setBidsFilter('all')} withRemoveButton>
+					Winning Bids Only
+				</Pill>
+			);
+		if (bidsFilter === 'mine')
+			return (
+				<Pill onRemove={() => setBidsFilter('all')} withRemoveButton>
+					My Bids Only
+				</Pill>
+			);
+	}, [bids, bidsFilter]);
 
 	//	Generate the legend based on the bids filter
 	const legend = useMemo(() => {
@@ -119,6 +143,8 @@ export const BidsTable = ({
 
 	const handlePrevPage = useCallback(() => {
 		if (!hasPrev) return;
+		tableContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+
 		if (bidsFilter === 'winning' && winningBids) winningBids.setPage(winningBids.data.page - 1);
 		else if (bidsFilter === 'mine' && myPaginatedBids)
 			myPaginatedBids.setCursor(myPaginatedBids.data.cursorForPrevPage);
@@ -127,6 +153,8 @@ export const BidsTable = ({
 
 	const handleNextPage = useCallback(() => {
 		if (!hasNext) return;
+		tableContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+
 		if (bidsFilter === 'winning' && winningBids) winningBids.setPage(winningBids.data.page + 1);
 		else if (bidsFilter === 'mine' && myPaginatedBids)
 			myPaginatedBids.setCursor(myPaginatedBids.data.cursorForNextPage);
@@ -134,7 +162,7 @@ export const BidsTable = ({
 	}, [bids, winningBids, myPaginatedBids, bidsFilter, hasNext]);
 
 	return (
-		<Stack className={classes.root}>
+		<Stack className={`${classes.root} ${className}`}>
 			<Stack className={classes.header}>
 				<Group className={classes.row}>
 					<Group className={classes.label}>
@@ -160,19 +188,20 @@ export const BidsTable = ({
 							onChange={handleSetPerPage}
 							allowDeselect={false}
 						/>
-						<Menu>
+						<Menu position="bottom-end">
 							<Menu.Target>
 								<ActionIcon className={classes.button}>
 									<IconAdjustments size={16} />
 								</ActionIcon>
 							</Menu.Target>
-							<Menu.Dropdown>
+							<Menu.Dropdown className={classes.filterMenu}>
 								<Radio.Group
+									classNames={{ label: classes.label }}
 									label="Bids Filter"
 									value={bidsFilter}
 									onChange={(value) => setBidsFilter(value as BidsFilter)}
 								>
-									<Stack>
+									<Stack className={classes.options}>
 										<Radio value="all" label="Show all bids" />
 										<Radio
 											value="contributing"
@@ -196,28 +225,39 @@ export const BidsTable = ({
 				<Group className={classes.row}>
 					<Group className={classes.filters}>
 						<Text className={classes.label}>Filters:</Text>
+						<Group className={classes.badges}>{filterBadges}</Group>
 					</Group>
 					<Group className={classes.legend}>{legend}</Group>
 				</Group>
 			</Stack>
-			<Table highlightOnHover {...props}>
-				<TableThead>
-					<TableTr>
-						<TableTh>Company</TableTh>
-						<TableTh className="flex items-center justify-between">
-							Bid
-							<IconArrowNarrowDown size={14} />
-						</TableTh>
-						<TableTh>Permits</TableTh>
-						<TableTh>Total Bid</TableTh>
-						<TableTh>Timestamp</TableTh>
-					</TableTr>
-				</TableThead>
-				<TableTbody>{bidsData}</TableTbody>
-			</Table>
-			<Group className="gap-2">
+			<Container className={classes.table} ref={tableContainerRef}>
+				<Table highlightOnHover {...props}>
+					<TableThead>
+						<TableTr>
+							<TableTh>Company</TableTh>
+							<TableTh className="flex items-center justify-between">
+								Bid
+								<IconArrowNarrowDown size={14} />
+							</TableTh>
+							<TableTh>Permits</TableTh>
+							<TableTh>Total Bid</TableTh>
+							<TableTh>Timestamp</TableTh>
+						</TableTr>
+					</TableThead>
+					<TableTbody>{bidsData}</TableTbody>
+				</Table>
+				{(!bidsData || bidsData.length === 0) && (
+					<Stack className={classes.empty}>
+						<Container className={classes.icon}>
+							<IconDatabaseOff size={24} />
+						</Container>
+						<Text className={classes.text}>No bids found</Text>
+					</Stack>
+				)}
+			</Container>
+			<Group className={classes.pagination}>
 				<ActionIcon
-					className="size-8 border-gray-300"
+					className={classes.button}
 					variant="outline"
 					disabled={!hasPrev}
 					onClick={handlePrevPage}
@@ -225,7 +265,7 @@ export const BidsTable = ({
 					<IconChevronLeft size={16} />
 				</ActionIcon>
 				<ActionIcon
-					className="size-8 border-gray-300"
+					className={classes.button}
 					variant="outline"
 					disabled={!hasNext}
 					onClick={handleNextPage}

@@ -1,3 +1,11 @@
 .root {
 	@apply min-w-[1000px] flex-[0_0_50%] p-8;
+
+	> .body {
+		@apply h-full;
+
+		> .table {
+			@apply h-full;
+		}
+	}
 }
