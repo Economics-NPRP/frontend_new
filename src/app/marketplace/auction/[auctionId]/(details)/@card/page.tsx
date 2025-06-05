@@ -9,7 +9,7 @@ import { CurrencyBadge } from '@/components/Badge';
 import { LargeCountdown } from '@/components/Countdown';
 import { SingleAuctionContext } from '@/contexts';
 import { Button, Container, Group, Stack, Text } from '@mantine/core';
-import { IconGavel, IconShoppingBag } from '@tabler/icons-react';
+import { IconGavel, IconGitCompare, IconLeaf, IconShoppingBag } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -30,13 +30,22 @@ export default function Card() {
 				</Container>
 			</Container>
 			<Group className={classes.row}>
-				<Stack className={classes.section}>
+				{/* <Stack className={classes.section}>
 					<Text className={classes.subtext}>Buy Now Price</Text>
 					<Group className={classes.price}>
 						<CurrencyBadge className={classes.badge} />
 						<Text className={classes.value}>
 							{format.number(auction.data.minBid + 100, 'money')}
 						</Text>
+					</Group>
+				</Stack> */}
+				<Stack className={classes.section}>
+					<Text className={classes.subtext}>Permits Offered</Text>
+					<Group className={classes.price}>
+						<Container className={classes.icon}>
+							<IconLeaf size={14} />
+						</Container>
+						<Text className={classes.value}>{format.number(auction.data.permits)}</Text>
 					</Group>
 				</Stack>
 				<Stack className={classes.section}>
@@ -66,12 +75,19 @@ export default function Card() {
 				</Text>
 			</Stack>
 			<Group className={classes.prompt}>
-				<Button
+				{/* <Button
 					className={classes.cta}
 					rightSection={<IconShoppingBag size={16} />}
 					variant="outline"
 				>
 					Buy Now
+				</Button> */}
+				<Button
+					className={classes.cta}
+					rightSection={<IconGitCompare size={16} />}
+					variant="outline"
+				>
+					Compare Auctions
 				</Button>
 				<Button className={classes.cta} rightSection={<IconGavel size={16} />}>
 					Start Bidding

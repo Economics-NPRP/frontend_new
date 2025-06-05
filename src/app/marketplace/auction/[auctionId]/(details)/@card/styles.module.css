@@ -42,6 +42,13 @@
 					@apply text-dark-100;
 				}
 
+				> .icon {
+					@apply size-6;
+					@apply flex items-center justify-center;
+					@apply bg-dark-400 text-dark-100;
+					@apply rounded-sm;
+				}
+
 				> .value {
 					@apply numeric-xl-w;
 				}

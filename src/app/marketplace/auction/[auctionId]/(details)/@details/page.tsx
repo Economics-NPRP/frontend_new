@@ -127,12 +127,17 @@ export default function Details() {
 				/>
 				<Stack className={classes.table}>
 					<Group className={classes.row}>
-						<Group className={classes.cell}>
+						{/* <Group className={classes.cell}>
 							<IconLicense size={16} className={classes.icon} />
 							<Text className={classes.key}>Permits Offered</Text>
 							<Text className={classes.value}>
 								{format.number(auction.data.permits)} permits
 							</Text>
+						</Group> */}
+						<Group className={classes.cell}>
+							<IconHourglassEmpty size={16} className={classes.icon} />
+							<Text className={classes.key}>Permit Lifespan</Text>
+							<Text className={classes.value}>1 year</Text>
 						</Group>
 						<Group className={classes.cell}>
 							<IconLeaf size={16} className={classes.icon} />
@@ -140,7 +145,7 @@ export default function Details() {
 							<Text className={classes.value}>10,000 tCO2e</Text>
 						</Group>
 					</Group>
-					<Group className={classes.row}>
+					{/* <Group className={classes.row}>
 						<Group className={classes.cell}>
 							<IconHourglassEmpty size={16} className={classes.icon} />
 							<Text className={classes.key}>Permit Lifespan</Text>
@@ -150,6 +155,26 @@ export default function Details() {
 							<IconDiamond size={16} className={classes.icon} />
 							<Text className={classes.key}>Emission Quality</Text>
 							<Text className={classes.value}>High Quality</Text>
+						</Group>
+					</Group> */}
+					<Group className={classes.row}>
+						<Group className={classes.cell}>
+							<IconClock size={16} className={classes.icon} />
+							<Text className={classes.key}>Auction Start Date</Text>
+							<Text className={classes.value}>
+								{DateTime.fromISO(auction.data.startDatetime).toLocaleString(
+									DateTime.DATETIME_SHORT,
+								)}
+							</Text>
+						</Group>
+						<Group className={classes.cell}>
+							<IconAlarm size={16} className={classes.icon} />
+							<Text className={classes.key}>Auction End Date</Text>
+							<Text className={classes.value}>
+								{DateTime.fromISO(auction.data.endDatetime).toLocaleString(
+									DateTime.DATETIME_SHORT,
+								)}
+							</Text>
 						</Group>
 					</Group>
 					{!isDetailsExpanded && (
@@ -163,26 +188,6 @@ export default function Details() {
 					)}
 					{isDetailsExpanded && (
 						<>
-							<Group className={classes.row}>
-								<Group className={classes.cell}>
-									<IconClock size={16} className={classes.icon} />
-									<Text className={classes.key}>Auction Start Date</Text>
-									<Text className={classes.value}>
-										{DateTime.fromISO(
-											auction.data.startDatetime,
-										).toLocaleString(DateTime.DATETIME_SHORT)}
-									</Text>
-								</Group>
-								<Group className={classes.cell}>
-									<IconAlarm size={16} className={classes.icon} />
-									<Text className={classes.key}>Auction End Date</Text>
-									<Text className={classes.value}>
-										{DateTime.fromISO(auction.data.endDatetime).toLocaleString(
-											DateTime.DATETIME_SHORT,
-										)}
-									</Text>
-								</Group>
-							</Group>
 							<Group className={classes.row}>
 								<Group className={classes.cell}>
 									<IconEye size={16} className={classes.icon} />
@@ -225,7 +230,7 @@ export default function Details() {
 				</Stack>
 			</Stack>
 
-			<Stack className={`${classes.permits} ${classes.section}`}>
+			{/* <Stack className={`${classes.permits} ${classes.section}`}>
 				<Divider
 					label={
 						<Group className={classes.row}>
@@ -277,7 +282,7 @@ export default function Details() {
 						</Group>
 					</Stack>
 				</Group>
-			</Stack>
+			</Stack> */}
 
 			<Stack className={`${classes.winnings} ${classes.section}`}>
 				<Divider
