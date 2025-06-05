@@ -2,7 +2,7 @@
 
 import { DateTime } from 'luxon';
 import { useFormatter, useTranslations } from 'next-intl';
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useState } from 'react';
 
 import {
 	AuctionTypeBadge,
@@ -25,7 +25,6 @@ import {
 	Container,
 	Divider,
 	Group,
-	Slider,
 	Stack,
 	Text,
 	Title,
@@ -38,7 +37,6 @@ import {
 	IconChevronRight,
 	IconClock,
 	IconCoins,
-	IconDiamond,
 	IconEye,
 	IconGavel,
 	IconHourglassEmpty,
@@ -58,9 +56,6 @@ export default function Details() {
 	const allBids = useContext(PaginatedBidsContext);
 
 	const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
-
-	const bought = useMemo(() => Math.random() * 100, [auction.data.permits]);
-	const available = useMemo(() => 100 - bought, [bought]);
 
 	return (
 		<Stack className={classes.root}>

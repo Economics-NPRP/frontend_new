@@ -3,7 +3,7 @@
 import { sortBy } from 'lodash-es';
 import { DataTable } from 'mantine-datatable';
 import { useFormatter } from 'next-intl';
-import { useCallback, useContext, useMemo } from 'react';
+import { Ref, useCallback, useContext, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
@@ -17,12 +17,14 @@ export interface BiddingTableProps extends TableProps {
 	readOnly?: boolean;
 	displaySelectedOnly?: boolean;
 	displayDeletingOnly?: boolean;
+	ref?: Ref<HTMLTableElement>;
 }
 export const BiddingTable = ({
 	readOnly = false,
 	displaySelectedOnly = false,
 	displayDeletingOnly = false,
 	className,
+	ref,
 	...props
 }: BiddingTableProps) => {
 	const format = useFormatter();
@@ -148,6 +150,7 @@ export const BiddingTable = ({
 				idAccessor="bid"
 				selectionTrigger="cell"
 				noRecordsText='No bids added yet. Use the "Insert Bids" form on the side to add bids.'
+				{...(ref && { tableRef: ref })}
 				{...props}
 			/>
 			{!readOnly && (

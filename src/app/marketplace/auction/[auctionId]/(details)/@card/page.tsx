@@ -8,8 +8,9 @@ import { useContext } from 'react';
 import { CurrencyBadge } from '@/components/Badge';
 import { LargeCountdown } from '@/components/Countdown';
 import { SingleAuctionContext } from '@/contexts';
+import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Button, Container, Group, Stack, Text } from '@mantine/core';
-import { IconGavel, IconGitCompare, IconLeaf, IconShoppingBag } from '@tabler/icons-react';
+import { IconGavel, IconGitCompare, IconLeaf } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -17,6 +18,7 @@ export default function Card() {
 	const t = useTranslations();
 	const format = useFormatter();
 	const auction = useContext(SingleAuctionContext);
+	const { scrollToBidding } = useContext(AuctionDetailsPageContext);
 
 	return (
 		<Stack className={classes.root}>
@@ -89,7 +91,11 @@ export default function Card() {
 				>
 					Compare Auctions
 				</Button>
-				<Button className={classes.cta} rightSection={<IconGavel size={16} />}>
+				<Button
+					className={classes.cta}
+					rightSection={<IconGavel size={16} />}
+					onClick={scrollToBidding}
+				>
 					Start Bidding
 				</Button>
 			</Group>

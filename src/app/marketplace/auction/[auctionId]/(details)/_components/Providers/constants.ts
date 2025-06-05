@@ -1,9 +1,9 @@
 'use client';
 
 import { DataTableSortStatus } from 'mantine-datatable';
-import { createContext } from 'react';
+import { Ref, createContext } from 'react';
 
-import { BidTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
+import { BiddingTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import { UseListStateHandlers } from '@mantine/hooks';
 
 //	@ts-expect-error - cannot make default context for list handlers
@@ -11,6 +11,9 @@ export const DefaultAuctionDetailsPageContextData: IAuctionBiddingContext = {
 	isBidsDrawerOpen: false,
 	openBidsDrawer: () => {},
 	closeBidsDrawer: () => {},
+
+	scrollToBidding: () => {},
+	biddingTableRef: {} as Ref<HTMLTableElement>,
 
 	bids: [],
 
@@ -35,16 +38,19 @@ export interface IAuctionDetailsPageContext {
 	openBidsDrawer: () => void;
 	closeBidsDrawer: () => void;
 
-	bids: BidTableData[];
-	bidsHandlers: UseListStateHandlers<BidTableData>;
+	scrollToBidding: () => void;
+	biddingTableRef: Ref<HTMLTableElement>;
+
+	bids: BiddingTableData[];
+	bidsHandlers: UseListStateHandlers<BiddingTableData>;
 	bidConfirmationModalOpened: boolean;
 	bidConfirmationModalActions: { open: () => void; close: () => void };
 
-	selectedBids: BidTableData[];
-	selectedBidsHandlers: UseListStateHandlers<BidTableData>;
+	selectedBids: BiddingTableData[];
+	selectedBidsHandlers: UseListStateHandlers<BiddingTableData>;
 
-	deletingBids: BidTableData[];
-	deletingBidsHandlers: UseListStateHandlers<BidTableData>;
+	deletingBids: BiddingTableData[];
+	deletingBidsHandlers: UseListStateHandlers<BiddingTableData>;
 	deleteModalOpened: boolean;
 	deleteModalActions: { open: () => void; close: () => void };
 
@@ -53,8 +59,8 @@ export interface IAuctionDetailsPageContext {
 	editModalOpened: boolean;
 	editModalActions: { open: () => void; close: () => void };
 
-	sortStatus: DataTableSortStatus<BidTableData>;
-	setSortStatus: (sortStatus: DataTableSortStatus<BidTableData>) => void;
+	sortStatus: DataTableSortStatus<BiddingTableData>;
+	setSortStatus: (sortStatus: DataTableSortStatus<BiddingTableData>) => void;
 
 	totalPermits: number;
 	grandTotal: number;

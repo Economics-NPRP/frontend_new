@@ -3,33 +3,35 @@
 import { DataTableSortStatus } from 'mantine-datatable';
 import { useCallback, useMemo, useState } from 'react';
 
-import { BidTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
+import { BiddingTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import {
 	AuctionDetailsPageContext,
 	DefaultAuctionDetailsPageContextData,
 } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers/constants';
-import { useDisclosure, useListState } from '@mantine/hooks';
+import { useDisclosure, useListState, useScrollIntoView } from '@mantine/hooks';
 
 export const PageProviders = ({ children }: { children: React.ReactNode }) => {
 	const [isBidsDrawerOpen, { open: openBidsDrawer, close: closeBidsDrawer }] = useDisclosure(
 		DefaultAuctionDetailsPageContextData.isBidsDrawerOpen,
 	);
 
-	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<BidTableData>>({
+	const { scrollIntoView: scrollToBidding, targetRef: biddingTableRef } = useScrollIntoView();
+
+	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<BiddingTableData>>({
 		columnAccessor: 'bid',
 		direction: 'desc',
 	});
 
-	const [bids, bidsHandlers] = useListState<BidTableData>(
+	const [bids, bidsHandlers] = useListState<BiddingTableData>(
 		DefaultAuctionDetailsPageContextData.bids,
 	);
 	const [bidConfirmationModalOpened, bidConfirmationModalActions] = useDisclosure(false);
 
-	const [selectedBids, selectedBidsHandlers] = useListState<BidTableData>(
+	const [selectedBids, selectedBidsHandlers] = useListState<BiddingTableData>(
 		DefaultAuctionDetailsPageContextData.selectedBids,
 	);
 
-	const [deletingBids, deletingBidsHandlers] = useListState<BidTableData>(
+	const [deletingBids, deletingBidsHandlers] = useListState<BiddingTableData>(
 		DefaultAuctionDetailsPageContextData.deletingBids,
 	);
 	const [deleteModalOpened, deleteModalActions] = useDisclosure(false, {
@@ -74,6 +76,9 @@ export const PageProviders = ({ children }: { children: React.ReactNode }) => {
 				isBidsDrawerOpen,
 				openBidsDrawer,
 				closeBidsDrawer,
+
+				scrollToBidding,
+				biddingTableRef,
 
 				bids,
 				bidsHandlers,

@@ -21,8 +21,14 @@ import classes from './styles.module.css';
 export default function Prompt() {
 	const format = useFormatter();
 	const auction = useContext(SingleAuctionContext);
-	const { openBidsDrawer, bids, totalPermits, grandTotal, bidConfirmationModalActions } =
-		useContext(AuctionDetailsPageContext);
+	const {
+		openBidsDrawer,
+		biddingTableRef,
+		bids,
+		totalPermits,
+		grandTotal,
+		bidConfirmationModalActions,
+	} = useContext(AuctionDetailsPageContext);
 
 	//	TODO: also check every second if the auction is still active
 	const hasEnded = useMemo(
@@ -66,7 +72,7 @@ export default function Prompt() {
 							targetDate={auction.data.endDatetime}
 						/>
 					</Group>
-					<BiddingTable />
+					<BiddingTable ref={biddingTableRef} />
 				</Stack>
 				<Stack className={classes.sidebar}>
 					<Group className={classes.minBid}>
