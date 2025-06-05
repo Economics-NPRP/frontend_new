@@ -1,0 +1,32 @@
+.root {
+	> .inner > .content {
+		@apply min-w-[800px];
+		@apply px-16 pt-12 pb-8;
+		@apply justify-center items-center;
+
+		> .body {
+			@apply flex flex-col items-stretch justify-center;
+			@apply gap-4 p-0;
+
+			> .title {
+				@apply text-center heading-2;
+			}
+
+			> .description {
+				@apply text-center paragraph-sm;
+			}
+
+			> .table {
+				@apply min-h-[160px];
+			}
+
+			> .actions {
+				@apply mt-4 gap-2 justify-center flex-nowrap;
+
+				> .button {
+					@apply flex-[50%];
+				}
+			}
+		}
+	}
+}

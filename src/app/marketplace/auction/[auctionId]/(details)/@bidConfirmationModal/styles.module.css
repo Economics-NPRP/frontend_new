@@ -1,0 +1,83 @@
+.root {
+	> .inner > .content {
+		@apply min-w-[800px];
+		@apply px-16 pt-12 pb-8;
+		@apply justify-center items-center;
+
+		> .body {
+			@apply flex flex-col items-stretch justify-center;
+			@apply gap-4 p-0;
+
+			> .title {
+				@apply text-center text-pretty heading-2;
+			}
+
+			> .description {
+				@apply text-center paragraph-sm;
+			}
+
+			> .table {
+				@apply min-h-[160px];
+			}
+
+			> .divider {
+				@apply my-4;
+			}
+
+			> .summary {
+				@apply items-center justify-center flex-nowrap;
+				@apply mb-4 gap-16;
+
+				> .cell {
+					@apply gap-0 items-center;
+
+					> .icon {
+						@apply size-12 flex items-center justify-center;
+						@apply mb-2;
+						@apply bg-white border border-solid border-gray-300 shadow-sm;
+						@apply text-dark-300;
+					}
+
+					> .key {
+						@apply paragraph-sm-g6;
+					}
+
+					> .row {
+						@apply gap-1 items-baseline;
+
+						> .value {
+							@apply numeric-md;
+						}
+
+						> .unit {
+							@apply paragraph-sm;
+						}
+					}
+				}
+
+				> .divider {
+					@apply h-8 self-center;
+				}
+			}
+
+			> .actions {
+				@apply mt-4 gap-2 justify-center flex-nowrap;
+
+				> .button {
+					@apply flex-[50%];
+				}
+			}
+		}
+	}
+
+	&.loading {
+		> .inner > .content {
+			@apply h-[400px];
+			@apply flex items-center justify-center;
+
+			> .body {
+				@apply items-center justify-center;
+			}
+		}
+	}
+}

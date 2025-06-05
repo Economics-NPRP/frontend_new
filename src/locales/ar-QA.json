@@ -31,13 +31,20 @@
 			"sealed": "مختوم"
 		},
 		"auctionStatus": {
-			"ending": "ينتهي"
+			"ending": {
+				"label": "ينتهي",
+				"tooltip": "المزاد ينتهي قريبًا"
+			}
 		},
 		"currency": {
 			"QAR": {
 				"name": "الريال القطري",
 				"symbol": "ر.ق"
 			}
+		},
+		"rating": {
+			"medium": "{rating, number, ::.00} من 5.00",
+			"long": "{rating, number, ::.00} من 5.00 ({reviews, plural, =0 {لا توجد مراجعات} =1 {مراجعة واحدة} other {# مراجعات}})"
 		},
 		"viewAll": "عرض الكل"
 	},
@@ -144,9 +151,6 @@
 				}
 			},
 			"user": {
-				"details": {
-					"rating": "{rating, number, ::.00} من ٥٫٠٠"
-				},
 				"auctionCalendar": "تقويم المزاد",
 				"biddingHistory": "تاريخ العطاءات",
 				"dashboard": "لوحة القيادة",
@@ -166,6 +170,27 @@
 			"value": "٠\n١\n٢\n٣\n٤\n٥\n٦\n٧\n٨\n٩",
 			"label": {
 				"long": {
+					"day": "يوم",
+					"days": "أيام",
+					"empty": "—",
+					"hour": "ساعة",
+					"hours": "ساعات",
+					"millisecond": "ميلي ثانية",
+					"milliseconds": "ميلي ثوانٍ",
+					"minute": "دقيقة",
+					"minutes": "دقائق",
+					"month": "شهر",
+					"months": "أشهر",
+					"quarter": "ربع",
+					"quarters": "أرباع",
+					"second": "ثانية",
+					"seconds": "ثوانٍ",
+					"week": "أسبوع",
+					"weeks": "أسابيع",
+					"year": "سنة",
+					"years": "سنوات"
+				},
+				"medium": {
 					"day": "يوم",
 					"days": "أيام",
 					"empty": "—",

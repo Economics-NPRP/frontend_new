@@ -114,6 +114,7 @@
 				@apply flex items-center;
 				@apply paragraph-sm-g6;
 				@apply leading-tight;
+				@apply text-right;
 			}
 		}
 	}

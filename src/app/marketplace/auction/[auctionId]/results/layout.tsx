@@ -26,10 +26,18 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 	const { currentUser } = useContext(CurrentUserContext);
 
 	const [resultsPage, setResultsPage] = useState(DEFAULT_CONTEXT.resultsPage);
-	const [allBidsKey, setAllBidsKey] = useState<string | undefined>(undefined);
-	const [allBidsNavDirection, setAllBidsNavDirection] = useState<NavDirection>('next');
-	const [myBidsKey, setMyBidsKey] = useState<string | undefined>(undefined);
-	const [myBidsNavDirection, setMyBidsNavDirection] = useState<NavDirection>('next');
+	const [allBidsCursor, setAllBidsCursor] = useState<string | null | undefined>(
+		DEFAULT_CONTEXT.allBidsCursor,
+	);
+	const [allBidsNavDirection, setAllBidsNavDirection] = useState<NavDirection>(
+		DEFAULT_CONTEXT.allBidsNavDirection,
+	);
+	const [myBidsCursor, setMyBidsCursor] = useState<string | null | undefined>(
+		DEFAULT_CONTEXT.myBidsCursor,
+	);
+	const [myBidsNavDirection, setMyBidsNavDirection] = useState<NavDirection>(
+		DEFAULT_CONTEXT.myBidsNavDirection,
+	);
 	const [winningBidsPage, setWinningBidsPage] = useState(DEFAULT_CONTEXT.winningBidsPage);
 
 	const [resultsPerPage, setResultsPerPage] = useState(DEFAULT_CONTEXT.resultsPerPage);
@@ -95,15 +103,16 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 			'@catalogue',
 			'allBids',
 			auctionId,
-			allBidsKey,
+			allBidsCursor,
 			bidsPerPage,
+			//	TODO: either remove or uncomment this once keyset pagination bug is fixed
 			allBidsNavDirection,
 		],
 		queryFn: () =>
 			throwError(
 				getPaginatedBids({
 					auctionId: auctionId as string,
-					bidId: allBidsKey,
+					cursor: allBidsCursor,
 					perPage: bidsPerPage,
 					navDirection: allBidsNavDirection,
 				}),
@@ -123,18 +132,18 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 			'myBids',
 			auctionId,
 			currentUser.id,
-			myBidsKey,
+			myBidsCursor,
 			bidsPerPage,
-			myBidsNavDirection,
+			// myBidsNavDirection,
 		],
 		queryFn: () =>
 			throwError(
 				getPaginatedBids({
 					auctionId: auctionId as string,
 					bidderId: currentUser.id,
-					bidId: myBidsKey,
+					cursor: myBidsCursor,
 					perPage: bidsPerPage,
-					navDirection: myBidsNavDirection,
+					// navDirection: myBidsNavDirection,
 				}),
 			),
 		placeholderData: keepPreviousData,
@@ -192,13 +201,13 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 				resultsPage,
 				setResultsPage,
 
-				allBidsKey,
-				setAllBidsKey,
+				allBidsCursor,
+				setAllBidsCursor,
 				allBidsNavDirection,
 				setAllBidsNavDirection,
 
-				myBidsKey,
-				setMyBidsKey,
+				myBidsCursor,
+				setMyBidsCursor,
 				myBidsNavDirection,
 				setMyBidsNavDirection,
 

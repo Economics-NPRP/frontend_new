@@ -1,0 +1,234 @@
+.root {
+	@apply flex-[4_4_0] px-12 gap-7;
+	@apply items-stretch flex-nowrap;
+
+	> .section {
+		@apply gap-3 items-stretch flex-nowrap;
+
+		> .divider {
+			.label {
+				@apply display-xs-13-g6 uppercase;
+
+				&::before {
+					@apply flex-[unset] w-4;
+				}
+			}
+
+			.row {
+				@apply gap-2;
+
+				> .info {
+					@apply cursor-pointer;
+				}
+			}
+		}
+
+		button.subtle,
+		a.subtle {
+			@apply h-7;
+			@apply self-center px-2 mt-2;
+			@apply paragraph-sm-g6;
+		}
+
+		&.details {
+			@apply gap-2;
+
+			> .title {
+				@apply heading-1;
+			}
+
+			> .row {
+				@apply justify-between items-center;
+
+				> .cell {
+					@apply gap-2 items-center;
+				}
+
+				> .rating {
+					@apply gap-0 items-end;
+				}
+
+				.subtext {
+					@apply paragraph-sm-g6;
+				}
+
+				&:has(.id) {
+					@apply mt-2;
+				}
+
+				> .owner {
+					@apply gap-2;
+
+					> .avatar {
+						@apply size-10;
+					}
+
+					> .link {
+						@apply text-blue-600 font-semibold;
+					}
+				}
+
+				> .breadcrumbs {
+					> a {
+						@apply paragraph-sm;
+					}
+
+					> .separator {
+						@apply mx-1;
+					}
+				}
+
+				.action {
+					@apply border-gray-400 text-dark-300;
+				}
+			}
+
+			> .description {
+				@apply paragraph-md text-justify;
+			}
+		}
+
+		&.properties {
+			@apply -mb-3;
+
+			> .table {
+				@apply gap-0;
+
+				> .row {
+					@apply h-12 flex-auto gap-0;
+
+					/* Dashed border */
+					background-image: repeating-linear-gradient(
+						90deg,
+						var(--mantine-color-gray-2) 0 12px,
+						#0000 0 24px
+					);
+					background-position: bottom;
+					background-size: 100% 1px;
+					background-repeat: repeat-x;
+
+					> .cell {
+						@apply flex-[50%] h-full;
+						@apply px-6 gap-3;
+						@apply flex-nowrap items-center justify-center;
+
+						/* Dashed border */
+						background-image: repeating-linear-gradient(
+							0deg,
+							var(--mantine-color-gray-2) 0 12px,
+							#0000 0 24px
+						);
+						background-position: right;
+						background-size: 1px 100%;
+						background-repeat: repeat-y;
+
+						> .icon {
+							@apply text-gray-600;
+						}
+
+						> .key {
+							@apply display-md-sb;
+						}
+
+						> .value {
+							@apply flex-auto;
+							@apply paragraph-md text-right;
+						}
+
+						&:last-child {
+							@apply bg-none;
+						}
+					}
+
+					&:nth-last-child(2) {
+						@apply bg-none;
+					}
+				}
+			}
+		}
+
+		&.permits {
+			@apply gap-4;
+
+			> .row {
+				@apply gap-4 items-center justify-center flex-nowrap;
+
+				> .cell {
+					@apply gap-0;
+
+					> .key {
+						@apply paragraph-sm-g6;
+					}
+
+					> .row {
+						@apply gap-1 items-baseline;
+
+						> .value {
+							@apply numeric-md;
+						}
+
+						> .unit {
+							@apply paragraph-sm;
+						}
+					}
+
+					&:last-child {
+						@apply items-end;
+
+						p {
+							@apply text-right;
+						}
+					}
+				}
+
+				> .slider {
+					@apply flex-auto pointer-events-none;
+
+					.thumb {
+						@apply hidden;
+					}
+				}
+			}
+		}
+
+		&.winnings {
+			@apply gap-4;
+
+			> .row {
+				@apply items-center justify-center flex-nowrap;
+				@apply mt-2 gap-16;
+
+				> .cell {
+					@apply gap-0 items-center;
+
+					> .icon {
+						@apply size-12 flex items-center justify-center;
+						@apply mb-2;
+						@apply bg-white border border-solid border-gray-300 shadow-sm;
+						@apply text-dark-300;
+					}
+
+					> .key {
+						@apply paragraph-sm-g6;
+					}
+
+					> .row {
+						@apply gap-1 items-baseline;
+
+						> .value {
+							@apply numeric-md;
+						}
+
+						> .unit {
+							@apply paragraph-sm;
+						}
+					}
+				}
+
+				> .divider {
+					@apply h-8 self-center;
+				}
+			}
+		}
+	}
+}

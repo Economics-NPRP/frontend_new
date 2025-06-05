@@ -18,13 +18,13 @@ export const DEFAULT_CONTEXT: IAuctionResultsContext = {
 	resultsPage: 1,
 	setResultsPage: () => {},
 
-	allBidsKey: undefined,
-	setAllBidsKey: () => {},
+	allBidsCursor: undefined,
+	setAllBidsCursor: () => {},
 	allBidsNavDirection: 'next',
 	setAllBidsNavDirection: () => {},
 
-	myBidsKey: undefined,
-	setMyBidsKey: () => {},
+	myBidsCursor: undefined,
+	setMyBidsCursor: () => {},
 	myBidsNavDirection: 'next',
 	setMyBidsNavDirection: () => {},
 
@@ -57,6 +57,9 @@ export const DEFAULT_CONTEXT: IAuctionResultsContext = {
 		results: [],
 		perPage: 20,
 		hasNext: false,
+		hasPrev: false,
+		cursorForNextPage: null,
+		cursorForPrevPage: null,
 		totalCount: 0,
 		isExact: true,
 		resultCount: 0,
@@ -71,6 +74,9 @@ export const DEFAULT_CONTEXT: IAuctionResultsContext = {
 		results: [],
 		perPage: 20,
 		hasNext: false,
+		hasPrev: false,
+		cursorForNextPage: null,
+		cursorForPrevPage: null,
 		totalCount: 0,
 		isExact: true,
 		resultCount: 0,
@@ -134,13 +140,13 @@ export interface IAuctionResultsContext {
 	resultsPage: number;
 	setResultsPage: (page: number) => void;
 
-	allBidsKey: string | undefined;
-	setAllBidsKey: (bidId: string | undefined) => void;
+	allBidsCursor: string | null | undefined;
+	setAllBidsCursor: (bidId: string | null | undefined) => void;
 	allBidsNavDirection: NavDirection;
 	setAllBidsNavDirection: (direction: NavDirection) => void;
 
-	myBidsKey: string | undefined;
-	setMyBidsKey: (bidId: string | undefined) => void;
+	myBidsCursor: string | null | undefined;
+	setMyBidsCursor: (bidId: string | null | undefined) => void;
 	myBidsNavDirection: NavDirection;
 	setMyBidsNavDirection: (direction: NavDirection) => void;
 
@@ -154,39 +160,39 @@ export interface IAuctionResultsContext {
 	setBidsPerPage: (perPage: number) => void;
 
 	openAuctionResults: OffsetPaginatedData<IAuctionResultsData>;
-	isOpenAuctionResultsLoading?: boolean;
-	isOpenAuctionResultsError?: boolean;
-	isOpenAuctionResultsSuccess?: boolean;
+	isOpenAuctionResultsLoading: boolean;
+	isOpenAuctionResultsError: boolean;
+	isOpenAuctionResultsSuccess: boolean;
 
 	allBids: KeysetPaginatedData<IBidData>;
-	isAllBidsLoading?: boolean;
-	isAllBidsError?: boolean;
-	isAllBidsSuccess?: boolean;
+	isAllBidsLoading: boolean;
+	isAllBidsError: boolean;
+	isAllBidsSuccess: boolean;
 
 	myBids: KeysetPaginatedData<IBidData>;
-	isMyBidsLoading?: boolean;
-	isMyBidsError?: boolean;
-	isMyBidsSuccess?: boolean;
+	isMyBidsLoading: boolean;
+	isMyBidsError: boolean;
+	isMyBidsSuccess: boolean;
 
 	winningBids: OffsetPaginatedData<IBidData>;
-	isWinningBidsLoading?: boolean;
-	isWinningBidsError?: boolean;
-	isWinningBidsSuccess?: boolean;
+	isWinningBidsLoading: boolean;
+	isWinningBidsError: boolean;
+	isWinningBidsSuccess: boolean;
 
 	allWinningBids: OffsetPaginatedData<IBidData>;
-	isAllWinningBidsLoading?: boolean;
-	isAllWinningBidsError?: boolean;
-	isAllWinningBidsSuccess?: boolean;
+	isAllWinningBidsLoading: boolean;
+	isAllWinningBidsError: boolean;
+	isAllWinningBidsSuccess: boolean;
 
 	auctionData: ServerData<IAuctionData>;
-	isAuctionDataLoading?: boolean;
-	isAuctionDataError?: boolean;
-	isAuctionDataSuccess?: boolean;
+	isAuctionDataLoading: boolean;
+	isAuctionDataError: boolean;
+	isAuctionDataSuccess: boolean;
 
 	myOpenAuctionResults: ServerData<IMyAuctionResultsData>;
-	isMyOpenAuctionResultsLoading?: boolean;
-	isMyOpenAuctionResultsError?: boolean;
-	isMyOpenAuctionResultsSuccess?: boolean;
+	isMyOpenAuctionResultsLoading: boolean;
+	isMyOpenAuctionResultsError: boolean;
+	isMyOpenAuctionResultsSuccess: boolean;
 }
 
 export const AuctionResultsContext = createContext<IAuctionResultsContext>(DEFAULT_CONTEXT);

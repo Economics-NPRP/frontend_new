@@ -4,6 +4,7 @@ export interface IOffsetPagination {
 }
 
 export interface IKeysetPagination {
+	cursor?: string | null;
 	perPage?: number;
 	navDirection?: NavDirection;
 }

@@ -1,106 +1,23 @@
 'use client';
 
-import { DateTime, Duration } from 'luxon';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useState } from 'react';
 
 import { Digit } from '@/components/Countdown/Digit';
-import { CountdownProps, CountdownUnitsArray } from '@/components/Countdown/constants';
-import { calculateInterval } from '@/components/Countdown/helpers';
+import { CountdownProps } from '@/components/Countdown/constants';
 import classes from '@/components/Countdown/styles.module.css';
+import { useCountdown } from '@/hooks';
 import { Group, Stack, Text } from '@mantine/core';
-import { useInViewport, useInterval } from '@mantine/hooks';
 import { IconPointFilled } from '@tabler/icons-react';
 
 export const LargeCountdown = ({
 	targetDate,
 	units,
-	displayOnly = false,
+	displayOnly,
 	className,
 	...props
 }: CountdownProps) => {
 	const t = useTranslations();
-	const { ref, inViewport } = useInViewport();
-
-	//	Convert the target date to a DateTime object if it is a string
-	targetDate = useMemo<DateTime>(
-		() => (typeof targetDate === 'string' ? DateTime.fromISO(targetDate) : targetDate),
-		[targetDate],
-	);
-
-	const [displayUnits, setDisplayUnits] = useState<CountdownUnitsArray>(
-		units || ['hour', 'minute', 'second'],
-	);
-	const [values, _setValues] = useState<[number, number, number, number, number, number]>([
-		0, 0, 0, 0, 0, 0,
-	]);
-
-	const setValues = useMemo(
-		() => (value?: DateTime | Duration, units?: CountdownUnitsArray) => {
-			if (!inViewport) return;
-			if (!value) return _setValues([0, 0, 0, 0, 0, 0]);
-
-			_setValues(
-				Array(6)
-					.fill(0)
-					.concat(
-						units!
-							.map((unit) =>
-								//	Convert value to 2-digit array, taking last 2 digits, for example:
-								//	12 -> [1, 2]
-								//	1 -> [0, 1]
-								//	2024 -> [2, 4]
-								value
-									.get(unit as never)
-									.toString()
-									.padStart(4, '0')
-									.slice(2)
-									.padStart(2, '0')
-									.split('')
-									.map(Number),
-							)
-							.flat(),
-					)
-					.slice(units!.length * 2) as [number, number, number, number, number, number],
-			);
-		},
-		[inViewport],
-	);
-
-	//	Main countdown logic
-	const handleInterval = () => {
-		const interval = calculateInterval(targetDate, units);
-
-		if (!interval.valid || displayOnly) {
-			setDisplayUnits(['empty', 'empty', 'empty'] as never);
-			setValues();
-			return stopCountdown();
-		}
-
-		setDisplayUnits(interval.units!);
-		setValues(interval.value, interval.units);
-	};
-	const { start: startCountdown, stop: stopCountdown } = useInterval(handleInterval, 1000);
-
-	//	Only render the value if the component is in the viewport
-	useEffect(() => {
-		if (displayOnly) return;
-		if (!inViewport) stopCountdown();
-		else {
-			handleInterval();
-			startCountdown();
-		}
-	}, [inViewport, displayOnly]);
-
-	useEffect(() => {
-		if (displayOnly) setValues(targetDate, units || ['day', 'month', 'year']);
-		else {
-			handleInterval();
-			startCountdown();
-		}
-
-		return stopCountdown;
-	}, [targetDate, units, displayOnly]);
+	const { values, displayUnits, ref } = useCountdown({ targetDate, units, displayOnly });
 
 	return (
 		<Group className={`${classes.root} ${className}`} ref={ref} {...props}>

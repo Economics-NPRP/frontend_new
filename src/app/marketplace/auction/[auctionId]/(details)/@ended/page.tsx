@@ -1,5 +1,6 @@
 'use client';
 
+import { SingleAuctionContext } from 'contexts/SingleAuction';
 import { useParams } from 'next/navigation';
 import { useContext, useMemo } from 'react';
 
@@ -7,42 +8,46 @@ import { Button, Group, Modal, Stack, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconArrowUpRight } from '@tabler/icons-react';
 
-import { AuctionDetailsContext } from '../constants';
+import classes from './styles.module.css';
 
 export default function EndedOverlay() {
 	const { auctionId } = useParams();
-	const { auctionData, isAuctionDataSuccess } = useContext(AuctionDetailsContext);
+	const auction = useContext(SingleAuctionContext);
 
 	const [isReadOnlyMode, { open: viewInReadOnlyMode }] = useDisclosure(false);
 
 	//	TODO: also check every second if the auction is still active
 	const hasEnded = useMemo(
-		() => new Date(auctionData.endDatetime).getTime() < Date.now(),
-		[auctionData.endDatetime],
+		() => new Date(auction.data.endDatetime).getTime() < Date.now(),
+		[auction.data.endDatetime],
 	);
 
 	return (
 		<>
 			<Modal
-				opened={isAuctionDataSuccess && hasEnded && !isReadOnlyMode}
+				opened={auction.isSuccess && hasEnded && !isReadOnlyMode}
 				onClose={viewInReadOnlyMode}
-				centered
 				closeOnEscape={false}
 				closeOnClickOutside={false}
 				withCloseButton={false}
 				classNames={{
-					content: 'min-w-[600px] px-16 pt-12 pb-8 justify-center items-center',
-					body: 'flex flex-col items-center justify-center gap-4 p-0',
+					root: classes.modal,
+					inner: classes.inner,
+					content: classes.content,
+					body: classes.body,
 				}}
+				centered
 			>
-				<Title className="text-center heading-2">This Auction Has Ended</Title>
-				<Text className="text-center paragraph-sm">
+				<Title order={2} className={classes.title}>
+					This Auction Has Ended
+				</Title>
+				<Text className={classes.description}>
 					You cannot participate in this auction anymore as it has ended. You can choose
 					to take a look at the results, or view the page in read-only mode
 				</Text>
-				<Stack className="mt-6 gap-2 items-center">
+				<Stack className={classes.actions}>
 					<Button
-						className="w-[200px]"
+						className={classes.cta}
 						component="a"
 						href={`/marketplace/auction/${auctionId}/results`}
 						rightSection={<IconArrowUpRight size={16} />}
@@ -56,14 +61,12 @@ export default function EndedOverlay() {
 			</Modal>
 
 			{isReadOnlyMode && (
-				<Group className="fixed left-[50%] -translate-x-[50%] bottom-8 bg-white px-4 h-12 shadow-md border-solid border border-gray-300 flex-nowrap justify-center items-center z-10">
-					<Text className="paragraph-sm text-center">
-						Viewing the page in read-only mode
-					</Text>
+				<Group className={classes.overlay}>
+					<Text className={classes.text}>Viewing the page in read-only mode</Text>
 					<Button
 						classNames={{
-							root: 'h-7 px-3',
-							section: 'ml-1',
+							root: classes.button,
+							section: classes.section,
 						}}
 						component="a"
 						href={`/marketplace/auction/${auctionId}/results`}

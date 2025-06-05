@@ -1,0 +1,58 @@
+.root {
+	@apply gap-8;
+
+	> .button {
+		@apply self-start;
+	}
+
+	> .details {
+		@apply flex-nowrap gap-0 items-start;
+	}
+
+	> .dashed {
+		@apply h-[1px];
+
+		/* Dashed border */
+		background-image: repeating-linear-gradient(
+			90deg,
+			var(--mantine-color-gray-2) 0 8px,
+			#0000 0 16px
+		);
+		background-position: bottom;
+		background-size: 100% 1px;
+		background-repeat: repeat-x;
+	}
+}
+
+.bg {
+	@apply absolute top-0 left-0;
+	@apply w-full h-[25%] max-w-none;
+	@apply pointer-events-none;
+	@apply -z-10;
+
+	> .gradient {
+		@apply absolute;
+		@apply size-full;
+		background: linear-gradient(to top, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0) 100%);
+	}
+
+	> .graphic {
+		@apply absolute;
+		@apply size-full;
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+		}
+	}
+}

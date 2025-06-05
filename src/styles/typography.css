@@ -125,6 +125,14 @@
 		@apply font-bold;
 		@apply text-dark-200 dark:text-dark-100;
 	}
+	.display-sm-15 {
+		@apply font-sans;
+		@apply font-bold;
+		@apply text-dark-200 dark:text-dark-100;
+
+		font-size: 15px;
+		line-height: 22px;
+	}
 	.display-sm-sb {
 		@apply font-sans;
 		@apply text-sm;
@@ -187,6 +195,12 @@
 		@apply font-semibold;
 		@apply text-white dark:text-dark-600;
 	}
+	.display-xs-g6 {
+		@apply font-sans;
+		@apply text-xs;
+		@apply font-semibold;
+		@apply text-gray-600 dark:text-dark-200;
+	}
 	.display-xs-13-w {
 		@apply font-sans;
 		@apply font-semibold;
@@ -195,12 +209,44 @@
 		font-size: 13px;
 		line-height: 19px;
 	}
+	.display-xs-13-g6 {
+		@apply font-sans;
+		@apply font-semibold;
+		@apply text-gray-600 dark:text-dark-200;
 
+		font-size: 13px;
+		line-height: 19px;
+	}
+	.display-2xs {
+		@apply font-sans;
+		@apply text-[0.625rem];
+		@apply font-semibold;
+		@apply text-dark-300 dark:text-dark-50;
+	}
+
+	.paragraph-lg {
+		@apply font-sans;
+		@apply text-lg;
+		@apply font-normal;
+		@apply text-dark-300 dark:text-dark-50;
+	}
+	.paragraph-lg-w {
+		@apply font-sans;
+		@apply text-lg;
+		@apply font-normal;
+		@apply text-white dark:text-dark-600;
+	}
 	.paragraph-md {
 		@apply font-sans;
 		@apply text-base;
 		@apply font-normal;
 		@apply text-dark-300 dark:text-dark-50;
+	}
+	.paragraph-md-g3 {
+		@apply font-sans;
+		@apply text-base;
+		@apply font-normal;
+		@apply text-gray-300 dark:text-dark-50;
 	}
 	.paragraph-md-w {
 		@apply font-sans;
@@ -214,18 +260,41 @@
 		@apply font-normal;
 		@apply text-dark-300 dark:text-dark-50;
 	}
+	.paragraph-sm-15 {
+		@apply font-sans;
+		@apply font-normal;
+		@apply text-dark-300 dark:text-dark-50;
 
+		font-size: 15px;
+		line-height: 22px;
+	}
 	.paragraph-sm-w {
 		@apply font-sans;
 		@apply text-sm;
 		@apply font-normal;
 		@apply text-white dark:text-dark-600;
 	}
+	.paragraph-sm-15-w {
+		@apply font-sans;
+		@apply font-normal;
+		@apply text-white dark:text-dark-600;
+
+		font-size: 15px;
+		line-height: 22px;
+	}
 	.paragraph-sm-g3 {
 		@apply font-sans;
 		@apply text-sm;
 		@apply font-normal;
-		@apply text-gray-300 dark:text-dark-300;
+		@apply text-gray-300 dark:text-dark-50;
+	}
+	.paragraph-sm-15-g3 {
+		@apply font-sans;
+		@apply font-normal;
+		@apply text-gray-300 dark:text-dark-50;
+
+		font-size: 15px;
+		line-height: 22px;
 	}
 	.paragraph-sm-g5 {
 		@apply font-sans;
@@ -283,10 +352,40 @@
 		@apply font-bold;
 		@apply text-dark-600 dark:text-white;
 	}
+	.numeric-lg-w {
+		@apply font-serif;
+		@apply text-xl;
+		@apply font-bold;
+		@apply text-white dark:text-dark-600;
+	}
 	.numeric-md {
 		@apply font-serif;
 		@apply text-lg;
 		@apply font-bold;
 		@apply text-dark-600 dark:text-white;
+	}
+	.numeric-md-w {
+		@apply font-serif;
+		@apply text-lg;
+		@apply font-bold;
+		@apply text-white dark:text-dark-300;
+	}
+	.numeric-sm {
+		@apply font-serif;
+		@apply text-base;
+		@apply font-semibold;
+		@apply text-dark-300 dark:text-white;
+	}
+	.numeric-sm-n {
+		@apply font-serif;
+		@apply text-base;
+		@apply font-normal;
+		@apply text-dark-300 dark:text-white;
+	}
+	.numeric-sm-n-w {
+		@apply font-serif;
+		@apply text-base;
+		@apply font-normal;
+		@apply text-white dark:text-dark-300;
 	}
 }

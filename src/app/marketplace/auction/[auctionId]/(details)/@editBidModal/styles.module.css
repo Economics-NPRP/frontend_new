@@ -1,0 +1,72 @@
+.root {
+	> .inner > .content {
+		@apply min-w-[720px];
+		@apply px-16 pt-12 pb-8;
+		@apply justify-center items-center;
+
+		> .body {
+			@apply flex flex-col items-stretch justify-center;
+			@apply gap-4 p-0;
+
+			> .title {
+				@apply text-center heading-2;
+			}
+
+			> .description {
+				@apply text-center paragraph-sm;
+			}
+
+			> form {
+				@apply contents;
+
+				> .inputs {
+					@apply gap-2 my-4 items-stretch flex-nowrap;
+
+					> .section {
+						@apply gap-2 justify-between;
+
+						> .key {
+							@apply gap-2;
+
+							> .icon {
+								@apply text-dark-300;
+							}
+
+							> .label {
+								@apply paragraph-md;
+							}
+						}
+
+						> .value {
+							@apply w-40 text-center paragraph-md;
+						}
+					}
+
+					> .summary {
+						@apply mt-2 flex-nowrap justify-between;
+
+						> .text {
+							@apply display-lg;
+						}
+
+						> .cell {
+							@apply gap-2;
+
+							> .value {
+								@apply numeric-md;
+							}
+						}
+					}
+				}
+
+				> .actions {
+					@apply mt-4 gap-2 justify-center flex-nowrap;
+
+					> .button {
+						@apply flex-[50%];
+					}
+				}
+			}
+		}
+	}
+}

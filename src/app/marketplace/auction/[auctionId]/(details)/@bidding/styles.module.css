@@ -1,0 +1,239 @@
+.root {
+	@apply relative;
+
+	> .body {
+		@apply gap-4 flex-nowrap items-stretch;
+
+		> .content {
+			@apply flex-auto;
+
+			> .header {
+				@apply gap-32 px-8 py-6 justify-between flex-nowrap;
+				@apply bg-white border border-solid border-gray-300;
+
+				> .label {
+					@apply gap-0 items-start;
+
+					> .title {
+						@apply heading-2;
+					}
+
+					> .subtitle {
+						@apply paragraph-md text-pretty;
+					}
+				}
+			}
+		}
+
+		> .sidebar {
+			@apply w-[480px];
+			@apply gap-0 items-stretch;
+
+			> .minBid {
+				@apply justify-between flex-nowrap;
+				@apply gap-4 px-6 py-4;
+				@apply bg-white border border-solid border-gray-300;
+
+				> .content {
+					@apply gap-1;
+
+					> .key {
+						@apply paragraph-sm-15;
+					}
+
+					> .value {
+						@apply gap-1;
+
+						> .amount {
+							@apply numeric-lg;
+						}
+					}
+
+					> .subtext {
+						@apply paragraph-sm-g6;
+
+						b {
+							@apply text-dark-600;
+						}
+					}
+				}
+			}
+
+			> .minIncrement {
+				@apply flex-nowrap gap-4 justify-between px-6 py-2;
+				@apply bg-white border border-t-0 border-solid border-gray-300;
+
+				> .key {
+					@apply paragraph-sm-15;
+				}
+
+				> .value {
+					@apply gap-1;
+
+					> .amount {
+						@apply numeric-lg;
+					}
+				}
+			}
+
+			> .bids {
+				@apply flex-nowrap gap-2 p-4;
+				@apply border border-t-0 border-solid border-gray-300;
+
+				.button {
+					@apply bg-white h-9 flex-[50%];
+				}
+			}
+
+			> .insertForm {
+				@apply px-12 py-8 gap-6 items-stretch;
+				@apply bg-dark-600;
+
+				> .header {
+					@apply gap-1;
+
+					> .row {
+						@apply justify-between flex-nowrap;
+
+						> .title {
+							@apply heading-2-w uppercase tracking-widest;
+						}
+
+						> .dots {
+							@apply items-center justify-center;
+							@apply flex-nowrap;
+							@apply gap-4;
+							@apply text-white;
+						}
+					}
+
+					> .description {
+						@apply paragraph-md-g3;
+					}
+				}
+
+				> .error .list {
+					@apply text-white;
+				}
+
+				> form {
+					@apply contents;
+
+					> .inputs {
+						@apply gap-2 items-stretch flex-nowrap;
+
+						> .section {
+							@apply gap-2 justify-between;
+							@apply text-white;
+
+							> .key {
+								@apply gap-2;
+
+								> .icon {
+									@apply text-white;
+								}
+
+								> .label {
+									@apply paragraph-md-w;
+								}
+							}
+
+							> .value {
+								@apply w-40 text-center paragraph-md-w;
+							}
+						}
+					}
+
+					> .summary {
+						@apply gap-2 mt-4;
+
+						> .row {
+							@apply flex-nowrap justify-between;
+
+							> .text {
+								@apply paragraph-lg-w;
+							}
+
+							> .cell {
+								@apply gap-2;
+
+								> .badge {
+									@apply bg-dark-400;
+									@apply text-dark-100;
+								}
+
+								> .value {
+									@apply numeric-md-w;
+								}
+							}
+						}
+
+						> .button {
+							@apply bg-white text-dark-600;
+						}
+
+						> .subtext {
+							@apply paragraph-sm-g5 text-center;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	> .footer {
+		@apply px-8 py-4 gap-8;
+		@apply bg-white border border-solid border-gray-300;
+
+		> .content {
+			@apply flex-auto;
+			@apply gap-4 items-center justify-center flex-nowrap;
+
+			> .cell {
+				@apply gap-1 items-baseline;
+
+				> .value {
+					@apply numeric-md;
+				}
+
+				> .unit {
+					@apply paragraph-sm;
+				}
+
+				&:last-child {
+					@apply items-end;
+
+					p {
+						@apply text-right;
+					}
+				}
+			}
+
+			> .slider {
+				@apply flex-auto pointer-events-none;
+
+				.thumb {
+					@apply hidden;
+				}
+			}
+		}
+
+		> .total {
+			@apply gap-2;
+
+			> .value {
+				@apply numeric-lg;
+			}
+		}
+
+		> .cta {
+			@apply w-[360px] h-10;
+			@apply bg-green-600;
+			@apply uppercase;
+
+			&[data-disabled='true'] {
+				@apply bg-gray-200;
+			}
+		}
+	}
+}

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { Header } from '@/pages/(auth)/(external)/(components)/(header)';
+import { Header } from '@/pages/(auth)/(external)/_components/Header';
 import classes from '@/pages/(auth)/(external)/styles.module.css';
 import { Stack } from '@mantine/core';
 

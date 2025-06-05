@@ -14,16 +14,4 @@
 			@apply px-4 pb-16 pt-24;
 		}
 	}
-
-	@mixin larger-than $mantine-breakpoint-lg {
-		.root {
-			@apply pt-28;
-		}
-	}
-
-	@mixin larger-than $mantine-breakpoint-xl {
-		.root {
-			@apply pt-32;
-		}
-	}
 }
