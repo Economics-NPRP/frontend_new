@@ -71,15 +71,15 @@ export default function AuctionPage({
 const Providers = ({ children }: PropsWithChildren) => (
 	<SingleAuctionProvider>
 		<MyOpenAuctionResultsProvider>
-			<PaginatedWinningBidsProvider>
-				<MyPaginatedWinningBidsProvider>
-					<PaginatedBidsProvider>
-						<MyPaginatedBidsProvider>
+			<MyPaginatedWinningBidsProvider>
+				<PaginatedWinningBidsProvider defaultPerPage={20}>
+					<PaginatedBidsProvider defaultPerPage={20}>
+						<MyPaginatedBidsProvider defaultPerPage={20}>
 							<PageProviders>{children}</PageProviders>
 						</MyPaginatedBidsProvider>
 					</PaginatedBidsProvider>
-				</MyPaginatedWinningBidsProvider>
-			</PaginatedWinningBidsProvider>
+				</PaginatedWinningBidsProvider>
+			</MyPaginatedWinningBidsProvider>
 		</MyOpenAuctionResultsProvider>
 	</SingleAuctionProvider>
 );
