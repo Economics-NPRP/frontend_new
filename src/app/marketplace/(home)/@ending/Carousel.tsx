@@ -6,7 +6,8 @@ import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'rea
 import { getLangDir } from 'rtl-detect';
 
 import { AuctionCard } from '@/components/AuctionCard';
-import { getPaginatedAuctions } from '@/lib/auctions';
+import { IAuctionData } from '@/schema/models';
+import { SortedOffsetPaginatedInfiniteContextState } from '@/types';
 import { Carousel, CarouselSlide } from '@mantine/carousel';
 import {
 	ActionIcon,
@@ -26,15 +27,15 @@ import {
 	IconChevronRight,
 	IconPointFilled,
 } from '@tabler/icons-react';
-import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { QUERY_PARAMS } from './constants';
 import classes from './styles.module.css';
 
 const TWEEN_FACTOR_BASE = 0.75;
 
-export interface CarouselProps {}
-export const AuctionCarousel = ({}: CarouselProps) => {
+export interface CarouselProps {
+	infinitePaginatedAuctions: SortedOffsetPaginatedInfiniteContextState<IAuctionData>;
+}
+export const AuctionCarousel = ({ infinitePaginatedAuctions }: CarouselProps) => {
 	const t = useTranslations();
 	const locale = useLocale();
 	const direction = getLangDir(locale);
@@ -48,15 +49,6 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 		xl: 4,
 	});
 
-	const { data, isError, isSuccess, isFetchingNextPage, hasNextPage, fetchNextPage } =
-		useInfiniteQuery({
-			queryKey: ['marketplace', '@ending'],
-			queryFn: ({ pageParam }) => getPaginatedAuctions({ ...QUERY_PARAMS, page: pageParam }),
-			initialPageParam: 1,
-			getNextPageParam: (lastPage) =>
-				lastPage.page + 1 > lastPage.pageCount ? undefined : lastPage.page + 1,
-		});
-
 	const [embla, setEmbla] = useState<EmblaCarouselType | null>(null);
 	const [progress, setProgress] = useState<number>(0);
 	const tweenFactor = useRef(0);
@@ -66,19 +58,23 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 	const handleUpdateProgress = useCallback(
 		(embla: EmblaCarouselType) =>
 			setProgress(Math.min(Math.max(embla.scrollProgress(), 0), 1) * 100),
-		[embla, data],
+		[embla, infinitePaginatedAuctions.data],
 	);
 
 	//	Infinite scroll when end is reached
 	const handleInfiniteScroll = useCallback(
 		(embla: EmblaCarouselType) => {
-			if (isFetchingNextPage || !hasNextPage) return;
+			if (
+				infinitePaginatedAuctions.isFetchingNextPage ||
+				!infinitePaginatedAuctions.hasNextPage
+			)
+				return;
 
 			const loaderIndex = embla.slideNodes().length - 1;
 			const loaderInView = embla.slidesInView().includes(loaderIndex);
-			if (loaderInView) fetchNextPage();
+			if (loaderInView) infinitePaginatedAuctions.fetchNextPage();
 		},
-		[isFetchingNextPage, hasNextPage],
+		[infinitePaginatedAuctions.isFetchingNextPage, infinitePaginatedAuctions.hasNextPage],
 	);
 
 	const setTweenFactor = useCallback((embla: EmblaCarouselType) => {
@@ -169,9 +165,9 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 	]);
 
 	const auctions = useMemo(() => {
-		if (!isSuccess) return [];
+		if (!infinitePaginatedAuctions.isSuccess) return [];
 
-		return data.pages.map((group) => (
+		return infinitePaginatedAuctions.data.pages.map((group) => (
 			<Fragment key={group.page}>
 				{group.results.map((auction) => (
 					<CarouselSlide key={auction.id}>
@@ -180,7 +176,7 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 				))}
 			</Fragment>
 		));
-	}, [data]);
+	}, [infinitePaginatedAuctions.data]);
 
 	return (
 		<>
@@ -244,8 +240,10 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 				/>
 			</Stack>
 			<Group className={classes.content}>
-				{isError && <Text className={classes.error}>Error loading auctions</Text>}
-				{isSuccess && (
+				{infinitePaginatedAuctions.isError && (
+					<Text className={classes.error}>Error loading auctions</Text>
+				)}
+				{infinitePaginatedAuctions.isSuccess && (
 					<Carousel
 						classNames={{
 							root: classes.carousel,
@@ -261,7 +259,7 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 						ref={containerRef}
 					>
 						{auctions}
-						{hasNextPage && (
+						{infinitePaginatedAuctions.hasNextPage && (
 							<CarouselSlide className={classes.loader}>
 								<Loader color="maroon" />
 							</CarouselSlide>

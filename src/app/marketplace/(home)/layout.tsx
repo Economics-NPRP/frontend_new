@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 
+import { InfinitePaginatedAuctionsProvider, PaginatedAuctionsProvider } from '@/contexts';
+import { withProviders } from '@/helpers';
 import { Container } from '@mantine/core';
 
 import classes from './styles.module.css';
@@ -20,7 +22,7 @@ export default function Home({
 	ending,
 	catalogue,
 }: HomeProps) {
-	return (
+	return withProviders(
 		<Container className={classes.root}>
 			<Container className={classes.banners}>
 				{banner}
@@ -30,6 +32,28 @@ export default function Home({
 			{calendar}
 			{ending}
 			{catalogue}
-		</Container>
+		</Container>,
+		{
+			provider: InfinitePaginatedAuctionsProvider,
+			props: {
+				defaultPerPage: 12,
+				defaultSortBy: 'end_datetime',
+				defaultSortDirection: 'asc',
+				defaultFilters: {
+					type: [],
+					status: 'ongoing',
+					sector: [],
+					owner: [],
+				},
+			},
+		},
+		{
+			provider: PaginatedAuctionsProvider,
+			props: {
+				defaultPerPage: 12,
+				defaultSortBy: 'created_at',
+				defaultSortDirection: 'desc',
+			},
+		},
 	);
 }

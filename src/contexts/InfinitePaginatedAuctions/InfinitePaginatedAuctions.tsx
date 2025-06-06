@@ -3,6 +3,7 @@
 import { createContext, useCallback, useMemo, useState } from 'react';
 
 import {
+	PaginatedAuctionsProviderProps,
 	SortedOffsetPaginatedInfiniteQueryProvider,
 	SortedOffsetPaginatedInfiniteQueryProviderProps,
 } from '@/contexts';
@@ -12,7 +13,6 @@ import { IAuctionFilters } from '@/pages/marketplace/(home)/@catalogue/constants
 import { IAuctionData } from '@/schema/models';
 import {
 	SortedOffsetPaginatedInfiniteContextState,
-	SortedOffsetPaginatedProviderProps,
 	getDefaultSortedOffsetPaginatedInfiniteContextState,
 } from '@/types';
 
@@ -41,9 +41,10 @@ export const InfinitePaginatedAuctionsProvider = ({
 	defaultPerPage,
 	defaultSortBy,
 	defaultSortDirection,
+	defaultFilters,
 	children,
-}: SortedOffsetPaginatedProviderProps) => {
-	const [filters, setFilters] = useState(DefaultData.filters);
+}: PaginatedAuctionsProviderProps) => {
+	const [filters, setFilters] = useState(defaultFilters || DefaultData.filters);
 
 	const removeFilter = useCallback<IInfinitePaginatedAuctionsContext['removeFilter']>(
 		(key, value) => {

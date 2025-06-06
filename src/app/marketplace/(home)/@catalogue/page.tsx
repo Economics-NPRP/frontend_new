@@ -2,7 +2,6 @@
 
 import { PropsWithChildren } from 'react';
 
-import { PaginatedAuctionsProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { Container } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -27,14 +26,6 @@ export default function Catalogue() {
 			</Container>
 		</>,
 		{ provider: ComponentProviders },
-		{
-			provider: PaginatedAuctionsProvider,
-			props: {
-				defaultPerPage: 12,
-				defaultSortBy: 'created_at',
-				defaultSortDirection: 'desc',
-			},
-		},
 	);
 }
 
