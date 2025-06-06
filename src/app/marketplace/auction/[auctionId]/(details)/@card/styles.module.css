@@ -1,5 +1,7 @@
 .root {
-	@apply flex-[3_3_0] items-stretch gap-0;
+	@apply sticky top-24;
+	@apply w-[560px] items-stretch gap-0;
+	@apply bg-white;
 
 	> .container {
 		@apply p-4;

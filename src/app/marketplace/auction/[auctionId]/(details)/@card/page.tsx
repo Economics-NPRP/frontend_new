@@ -51,7 +51,7 @@ export default function Card() {
 					</Group>
 				</Stack>
 				<Stack className={classes.section}>
-					<Text className={classes.subtext}>Minimum Winning Bid</Text>
+					<Text className={classes.subtext}>Minimum Bid</Text>
 					<Group className={classes.price}>
 						<CurrencyBadge className={classes.badge} />
 						<Text className={classes.value}>

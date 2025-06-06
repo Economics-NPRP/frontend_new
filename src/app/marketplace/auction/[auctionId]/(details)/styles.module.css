@@ -6,6 +6,7 @@
 	}
 
 	> .details {
+		@apply relative;
 		@apply flex-nowrap gap-0 items-start;
 	}
 

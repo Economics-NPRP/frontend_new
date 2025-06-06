@@ -1,5 +1,5 @@
 .root {
-	@apply flex-[4_4_0] px-12 gap-7;
+	@apply flex-1 px-12 gap-7;
 	@apply items-stretch flex-nowrap;
 
 	> .section {
