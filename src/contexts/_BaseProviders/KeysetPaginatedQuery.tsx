@@ -1,15 +1,14 @@
-import { Context, PropsWithChildren, useMemo, useState } from 'react';
+'use client';
 
+import { useMemo, useState } from 'react';
+
+import { QueryProvider, QueryProviderProps } from '@/contexts';
 import { KeysetPaginatedContextState, KeysetPaginatedProviderProps } from '@/types';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 export interface KeysetPaginatedQueryProviderProps<T extends KeysetPaginatedContextState<unknown>>
 	extends KeysetPaginatedProviderProps,
-		PropsWithChildren,
+		Pick<QueryProviderProps<T>, 'context' | 'defaultData' | 'queryKey'>,
 		Record<string, unknown> {
-	context: Context<T>;
-	defaultData: T;
-	queryKey: string[];
 	queryFn: (cursor: string | null, perPage: number) => () => Promise<unknown>;
 }
 export const KeysetPaginatedQueryProvider = <T extends KeysetPaginatedContextState<unknown>>({
@@ -30,32 +29,23 @@ export const KeysetPaginatedQueryProvider = <T extends KeysetPaginatedContextSta
 		() => [...queryKey, perPage, cursor],
 		[queryKey, perPage, cursor],
 	);
-	const paginatedQueryFn = useMemo(() => queryFn(cursor, perPage), [queryFn, perPage, cursor]);
-
-	const queryResults = useQuery({
-		queryKey: paginatedQueryKey,
-		queryFn: paginatedQueryFn,
-		placeholderData: keepPreviousData,
-	});
+	const paginatedQueryFn = useMemo(
+		() => () => queryFn(cursor, perPage),
+		[queryFn, perPage, cursor],
+	);
 
 	return (
-		<context.Provider
-			value={
-				{
-					cursor,
-					setCursor,
-
-					perPage,
-					setPerPage,
-
-					data: queryResults.data || defaultData.data,
-					isLoading: queryResults.isLoading,
-					isError: queryResults.isError,
-					isSuccess: queryResults.isSuccess,
-					...props,
-				} as T
-			}
+		<QueryProvider
+			context={context}
+			defaultData={defaultData}
+			queryKey={paginatedQueryKey}
+			queryFn={paginatedQueryFn}
 			children={children}
+			cursor={cursor}
+			setCursor={setCursor}
+			perPage={perPage}
+			setPerPage={setPerPage}
+			{...props}
 		/>
 	);
 };

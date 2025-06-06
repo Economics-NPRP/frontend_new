@@ -1,8 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 
-import { throwError } from '@/helpers';
+import { PaginatedAuctionsProvider } from '@/contexts';
+import { throwError, withProviders } from '@/helpers';
 import { IGetPaginatedAuctionsOptions, getPaginatedAuctions } from '@/lib/auctions';
 import { Container } from '@mantine/core';
 import { useDisclosure, useLocalStorage } from '@mantine/hooks';
@@ -15,6 +16,31 @@ import { CatalogueContext, DEFAULT_CONTEXT, ICatalogueContext } from './constant
 import classes from './styles.module.css';
 
 export default function Catalogue() {
+	return withProviders(
+		<>
+			<Container className={classes.root}>
+				<Container className={classes.bg}>
+					<Container className={`${classes.graphic} bg-grid-md`} />
+				</Container>
+				<Header />
+				<FiltersList />
+				<FiltersModal />
+				<List />
+			</Container>
+		</>,
+		{ provider: ComponentProviders },
+		{
+			provider: PaginatedAuctionsProvider,
+			props: {
+				defaultPerPage: 12,
+				defaultSortBy: 'created_at',
+				defaultSortDirection: 'desc',
+			},
+		},
+	);
+}
+
+const ComponentProviders = ({ children }: PropsWithChildren) => {
 	const [page, setPage] = useState(DEFAULT_CONTEXT.page);
 	const [perPage, setPerPage] = useLocalStorage({
 		key: 'perPage',
@@ -112,15 +138,7 @@ export default function Catalogue() {
 				closeFiltersModal: close,
 			}}
 		>
-			<Container className={classes.root}>
-				<Container className={classes.bg}>
-					<Container className={`${classes.graphic} bg-grid-md`} />
-				</Container>
-				<Header />
-				<FiltersList />
-				<FiltersModal />
-				<List />
-			</Container>
+			{children}
 		</CatalogueContext.Provider>
 	);
-}
+};

@@ -1,4 +1,6 @@
-import { Context, PropsWithChildren } from 'react';
+'use client';
+
+import { Context, PropsWithChildren, useMemo } from 'react';
 
 import { ContextState } from '@/types';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
@@ -8,8 +10,8 @@ export interface QueryProviderProps<T extends ContextState<unknown>>
 		Record<string, unknown> {
 	context: Context<T>;
 	defaultData: T;
-	queryKey: string[];
-	queryFn: () => Promise<unknown>;
+	queryKey: Array<string | number | null>;
+	queryFn: () => () => Promise<unknown>;
 }
 export const QueryProvider = <T extends ContextState<unknown>>({
 	context,
@@ -19,9 +21,11 @@ export const QueryProvider = <T extends ContextState<unknown>>({
 	children,
 	...props
 }: QueryProviderProps<T>) => {
+	const memoizedQueryFn = useMemo(() => queryFn(), [queryFn]);
+
 	const queryResults = useQuery({
 		queryKey,
-		queryFn,
+		queryFn: memoizedQueryFn,
 		placeholderData: keepPreviousData,
 	});
 

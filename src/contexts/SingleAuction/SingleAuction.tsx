@@ -21,7 +21,7 @@ export const SingleAuctionProvider = ({ children }: PropsWithChildren) => {
 			context={Context}
 			defaultData={DefaultData}
 			queryKey={['marketplace', '@catalogue', 'singleAuction', auctionId as string]}
-			queryFn={() => throwError(getSingleAuction(auctionId as string))}
+			queryFn={() => () => throwError(getSingleAuction(auctionId as string))}
 			children={children}
 		/>
 	);
