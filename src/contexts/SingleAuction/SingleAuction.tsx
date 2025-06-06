@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import { PropsWithChildren, createContext } from 'react';
 
-import { BaseQueryContextProvider } from '@/contexts';
+import { QueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
 import { getSingleAuction } from '@/lib/auctions';
 import { DefaultAuctionData, IAuctionData } from '@/schema/models';
@@ -17,7 +17,7 @@ export const SingleAuctionProvider = ({ children }: PropsWithChildren) => {
 	const { auctionId } = useParams();
 
 	return (
-		<BaseQueryContextProvider
+		<QueryProvider
 			context={Context}
 			defaultData={DefaultData}
 			queryKey={['marketplace', '@catalogue', 'singleAuction', auctionId as string]}

@@ -1,9 +1,9 @@
 'use client';
 
-import { BaseOffsetPaginatedQueryContextProvider } from 'contexts/BaseContextProviders';
 import { useParams } from 'next/navigation';
 import { createContext } from 'react';
 
+import { OffsetPaginatedQueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
 import { getPaginatedWinningBids } from '@/lib/bids/open';
 import { IBidData } from '@/schema/models';
@@ -25,7 +25,7 @@ export const PaginatedWinningBidsProvider = ({
 	const { auctionId } = useParams();
 
 	return (
-		<BaseOffsetPaginatedQueryContextProvider
+		<OffsetPaginatedQueryProvider
 			defaultPage={defaultPage}
 			defaultPerPage={defaultPerPage}
 			context={Context}
