@@ -1,4 +1,5 @@
 export * from './_BaseProviders';
+export * from './InfinitePaginatedAuctions';
 export * from './MyOpenAuctionResults';
 export * from './MyPaginatedBids';
 export * from './MyPaginatedWinningBids';
