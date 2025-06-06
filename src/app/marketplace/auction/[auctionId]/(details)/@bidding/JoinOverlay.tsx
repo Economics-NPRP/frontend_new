@@ -5,7 +5,6 @@ import { throwError } from '@/helpers';
 import { joinAuction } from '@/lib/auctions';
 import { Button, Container, Loader, Stack, Text, Title } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { IconArrowUpRight } from '@tabler/icons-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const JoinOverlay = () => {
@@ -16,7 +15,7 @@ export const JoinOverlay = () => {
 		mutationFn: () => throwError(joinAuction(auctionId as string)),
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ['marketplace', '@catalogue', 'auctionData', auctionId],
+				queryKey: ['marketplace', auctionId],
 			});
 		},
 		onError: ({ message }) => {
@@ -50,11 +49,7 @@ export const JoinOverlay = () => {
 						You must first join the auction to participate in the bidding process. Click
 						the button below to join.
 					</Text>
-					<Button
-						className="w-[200px] mt-4"
-						onClick={onClickHandler}
-						rightSection={<IconArrowUpRight size={16} />}
-					>
+					<Button className="w-[200px] mt-4" onClick={onClickHandler}>
 						Join Auction
 					</Button>
 				</Stack>
