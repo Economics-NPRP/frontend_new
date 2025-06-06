@@ -32,10 +32,10 @@ import classes from './styles.module.css';
 
 const TWEEN_FACTOR_BASE = 0.75;
 
-export interface CarouselProps {
+export interface AuctionCarouselProps {
 	infinitePaginatedAuctions: SortedOffsetPaginatedInfiniteContextState<IAuctionData>;
 }
-export const AuctionCarousel = ({ infinitePaginatedAuctions }: CarouselProps) => {
+export const AuctionCarousel = ({ infinitePaginatedAuctions }: AuctionCarouselProps) => {
 	const t = useTranslations();
 	const locale = useLocale();
 	const direction = getLangDir(locale);
@@ -179,7 +179,7 @@ export const AuctionCarousel = ({ infinitePaginatedAuctions }: CarouselProps) =>
 	}, [infinitePaginatedAuctions.data]);
 
 	return (
-		<>
+		<Stack className={classes.root}>
 			<Stack className={classes.header}>
 				<Group className={classes.top}>
 					<Group className={classes.left}>
@@ -267,6 +267,6 @@ export const AuctionCarousel = ({ infinitePaginatedAuctions }: CarouselProps) =>
 					</Carousel>
 				)}
 			</Group>
-		</>
+		</Stack>
 	);
 };

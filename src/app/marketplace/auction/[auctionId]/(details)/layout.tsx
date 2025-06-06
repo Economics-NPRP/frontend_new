@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 
 import {
+	InfinitePaginatedAuctionsProvider,
 	MyOpenAuctionResultsProvider,
 	MyPaginatedBidsProvider,
 	MyPaginatedWinningBidsProvider,
@@ -73,5 +74,19 @@ export default function AuctionPage({
 		{ provider: PaginatedBidsProvider, props: { defaultPerPage: 20 } },
 		{ provider: MyPaginatedBidsProvider, props: { defaultPerPage: 20 } },
 		{ provider: PageProviders },
+		{
+			provider: InfinitePaginatedAuctionsProvider,
+			props: {
+				defaultPerPage: 12,
+				defaultSortBy: 'end_datetime',
+				defaultSortDirection: 'asc',
+				defaultFilters: {
+					type: [],
+					status: 'ongoing',
+					sector: [],
+					owner: [],
+				},
+			},
+		},
 	);
 }

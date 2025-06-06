@@ -3,9 +3,9 @@
 import { InfinitePaginatedAuctionsContext } from 'contexts/InfinitePaginatedAuctions';
 import { useContext } from 'react';
 
+import { AuctionCarousel } from '@/components/AuctionCarousel';
 import { Container, Stack } from '@mantine/core';
 
-import { AuctionCarousel } from './Carousel';
 import classes from './styles.module.css';
 
 export default function EndingSoon() {
