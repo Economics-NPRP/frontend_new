@@ -1,3 +1,4 @@
+import { PaginatedAuctionsContext } from 'contexts/PaginatedAuctions';
 import { useTranslations } from 'next-intl';
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 
@@ -28,7 +29,7 @@ import { DatePickerInput, DatesRangeValue } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { IconArrowBackUp, IconCheck, IconPlus, IconTrash } from '@tabler/icons-react';
 
-import { CatalogueContext, IAuctionFilters } from './constants';
+import { AuctionCatalogueContext, IAuctionFilters } from './constants';
 import classes from './styles.module.css';
 
 const MIN_PERMITS = 1;
@@ -81,31 +82,34 @@ const parseValues = (values: ReturnType<typeof parseFilters>) =>
 
 const FiltersCore = () => {
 	const t = useTranslations();
-	const context = useContext(CatalogueContext);
+	const paginatedAuctions = useContext(PaginatedAuctionsContext);
 
 	const form = useForm({
 		mode: 'uncontrolled',
-		initialValues: parseFilters(context.filters),
+		initialValues: parseFilters(paginatedAuctions.filters),
 
 		transformValues: parseValues,
 	});
 
 	useEffect(() => {
-		form.setInitialValues(parseFilters(context.filters));
+		form.setInitialValues(parseFilters(paginatedAuctions.filters));
 		form.reset();
-	}, [context.filters]);
+	}, [paginatedAuctions.filters]);
 
-	const handleClearFilters = useCallback(() => context.setFilters({}), [context.setFilters]);
+	const handleClearFilters = useCallback(
+		() => paginatedAuctions.setFilters({}),
+		[paginatedAuctions.setFilters],
+	);
 
 	const numFilters = useMemo(() => {
-		const type = context.filters.type?.length || 0;
-		const status = context.filters.status === 'all' ? 0 : 1;
-		const sector = context.filters.sector?.length || 0;
-		const owner = context.filters.owner?.length || 0;
-		const date = context.filters.date ? 1 : 0;
-		const permits = context.filters.permits ? 1 : 0;
-		const minBid = context.filters.minBid ? 1 : 0;
-		const price = context.filters.price ? 1 : 0;
+		const type = paginatedAuctions.filters.type?.length || 0;
+		const status = paginatedAuctions.filters.status === 'all' ? 0 : 1;
+		const sector = paginatedAuctions.filters.sector?.length || 0;
+		const owner = paginatedAuctions.filters.owner?.length || 0;
+		const date = paginatedAuctions.filters.date ? 1 : 0;
+		const permits = paginatedAuctions.filters.permits ? 1 : 0;
+		const minBid = paginatedAuctions.filters.minBid ? 1 : 0;
+		const price = paginatedAuctions.filters.price ? 1 : 0;
 		const total = type + status + sector + owner + date + permits + minBid + price;
 
 		return {
@@ -119,10 +123,10 @@ const FiltersCore = () => {
 			price,
 			total,
 		};
-	}, [context.filters]);
+	}, [paginatedAuctions.filters]);
 
 	return (
-		<form onSubmit={form.onSubmit((value) => context.setFilters(value))}>
+		<form onSubmit={form.onSubmit((value) => paginatedAuctions.setFilters(value))}>
 			<Group className={classes.footer}>
 				<Text className={classes.value}>
 					{t('marketplace.home.catalogue.filters.total', {
@@ -529,7 +533,7 @@ export const FiltersList = () => {
 };
 
 export const FiltersModal = () => {
-	const { isFilterModalOpen, closeFiltersModal } = useContext(CatalogueContext);
+	const { isFilterModalOpen, closeFiltersModal } = useContext(AuctionCatalogueContext);
 
 	return (
 		<Modal title="Filters List" opened={isFilterModalOpen} onClose={closeFiltersModal}>

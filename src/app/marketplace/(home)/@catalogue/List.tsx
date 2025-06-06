@@ -1,35 +1,35 @@
+import { PaginatedAuctionsContext } from 'contexts/PaginatedAuctions';
 import { useContext, useMemo } from 'react';
 
 import { AuctionCard } from '@/components/AuctionCard';
 import { Container, Pagination } from '@mantine/core';
 
-import { CatalogueContext } from './constants';
 import classes from './styles.module.css';
 
 export const List = () => {
-	const context = useContext(CatalogueContext);
+	const paginatedAuctions = useContext(PaginatedAuctionsContext);
 
 	const auctions = useMemo(() => {
-		if (!context.isSuccess) return [];
+		if (!paginatedAuctions.isSuccess) return [];
 
-		return context.auctionData.results.map((auction) => (
+		return paginatedAuctions.data.results.map((auction) => (
 			<AuctionCard auction={auction} key={auction.id} />
 		));
-	}, [context.auctionData, context.isSuccess]);
+	}, [paginatedAuctions.data, paginatedAuctions.isSuccess]);
 
 	const pagination = useMemo(
 		() =>
-			context.pageCount > 1 && (
+			paginatedAuctions.data.pageCount > 1 && (
 				<Pagination
 					className={classes.pagination}
-					value={context.auctionData.page}
-					total={context.pageCount}
+					value={paginatedAuctions.data.page}
+					total={paginatedAuctions.data.pageCount}
 					siblings={2}
 					boundaries={3}
-					onChange={context.setPage}
+					onChange={paginatedAuctions.setPage}
 				/>
 			),
-		[context.auctionData.page, context.pageCount, context.setPage],
+		[paginatedAuctions.data.page, paginatedAuctions.data.pageCount, paginatedAuctions.setPage],
 	);
 
 	return (

@@ -10,7 +10,7 @@ export interface QueryProviderProps<T extends ContextState<unknown>>
 		Record<string, unknown> {
 	context: Context<T>;
 	defaultData: T;
-	queryKey: Array<string | number | null>;
+	queryKey: Array<string | number | boolean | undefined | null>;
 	queryFn: () => () => Promise<unknown>;
 }
 export const QueryProvider = <T extends ContextState<unknown>>({
