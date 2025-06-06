@@ -9,8 +9,8 @@ import { AuctionType, IAuctionData } from '@/schema/models';
 import { IOffsetPagination, OffsetPaginatedData, SortDirection } from '@/types';
 
 export interface IGetPaginatedAuctionsOptions extends IOffsetPagination {
-	sortBy?: string;
-	sortDirection?: SortDirection;
+	sortBy?: string | null;
+	sortDirection?: SortDirection | null;
 
 	ownerId?: string;
 	type?: AuctionType;
