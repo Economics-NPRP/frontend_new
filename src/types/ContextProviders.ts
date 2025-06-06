@@ -1,5 +1,6 @@
 import { PropsWithChildren } from 'react';
 
+import { SortDirection } from '@/types';
 import { KeysetPaginatedData, OffsetPaginatedData, ServerData } from '@/types/ServerData';
 
 export interface OffsetPaginatedProviderProps extends PropsWithChildren {
@@ -10,6 +11,13 @@ export interface OffsetPaginatedProviderProps extends PropsWithChildren {
 export interface KeysetPaginatedProviderProps extends PropsWithChildren {
 	defaultCursor?: string | null;
 	defaultPerPage?: number;
+}
+
+export interface SortedOffsetPaginatedProviderProps extends PropsWithChildren {
+	defaultPage?: number;
+	defaultPerPage?: number;
+	defaultSortBy?: string | null;
+	defaultSortDirection?: SortDirection | null;
 }
 
 export interface ContextState<T> {
@@ -35,6 +43,20 @@ export interface KeysetPaginatedContextState<T> extends ContextState<KeysetPagin
 
 	perPage: number;
 	setPerPage: (perPage: number) => void;
+}
+
+export interface SortedOffsetPaginatedContextState<T> extends ContextState<OffsetPaginatedData<T>> {
+	page: number;
+	setPage: (page: number) => void;
+
+	perPage: number;
+	setPerPage: (perPage: number) => void;
+
+	sortBy: string | null;
+	setSortBy: (sortBy: string) => void;
+
+	sortDirection: SortDirection | null;
+	setSortDirection: (sortDirection: SortDirection) => void;
 }
 
 export const getDefaultContextState = <T>(defaultData: T): ServerContextState<T> => ({
@@ -96,6 +118,37 @@ export const getDefaultKeysetPaginatedContextState = <T>(
 		isExact: true,
 		resultCount: 0,
 	} as KeysetPaginatedData<T>,
+	isLoading: true,
+	isError: false,
+	isSuccess: false,
+});
+
+export const getDefaultSortedOffsetPaginatedContextState = <T>(
+	defaultPage: number = 1,
+	defaultPerPage: number = 10,
+): SortedOffsetPaginatedContextState<T> => ({
+	page: defaultPage,
+	setPage: () => {},
+
+	perPage: defaultPerPage,
+	setPerPage: () => {},
+
+	sortBy: null,
+	setSortBy: () => {},
+
+	sortDirection: null,
+	setSortDirection: () => {},
+
+	data: {
+		ok: false,
+		errors: [],
+		results: [],
+		page: 1,
+		pageCount: 1,
+		totalCount: 0,
+		perPage: 10,
+		resultCount: 0,
+	} as OffsetPaginatedData<T>,
 	isLoading: true,
 	isError: false,
 	isSuccess: false,

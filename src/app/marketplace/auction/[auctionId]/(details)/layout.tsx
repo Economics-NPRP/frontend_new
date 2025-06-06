@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import {
 	MyOpenAuctionResultsProvider,
@@ -8,6 +8,7 @@ import {
 	PaginatedWinningBidsProvider,
 	SingleAuctionProvider,
 } from '@/contexts';
+import { withProviders } from '@/helpers';
 import { PageProviders } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Button, Container, Group, Stack } from '@mantine/core';
 import { IconArrowUpLeft } from '@tabler/icons-react';
@@ -36,8 +37,8 @@ export default function AuctionPage({
 	bidding,
 	suggestions,
 }: AuctionDetailsProps) {
-	return (
-		<Providers>
+	return withProviders(
+		<>
 			<Container className={classes.bg}>
 				<Container className={`${classes.graphic} bg-grid-md`} />
 				<Container className={classes.gradient} />
@@ -64,22 +65,13 @@ export default function AuctionPage({
 			{editBidModal}
 			{bidConfirmationModal}
 			{ended}
-		</Providers>
+		</>,
+		{ provider: SingleAuctionProvider },
+		{ provider: MyOpenAuctionResultsProvider },
+		{ provider: MyPaginatedWinningBidsProvider },
+		{ provider: PaginatedWinningBidsProvider, props: { defaultPerPage: 20 } },
+		{ provider: PaginatedBidsProvider, props: { defaultPerPage: 20 } },
+		{ provider: MyPaginatedBidsProvider, props: { defaultPerPage: 20 } },
+		{ provider: PageProviders },
 	);
 }
-
-const Providers = ({ children }: PropsWithChildren) => (
-	<SingleAuctionProvider>
-		<MyOpenAuctionResultsProvider>
-			<MyPaginatedWinningBidsProvider>
-				<PaginatedWinningBidsProvider defaultPerPage={20}>
-					<PaginatedBidsProvider defaultPerPage={20}>
-						<MyPaginatedBidsProvider defaultPerPage={20}>
-							<PageProviders>{children}</PageProviders>
-						</MyPaginatedBidsProvider>
-					</PaginatedBidsProvider>
-				</PaginatedWinningBidsProvider>
-			</MyPaginatedWinningBidsProvider>
-		</MyOpenAuctionResultsProvider>
-	</SingleAuctionProvider>
-);

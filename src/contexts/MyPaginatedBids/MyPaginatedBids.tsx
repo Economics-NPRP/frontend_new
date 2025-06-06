@@ -1,9 +1,9 @@
 'use client';
 
-import { BaseKeysetPaginatedQueryContextProvider } from 'contexts/BaseContextProviders';
 import { useParams } from 'next/navigation';
 import { createContext, useContext } from 'react';
 
+import { KeysetPaginatedQueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
 import { getPaginatedBids } from '@/lib/bids/open';
 import { CurrentUserContext } from '@/pages/globalContext';
@@ -28,18 +28,12 @@ export const MyPaginatedBidsProvider = ({
 	const { currentUser } = useContext(CurrentUserContext);
 
 	return (
-		<BaseKeysetPaginatedQueryContextProvider
+		<KeysetPaginatedQueryProvider
 			defaultCursor={defaultCursor}
 			defaultPerPage={defaultPerPage}
 			context={Context}
 			defaultData={DefaultData}
-			queryKey={[
-				'marketplace',
-				'@catalogue',
-				'myPaginatedBids',
-				auctionId as string,
-				currentUser.id,
-			]}
+			queryKey={[currentUser.id, 'marketplace', auctionId as string, 'myPaginatedBids']}
 			queryFn={(cursor, perPage) => () =>
 				throwError(
 					getPaginatedBids({

@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { useCallback, useContext, useMemo, useState } from 'react';
 
+import { DefaultPaginatedAuctionsContextData, PaginatedAuctionsContext } from '@/contexts';
 import { SortDirection } from '@/types';
 import {
 	ActionIcon,
@@ -18,7 +19,7 @@ import {
 import { DatesRangeValue } from '@mantine/dates';
 import { IconDownload, IconFilter, IconLayoutGrid, IconListDetails } from '@tabler/icons-react';
 
-import { CatalogueContext, DEFAULT_CONTEXT, IAuctionFilters, IAuctionStatus } from './constants';
+import { AuctionCatalogueContext, IAuctionFilters, IAuctionStatus } from './constants';
 import classes from './styles.module.css';
 
 type ViewType = 'grid' | 'list';
@@ -29,19 +30,8 @@ const FilterPill = (props: PillProps) => (
 
 export const Header = () => {
 	const t = useTranslations();
-	const {
-		page,
-		perPage,
-		sortBy,
-		sortDirection,
-		filters,
-		auctionData,
-		setPerPage,
-		setSortBy,
-		setSortDirection,
-		removeFilter,
-		openFiltersModal,
-	} = useContext(CatalogueContext);
+	const paginatedAuctions = useContext(PaginatedAuctionsContext);
+	const { openFiltersModal } = useContext(AuctionCatalogueContext);
 
 	const [view, setView] = useState<ViewType>('grid');
 	const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
@@ -56,18 +46,20 @@ export const Header = () => {
 	);
 
 	const auctionIndex = useMemo(() => {
-		const index = (page - 1) * perPage;
+		const index = (paginatedAuctions.page - 1) * paginatedAuctions.perPage;
 		const end =
-			index + perPage > auctionData.totalCount ? auctionData.totalCount : index + perPage;
+			index + paginatedAuctions.perPage > paginatedAuctions.data.totalCount
+				? paginatedAuctions.data.totalCount
+				: index + paginatedAuctions.perPage;
 		return `${index + 1} - ${end}`;
-	}, [page, perPage, auctionData.totalCount]);
+	}, [paginatedAuctions.page, paginatedAuctions.perPage, paginatedAuctions.data.totalCount]);
 
 	const filterBadges = useMemo(() => {
 		const output = [];
 
 		const selectFilters = ['type', 'sector', 'owner'];
 		(
-			Object.entries(filters) as Array<
+			Object.entries(paginatedAuctions.filters) as Array<
 				[keyof IAuctionFilters, Array<unknown> | IAuctionStatus]
 			>
 		).forEach(([key, value]) => {
@@ -75,7 +67,10 @@ export const Header = () => {
 			if (selectFilters.includes(key))
 				output.push(
 					...(value as Array<string>).map((val) => (
-						<FilterPill key={`${key}-${val}`} onRemove={() => removeFilter(key, val)}>
+						<FilterPill
+							key={`${key}-${val}`}
+							onRemove={() => paginatedAuctions.removeFilter(key, val)}
+						>
 							{t(`marketplace.home.catalogue.filters.accordion.${key}.title`)}: "{val}
 							"
 						</FilterPill>
@@ -85,7 +80,7 @@ export const Header = () => {
 				const status = value as IAuctionStatus;
 				if (status !== 'all') {
 					output.push(
-						<FilterPill key={key} onRemove={() => removeFilter(key)}>
+						<FilterPill key={key} onRemove={() => paginatedAuctions.removeFilter(key)}>
 							{t(
 								`marketplace.home.catalogue.filters.accordion.${key}.options.${status}`,
 							)}{' '}
@@ -98,7 +93,7 @@ export const Header = () => {
 				output.push(
 					<FilterPill
 						key={`date-${startDate?.getMilliseconds()}-${endDate?.getMilliseconds()}`}
-						onRemove={() => removeFilter(key)}
+						onRemove={() => paginatedAuctions.removeFilter(key)}
 					>
 						{t(`marketplace.home.catalogue.filters.accordion.${key}.title`)}: "
 						{startDate?.toLocaleDateString()} - {endDate?.toLocaleDateString()}"
@@ -107,7 +102,10 @@ export const Header = () => {
 			} else if (key === 'permits' || key === 'minBid' || key === 'price') {
 				const [min, max] = value as [number, number];
 				output.push(
-					<FilterPill key={`${key}-${min}-${max}`} onRemove={() => removeFilter(key)}>
+					<FilterPill
+						key={`${key}-${min}-${max}`}
+						onRemove={() => paginatedAuctions.removeFilter(key)}
+					>
 						{t(`marketplace.home.catalogue.filters.accordion.${key}.title`)}: "{min} -{' '}
 						{max}"
 					</FilterPill>,
@@ -122,7 +120,7 @@ export const Header = () => {
 				</FilterPill>,
 			);
 		return output;
-	}, [filters]);
+	}, [paginatedAuctions.filters]);
 
 	return (
 		<Stack className={classes.header}>
@@ -141,7 +139,8 @@ export const Header = () => {
 						-
 					</Text>
 					<Text className={classes.subheading}>
-						Showing <b>{auctionIndex}</b> of {auctionData.totalCount} auctions
+						Showing <b>{auctionIndex}</b> of {paginatedAuctions.data.totalCount}{' '}
+						auctions
 					</Text>
 				</Group>
 				<Group className={classes.settings}>
@@ -149,7 +148,7 @@ export const Header = () => {
 					<Select
 						className={classes.dropdown}
 						w={180}
-						value={`${sortBy}-${sortDirection}`}
+						value={`${paginatedAuctions.sortBy}-${paginatedAuctions.sortDirection}`}
 						data={[
 							{ value: 'created_at-desc', label: 'Newest' },
 							{ value: 'created_at-asc', label: 'Oldest' },
@@ -162,19 +161,19 @@ export const Header = () => {
 						onChange={(value) => {
 							const [sortBy, sortDirection] = (
 								value ||
-								`${DEFAULT_CONTEXT.sortBy}-${DEFAULT_CONTEXT.sortDirection}`
+								`${DefaultPaginatedAuctionsContextData.sortBy}-${DefaultPaginatedAuctionsContextData.sortDirection}`
 							).split('-');
-							setSortBy(sortBy);
-							setSortDirection(sortDirection as SortDirection);
+							paginatedAuctions.setSortBy(sortBy);
+							paginatedAuctions.setSortDirection(sortDirection as SortDirection);
 						}}
 					/>
 					<Text className={classes.label}>Per page:</Text>
 					<Select
 						className={classes.dropdown}
 						w={64}
-						value={perPage.toString()}
+						value={paginatedAuctions.perPage.toString()}
 						data={['6', '12', '24']}
-						onChange={(value) => setPerPage(Number(value))}
+						onChange={(value) => paginatedAuctions.setPerPage(Number(value))}
 					/>
 				</Group>
 			</Group>

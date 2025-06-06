@@ -1,5 +1,7 @@
 'use client';
 
+import { MyOpenAuctionResultsContext } from 'contexts/MyOpenAuctionResults';
+import { SingleAuctionContext } from 'contexts/SingleAuction';
 import { useFormatter } from 'next-intl';
 import { useContext, useMemo } from 'react';
 
@@ -23,25 +25,26 @@ import {
 } from '@mantine/core';
 import { IconArrowUpLeft } from '@tabler/icons-react';
 
-import { AuctionResultsContext } from '../constants';
+import { AuctionResultsPageContext } from '../constants';
 
 export default function Ticket() {
 	const format = useFormatter();
-	const { scrollToHistory, auctionData, myOpenAuctionResults } =
-		useContext(AuctionResultsContext);
+	const auction = useContext(SingleAuctionContext);
+	const myOpenAuctionResults = useContext(MyOpenAuctionResultsContext);
+	const { scrollToHistory } = useContext(AuctionResultsPageContext);
 
 	const percentage = useMemo(
-		() => (myOpenAuctionResults.permitsReserved / auctionData.permits) * 100,
-		[myOpenAuctionResults.permitsReserved, auctionData.permits],
+		() => (myOpenAuctionResults.data.permitsReserved / auction.data.permits) * 100,
+		[myOpenAuctionResults.data.permitsReserved, auction.data.permits],
 	);
 
 	const isEnded = useMemo(
-		() => new Date(auctionData.endDatetime).getTime() < Date.now(),
-		[auctionData.endDatetime],
+		() => new Date(auction.data.endDatetime).getTime() < Date.now(),
+		[auction.data.endDatetime],
 	);
 	const isWinner = useMemo(
-		() => myOpenAuctionResults.permitsReserved > 0 && isEnded,
-		[myOpenAuctionResults],
+		() => myOpenAuctionResults.data.permitsReserved > 0 && isEnded,
+		[myOpenAuctionResults.data],
 	);
 
 	const winnerTicket = (
@@ -49,7 +52,7 @@ export default function Ticket() {
 			<Stack>
 				<Text>You have won</Text>
 				<Group>
-					<Text>{myOpenAuctionResults.permitsReserved}</Text>
+					<Text>{myOpenAuctionResults.data.permitsReserved}</Text>
 					<Text>Permits</Text>
 				</Group>
 			</Stack>
@@ -91,7 +94,7 @@ export default function Ticket() {
 					<TableTr>
 						<TableTd>Number of Emissions</TableTd>
 						<TableTd>
-							{format.number(myOpenAuctionResults.permitsReserved * 1000)} tCO2e
+							{format.number(myOpenAuctionResults.data.permitsReserved * 1000)} tCO2e
 						</TableTd>
 					</TableTr>
 
@@ -99,20 +102,25 @@ export default function Ticket() {
 						<TableTd>Average Cost Per Permit</TableTd>
 						<TableTd>
 							<CurrencyBadge />
-							{format.number(myOpenAuctionResults.averagePricePerPermit, 'money')}
+							{format.number(
+								myOpenAuctionResults.data.averagePricePerPermit,
+								'money',
+							)}
 						</TableTd>
 					</TableTr>
 
 					<TableTr>
 						<TableTd>Number of Winning Bids</TableTd>
 						<TableTd>
-							{format.number(myOpenAuctionResults.winningBidsCount)} Bids
+							{format.number(myOpenAuctionResults.data.winningBidsCount)} Bids
 						</TableTd>
 					</TableTr>
 
 					<TableTr>
 						<TableTd>Number of Submitted Bids</TableTd>
-						<TableTd>{format.number(myOpenAuctionResults.totalBidsCount)} Bids</TableTd>
+						<TableTd>
+							{format.number(myOpenAuctionResults.data.totalBidsCount)} Bids
+						</TableTd>
 					</TableTr>
 				</TableTbody>
 			</Table>
@@ -121,7 +129,7 @@ export default function Ticket() {
 				<Text>You owe</Text>
 				<Group>
 					<CurrencyBadge />
-					<Text>{format.number(myOpenAuctionResults.finalBill, 'money')}</Text>
+					<Text>{format.number(myOpenAuctionResults.data.finalBill, 'money')}</Text>
 				</Group>
 				<Button color="green">Continue</Button>
 				<Text className="text-center paragraph-sm-g6">
@@ -147,10 +155,10 @@ export default function Ticket() {
 				Check out some similar auctions that you might be interested in:
 			</Text>
 			<Group className="grid grid-cols-12 gap-4">
-				<AuctionCard auction={auctionData} />
-				<AuctionCard auction={auctionData} />
-				<AuctionCard auction={auctionData} />
-				<AuctionCard auction={auctionData} />
+				<AuctionCard auction={auction.data} />
+				<AuctionCard auction={auction.data} />
+				<AuctionCard auction={auction.data} />
+				<AuctionCard auction={auction.data} />
 			</Group>
 		</Stack>
 	);
@@ -160,7 +168,7 @@ export default function Ticket() {
 			<Group>
 				<Button
 					component="a"
-					href={`/marketplace/auction/${auctionData.id}`}
+					href={`/marketplace/auction/${auction.data.id}`}
 					variant="outline"
 					leftSection={<IconArrowUpLeft />}
 				>

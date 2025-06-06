@@ -1,9 +1,9 @@
 'use client';
 
-import { BaseKeysetPaginatedQueryContextProvider } from 'contexts/BaseContextProviders';
 import { useParams } from 'next/navigation';
 import { createContext } from 'react';
 
+import { KeysetPaginatedQueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
 import { getPaginatedBids } from '@/lib/bids/open';
 import { IBidData } from '@/schema/models';
@@ -25,12 +25,12 @@ export const PaginatedBidsProvider = ({
 	const { auctionId } = useParams();
 
 	return (
-		<BaseKeysetPaginatedQueryContextProvider
+		<KeysetPaginatedQueryProvider
 			defaultCursor={defaultCursor}
 			defaultPerPage={defaultPerPage}
 			context={Context}
 			defaultData={DefaultData}
-			queryKey={['marketplace', '@catalogue', 'paginatedBids', auctionId as string]}
+			queryKey={['marketplace', auctionId as string, 'paginatedBids']}
 			queryFn={(cursor, perPage) => () =>
 				throwError(
 					getPaginatedBids({

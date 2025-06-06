@@ -1,11 +1,12 @@
 'use client';
 
-import { BaseQueryContextProvider } from 'contexts/BaseContextProviders';
 import { useParams } from 'next/navigation';
-import { PropsWithChildren, createContext } from 'react';
+import { PropsWithChildren, createContext, useContext } from 'react';
 
+import { QueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
 import { getMyOpenAuctionResults } from '@/lib/results/open';
+import { CurrentUserContext } from '@/pages/globalContext';
 import {
 	DefaultMyAuctionResultsData,
 	IMyAuctionResultsData,
@@ -19,13 +20,14 @@ const Context = createContext<IMyOpenAuctionResultsContext>(DefaultData);
 
 export const MyOpenAuctionResultsProvider = ({ children }: PropsWithChildren) => {
 	const { auctionId } = useParams();
+	const { currentUser } = useContext(CurrentUserContext);
 
 	return (
-		<BaseQueryContextProvider
+		<QueryProvider
 			context={Context}
 			defaultData={DefaultData}
-			queryKey={['marketplace', '@catalogue', 'myOpenAuctionResults', auctionId as string]}
-			queryFn={() => throwError(getMyOpenAuctionResults(auctionId as string))}
+			queryKey={[currentUser.id, 'marketplace', auctionId as string, 'myOpenAuctionResults']}
+			queryFn={() => () => throwError(getMyOpenAuctionResults(auctionId as string))}
 			children={children}
 		/>
 	);
