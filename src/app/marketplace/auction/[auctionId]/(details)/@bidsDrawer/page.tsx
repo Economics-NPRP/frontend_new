@@ -26,6 +26,7 @@ export default function Bids() {
 				opened={isBidsDrawerOpen}
 				onClose={closeBidsDrawer}
 				withCloseButton={false}
+				keepMounted
 			>
 				<BidsTable
 					bids={paginatedBids}

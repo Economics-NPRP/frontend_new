@@ -94,7 +94,7 @@ export default function Card() {
 				<Button
 					className={classes.cta}
 					rightSection={<IconGavel size={16} />}
-					onClick={scrollToBidding}
+					onClick={() => scrollToBidding({ alignment: 'center' })}
 				>
 					Start Bidding
 				</Button>

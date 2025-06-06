@@ -10,10 +10,13 @@ import {
 	CurrencyBadge,
 	EndingSoonBadge,
 } from '@/components/Badge';
+import { BidsTable } from '@/components/BidsTable';
 import { Id } from '@/components/Id';
 import {
 	MyOpenAuctionResultsContext,
+	MyPaginatedBidsContext,
 	PaginatedBidsContext,
+	PaginatedWinningBidsContext,
 	SingleAuctionContext,
 } from '@/contexts';
 import {
@@ -53,7 +56,9 @@ export default function Details() {
 	const format = useFormatter();
 	const auction = useContext(SingleAuctionContext);
 	const myOpenAuctionResults = useContext(MyOpenAuctionResultsContext);
-	const allBids = useContext(PaginatedBidsContext);
+	const paginatedBids = useContext(PaginatedBidsContext);
+	const winningBids = useContext(PaginatedWinningBidsContext);
+	const myPaginatedBids = useContext(MyPaginatedBidsContext);
 
 	const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
 
@@ -202,7 +207,7 @@ export default function Details() {
 									<IconGavel size={16} className={classes.icon} />
 									<Text className={classes.key}>Number of Bids</Text>
 									<Text className={classes.value}>
-										{format.number(allBids.data.totalCount)} bids
+										{format.number(paginatedBids.data.totalCount)} bids
 									</Text>
 								</Group>
 								<Group className={classes.cell}>
@@ -353,6 +358,33 @@ export default function Details() {
 				>
 					View Full Results
 				</Button>
+			</Stack>
+
+			<Stack className={`${classes.bids} ${classes.section}`}>
+				<Divider
+					label={
+						<Group className={classes.row}>
+							<Text className={classes.label}>Bids Table</Text>
+							<Tooltip
+								position="top"
+								label="View all bids placed on this auction, including your own and the winning bids"
+							>
+								<IconInfoCircle size={14} className={classes.info} />
+							</Tooltip>
+						</Group>
+					}
+					classNames={{
+						root: classes.divider,
+						label: classes.label,
+					}}
+				/>
+				<BidsTable
+					bids={paginatedBids}
+					winningBids={winningBids}
+					myPaginatedBids={myPaginatedBids}
+					className={classes.table}
+					hideHeader
+				/>
 			</Stack>
 		</Stack>
 	);

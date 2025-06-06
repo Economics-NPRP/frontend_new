@@ -45,6 +45,8 @@ export interface BidsTableProps extends TableProps {
 
 	withCloseButton?: boolean;
 	onClose?: () => void;
+
+	hideHeader?: boolean;
 }
 export const BidsTable = ({
 	bids,
@@ -54,6 +56,8 @@ export const BidsTable = ({
 
 	withCloseButton,
 	onClose,
+
+	hideHeader,
 
 	className,
 	...props
@@ -163,75 +167,81 @@ export const BidsTable = ({
 
 	return (
 		<Stack className={`${classes.root} ${className}`}>
-			<Stack className={classes.header}>
-				<Group className={classes.row}>
-					<Group className={classes.label}>
-						<Title order={2} className={classes.title}>
-							Bids Table
-						</Title>
-						<Text className={classes.subtitle}>
-							Showing{' '}
-							{Math.min(
-								currentContextState.perPage,
-								currentContextState.data.totalCount,
-							)}{' '}
-							{isExact ? 'of' : 'of about'} {currentContextState.data.totalCount} bids
-						</Text>
-					</Group>
-					<Group className={classes.settings}>
-						<Text className={classes.label}>Per page:</Text>
-						<Select
-							className={classes.dropdown}
-							w={80}
-							value={currentContextState.perPage.toString()}
-							data={['10', '20', '50', '100']}
-							onChange={handleSetPerPage}
-							allowDeselect={false}
-						/>
-						<Menu position="bottom-end">
-							<Menu.Target>
-								<ActionIcon className={classes.button}>
-									<IconAdjustments size={16} />
+			{!hideHeader && (
+				<Stack className={classes.header}>
+					<Group className={classes.row}>
+						<Group className={classes.label}>
+							<Title order={2} className={classes.title}>
+								Bids Table
+							</Title>
+							<Text className={classes.subtitle}>
+								Showing{' '}
+								{Math.min(
+									currentContextState.perPage,
+									currentContextState.data.totalCount,
+								)}{' '}
+								{isExact ? 'of' : 'of about'} {currentContextState.data.totalCount}{' '}
+								bids
+							</Text>
+						</Group>
+						<Group className={classes.settings}>
+							<Text className={classes.label}>Per page:</Text>
+							<Select
+								className={classes.dropdown}
+								w={80}
+								value={currentContextState.perPage.toString()}
+								data={['10', '20', '50', '100']}
+								onChange={handleSetPerPage}
+								allowDeselect={false}
+							/>
+							<Menu position="bottom-end">
+								<Menu.Target>
+									<ActionIcon className={classes.button}>
+										<IconAdjustments size={16} />
+									</ActionIcon>
+								</Menu.Target>
+								<Menu.Dropdown className={classes.filterMenu}>
+									<Radio.Group
+										classNames={{ label: classes.label }}
+										label="Bids Filter"
+										value={bidsFilter}
+										onChange={(value) => setBidsFilter(value as BidsFilter)}
+									>
+										<Stack className={classes.options}>
+											<Radio value="all" label="Show all bids" />
+											<Radio
+												value="contributing"
+												label="Only show bids contributing to your final bill"
+											/>
+											{winningBids && (
+												<Radio
+													value="winning"
+													label="Only show winning bids"
+												/>
+											)}
+											<Radio value="mine" label="Only show your bids" />
+										</Stack>
+									</Radio.Group>
+								</Menu.Dropdown>
+							</Menu>
+							{withCloseButton && (
+								<ActionIcon className={classes.button} onClick={onClose}>
+									<IconX size={16} />
 								</ActionIcon>
-							</Menu.Target>
-							<Menu.Dropdown className={classes.filterMenu}>
-								<Radio.Group
-									classNames={{ label: classes.label }}
-									label="Bids Filter"
-									value={bidsFilter}
-									onChange={(value) => setBidsFilter(value as BidsFilter)}
-								>
-									<Stack className={classes.options}>
-										<Radio value="all" label="Show all bids" />
-										<Radio
-											value="contributing"
-											label="Only show bids contributing to your final bill"
-										/>
-										{winningBids && (
-											<Radio value="winning" label="Only show winning bids" />
-										)}
-										<Radio value="mine" label="Only show your bids" />
-									</Stack>
-								</Radio.Group>
-							</Menu.Dropdown>
-						</Menu>
-						{withCloseButton && (
-							<ActionIcon className={classes.button} onClick={onClose}>
-								<IconX size={16} />
-							</ActionIcon>
-						)}
+							)}
+						</Group>
 					</Group>
-				</Group>
-				<Group className={classes.row}>
-					<Group className={classes.filters}>
-						<Text className={classes.label}>Filters:</Text>
-						<Group className={classes.badges}>{filterBadges}</Group>
+					<Group className={classes.row}>
+						<Group className={classes.filters}>
+							<Text className={classes.label}>Filters:</Text>
+							<Group className={classes.badges}>{filterBadges}</Group>
+						</Group>
+						<Group className={classes.legend}>{legend}</Group>
 					</Group>
-					<Group className={classes.legend}>{legend}</Group>
-				</Group>
-			</Stack>
+				</Stack>
+			)}
 			<Container className={classes.table} ref={tableContainerRef}>
-				<Table highlightOnHover {...props}>
+				<Table highlightOnHover withColumnBorders stickyHeader {...props}>
 					<TableThead>
 						<TableTr>
 							<TableTh>Company</TableTh>
@@ -255,23 +265,26 @@ export const BidsTable = ({
 					</Stack>
 				)}
 			</Container>
-			<Group className={classes.pagination}>
-				<ActionIcon
-					className={classes.button}
-					variant="outline"
-					disabled={!hasPrev}
-					onClick={handlePrevPage}
-				>
-					<IconChevronLeft size={16} />
-				</ActionIcon>
-				<ActionIcon
-					className={classes.button}
-					variant="outline"
-					disabled={!hasNext}
-					onClick={handleNextPage}
-				>
-					<IconChevronRight size={16} />
-				</ActionIcon>
+			<Group className={classes.footer}>
+				<Group className={classes.pagination}>
+					<ActionIcon
+						className={classes.button}
+						variant="outline"
+						disabled={!hasPrev}
+						onClick={handlePrevPage}
+					>
+						<IconChevronLeft size={16} />
+					</ActionIcon>
+					<ActionIcon
+						className={classes.button}
+						variant="outline"
+						disabled={!hasNext}
+						onClick={handleNextPage}
+					>
+						<IconChevronRight size={16} />
+					</ActionIcon>
+				</Group>
+				{hideHeader && <Group className={classes.legend}>{legend}</Group>}
 			</Group>
 		</Stack>
 	);

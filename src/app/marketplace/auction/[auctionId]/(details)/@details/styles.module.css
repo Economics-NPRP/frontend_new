@@ -230,5 +230,13 @@
 				}
 			}
 		}
+
+		&.bids {
+			@apply gap-4;
+
+			> .table {
+				@apply h-[480px];
+			}
+		}
 	}
 }
