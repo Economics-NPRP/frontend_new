@@ -20,7 +20,7 @@ export const SingleAuctionProvider = ({ children }: PropsWithChildren) => {
 		<QueryProvider
 			context={Context}
 			defaultData={DefaultData}
-			queryKey={['marketplace', '@catalogue', 'singleAuction', auctionId as string]}
+			queryKey={['marketplace', auctionId as string, 'singleAuction']}
 			queryFn={() => () => throwError(getSingleAuction(auctionId as string))}
 			children={children}
 		/>

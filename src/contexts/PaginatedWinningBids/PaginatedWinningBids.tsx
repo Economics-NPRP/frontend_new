@@ -30,7 +30,7 @@ export const PaginatedWinningBidsProvider = ({
 			defaultPerPage={defaultPerPage}
 			context={Context}
 			defaultData={DefaultData}
-			queryKey={['marketplace', '@catalogue', 'paginatedWinningBids', auctionId as string]}
+			queryKey={['marketplace', auctionId as string, 'paginatedWinningBids']}
 			queryFn={(page, perPage) => () =>
 				throwError(
 					getPaginatedWinningBids({
