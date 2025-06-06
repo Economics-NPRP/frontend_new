@@ -38,6 +38,7 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 	const t = useTranslations();
 	const locale = useLocale();
 	const direction = getLangDir(locale);
+	const containerRef = useRef<HTMLDivElement>(null);
 
 	const draggable = useMatches({ base: true, md: false });
 	const cardsPerScreen = useMatches({
@@ -104,19 +105,31 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 				else {
 					embla.slideNodes()[slideIndex].style.opacity = opacity;
 					embla.slideNodes()[slideIndex].style.transform = `scale(${scale})`;
-
-					//	Slides that are not in view should not be interactive
-					if (!isVisible) {
-						element.style.pointerEvents = 'none';
-						element.inert = true;
-					} else {
-						element.style.pointerEvents = 'auto';
-						element.inert = false;
-					}
 				}
 			});
 		});
 	}, []);
+
+	const handleSetPointerEvents = useCallback(
+		(embla: EmblaCarouselType) => {
+			embla.slideNodes().forEach((element) => {
+				if (!containerRef) return;
+
+				const rect = element.getBoundingClientRect();
+				const parentRect = containerRef.current!.getBoundingClientRect();
+				const isVisible = rect.x < parentRect.right + 16 && rect.x >= parentRect.left - 16;
+
+				if (isVisible) {
+					element.style.pointerEvents = 'auto';
+					element.inert = false;
+				} else {
+					element.style.pointerEvents = 'none';
+					element.inert = true;
+				}
+			});
+		},
+		[containerRef],
+	);
 
 	const handleResize = useCallback(
 		() => embla?.reInit({ direction, watchDrag: draggable }),
@@ -131,18 +144,29 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 		setTweenFactor(embla);
 		handleTweenOpacity(embla);
 		handleResize();
+		handleSetPointerEvents(embla);
 		window.addEventListener('resize', handleResize);
 		embla
 			.on('reInit', setTweenFactor)
 			.on('reInit', handleUpdateProgress)
 			.on('reInit', handleTweenOpacity)
-			.on('settle', handleInfiniteScroll)
+			.on('reInit', handleSetPointerEvents)
 			.on('scroll', handleUpdateProgress)
 			.on('scroll', handleTweenOpacity)
+			.on('scroll', handleInfiniteScroll)
+			.on('scroll', handleSetPointerEvents)
 			.on('slidesChanged', handleUpdateProgress)
 			.on('slideFocus', handleTweenOpacity)
 			.on('destroy', () => window.removeEventListener('resize', handleResize));
-	}, [embla, handleResize, handleTweenOpacity, handleUpdateProgress, handleInfiniteScroll]);
+	}, [
+		embla,
+		handleResize,
+		handleTweenOpacity,
+		handleUpdateProgress,
+		handleInfiniteScroll,
+		setTweenFactor,
+		handleSetPointerEvents,
+	]);
 
 	const auctions = useMemo(() => {
 		if (!isSuccess) return [];
@@ -234,6 +258,7 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 						align={'end'}
 						withControls={false}
 						getEmblaApi={setEmbla}
+						ref={containerRef}
 					>
 						{auctions}
 						{hasNextPage && (
