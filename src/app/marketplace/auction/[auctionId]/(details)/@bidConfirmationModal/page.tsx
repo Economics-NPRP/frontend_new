@@ -7,6 +7,7 @@ import { useCallback, useContext } from 'react';
 import { CurrencyBadge } from '@/components/Badge';
 import { throwError } from '@/helpers';
 import { placeBid } from '@/lib/bids/open';
+import { CurrentUserContext } from '@/pages/globalContext';
 import { BiddingTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import {
@@ -28,8 +29,9 @@ import classes from './styles.module.css';
 
 export default function BidConfirmationModal() {
 	const format = useFormatter();
-	const { auctionId } = useParams();
 	const queryClient = useQueryClient();
+	const { auctionId } = useParams();
+	const { currentUser } = useContext(CurrentUserContext);
 
 	const {
 		bids,
@@ -50,10 +52,16 @@ export default function BidConfirmationModal() {
 			),
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ['marketplace', '@catalogue', 'winningBids', auctionId],
+				queryKey: ['marketplace', auctionId, 'paginatedWinningBids'],
 			});
 			queryClient.invalidateQueries({
-				queryKey: ['marketplace', '@catalogue', 'myBids', auctionId],
+				queryKey: [currentUser.id, 'marketplace', auctionId, 'myPaginatedBids'],
+			});
+			queryClient.invalidateQueries({
+				queryKey: [currentUser.id, 'marketplace', auctionId, 'myPaginatedWinningBids'],
+			});
+			queryClient.invalidateQueries({
+				queryKey: [currentUser.id, 'marketplace', auctionId, 'myOpenAuctionResults'],
 			});
 
 			notifications.show({

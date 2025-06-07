@@ -10,7 +10,9 @@ import { IBidData } from '@/schema/models';
 import { KeysetPaginatedContextState, OffsetPaginatedContextState } from '@/types';
 import {
 	ActionIcon,
+	Button,
 	Container,
+	Divider,
 	Group,
 	Menu,
 	Pill,
@@ -47,6 +49,9 @@ export interface BidsTableProps extends TableProps {
 	onClose?: () => void;
 
 	hideHeader?: boolean;
+
+	withViewAllButton?: boolean;
+	onViewAll?: () => void;
 }
 export const BidsTable = ({
 	bids,
@@ -58,6 +63,9 @@ export const BidsTable = ({
 	onClose,
 
 	hideHeader,
+
+	withViewAllButton,
+	onViewAll,
 
 	className,
 	...props
@@ -284,7 +292,18 @@ export const BidsTable = ({
 						<IconChevronRight size={16} />
 					</ActionIcon>
 				</Group>
-				{hideHeader && <Group className={classes.legend}>{legend}</Group>}
+				{hideHeader &&
+					(withViewAllButton ? (
+						<Group className={classes.row}>
+							<Group className={classes.legend}>{legend}</Group>
+							<Divider orientation="vertical" />
+							<Button variant="outline" onClick={onViewAll}>
+								View All Bids
+							</Button>
+						</Group>
+					) : (
+						<Group className={classes.legend}>{legend}</Group>
+					))}
 			</Group>
 		</Stack>
 	);

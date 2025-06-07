@@ -19,6 +19,7 @@ import {
 	PaginatedWinningBidsContext,
 	SingleAuctionContext,
 } from '@/contexts';
+import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import {
 	ActionIcon,
 	Anchor,
@@ -59,6 +60,7 @@ export default function Details() {
 	const paginatedBids = useContext(PaginatedBidsContext);
 	const winningBids = useContext(PaginatedWinningBidsContext);
 	const myPaginatedBids = useContext(MyPaginatedBidsContext);
+	const { openBidsDrawer } = useContext(AuctionDetailsPageContext);
 
 	const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
 
@@ -387,7 +389,9 @@ export default function Details() {
 					winningBids={winningBids}
 					myPaginatedBids={myPaginatedBids}
 					className={classes.table}
+					onViewAll={openBidsDrawer}
 					hideHeader
+					withViewAllButton
 				/>
 			</Stack>
 		</Stack>

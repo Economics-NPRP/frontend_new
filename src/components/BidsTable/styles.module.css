@@ -84,6 +84,10 @@
 				@apply size-8 border-gray-300;
 			}
 		}
+
+		> .row {
+			@apply gap-4 items-center;
+		}
 	}
 
 	.legend {
