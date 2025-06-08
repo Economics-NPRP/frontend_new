@@ -6,4 +6,5 @@ export * from './MyPaginatedWinningBids';
 export * from './PaginatedAuctions';
 export * from './PaginatedBids';
 export * from './PaginatedWinningBids';
+export * from './RealtimeBids';
 export * from './SingleAuction';

@@ -1,13 +1,16 @@
 'use client';
 
-import { MyPaginatedBidsContext } from 'contexts/MyPaginatedBids';
-import { PaginatedBidsContext } from 'contexts/PaginatedBids';
-import { PaginatedWinningBidsContext } from 'contexts/PaginatedWinningBids';
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 
 import { BidsTable } from '@/components/BidsTable';
+import {
+	MyPaginatedBidsContext,
+	PaginatedBidsContext,
+	PaginatedWinningBidsContext,
+	RealtimeBidsContext,
+} from '@/contexts';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
-import { ActionIcon, Drawer, Tooltip } from '@mantine/core';
+import { ActionIcon, Drawer, Indicator, Tooltip } from '@mantine/core';
 import { IconListDetails } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
@@ -16,8 +19,14 @@ export default function Bids() {
 	const paginatedBids = useContext(PaginatedBidsContext);
 	const winningBids = useContext(PaginatedWinningBidsContext);
 	const myPaginatedBids = useContext(MyPaginatedBidsContext);
+	const realtimeBids = useContext(RealtimeBidsContext);
 	const { isBidsDrawerOpen, openBidsDrawer, closeBidsDrawer } =
 		useContext(AuctionDetailsPageContext);
+
+	const handleOpenDrawer = useCallback(() => {
+		realtimeBids.setStatus('idle');
+		openBidsDrawer();
+	}, [realtimeBids, openBidsDrawer]);
 
 	return (
 		<>
@@ -38,9 +47,17 @@ export default function Bids() {
 				/>
 			</Drawer>
 			<Tooltip label="Open bids table" position="right">
-				<ActionIcon className={classes.button} onClick={openBidsDrawer}>
-					<IconListDetails size={20} />
-				</ActionIcon>
+				<Indicator
+					className={classes.indicator}
+					size={8}
+					color="red"
+					disabled={realtimeBids.status !== 'new'}
+					processing
+				>
+					<ActionIcon className={classes.button} onClick={handleOpenDrawer}>
+						<IconListDetails size={20} />
+					</ActionIcon>
+				</Indicator>
 			</Tooltip>
 		</>
 	);

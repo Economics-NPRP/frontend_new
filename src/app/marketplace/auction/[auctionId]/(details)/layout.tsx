@@ -7,6 +7,7 @@ import {
 	MyPaginatedWinningBidsProvider,
 	PaginatedBidsProvider,
 	PaginatedWinningBidsProvider,
+	RealtimeBidsProvider,
 	SingleAuctionProvider,
 } from '@/contexts';
 import { withProviders } from '@/helpers';
@@ -67,6 +68,7 @@ export default function AuctionPage({
 			{bidConfirmationModal}
 			{ended}
 		</>,
+		{ provider: RealtimeBidsProvider },
 		{ provider: SingleAuctionProvider },
 		{ provider: MyOpenAuctionResultsProvider },
 		{ provider: MyPaginatedWinningBidsProvider },

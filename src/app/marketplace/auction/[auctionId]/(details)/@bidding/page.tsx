@@ -2,15 +2,16 @@
 
 import { SingleAuctionContext } from 'contexts/SingleAuction';
 import { useFormatter } from 'next-intl';
-import { useContext, useMemo } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { MediumCountdown } from '@/components/Countdown';
+import { RealtimeBidsContext } from '@/contexts';
 import { generateTrendData } from '@/helpers';
 import { BiddingTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Sparkline } from '@mantine/charts';
-import { Button, Divider, Group, Slider, Stack, Text, Title } from '@mantine/core';
+import { Button, Divider, Group, Indicator, Slider, Stack, Text, Title } from '@mantine/core';
 import { IconGavel } from '@tabler/icons-react';
 
 import { EndedOverlay } from './EndedOverlay';
@@ -21,6 +22,7 @@ import classes from './styles.module.css';
 export default function Prompt() {
 	const format = useFormatter();
 	const auction = useContext(SingleAuctionContext);
+	const realtimeBids = useContext(RealtimeBidsContext);
 	const {
 		openBidsDrawer,
 		biddingTableRef,
@@ -50,6 +52,11 @@ export default function Prompt() {
 			}),
 		[],
 	);
+
+	const handleOpenDrawer = useCallback(() => {
+		realtimeBids.setStatus('idle');
+		openBidsDrawer();
+	}, [realtimeBids, openBidsDrawer]);
 
 	return (
 		<Stack className={classes.root}>
@@ -110,14 +117,22 @@ export default function Prompt() {
 						</Group>
 					</Group>
 					<Group className={`${classes.bids} bg-grid-md`}>
-						<Button
-							className={classes.button}
-							variant="outline"
-							rightSection={<IconGavel size={16} />}
-							onClick={openBidsDrawer}
+						<Indicator
+							className={classes.indicator}
+							size={8}
+							color="red"
+							disabled={realtimeBids.status !== 'new'}
+							processing
 						>
-							View Bids
-						</Button>
+							<Button
+								className={classes.button}
+								variant="outline"
+								rightSection={<IconGavel size={16} />}
+								onClick={handleOpenDrawer}
+							>
+								View Bids
+							</Button>
+						</Indicator>
 					</Group>
 					<InsertForm />
 				</Stack>

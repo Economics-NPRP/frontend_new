@@ -55,6 +55,9 @@ export default function BidConfirmationModal() {
 				queryKey: ['marketplace', auctionId, 'paginatedWinningBids'],
 			});
 			queryClient.invalidateQueries({
+				queryKey: ['marketplace', auctionId, 'paginatedBids'],
+			});
+			queryClient.invalidateQueries({
 				queryKey: [currentUser.id, 'marketplace', auctionId, 'myPaginatedBids'],
 			});
 			queryClient.invalidateQueries({
