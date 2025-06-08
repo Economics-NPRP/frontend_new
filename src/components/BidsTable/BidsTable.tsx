@@ -5,9 +5,14 @@ import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'r
 
 import { generateBidsRows, generateLegend } from '@/components/BidsTable/helpers';
 import { BidsFilter } from '@/components/BidsTable/types';
+import {
+	IAllWinningBidsContext,
+	IMyOpenAuctionResultsContext,
+	IMyPaginatedBidsContext,
+	IPaginatedBidsContext,
+	IPaginatedWinningBidsContext,
+} from '@/contexts';
 import { CurrentUserContext } from '@/pages/globalContext';
-import { IBidData } from '@/schema/models';
-import { KeysetPaginatedContextState, OffsetPaginatedContextState } from '@/types';
 import {
 	ActionIcon,
 	Button,
@@ -40,11 +45,11 @@ import {
 import classes from './styles.module.css';
 
 export interface BidsTableProps extends TableProps {
-	bids: KeysetPaginatedContextState<IBidData>;
-	allWinningBids?: OffsetPaginatedContextState<IBidData>;
-	paginatedWinningBids?: OffsetPaginatedContextState<IBidData>;
-	myPaginatedBids?: KeysetPaginatedContextState<IBidData>;
-	contributingBidIds?: Array<string>;
+	bids: IPaginatedBidsContext;
+	allWinningBids?: IAllWinningBidsContext;
+	paginatedWinningBids?: IPaginatedWinningBidsContext;
+	myPaginatedBids?: IMyPaginatedBidsContext;
+	myOpenAuctionResults?: IMyOpenAuctionResultsContext;
 
 	withCloseButton?: boolean;
 	onClose?: () => void;
@@ -59,7 +64,7 @@ export const BidsTable = ({
 	allWinningBids,
 	paginatedWinningBids,
 	myPaginatedBids,
-	contributingBidIds,
+	myOpenAuctionResults,
 
 	withCloseButton,
 	onClose,
@@ -86,7 +91,7 @@ export const BidsTable = ({
 			allWinningBids,
 			paginatedWinningBids,
 			myPaginatedBids,
-			contributingBidIds,
+			myOpenAuctionResults,
 			bidsFilter,
 			currentUser,
 		});
@@ -95,7 +100,7 @@ export const BidsTable = ({
 		allWinningBids,
 		paginatedWinningBids,
 		myPaginatedBids,
-		contributingBidIds,
+		myOpenAuctionResults,
 		bidsFilter,
 		currentUser,
 	]);

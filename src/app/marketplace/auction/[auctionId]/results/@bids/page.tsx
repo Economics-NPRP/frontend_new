@@ -1,75 +1,30 @@
 'use client';
 
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext } from 'react';
 
 import { ResultsTable } from '@/components/AuctionResultsTable';
 import { BidsTable } from '@/components/BidsTable';
-import { AuctionResultsContext } from '@/pages/marketplace/auction/[auctionId]/results/constants';
 import {
-	Container,
-	Group,
-	Radio,
-	Select,
-	Stack,
-	Tabs,
-	TabsList,
-	TabsPanel,
-	TabsTab,
-	Text,
-} from '@mantine/core';
-
-type BidsFilter = 'all' | 'contributing' | 'winning' | 'mine';
+	AllWinningBidsContext,
+	MyOpenAuctionResultsContext,
+	MyPaginatedBidsContext,
+	PaginatedBidsContext,
+	PaginatedOpenAuctionResultsContext,
+	PaginatedWinningBidsContext,
+	SingleAuctionContext,
+} from '@/contexts';
+import { AuctionResultsPageContext } from '@/pages/marketplace/auction/[auctionId]/results/constants';
+import { Container, Group, Select, Tabs, TabsList, TabsPanel, TabsTab, Text } from '@mantine/core';
 
 export default function Bids() {
-	const {
-		historyRef,
-		resultsPage,
-		setResultsPage,
-		setAllBidsCursor,
-		setAllBidsNavDirection,
-		winningBidsPage,
-		setWinningBidsPage,
-		setMyBidsCursor,
-		setMyBidsNavDirection,
-		resultsPerPage,
-		setResultsPerPage,
-		bidsPerPage,
-		setBidsPerPage,
-		auctionData,
-		openAuctionResults,
-		allBids,
-		myBids,
-		winningBids,
-		allWinningBids,
-		myOpenAuctionResults,
-	} = useContext(AuctionResultsContext);
-
-	const [bidsFilter, setBidsFilter] = useState<BidsFilter>('all');
-
-	const bidsTableData = useMemo(() => {
-		if (bidsFilter === 'contributing') return myOpenAuctionResults.contributingLosingBids;
-		if (bidsFilter === 'winning') return winningBids.results;
-		if (bidsFilter === 'mine') return myBids.results;
-		return allBids.results;
-	}, [bidsFilter, allBids, myOpenAuctionResults, winningBids, myBids]);
-
-	const totalBidsCount = useMemo(() => {
-		if (bidsFilter === 'contributing')
-			return myOpenAuctionResults.contributingLosingBids.length;
-		if (bidsFilter === 'winning') return winningBids.totalCount;
-		if (bidsFilter === 'mine') return myBids.totalCount;
-		return allBids.totalCount;
-	}, [bidsFilter, allBids, myOpenAuctionResults, winningBids, myBids]);
-
-	//	Reset page/cursor when filter or per page changes
-	useEffect(() => setResultsPage(1), [resultsPerPage]);
-	useEffect(() => {
-		setAllBidsCursor(undefined);
-		setMyBidsCursor(undefined);
-		setWinningBidsPage(1);
-	}, [bidsFilter, bidsPerPage]);
-
-	useEffect(() => console.log(allBids), [allBids]);
+	const auction = useContext(SingleAuctionContext);
+	const paginatedBids = useContext(PaginatedBidsContext);
+	const allWinningBids = useContext(AllWinningBidsContext);
+	const paginatedWinningBids = useContext(PaginatedWinningBidsContext);
+	const myPaginatedBids = useContext(MyPaginatedBidsContext);
+	const paginatedOpenAuctionResults = useContext(PaginatedOpenAuctionResultsContext);
+	const myOpenAuctionResults = useContext(MyOpenAuctionResultsContext);
+	const { historyRef } = useContext(AuctionResultsPageContext);
 
 	return (
 		<>
@@ -90,87 +45,26 @@ export default function Bids() {
 					<Text className="paragraph-sm">Per page:</Text>
 					<Select
 						w={80}
-						value={resultsPerPage.toString()}
+						value={paginatedOpenAuctionResults.perPage.toString()}
 						data={['10', '20', '50', '100']}
-						onChange={(value) => setResultsPerPage(Number(value))}
+						onChange={(value) => paginatedOpenAuctionResults.setPerPage(Number(value))}
 					/>
 					<Text className="paragraph-sm">
-						Total Results: {openAuctionResults.totalCount}
+						Total Results: {paginatedOpenAuctionResults.data.totalCount}
 					</Text>
 					<ResultsTable
-						tableData={openAuctionResults.results}
-						auctionData={auctionData}
-						paginationType="offset"
-						page={resultsPage}
-						pageCount={openAuctionResults.pageCount}
-						setPage={setResultsPage}
+						paginatedOpenAuctionResults={paginatedOpenAuctionResults}
+						auction={auction}
 					/>
 				</TabsPanel>
 
 				<TabsPanel value="all">
-					<Radio.Group
-						label="Bids Filter"
-						value={bidsFilter}
-						onChange={(value) => setBidsFilter(value as BidsFilter)}
-					>
-						<Stack>
-							<Radio value="all" label="Show all bids" />
-							<Radio
-								value="contributing"
-								label="Only show bids contributing to your final bill"
-							/>
-							<Radio value="winning" label="Only show winning bids" />
-							<Radio value="mine" label="Only show your bids" />
-						</Stack>
-					</Radio.Group>
-					<Group className="gap-4 py-4">
-						<Group className="gap-2">
-							<Container className="size-4 bg-blue-100 rounded-sm border border-solid border-blue-300" />
-							<Text className="paragraph-xs">Contributing Bids</Text>
-						</Group>
-						<Group className="gap-2">
-							<Container className="size-4 bg-yellow-100 rounded-sm border border-solid border-yellow-300" />
-							<Text className="paragraph-xs">Winning Bids</Text>
-						</Group>
-						<Group className="gap-2">
-							<Container className="size-4 bg-gray-100 rounded-sm border border-solid border-gray-300" />
-							<Text className="paragraph-xs">Your Bids</Text>
-						</Group>
-					</Group>
-					<Text className="paragraph-sm">Per page:</Text>
-					<Select
-						w={80}
-						value={bidsPerPage.toString()}
-						data={['10', '20', '50', '100']}
-						onChange={(value) => setBidsPerPage(Number(value))}
-					/>
-					<Text className="paragraph-sm">Total Bids: {totalBidsCount}</Text>
 					<BidsTable
-						tableData={bidsTableData}
-						winningBidIds={allWinningBids.results.map((bid) => bid.id)}
-						contributingBidIds={myOpenAuctionResults.contributingLosingBids.map(
-							(bid) => bid.id,
-						)}
-						paginationType={bidsFilter === 'winning' ? 'offset' : 'keyset'}
-						setCursor={bidsFilter === 'mine' ? setMyBidsCursor : setAllBidsCursor}
-						setNavDirection={
-							bidsFilter === 'mine' ? setMyBidsNavDirection : setAllBidsNavDirection
-						}
-						hasNext={bidsFilter === 'mine' ? myBids.hasNext : allBids.hasNext}
-						hasPrev={bidsFilter === 'mine' ? myBids.hasPrev : allBids.hasPrev}
-						cursorForNextPage={
-							bidsFilter === 'mine'
-								? myBids.cursorForNextPage
-								: allBids.cursorForNextPage
-						}
-						cursorForPrevPage={
-							bidsFilter === 'mine'
-								? myBids.cursorForPrevPage
-								: allBids.cursorForPrevPage
-						}
-						page={winningBidsPage}
-						pageCount={winningBids.pageCount}
-						setPage={setWinningBidsPage}
+						bids={paginatedBids}
+						allWinningBids={allWinningBids}
+						paginatedWinningBids={paginatedWinningBids}
+						myPaginatedBids={myPaginatedBids}
+						myOpenAuctionResults={myOpenAuctionResults}
 					/>
 				</TabsPanel>
 			</Tabs>

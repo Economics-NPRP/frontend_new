@@ -2,18 +2,24 @@ import { ReactElement } from 'react';
 
 import { BidsTableRow } from '@/components/BidsTable/Row';
 import { BidsFilter } from '@/components/BidsTable/types';
-import { IBidData, IUserData } from '@/schema/models';
-import { KeysetPaginatedContextState, OffsetPaginatedContextState } from '@/types';
+import {
+	IAllWinningBidsContext,
+	IMyOpenAuctionResultsContext,
+	IMyPaginatedBidsContext,
+	IPaginatedBidsContext,
+	IPaginatedWinningBidsContext,
+} from '@/contexts';
+import { IUserData } from '@/schema/models';
 import { Container, Group, Text } from '@mantine/core';
 
 import classes from './styles.module.css';
 
 interface GenerateBidsRowsParams {
-	bids: KeysetPaginatedContextState<IBidData>;
-	allWinningBids?: OffsetPaginatedContextState<IBidData>;
-	paginatedWinningBids?: OffsetPaginatedContextState<IBidData>;
-	myPaginatedBids?: KeysetPaginatedContextState<IBidData>;
-	contributingBidIds?: Array<string>;
+	bids: IPaginatedBidsContext;
+	allWinningBids?: IAllWinningBidsContext;
+	paginatedWinningBids?: IPaginatedWinningBidsContext;
+	myPaginatedBids?: IMyPaginatedBidsContext;
+	myOpenAuctionResults?: IMyOpenAuctionResultsContext;
 	bidsFilter: BidsFilter;
 	currentUser: IUserData;
 }
@@ -22,10 +28,13 @@ export const generateBidsRows = ({
 	allWinningBids,
 	paginatedWinningBids,
 	myPaginatedBids,
-	contributingBidIds,
+	myOpenAuctionResults,
 	bidsFilter,
 	currentUser,
 }: GenerateBidsRowsParams): Array<ReactElement> => {
+	const contributingBidIds =
+		myOpenAuctionResults?.data.contributingLosingBids.map(({ id }) => id) || [];
+	const winningBidIds = allWinningBids?.data.results.map(({ id }) => id) || [];
 	switch (bidsFilter) {
 		case 'all':
 			return bids.data.results.map((bid) => {
@@ -33,10 +42,8 @@ export const generateBidsRows = ({
 
 				const highlight: Array<string> = [];
 				if (bidder.id === currentUser.id) highlight.push('mine');
-				if (contributingBidIds && contributingBidIds.includes(id))
-					highlight.push('contributing');
-				if (allWinningBids && allWinningBids.data.results.map(({ id }) => id).includes(id))
-					highlight.push('winning');
+				if (contributingBidIds.includes(id)) highlight.push('contributing');
+				if (winningBidIds.includes(id)) highlight.push('winning');
 
 				return <BidsTableRow bid={bid} key={id} highlight={highlight} />;
 			});
@@ -56,10 +63,8 @@ export const generateBidsRows = ({
 				const { id } = bid;
 
 				const highlight: Array<string> = [];
-				if (contributingBidIds && contributingBidIds.includes(id))
-					highlight.push('contributing');
-				if (allWinningBids && allWinningBids.data.results.map(({ id }) => id).includes(id))
-					highlight.push('winning');
+				if (contributingBidIds.includes(id)) highlight.push('contributing');
+				if (winningBidIds.includes(id)) highlight.push('winning');
 
 				return <BidsTableRow bid={bid} key={id} highlight={highlight} />;
 			});
@@ -74,16 +79,16 @@ export const generateLegend = (bidsFilter: BidsFilter) => {
 			return (
 				<>
 					<Group className={classes.cell}>
+						<Container className={`${classes.key} ${classes.mine}`} />
+						<Text className={classes.value}>Your Bids</Text>
+					</Group>
+					<Group className={classes.cell}>
 						<Container className={`${classes.key} ${classes.contributing}`} />
 						<Text className={classes.value}>Contributing Bids</Text>
 					</Group>
 					<Group className={classes.cell}>
 						<Container className={`${classes.key} ${classes.winning}`} />
 						<Text className={classes.value}>Winning Bids</Text>
-					</Group>
-					<Group className={classes.cell}>
-						<Container className={`${classes.key} ${classes.mine}`} />
-						<Text className={classes.value}>Your Bids</Text>
 					</Group>
 				</>
 			);

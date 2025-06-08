@@ -29,7 +29,7 @@ export const BidsTableRow = ({ bid, highlight, ...props }: BidsTableRowProps) =>
 					color = '#fff9db';
 					break;
 				case 'mine':
-					color = '#ebfbee';
+					color = '#f3f0ff';
 					break;
 				default:
 					color = '#00000000';

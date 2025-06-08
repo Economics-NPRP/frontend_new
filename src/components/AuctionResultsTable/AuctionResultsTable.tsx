@@ -1,7 +1,9 @@
 'use client';
 
+import { IPaginatedOpenAuctionResultsContext } from 'contexts/PaginatedOpenAuctionResults';
+import { ISingleAuctionContext } from 'contexts/SingleAuction';
 import { createFormatter, useFormatter, useTranslations } from 'next-intl';
-import { useContext, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { CurrentUserContext } from '@/pages/globalContext';
@@ -21,20 +23,12 @@ import {
 import { IconArrowNarrowDown } from '@tabler/icons-react';
 
 export interface ResultsTableProps extends TableProps {
-	tableData: Array<IAuctionResultsData>;
-	auctionData: IAuctionData;
-	paginationType: 'offset' | 'keyset';
-	page?: number;
-	pageCount?: number;
-	setPage?: (page: number) => void;
+	paginatedOpenAuctionResults: IPaginatedOpenAuctionResultsContext;
+	auction: ISingleAuctionContext;
 }
 export const ResultsTable = ({
-	tableData,
-	auctionData,
-	paginationType,
-	page,
-	pageCount,
-	setPage,
+	paginatedOpenAuctionResults,
+	auction,
 	...props
 }: ResultsTableProps) => {
 	const t = useTranslations();
@@ -42,9 +36,16 @@ export const ResultsTable = ({
 	const { currentUser } = useContext(CurrentUserContext);
 
 	const resultsData = useMemo(() => {
-		if (!tableData) return null;
-		return generateResultsRows(tableData, auctionData, currentUser, format);
-	}, [tableData, auctionData, currentUser, format]);
+		if (!paginatedOpenAuctionResults.data) return null;
+		return generateResultsRows(
+			paginatedOpenAuctionResults.data.results,
+			auction.data,
+			currentUser,
+			format,
+		);
+	}, [paginatedOpenAuctionResults.data.results, auction.data, currentUser, format]);
+
+	useEffect(() => paginatedOpenAuctionResults.setPage(1), [paginatedOpenAuctionResults.perPage]);
 
 	return (
 		<>
@@ -64,13 +65,13 @@ export const ResultsTable = ({
 				</TableThead>
 				<TableTbody>{resultsData}</TableTbody>
 			</Table>
-			{paginationType === 'offset' && page && pageCount && pageCount > 1 && setPage && (
+			{paginatedOpenAuctionResults.isSuccess && (
 				<Pagination
-					value={page}
-					total={pageCount}
+					value={paginatedOpenAuctionResults.page}
+					total={paginatedOpenAuctionResults.data.pageCount}
 					siblings={2}
 					boundaries={3}
-					onChange={setPage}
+					onChange={paginatedOpenAuctionResults.setPage}
 				/>
 			)}
 		</>

@@ -108,7 +108,7 @@
 				}
 
 				&.mine {
-					@apply bg-lime-100 border-lime-300;
+					@apply bg-violet-100 border-violet-300;
 				}
 			}
 
