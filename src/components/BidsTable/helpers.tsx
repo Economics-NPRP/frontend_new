@@ -31,41 +31,37 @@ export const generateBidsRows = ({
 			return bids.data.results.map((bid) => {
 				const { id, bidder } = bid;
 
-				let bgColor = '';
-				if (contributingBidIds && contributingBidIds.includes(id)) bgColor = 'bg-blue-50';
-				else if (
-					allWinningBids &&
-					allWinningBids.data.results.map(({ id }) => id).includes(id)
-				)
-					bgColor = 'bg-yellow-50';
-				else if (bidder.id === currentUser.id) bgColor = 'bg-gray-50';
+				const highlight: Array<string> = [];
+				if (bidder.id === currentUser.id) highlight.push('mine');
+				if (contributingBidIds && contributingBidIds.includes(id))
+					highlight.push('contributing');
+				if (allWinningBids && allWinningBids.data.results.map(({ id }) => id).includes(id))
+					highlight.push('winning');
 
-				return <BidsTableRow bid={bid} key={id} className={bgColor} />;
+				return <BidsTableRow bid={bid} key={id} highlight={highlight} />;
 			});
 		case 'winning':
 			if (!paginatedWinningBids) return [];
 			return paginatedWinningBids.data.results.map((bid) => {
 				const { id, bidder } = bid;
 
-				let bgColor = '';
-				if (bidder.id === currentUser.id) bgColor = 'bg-gray-50';
+				const highlight: Array<string> = [];
+				if (bidder.id === currentUser.id) highlight.push('mine');
 
-				return <BidsTableRow bid={bid} key={id} className={bgColor} />;
+				return <BidsTableRow bid={bid} key={id} highlight={highlight} />;
 			});
 		case 'mine':
 			if (!myPaginatedBids) return [];
 			return myPaginatedBids.data.results.map((bid) => {
 				const { id } = bid;
 
-				let bgColor = '';
-				if (contributingBidIds && contributingBidIds.includes(id)) bgColor = 'bg-blue-50';
-				else if (
-					allWinningBids &&
-					allWinningBids.data.results.map(({ id }) => id).includes(id)
-				)
-					bgColor = 'bg-yellow-50';
+				const highlight: Array<string> = [];
+				if (contributingBidIds && contributingBidIds.includes(id))
+					highlight.push('contributing');
+				if (allWinningBids && allWinningBids.data.results.map(({ id }) => id).includes(id))
+					highlight.push('winning');
 
-				return <BidsTableRow bid={bid} key={id} className={bgColor} />;
+				return <BidsTableRow bid={bid} key={id} highlight={highlight} />;
 			});
 		default:
 			return [];
@@ -78,15 +74,15 @@ export const generateLegend = (bidsFilter: BidsFilter) => {
 			return (
 				<>
 					<Group className={classes.cell}>
-						<Container className={`${classes.key} ${classes.blue}`} />
+						<Container className={`${classes.key} ${classes.contributing}`} />
 						<Text className={classes.value}>Contributing Bids</Text>
 					</Group>
 					<Group className={classes.cell}>
-						<Container className={`${classes.key} ${classes.yellow}`} />
+						<Container className={`${classes.key} ${classes.winning}`} />
 						<Text className={classes.value}>Winning Bids</Text>
 					</Group>
 					<Group className={classes.cell}>
-						<Container className={`${classes.key} ${classes.gray}`} />
+						<Container className={`${classes.key} ${classes.mine}`} />
 						<Text className={classes.value}>Your Bids</Text>
 					</Group>
 				</>
@@ -94,7 +90,7 @@ export const generateLegend = (bidsFilter: BidsFilter) => {
 		case 'winning':
 			return (
 				<Group className={classes.cell}>
-					<Container className={`${classes.key} ${classes.gray}`} />
+					<Container className={`${classes.key} ${classes.mine}`} />
 					<Text className={classes.value}>Your Bids</Text>
 				</Group>
 			);
@@ -102,11 +98,11 @@ export const generateLegend = (bidsFilter: BidsFilter) => {
 			return (
 				<>
 					<Group className={classes.cell}>
-						<Container className={`${classes.key} ${classes.blue}`} />
+						<Container className={`${classes.key} ${classes.contributing}`} />
 						<Text className={classes.value}>Contributing Bids</Text>
 					</Group>
 					<Group className={classes.cell}>
-						<Container className={`${classes.key} ${classes.yellow}`} />
+						<Container className={`${classes.key} ${classes.winning}`} />
 						<Text className={classes.value}>Winning Bids</Text>
 					</Group>
 				</>

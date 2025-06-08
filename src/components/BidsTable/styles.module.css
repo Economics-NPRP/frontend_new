@@ -99,16 +99,16 @@
 			> .key {
 				@apply size-4 rounded-sm border border-solid;
 
-				&.blue {
+				&.contributing {
 					@apply bg-blue-100 border-blue-300;
 				}
 
-				&.yellow {
+				&.winning {
 					@apply bg-yellow-100 border-yellow-300;
 				}
 
-				&.gray {
-					@apply bg-gray-100 border-gray-300;
+				&.mine {
+					@apply bg-lime-100 border-lime-300;
 				}
 			}
 
