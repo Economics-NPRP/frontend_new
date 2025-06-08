@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useCallback, useContext, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { generateBidsRows, generateLegend } from '@/components/BidsTable/helpers';
 import { BidsFilter } from '@/components/BidsTable/types';
@@ -191,6 +191,13 @@ export const BidsTable = ({
 			myPaginatedBids.setCursor(myPaginatedBids.data.cursorForNextPage);
 		else bids.setCursor(bids.data.cursorForNextPage);
 	}, [bids, paginatedWinningBids, myPaginatedBids, bidsFilter, hasNext]);
+
+	//	Reset the page when the bids filter or per page changes
+	useEffect(() => {
+		bids.setCursor(null);
+		if (paginatedWinningBids) paginatedWinningBids.setPage(1);
+		if (myPaginatedBids) myPaginatedBids.setCursor(null);
+	}, [bidsFilter, bids.perPage, paginatedWinningBids?.perPage, myPaginatedBids?.perPage]);
 
 	return (
 		<Stack className={`${classes.root} ${className}`}>
