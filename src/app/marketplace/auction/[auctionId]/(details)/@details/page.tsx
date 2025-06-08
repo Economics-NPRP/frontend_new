@@ -13,6 +13,7 @@ import {
 import { BidsTable } from '@/components/BidsTable';
 import { Id } from '@/components/Id';
 import {
+	AllWinningBidsContext,
 	MyOpenAuctionResultsContext,
 	MyPaginatedBidsContext,
 	PaginatedBidsContext,
@@ -58,7 +59,8 @@ export default function Details() {
 	const auction = useContext(SingleAuctionContext);
 	const myOpenAuctionResults = useContext(MyOpenAuctionResultsContext);
 	const paginatedBids = useContext(PaginatedBidsContext);
-	const winningBids = useContext(PaginatedWinningBidsContext);
+	const allWinningBids = useContext(AllWinningBidsContext);
+	const paginatedWinningBids = useContext(PaginatedWinningBidsContext);
 	const myPaginatedBids = useContext(MyPaginatedBidsContext);
 	const { openBidsDrawer } = useContext(AuctionDetailsPageContext);
 
@@ -386,7 +388,8 @@ export default function Details() {
 				/>
 				<BidsTable
 					bids={paginatedBids}
-					winningBids={winningBids}
+					allWinningBids={allWinningBids}
+					paginatedWinningBids={paginatedWinningBids}
 					myPaginatedBids={myPaginatedBids}
 					className={classes.table}
 					onViewAll={openBidsDrawer}

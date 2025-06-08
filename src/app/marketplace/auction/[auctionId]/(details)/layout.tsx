@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 
 import {
+	AllWinningBidsProvider,
 	InfinitePaginatedAuctionsProvider,
 	MyOpenAuctionResultsProvider,
 	MyPaginatedBidsProvider,
@@ -69,6 +70,7 @@ export default function AuctionPage({
 			{ended}
 		</>,
 		{ provider: RealtimeBidsProvider },
+		{ provider: AllWinningBidsProvider },
 		{ provider: SingleAuctionProvider },
 		{ provider: MyOpenAuctionResultsProvider },
 		{ provider: MyPaginatedWinningBidsProvider },

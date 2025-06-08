@@ -10,7 +10,8 @@ import classes from './styles.module.css';
 
 interface GenerateBidsRowsParams {
 	bids: KeysetPaginatedContextState<IBidData>;
-	winningBids?: OffsetPaginatedContextState<IBidData>;
+	allWinningBids?: OffsetPaginatedContextState<IBidData>;
+	paginatedWinningBids?: OffsetPaginatedContextState<IBidData>;
 	myPaginatedBids?: KeysetPaginatedContextState<IBidData>;
 	contributingBidIds?: Array<string>;
 	bidsFilter: BidsFilter;
@@ -18,7 +19,8 @@ interface GenerateBidsRowsParams {
 }
 export const generateBidsRows = ({
 	bids,
-	winningBids,
+	allWinningBids,
+	paginatedWinningBids,
 	myPaginatedBids,
 	contributingBidIds,
 	bidsFilter,
@@ -31,15 +33,18 @@ export const generateBidsRows = ({
 
 				let bgColor = '';
 				if (contributingBidIds && contributingBidIds.includes(id)) bgColor = 'bg-blue-50';
-				else if (winningBids && winningBids.data.results.map(({ id }) => id).includes(id))
+				else if (
+					allWinningBids &&
+					allWinningBids.data.results.map(({ id }) => id).includes(id)
+				)
 					bgColor = 'bg-yellow-50';
 				else if (bidder.id === currentUser.id) bgColor = 'bg-gray-50';
 
 				return <BidsTableRow bid={bid} key={id} className={bgColor} />;
 			});
 		case 'winning':
-			if (!winningBids) return [];
-			return winningBids.data.results.map((bid) => {
+			if (!paginatedWinningBids) return [];
+			return paginatedWinningBids.data.results.map((bid) => {
 				const { id, bidder } = bid;
 
 				let bgColor = '';
@@ -54,7 +59,10 @@ export const generateBidsRows = ({
 
 				let bgColor = '';
 				if (contributingBidIds && contributingBidIds.includes(id)) bgColor = 'bg-blue-50';
-				else if (winningBids && winningBids.data.results.map(({ id }) => id).includes(id))
+				else if (
+					allWinningBids &&
+					allWinningBids.data.results.map(({ id }) => id).includes(id)
+				)
 					bgColor = 'bg-yellow-50';
 
 				return <BidsTableRow bid={bid} key={id} className={bgColor} />;

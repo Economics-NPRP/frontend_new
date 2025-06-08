@@ -4,6 +4,7 @@ import { useCallback, useContext } from 'react';
 
 import { BidsTable } from '@/components/BidsTable';
 import {
+	AllWinningBidsContext,
 	MyPaginatedBidsContext,
 	PaginatedBidsContext,
 	PaginatedWinningBidsContext,
@@ -17,7 +18,8 @@ import classes from './styles.module.css';
 
 export default function Bids() {
 	const paginatedBids = useContext(PaginatedBidsContext);
-	const winningBids = useContext(PaginatedWinningBidsContext);
+	const allWinningBids = useContext(AllWinningBidsContext);
+	const paginatedWinningBids = useContext(PaginatedWinningBidsContext);
 	const myPaginatedBids = useContext(MyPaginatedBidsContext);
 	const realtimeBids = useContext(RealtimeBidsContext);
 	const { isBidsDrawerOpen, openBidsDrawer, closeBidsDrawer } =
@@ -39,7 +41,8 @@ export default function Bids() {
 			>
 				<BidsTable
 					bids={paginatedBids}
-					winningBids={winningBids}
+					allWinningBids={allWinningBids}
+					paginatedWinningBids={paginatedWinningBids}
 					myPaginatedBids={myPaginatedBids}
 					withCloseButton
 					onClose={closeBidsDrawer}

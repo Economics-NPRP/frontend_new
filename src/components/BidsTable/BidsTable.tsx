@@ -41,7 +41,8 @@ import classes from './styles.module.css';
 
 export interface BidsTableProps extends TableProps {
 	bids: KeysetPaginatedContextState<IBidData>;
-	winningBids?: OffsetPaginatedContextState<IBidData>;
+	allWinningBids?: OffsetPaginatedContextState<IBidData>;
+	paginatedWinningBids?: OffsetPaginatedContextState<IBidData>;
 	myPaginatedBids?: KeysetPaginatedContextState<IBidData>;
 	contributingBidIds?: Array<string>;
 
@@ -55,7 +56,8 @@ export interface BidsTableProps extends TableProps {
 }
 export const BidsTable = ({
 	bids,
-	winningBids,
+	allWinningBids,
+	paginatedWinningBids,
 	myPaginatedBids,
 	contributingBidIds,
 
@@ -81,13 +83,22 @@ export const BidsTable = ({
 		if (!bids) return null;
 		return generateBidsRows({
 			bids,
-			winningBids,
+			allWinningBids,
+			paginatedWinningBids,
 			myPaginatedBids,
 			contributingBidIds,
 			bidsFilter,
 			currentUser,
 		});
-	}, [bids, winningBids, myPaginatedBids, contributingBidIds, bidsFilter, currentUser]);
+	}, [
+		bids,
+		allWinningBids,
+		paginatedWinningBids,
+		myPaginatedBids,
+		contributingBidIds,
+		bidsFilter,
+		currentUser,
+	]);
 
 	//	Generate the filter badges
 	const filterBadges = useMemo(() => {
@@ -114,42 +125,48 @@ export const BidsTable = ({
 	}, [bids, bidsFilter]);
 
 	const currentContextState = useMemo(() => {
-		if (bidsFilter === 'winning' && winningBids) return winningBids;
+		if (bidsFilter === 'winning' && paginatedWinningBids) return paginatedWinningBids;
 		if (bidsFilter === 'mine' && myPaginatedBids) return myPaginatedBids;
 		return bids;
-	}, [bids, winningBids, myPaginatedBids, bidsFilter]);
+	}, [bids, paginatedWinningBids, myPaginatedBids, bidsFilter]);
 
 	const handleSetPerPage = useCallback(
 		(value: string | null) => {
 			bids.setPerPage(Number(value));
-			if (winningBids) winningBids.setPerPage(Number(value));
+			if (paginatedWinningBids) paginatedWinningBids.setPerPage(Number(value));
 			if (myPaginatedBids) myPaginatedBids.setPerPage(Number(value));
 		},
-		[bids, winningBids, myPaginatedBids],
+		[bids, paginatedWinningBids, myPaginatedBids],
 	);
 
 	const isExact = useMemo(() => {
-		if (bidsFilter === 'winning' && winningBids) return true;
+		if (bidsFilter === 'winning' && paginatedWinningBids) return true;
 		if (bidsFilter === 'mine' && myPaginatedBids) return myPaginatedBids.data.isExact;
 		return bids.data.isExact;
 	}, [bidsFilter, bids.data.isExact, myPaginatedBids?.data.isExact]);
 
 	const hasPrev = useMemo(() => {
-		if (bidsFilter === 'winning' && winningBids) return winningBids.data.page > 1;
+		if (bidsFilter === 'winning' && paginatedWinningBids)
+			return paginatedWinningBids.data.page > 1;
 		if (bidsFilter === 'mine' && myPaginatedBids) return myPaginatedBids.data.hasPrev;
 		return bids.data.hasPrev;
-	}, [bidsFilter, bids.data.hasPrev, winningBids?.data.page, myPaginatedBids?.data.hasPrev]);
+	}, [
+		bidsFilter,
+		bids.data.hasPrev,
+		paginatedWinningBids?.data.page,
+		myPaginatedBids?.data.hasPrev,
+	]);
 
 	const hasNext = useMemo(() => {
-		if (bidsFilter === 'winning' && winningBids)
-			return winningBids.data.page < winningBids.data.pageCount;
+		if (bidsFilter === 'winning' && paginatedWinningBids)
+			return paginatedWinningBids.data.page < paginatedWinningBids.data.pageCount;
 		if (bidsFilter === 'mine' && myPaginatedBids) return myPaginatedBids.data.hasNext;
 		return bids.data.hasNext;
 	}, [
 		bidsFilter,
 		bids.data.hasNext,
-		winningBids?.data.page,
-		winningBids?.data.pageCount,
+		paginatedWinningBids?.data.page,
+		paginatedWinningBids?.data.pageCount,
 		myPaginatedBids?.data.hasNext,
 	]);
 
@@ -157,21 +174,23 @@ export const BidsTable = ({
 		if (!hasPrev) return;
 		tableContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
 
-		if (bidsFilter === 'winning' && winningBids) winningBids.setPage(winningBids.data.page - 1);
+		if (bidsFilter === 'winning' && paginatedWinningBids)
+			paginatedWinningBids.setPage(paginatedWinningBids.data.page - 1);
 		else if (bidsFilter === 'mine' && myPaginatedBids)
 			myPaginatedBids.setCursor(myPaginatedBids.data.cursorForPrevPage);
 		else bids.setCursor(bids.data.cursorForPrevPage);
-	}, [bids, winningBids, myPaginatedBids, bidsFilter, hasPrev]);
+	}, [bids, paginatedWinningBids, myPaginatedBids, bidsFilter, hasPrev]);
 
 	const handleNextPage = useCallback(() => {
 		if (!hasNext) return;
 		tableContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
 
-		if (bidsFilter === 'winning' && winningBids) winningBids.setPage(winningBids.data.page + 1);
+		if (bidsFilter === 'winning' && paginatedWinningBids)
+			paginatedWinningBids.setPage(paginatedWinningBids.data.page + 1);
 		else if (bidsFilter === 'mine' && myPaginatedBids)
 			myPaginatedBids.setCursor(myPaginatedBids.data.cursorForNextPage);
 		else bids.setCursor(bids.data.cursorForNextPage);
-	}, [bids, winningBids, myPaginatedBids, bidsFilter, hasNext]);
+	}, [bids, paginatedWinningBids, myPaginatedBids, bidsFilter, hasNext]);
 
 	return (
 		<Stack className={`${classes.root} ${className}`}>
@@ -221,7 +240,7 @@ export const BidsTable = ({
 												value="contributing"
 												label="Only show bids contributing to your final bill"
 											/>
-											{winningBids && (
+											{paginatedWinningBids && (
 												<Radio
 													value="winning"
 													label="Only show winning bids"
