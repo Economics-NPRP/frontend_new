@@ -9,7 +9,6 @@ import {
 	PaginatedBidsProvider,
 	PaginatedWinningBidsProvider,
 	RealtimeBidsProvider,
-	SingleAuctionProvider,
 } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { PageProviders } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
@@ -71,7 +70,6 @@ export default function AuctionPage({
 		</>,
 		{ provider: RealtimeBidsProvider },
 		{ provider: AllWinningBidsProvider },
-		{ provider: SingleAuctionProvider },
 		{ provider: MyOpenAuctionResultsProvider },
 		{ provider: MyPaginatedWinningBidsProvider },
 		{ provider: PaginatedWinningBidsProvider, props: { defaultPerPage: 20 } },

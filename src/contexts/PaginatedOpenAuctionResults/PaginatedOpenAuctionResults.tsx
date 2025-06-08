@@ -1,9 +1,9 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { createContext } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 
-import { SortedOffsetPaginatedQueryProvider } from '@/contexts';
+import { SingleAuctionContext, SortedOffsetPaginatedQueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
 import { getPaginatedOpenAuctionResults } from '@/lib/results/open';
 import {
@@ -25,7 +25,18 @@ export const PaginatedOpenAuctionResultsProvider = ({
 	defaultSortDirection,
 	children,
 }: SortedOffsetPaginatedProviderProps) => {
+	const auction = useContext(SingleAuctionContext);
 	const { auctionId } = useParams();
+
+	//	TODO: for sealed auctions, wait till authority publishes results
+	const areResultsAvailable = useMemo(
+		() =>
+			auction.isSuccess &&
+			(auction.data.type === 'open' ||
+				(auction.data.type === 'sealed' &&
+					new Date(auction.data.endDatetime).getTime() < Date.now())),
+		[auction.data.type, auction.data.endDatetime],
+	);
 
 	return (
 		<SortedOffsetPaginatedQueryProvider
@@ -45,6 +56,7 @@ export const PaginatedOpenAuctionResultsProvider = ({
 					}),
 				)
 			}
+			disabled={!areResultsAvailable}
 			children={children}
 		/>
 	);

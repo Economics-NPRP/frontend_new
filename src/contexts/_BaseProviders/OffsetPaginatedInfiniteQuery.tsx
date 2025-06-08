@@ -8,12 +8,12 @@ import {
 	OffsetPaginatedInfiniteContextState,
 	OffsetPaginatedProviderProps,
 } from '@/types';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { skipToken, useInfiniteQuery } from '@tanstack/react-query';
 
 export interface OffsetPaginatedInfiniteQueryProviderProps<
 	T extends OffsetPaginatedInfiniteContextState<unknown>,
 > extends OffsetPaginatedProviderProps,
-		Pick<QueryProviderProps<T>, 'context' | 'defaultData' | 'queryKey'>,
+		Pick<QueryProviderProps<T>, 'context' | 'defaultData' | 'queryKey' | 'disabled'>,
 		Record<string, unknown> {
 	queryFn: (perPage: number) => (params: { pageParam: unknown }) => Promise<unknown>;
 }
@@ -26,6 +26,7 @@ export const OffsetPaginatedInfiniteQueryProvider = <
 	defaultData,
 	queryKey,
 	queryFn,
+	disabled,
 	children,
 	...props
 }: OffsetPaginatedInfiniteQueryProviderProps<T>) => {
@@ -37,7 +38,7 @@ export const OffsetPaginatedInfiniteQueryProvider = <
 
 	const queryResults = useInfiniteQuery({
 		queryKey: paginatedQueryKey,
-		queryFn: paginatedQueryFn,
+		queryFn: disabled ? skipToken : paginatedQueryFn,
 		initialPageParam: defaultPage,
 		getNextPageParam: (prevResult) =>
 			(prevResult as OffsetPaginatedData<unknown>) &&

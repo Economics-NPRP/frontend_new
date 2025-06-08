@@ -6,11 +6,9 @@ import {
 	AllWinningBidsProvider,
 	MyOpenAuctionResultsProvider,
 	MyPaginatedBidsProvider,
-	MyPaginatedWinningBidsProvider,
 	PaginatedBidsProvider,
 	PaginatedOpenAuctionResultsProvider,
 	PaginatedWinningBidsProvider,
-	SingleAuctionProvider,
 } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { Stack } from '@mantine/core';
@@ -32,7 +30,6 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 				{bids}
 			</Stack>
 		</>,
-		{ provider: SingleAuctionProvider },
 		{ provider: PaginatedBidsProvider, props: { defaultPerPage: 20 } },
 		{ provider: AllWinningBidsProvider },
 		{ provider: PaginatedWinningBidsProvider, props: { defaultPerPage: 20 } },

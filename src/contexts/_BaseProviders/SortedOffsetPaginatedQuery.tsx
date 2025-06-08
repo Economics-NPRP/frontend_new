@@ -12,7 +12,10 @@ import {
 export interface SortedOffsetPaginatedQueryProviderProps<
 	T extends SortedOffsetPaginatedContextState<unknown>,
 > extends SortedOffsetPaginatedProviderProps,
-		Pick<OffsetPaginatedQueryProviderProps<T>, 'context' | 'defaultData' | 'queryKey'>,
+		Pick<
+			OffsetPaginatedQueryProviderProps<T>,
+			'context' | 'defaultData' | 'queryKey' | 'disabled'
+		>,
 		Record<string, unknown> {
 	queryFn: (
 		page: number,
@@ -30,6 +33,7 @@ export const SortedOffsetPaginatedQueryProvider = <
 	defaultData,
 	queryKey,
 	queryFn,
+	disabled,
 	children,
 	...props
 }: SortedOffsetPaginatedQueryProviderProps<T>) => {
@@ -54,6 +58,7 @@ export const SortedOffsetPaginatedQueryProvider = <
 			defaultData={defaultData}
 			queryKey={paginatedQueryKey}
 			queryFn={paginatedQueryFn}
+			disabled={disabled}
 			children={children}
 			sortBy={sortBy}
 			setSortBy={setSortBy}

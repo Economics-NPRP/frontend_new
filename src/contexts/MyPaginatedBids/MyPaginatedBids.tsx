@@ -1,9 +1,9 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 
-import { KeysetPaginatedQueryProvider } from '@/contexts';
+import { KeysetPaginatedQueryProvider, SingleAuctionContext } from '@/contexts';
 import { throwError } from '@/helpers';
 import { getPaginatedBids } from '@/lib/bids/open';
 import { CurrentUserContext } from '@/pages/globalContext';
@@ -24,8 +24,18 @@ export const MyPaginatedBidsProvider = ({
 	defaultPerPage,
 	children,
 }: KeysetPaginatedProviderProps) => {
+	const auction = useContext(SingleAuctionContext);
 	const { auctionId } = useParams();
 	const { currentUser } = useContext(CurrentUserContext);
+
+	const areBidsAvailable = useMemo(
+		() =>
+			auction.isSuccess &&
+			(auction.data.type === 'open' ||
+				(auction.data.type === 'sealed' &&
+					new Date(auction.data.endDatetime).getTime() < Date.now())),
+		[auction.data.type, auction.data.endDatetime],
+	);
 
 	return (
 		<KeysetPaginatedQueryProvider
@@ -44,6 +54,7 @@ export const MyPaginatedBidsProvider = ({
 					}),
 				)
 			}
+			disabled={!areBidsAvailable}
 			children={children}
 		/>
 	);
