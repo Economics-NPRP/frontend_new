@@ -43,7 +43,7 @@ export const RealtimeBidsProvider = ({ children, ...props }: PropsWithChildren) 
 	const handleOnError = useCallback(() => setStatus('error'), [setStatus]);
 	const handleOnMessage = useCallback(
 		() => (event: MessageEvent) => {
-			const payload = camelCase(JSON.parse(event.data)) as IRealtimeBidsContext['latest'];
+			const payload = camelCase(JSON.parse(event.data), 3) as IRealtimeBidsContext['latest'];
 			if (payload.type === 'new_bid') setStatus('new');
 			setLatest(payload);
 

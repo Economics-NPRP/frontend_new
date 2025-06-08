@@ -73,6 +73,9 @@ export default function Prompt() {
 								Add your bids to the table below. When you're ready, click the
 								"Place Bids" button to submit them all at once.
 							</Text>
+							<Text className={classes.bidders}>
+								Active Bidders: {realtimeBids.latest.data.activeBidders} Bidders
+							</Text>
 						</Stack>
 						<MediumCountdown
 							className={classes.countdown}

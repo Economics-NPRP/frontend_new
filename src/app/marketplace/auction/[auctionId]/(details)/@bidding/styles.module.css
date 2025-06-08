@@ -21,6 +21,11 @@
 					> .subtitle {
 						@apply paragraph-md text-pretty;
 					}
+
+					> .bidders {
+						@apply mt-2;
+						@apply display-md-sb;
+					}
 				}
 			}
 		}
