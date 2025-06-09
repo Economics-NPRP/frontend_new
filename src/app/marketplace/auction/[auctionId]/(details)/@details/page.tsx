@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+// import { useTranslations } from 'next-intl';
 import { useContext } from 'react';
 
 import { AuctionTypeBadge, CategoryBadge, EndingSoonBadge } from '@/components/Badge';
@@ -15,7 +15,7 @@ import { IconBookmark, IconChevronRight, IconShare } from '@tabler/icons-react';
 import classes from './styles.module.css';
 
 export default function Details() {
-	const t = useTranslations();
+	// const t = useTranslations();
 	const auction = useContext(SingleAuctionContext);
 
 	return (

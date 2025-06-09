@@ -1,7 +1,7 @@
 'use client';
 
 import { DateTime } from 'luxon';
-import { useFormatter, useTranslations } from 'next-intl';
+import { useFormatter } from 'next-intl';
 import Image from 'next/image';
 import { useCallback, useContext } from 'react';
 
@@ -19,7 +19,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import classes from './styles.module.css';
 
 export default function Card() {
-	const t = useTranslations();
+	// const t = useTranslations();
 	const format = useFormatter();
 	const queryClient = useQueryClient();
 	const auction = useContext(SingleAuctionContext);

@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+// import { useTranslations } from 'next-intl';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { generateBidsRows, generateLegend } from '@/components/BidsTable/helpers';
@@ -77,7 +77,7 @@ export const BidsTable = ({
 	className,
 	...props
 }: BidsTableProps) => {
-	const t = useTranslations();
+	// const t = useTranslations();
 	const tableContainerRef = useRef<HTMLDivElement>(null);
 	const { currentUser } = useContext(CurrentUserContext);
 

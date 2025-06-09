@@ -1,6 +1,6 @@
 'use client';
 
-import { useLocale, useTranslations } from 'next-intl';
+// import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 
@@ -9,8 +9,8 @@ import { Button, Group, Stack, Text, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
 export default function Contact() {
-	const t = useTranslations();
-	const locale = useLocale();
+	// const t = useTranslations();
+	// const locale = useLocale();
 	const router = useRouter();
 
 	const form = useForm<{ code: string }>({

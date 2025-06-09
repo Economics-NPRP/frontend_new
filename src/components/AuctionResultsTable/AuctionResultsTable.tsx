@@ -2,7 +2,7 @@
 
 import { IPaginatedOpenAuctionResultsContext } from 'contexts/PaginatedOpenAuctionResults';
 import { ISingleAuctionContext } from 'contexts/SingleAuction';
-import { createFormatter, useFormatter, useTranslations } from 'next-intl';
+import { createFormatter, useFormatter } from 'next-intl';
 import { useContext, useEffect, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
@@ -31,7 +31,7 @@ export const ResultsTable = ({
 	auction,
 	...props
 }: ResultsTableProps) => {
-	const t = useTranslations();
+	// const t = useTranslations();
 	const format = useFormatter();
 	const { currentUser } = useContext(CurrentUserContext);
 
