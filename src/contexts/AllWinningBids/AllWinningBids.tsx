@@ -1,10 +1,11 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { createContext, useContext, useMemo } from 'react';
+import { createContext } from 'react';
 
-import { OffsetPaginatedQueryProvider, SingleAuctionContext } from '@/contexts';
+import { OffsetPaginatedQueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
+import { useAuctionAvailability } from '@/hooks';
 import { getPaginatedWinningBids } from '@/lib/bids/open';
 import { IBidData } from '@/schema/models';
 import {
@@ -18,17 +19,8 @@ const DefaultData = getDefaultOffsetPaginatedContextState<IBidData>();
 const Context = createContext<IAllWinningBidsContext>(DefaultData);
 
 export const AllWinningBidsProvider = ({ children }: OffsetPaginatedProviderProps) => {
-	const auction = useContext(SingleAuctionContext);
 	const { auctionId } = useParams();
-
-	const areBidsAvailable = useMemo(
-		() =>
-			auction.isSuccess &&
-			(auction.data.type === 'open' ||
-				(auction.data.type === 'sealed' &&
-					new Date(auction.data.endDatetime).getTime() < Date.now())),
-		[auction.data.type, auction.data.endDatetime],
-	);
+	const { areBidsAvailable } = useAuctionAvailability();
 
 	return (
 		<OffsetPaginatedQueryProvider

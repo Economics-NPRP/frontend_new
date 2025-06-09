@@ -2,17 +2,9 @@
 
 import { camelCase } from 'change-case/keys';
 import { useParams } from 'next/navigation';
-import {
-	PropsWithChildren,
-	createContext,
-	useCallback,
-	useContext,
-	useEffect,
-	useMemo,
-	useState,
-} from 'react';
+import { PropsWithChildren, createContext, useCallback, useEffect, useState } from 'react';
 
-import { SingleAuctionContext } from '@/contexts';
+import { useAuctionAvailability } from '@/hooks';
 import { useQueryClient } from '@tanstack/react-query';
 
 export interface IRealtimeBidsContext {
@@ -43,20 +35,11 @@ const Context = createContext<IRealtimeBidsContext>(DefaultData);
 
 export const RealtimeBidsProvider = ({ children, ...props }: PropsWithChildren) => {
 	const queryClient = useQueryClient();
-	const auction = useContext(SingleAuctionContext);
 	const { auctionId } = useParams();
+	const { areBidsAvailable } = useAuctionAvailability();
 
 	const [status, setStatus] = useState<IRealtimeBidsContext['status']>(DefaultData.status);
 	const [latest, setLatest] = useState<IRealtimeBidsContext['latest']>(DefaultData.latest);
-
-	const areBidsAvailable = useMemo(
-		() =>
-			auction.isSuccess &&
-			(auction.data.type === 'open' ||
-				(auction.data.type === 'sealed' &&
-					new Date(auction.data.endDatetime).getTime() < Date.now())),
-		[auction.data.type, auction.data.endDatetime],
-	);
 
 	const handleOnOpen = useCallback(() => setStatus('idle'), [setStatus]);
 	const handleOnError = useCallback(() => setStatus('error'), [setStatus]);

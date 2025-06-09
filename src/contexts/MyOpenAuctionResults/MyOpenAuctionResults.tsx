@@ -1,10 +1,11 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { PropsWithChildren, createContext, useContext, useMemo } from 'react';
+import { PropsWithChildren, createContext, useContext } from 'react';
 
-import { QueryProvider, SingleAuctionContext } from '@/contexts';
+import { QueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
+import { useAuctionAvailability } from '@/hooks';
 import { getMyOpenAuctionResults } from '@/lib/results/open';
 import { CurrentUserContext } from '@/pages/globalContext';
 import {
@@ -19,19 +20,9 @@ const DefaultData = getDefaultContextState(DefaultMyAuctionResultsData);
 const Context = createContext<IMyOpenAuctionResultsContext>(DefaultData);
 
 export const MyOpenAuctionResultsProvider = ({ children }: PropsWithChildren) => {
-	const auction = useContext(SingleAuctionContext);
 	const { auctionId } = useParams();
 	const { currentUser } = useContext(CurrentUserContext);
-
-	//	TODO: for sealed auctions, wait till authority publishes results
-	const areResultsAvailable = useMemo(
-		() =>
-			auction.isSuccess &&
-			(auction.data.type === 'open' ||
-				(auction.data.type === 'sealed' &&
-					new Date(auction.data.endDatetime).getTime() < Date.now())),
-		[auction.data.type, auction.data.endDatetime],
-	);
+	const { areResultsAvailable } = useAuctionAvailability();
 
 	return (
 		<QueryProvider
