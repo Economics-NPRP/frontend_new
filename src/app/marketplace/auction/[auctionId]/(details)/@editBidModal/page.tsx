@@ -6,7 +6,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { BiddingNumberInput } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingNumberInput';
-import { BidTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
+import { BiddingTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import {
 	AuctionDetailsPageContext,
 	DefaultAuctionDetailsPageContextData,
@@ -36,7 +36,7 @@ export default function EditModal() {
 
 	const oldBid = useMemo(() => bids.find((bid) => bid.bid === editingBid), [bids, editingBid]);
 
-	const form = useForm<BidTableData>({
+	const form = useForm<BiddingTableData>({
 		mode: 'uncontrolled',
 		onValuesChange: ({ bid, permit }) => {
 			setSubtotal(Number(bid || 0) * Number(permit || 0));
@@ -78,7 +78,7 @@ export default function EditModal() {
 	}, [oldBid]);
 
 	const onEditHandler = useCallback(
-		(values: BidTableData) => {
+		(values: BiddingTableData) => {
 			bidsHandlers.applyWhere(
 				(bid) => bid.bid === editingBid,
 				() => values,
