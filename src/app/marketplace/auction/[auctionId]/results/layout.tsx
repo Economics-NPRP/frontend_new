@@ -1,13 +1,15 @@
 'use client';
 
-import { MyOpenAuctionResultsProvider } from 'contexts/MyOpenAuctionResults';
-import { MyPaginatedBidsProvider } from 'contexts/MyPaginatedBids';
-import { MyPaginatedWinningBidsProvider } from 'contexts/MyPaginatedWinningBids';
-import { PaginatedBidsProvider } from 'contexts/PaginatedBids';
-import { PaginatedWinningBidsProvider } from 'contexts/PaginatedWinningBids';
-import { SingleAuctionProvider } from 'contexts/SingleAuction';
 import { PropsWithChildren, ReactNode } from 'react';
 
+import {
+	AllWinningBidsProvider,
+	MyOpenAuctionResultsProvider,
+	MyPaginatedBidsProvider,
+	PaginatedBidsProvider,
+	PaginatedOpenAuctionResultsProvider,
+	PaginatedWinningBidsProvider,
+} from '@/contexts';
 import { withProviders } from '@/helpers';
 import { Stack } from '@mantine/core';
 import { useScrollIntoView } from '@mantine/hooks';
@@ -25,15 +27,15 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 			<Stack>
 				{ticket}
 				{details}
-				{/* {bids} */}
+				{bids}
 			</Stack>
 		</>,
-		{ provider: SingleAuctionProvider },
-		{ provider: MyOpenAuctionResultsProvider },
-		{ provider: MyPaginatedWinningBidsProvider },
-		{ provider: PaginatedWinningBidsProvider, props: { defaultPerPage: 20 } },
 		{ provider: PaginatedBidsProvider, props: { defaultPerPage: 20 } },
+		{ provider: AllWinningBidsProvider },
+		{ provider: PaginatedWinningBidsProvider, props: { defaultPerPage: 20 } },
 		{ provider: MyPaginatedBidsProvider, props: { defaultPerPage: 20 } },
+		{ provider: PaginatedOpenAuctionResultsProvider },
+		{ provider: MyOpenAuctionResultsProvider },
 		{ provider: PageProvider },
 	);
 }

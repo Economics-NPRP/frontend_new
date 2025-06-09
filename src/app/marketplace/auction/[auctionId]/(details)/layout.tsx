@@ -1,12 +1,14 @@
 import { ReactNode } from 'react';
 
 import {
+	AllWinningBidsProvider,
+	InfinitePaginatedAuctionsProvider,
 	MyOpenAuctionResultsProvider,
 	MyPaginatedBidsProvider,
 	MyPaginatedWinningBidsProvider,
 	PaginatedBidsProvider,
 	PaginatedWinningBidsProvider,
-	SingleAuctionProvider,
+	RealtimeBidsProvider,
 } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { PageProviders } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
@@ -66,12 +68,27 @@ export default function AuctionPage({
 			{bidConfirmationModal}
 			{ended}
 		</>,
-		{ provider: SingleAuctionProvider },
+		{ provider: RealtimeBidsProvider },
+		{ provider: AllWinningBidsProvider },
 		{ provider: MyOpenAuctionResultsProvider },
 		{ provider: MyPaginatedWinningBidsProvider },
 		{ provider: PaginatedWinningBidsProvider, props: { defaultPerPage: 20 } },
 		{ provider: PaginatedBidsProvider, props: { defaultPerPage: 20 } },
 		{ provider: MyPaginatedBidsProvider, props: { defaultPerPage: 20 } },
 		{ provider: PageProviders },
+		{
+			provider: InfinitePaginatedAuctionsProvider,
+			props: {
+				defaultPerPage: 12,
+				defaultSortBy: 'end_datetime',
+				defaultSortDirection: 'asc',
+				defaultFilters: {
+					type: [],
+					status: 'ongoing',
+					sector: [],
+					owner: [],
+				},
+			},
+		},
 	);
 }

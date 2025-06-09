@@ -364,7 +364,7 @@
 		},
 		"auctionCard": {
 			"permits": "{permits, number} {permits, plural, =0 {Permits} =1 {Permit} other {Permits}} ({emissions, number} tCO2e)",
-			"minBid": "Min. Winning Bid",
+			"minBid": "Minimum Bid",
 			"timeLeft": "Time Left"
 		}
 	}

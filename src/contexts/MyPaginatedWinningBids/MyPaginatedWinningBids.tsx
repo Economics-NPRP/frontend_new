@@ -5,6 +5,7 @@ import { createContext, useContext } from 'react';
 
 import { OffsetPaginatedQueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
+import { useAuctionAvailability } from '@/hooks';
 import { getMyPaginatedWinningBids } from '@/lib/bids/open';
 import { CurrentUserContext } from '@/pages/globalContext';
 import { IBidData } from '@/schema/models';
@@ -25,6 +26,7 @@ export const MyPaginatedWinningBidsProvider = ({
 }: OffsetPaginatedProviderProps) => {
 	const { auctionId } = useParams();
 	const { currentUser } = useContext(CurrentUserContext);
+	const { areBidsAvailable } = useAuctionAvailability();
 
 	return (
 		<OffsetPaginatedQueryProvider
@@ -47,6 +49,7 @@ export const MyPaginatedWinningBidsProvider = ({
 					}),
 				)
 			}
+			disabled={!areBidsAvailable}
 			children={children}
 		/>
 	);

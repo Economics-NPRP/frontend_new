@@ -5,6 +5,7 @@ import { createContext, useContext } from 'react';
 
 import { KeysetPaginatedQueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
+import { useAuctionAvailability } from '@/hooks';
 import { getPaginatedBids } from '@/lib/bids/open';
 import { CurrentUserContext } from '@/pages/globalContext';
 import { IBidData } from '@/schema/models';
@@ -26,6 +27,7 @@ export const MyPaginatedBidsProvider = ({
 }: KeysetPaginatedProviderProps) => {
 	const { auctionId } = useParams();
 	const { currentUser } = useContext(CurrentUserContext);
+	const { areBidsAvailable } = useAuctionAvailability();
 
 	return (
 		<KeysetPaginatedQueryProvider
@@ -44,6 +46,7 @@ export const MyPaginatedBidsProvider = ({
 					}),
 				)
 			}
+			disabled={!areBidsAvailable}
 			children={children}
 		/>
 	);

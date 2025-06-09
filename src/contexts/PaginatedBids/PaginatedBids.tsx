@@ -5,6 +5,7 @@ import { createContext } from 'react';
 
 import { KeysetPaginatedQueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
+import { useAuctionAvailability } from '@/hooks';
 import { getPaginatedBids } from '@/lib/bids/open';
 import { IBidData } from '@/schema/models';
 import {
@@ -23,6 +24,7 @@ export const PaginatedBidsProvider = ({
 	children,
 }: KeysetPaginatedProviderProps) => {
 	const { auctionId } = useParams();
+	const { areBidsAvailable } = useAuctionAvailability();
 
 	return (
 		<KeysetPaginatedQueryProvider
@@ -40,6 +42,7 @@ export const PaginatedBidsProvider = ({
 					}),
 				)
 			}
+			disabled={!areBidsAvailable}
 			children={children}
 		/>
 	);

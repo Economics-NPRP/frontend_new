@@ -1,15 +1,14 @@
 'use client';
 
-import { useLocale, useTranslations } from 'next-intl';
-
+// import { useLocale, useTranslations } from 'next-intl';
 import classes from '@/pages/(auth)/(internal)/styles.module.css';
 import { Button, Group, Stack, Text, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconMail } from '@tabler/icons-react';
 
 export default function Form() {
-	const t = useTranslations();
-	const locale = useLocale();
+	// const t = useTranslations();
+	// const locale = useLocale();
 
 	const form = useForm({
 		mode: 'uncontrolled',

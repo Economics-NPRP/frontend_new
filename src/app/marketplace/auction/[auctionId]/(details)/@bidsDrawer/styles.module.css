@@ -10,10 +10,13 @@
 	}
 }
 
-.button {
+.indicator {
 	@apply fixed;
 	@apply left-0 top-1/2 -translate-y-1/2;
-	@apply size-12;
-	@apply bg-white border border-solid border-gray-300 text-dark-600;
-	@apply shadow-sm;
+
+	> .button {
+		@apply size-12;
+		@apply bg-white border border-solid border-gray-300 text-dark-600;
+		@apply shadow-sm;
+	}
 }

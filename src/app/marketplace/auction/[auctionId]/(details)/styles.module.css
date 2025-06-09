@@ -1,11 +1,12 @@
 .root {
-	@apply gap-8;
+	@apply gap-16;
 
 	> .button {
-		@apply self-start;
+		@apply self-start -mb-8;
 	}
 
 	> .details {
+		@apply relative;
 		@apply flex-nowrap gap-0 items-start;
 	}
 

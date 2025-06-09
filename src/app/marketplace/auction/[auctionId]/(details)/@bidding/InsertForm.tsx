@@ -3,6 +3,7 @@ import { useFormatter } from 'next-intl';
 import { useCallback, useContext, useMemo, useState } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
+import { useUnsavedChanges } from '@/hooks';
 import { BiddingNumberInput } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingNumberInput';
 import { BiddingTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
@@ -74,6 +75,9 @@ export const InsertForm = () => {
 		},
 		[bidsHandlers, form, auction.data.hasJoined],
 	);
+
+	//	Stop user from leaving if he started bidding already
+	useUnsavedChanges(form.isDirty() || bids.length > 0);
 
 	return (
 		<Stack className={classes.insertForm}>

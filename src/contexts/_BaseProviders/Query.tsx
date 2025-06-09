@@ -3,7 +3,7 @@
 import { Context, PropsWithChildren, useMemo } from 'react';
 
 import { ContextState } from '@/types';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, skipToken, useQuery } from '@tanstack/react-query';
 
 export interface QueryProviderProps<T extends ContextState<unknown>>
 	extends PropsWithChildren,
@@ -12,12 +12,14 @@ export interface QueryProviderProps<T extends ContextState<unknown>>
 	defaultData: T;
 	queryKey: Array<string | number | boolean | undefined | null>;
 	queryFn: () => () => Promise<unknown>;
+	disabled?: boolean;
 }
 export const QueryProvider = <T extends ContextState<unknown>>({
 	context,
 	defaultData,
 	queryKey,
 	queryFn,
+	disabled,
 	children,
 	...props
 }: QueryProviderProps<T>) => {
@@ -25,7 +27,7 @@ export const QueryProvider = <T extends ContextState<unknown>>({
 
 	const queryResults = useQuery({
 		queryKey,
-		queryFn: memoizedQueryFn,
+		queryFn: disabled ? skipToken : memoizedQueryFn,
 		placeholderData: keepPreviousData,
 	});
 

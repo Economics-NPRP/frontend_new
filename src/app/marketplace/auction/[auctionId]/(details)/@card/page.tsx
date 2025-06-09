@@ -1,24 +1,49 @@
 'use client';
 
 import { DateTime } from 'luxon';
-import { useFormatter, useTranslations } from 'next-intl';
+import { useFormatter } from 'next-intl';
 import Image from 'next/image';
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { LargeCountdown } from '@/components/Countdown';
 import { SingleAuctionContext } from '@/contexts';
+import { throwError } from '@/helpers';
+import { joinAuction } from '@/lib/auctions';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Button, Container, Group, Stack, Text } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { IconGavel, IconGitCompare, IconLeaf } from '@tabler/icons-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import classes from './styles.module.css';
 
 export default function Card() {
-	const t = useTranslations();
+	// const t = useTranslations();
 	const format = useFormatter();
+	const queryClient = useQueryClient();
 	const auction = useContext(SingleAuctionContext);
 	const { scrollToBidding } = useContext(AuctionDetailsPageContext);
+
+	const mutation = useMutation({
+		mutationFn: () => throwError(joinAuction(auction.data.id as string)),
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ['marketplace', auction.data.id],
+			});
+		},
+		onError: ({ message }) => {
+			notifications.show({
+				color: 'red',
+				title: 'There was a problem joining the auction',
+				message,
+				position: 'bottom-center',
+			});
+		},
+		retry: false,
+	});
+
+	const handleJoinAuction = useCallback(() => mutation.mutate(), [mutation]);
 
 	return (
 		<Stack className={classes.root}>
@@ -51,7 +76,7 @@ export default function Card() {
 					</Group>
 				</Stack>
 				<Stack className={classes.section}>
-					<Text className={classes.subtext}>Minimum Winning Bid</Text>
+					<Text className={classes.subtext}>Minimum Bid</Text>
 					<Group className={classes.price}>
 						<CurrencyBadge className={classes.badge} />
 						<Text className={classes.value}>
@@ -84,20 +109,29 @@ export default function Card() {
 				>
 					Buy Now
 				</Button> */}
-				<Button
-					className={classes.cta}
-					rightSection={<IconGitCompare size={16} />}
-					variant="outline"
-				>
-					Compare Auctions
-				</Button>
-				<Button
-					className={classes.cta}
-					rightSection={<IconGavel size={16} />}
-					onClick={scrollToBidding}
-				>
-					Start Bidding
-				</Button>
+				{auction.data.hasJoined && (
+					<>
+						<Button
+							className={classes.cta}
+							rightSection={<IconGitCompare size={16} />}
+							variant="outline"
+						>
+							Compare Auctions
+						</Button>
+						<Button
+							className={classes.cta}
+							rightSection={<IconGavel size={16} />}
+							onClick={() => scrollToBidding({ alignment: 'center' })}
+						>
+							Start Bidding
+						</Button>
+					</>
+				)}
+				{!auction.data.hasJoined && (
+					<Button className={classes.cta} onClick={handleJoinAuction}>
+						Join Auction
+					</Button>
+				)}
 			</Group>
 		</Stack>
 	);

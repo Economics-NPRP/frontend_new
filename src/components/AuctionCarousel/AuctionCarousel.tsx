@@ -6,7 +6,8 @@ import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'rea
 import { getLangDir } from 'rtl-detect';
 
 import { AuctionCard } from '@/components/AuctionCard';
-import { getPaginatedAuctions } from '@/lib/auctions';
+import { IAuctionData } from '@/schema/models';
+import { SortedOffsetPaginatedInfiniteContextState } from '@/types';
 import { Carousel, CarouselSlide } from '@mantine/carousel';
 import {
 	ActionIcon,
@@ -26,18 +27,19 @@ import {
 	IconChevronRight,
 	IconPointFilled,
 } from '@tabler/icons-react';
-import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { QUERY_PARAMS } from './constants';
 import classes from './styles.module.css';
 
 const TWEEN_FACTOR_BASE = 0.75;
 
-export interface CarouselProps {}
-export const AuctionCarousel = ({}: CarouselProps) => {
+export interface AuctionCarouselProps {
+	infinitePaginatedAuctions: SortedOffsetPaginatedInfiniteContextState<IAuctionData>;
+}
+export const AuctionCarousel = ({ infinitePaginatedAuctions }: AuctionCarouselProps) => {
 	const t = useTranslations();
 	const locale = useLocale();
 	const direction = getLangDir(locale);
+	const containerRef = useRef<HTMLDivElement>(null);
 
 	const draggable = useMatches({ base: true, md: false });
 	const cardsPerScreen = useMatches({
@@ -46,15 +48,6 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 		md: 3,
 		xl: 4,
 	});
-
-	const { data, isError, isSuccess, isFetchingNextPage, hasNextPage, fetchNextPage } =
-		useInfiniteQuery({
-			queryKey: ['marketplace', '@ending'],
-			queryFn: ({ pageParam }) => getPaginatedAuctions({ ...QUERY_PARAMS, page: pageParam }),
-			initialPageParam: 1,
-			getNextPageParam: (lastPage) =>
-				lastPage.page + 1 > lastPage.pageCount ? undefined : lastPage.page + 1,
-		});
 
 	const [embla, setEmbla] = useState<EmblaCarouselType | null>(null);
 	const [progress, setProgress] = useState<number>(0);
@@ -65,19 +58,23 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 	const handleUpdateProgress = useCallback(
 		(embla: EmblaCarouselType) =>
 			setProgress(Math.min(Math.max(embla.scrollProgress(), 0), 1) * 100),
-		[embla, data],
+		[embla, infinitePaginatedAuctions.data],
 	);
 
 	//	Infinite scroll when end is reached
 	const handleInfiniteScroll = useCallback(
 		(embla: EmblaCarouselType) => {
-			if (isFetchingNextPage || !hasNextPage) return;
+			if (
+				infinitePaginatedAuctions.isFetchingNextPage ||
+				!infinitePaginatedAuctions.hasNextPage
+			)
+				return;
 
 			const loaderIndex = embla.slideNodes().length - 1;
 			const loaderInView = embla.slidesInView().includes(loaderIndex);
-			if (loaderInView) fetchNextPage();
+			if (loaderInView) infinitePaginatedAuctions.fetchNextPage();
 		},
-		[isFetchingNextPage, hasNextPage],
+		[infinitePaginatedAuctions.isFetchingNextPage, infinitePaginatedAuctions.hasNextPage],
 	);
 
 	const setTweenFactor = useCallback((embla: EmblaCarouselType) => {
@@ -104,19 +101,31 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 				else {
 					embla.slideNodes()[slideIndex].style.opacity = opacity;
 					embla.slideNodes()[slideIndex].style.transform = `scale(${scale})`;
-
-					//	Slides that are not in view should not be interactive
-					if (!isVisible) {
-						element.style.pointerEvents = 'none';
-						element.inert = true;
-					} else {
-						element.style.pointerEvents = 'auto';
-						element.inert = false;
-					}
 				}
 			});
 		});
 	}, []);
+
+	const handleSetPointerEvents = useCallback(
+		(embla: EmblaCarouselType) => {
+			embla.slideNodes().forEach((element) => {
+				if (!containerRef) return;
+
+				const rect = element.getBoundingClientRect();
+				const parentRect = containerRef.current!.getBoundingClientRect();
+				const isVisible = rect.x < parentRect.right + 16 && rect.x >= parentRect.left - 16;
+
+				if (isVisible) {
+					element.style.pointerEvents = 'auto';
+					element.inert = false;
+				} else {
+					element.style.pointerEvents = 'none';
+					element.inert = true;
+				}
+			});
+		},
+		[containerRef],
+	);
 
 	const handleResize = useCallback(
 		() => embla?.reInit({ direction, watchDrag: draggable }),
@@ -131,23 +140,34 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 		setTweenFactor(embla);
 		handleTweenOpacity(embla);
 		handleResize();
+		handleSetPointerEvents(embla);
 		window.addEventListener('resize', handleResize);
 		embla
 			.on('reInit', setTweenFactor)
 			.on('reInit', handleUpdateProgress)
 			.on('reInit', handleTweenOpacity)
-			.on('settle', handleInfiniteScroll)
+			.on('reInit', handleSetPointerEvents)
 			.on('scroll', handleUpdateProgress)
 			.on('scroll', handleTweenOpacity)
+			.on('scroll', handleInfiniteScroll)
+			.on('scroll', handleSetPointerEvents)
 			.on('slidesChanged', handleUpdateProgress)
 			.on('slideFocus', handleTweenOpacity)
 			.on('destroy', () => window.removeEventListener('resize', handleResize));
-	}, [embla, handleResize, handleTweenOpacity, handleUpdateProgress, handleInfiniteScroll]);
+	}, [
+		embla,
+		handleResize,
+		handleTweenOpacity,
+		handleUpdateProgress,
+		handleInfiniteScroll,
+		setTweenFactor,
+		handleSetPointerEvents,
+	]);
 
 	const auctions = useMemo(() => {
-		if (!isSuccess) return [];
+		if (!infinitePaginatedAuctions.isSuccess) return [];
 
-		return data.pages.map((group) => (
+		return infinitePaginatedAuctions.data.pages.map((group) => (
 			<Fragment key={group.page}>
 				{group.results.map((auction) => (
 					<CarouselSlide key={auction.id}>
@@ -156,10 +176,10 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 				))}
 			</Fragment>
 		));
-	}, [data]);
+	}, [infinitePaginatedAuctions.data]);
 
 	return (
-		<>
+		<Stack className={classes.root}>
 			<Stack className={classes.header}>
 				<Group className={classes.top}>
 					<Group className={classes.left}>
@@ -220,8 +240,10 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 				/>
 			</Stack>
 			<Group className={classes.content}>
-				{isError && <Text className={classes.error}>Error loading auctions</Text>}
-				{isSuccess && (
+				{infinitePaginatedAuctions.isError && (
+					<Text className={classes.error}>Error loading auctions</Text>
+				)}
+				{infinitePaginatedAuctions.isSuccess && (
 					<Carousel
 						classNames={{
 							root: classes.carousel,
@@ -234,9 +256,10 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 						align={'end'}
 						withControls={false}
 						getEmblaApi={setEmbla}
+						ref={containerRef}
 					>
 						{auctions}
-						{hasNextPage && (
+						{infinitePaginatedAuctions.hasNextPage && (
 							<CarouselSlide className={classes.loader}>
 								<Loader color="maroon" />
 							</CarouselSlide>
@@ -244,6 +267,6 @@ export const AuctionCarousel = ({}: CarouselProps) => {
 					</Carousel>
 				)}
 			</Group>
-		</>
+		</Stack>
 	);
 };

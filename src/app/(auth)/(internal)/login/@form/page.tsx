@@ -1,7 +1,7 @@
 'use client';
 
 import { valibotResolver } from 'mantine-form-valibot-resolver';
-import { useLocale, useTranslations } from 'next-intl';
+// import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 
@@ -24,8 +24,8 @@ import { useForm } from '@mantine/form';
 import { IconExclamationCircle, IconKey, IconMail } from '@tabler/icons-react';
 
 export default function Form() {
-	const t = useTranslations();
-	const locale = useLocale();
+	// const t = useTranslations();
+	// const locale = useLocale();
 	const router = useRouter();
 	const [formError, setFormError] = useState<Array<ReactElement>>([]);
 

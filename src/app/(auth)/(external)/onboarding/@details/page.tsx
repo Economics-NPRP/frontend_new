@@ -1,13 +1,12 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
-
+// import { useSearchParams } from 'next/navigation';
 import classes from '@/pages/(auth)/(external)/styles.module.css';
 import { Anchor, Avatar, Group, Stack, Text, Title } from '@mantine/core';
 import { IconMail, IconPhone } from '@tabler/icons-react';
 
 export default function Details() {
-	const searchParams = useSearchParams();
+	// const searchParams = useSearchParams();
 
 	return (
 		<Stack className={classes.section}>

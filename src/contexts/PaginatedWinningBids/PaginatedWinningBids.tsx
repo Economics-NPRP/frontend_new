@@ -5,6 +5,7 @@ import { createContext } from 'react';
 
 import { OffsetPaginatedQueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
+import { useAuctionAvailability } from '@/hooks';
 import { getPaginatedWinningBids } from '@/lib/bids/open';
 import { IBidData } from '@/schema/models';
 import {
@@ -23,6 +24,7 @@ export const PaginatedWinningBidsProvider = ({
 	children,
 }: OffsetPaginatedProviderProps) => {
 	const { auctionId } = useParams();
+	const { areBidsAvailable } = useAuctionAvailability();
 
 	return (
 		<OffsetPaginatedQueryProvider
@@ -40,6 +42,7 @@ export const PaginatedWinningBidsProvider = ({
 					}),
 				)
 			}
+			disabled={!areBidsAvailable}
 			children={children}
 		/>
 	);

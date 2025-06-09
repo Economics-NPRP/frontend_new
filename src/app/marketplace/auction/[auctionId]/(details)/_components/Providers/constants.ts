@@ -38,7 +38,7 @@ export interface IAuctionDetailsPageContext {
 	openBidsDrawer: () => void;
 	closeBidsDrawer: () => void;
 
-	scrollToBidding: () => void;
+	scrollToBidding: (options: { alignment: 'start' | 'center' | 'end' }) => void;
 	biddingTableRef: Ref<HTMLTableElement>;
 
 	bids: BiddingTableData[];

@@ -2,6 +2,7 @@ import { PropsWithChildren } from 'react';
 
 import { SortDirection } from '@/types';
 import { KeysetPaginatedData, OffsetPaginatedData, ServerData } from '@/types/ServerData';
+import { InfiniteData } from '@tanstack/react-query';
 
 export interface OffsetPaginatedProviderProps extends PropsWithChildren {
 	defaultPage?: number;
@@ -27,52 +28,86 @@ export interface ContextState<T> {
 	isSuccess: boolean;
 }
 
+export interface InfiniteContextState<T>
+	extends Pick<ContextState<T>, 'isLoading' | 'isError' | 'isSuccess'> {
+	data: InfiniteData<T>;
+	isFetchingNextPage: boolean;
+	hasNextPage: boolean;
+	fetchNextPage: () => void;
+}
+
 export interface ServerContextState<T> extends ContextState<ServerData<T>> {}
 
-export interface OffsetPaginatedContextState<T> extends ContextState<OffsetPaginatedData<T>> {
+interface OffsetContextStateCore {
 	page: number;
 	setPage: (page: number) => void;
 
 	perPage: number;
 	setPerPage: (perPage: number) => void;
 }
+export interface OffsetPaginatedContextState<T>
+	extends ContextState<OffsetPaginatedData<T>>,
+		OffsetContextStateCore {}
+export interface OffsetPaginatedInfiniteContextState<T>
+	extends InfiniteContextState<OffsetPaginatedData<T>>,
+		Pick<OffsetContextStateCore, 'perPage' | 'setPerPage'> {}
 
-export interface KeysetPaginatedContextState<T> extends ContextState<KeysetPaginatedData<T>> {
+export interface KeysetContextStateCore {
 	cursor: string | null;
 	setCursor: (cursor: string | null) => void;
 
 	perPage: number;
 	setPerPage: (perPage: number) => void;
 }
+export interface KeysetPaginatedContextState<T>
+	extends ContextState<KeysetPaginatedData<T>>,
+		KeysetContextStateCore {}
+export interface KeysetPaginatedInfiniteContextState<T>
+	extends InfiniteContextState<KeysetPaginatedData<T>>,
+		KeysetContextStateCore {}
 
-export interface SortedOffsetPaginatedContextState<T> extends ContextState<OffsetPaginatedData<T>> {
-	page: number;
-	setPage: (page: number) => void;
-
-	perPage: number;
-	setPerPage: (perPage: number) => void;
-
+export interface SortedOffsetContextStateCore {
 	sortBy: string | null;
 	setSortBy: (sortBy: string) => void;
 
 	sortDirection: SortDirection | null;
 	setSortDirection: (sortDirection: SortDirection) => void;
 }
+export interface SortedOffsetPaginatedContextState<T>
+	extends OffsetPaginatedContextState<T>,
+		SortedOffsetContextStateCore {}
+export interface SortedOffsetPaginatedInfiniteContextState<T>
+	extends OffsetPaginatedInfiniteContextState<T>,
+		SortedOffsetContextStateCore {}
 
-export const getDefaultContextState = <T>(defaultData: T): ServerContextState<T> => ({
+export const getDefaultContextState = <T>(defaultData?: T): ServerContextState<T> => ({
 	data: {
 		ok: false,
 		errors: [],
 		...defaultData,
-	},
+	} as ServerData<T>,
 	isLoading: true,
 	isError: false,
 	isSuccess: false,
 });
 
+const getInfiniteContextState = <T>(): Pick<
+	InfiniteContextState<T>,
+	'data' | 'isFetchingNextPage' | 'hasNextPage' | 'fetchNextPage'
+> => ({
+	data: {
+		pages: [],
+		pageParams: [],
+	},
+	isFetchingNextPage: false,
+	hasNextPage: false,
+	fetchNextPage: () => {},
+});
+
 export const getDefaultOffsetPaginatedContextState = <T>(
 	defaultPage: number = 1,
 	defaultPerPage: number = 10,
+	defaultData?: T,
 ): OffsetPaginatedContextState<T> => ({
 	page: defaultPage,
 	setPage: () => {},
@@ -80,24 +115,63 @@ export const getDefaultOffsetPaginatedContextState = <T>(
 	perPage: defaultPerPage,
 	setPerPage: () => {},
 
-	data: {
-		ok: false,
-		errors: [],
+	...getDefaultContextState({
 		results: [],
-		page: 1,
+		page: defaultPage,
 		pageCount: 1,
 		totalCount: 0,
-		perPage: 10,
+		perPage: defaultPerPage,
 		resultCount: 0,
-	} as OffsetPaginatedData<T>,
-	isLoading: true,
-	isError: false,
-	isSuccess: false,
+
+		...defaultData,
+	}),
+});
+
+export const getDefaultSortedOffsetPaginatedContextState = <T>(
+	defaultPage: number = 1,
+	defaultPerPage: number = 10,
+	defaultSortBy: string | null = null,
+	defaultSortDirection: SortDirection | null = null,
+	defaultData?: T,
+): SortedOffsetPaginatedContextState<T> => ({
+	sortBy: defaultSortBy,
+	setSortBy: () => {},
+
+	sortDirection: defaultSortDirection,
+	setSortDirection: () => {},
+
+	...getDefaultOffsetPaginatedContextState(defaultPage, defaultPerPage, defaultData),
+});
+
+export const getDefaultOffsetPaginatedInfiniteContextState = <T>(
+	defaultPage: number = 1,
+	defaultPerPage: number = 10,
+	defaultData?: T,
+): OffsetPaginatedInfiniteContextState<T> => ({
+	...getDefaultOffsetPaginatedContextState(defaultPage, defaultPerPage, defaultData),
+	...getInfiniteContextState<OffsetPaginatedData<T>>(),
+});
+export const getDefaultSortedOffsetPaginatedInfiniteContextState = <T>(
+	defaultPage: number = 1,
+	defaultPerPage: number = 10,
+	defaultSortBy: string | null = null,
+	defaultSortDirection: SortDirection | null = null,
+	defaultData?: T,
+): SortedOffsetPaginatedInfiniteContextState<T> => ({
+	...getDefaultSortedOffsetPaginatedContextState(
+		defaultPage,
+		defaultPerPage,
+		defaultSortBy,
+		defaultSortDirection,
+		defaultData,
+	),
+	...getInfiniteContextState<OffsetPaginatedData<T>>(),
 });
 
 export const getDefaultKeysetPaginatedContextState = <T>(
 	defaultCursor: string | null = null,
 	defaultPerPage: number = 10,
+	defaultData?: T,
 ): KeysetPaginatedContextState<T> => ({
 	cursor: defaultCursor,
 	setCursor: () => {},
@@ -105,11 +179,9 @@ export const getDefaultKeysetPaginatedContextState = <T>(
 	perPage: defaultPerPage,
 	setPerPage: () => {},
 
-	data: {
-		ok: false,
-		errors: [],
+	...getDefaultContextState({
 		results: [],
-		perPage: 10,
+		perPage: defaultPerPage,
 		hasNext: false,
 		hasPrev: false,
 		cursorForNextPage: null,
@@ -117,39 +189,7 @@ export const getDefaultKeysetPaginatedContextState = <T>(
 		totalCount: 0,
 		isExact: true,
 		resultCount: 0,
-	} as KeysetPaginatedData<T>,
-	isLoading: true,
-	isError: false,
-	isSuccess: false,
-});
 
-export const getDefaultSortedOffsetPaginatedContextState = <T>(
-	defaultPage: number = 1,
-	defaultPerPage: number = 10,
-): SortedOffsetPaginatedContextState<T> => ({
-	page: defaultPage,
-	setPage: () => {},
-
-	perPage: defaultPerPage,
-	setPerPage: () => {},
-
-	sortBy: null,
-	setSortBy: () => {},
-
-	sortDirection: null,
-	setSortDirection: () => {},
-
-	data: {
-		ok: false,
-		errors: [],
-		results: [],
-		page: 1,
-		pageCount: 1,
-		totalCount: 0,
-		perPage: 10,
-		resultCount: 0,
-	} as OffsetPaginatedData<T>,
-	isLoading: true,
-	isError: false,
-	isSuccess: false,
+		...defaultData,
+	}),
 });

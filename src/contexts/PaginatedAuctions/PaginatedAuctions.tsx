@@ -35,14 +35,18 @@ const DefaultData: IPaginatedAuctionsContext = {
 };
 const Context = createContext<IPaginatedAuctionsContext>(DefaultData);
 
+export interface PaginatedAuctionsProviderProps extends SortedOffsetPaginatedProviderProps {
+	defaultFilters?: IAuctionFilters;
+}
 export const PaginatedAuctionsProvider = ({
 	defaultPage,
 	defaultPerPage,
 	defaultSortBy,
 	defaultSortDirection,
+	defaultFilters,
 	children,
-}: SortedOffsetPaginatedProviderProps) => {
-	const [filters, setFilters] = useState(DefaultData.filters);
+}: PaginatedAuctionsProviderProps) => {
+	const [filters, setFilters] = useState(defaultFilters || DefaultData.filters);
 
 	const removeFilter = useCallback<IPaginatedAuctionsContext['removeFilter']>((key, value) => {
 		if (value) {

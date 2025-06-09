@@ -21,6 +21,11 @@
 					> .subtitle {
 						@apply paragraph-md text-pretty;
 					}
+
+					> .bidders {
+						@apply mt-2;
+						@apply display-md-sb;
+					}
 				}
 			}
 		}
@@ -80,8 +85,12 @@
 				@apply flex-nowrap gap-2 p-4;
 				@apply border border-t-0 border-solid border-gray-300;
 
-				.button {
-					@apply bg-white h-9 flex-[50%];
+				.indicator {
+					@apply flex-auto;
+
+					> .button {
+						@apply bg-white w-full h-9;
+					}
 				}
 			}
 

@@ -1,19 +1,15 @@
-import { throwError } from '@/helpers';
-import { getPaginatedAuctions } from '@/lib/auctions';
-import { Container, Stack } from '@mantine/core';
-import { QueryClient } from '@tanstack/react-query';
+'use client';
 
-import { AuctionCarousel } from './Carousel';
-import { QUERY_PARAMS } from './constants';
+import { InfinitePaginatedAuctionsContext } from 'contexts/InfinitePaginatedAuctions';
+import { useContext } from 'react';
+
+import { AuctionCarousel } from '@/components/AuctionCarousel';
+import { Container, Stack } from '@mantine/core';
+
 import classes from './styles.module.css';
 
-export default async function EndingSoon() {
-	const queryClient = new QueryClient();
-	await queryClient.prefetchInfiniteQuery({
-		queryKey: ['marketplace', '@ending', JSON.stringify(QUERY_PARAMS)],
-		queryFn: () => throwError(getPaginatedAuctions(QUERY_PARAMS)),
-		initialPageParam: 1,
-	});
+export default function EndingSoon() {
+	const infinitePaginatedAuctions = useContext(InfinitePaginatedAuctionsContext);
 
 	return (
 		<Stack className={classes.root}>
@@ -21,7 +17,7 @@ export default async function EndingSoon() {
 				<Container className={`${classes.grid} bg-dot-sm`} />
 				<Container className={classes.gradient} />
 			</Container>
-			<AuctionCarousel />
+			<AuctionCarousel infinitePaginatedAuctions={infinitePaginatedAuctions} />
 		</Stack>
 	);
 }

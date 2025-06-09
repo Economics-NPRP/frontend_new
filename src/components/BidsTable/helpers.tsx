@@ -2,62 +2,71 @@ import { ReactElement } from 'react';
 
 import { BidsTableRow } from '@/components/BidsTable/Row';
 import { BidsFilter } from '@/components/BidsTable/types';
-import { IBidData, IUserData } from '@/schema/models';
-import { KeysetPaginatedContextState, OffsetPaginatedContextState } from '@/types';
+import {
+	IAllWinningBidsContext,
+	IMyOpenAuctionResultsContext,
+	IMyPaginatedBidsContext,
+	IPaginatedBidsContext,
+	IPaginatedWinningBidsContext,
+} from '@/contexts';
+import { IUserData } from '@/schema/models';
 import { Container, Group, Text } from '@mantine/core';
 
 import classes from './styles.module.css';
 
 interface GenerateBidsRowsParams {
-	bids: KeysetPaginatedContextState<IBidData>;
-	winningBids?: OffsetPaginatedContextState<IBidData>;
-	myPaginatedBids?: KeysetPaginatedContextState<IBidData>;
-	contributingBidIds?: Array<string>;
+	bids: IPaginatedBidsContext;
+	allWinningBids?: IAllWinningBidsContext;
+	paginatedWinningBids?: IPaginatedWinningBidsContext;
+	myPaginatedBids?: IMyPaginatedBidsContext;
+	myOpenAuctionResults?: IMyOpenAuctionResultsContext;
 	bidsFilter: BidsFilter;
 	currentUser: IUserData;
 }
 export const generateBidsRows = ({
 	bids,
-	winningBids,
+	allWinningBids,
+	paginatedWinningBids,
 	myPaginatedBids,
-	contributingBidIds,
+	myOpenAuctionResults,
 	bidsFilter,
 	currentUser,
 }: GenerateBidsRowsParams): Array<ReactElement> => {
+	const contributingBidIds =
+		myOpenAuctionResults?.data.contributingLosingBids.map(({ id }) => id) || [];
+	const winningBidIds = allWinningBids?.data.results.map(({ id }) => id) || [];
 	switch (bidsFilter) {
 		case 'all':
 			return bids.data.results.map((bid) => {
 				const { id, bidder } = bid;
 
-				let bgColor = '';
-				if (contributingBidIds && contributingBidIds.includes(id)) bgColor = 'bg-blue-50';
-				else if (winningBids && winningBids.data.results.map(({ id }) => id).includes(id))
-					bgColor = 'bg-yellow-50';
-				else if (bidder.id === currentUser.id) bgColor = 'bg-gray-50';
+				const highlight: Array<string> = [];
+				if (bidder.id === currentUser.id) highlight.push('mine');
+				if (contributingBidIds.includes(id)) highlight.push('contributing');
+				if (winningBidIds.includes(id)) highlight.push('winning');
 
-				return <BidsTableRow bid={bid} key={id} className={bgColor} />;
+				return <BidsTableRow bid={bid} key={id} highlight={highlight} />;
 			});
 		case 'winning':
-			if (!winningBids) return [];
-			return winningBids.data.results.map((bid) => {
+			if (!paginatedWinningBids) return [];
+			return paginatedWinningBids.data.results.map((bid) => {
 				const { id, bidder } = bid;
 
-				let bgColor = '';
-				if (bidder.id === currentUser.id) bgColor = 'bg-gray-50';
+				const highlight: Array<string> = [];
+				if (bidder.id === currentUser.id) highlight.push('mine');
 
-				return <BidsTableRow bid={bid} key={id} className={bgColor} />;
+				return <BidsTableRow bid={bid} key={id} highlight={highlight} />;
 			});
 		case 'mine':
 			if (!myPaginatedBids) return [];
 			return myPaginatedBids.data.results.map((bid) => {
 				const { id } = bid;
 
-				let bgColor = '';
-				if (contributingBidIds && contributingBidIds.includes(id)) bgColor = 'bg-blue-50';
-				else if (winningBids && winningBids.data.results.map(({ id }) => id).includes(id))
-					bgColor = 'bg-yellow-50';
+				const highlight: Array<string> = [];
+				if (contributingBidIds.includes(id)) highlight.push('contributing');
+				if (winningBidIds.includes(id)) highlight.push('winning');
 
-				return <BidsTableRow bid={bid} key={id} className={bgColor} />;
+				return <BidsTableRow bid={bid} key={id} highlight={highlight} />;
 			});
 		default:
 			return [];
@@ -70,23 +79,23 @@ export const generateLegend = (bidsFilter: BidsFilter) => {
 			return (
 				<>
 					<Group className={classes.cell}>
-						<Container className={`${classes.key} ${classes.blue}`} />
+						<Container className={`${classes.key} ${classes.mine}`} />
+						<Text className={classes.value}>Your Bids</Text>
+					</Group>
+					<Group className={classes.cell}>
+						<Container className={`${classes.key} ${classes.contributing}`} />
 						<Text className={classes.value}>Contributing Bids</Text>
 					</Group>
 					<Group className={classes.cell}>
-						<Container className={`${classes.key} ${classes.yellow}`} />
+						<Container className={`${classes.key} ${classes.winning}`} />
 						<Text className={classes.value}>Winning Bids</Text>
-					</Group>
-					<Group className={classes.cell}>
-						<Container className={`${classes.key} ${classes.gray}`} />
-						<Text className={classes.value}>Your Bids</Text>
 					</Group>
 				</>
 			);
 		case 'winning':
 			return (
 				<Group className={classes.cell}>
-					<Container className={`${classes.key} ${classes.gray}`} />
+					<Container className={`${classes.key} ${classes.mine}`} />
 					<Text className={classes.value}>Your Bids</Text>
 				</Group>
 			);
@@ -94,11 +103,11 @@ export const generateLegend = (bidsFilter: BidsFilter) => {
 			return (
 				<>
 					<Group className={classes.cell}>
-						<Container className={`${classes.key} ${classes.blue}`} />
+						<Container className={`${classes.key} ${classes.contributing}`} />
 						<Text className={classes.value}>Contributing Bids</Text>
 					</Group>
 					<Group className={classes.cell}>
-						<Container className={`${classes.key} ${classes.yellow}`} />
+						<Container className={`${classes.key} ${classes.winning}`} />
 						<Text className={classes.value}>Winning Bids</Text>
 					</Group>
 				</>
