@@ -36,7 +36,7 @@ export default function Ticket() {
 				</Button>
 			</Group>
 			{!auction.data.hasJoined && <Unjoined />}
-			{!areResultsAvailable && <Ongoing />}
+			{auction.data.hasJoined && !areResultsAvailable && <Ongoing />}
 			{areResultsAvailable && isWinner && <Winner />}
 			{areResultsAvailable && !isWinner && <Loser />}
 		</Stack>
