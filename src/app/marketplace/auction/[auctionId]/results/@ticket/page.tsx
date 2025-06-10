@@ -1,10 +1,12 @@
 'use client';
 
-import { MyOpenAuctionResultsContext } from 'contexts/MyOpenAuctionResults';
-import { SingleAuctionContext } from 'contexts/SingleAuction';
 import { useContext, useMemo } from 'react';
 
+import { MyOpenAuctionResultsContext, SingleAuctionContext } from '@/contexts';
+import { useAuctionAvailability } from '@/hooks';
 import { Loser } from '@/pages/marketplace/auction/[auctionId]/results/@ticket/Loser';
+import { Ongoing } from '@/pages/marketplace/auction/[auctionId]/results/@ticket/Ongoing';
+import { Unjoined } from '@/pages/marketplace/auction/[auctionId]/results/@ticket/Unjoined';
 import { Winner } from '@/pages/marketplace/auction/[auctionId]/results/@ticket/Winner';
 import { Button, Group, Stack } from '@mantine/core';
 import { IconArrowUpLeft } from '@tabler/icons-react';
@@ -15,12 +17,10 @@ export default function Ticket() {
 	const auction = useContext(SingleAuctionContext);
 	const myOpenAuctionResults = useContext(MyOpenAuctionResultsContext);
 
-	const isEnded = useMemo(
-		() => new Date(auction.data.endDatetime).getTime() < Date.now(),
-		[auction.data.endDatetime],
-	);
+	const { areResultsAvailable } = useAuctionAvailability();
+
 	const isWinner = useMemo(
-		() => myOpenAuctionResults.data.permitsReserved > 0 && isEnded,
+		() => myOpenAuctionResults.data.permitsReserved > 0 && areResultsAvailable,
 		[myOpenAuctionResults.data],
 	);
 
@@ -30,14 +30,15 @@ export default function Ticket() {
 				<Button
 					component="a"
 					href={`/marketplace/auction/${auction.data.id}`}
-					variant="outline"
 					leftSection={<IconArrowUpLeft />}
 				>
 					Return to Auction Page
 				</Button>
 			</Group>
-			{isWinner && <Winner />}
-			{!isWinner && <Loser />}
+			{!auction.data.hasJoined && <Unjoined />}
+			{!areResultsAvailable && <Ongoing />}
+			{areResultsAvailable && isWinner && <Winner />}
+			{areResultsAvailable && !isWinner && <Loser />}
 		</Stack>
 	);
 }

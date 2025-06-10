@@ -92,11 +92,7 @@ export const Winner = () => {
 			</Stack>
 
 			<Stack className={classes.footer}>
-				<Button
-					className={classes.button}
-					color="green"
-					rightSection={<IconArrowUpRight size={16} />}
-				>
+				<Button className={classes.button} rightSection={<IconArrowUpRight size={16} />}>
 					Continue
 				</Button>
 				<Text className={classes.subtext}>

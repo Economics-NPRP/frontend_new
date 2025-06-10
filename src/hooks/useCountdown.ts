@@ -79,7 +79,6 @@ export const useCountdown = ({ targetDate, units, displayOnly }: UseCountdownPro
 		() => (value?: DateTime | Duration, units?: CountdownUnitsArray) => {
 			if (!inViewport) return;
 			if (!value) return _setValues([0, 0, 0, 0, 0, 0]);
-			console.log(units);
 
 			_setValues(
 				Array(6)

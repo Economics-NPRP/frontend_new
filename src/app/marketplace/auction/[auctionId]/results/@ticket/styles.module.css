@@ -7,22 +7,25 @@
 	}
 
 	> .ticket {
-		@apply mt-auto;
+		@apply my-auto items-center;
+
+		> .header {
+			@apply items-center justify-center gap-0;
+
+			> .title {
+				@apply heading-2;
+			}
+
+			> .subtitle {
+				@apply paragraph-md text-center;
+			}
+		}
 
 		&.loser {
-			@apply flex-auto items-center;
+			@apply flex-auto mb-0;
 
 			> .header {
-				@apply items-center justify-center gap-0;
 				@apply mt-16;
-
-				> .title {
-					@apply heading-2;
-				}
-
-				> .subtitle {
-					@apply paragraph-md text-center;
-				}
 			}
 
 			> .button {
@@ -43,9 +46,24 @@
 			}
 		}
 
+		&.ongoing {
+			@apply w-[480px] gap-12;
+
+			> .countdown {
+				@apply gap-4 items-center;
+
+				> .title {
+					@apply display-md-sb;
+				}
+
+				> .subtext {
+					@apply text-center paragraph-md;
+				}
+			}
+		}
+
 		&.winner {
 			@apply w-[400px];
-			@apply mb-auto;
 			@apply gap-0 items-stretch;
 
 			> .upper {
