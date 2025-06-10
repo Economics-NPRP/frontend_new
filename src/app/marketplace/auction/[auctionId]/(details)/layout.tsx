@@ -51,6 +51,7 @@ export default function AuctionPage({
 					// TODO: change to explore page when available
 					href="/marketplace"
 					className={classes.button}
+					variant="outline"
 					leftSection={<IconArrowUpLeft />}
 				>
 					Return to Catalogue

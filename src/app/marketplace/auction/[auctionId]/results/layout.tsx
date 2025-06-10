@@ -15,6 +15,7 @@ import { Stack } from '@mantine/core';
 import { useScrollIntoView } from '@mantine/hooks';
 
 import { AuctionResultsPageContext } from './constants';
+import classes from './styles.module.css';
 
 export interface AuctionResultsProps {
 	bids: ReactNode;
@@ -24,7 +25,7 @@ export interface AuctionResultsProps {
 export default function AuctionResults({ bids, details, ticket }: AuctionResultsProps) {
 	return withProviders(
 		<>
-			<Stack>
+			<Stack className={classes.root}>
 				{ticket}
 				{details}
 				{bids}
