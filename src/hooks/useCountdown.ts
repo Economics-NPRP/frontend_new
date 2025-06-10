@@ -79,6 +79,7 @@ export const useCountdown = ({ targetDate, units, displayOnly }: UseCountdownPro
 		() => (value?: DateTime | Duration, units?: CountdownUnitsArray) => {
 			if (!inViewport) return;
 			if (!value) return _setValues([0, 0, 0, 0, 0, 0]);
+			console.log(units);
 
 			_setValues(
 				Array(6)
@@ -90,14 +91,16 @@ export const useCountdown = ({ targetDate, units, displayOnly }: UseCountdownPro
 								//	12 -> [1, 2]
 								//	1 -> [0, 1]
 								//	2024 -> [2, 4]
-								value
-									.get(unit as never)
-									.toString()
-									.padStart(4, '0')
-									.slice(2)
-									.padStart(2, '0')
-									.split('')
-									.map(Number),
+								unit !== 'empty'
+									? value
+											.get(unit as never)
+											.toString()
+											.padStart(4, '0')
+											.slice(2)
+											.padStart(2, '0')
+											.split('')
+											.map(Number)
+									: [0, 0],
 							)
 							.flat(),
 					)
