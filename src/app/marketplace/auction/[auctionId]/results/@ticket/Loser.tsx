@@ -13,19 +13,23 @@ export const Loser = () => {
 
 	return (
 		<Stack className={`${classes.loser} ${classes.ticket}`}>
-			<Stack className="items-center justify-center gap-0">
-				<Title order={2}>No Permits Awarded</Title>
-				<Text className="paragraph-md">
+			<Stack className={classes.header}>
+				<Title order={2} className={classes.title}>
+					No Permits Awarded
+				</Title>
+				<Text className={classes.subtitle}>
 					You did not win any permits in this auction. However, you may still view the
 					bidding history and analyze the auction results.
 				</Text>
 			</Stack>
-			<Button onClick={scrollToHistory}>View Bidding History</Button>
-			<Divider label="OR" />
-			<Text className="text-center paragraph-md">
+			<Button className={classes.button} onClick={scrollToHistory}>
+				View Bidding History
+			</Button>
+			<Divider className={classes.divider} label="OR" />
+			<Text className={classes.subtext}>
 				Check out some similar auctions that you might be interested in:
 			</Text>
-			<Group className="grid grid-cols-12 gap-4">
+			<Group className={classes.auctions}>
 				<AuctionCard auction={auction.data} />
 				<AuctionCard auction={auction.data} />
 				<AuctionCard auction={auction.data} />

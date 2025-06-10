@@ -5,7 +5,7 @@ import { CategoryBadge, CurrencyBadge } from '@/components/Badge';
 import { MyOpenAuctionResultsContext, SingleAuctionContext } from '@/contexts';
 import { CurrentUserContext } from '@/pages/globalContext';
 import { Button, Container, Group, Progress, Stack, Text } from '@mantine/core';
-import { IconLeaf } from '@tabler/icons-react';
+import { IconArrowUpRight, IconLeaf } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -86,13 +86,17 @@ export const Winner = () => {
 						</Text>
 					</Group>
 					<Text className={classes.subtext}>
-						Scroll down to see the bids used for calculation
+						Scroll down to view the bids used for calculation
 					</Text>
 				</Stack>
 			</Stack>
 
 			<Stack className={classes.footer}>
-				<Button className={classes.button} color="green">
+				<Button
+					className={classes.button}
+					color="green"
+					rightSection={<IconArrowUpRight size={16} />}
+				>
 					Continue
 				</Button>
 				<Text className={classes.subtext}>

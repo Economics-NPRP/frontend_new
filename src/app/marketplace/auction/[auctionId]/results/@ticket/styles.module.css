@@ -7,10 +7,45 @@
 	}
 
 	> .ticket {
-		@apply my-auto;
+		@apply mt-auto;
+
+		&.loser {
+			@apply flex-auto items-center;
+
+			> .header {
+				@apply items-center justify-center gap-0;
+				@apply mt-16;
+
+				> .title {
+					@apply heading-2;
+				}
+
+				> .subtitle {
+					@apply paragraph-md text-center;
+				}
+			}
+
+			> .button {
+				@apply w-[320px];
+				@apply mt-8;
+			}
+
+			> .divider {
+				@apply w-[240px] my-auto;
+			}
+
+			> .subtext {
+				@apply text-center paragraph-md;
+			}
+
+			> .auctions {
+				@apply grid grid-cols-12 gap-4;
+			}
+		}
 
 		&.winner {
 			@apply w-[400px];
+			@apply mb-auto;
 			@apply gap-0 items-stretch;
 
 			> .upper {
