@@ -14,7 +14,7 @@ import {
 	SingleAuctionContext,
 } from '@/contexts';
 import { AuctionResultsPageContext } from '@/pages/marketplace/auction/[auctionId]/results/constants';
-import { Container, FloatingIndicator, Group, Select, Tabs, Text } from '@mantine/core';
+import { FloatingIndicator, Tabs } from '@mantine/core';
 import { IconGavel, IconTrophy } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
@@ -75,23 +75,8 @@ export default function Bids() {
 				</Tabs.List>
 
 				<Tabs.Panel value="results">
-					<Group className="gap-4 py-4">
-						<Group className="gap-2">
-							<Container className="size-4 bg-gray-100 rounded-sm border border-solid border-gray-300" />
-							<Text className="paragraph-xs">Your Bids</Text>
-						</Group>
-					</Group>
-					<Text className="paragraph-sm">Per page:</Text>
-					<Select
-						w={80}
-						value={paginatedOpenAuctionResults.perPage.toString()}
-						data={['10', '20', '50', '100']}
-						onChange={(value) => paginatedOpenAuctionResults.setPerPage(Number(value))}
-					/>
-					<Text className="paragraph-sm">
-						Total Results: {paginatedOpenAuctionResults.data.totalCount}
-					</Text>
 					<ResultsTable
+						className={classes.table}
 						paginatedOpenAuctionResults={paginatedOpenAuctionResults}
 						auction={auction}
 					/>
@@ -99,6 +84,7 @@ export default function Bids() {
 
 				<Tabs.Panel value="all">
 					<BidsTable
+						className={classes.table}
 						bids={paginatedBids}
 						allWinningBids={allWinningBids}
 						paginatedWinningBids={paginatedWinningBids}

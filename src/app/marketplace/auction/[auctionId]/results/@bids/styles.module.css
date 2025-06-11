@@ -32,5 +32,9 @@
 
 	> .panel {
 		@apply self-stretch;
+
+		> .table {
+			@apply h-[75vh];
+		}
 	}
 }
