@@ -4,6 +4,7 @@ import { useContext, useMemo } from 'react';
 export const useAuctionAvailability = () => {
 	const auction = useContext(SingleAuctionContext);
 
+	//	TODO: refresh when auction ends
 	const areBidsAvailable = useMemo(
 		() =>
 			auction.isSuccess &&

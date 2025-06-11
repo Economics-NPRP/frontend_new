@@ -1,0 +1,48 @@
+.modal {
+	> .inner > .content {
+		@apply min-w-[600px];
+		@apply px-16 pt-12 pb-8;
+		@apply justify-center items-center;
+
+		> .body {
+			@apply flex flex-col items-center justify-center;
+			@apply gap-4 p-0;
+
+			> .title {
+				@apply text-center heading-2;
+			}
+
+			> .description {
+				@apply text-center paragraph-sm;
+			}
+
+			> .actions {
+				@apply mt-6 gap-2 items-center;
+
+				> .cta {
+					@apply w-[200px];
+				}
+			}
+		}
+	}
+}
+
+.overlay {
+	@apply fixed left-[50%] -translate-x-[50%] bottom-8;
+	@apply px-4 h-12 flex-nowrap justify-center items-center;
+	@apply bg-white border-solid border border-gray-300;
+	@apply shadow-md;
+	@apply z-10;
+
+	> .text {
+		@apply paragraph-sm text-center;
+	}
+
+	> .button {
+		@apply h-7 px-3;
+
+		.section {
+			@apply mr-1;
+		}
+	}
+}

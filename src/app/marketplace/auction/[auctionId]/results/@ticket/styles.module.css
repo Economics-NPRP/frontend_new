@@ -1,0 +1,246 @@
+.root {
+	@apply justify-center items-center pb-8;
+	height: calc(100vh - 96px);
+
+	> .header {
+		@apply self-stretch justify-between gap-8;
+	}
+
+	> .ticket {
+		@apply my-auto items-center;
+
+		> .header {
+			@apply items-center justify-center gap-0;
+
+			> .title {
+				@apply heading-2;
+			}
+
+			> .subtitle {
+				@apply paragraph-md text-center;
+			}
+		}
+
+		&.loser {
+			@apply flex-auto mb-0;
+
+			> .header {
+				@apply mt-16;
+			}
+
+			> .button {
+				@apply w-[320px];
+				@apply mt-8;
+			}
+
+			> .divider {
+				@apply w-[240px] my-auto;
+			}
+
+			> .subtext {
+				@apply text-center paragraph-md;
+			}
+
+			> .auctions {
+				@apply grid grid-cols-12 gap-4;
+			}
+		}
+
+		&.ongoing {
+			@apply w-[480px] gap-12;
+
+			> .countdown {
+				@apply gap-4 items-center;
+
+				> .title {
+					@apply display-md-sb;
+				}
+
+				> .subtext {
+					@apply text-center paragraph-md;
+				}
+			}
+		}
+
+		&.winner {
+			@apply w-[400px];
+			@apply gap-0 items-stretch;
+
+			> .upper {
+				@apply relative;
+				@apply justify-center items-center;
+				@apply gap-4 px-8 pt-12 pb-6;
+				@apply bg-dark-600;
+				@apply rounded-t-md;
+
+				> .icon {
+					@apply absolute -top-4;
+					@apply size-12;
+					@apply flex justify-center items-center;
+					@apply bg-dark-400 text-white border-4 border-solid border-dark-600;
+					@apply rounded-full;
+				}
+
+				> .winnings {
+					@apply justify-center items-center;
+					@apply gap-0;
+
+					> .subtext {
+						@apply display-sm-sb-w;
+					}
+
+					> .row {
+						@apply flex-nowrap items-baseline;
+						@apply gap-2;
+
+						> .value {
+							@apply numeric-xl-w;
+						}
+
+						> .unit {
+							@apply paragraph-sm-w;
+						}
+					}
+				}
+
+				> .percentage {
+					@apply gap-1 items-stretch self-stretch;
+
+					> .row {
+						@apply justify-between items-center;
+						@apply gap-4;
+
+						> .key {
+							@apply paragraph-sm-w;
+						}
+
+						> .value {
+							@apply numeric-sm-n-w;
+						}
+					}
+
+					> .progress {
+						@apply bg-dark-400;
+						@apply rounded-full;
+					}
+				}
+			}
+
+			> .middle {
+				@apply px-8 pt-6 pb-4 gap-0;
+				@apply bg-white border-0 border-x border-solid border-gray-300;
+
+				> .header {
+					@apply h-8;
+					@apply flex-nowrap justify-between items-center;
+					@apply gap-4;
+					@apply border-0 border-y border-solid border-gray-300;
+
+					> .key,
+					> .value {
+						@apply display-sm-sb-d3;
+					}
+				}
+
+				> .row {
+					@apply h-8;
+					@apply flex-nowrap justify-between items-center;
+					@apply gap-4;
+
+					> .key {
+						@apply paragraph-sm-g6;
+					}
+
+					> .value {
+						@apply display-sm-sb-d6;
+					}
+				}
+			}
+
+			> .divider {
+				@apply flex-nowrap justify-center items-center;
+				@apply gap-2;
+
+				> .dot {
+					@apply w-3 h-6 flex-shrink-0;
+					@apply border border-solid border-gray-300;
+					@apply rounded-full;
+
+					&:first-child {
+						@apply border-l-0 rounded-l-none;
+					}
+
+					&:last-child {
+						@apply border-r-0 rounded-r-none;
+					}
+				}
+
+				> .line {
+					@apply h-[1px];
+					@apply flex-auto;
+
+					/* Dashed border */
+					background-image: repeating-linear-gradient(
+						90deg,
+						#0000 0 8px,
+						var(--mantine-color-gray-2) 0 24px,
+						#0000 0 32px
+					);
+					background-position: bottom;
+					background-size: 100% 1px;
+					background-repeat: repeat-x;
+				}
+
+				> .label {
+					@apply display-xs-g6;
+					@apply text-center;
+				}
+			}
+
+			> .lower {
+				@apply gap-2 px-8 pt-4 pb-6;
+				@apply items-center;
+				@apply border border-t-0 border-solid border-gray-300;
+				@apply rounded-b-md;
+
+				background-image: repeating-linear-gradient(
+					135deg,
+					rgba(0, 0, 0, 0.01),
+					rgba(0, 0, 0, 0.01) 20px,
+					#0000 20px,
+					#0000 40px
+				);
+
+				> .title {
+					@apply display-md-sb;
+				}
+
+				> .row {
+					@apply flex-nowrap items-center;
+					@apply gap-2;
+
+					> .value {
+						@apply numeric-xl;
+					}
+				}
+
+				> .subtext {
+					@apply paragraph-sm-g6 text-center;
+				}
+			}
+		}
+	}
+
+	> .footer {
+		@apply w-[400px];
+		@apply justify-center items-center gap-2;
+
+		> .button {
+			@apply w-[320px];
+		}
+
+		> .subtext {
+			@apply text-center paragraph-sm-g6;
+		}
+	}
+}

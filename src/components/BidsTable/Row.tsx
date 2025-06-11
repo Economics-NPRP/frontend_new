@@ -4,7 +4,7 @@ import { ComponentProps, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { IBidData } from '@/schema/models';
-import { Anchor, MantineStyleProp, TableTd, TableTr } from '@mantine/core';
+import { Anchor, MantineStyleProp, Table } from '@mantine/core';
 
 interface BidsTableRowProps extends ComponentProps<'tr'> {
 	bid: IBidData;
@@ -43,20 +43,20 @@ export const BidsTableRow = ({ bid, highlight, ...props }: BidsTableRowProps) =>
 	}, [highlight]);
 
 	return (
-		<TableTr style={styles} {...props}>
-			<TableTd>
+		<Table.Tr style={styles} {...props}>
+			<Table.Td>
 				<Anchor href={`/marketplace/company/${bid.bidder.id}`}>{bid.bidder.name}</Anchor>
-			</TableTd>
-			<TableTd>
-				<CurrencyBadge />
+			</Table.Td>
+			<Table.Td>
+				<CurrencyBadge className="mr-1" />
 				{format.number(bid.amount, 'money')}
-			</TableTd>
-			<TableTd>{format.number(bid.permits)}</TableTd>
-			<TableTd>
-				<CurrencyBadge />
+			</Table.Td>
+			<Table.Td>{format.number(bid.permits)}</Table.Td>
+			<Table.Td>
+				<CurrencyBadge className="mr-1" />
 				{format.number(bid.amount * bid.permits, 'money')}
-			</TableTd>
-			<TableTd>{DateTime.fromISO(bid.timestamp).toRelative()}</TableTd>
-		</TableTr>
+			</Table.Td>
+			<Table.Td>{DateTime.fromISO(bid.timestamp).toRelative()}</Table.Td>
+		</Table.Tr>
 	);
 };

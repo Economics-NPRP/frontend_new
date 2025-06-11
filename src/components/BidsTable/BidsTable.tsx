@@ -26,10 +26,6 @@ import {
 	Stack,
 	Table,
 	TableProps,
-	TableTbody,
-	TableTh,
-	TableThead,
-	TableTr,
 	Text,
 	Title,
 } from '@mantine/core';
@@ -281,19 +277,19 @@ export const BidsTable = ({
 			)}
 			<Container className={classes.table} ref={tableContainerRef}>
 				<Table highlightOnHover withColumnBorders stickyHeader {...props}>
-					<TableThead>
-						<TableTr>
-							<TableTh>Company</TableTh>
-							<TableTh className="flex items-center justify-between">
+					<Table.Thead>
+						<Table.Tr>
+							<Table.Th>Company</Table.Th>
+							<Table.Th className="flex items-center justify-between">
 								Bid
 								<IconArrowNarrowDown size={14} />
-							</TableTh>
-							<TableTh>Permits</TableTh>
-							<TableTh>Total Bid</TableTh>
-							<TableTh>Timestamp</TableTh>
-						</TableTr>
-					</TableThead>
-					<TableTbody>{bidsData}</TableTbody>
+							</Table.Th>
+							<Table.Th>Permits</Table.Th>
+							<Table.Th>Total Bid</Table.Th>
+							<Table.Th>Timestamp</Table.Th>
+						</Table.Tr>
+					</Table.Thead>
+					<Table.Tbody>{bidsData}</Table.Tbody>
 				</Table>
 				{(!bidsData || bidsData.length === 0) && (
 					<Stack className={classes.empty}>

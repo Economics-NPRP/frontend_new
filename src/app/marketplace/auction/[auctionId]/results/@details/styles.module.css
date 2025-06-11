@@ -1,0 +1,143 @@
+.root {
+	@apply gap-4 items-start;
+	@apply grid grid-cols-9;
+	grid-template-rows: auto auto;
+
+	> .details {
+		@apply gap-0 flex-auto flex-nowrap;
+		@apply col-span-6 row-span-1;
+
+		> .image {
+			@apply w-[280px] self-stretch;
+			@apply relative;
+
+			img {
+				@apply object-cover object-center;
+			}
+		}
+
+		> .content {
+			@apply gap-2 px-8 py-6;
+			@apply flex-auto flex-nowrap justify-between items-stretch;
+			@apply bg-white border border-solid border-gray-300;
+
+			> .breadcrumbs {
+				> a {
+					@apply paragraph-sm;
+				}
+
+				> .separator {
+					@apply mx-1;
+				}
+			}
+
+			> .title {
+				@apply heading-1;
+			}
+
+			> .badges {
+				@apply gap-2 items-center;
+			}
+
+			> .row {
+				@apply gap-8 justify-between items-center;
+
+				> .owner {
+					@apply gap-2;
+
+					> .avatar {
+						@apply size-10;
+					}
+
+					> .link {
+						@apply text-blue-600 font-semibold;
+					}
+				}
+			}
+		}
+	}
+
+	> .properties {
+		@apply col-span-6 row-span-1 row-start-2;
+		@apply grid grid-cols-4 grid-rows-2 gap-0;
+		@apply bg-dark-600;
+
+		> .cell {
+			@apply h-32;
+			@apply gap-0 items-center justify-center;
+			@apply border border-t-0 border-l-0 border-solid border-dark-400;
+
+			> .icon {
+				@apply size-9 mb-2;
+				@apply flex items-center justify-center;
+				@apply bg-dark-400 text-white;
+				@apply rounded-sm;
+			}
+
+			> .key {
+				@apply paragraph-sm-g3 text-center;
+			}
+
+			> .value {
+				@apply display-sm-w text-center;
+			}
+		}
+	}
+
+	> .statistics {
+		@apply col-span-3 row-span-2;
+		@apply gap-0 items-stretch;
+
+		> .section {
+			@apply px-8 py-6;
+			@apply bg-white border border-solid border-gray-300;
+
+			&.minBid {
+				@apply flex-nowrap justify-between items-center;
+
+				> .content {
+					@apply flex-auto;
+					@apply gap-1;
+
+					> .key {
+						@apply paragraph-sm-15;
+					}
+
+					> .value {
+						@apply gap-2;
+
+						> .amount {
+							@apply numeric-xl;
+						}
+					}
+				}
+			}
+
+			&.permits {
+				@apply items-center;
+				@apply border-t-0;
+
+				.label {
+					@apply display-sm-sb-d3;
+				}
+
+				> .content {
+					@apply gap-0 items-center justify-center self-stretch;
+					@apply flex-nowrap;
+
+					> .key {
+						@apply paragraph-sm-15;
+					}
+
+					> .value {
+						@apply gap-2;
+
+						> .amount {
+							@apply numeric-xl;
+						}
+					}
+				}
+			}
+		}
+	}
+}

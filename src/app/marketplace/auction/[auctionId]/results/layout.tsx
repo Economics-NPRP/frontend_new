@@ -3,6 +3,7 @@
 import { PropsWithChildren, ReactNode } from 'react';
 
 import {
+	AllOpenAuctionResultsProvider,
 	AllWinningBidsProvider,
 	MyOpenAuctionResultsProvider,
 	MyPaginatedBidsProvider,
@@ -15,26 +16,30 @@ import { Stack } from '@mantine/core';
 import { useScrollIntoView } from '@mantine/hooks';
 
 import { AuctionResultsPageContext } from './constants';
+import classes from './styles.module.css';
 
 export interface AuctionResultsProps {
 	bids: ReactNode;
 	details: ReactNode;
+	ongoing: ReactNode;
 	ticket: ReactNode;
 }
-export default function AuctionResults({ bids, details, ticket }: AuctionResultsProps) {
+export default function AuctionResults({ bids, details, ongoing, ticket }: AuctionResultsProps) {
 	return withProviders(
 		<>
-			<Stack>
+			<Stack className={classes.root}>
 				{ticket}
 				{details}
 				{bids}
 			</Stack>
+			{ongoing}
 		</>,
 		{ provider: PaginatedBidsProvider, props: { defaultPerPage: 20 } },
+		{ provider: AllOpenAuctionResultsProvider },
 		{ provider: AllWinningBidsProvider },
 		{ provider: PaginatedWinningBidsProvider, props: { defaultPerPage: 20 } },
 		{ provider: MyPaginatedBidsProvider, props: { defaultPerPage: 20 } },
-		{ provider: PaginatedOpenAuctionResultsProvider },
+		{ provider: PaginatedOpenAuctionResultsProvider, props: { defaultPerPage: 20 } },
 		{ provider: MyOpenAuctionResultsProvider },
 		{ provider: PageProvider },
 	);
