@@ -3,6 +3,7 @@
 import { PropsWithChildren, ReactNode } from 'react';
 
 import {
+	AllOpenAuctionResultsProvider,
 	AllWinningBidsProvider,
 	MyOpenAuctionResultsProvider,
 	MyPaginatedBidsProvider,
@@ -32,6 +33,7 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 			</Stack>
 		</>,
 		{ provider: PaginatedBidsProvider, props: { defaultPerPage: 20 } },
+		{ provider: AllOpenAuctionResultsProvider },
 		{ provider: AllWinningBidsProvider },
 		{ provider: PaginatedWinningBidsProvider, props: { defaultPerPage: 20 } },
 		{ provider: MyPaginatedBidsProvider, props: { defaultPerPage: 20 } },

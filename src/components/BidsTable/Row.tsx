@@ -48,12 +48,12 @@ export const BidsTableRow = ({ bid, highlight, ...props }: BidsTableRowProps) =>
 				<Anchor href={`/marketplace/company/${bid.bidder.id}`}>{bid.bidder.name}</Anchor>
 			</TableTd>
 			<TableTd>
-				<CurrencyBadge />
+				<CurrencyBadge className="mr-1" />
 				{format.number(bid.amount, 'money')}
 			</TableTd>
 			<TableTd>{format.number(bid.permits)}</TableTd>
 			<TableTd>
-				<CurrencyBadge />
+				<CurrencyBadge className="mr-1" />
 				{format.number(bid.amount * bid.permits, 'money')}
 			</TableTd>
 			<TableTd>{DateTime.fromISO(bid.timestamp).toRelative()}</TableTd>
