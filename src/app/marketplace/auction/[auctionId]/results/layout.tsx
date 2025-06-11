@@ -21,9 +21,10 @@ import classes from './styles.module.css';
 export interface AuctionResultsProps {
 	bids: ReactNode;
 	details: ReactNode;
+	ongoing: ReactNode;
 	ticket: ReactNode;
 }
-export default function AuctionResults({ bids, details, ticket }: AuctionResultsProps) {
+export default function AuctionResults({ bids, details, ongoing, ticket }: AuctionResultsProps) {
 	return withProviders(
 		<>
 			<Stack className={classes.root}>
@@ -31,6 +32,7 @@ export default function AuctionResults({ bids, details, ticket }: AuctionResults
 				{details}
 				{bids}
 			</Stack>
+			{ongoing}
 		</>,
 		{ provider: PaginatedBidsProvider, props: { defaultPerPage: 20 } },
 		{ provider: AllOpenAuctionResultsProvider },

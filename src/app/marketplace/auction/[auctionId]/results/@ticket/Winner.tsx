@@ -20,6 +20,12 @@ export const Winner = () => {
 		[myOpenAuctionResults.data.permitsReserved, auction.data.permits],
 	);
 
+	//	TODO: also check every second if the auction is still active
+	const hasEnded = useMemo(
+		() => new Date(auction.data.endDatetime).getTime() < Date.now(),
+		[auction.data.endDatetime],
+	);
+
 	return (
 		<>
 			<Stack className={`${classes.winner} ${classes.ticket}`}>
@@ -92,7 +98,11 @@ export const Winner = () => {
 			</Stack>
 
 			<Stack className={classes.footer}>
-				<Button className={classes.button} rightSection={<IconArrowUpRight size={16} />}>
+				<Button
+					className={classes.button}
+					rightSection={<IconArrowUpRight size={16} />}
+					disabled={!hasEnded}
+				>
 					Continue
 				</Button>
 				<Text className={classes.subtext}>
