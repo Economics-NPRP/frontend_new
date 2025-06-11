@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import { ResultsTable } from '@/components/AuctionResultsTable';
 import { BidsTable } from '@/components/BidsTable';
@@ -14,7 +14,10 @@ import {
 	SingleAuctionContext,
 } from '@/contexts';
 import { AuctionResultsPageContext } from '@/pages/marketplace/auction/[auctionId]/results/constants';
-import { Container, Group, Select, Tabs, TabsList, TabsPanel, TabsTab, Text } from '@mantine/core';
+import { Container, FloatingIndicator, Group, Select, Tabs, Text } from '@mantine/core';
+import { IconGavel, IconTrophy } from '@tabler/icons-react';
+
+import classes from './styles.module.css';
 
 export default function Bids() {
 	const auction = useContext(SingleAuctionContext);
@@ -26,16 +29,52 @@ export default function Bids() {
 	const myOpenAuctionResults = useContext(MyOpenAuctionResultsContext);
 	const { historyRef } = useContext(AuctionResultsPageContext);
 
+	const [currentTab, setCurrentTab] = useState<string | null>('results');
+	const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
+	const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
+	const setControlRef = (val: string) => (node: HTMLButtonElement) => {
+		controlsRefs[val] = node;
+		setControlsRefs(controlsRefs);
+	};
+
 	return (
 		<>
 			<a id="history" ref={historyRef} />
-			<Tabs defaultValue={'results'}>
-				<TabsList>
-					<TabsTab value="results">Auction Results</TabsTab>
-					<TabsTab value="all">All Bids</TabsTab>
-				</TabsList>
+			<Tabs
+				value={currentTab}
+				onChange={setCurrentTab}
+				variant="none"
+				classNames={{
+					root: classes.root,
+					list: classes.list,
+					tab: classes.tab,
+					panel: classes.panel,
+				}}
+			>
+				<Tabs.List ref={setRootRef}>
+					<Tabs.Tab
+						value="results"
+						ref={setControlRef('results')}
+						leftSection={<IconTrophy size={16} />}
+					>
+						Auction Results
+					</Tabs.Tab>
+					<Tabs.Tab
+						value="all"
+						ref={setControlRef('all')}
+						leftSection={<IconGavel size={16} />}
+					>
+						All Bids
+					</Tabs.Tab>
 
-				<TabsPanel value="results">
+					<FloatingIndicator
+						className={classes.indicator}
+						target={currentTab ? controlsRefs[currentTab] : null}
+						parent={rootRef}
+					/>
+				</Tabs.List>
+
+				<Tabs.Panel value="results">
 					<Group className="gap-4 py-4">
 						<Group className="gap-2">
 							<Container className="size-4 bg-gray-100 rounded-sm border border-solid border-gray-300" />
@@ -56,9 +95,9 @@ export default function Bids() {
 						paginatedOpenAuctionResults={paginatedOpenAuctionResults}
 						auction={auction}
 					/>
-				</TabsPanel>
+				</Tabs.Panel>
 
-				<TabsPanel value="all">
+				<Tabs.Panel value="all">
 					<BidsTable
 						bids={paginatedBids}
 						allWinningBids={allWinningBids}
@@ -66,7 +105,7 @@ export default function Bids() {
 						myPaginatedBids={myPaginatedBids}
 						myOpenAuctionResults={myOpenAuctionResults}
 					/>
-				</TabsPanel>
+				</Tabs.Panel>
 			</Tabs>
 		</>
 	);

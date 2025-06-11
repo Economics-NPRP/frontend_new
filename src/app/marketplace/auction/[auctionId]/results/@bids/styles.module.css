@@ -1,0 +1,36 @@
+.root {
+	@apply flex flex-col items-center justify-start;
+	@apply gap-8;
+
+	> .list {
+		@apply relative;
+		@apply h-10 px-1;
+		@apply justify-center items-center;
+		@apply bg-gray-50;
+
+		> .tab {
+			@apply w-48 h-8;
+			@apply display-sm-sb-d3;
+			@apply transition-colors;
+			@apply z-[1];
+
+			&[data-active] {
+				@apply display-sm-sb-d6;
+			}
+
+			&:not([data-active]):hover {
+				@apply bg-gray-100;
+			}
+		}
+
+		> .indicator {
+			@apply h-8;
+			@apply bg-white border border-solid border-gray-300;
+			@apply shadow-sm;
+		}
+	}
+
+	> .panel {
+		@apply self-stretch;
+	}
+}
