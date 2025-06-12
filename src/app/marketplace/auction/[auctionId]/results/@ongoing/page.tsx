@@ -2,7 +2,7 @@
 
 import { SingleAuctionContext } from 'contexts/SingleAuction';
 import { useParams } from 'next/navigation';
-import { useContext, useMemo } from 'react';
+import { useContext } from 'react';
 
 import { useAuctionAvailability } from '@/hooks';
 import { Button, Group, Modal, Stack, Text, Title } from '@mantine/core';
@@ -17,17 +17,59 @@ export default function OngoingOverlay() {
 
 	const [isReadOnlyMode, { open: viewInReadOnlyMode }] = useDisclosure(false);
 
-	const hasStarted = useMemo(
-		() => new Date(auction.data.startDatetime).getTime() <= Date.now(),
-		[auction.data.startDatetime],
+	const { isUpcoming, isLive } = useAuctionAvailability();
+
+	const isUpcomingState = (
+		<>
+			<Title order={2} className={classes.title}>
+				This Auction Has Not Started Yet
+			</Title>
+			<Text className={classes.description}>
+				This auction does not have any results yet as it has not started. Please return to
+				the auction page and check back later once the auction is live.
+			</Text>
+			<Stack className={classes.actions}>
+				<Button
+					className={classes.cta}
+					component="a"
+					href={`/marketplace/auction/${auctionId}`}
+					leftSection={<IconArrowUpLeft size={16} />}
+				>
+					Return to Auction Page
+				</Button>
+			</Stack>
+		</>
 	);
 
-	const { hasEnded } = useAuctionAvailability();
+	const isLiveState = (
+		<>
+			<Title order={2} className={classes.title}>
+				This Auction Is Still Ongoing
+			</Title>
+			<Text className={classes.description}>
+				You can take a look at the results, but please note that they are not final and may
+				change as the auction is still active.
+			</Text>
+			<Stack className={classes.actions}>
+				<Button
+					className={classes.cta}
+					component="a"
+					href={`/marketplace/auction/${auctionId}`}
+					leftSection={<IconArrowUpLeft size={16} />}
+				>
+					Return to Auction Page
+				</Button>
+				<Button onClick={viewInReadOnlyMode} variant="transparent">
+					View results as of now
+				</Button>
+			</Stack>
+		</>
+	);
 
 	return (
 		<>
 			<Modal
-				opened={auction.isSuccess && hasStarted && !hasEnded && !isReadOnlyMode}
+				opened={auction.isSuccess && (isUpcoming || isLive) && !isReadOnlyMode}
 				onClose={viewInReadOnlyMode}
 				closeOnEscape={false}
 				closeOnClickOutside={false}
@@ -40,26 +82,8 @@ export default function OngoingOverlay() {
 				}}
 				centered
 			>
-				<Title order={2} className={classes.title}>
-					This Auction Is Still Ongoing
-				</Title>
-				<Text className={classes.description}>
-					You can take a look at the results, but please note that they are not final and
-					may change as the auction is still active.
-				</Text>
-				<Stack className={classes.actions}>
-					<Button
-						className={classes.cta}
-						component="a"
-						href={`/marketplace/auction/${auctionId}`}
-						leftSection={<IconArrowUpLeft size={16} />}
-					>
-						Return to Auction Page
-					</Button>
-					<Button onClick={viewInReadOnlyMode} variant="transparent">
-						View results as of now
-					</Button>
-				</Stack>
+				{isUpcoming && isUpcomingState}
+				{isLive && isLiveState}
 			</Modal>
 
 			{isReadOnlyMode && (

@@ -27,7 +27,7 @@ export default function Card() {
 	const auction = useContext(SingleAuctionContext);
 	const { scrollToBidding } = useContext(AuctionDetailsPageContext);
 
-	const { isUpcoming, hasEnded } = useAuctionAvailability();
+	const { isUpcoming, hasEnded, isLive } = useAuctionAvailability();
 
 	const joinAuction = useJoinAuction(auction.data.id);
 
@@ -201,8 +201,8 @@ export default function Card() {
 					</Group>
 				</Stack>
 			</Group>
-			{isUpcoming && !hasEnded && isUpcomingState}
-			{!isUpcoming && !hasEnded && isLiveState}
+			{isUpcoming && isUpcomingState}
+			{isLive && isLiveState}
 			{hasEnded && hasEndedState}
 		</Stack>
 	);

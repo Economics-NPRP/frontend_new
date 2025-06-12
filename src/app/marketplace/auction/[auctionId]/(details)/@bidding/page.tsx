@@ -33,7 +33,7 @@ export default function Prompt() {
 		bidConfirmationModalActions,
 	} = useContext(AuctionDetailsPageContext);
 
-	const { isUpcoming, hasEnded } = useAuctionAvailability();
+	const { isUpcoming, hasEnded, isLive } = useAuctionAvailability();
 
 	const readOnly = useMemo(() => !auction.data.hasJoined || hasEnded, [auction.data, hasEnded]);
 
@@ -57,8 +57,8 @@ export default function Prompt() {
 
 	return (
 		<Stack className={classes.root}>
-			{isUpcoming && !hasEnded && <UpcomingOverlay />}
-			{!isUpcoming && !hasEnded && !auction.data.hasJoined && <JoinOverlay />}
+			{isUpcoming && <UpcomingOverlay />}
+			{isLive && !auction.data.hasJoined && <JoinOverlay />}
 			{hasEnded && <EndedOverlay />}
 			<Group className={classes.body}>
 				<Stack className={classes.content}>

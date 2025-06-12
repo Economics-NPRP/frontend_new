@@ -23,6 +23,12 @@ export const useAuctionAvailability = (defaultAuction?: IAuctionData) => {
 	);
 
 	//	TODO: refresh when auction ends
+	const isLive = useMemo(
+		() => auction.isSuccess && !isUpcoming && !hasEnded,
+		[auction.isSuccess, isUpcoming, hasEnded],
+	);
+
+	//	TODO: refresh when auction ends
 	const isEndingSoon = useMemo(
 		() =>
 			auction.isSuccess &&
@@ -52,6 +58,7 @@ export const useAuctionAvailability = (defaultAuction?: IAuctionData) => {
 	return {
 		isUpcoming,
 		hasEnded,
+		isLive,
 		isEndingSoon,
 		areBidsAvailable,
 		areResultsAvailable,

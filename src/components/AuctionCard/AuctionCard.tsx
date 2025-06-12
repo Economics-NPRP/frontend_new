@@ -46,7 +46,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 	const format = useFormatter();
 	const router = useRouter();
 
-	const { isUpcoming, hasEnded } = useAuctionAvailability(auction);
+	const { isUpcoming, hasEnded, isLive } = useAuctionAvailability(auction);
 
 	const url = `/marketplace/auction/${auction.id}`;
 	const bidsUrl = `/marketplace/auction/${auction.id}/results#history`;
@@ -290,8 +290,8 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 					<Id value={auction.id} variant={category} />
 				</Stack>
 				<Divider className={classes.divider} />
-				{isUpcoming && !hasEnded && isUpcomingFooter}
-				{!isUpcoming && !hasEnded && isLiveFooter}
+				{isUpcoming && isUpcomingFooter}
+				{isLive && isLiveFooter}
 				{hasEnded && hasEndedFooter}
 			</Stack>
 		</Stack>
