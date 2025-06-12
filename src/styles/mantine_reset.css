@@ -3,3 +3,12 @@
 	padding-inline: unset;
 	margin-inline: unset;
 }
+
+.mantine-Skeleton-root[data-dark] {
+	&::before {
+		@apply bg-dark-700 my-[2px];
+	}
+	&::after {
+		@apply bg-dark-300 my-[2px];
+	}
+}

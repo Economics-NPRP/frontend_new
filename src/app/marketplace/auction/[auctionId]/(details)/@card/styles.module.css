@@ -10,6 +10,7 @@
 		> .image {
 			@apply h-[320px];
 			@apply relative;
+			@apply overflow-hidden;
 
 			img {
 				@apply object-cover object-center;
@@ -55,11 +56,11 @@
 				@apply border-0;
 			}
 
-			> .subtext {
+			.subtext {
 				@apply paragraph-sm-w text-center;
 			}
 
-			> .price {
+			.price {
 				@apply gap-2 flex-nowrap;
 
 				> .badge {

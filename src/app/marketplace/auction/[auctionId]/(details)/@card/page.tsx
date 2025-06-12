@@ -10,7 +10,7 @@ import { LargeCountdown } from '@/components/Countdown';
 import { SingleAuctionContext } from '@/contexts';
 import { useAuctionAvailability, useJoinAuction } from '@/hooks';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
-import { Button, Container, Group, Stack, Text, Tooltip } from '@mantine/core';
+import { Button, Container, Group, Skeleton, Stack, Text, Tooltip } from '@mantine/core';
 import {
 	IconAwardFilled,
 	IconCheckbox,
@@ -33,6 +33,20 @@ export default function Card() {
 
 	const bidsUrl = `/marketplace/auction/${auction.data.id}/results#history`;
 	const resultsUrl = `/marketplace/auction/${auction.data.id}/results`;
+
+	const isLoadingState = (
+		<>
+			<Stack className={classes.countdown}>
+				<Skeleton width={80} height={24} visible />
+				<LargeCountdown targetDate={auction.data.startDatetime} loading />
+				<Skeleton width={200} height={22} visible />
+			</Stack>
+			<Group className={classes.prompt}>
+				<Skeleton height={40} visible />
+				<Skeleton height={40} visible />
+			</Group>
+		</>
+	);
 
 	const isUpcomingState = (
 		<>
@@ -172,41 +186,65 @@ export default function Card() {
 				</Container>
 			</Container>
 			<Group className={classes.row}>
-				{/* <Stack className={classes.section}>
-					<Text className={classes.subtext}>Buy Now Price</Text>
-					<Group className={classes.price}>
-						<CurrencyBadge className={classes.badge} />
-						<Text className={classes.value}>
-							{format.number(auction.data.minBid + 100, 'money')}
-						</Text>
-					</Group>
-				</Stack> */}
 				<Stack className={classes.section}>
-					<Text className={classes.subtext}>Permits Offered</Text>
-					<Group className={classes.price}>
-						<Container className={classes.icon}>
-							<IconLeaf size={14} />
-						</Container>
-						<Text className={classes.value}>{format.number(auction.data.permits)}</Text>
-					</Group>
+					{auction.isLoading && (
+						<>
+							<Skeleton width={100} height={18} data-dark visible />
+							<Skeleton width={120} height={24} data-dark visible />
+						</>
+					)}
+					{!auction.isLoading && (
+						<>
+							<Text className={classes.subtext}>Permits Offered</Text>
+							<Group className={classes.price}>
+								<Container className={classes.icon}>
+									<IconLeaf size={14} />
+								</Container>
+								<Text className={classes.value}>
+									{format.number(auction.data.permits)}
+								</Text>
+							</Group>
+						</>
+					)}
 				</Stack>
 				<Stack className={classes.section}>
-					<Text className={classes.subtext}>Minimum Bid</Text>
-					<Group className={classes.price}>
-						<CurrencyBadge className={classes.badge} />
-						<Text className={classes.value}>
-							{format.number(auction.data.minBid, 'money')}
-						</Text>
-					</Group>
+					{auction.isLoading && (
+						<>
+							<Skeleton width={100} height={18} data-dark visible />
+							<Skeleton width={120} height={24} data-dark visible />
+						</>
+					)}
+					{!auction.isLoading && (
+						<>
+							<Text className={classes.subtext}>Minimum Bid</Text>
+							<Group className={classes.price}>
+								<CurrencyBadge className={classes.badge} />
+								<Text className={classes.value}>
+									{format.number(auction.data.minBid, 'money')}
+								</Text>
+							</Group>
+						</>
+					)}
 				</Stack>
 				<Stack className={classes.section}>
-					<Text className={classes.subtext}>Minimum Increment</Text>
-					<Group className={classes.price}>
-						<CurrencyBadge className={classes.badge} />
-						<Text className={classes.value}>{format.number(1, 'money')}</Text>
-					</Group>
+					{auction.isLoading && (
+						<>
+							<Skeleton width={100} height={18} data-dark visible />
+							<Skeleton width={120} height={24} data-dark visible />
+						</>
+					)}
+					{!auction.isLoading && (
+						<>
+							<Text className={classes.subtext}>Minimum Increment</Text>
+							<Group className={classes.price}>
+								<CurrencyBadge className={classes.badge} />
+								<Text className={classes.value}>{format.number(1, 'money')}</Text>
+							</Group>
+						</>
+					)}
 				</Stack>
 			</Group>
+			{auction.isLoading && isLoadingState}
 			{isUpcoming && isUpcomingState}
 			{isLive && isLiveState}
 			{hasEnded && hasEndedState}
