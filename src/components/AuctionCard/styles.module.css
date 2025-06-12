@@ -96,10 +96,22 @@
 			}
 		}
 
-		> .footer {
+		.divider {
+			@apply border-gray-200;
+		}
+
+		> .properties {
 			@apply h-16;
 			@apply flex-nowrap;
 			@apply gap-0;
+
+			background-image: repeating-linear-gradient(
+				135deg,
+				rgba(0, 0, 0, 0.01),
+				rgba(0, 0, 0, 0.01) 20px,
+				#0000 20px,
+				#0000 40px
+			);
 
 			> .cell {
 				@apply h-12;
@@ -126,17 +138,22 @@
 						@apply numeric-lg;
 					}
 				}
+			}
+		}
 
-				> .button {
-					@apply w-full;
+		> .footer {
+			@apply p-2 gap-2;
+			@apply flex-nowrap;
 
-					&.primary {
-						@apply flex-[2_0_0%];
-					}
+			> .button {
+				@apply w-full max-h-9;
 
-					&.secondary {
-						@apply flex-[1_0_0%];
-					}
+				&.primary {
+					@apply flex-[3_0_0%];
+				}
+
+				&.secondary {
+					@apply flex-[2_0_0%];
 				}
 			}
 		}

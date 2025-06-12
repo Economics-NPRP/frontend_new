@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon';
 import { useFormatter, useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { ComponentPropsWithRef, useMemo } from 'react';
 
 import {
@@ -11,7 +12,7 @@ import {
 } from '@/components/Badge';
 import { SmallCountdown } from '@/components/Countdown';
 import { Id } from '@/components/Id';
-import { useAuctionAvailability } from '@/hooks';
+import { useAuctionAvailability, useJoinAuction } from '@/hooks';
 import { IAuctionData } from '@/schema/models';
 import { AuctionCategory } from '@/types';
 import {
@@ -26,7 +27,14 @@ import {
 	Tooltip,
 	UnstyledButton,
 } from '@mantine/core';
-import { IconBookmark, IconLicense, IconShare, IconTrophy } from '@tabler/icons-react';
+import {
+	IconArrowUpRight,
+	IconAwardFilled,
+	IconBookmark,
+	IconCheckbox,
+	IconLicense,
+	IconShare,
+} from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -36,6 +44,7 @@ export interface AuctionCardProps extends ComponentPropsWithRef<'div'> {
 export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) => {
 	const t = useTranslations();
 	const format = useFormatter();
+	const router = useRouter();
 
 	const { isUpcoming, hasEnded } = useAuctionAvailability(auction);
 
@@ -62,6 +71,177 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 	const src = useMemo(() => imgs[Math.floor(Math.random() * imgs.length)], []);
 	const category = useMemo(() => categories[Math.floor(Math.random() * categories.length)], []);
 
+	const joinAuction = useJoinAuction(auction.id, () => router.push(url));
+
+	const isUpcomingFooter = (
+		<>
+			<Group className={classes.properties}>
+				<Stack className={classes.cell}>
+					<Text className={classes.subtext}>{t('components.auctionCard.opensIn')}</Text>
+					<Tooltip
+						label={DateTime.fromISO(auction.startDatetime).toLocaleString(
+							DateTime.DATETIME_FULL,
+						)}
+					>
+						<SmallCountdown
+							className={classes.value}
+							targetDate={auction.startDatetime}
+						/>
+					</Tooltip>
+				</Stack>
+				<Divider className={classes.divider} orientation="vertical" />
+				<Stack className={classes.cell}>
+					<Text className={classes.subtext}>{t('components.auctionCard.minBid')}</Text>
+					<Group className={classes.price}>
+						<CurrencyBadge />
+						<Text className={classes.value}>
+							{format.number(auction.minBid, 'money')}
+						</Text>
+					</Group>
+				</Stack>
+			</Group>
+			<Divider className={classes.divider} />
+			<Group className={classes.footer}>
+				{!auction.hasJoined && (
+					<>
+						<Button
+							className={`${classes.secondary} ${classes.button}`}
+							variant="outline"
+							component="a"
+							href={url}
+						>
+							View Auction
+						</Button>
+						<Button
+							className={`${classes.primary} ${classes.button}`}
+							onClick={() => joinAuction.mutate()}
+							rightSection={<IconCheckbox size={16} />}
+							loading={joinAuction.isPending}
+						>
+							Join Auction
+						</Button>
+					</>
+				)}
+				{auction.hasJoined && (
+					<Button
+						className={`${classes.primary} ${classes.button}`}
+						component="a"
+						href={url}
+						rightSection={<IconArrowUpRight size={16} />}
+					>
+						View Auction
+					</Button>
+				)}
+			</Group>
+		</>
+	);
+
+	const isLiveFooter = (
+		<>
+			<Group className={classes.properties}>
+				<Stack className={classes.cell}>
+					<Text className={classes.subtext}>{t('components.auctionCard.endsIn')}</Text>
+					<Tooltip
+						label={DateTime.fromISO(auction.endDatetime).toLocaleString(
+							DateTime.DATETIME_FULL,
+						)}
+					>
+						<SmallCountdown
+							className={classes.value}
+							targetDate={auction.endDatetime}
+						/>
+					</Tooltip>
+				</Stack>
+				<Divider className={classes.divider} orientation="vertical" />
+				<Stack className={classes.cell}>
+					<Text className={classes.subtext}>{t('components.auctionCard.minBid')}</Text>
+					<Group className={classes.price}>
+						<CurrencyBadge />
+						<Text className={classes.value}>
+							{format.number(auction.minBid, 'money')}
+						</Text>
+					</Group>
+				</Stack>
+			</Group>
+			<Divider className={classes.divider} />
+			<Group className={classes.footer}>
+				{!auction.hasJoined && (
+					<>
+						<Button
+							className={`${classes.secondary} ${classes.button}`}
+							variant="outline"
+							component="a"
+							href={url}
+						>
+							View Auction
+						</Button>
+						<Button
+							className={`${classes.primary} ${classes.button}`}
+							onClick={() => joinAuction.mutate()}
+							rightSection={<IconCheckbox size={16} />}
+							loading={joinAuction.isPending}
+						>
+							Join Auction
+						</Button>
+					</>
+				)}
+				{auction.hasJoined && (
+					<Button
+						className={`${classes.primary} ${classes.button}`}
+						component="a"
+						href={url}
+						rightSection={<IconArrowUpRight size={16} />}
+					>
+						View Auction
+					</Button>
+				)}
+			</Group>
+		</>
+	);
+
+	const hasEndedFooter = (
+		<>
+			<Group className={classes.properties}>
+				<Stack className={classes.cell}>
+					<Text className={classes.subtext}>{t('components.auctionCard.numBids')}</Text>
+					<Text className={classes.value}>
+						{/* TODO: show actual number of bids from backend */}
+						{format.number(auction.bids, 'money')} Bids
+					</Text>
+				</Stack>
+				<Divider className={classes.divider} orientation="vertical" />
+				<Stack className={classes.cell}>
+					<Text className={classes.subtext}>
+						{t('components.auctionCard.numBidders')}
+					</Text>
+					<Text className={classes.value}>
+						{/* TODO: show actual number of bidders from backend */}
+						{format.number(auction.bids, 'money')} Bidders
+					</Text>
+				</Stack>
+			</Group>
+			<Divider className={classes.divider} />
+			<Group className={classes.footer}>
+				<Button
+					className={`${classes.secondary} ${classes.button}`}
+					variant="outline"
+					component="a"
+					href={bidsUrl}
+				>
+					View Bids
+				</Button>
+				<Button
+					className={`${classes.primary} ${classes.button}`}
+					component="a"
+					href={resultsUrl}
+					rightSection={<IconAwardFilled size={14} />}
+				>
+					View Results
+				</Button>
+			</Group>
+		</>
+	);
+
 	return (
 		<Stack className={`${classes.root} ${className}`} {...props}>
 			<UnstyledButton className={classes.image} component="a" href={url}>
@@ -70,6 +250,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 					className={`${classes.overlay} ${(hasEnded || isUpcoming) && classes.blurred}`}
 				>
 					{hasEnded && <Text className={classes.text}>Ended</Text>}
+					{isUpcoming && <Text className={classes.text}>Upcoming</Text>}
 				</Stack>
 			</UnstyledButton>
 			<Group className={classes.meta}>
@@ -112,59 +293,9 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 					<Id value={auction.id} variant={category} />
 				</Stack>
 				<Divider className={classes.divider} />
-				<Group className={classes.footer}>
-					{!hasEnded && (
-						<>
-							<Stack className={classes.cell}>
-								<Text className={classes.subtext}>
-									{t('components.auctionCard.timeLeft')}
-								</Text>
-								<Tooltip
-									label={DateTime.fromISO(auction.endDatetime).toLocaleString(
-										DateTime.DATETIME_FULL,
-									)}
-								>
-									<SmallCountdown
-										className={classes.value}
-										targetDate={auction.endDatetime}
-									/>
-								</Tooltip>
-							</Stack>
-							<Divider className={classes.divider} orientation="vertical" />
-							<Stack className={classes.cell}>
-								<Text className={classes.subtext}>
-									{t('components.auctionCard.minBid')}
-								</Text>
-								<Group className={classes.price}>
-									<CurrencyBadge />
-									<Text className={classes.value}>
-										{format.number(auction.minBid, 'money')}
-									</Text>
-								</Group>
-							</Stack>
-						</>
-					)}
-					{hasEnded && (
-						<Stack className={`${classes.row} ${classes.cell}`}>
-							<Button
-								className={`${classes.primary} ${classes.button}`}
-								component="a"
-								href={resultsUrl}
-								rightSection={<IconTrophy size={14} />}
-							>
-								View Results
-							</Button>
-							<Button
-								className={`${classes.secondary} ${classes.button}`}
-								variant="outline"
-								component="a"
-								href={bidsUrl}
-							>
-								View Bids
-							</Button>
-						</Stack>
-					)}
-				</Group>
+				{isUpcoming && !hasEnded && isUpcomingFooter}
+				{!isUpcoming && !hasEnded && isLiveFooter}
+				{hasEnded && hasEndedFooter}
 			</Stack>
 		</Stack>
 	);

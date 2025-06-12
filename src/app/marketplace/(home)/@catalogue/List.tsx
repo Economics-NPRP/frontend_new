@@ -15,7 +15,7 @@ export const List = () => {
 		return paginatedAuctions.data.results.map((auction) => (
 			<AuctionCard auction={auction} key={auction.id} />
 		));
-	}, [paginatedAuctions.data, paginatedAuctions.isSuccess]);
+	}, [paginatedAuctions.data.results, paginatedAuctions.isSuccess]);
 
 	const pagination = useMemo(
 		() =>
