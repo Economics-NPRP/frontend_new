@@ -16,8 +16,10 @@ import { Notifications } from '@mantine/notifications';
 import '@valibot/i18n/ar';
 
 export const metadata: Metadata = {
-	title: 'Next App Mantine Tailwind Template',
-	description: 'Next App Mantine Tailwind Template',
+	title: {
+		default: 'ETS',
+		template: '%s | ETS',
+	},
 };
 
 export default async function RootLayout({

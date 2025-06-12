@@ -13,7 +13,7 @@ import {
 	PaginatedWinningBidsContext,
 	SingleAuctionContext,
 } from '@/contexts';
-import { AuctionResultsPageContext } from '@/pages/marketplace/auction/[auctionId]/results/constants';
+import { AuctionResultsPageContext } from '@/pages/marketplace/auction/[auctionId]/results/_components/Providers';
 import { FloatingIndicator, Tabs } from '@mantine/core';
 import { IconGavel, IconTrophy } from '@tabler/icons-react';
 

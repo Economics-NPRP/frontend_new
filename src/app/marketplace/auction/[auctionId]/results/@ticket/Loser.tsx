@@ -1,8 +1,10 @@
+'use client';
+
 import { useContext } from 'react';
 
 import { AuctionCard } from '@/components/AuctionCard';
 import { SingleAuctionContext } from '@/contexts';
-import { AuctionResultsPageContext } from '@/pages/marketplace/auction/[auctionId]/results/constants';
+import { AuctionResultsPageContext } from '@/pages/marketplace/auction/[auctionId]/results/_components/Providers';
 import { Button, Divider, Group, Stack, Text, Title } from '@mantine/core';
 
 import classes from './styles.module.css';

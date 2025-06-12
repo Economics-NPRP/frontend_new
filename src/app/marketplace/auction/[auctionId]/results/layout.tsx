@@ -1,6 +1,5 @@
-'use client';
-
-import { PropsWithChildren, ReactNode } from 'react';
+import { Metadata } from 'next';
+import { ReactNode } from 'react';
 
 import {
 	AllOpenAuctionResultsProvider,
@@ -12,11 +11,14 @@ import {
 	PaginatedWinningBidsProvider,
 } from '@/contexts';
 import { withProviders } from '@/helpers';
+import { PageProvider } from '@/pages/marketplace/auction/[auctionId]/results/_components/Providers';
 import { Stack } from '@mantine/core';
-import { useScrollIntoView } from '@mantine/hooks';
 
-import { AuctionResultsPageContext } from './constants';
 import classes from './styles.module.css';
+
+export const metadata: Metadata = {
+	title: 'Results',
+};
 
 export interface AuctionResultsProps {
 	bids: ReactNode;
@@ -44,17 +46,3 @@ export default function AuctionResults({ bids, details, ongoing, ticket }: Aucti
 		{ provider: PageProvider },
 	);
 }
-
-const PageProvider = ({ children }: PropsWithChildren) => {
-	const { scrollIntoView: scrollToHistory, targetRef: historyRef } = useScrollIntoView();
-	return (
-		<AuctionResultsPageContext.Provider
-			value={{
-				scrollToHistory,
-				historyRef,
-			}}
-		>
-			{children}
-		</AuctionResultsPageContext.Provider>
-	);
-};

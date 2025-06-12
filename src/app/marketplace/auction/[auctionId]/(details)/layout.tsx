@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
 import {
@@ -16,6 +17,10 @@ import { Button, Container, Group, Stack } from '@mantine/core';
 import { IconArrowUpLeft } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
+
+export const metadata: Metadata = {
+	title: 'Details',
+};
 
 export interface AuctionDetailsProps {
 	bidConfirmationModal: ReactNode;
