@@ -3,7 +3,7 @@ import { useFormatter } from 'next-intl';
 import { useCallback, useContext, useMemo, useState } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
-import { useUnsavedChanges } from '@/hooks';
+import { useAuctionAvailability, useUnsavedChanges } from '@/hooks';
 import { BiddingNumberInput } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingNumberInput';
 import { BiddingTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
@@ -24,6 +24,8 @@ export const InsertForm = () => {
 	const format = useFormatter();
 	const auction = useContext(SingleAuctionContext);
 	const { bids, bidsHandlers, totalPermits } = useContext(AuctionDetailsPageContext);
+
+	const { isUpcoming, hasEnded } = useAuctionAvailability();
 
 	const [subtotal, setSubtotal] = useState(0);
 	const [emissions, setEmissions] = useState(0);
@@ -121,7 +123,7 @@ export const InsertForm = () => {
 							max={auction.data.permits - totalPermits}
 							name="permit"
 							key={form.key('permit')}
-							disabled={!auction.data.hasJoined}
+							disabled={!auction.data.hasJoined || isUpcoming || hasEnded}
 							dark
 							{...form.getInputProps('permit')}
 						/>
@@ -142,7 +144,7 @@ export const InsertForm = () => {
 							placeholder="0.00"
 							name="bid"
 							key={form.key('bid')}
-							disabled={!auction.data.hasJoined}
+							disabled={!auction.data.hasJoined || isUpcoming || hasEnded}
 							decimalScale={2}
 							fixedDecimalScale
 							dark
@@ -163,7 +165,7 @@ export const InsertForm = () => {
 					<Button
 						className={classes.button}
 						type="submit"
-						disabled={!auction.data.hasJoined}
+						disabled={!auction.data.hasJoined || isUpcoming || hasEnded}
 						leftSection={<IconArrowUpLeft size={16} />}
 					>
 						Add to Table

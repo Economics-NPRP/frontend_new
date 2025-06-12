@@ -8,6 +8,7 @@ import { MediumCountdown } from '@/components/Countdown';
 import { RealtimeBidsContext, SingleAuctionContext } from '@/contexts';
 import { generateTrendData } from '@/helpers';
 import { useAuctionAvailability } from '@/hooks';
+import { UpcomingOverlay } from '@/pages/marketplace/auction/[auctionId]/(details)/@bidding/UpcomingOverlay';
 import { BiddingTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Sparkline } from '@mantine/charts';
@@ -32,7 +33,7 @@ export default function Prompt() {
 		bidConfirmationModalActions,
 	} = useContext(AuctionDetailsPageContext);
 
-	const { hasEnded } = useAuctionAvailability();
+	const { isUpcoming, hasEnded } = useAuctionAvailability();
 
 	const readOnly = useMemo(() => !auction.data.hasJoined || hasEnded, [auction.data, hasEnded]);
 
@@ -56,7 +57,8 @@ export default function Prompt() {
 
 	return (
 		<Stack className={classes.root}>
-			{!auction.data.hasJoined && !hasEnded && <JoinOverlay />}
+			{isUpcoming && !hasEnded && <UpcomingOverlay />}
+			{!isUpcoming && !hasEnded && !auction.data.hasJoined && <JoinOverlay />}
 			{hasEnded && <EndedOverlay />}
 			<Group className={classes.body}>
 				<Stack className={classes.content}>
@@ -173,7 +175,7 @@ export default function Prompt() {
 				<Divider orientation="vertical" />
 				<Button
 					className={classes.cta}
-					disabled={readOnly || bids.length === 0}
+					disabled={readOnly || bids.length === 0 || isUpcoming || hasEnded}
 					onClick={bidConfirmationModalActions.open}
 				>
 					Place Bids

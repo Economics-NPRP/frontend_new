@@ -8,10 +8,16 @@ import { useContext } from 'react';
 import { CurrencyBadge } from '@/components/Badge';
 import { LargeCountdown } from '@/components/Countdown';
 import { SingleAuctionContext } from '@/contexts';
-import { useJoinAuction } from '@/hooks';
+import { useAuctionAvailability, useJoinAuction } from '@/hooks';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
-import { Button, Container, Group, Stack, Text } from '@mantine/core';
-import { IconCheckbox, IconGavel, IconGitCompare, IconLeaf } from '@tabler/icons-react';
+import { Button, Container, Group, Stack, Text, Tooltip } from '@mantine/core';
+import {
+	IconAwardFilled,
+	IconCheckbox,
+	IconGavel,
+	IconGitCompare,
+	IconLeaf,
+} from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -21,7 +27,132 @@ export default function Card() {
 	const auction = useContext(SingleAuctionContext);
 	const { scrollToBidding } = useContext(AuctionDetailsPageContext);
 
+	const { isUpcoming, hasEnded } = useAuctionAvailability();
+
 	const joinAuction = useJoinAuction(auction.data.id);
+
+	const bidsUrl = `/marketplace/auction/${auction.data.id}/results#history`;
+	const resultsUrl = `/marketplace/auction/${auction.data.id}/results`;
+
+	const isUpcomingState = (
+		<>
+			<Stack className={classes.countdown}>
+				<Text className={classes.title}>Starting In</Text>
+				<LargeCountdown targetDate={auction.data.startDatetime} />
+				<Text className={classes.subtext}>
+					{DateTime.fromISO(auction.data.startDatetime).toLocaleString(
+						DateTime.DATETIME_FULL,
+					)}
+				</Text>
+			</Stack>
+			<Group className={classes.prompt}>
+				<Button
+					className={classes.cta}
+					rightSection={<IconGitCompare size={16} />}
+					variant="outline"
+				>
+					Compare Auctions
+				</Button>
+				{auction.data.hasJoined && (
+					<Tooltip label="Auction has not started yet">
+						<Button
+							className={classes.cta}
+							rightSection={<IconGavel size={16} />}
+							disabled
+						>
+							Start Bidding
+						</Button>
+					</Tooltip>
+				)}
+				{!auction.data.hasJoined && (
+					<Button
+						className={classes.cta}
+						onClick={() => joinAuction.mutate()}
+						rightSection={<IconCheckbox size={16} />}
+						loading={joinAuction.isPending}
+					>
+						Join Auction
+					</Button>
+				)}
+			</Group>
+		</>
+	);
+
+	const isLiveState = (
+		<>
+			<Stack className={classes.countdown}>
+				<Text className={classes.title}>Ending In</Text>
+				<LargeCountdown targetDate={auction.data.endDatetime} />
+				<Text className={classes.subtext}>
+					{DateTime.fromISO(auction.data.endDatetime).toLocaleString(
+						DateTime.DATETIME_FULL,
+					)}
+				</Text>
+			</Stack>
+			<Group className={classes.prompt}>
+				<Button
+					className={classes.cta}
+					rightSection={<IconGitCompare size={16} />}
+					variant="outline"
+				>
+					Compare Auctions
+				</Button>
+				{auction.data.hasJoined && (
+					<Button
+						className={classes.cta}
+						rightSection={<IconGavel size={16} />}
+						onClick={() => scrollToBidding({ alignment: 'center' })}
+					>
+						Start Bidding
+					</Button>
+				)}
+				{!auction.data.hasJoined && (
+					<Button
+						className={classes.cta}
+						onClick={() => joinAuction.mutate()}
+						rightSection={<IconCheckbox size={16} />}
+						loading={joinAuction.isPending}
+					>
+						Join Auction
+					</Button>
+				)}
+			</Group>
+		</>
+	);
+
+	const hasEndedState = (
+		<>
+			<Stack className={classes.countdown}>
+				<Text className={classes.title}>Auction Ended</Text>
+				<LargeCountdown targetDate={auction.data.endDatetime} />
+				<Text className={classes.subtext}>
+					{DateTime.fromISO(auction.data.endDatetime).toLocaleString(
+						DateTime.DATETIME_FULL,
+					)}
+				</Text>
+			</Stack>
+			<Group className={classes.prompt}>
+				<Button
+					className={classes.cta}
+					component="a"
+					href={bidsUrl}
+					rightSection={<IconGavel size={16} />}
+					variant="outline"
+				>
+					View Bids
+				</Button>
+				<Button
+					className={classes.cta}
+					component="a"
+					href={resultsUrl}
+					rightSection={<IconAwardFilled size={16} />}
+					onClick={() => scrollToBidding({ alignment: 'center' })}
+				>
+					View Results
+				</Button>
+			</Group>
+		</>
+	);
 
 	return (
 		<Stack className={classes.root}>
@@ -70,52 +201,9 @@ export default function Card() {
 					</Group>
 				</Stack>
 			</Group>
-			<Stack className={classes.countdown}>
-				<Text className={classes.title}>Ending In</Text>
-				<LargeCountdown targetDate={auction.data.endDatetime} />
-				<Text className={classes.subtext}>
-					{DateTime.fromISO(auction.data.endDatetime).toLocaleString(
-						DateTime.DATETIME_FULL,
-					)}
-				</Text>
-			</Stack>
-			<Group className={classes.prompt}>
-				{/* <Button
-					className={classes.cta}
-					rightSection={<IconShoppingBag size={16} />}
-					variant="outline"
-				>
-					Buy Now
-				</Button> */}
-				{auction.data.hasJoined && (
-					<>
-						<Button
-							className={classes.cta}
-							rightSection={<IconGitCompare size={16} />}
-							variant="outline"
-						>
-							Compare Auctions
-						</Button>
-						<Button
-							className={classes.cta}
-							rightSection={<IconGavel size={16} />}
-							onClick={() => scrollToBidding({ alignment: 'center' })}
-						>
-							Start Bidding
-						</Button>
-					</>
-				)}
-				{!auction.data.hasJoined && (
-					<Button
-						className={classes.cta}
-						onClick={() => joinAuction.mutate()}
-						rightSection={<IconCheckbox size={16} />}
-						loading={joinAuction.isPending}
-					>
-						Join Auction
-					</Button>
-				)}
-			</Group>
+			{isUpcoming && !hasEnded && isUpcomingState}
+			{!isUpcoming && !hasEnded && isLiveState}
+			{hasEnded && hasEndedState}
 		</Stack>
 	);
 }

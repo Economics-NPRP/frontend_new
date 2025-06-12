@@ -48,12 +48,9 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 
 	const { isUpcoming, hasEnded } = useAuctionAvailability(auction);
 
-	const url = useMemo(() => `/marketplace/auction/${auction.id}`, [auction.id]);
-	const bidsUrl = useMemo(
-		() => `/marketplace/auction/${auction.id}/results#history`,
-		[auction.id],
-	);
-	const resultsUrl = useMemo(() => `/marketplace/auction/${auction.id}/results`, [auction.id]);
+	const url = `/marketplace/auction/${auction.id}`;
+	const bidsUrl = `/marketplace/auction/${auction.id}/results#history`;
+	const resultsUrl = `/marketplace/auction/${auction.id}/results`;
 
 	const imgs = [
 		'/imgs/industry/flare.jpg',
@@ -77,7 +74,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 		<>
 			<Group className={classes.properties}>
 				<Stack className={classes.cell}>
-					<Text className={classes.subtext}>{t('components.auctionCard.opensIn')}</Text>
+					<Text className={classes.subtext}>{t('components.auctionCard.startsIn')}</Text>
 					<Tooltip
 						label={DateTime.fromISO(auction.startDatetime).toLocaleString(
 							DateTime.DATETIME_FULL,

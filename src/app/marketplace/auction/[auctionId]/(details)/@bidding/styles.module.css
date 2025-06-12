@@ -179,6 +179,10 @@
 
 						> .button {
 							@apply bg-white text-dark-600;
+
+							&[data-disabled='true'] {
+								@apply bg-dark-400 text-dark-200;
+							}
 						}
 
 						> .subtext {
@@ -243,6 +247,41 @@
 			&[data-disabled='true'] {
 				@apply bg-gray-200;
 			}
+		}
+	}
+}
+
+.overlay {
+	@apply absolute top-0 left-0;
+	@apply w-full h-full;
+	@apply justify-center items-center;
+	@apply z-10;
+
+	> .background {
+		@apply absolute top-0 left-0;
+		@apply w-full h-full;
+		@apply bg-black/30;
+		@apply -z-10;
+
+		backdrop-filter: blur(4px);
+	}
+
+	> .content {
+		@apply w-[600px];
+		@apply items-center;
+		@apply gap-2 px-12 py-8;
+		@apply bg-white;
+
+		> .title {
+			@apply text-center heading-2;
+		}
+
+		> .description {
+			@apply text-center paragraph-sm;
+		}
+
+		> .button {
+			@apply w-[200px] mt-4;
 		}
 	}
 }

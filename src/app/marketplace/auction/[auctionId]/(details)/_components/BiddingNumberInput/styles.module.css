@@ -34,6 +34,10 @@
 
 			.section button {
 				@apply bg-white text-dark-600;
+
+				&[data-disabled='true'] {
+					@apply bg-dark-400 text-dark-200;
+				}
 			}
 		}
 	}
