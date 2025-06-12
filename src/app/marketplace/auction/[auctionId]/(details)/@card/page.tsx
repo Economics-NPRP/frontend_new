@@ -163,6 +163,12 @@ export default function Card() {
 						alt={'Image of a power plant'}
 						fill
 					/>
+					<Stack
+						className={`${classes.overlay} ${(hasEnded || isUpcoming) && classes.blurred}`}
+					>
+						{hasEnded && <Text className={classes.text}>Ended</Text>}
+						{isUpcoming && <Text className={classes.text}>Upcoming</Text>}
+					</Stack>
 				</Container>
 			</Container>
 			<Group className={classes.row}>

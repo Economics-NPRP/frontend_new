@@ -20,7 +20,6 @@
 			@apply absolute -bottom-8 left-0 w-full h-full;
 			@apply justify-center items-center;
 			@apply opacity-25;
-			@apply transition-all duration-1000;
 
 			background-image: linear-gradient(
 				to top,
@@ -34,8 +33,8 @@
 				backdrop-filter: blur(4px);
 
 				> .text {
-					@apply text-center uppercase tracking-[0.25rem] indent-1;
-					@apply display-xl-w;
+					@apply text-center uppercase tracking-[0.125rem] indent-1;
+					@apply display-2xl-w opacity-50;
 				}
 			}
 		}

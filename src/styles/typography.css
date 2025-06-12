@@ -57,6 +57,30 @@
 		@apply uppercase;
 	}
 
+	.display-3xl {
+		@apply font-sans;
+		@apply text-7xl;
+		@apply font-bold;
+		@apply text-dark-600 dark:text-white;
+	}
+	.display-3xl-w {
+		@apply font-sans;
+		@apply text-7xl;
+		@apply font-bold;
+		@apply text-white dark:text-dark-600;
+	}
+	.display-2xl {
+		@apply font-sans;
+		@apply text-5xl;
+		@apply font-bold;
+		@apply text-dark-600 dark:text-white;
+	}
+	.display-2xl-w {
+		@apply font-sans;
+		@apply text-5xl;
+		@apply font-bold;
+		@apply text-white dark:text-dark-600;
+	}
 	.display-xl {
 		@apply font-sans;
 		@apply text-3xl;
@@ -67,7 +91,7 @@
 		@apply font-sans;
 		@apply text-3xl;
 		@apply font-bold;
-		@apply text-white/50 dark:text-dark-600;
+		@apply text-white dark:text-dark-600;
 	}
 	.display-lg {
 		@apply font-sans;
