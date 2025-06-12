@@ -7,6 +7,7 @@ import { useContext } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { LargeCountdown } from '@/components/Countdown';
+import { Case, FalseCase, Switch, TrueCase } from '@/components/SwitchCase';
 import { SingleAuctionContext } from '@/contexts';
 import { useAuctionAvailability, useJoinAuction } from '@/hooks';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
@@ -67,27 +68,29 @@ export default function Card() {
 				>
 					Compare Auctions
 				</Button>
-				{auction.data.hasJoined && (
-					<Tooltip label="Auction has not started yet">
+				<Switch value={auction.data.hasJoined}>
+					<TrueCase>
+						<Tooltip label="Auction has not started yet">
+							<Button
+								className={classes.cta}
+								rightSection={<IconGavel size={16} />}
+								disabled
+							>
+								Start Bidding
+							</Button>
+						</Tooltip>
+					</TrueCase>
+					<FalseCase>
 						<Button
 							className={classes.cta}
-							rightSection={<IconGavel size={16} />}
-							disabled
+							onClick={() => joinAuction.mutate()}
+							rightSection={<IconCheckbox size={16} />}
+							loading={joinAuction.isPending}
 						>
-							Start Bidding
+							Join Auction
 						</Button>
-					</Tooltip>
-				)}
-				{!auction.data.hasJoined && (
-					<Button
-						className={classes.cta}
-						onClick={() => joinAuction.mutate()}
-						rightSection={<IconCheckbox size={16} />}
-						loading={joinAuction.isPending}
-					>
-						Join Auction
-					</Button>
-				)}
+					</FalseCase>
+				</Switch>
 			</Group>
 		</>
 	);
@@ -111,25 +114,27 @@ export default function Card() {
 				>
 					Compare Auctions
 				</Button>
-				{auction.data.hasJoined && (
-					<Button
-						className={classes.cta}
-						rightSection={<IconGavel size={16} />}
-						onClick={() => scrollToBidding({ alignment: 'center' })}
-					>
-						Start Bidding
-					</Button>
-				)}
-				{!auction.data.hasJoined && (
-					<Button
-						className={classes.cta}
-						onClick={() => joinAuction.mutate()}
-						rightSection={<IconCheckbox size={16} />}
-						loading={joinAuction.isPending}
-					>
-						Join Auction
-					</Button>
-				)}
+				<Switch value={auction.data.hasJoined}>
+					<TrueCase>
+						<Button
+							className={classes.cta}
+							rightSection={<IconGavel size={16} />}
+							onClick={() => scrollToBidding({ alignment: 'center' })}
+						>
+							Start Bidding
+						</Button>
+					</TrueCase>
+					<FalseCase>
+						<Button
+							className={classes.cta}
+							onClick={() => joinAuction.mutate()}
+							rightSection={<IconCheckbox size={16} />}
+							loading={joinAuction.isPending}
+						>
+							Join Auction
+						</Button>
+					</FalseCase>
+				</Switch>
 			</Group>
 		</>
 	);
@@ -186,15 +191,23 @@ export default function Card() {
 				</Container>
 			</Container>
 			<Group className={classes.row}>
-				<Stack className={classes.section}>
-					{auction.isLoading && (
-						<>
+				<Switch value={auction.isLoading}>
+					<TrueCase>
+						<Stack className={classes.section}>
 							<Skeleton width={100} height={18} data-dark visible />
 							<Skeleton width={120} height={24} data-dark visible />
-						</>
-					)}
-					{!auction.isLoading && (
-						<>
+						</Stack>
+						<Stack className={classes.section}>
+							<Skeleton width={100} height={18} data-dark visible />
+							<Skeleton width={120} height={24} data-dark visible />
+						</Stack>
+						<Stack className={classes.section}>
+							<Skeleton width={100} height={18} data-dark visible />
+							<Skeleton width={120} height={24} data-dark visible />
+						</Stack>
+					</TrueCase>
+					<FalseCase>
+						<Stack className={classes.section}>
 							<Text className={classes.subtext}>Permits Offered</Text>
 							<Group className={classes.price}>
 								<Container className={classes.icon}>
@@ -204,18 +217,8 @@ export default function Card() {
 									{format.number(auction.data.permits)}
 								</Text>
 							</Group>
-						</>
-					)}
-				</Stack>
-				<Stack className={classes.section}>
-					{auction.isLoading && (
-						<>
-							<Skeleton width={100} height={18} data-dark visible />
-							<Skeleton width={120} height={24} data-dark visible />
-						</>
-					)}
-					{!auction.isLoading && (
-						<>
+						</Stack>
+						<Stack className={classes.section}>
 							<Text className={classes.subtext}>Minimum Bid</Text>
 							<Group className={classes.price}>
 								<CurrencyBadge className={classes.badge} />
@@ -223,31 +226,23 @@ export default function Card() {
 									{format.number(auction.data.minBid, 'money')}
 								</Text>
 							</Group>
-						</>
-					)}
-				</Stack>
-				<Stack className={classes.section}>
-					{auction.isLoading && (
-						<>
-							<Skeleton width={100} height={18} data-dark visible />
-							<Skeleton width={120} height={24} data-dark visible />
-						</>
-					)}
-					{!auction.isLoading && (
-						<>
+						</Stack>
+						<Stack className={classes.section}>
 							<Text className={classes.subtext}>Minimum Increment</Text>
 							<Group className={classes.price}>
 								<CurrencyBadge className={classes.badge} />
 								<Text className={classes.value}>{format.number(1, 'money')}</Text>
 							</Group>
-						</>
-					)}
-				</Stack>
+						</Stack>
+					</FalseCase>
+				</Switch>
 			</Group>
-			{auction.isLoading && isLoadingState}
-			{isUpcoming && isUpcomingState}
-			{isLive && isLiveState}
-			{hasEnded && hasEndedState}
+			<Switch>
+				<Case when={auction.isLoading}>{isLoadingState}</Case>
+				<Case when={isUpcoming}>{isUpcomingState}</Case>
+				<Case when={isLive}>{isLiveState}</Case>
+				<Case when={hasEnded}>{hasEndedState}</Case>
+			</Switch>
 		</Stack>
 	);
 }
