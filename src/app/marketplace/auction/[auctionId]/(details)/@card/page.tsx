@@ -3,11 +3,11 @@
 import { DateTime } from 'luxon';
 import { useFormatter } from 'next-intl';
 import Image from 'next/image';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { LargeCountdown } from '@/components/Countdown';
-import { Case, FalseCase, Switch, TrueCase } from '@/components/SwitchCase';
+import { Switch } from '@/components/SwitchCase';
 import { SingleAuctionContext } from '@/contexts';
 import { useAuctionAvailability, useJoinAuction } from '@/hooks';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
@@ -34,6 +34,13 @@ export default function Card() {
 
 	const bidsUrl = `/marketplace/auction/${auction.data.id}/results#history`;
 	const resultsUrl = `/marketplace/auction/${auction.data.id}/results`;
+
+	const currentState = useMemo(() => {
+		if (auction.isLoading) return 'loading';
+		if (isUpcoming) return 'upcoming';
+		if (isLive) return 'live';
+		if (hasEnded) return 'ended';
+	}, [auction.isLoading, isUpcoming, isLive, hasEnded]);
 
 	const isLoadingState = (
 		<>
@@ -69,7 +76,7 @@ export default function Card() {
 					Compare Auctions
 				</Button>
 				<Switch value={auction.data.hasJoined}>
-					<TrueCase>
+					<Switch.True>
 						<Tooltip label="Auction has not started yet">
 							<Button
 								className={classes.cta}
@@ -79,8 +86,8 @@ export default function Card() {
 								Start Bidding
 							</Button>
 						</Tooltip>
-					</TrueCase>
-					<FalseCase>
+					</Switch.True>
+					<Switch.False>
 						<Button
 							className={classes.cta}
 							onClick={() => joinAuction.mutate()}
@@ -89,7 +96,7 @@ export default function Card() {
 						>
 							Join Auction
 						</Button>
-					</FalseCase>
+					</Switch.False>
 				</Switch>
 			</Group>
 		</>
@@ -115,7 +122,7 @@ export default function Card() {
 					Compare Auctions
 				</Button>
 				<Switch value={auction.data.hasJoined}>
-					<TrueCase>
+					<Switch.True>
 						<Button
 							className={classes.cta}
 							rightSection={<IconGavel size={16} />}
@@ -123,8 +130,8 @@ export default function Card() {
 						>
 							Start Bidding
 						</Button>
-					</TrueCase>
-					<FalseCase>
+					</Switch.True>
+					<Switch.False>
 						<Button
 							className={classes.cta}
 							onClick={() => joinAuction.mutate()}
@@ -133,7 +140,7 @@ export default function Card() {
 						>
 							Join Auction
 						</Button>
-					</FalseCase>
+					</Switch.False>
 				</Switch>
 			</Group>
 		</>
@@ -192,7 +199,7 @@ export default function Card() {
 			</Container>
 			<Group className={classes.row}>
 				<Switch value={auction.isLoading}>
-					<TrueCase>
+					<Switch.True>
 						<Stack className={classes.section}>
 							<Skeleton width={100} height={18} data-dark visible />
 							<Skeleton width={120} height={24} data-dark visible />
@@ -205,8 +212,8 @@ export default function Card() {
 							<Skeleton width={100} height={18} data-dark visible />
 							<Skeleton width={120} height={24} data-dark visible />
 						</Stack>
-					</TrueCase>
-					<FalseCase>
+					</Switch.True>
+					<Switch.False>
 						<Stack className={classes.section}>
 							<Text className={classes.subtext}>Permits Offered</Text>
 							<Group className={classes.price}>
@@ -234,14 +241,14 @@ export default function Card() {
 								<Text className={classes.value}>{format.number(1, 'money')}</Text>
 							</Group>
 						</Stack>
-					</FalseCase>
+					</Switch.False>
 				</Switch>
 			</Group>
-			<Switch>
-				<Case when={auction.isLoading}>{isLoadingState}</Case>
-				<Case when={isUpcoming}>{isUpcomingState}</Case>
-				<Case when={isLive}>{isLiveState}</Case>
-				<Case when={hasEnded}>{hasEndedState}</Case>
+			<Switch value={currentState}>
+				<Switch.Case when={'loading'}>{isLoadingState}</Switch.Case>
+				<Switch.Case when={'upcoming'}>{isUpcomingState}</Switch.Case>
+				<Switch.Case when={'live'}>{isLiveState}</Switch.Case>
+				<Switch.Case when={'ended'}>{hasEndedState}</Switch.Case>
 			</Switch>
 		</Stack>
 	);
