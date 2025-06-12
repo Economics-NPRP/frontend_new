@@ -49,7 +49,7 @@ export default function Details() {
 						<AuctionTypeBadge type={auction.data.type} />
 					</Group>
 					<Group className={classes.cell}>
-						<EndingSoonBadge endDatetime={auction.data.endDatetime} />
+						<EndingSoonBadge auction={auction.data} />
 					</Group>
 				</Group>
 				<Text className={classes.description}>

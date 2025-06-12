@@ -47,6 +47,8 @@ export interface BidsTableProps extends TableProps {
 	myPaginatedBids?: IMyPaginatedBidsContext;
 	myOpenAuctionResults?: IMyOpenAuctionResultsContext;
 
+	showContributingBids?: boolean;
+
 	withCloseButton?: boolean;
 	onClose?: () => void;
 
@@ -61,6 +63,8 @@ export const BidsTable = ({
 	paginatedWinningBids,
 	myPaginatedBids,
 	myOpenAuctionResults,
+
+	showContributingBids,
 
 	withCloseButton,
 	onClose,
@@ -122,8 +126,8 @@ export const BidsTable = ({
 	//	Generate the legend based on the bids filter
 	const legend = useMemo(() => {
 		if (!bids) return null;
-		return generateLegend(bidsFilter);
-	}, [bids, bidsFilter]);
+		return generateLegend(bidsFilter, showContributingBids);
+	}, [bids, bidsFilter, showContributingBids]);
 
 	const currentContextState = useMemo(() => {
 		if (bidsFilter === 'winning' && paginatedWinningBids) return paginatedWinningBids;
@@ -244,10 +248,12 @@ export const BidsTable = ({
 									>
 										<Stack className={classes.options}>
 											<Radio value="all" label="Show all bids" />
-											<Radio
-												value="contributing"
-												label="Only show bids contributing to your final bill"
-											/>
+											{showContributingBids && (
+												<Radio
+													value="contributing"
+													label="Only show bids contributing to your final bill"
+												/>
+											)}
 											{paginatedWinningBids && (
 												<Radio
 													value="winning"

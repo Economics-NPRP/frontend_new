@@ -73,7 +73,7 @@ export const generateBidsRows = ({
 	}
 };
 
-export const generateLegend = (bidsFilter: BidsFilter) => {
+export const generateLegend = (bidsFilter: BidsFilter, showContributingBids?: boolean) => {
 	switch (bidsFilter) {
 		case 'all':
 			return (
@@ -82,10 +82,12 @@ export const generateLegend = (bidsFilter: BidsFilter) => {
 						<Container className={`${classes.key} ${classes.mine}`} />
 						<Text className={classes.value}>Your Bids</Text>
 					</Group>
-					<Group className={classes.cell}>
-						<Container className={`${classes.key} ${classes.contributing}`} />
-						<Text className={classes.value}>Contributing Bids</Text>
-					</Group>
+					{showContributingBids && (
+						<Group className={classes.cell}>
+							<Container className={`${classes.key} ${classes.contributing}`} />
+							<Text className={classes.value}>Contributing Bids</Text>
+						</Group>
+					)}
 					<Group className={classes.cell}>
 						<Container className={`${classes.key} ${classes.winning}`} />
 						<Text className={classes.value}>Winning Bids</Text>
@@ -102,10 +104,12 @@ export const generateLegend = (bidsFilter: BidsFilter) => {
 		case 'mine':
 			return (
 				<>
-					<Group className={classes.cell}>
-						<Container className={`${classes.key} ${classes.contributing}`} />
-						<Text className={classes.value}>Contributing Bids</Text>
-					</Group>
+					{showContributingBids && (
+						<Group className={classes.cell}>
+							<Container className={`${classes.key} ${classes.contributing}`} />
+							<Text className={classes.value}>Contributing Bids</Text>
+						</Group>
+					)}
 					<Group className={classes.cell}>
 						<Container className={`${classes.key} ${classes.winning}`} />
 						<Text className={classes.value}>Winning Bids</Text>
