@@ -3,6 +3,7 @@ import { useContext, useMemo } from 'react';
 
 import { CategoryBadge, CurrencyBadge } from '@/components/Badge';
 import { MyOpenAuctionResultsContext, SingleAuctionContext } from '@/contexts';
+import { useAuctionAvailability } from '@/hooks';
 import { CurrentUserContext } from '@/pages/globalContext';
 import { Button, Container, Group, Progress, Stack, Text } from '@mantine/core';
 import { IconArrowUpRight, IconLeaf } from '@tabler/icons-react';
@@ -20,11 +21,7 @@ export const Winner = () => {
 		[myOpenAuctionResults.data.permitsReserved, auction.data.permits],
 	);
 
-	//	TODO: also check every second if the auction is still active
-	const hasEnded = useMemo(
-		() => new Date(auction.data.endDatetime).getTime() < Date.now(),
-		[auction.data.endDatetime],
-	);
+	const { hasEnded } = useAuctionAvailability();
 
 	return (
 		<>

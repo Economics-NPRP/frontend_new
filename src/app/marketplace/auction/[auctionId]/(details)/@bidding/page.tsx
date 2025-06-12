@@ -1,13 +1,13 @@
 'use client';
 
-import { SingleAuctionContext } from 'contexts/SingleAuction';
 import { useFormatter } from 'next-intl';
 import { useCallback, useContext, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { MediumCountdown } from '@/components/Countdown';
-import { RealtimeBidsContext } from '@/contexts';
+import { RealtimeBidsContext, SingleAuctionContext } from '@/contexts';
 import { generateTrendData } from '@/helpers';
+import { useAuctionAvailability } from '@/hooks';
 import { BiddingTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Sparkline } from '@mantine/charts';
@@ -32,11 +32,7 @@ export default function Prompt() {
 		bidConfirmationModalActions,
 	} = useContext(AuctionDetailsPageContext);
 
-	//	TODO: also check every second if the auction is still active
-	const hasEnded = useMemo(
-		() => new Date(auction.data.endDatetime).getTime() < Date.now(),
-		[auction.data.endDatetime],
-	);
+	const { hasEnded } = useAuctionAvailability();
 
 	const readOnly = useMemo(() => !auction.data.hasJoined || hasEnded, [auction.data, hasEnded]);
 

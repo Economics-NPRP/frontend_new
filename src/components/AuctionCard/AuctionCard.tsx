@@ -11,6 +11,7 @@ import {
 } from '@/components/Badge';
 import { SmallCountdown } from '@/components/Countdown';
 import { Id } from '@/components/Id';
+import { useAuctionAvailability } from '@/hooks';
 import { IAuctionData } from '@/schema/models';
 import { AuctionCategory } from '@/types';
 import {
@@ -36,15 +37,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 	const t = useTranslations();
 	const format = useFormatter();
 
-	const hasEnded = useMemo(
-		() => DateTime.fromISO(auction.endDatetime).diffNow().milliseconds < 0,
-		[auction.endDatetime],
-	);
-
-	const isUpcoming = useMemo(
-		() => DateTime.fromISO(auction.startDatetime).diffNow().milliseconds > 0,
-		[auction.startDatetime],
-	);
+	const { isUpcoming, hasEnded } = useAuctionAvailability();
 
 	const url = useMemo(() => `/marketplace/auction/${auction.id}`, [auction.id]);
 	const bidsUrl = useMemo(

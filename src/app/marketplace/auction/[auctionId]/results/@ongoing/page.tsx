@@ -4,6 +4,7 @@ import { SingleAuctionContext } from 'contexts/SingleAuction';
 import { useParams } from 'next/navigation';
 import { useContext, useMemo } from 'react';
 
+import { useAuctionAvailability } from '@/hooks';
 import { Button, Group, Modal, Stack, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconArrowUpLeft } from '@tabler/icons-react';
@@ -21,11 +22,7 @@ export default function OngoingOverlay() {
 		[auction.data.startDatetime],
 	);
 
-	//	TODO: also check every second if the auction is still active
-	const hasEnded = useMemo(
-		() => new Date(auction.data.endDatetime).getTime() < Date.now(),
-		[auction.data.endDatetime],
-	);
+	const { hasEnded } = useAuctionAvailability();
 
 	return (
 		<>
