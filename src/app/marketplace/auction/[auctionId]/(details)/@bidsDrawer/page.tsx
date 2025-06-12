@@ -10,6 +10,7 @@ import {
 	PaginatedWinningBidsContext,
 	RealtimeBidsContext,
 } from '@/contexts';
+import { useAuctionAvailability } from '@/hooks';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { ActionIcon, Drawer, Indicator, Tooltip } from '@mantine/core';
 import { IconListDetails } from '@tabler/icons-react';
@@ -24,6 +25,8 @@ export default function Bids() {
 	const realtimeBids = useContext(RealtimeBidsContext);
 	const { isBidsDrawerOpen, openBidsDrawer, closeBidsDrawer } =
 		useContext(AuctionDetailsPageContext);
+
+	const { hasEnded } = useAuctionAvailability();
 
 	const handleOpenDrawer = useCallback(() => {
 		realtimeBids.setStatus('idle');
@@ -44,6 +47,7 @@ export default function Bids() {
 					allWinningBids={allWinningBids}
 					paginatedWinningBids={paginatedWinningBids}
 					myPaginatedBids={myPaginatedBids}
+					showContributingBids={hasEnded}
 					withCloseButton
 					onClose={closeBidsDrawer}
 					className={classes.table}

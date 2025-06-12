@@ -2,11 +2,8 @@ import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
-import {
-	AuctionCategoryData,
-	AuctionCategoryVariants,
-	ENDING_SOON_THRESHOLD,
-} from '@/constants/AuctionCategory';
+import { AuctionCategoryData, AuctionCategoryVariants } from '@/constants/AuctionCategory';
+import { useAuctionAvailability } from '@/hooks';
 import { AuctionType, IAuctionData } from '@/schema/models';
 import { colors } from '@/styles/mantine';
 import { AuctionCategory } from '@/types';
@@ -71,22 +68,21 @@ export const CategoryBadge = ({ category, className, ...props }: CategoryBadgePr
 	);
 };
 
-export interface EndingSoonBadgeProps extends BadgeProps, Pick<IAuctionData, 'endDatetime'> {}
-export const EndingSoonBadge = ({ endDatetime, className, ...props }: EndingSoonBadgeProps) => {
+export interface EndingSoonBadgeProps extends BadgeProps {
+	auction: IAuctionData;
+}
+export const EndingSoonBadge = ({ auction, className, ...props }: EndingSoonBadgeProps) => {
 	const t = useTranslations();
 
-	const isEndingSoon = useMemo(
-		() =>
-			DateTime.fromISO(endDatetime).diffNow().milliseconds > 0 &&
-			DateTime.fromISO(endDatetime).diffNow().milliseconds < ENDING_SOON_THRESHOLD,
-		[endDatetime],
-	);
+	const { isEndingSoon } = useAuctionAvailability(auction);
 
 	return (
 		isEndingSoon && (
 			<Tooltip
 				label={t('constants.auctionStatus.ending.tooltip', {
-					date: DateTime.fromISO(endDatetime).toLocaleString(DateTime.DATETIME_FULL),
+					date: DateTime.fromISO(auction.endDatetime).toLocaleString(
+						DateTime.DATETIME_FULL,
+					),
 				})}
 			>
 				<Badge

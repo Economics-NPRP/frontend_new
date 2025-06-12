@@ -21,7 +21,7 @@ export const Bids = () => {
 	const myPaginatedBids = useContext(MyPaginatedBidsContext);
 	const { openBidsDrawer } = useContext(AuctionDetailsPageContext);
 
-	const { areBidsAvailable } = useAuctionAvailability();
+	const { hasEnded, areBidsAvailable } = useAuctionAvailability();
 
 	return (
 		<Stack className={`${classes.bids} ${classes.section}`}>
@@ -59,6 +59,7 @@ export const Bids = () => {
 					allWinningBids={allWinningBids}
 					paginatedWinningBids={paginatedWinningBids}
 					myPaginatedBids={myPaginatedBids}
+					showContributingBids={hasEnded}
 					className={classes.table}
 					onViewAll={openBidsDrawer}
 					hideHeader

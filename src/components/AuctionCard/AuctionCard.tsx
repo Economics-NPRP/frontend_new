@@ -37,7 +37,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 	const t = useTranslations();
 	const format = useFormatter();
 
-	const { isUpcoming, hasEnded } = useAuctionAvailability();
+	const { isUpcoming, hasEnded } = useAuctionAvailability(auction);
 
 	const url = useMemo(() => `/marketplace/auction/${auction.id}`, [auction.id]);
 	const bidsUrl = useMemo(
@@ -107,7 +107,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 					</Group>
 					<Group className={classes.badges}>
 						<AuctionTypeBadge type={auction.type} />
-						<EndingSoonBadge endDatetime={auction.endDatetime} />
+						<EndingSoonBadge auction={auction} />
 					</Group>
 					<Id value={auction.id} variant={category} />
 				</Stack>

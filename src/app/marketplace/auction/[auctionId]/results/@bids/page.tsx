@@ -13,6 +13,7 @@ import {
 	PaginatedWinningBidsContext,
 	SingleAuctionContext,
 } from '@/contexts';
+import { useAuctionAvailability } from '@/hooks';
 import { AuctionResultsPageContext } from '@/pages/marketplace/auction/[auctionId]/results/_components/Providers';
 import { FloatingIndicator, Tabs } from '@mantine/core';
 import { IconGavel, IconTrophy } from '@tabler/icons-react';
@@ -28,6 +29,8 @@ export default function Bids() {
 	const paginatedOpenAuctionResults = useContext(PaginatedOpenAuctionResultsContext);
 	const myOpenAuctionResults = useContext(MyOpenAuctionResultsContext);
 	const { historyRef } = useContext(AuctionResultsPageContext);
+
+	const { hasEnded } = useAuctionAvailability();
 
 	const [currentTab, setCurrentTab] = useState<string | null>('results');
 	const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
@@ -90,6 +93,7 @@ export default function Bids() {
 						paginatedWinningBids={paginatedWinningBids}
 						myPaginatedBids={myPaginatedBids}
 						myOpenAuctionResults={myOpenAuctionResults}
+						showContributingBids={hasEnded}
 					/>
 				</Tabs.Panel>
 			</Tabs>
