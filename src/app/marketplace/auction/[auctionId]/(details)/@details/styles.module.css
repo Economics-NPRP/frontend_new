@@ -127,11 +127,11 @@
 						}
 
 						> .key {
+							@apply flex-auto;
 							@apply display-md-sb;
 						}
 
 						> .value {
-							@apply flex-auto;
 							@apply paragraph-md text-right;
 						}
 

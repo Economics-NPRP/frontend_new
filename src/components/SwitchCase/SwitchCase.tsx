@@ -11,7 +11,7 @@ export interface CaseProps extends PropsWithChildren {
 }
 
 const evaluateMatch = ({ value, children }: SwitchProps): ReactNode => {
-	let foundMatch: ReactNode = false;
+	let foundMatch: ReactNode = null;
 	Children.forEach(children, (child) => {
 		if (!isValidElement(child)) return;
 
@@ -31,7 +31,7 @@ const evaluateMatch = ({ value, children }: SwitchProps): ReactNode => {
 const Switch = ({ value = true, children }: SwitchProps) => {
 	const [match, setMatch] = useState<ReactNode>(() => evaluateMatch({ value, children }));
 
-	useEffect(() => setMatch(evaluateMatch({ value, children })), [value]);
+	useEffect(() => setMatch(evaluateMatch({ value, children })), [value, children]);
 
 	return match;
 };

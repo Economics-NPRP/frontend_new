@@ -1,10 +1,21 @@
 import { useFormatter } from 'next-intl';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
+import { Switch } from '@/components/SwitchCase';
 import { MyOpenAuctionResultsContext, SingleAuctionContext } from '@/contexts';
 import { useAuctionAvailability } from '@/hooks';
-import { Alert, Button, Container, Divider, Group, Stack, Text, Tooltip } from '@mantine/core';
+import {
+	Alert,
+	Button,
+	Container,
+	Divider,
+	Group,
+	Skeleton,
+	Stack,
+	Text,
+	Tooltip,
+} from '@mantine/core';
 import {
 	IconCoins,
 	IconExclamationCircle,
@@ -21,6 +32,12 @@ export const Winnings = () => {
 	const myOpenAuctionResults = useContext(MyOpenAuctionResultsContext);
 
 	const { areResultsAvailable } = useAuctionAvailability();
+
+	const currentState = useMemo(() => {
+		if (myOpenAuctionResults.isLoading || auction.isLoading) return 'loading';
+		if (!areResultsAvailable) return 'unavailable';
+		return 'available';
+	}, [myOpenAuctionResults.isLoading, areResultsAvailable]);
 
 	return (
 		<Stack className={`${classes.winnings} ${classes.section}`}>
@@ -41,24 +58,51 @@ export const Winnings = () => {
 					label: classes.label,
 				}}
 			/>
-			{!areResultsAvailable && (
-				<Alert
-					variant="light"
-					color="gray"
-					title={
-						auction.data.type === 'sealed'
-							? 'Results are currently unavailable'
-							: 'You have not joined the auction yet'
-					}
-					icon={<IconExclamationCircle />}
-				>
-					{auction.data.type === 'sealed'
-						? 'The auction results will be released after the auction ends and all bids have been processed.'
-						: 'Please join the auction to see your estimated winnings.'}
-				</Alert>
-			)}
-			{areResultsAvailable && (
-				<>
+			<Switch value={currentState}>
+				<Switch.Case when="loading">
+					<Group className={classes.row}>
+						<Stack className={classes.cell}>
+							<Container className={classes.icon}>
+								<IconLicense size={16} />
+							</Container>
+							<Text className={classes.key}>Estimated # of Permits</Text>
+							<Skeleton width={100} height={28} visible />
+						</Stack>
+						<Divider orientation="vertical" className={classes.divider} />
+						<Stack className={classes.cell}>
+							<Container className={classes.icon}>
+								<IconLeaf size={16} />
+							</Container>
+							<Text className={classes.key}>Estimated # of Emissions</Text>
+							<Skeleton width={120} height={28} visible />
+						</Stack>
+						<Divider orientation="vertical" className={classes.divider} />
+						<Stack className={classes.cell}>
+							<Container className={classes.icon}>
+								<IconCoins size={16} />
+							</Container>
+							<Text className={classes.key}>Estimated Final Bill</Text>
+							<Skeleton width={160} height={28} visible />
+						</Stack>
+					</Group>
+				</Switch.Case>
+				<Switch.Case when="unavailable">
+					<Alert
+						variant="light"
+						color="gray"
+						title={
+							auction.data.type === 'sealed'
+								? 'Results are currently unavailable'
+								: 'You have not joined the auction yet'
+						}
+						icon={<IconExclamationCircle />}
+					>
+						{auction.data.type === 'sealed'
+							? 'The auction results will be released after the auction ends and all bids have been processed.'
+							: 'Please join the auction to see your estimated winnings.'}
+					</Alert>
+				</Switch.Case>
+				<Switch.Case when="available">
 					<Group className={classes.row}>
 						<Stack className={classes.cell}>
 							<Container className={classes.icon}>
@@ -117,8 +161,8 @@ export const Winnings = () => {
 					>
 						View Full Results
 					</Button>
-				</>
-			)}
+				</Switch.Case>
+			</Switch>
 		</Stack>
 	);
 };

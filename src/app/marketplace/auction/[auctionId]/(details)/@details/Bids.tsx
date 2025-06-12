@@ -1,11 +1,13 @@
 import { useContext } from 'react';
 
 import { BidsTable } from '@/components/BidsTable';
+import { Switch } from '@/components/SwitchCase';
 import {
 	AllWinningBidsContext,
 	MyPaginatedBidsContext,
 	PaginatedBidsContext,
 	PaginatedWinningBidsContext,
+	SingleAuctionContext,
 } from '@/contexts';
 import { useAuctionAvailability } from '@/hooks';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
@@ -15,6 +17,7 @@ import { IconExclamationCircle, IconInfoCircle } from '@tabler/icons-react';
 import classes from './styles.module.css';
 
 export const Bids = () => {
+	const auction = useContext(SingleAuctionContext);
 	const paginatedBids = useContext(PaginatedBidsContext);
 	const allWinningBids = useContext(AllWinningBidsContext);
 	const paginatedWinningBids = useContext(PaginatedWinningBidsContext);
@@ -42,30 +45,33 @@ export const Bids = () => {
 					label: classes.label,
 				}}
 			/>
-			{!areBidsAvailable && (
-				<Alert
-					variant="light"
-					color="gray"
-					title="Bids are currently unavailable"
-					icon={<IconExclamationCircle />}
-				>
-					The list of bids submitted are not available during a sealed auction. Please
-					wait until the auction ends and the results are published.
-				</Alert>
-			)}
-			{areBidsAvailable && (
-				<BidsTable
-					bids={paginatedBids}
-					allWinningBids={allWinningBids}
-					paginatedWinningBids={paginatedWinningBids}
-					myPaginatedBids={myPaginatedBids}
-					showContributingBids={hasEnded}
-					className={classes.table}
-					onViewAll={openBidsDrawer}
-					hideHeader
-					withViewAllButton
-				/>
-			)}
+			<Switch value={auction.isSuccess && !areBidsAvailable}>
+				<Switch.True>
+					<Alert
+						variant="light"
+						color="gray"
+						title="Bids are currently unavailable"
+						icon={<IconExclamationCircle />}
+					>
+						The list of bids submitted are not available during a sealed auction. Please
+						wait until the auction ends and the results are published.
+					</Alert>
+				</Switch.True>
+				<Switch.False>
+					<BidsTable
+						bids={paginatedBids}
+						allWinningBids={allWinningBids}
+						paginatedWinningBids={paginatedWinningBids}
+						myPaginatedBids={myPaginatedBids}
+						showContributingBids={hasEnded}
+						className={classes.table}
+						onViewAll={openBidsDrawer}
+						loading={auction.isLoading || paginatedBids.isLoading}
+						hideHeader
+						withViewAllButton
+					/>
+				</Switch.False>
+			</Switch>
 		</Stack>
 	);
 };

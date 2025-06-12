@@ -2,6 +2,8 @@ import { DateTime } from 'luxon';
 import { useFormatter } from 'next-intl';
 import { useContext, useState } from 'react';
 
+import { Switch } from '@/components/SwitchCase';
+import { WithSkeleton } from '@/components/WithSkeleton';
 import { PaginatedBidsContext, SingleAuctionContext } from '@/contexts';
 import { useAuctionAvailability } from '@/hooks';
 import { Button, Divider, Group, Stack, Text } from '@mantine/core';
@@ -47,12 +49,16 @@ export const Properties = () => {
 					<Group className={classes.cell}>
 						<IconHourglassEmpty size={16} className={classes.icon} />
 						<Text className={classes.key}>Permit Lifespan</Text>
-						<Text className={classes.value}>1 year</Text>
+						<WithSkeleton loading={auction.isLoading} width={120} height={24}>
+							<Text className={classes.value}>1 year</Text>
+						</WithSkeleton>
 					</Group>
 					<Group className={classes.cell}>
 						<IconLeaf size={16} className={classes.icon} />
 						<Text className={classes.key}>Emissions Per Permit</Text>
-						<Text className={classes.value}>10,000 tCO2e</Text>
+						<WithSkeleton loading={auction.isLoading} width={120} height={24}>
+							<Text className={classes.value}>10,000 tCO2e</Text>
+						</WithSkeleton>
 					</Group>
 				</Group>
 				{/* <Group className={classes.row}>
@@ -71,59 +77,79 @@ export const Properties = () => {
 					<Group className={classes.cell}>
 						<IconClock size={16} className={classes.icon} />
 						<Text className={classes.key}>Auction Start Date</Text>
-						<Text className={classes.value}>
-							{DateTime.fromISO(auction.data.startDatetime).toLocaleString(
-								DateTime.DATETIME_SHORT,
-							)}
-						</Text>
+						<WithSkeleton loading={auction.isLoading} width={120} height={24}>
+							<Text className={classes.value}>
+								{DateTime.fromISO(auction.data.startDatetime).toLocaleString(
+									DateTime.DATETIME_SHORT,
+								)}
+							</Text>
+						</WithSkeleton>
 					</Group>
 					<Group className={classes.cell}>
 						<IconAlarm size={16} className={classes.icon} />
 						<Text className={classes.key}>Auction End Date</Text>
-						<Text className={classes.value}>
-							{DateTime.fromISO(auction.data.endDatetime).toLocaleString(
-								DateTime.DATETIME_SHORT,
-							)}
-						</Text>
+						<WithSkeleton loading={auction.isLoading} width={120} height={24}>
+							<Text className={classes.value}>
+								{DateTime.fromISO(auction.data.endDatetime).toLocaleString(
+									DateTime.DATETIME_SHORT,
+								)}
+							</Text>
+						</WithSkeleton>
 					</Group>
 				</Group>
-				{!isDetailsExpanded && (
-					<Button
-						className={classes.subtle}
-						variant="subtle"
-						onClick={() => setIsDetailsExpanded(true)}
-					>
-						Show More
-					</Button>
-				)}
-				{isDetailsExpanded && (
-					<>
+				<Switch value={isDetailsExpanded}>
+					<Switch.False>
+						<Button
+							className={classes.subtle}
+							variant="subtle"
+							onClick={() => setIsDetailsExpanded(true)}
+						>
+							Show More
+						</Button>
+					</Switch.False>
+					<Switch.True>
 						<Group className={classes.row}>
 							<Group className={classes.cell}>
 								<IconEye size={16} className={classes.icon} />
 								<Text className={classes.key}>Number of Views</Text>
-								<Text className={classes.value}>{format.number(0)} views</Text>
+								<WithSkeleton loading={auction.isLoading} width={120} height={24}>
+									<Text className={classes.value}>{format.number(0)} views</Text>
+								</WithSkeleton>
 							</Group>
 							<Group className={classes.cell}>
 								<IconBuildingBank size={16} className={classes.icon} />
 								<Text className={classes.key}>Number of Bidders</Text>
-								<Text className={classes.value}>{format.number(0)} bidders</Text>
+								<WithSkeleton loading={auction.isLoading} width={120} height={24}>
+									<Text className={classes.value}>
+										{format.number(0)} bidders
+									</Text>
+								</WithSkeleton>
 							</Group>
 						</Group>
 						<Group className={classes.row}>
 							<Group className={classes.cell}>
 								<IconGavel size={16} className={classes.icon} />
 								<Text className={classes.key}>Number of Bids</Text>
-								<Text className={classes.value}>
-									{areBidsAvailable
-										? `${format.number(paginatedBids.data.totalCount)} bids`
-										: 'N/A'}
-								</Text>
+								<WithSkeleton
+									loading={paginatedBids.isLoading}
+									width={120}
+									height={24}
+								>
+									<Text className={classes.value}>
+										{areBidsAvailable
+											? `${format.number(paginatedBids.data.totalCount)} bids`
+											: 'N/A'}
+									</Text>
+								</WithSkeleton>
 							</Group>
 							<Group className={classes.cell}>
 								<IconBookmark size={16} className={classes.icon} />
 								<Text className={classes.key}>Number of Bookmarks</Text>
-								<Text className={classes.value}>{format.number(0)} bookmarks</Text>
+								<WithSkeleton loading={auction.isLoading} width={120} height={24}>
+									<Text className={classes.value}>
+										{format.number(0)} bookmarks
+									</Text>
+								</WithSkeleton>
 							</Group>
 						</Group>
 						<Button
@@ -133,8 +159,8 @@ export const Properties = () => {
 						>
 							Show Less
 						</Button>
-					</>
-				)}
+					</Switch.True>
+				</Switch>
 			</Stack>
 		</Stack>
 	);

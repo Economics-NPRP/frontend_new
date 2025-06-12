@@ -7,44 +7,55 @@ import { useAuctionAvailability } from '@/hooks';
 import { AuctionType, IAuctionData } from '@/schema/models';
 import { colors } from '@/styles/mantine';
 import { AuctionCategory } from '@/types';
-import { Badge, BadgeProps, Tooltip } from '@mantine/core';
+import { Badge, BadgeProps, Skeleton, Tooltip } from '@mantine/core';
 import { IconAlarm, IconLock, IconLockOpen } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
-export interface AuctionTypeBadgeProps extends BadgeProps {
+interface BaseBadgeProps extends BadgeProps {
+	loading?: boolean;
+}
+const BaseBadge = ({ className, loading, ...props }: BaseBadgeProps) => {
+	return loading ? (
+		<Skeleton width={100} height={24} radius={12} visible />
+	) : (
+		<Badge className={`${classes.root} ${className}`} {...props} />
+	);
+};
+
+export interface AuctionTypeBadgeProps extends BaseBadgeProps {
 	type: AuctionType;
 }
 export const AuctionTypeBadge = ({ type, className, ...props }: AuctionTypeBadgeProps) => {
 	const t = useTranslations();
 
 	return (
-		<Badge
+		<BaseBadge
 			className={`${classes.root} ${classes.auctionType} ${className}`}
 			variant="light"
 			leftSection={type === 'open' ? <IconLockOpen size={14} /> : <IconLock size={14} />}
 			{...props}
 		>
 			{t(`constants.auctionType.${type}`)}
-		</Badge>
+		</BaseBadge>
 	);
 };
 
-export const CurrencyBadge = ({ className, ...props }: BadgeProps) => {
+export const CurrencyBadge = ({ className, ...props }: BaseBadgeProps) => {
 	const t = useTranslations();
 
 	return (
-		<Badge
+		<BaseBadge
 			className={`${classes.root} ${classes.currency} ${className}`}
 			variant="light"
 			{...props}
 		>
 			{t('constants.currency.QAR.symbol')}
-		</Badge>
+		</BaseBadge>
 	);
 };
 
-export interface CategoryBadgeProps extends BadgeProps {
+export interface CategoryBadgeProps extends BaseBadgeProps {
 	category: AuctionCategory;
 }
 export const CategoryBadge = ({ category, className, ...props }: CategoryBadgeProps) => {
@@ -56,7 +67,7 @@ export const CategoryBadge = ({ category, className, ...props }: CategoryBadgePr
 	);
 
 	return (
-		<Badge
+		<BaseBadge
 			className={`${classes.root} ${classes.category} ${className}`}
 			leftSection={<Icon size={14} />}
 			style={{ backgroundColor: colors[color.token!][6] }}
@@ -64,11 +75,11 @@ export const CategoryBadge = ({ category, className, ...props }: CategoryBadgePr
 			{...props}
 		>
 			{t(`constants.auctionCategory.${category}.title`)}
-		</Badge>
+		</BaseBadge>
 	);
 };
 
-export interface EndingSoonBadgeProps extends BadgeProps {
+export interface EndingSoonBadgeProps extends BaseBadgeProps {
 	auction: IAuctionData;
 }
 export const EndingSoonBadge = ({ auction, className, ...props }: EndingSoonBadgeProps) => {
@@ -85,14 +96,14 @@ export const EndingSoonBadge = ({ auction, className, ...props }: EndingSoonBadg
 					),
 				})}
 			>
-				<Badge
+				<BaseBadge
 					className={`${classes.root} ${classes.ending} ${className}`}
 					leftSection={<IconAlarm size={14} />}
 					autoContrast
 					{...props}
 				>
 					{t('constants.auctionStatus.ending.label')}
-				</Badge>
+				</BaseBadge>
 			</Tooltip>
 		)
 	);

@@ -5,6 +5,7 @@ import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'r
 
 import { generateBidsRows, generateLegend } from '@/components/BidsTable/helpers';
 import { BidsFilter } from '@/components/BidsTable/types';
+import { Switch } from '@/components/SwitchCase';
 import {
 	IAllWinningBidsContext,
 	IMyOpenAuctionResultsContext,
@@ -19,6 +20,7 @@ import {
 	Container,
 	Divider,
 	Group,
+	Loader,
 	Menu,
 	Pill,
 	Radio,
@@ -49,6 +51,8 @@ export interface BidsTableProps extends TableProps {
 
 	showContributingBids?: boolean;
 
+	loading?: boolean;
+
 	withCloseButton?: boolean;
 	onClose?: () => void;
 
@@ -65,6 +69,8 @@ export const BidsTable = ({
 	myOpenAuctionResults,
 
 	showContributingBids,
+
+	loading = false,
 
 	withCloseButton,
 	onClose,
@@ -204,6 +210,12 @@ export const BidsTable = ({
 		if (myPaginatedBids) myPaginatedBids.setCursor(null);
 	}, [bidsFilter, bids.perPage, paginatedWinningBids?.perPage, myPaginatedBids?.perPage]);
 
+	const currentState = useMemo(() => {
+		if (loading) return 'loading';
+		if (!bidsData || bidsData.length === 0) return 'empty';
+		return 'ok';
+	}, [loading, bidsData]);
+
 	return (
 		<Stack className={`${classes.root} ${className}`}>
 			{!hideHeader && (
@@ -297,14 +309,21 @@ export const BidsTable = ({
 					</Table.Thead>
 					<Table.Tbody>{bidsData}</Table.Tbody>
 				</Table>
-				{(!bidsData || bidsData.length === 0) && (
-					<Stack className={classes.empty}>
-						<Container className={classes.icon}>
-							<IconDatabaseOff size={24} />
-						</Container>
-						<Text className={classes.text}>No bids found</Text>
-					</Stack>
-				)}
+				<Switch value={currentState}>
+					<Switch.Case when="loading">
+						<Stack className={classes.placeholder}>
+							<Loader color="gray" />
+						</Stack>
+					</Switch.Case>
+					<Switch.Case when="empty">
+						<Stack className={classes.placeholder}>
+							<Container className={classes.icon}>
+								<IconDatabaseOff size={24} />
+							</Container>
+							<Text className={classes.text}>No bids found</Text>
+						</Stack>
+					</Switch.Case>
+				</Switch>
 			</Container>
 			<Group className={classes.footer}>
 				<Group className={classes.pagination}>

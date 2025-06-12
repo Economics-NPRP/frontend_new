@@ -1,6 +1,7 @@
 'use server';
 
 import { camelCase } from 'change-case/keys';
+import { setTimeout } from 'node:timers/promises';
 import { cache } from 'react';
 import 'server-only';
 
@@ -30,6 +31,7 @@ export const getSingleAuction: IFunctionSignature = cache(async (uuid) => {
 
 	const response = await fetch(queryUrl, querySettings);
 	const rawData = camelCase(await response.json(), 5) as ServerData<unknown>;
+	await setTimeout(5000);
 
 	//	If theres an issue, return the default data with errors
 	if (!rawData) return getDefaultData('No data was returned.');

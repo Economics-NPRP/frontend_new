@@ -56,8 +56,10 @@
 	> .table {
 		@apply flex-1 overflow-y-auto;
 
-		.empty {
-			@apply items-center justify-center h-[320px];
+		.placeholder {
+			@apply h-[90%];
+			@apply items-center justify-center;
+			@apply bg-gray-50;
 
 			> .icon {
 				@apply size-11 rounded-full bg-gray-100 text-gray-500;
