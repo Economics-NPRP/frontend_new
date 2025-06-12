@@ -11,8 +11,8 @@ import {
 	IMyPaginatedBidsContext,
 	IPaginatedBidsContext,
 	IPaginatedWinningBidsContext,
+	MyUserContext,
 } from '@/contexts';
-import { CurrentUserContext } from '@/pages/globalContext';
 import {
 	ActionIcon,
 	Button,
@@ -79,7 +79,7 @@ export const BidsTable = ({
 }: BidsTableProps) => {
 	// const t = useTranslations();
 	const tableContainerRef = useRef<HTMLDivElement>(null);
-	const { currentUser } = useContext(CurrentUserContext);
+	const myUser = useContext(MyUserContext);
 
 	const [bidsFilter, setBidsFilter] = useState<BidsFilter>('all');
 
@@ -93,7 +93,7 @@ export const BidsTable = ({
 			myPaginatedBids,
 			myOpenAuctionResults,
 			bidsFilter,
-			currentUser,
+			myUser,
 		});
 	}, [
 		bids,
@@ -102,7 +102,7 @@ export const BidsTable = ({
 		myPaginatedBids,
 		myOpenAuctionResults,
 		bidsFilter,
-		currentUser,
+		myUser,
 	]);
 
 	//	Generate the filter badges

@@ -2,9 +2,8 @@ import { useFormatter } from 'next-intl';
 import { useContext, useMemo } from 'react';
 
 import { CategoryBadge, CurrencyBadge } from '@/components/Badge';
-import { MyOpenAuctionResultsContext, SingleAuctionContext } from '@/contexts';
+import { MyOpenAuctionResultsContext, MyUserContext, SingleAuctionContext } from '@/contexts';
 import { useAuctionAvailability } from '@/hooks';
-import { CurrentUserContext } from '@/pages/globalContext';
 import { Button, Container, Group, Progress, Stack, Text } from '@mantine/core';
 import { IconArrowUpRight, IconLeaf } from '@tabler/icons-react';
 
@@ -12,9 +11,9 @@ import classes from './styles.module.css';
 
 export const Winner = () => {
 	const format = useFormatter();
-	const currentUser = useContext(CurrentUserContext);
 	const auction = useContext(SingleAuctionContext);
 	const myOpenAuctionResults = useContext(MyOpenAuctionResultsContext);
+	const myUser = useContext(MyUserContext);
 
 	const percentage = useMemo(
 		() => (myOpenAuctionResults.data.permitsReserved / auction.data.permits) * 100,
@@ -64,7 +63,7 @@ export const Winner = () => {
 					</Group>
 					<Group className={classes.row}>
 						<Text className={classes.key}>Awarded To</Text>
-						<Text className={classes.value}>{currentUser.currentUser.name}</Text>
+						<Text className={classes.value}>{myUser.data.name}</Text>
 					</Group>
 					<Group className={classes.row}>
 						<Text className={classes.key}>Number of Emissions</Text>

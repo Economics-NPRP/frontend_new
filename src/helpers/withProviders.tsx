@@ -1,11 +1,14 @@
-import { ComponentType, ReactElement } from 'react';
+import { ComponentType, PropsWithChildren, ReactElement } from 'react';
+
+interface ProviderConfig<T> {
+	provider: ComponentType<PropsWithChildren<T>>;
+	props?: T;
+}
 
 type WithProvidersParams = (
 	component: ReactElement,
-	...providers: Array<{
-		provider: ComponentType<{ children: React.ReactNode }>;
-		props?: Record<string, unknown>;
-	}>
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	...providers: Array<ProviderConfig<any>>
 ) => ReactElement;
 
 export const withProviders: WithProvidersParams = (component, ...providers) =>

@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useContext } from 'react';
 
 import { Id } from '@/components/Id';
+import { MyUserContext } from '@/contexts';
 import { logout } from '@/lib/auth/logout';
-import { CurrentUserContext } from '@/pages/globalContext';
 import {
 	Alert,
 	Avatar,
@@ -47,13 +47,7 @@ export const UserProfile = () => {
 	const t = useTranslations();
 	const router = useRouter();
 	const queryClient = useQueryClient();
-	const {
-		currentUser,
-		currentUserError,
-		isCurrentUserLoading,
-		isCurrentUserError,
-		isCurrentUserSuccess,
-	} = useContext(CurrentUserContext);
+	const myUser = useContext(MyUserContext);
 
 	//	Clear cookies and redirect to login page
 	const handleLogout = useCallback(() => {
@@ -116,7 +110,7 @@ export const UserProfile = () => {
 			icon={<IconExclamationCircle />}
 			className="mb-4"
 		>
-			{currentUserError?.message}
+			{myUser.error?.message}
 		</Alert>
 	);
 
@@ -125,14 +119,14 @@ export const UserProfile = () => {
 			<Container className={`${classes.bg} bg-grid-sm`} />
 			<Avatar
 				className={classes.avatar}
-				name={currentUser?.name}
+				name={myUser.data.name}
 				color="initials"
 				size={'lg'}
 			/>
 			<Group className={classes.details}>
 				<Stack className={classes.id}>
-					<Id value={currentUser?.id || ''} variant="company" truncate />
-					<Text className={classes.text}>{currentUser?.name}</Text>
+					<Id value={myUser.data.id} variant="company" truncate />
+					<Text className={classes.text}>{myUser.data.name}</Text>
 				</Stack>
 				<Stack className={classes.rating}>
 					<Rating
@@ -169,15 +163,12 @@ export const UserProfile = () => {
 			</MenuTarget>
 
 			<MenuDropdown
-				className={`${classes.userDropdown} ${isCurrentUserLoading ? classes.loading : ''}`}
+				className={`${classes.userDropdown} ${myUser.isLoading ? classes.loading : ''}`}
 			>
-				{isCurrentUserLoading && profileLoading}
-				{!isCurrentUserLoading &&
-					!isCurrentUserError &&
-					!isCurrentUserSuccess &&
-					profileLoading}
-				{isCurrentUserError && profileError}
-				{isCurrentUserSuccess && profileDetails}
+				{myUser.isLoading && profileLoading}
+				{!myUser.isLoading && !myUser.isError && !myUser.isSuccess && profileLoading}
+				{myUser.isError && profileError}
+				{myUser.isSuccess && profileDetails}
 
 				<MenuDivider />
 				<MenuLabel>{t('components.header.user.marketplace')} </MenuLabel>

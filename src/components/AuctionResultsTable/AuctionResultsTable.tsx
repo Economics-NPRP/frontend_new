@@ -6,7 +6,7 @@ import { createFormatter, useFormatter } from 'next-intl';
 import { useContext, useEffect, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
-import { CurrentUserContext } from '@/pages/globalContext';
+import { MyUserContext } from '@/contexts';
 import { IAuctionData, IUserData } from '@/schema/models';
 import { IAuctionResultsData } from '@/types';
 import {
@@ -38,17 +38,17 @@ export const ResultsTable = ({
 }: ResultsTableProps) => {
 	// const t = useTranslations();
 	const format = useFormatter();
-	const { currentUser } = useContext(CurrentUserContext);
+	const myUser = useContext(MyUserContext);
 
 	const resultsData = useMemo(() => {
 		if (!paginatedOpenAuctionResults.data) return null;
 		return generateResultsRows(
 			paginatedOpenAuctionResults.data.results,
 			auction.data,
-			currentUser,
+			myUser.data,
 			format,
 		);
-	}, [paginatedOpenAuctionResults.data.results, auction.data, currentUser, format]);
+	}, [paginatedOpenAuctionResults.data.results, auction.data, myUser.data, format]);
 
 	useEffect(() => paginatedOpenAuctionResults.setPage(1), [paginatedOpenAuctionResults.perPage]);
 

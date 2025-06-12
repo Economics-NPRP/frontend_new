@@ -6,10 +6,10 @@ import {
 	IAllWinningBidsContext,
 	IMyOpenAuctionResultsContext,
 	IMyPaginatedBidsContext,
+	IMyUserContext,
 	IPaginatedBidsContext,
 	IPaginatedWinningBidsContext,
 } from '@/contexts';
-import { IUserData } from '@/schema/models';
 import { Container, Group, Text } from '@mantine/core';
 
 import classes from './styles.module.css';
@@ -21,7 +21,7 @@ interface GenerateBidsRowsParams {
 	myPaginatedBids?: IMyPaginatedBidsContext;
 	myOpenAuctionResults?: IMyOpenAuctionResultsContext;
 	bidsFilter: BidsFilter;
-	currentUser: IUserData;
+	myUser: IMyUserContext;
 }
 export const generateBidsRows = ({
 	bids,
@@ -30,7 +30,7 @@ export const generateBidsRows = ({
 	myPaginatedBids,
 	myOpenAuctionResults,
 	bidsFilter,
-	currentUser,
+	myUser,
 }: GenerateBidsRowsParams): Array<ReactElement> => {
 	const contributingBidIds =
 		myOpenAuctionResults?.data.contributingLosingBids.map(({ id }) => id) || [];
@@ -41,7 +41,7 @@ export const generateBidsRows = ({
 				const { id, bidder } = bid;
 
 				const highlight: Array<string> = [];
-				if (bidder.id === currentUser.id) highlight.push('mine');
+				if (bidder.id === myUser.data.id) highlight.push('mine');
 				if (contributingBidIds.includes(id)) highlight.push('contributing');
 				if (winningBidIds.includes(id)) highlight.push('winning');
 
@@ -53,7 +53,7 @@ export const generateBidsRows = ({
 				const { id, bidder } = bid;
 
 				const highlight: Array<string> = [];
-				if (bidder.id === currentUser.id) highlight.push('mine');
+				if (bidder.id === myUser.data.id) highlight.push('mine');
 
 				return <BidsTableRow bid={bid} key={id} highlight={highlight} />;
 			});
