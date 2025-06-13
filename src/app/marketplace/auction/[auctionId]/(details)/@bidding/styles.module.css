@@ -272,6 +272,14 @@
 		@apply gap-2 px-12 py-8;
 		@apply bg-white;
 
+		&.square {
+			@apply size-60 justify-center;
+		}
+
+		> .loader {
+			@apply mb-4;
+		}
+
 		> .title {
 			@apply text-center heading-2;
 		}

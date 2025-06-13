@@ -5,9 +5,11 @@ import { useCallback, useContext, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { MediumCountdown } from '@/components/Countdown';
+import { Switch } from '@/components/SwitchCase';
 import { RealtimeBidsContext, SingleAuctionContext } from '@/contexts';
 import { generateTrendData } from '@/helpers';
 import { useAuctionAvailability } from '@/hooks';
+import { LoadingOverlay } from '@/pages/marketplace/auction/[auctionId]/(details)/@bidding/LoadingOverlay';
 import { UpcomingOverlay } from '@/pages/marketplace/auction/[auctionId]/(details)/@bidding/UpcomingOverlay';
 import { BiddingTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
@@ -55,11 +57,29 @@ export default function Prompt() {
 		openBidsDrawer();
 	}, [realtimeBids, openBidsDrawer]);
 
+	const currentState = useMemo(() => {
+		if (auction.isLoading) return 'loading';
+		if (isUpcoming) return 'upcoming';
+		if (isLive && !auction.data.hasJoined) return 'unjoined';
+		if (hasEnded) return 'ended';
+	}, [auction.isLoading, isUpcoming, isLive, hasEnded]);
+
 	return (
 		<Stack className={classes.root}>
-			{isUpcoming && <UpcomingOverlay />}
-			{isLive && !auction.data.hasJoined && <JoinOverlay />}
-			{hasEnded && <EndedOverlay />}
+			<Switch value={currentState}>
+				<Switch.Case when="loading">
+					<LoadingOverlay />
+				</Switch.Case>
+				<Switch.Case when="upcoming">
+					<UpcomingOverlay />
+				</Switch.Case>
+				<Switch.Case when="unjoined">
+					<JoinOverlay />
+				</Switch.Case>
+				<Switch.Case when="ended">
+					<EndedOverlay />
+				</Switch.Case>
+			</Switch>
 			<Group className={classes.body}>
 				<Stack className={classes.content}>
 					<Group className={classes.header}>

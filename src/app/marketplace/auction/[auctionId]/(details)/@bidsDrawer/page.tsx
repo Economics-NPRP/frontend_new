@@ -9,6 +9,7 @@ import {
 	PaginatedBidsContext,
 	PaginatedWinningBidsContext,
 	RealtimeBidsContext,
+	SingleAuctionContext,
 } from '@/contexts';
 import { useAuctionAvailability } from '@/hooks';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
@@ -18,6 +19,7 @@ import { IconListDetails } from '@tabler/icons-react';
 import classes from './styles.module.css';
 
 export default function Bids() {
+	const auction = useContext(SingleAuctionContext);
 	const paginatedBids = useContext(PaginatedBidsContext);
 	const allWinningBids = useContext(AllWinningBidsContext);
 	const paginatedWinningBids = useContext(PaginatedWinningBidsContext);
@@ -48,9 +50,10 @@ export default function Bids() {
 					paginatedWinningBids={paginatedWinningBids}
 					myPaginatedBids={myPaginatedBids}
 					showContributingBids={hasEnded}
-					withCloseButton
-					onClose={closeBidsDrawer}
 					className={classes.table}
+					loading={auction.isLoading || paginatedBids.isLoading}
+					onClose={closeBidsDrawer}
+					withCloseButton
 				/>
 			</Drawer>
 			<Tooltip label="Open bids table" position="right">
