@@ -81,6 +81,21 @@ export const generateBidsRows = ({
 					/>
 				);
 			});
+		case 'contributing':
+			if (!myOpenAuctionResults) return [];
+			return myOpenAuctionResults.data.contributingLosingBids.map((bid) => {
+				const { id, bidder } = bid;
+
+				return (
+					<BidsTableRow
+						bid={bid}
+						key={id}
+						isMine={bidder.id === myUser.data.id}
+						isWinning={false}
+						isContributing={false}
+					/>
+				);
+			});
 		default:
 			return [];
 	}
@@ -140,6 +155,13 @@ export const generateLegend = (bidsFilter: BidsFilter, showContributingBids?: bo
 						<Text className={classes.value}>Winning Bids</Text>
 					</Group>
 				</>
+			);
+		case 'contributing':
+			return (
+				<Group className={classes.cell}>
+					<IconUserHexagon size={16} className={`${classes.icon} ${classes.mine}`} />
+					<Text className={classes.value}>Your Bids</Text>
+				</Group>
 			);
 		default:
 			return null;

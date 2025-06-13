@@ -127,6 +127,12 @@ export const BidsTable = ({
 					My Bids Only
 				</Pill>
 			);
+		if (bidsFilter === 'contributing')
+			return (
+				<Pill onRemove={() => setBidsFilter('all')} withRemoveButton>
+					Contributing Bids Only
+				</Pill>
+			);
 	}, [bids, bidsFilter]);
 
 	//	Generate the legend based on the bids filter
