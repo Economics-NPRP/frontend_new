@@ -27,12 +27,8 @@ export default function Ticket() {
 	return (
 		<Stack className={classes.root}>
 			<Group className={classes.header}>
-				<Button
-					component="a"
-					href={`/marketplace/auction/${auction.data.id}`}
-					leftSection={<IconArrowUpLeft />}
-				>
-					Return to Auction Page
+				<Button component="a" href={'/marketplace'} leftSection={<IconArrowUpLeft />}>
+					Return to Catalogue
 				</Button>
 			</Group>
 			{!auction.data.hasJoined && <Unjoined />}
