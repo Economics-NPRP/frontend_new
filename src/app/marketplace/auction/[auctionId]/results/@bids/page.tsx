@@ -16,7 +16,7 @@ import {
 import { useAuctionAvailability } from '@/hooks';
 import { AuctionResultsPageContext } from '@/pages/marketplace/auction/[auctionId]/results/_components/Providers';
 import { FloatingIndicator, Tabs } from '@mantine/core';
-import { IconGavel, IconTrophy } from '@tabler/icons-react';
+import { IconAward, IconGavel } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -58,7 +58,7 @@ export default function Bids() {
 					<Tabs.Tab
 						value="results"
 						ref={setControlRef('results')}
-						leftSection={<IconTrophy size={16} />}
+						leftSection={<IconAward size={16} />}
 					>
 						Auction Results
 					</Tabs.Tab>

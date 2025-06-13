@@ -10,7 +10,8 @@ import {
 	IPaginatedBidsContext,
 	IPaginatedWinningBidsContext,
 } from '@/contexts';
-import { Container, Group, Text } from '@mantine/core';
+import { Group, Text } from '@mantine/core';
+import { IconHexagonLetterC, IconHexagonLetterW, IconUserHexagon } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -40,33 +41,45 @@ export const generateBidsRows = ({
 			return bids.data.results.map((bid) => {
 				const { id, bidder } = bid;
 
-				const highlight: Array<string> = [];
-				if (bidder.id === myUser.data.id) highlight.push('mine');
-				if (contributingBidIds.includes(id)) highlight.push('contributing');
-				if (winningBidIds.includes(id)) highlight.push('winning');
-
-				return <BidsTableRow bid={bid} key={id} highlight={highlight} />;
+				return (
+					<BidsTableRow
+						bid={bid}
+						key={id}
+						isMine={bidder.id === myUser.data.id}
+						isWinning={winningBidIds.includes(id)}
+						isContributing={contributingBidIds.includes(id)}
+					/>
+				);
 			});
 		case 'winning':
 			if (!paginatedWinningBids) return [];
 			return paginatedWinningBids.data.results.map((bid) => {
 				const { id, bidder } = bid;
 
-				const highlight: Array<string> = [];
-				if (bidder.id === myUser.data.id) highlight.push('mine');
-
-				return <BidsTableRow bid={bid} key={id} highlight={highlight} />;
+				return (
+					<BidsTableRow
+						bid={bid}
+						key={id}
+						isMine={bidder.id === myUser.data.id}
+						isWinning={false}
+						isContributing={false}
+					/>
+				);
 			});
 		case 'mine':
 			if (!myPaginatedBids) return [];
 			return myPaginatedBids.data.results.map((bid) => {
 				const { id } = bid;
 
-				const highlight: Array<string> = [];
-				if (contributingBidIds.includes(id)) highlight.push('contributing');
-				if (winningBidIds.includes(id)) highlight.push('winning');
-
-				return <BidsTableRow bid={bid} key={id} highlight={highlight} />;
+				return (
+					<BidsTableRow
+						bid={bid}
+						key={id}
+						isMine={false}
+						isWinning={winningBidIds.includes(id)}
+						isContributing={contributingBidIds.includes(id)}
+					/>
+				);
 			});
 		default:
 			return [];
@@ -79,17 +92,23 @@ export const generateLegend = (bidsFilter: BidsFilter, showContributingBids?: bo
 			return (
 				<>
 					<Group className={classes.cell}>
-						<Container className={`${classes.key} ${classes.mine}`} />
+						<IconUserHexagon size={16} className={`${classes.icon} ${classes.mine}`} />
 						<Text className={classes.value}>Your Bids</Text>
 					</Group>
 					{showContributingBids && (
 						<Group className={classes.cell}>
-							<Container className={`${classes.key} ${classes.contributing}`} />
+							<IconHexagonLetterC
+								size={16}
+								className={`${classes.icon} ${classes.contributing}`}
+							/>
 							<Text className={classes.value}>Contributing Bids</Text>
 						</Group>
 					)}
 					<Group className={classes.cell}>
-						<Container className={`${classes.key} ${classes.winning}`} />
+						<IconHexagonLetterW
+							size={16}
+							className={`${classes.icon} ${classes.winning}`}
+						/>
 						<Text className={classes.value}>Winning Bids</Text>
 					</Group>
 				</>
@@ -97,7 +116,7 @@ export const generateLegend = (bidsFilter: BidsFilter, showContributingBids?: bo
 		case 'winning':
 			return (
 				<Group className={classes.cell}>
-					<Container className={`${classes.key} ${classes.mine}`} />
+					<IconUserHexagon size={16} className={`${classes.icon} ${classes.mine}`} />
 					<Text className={classes.value}>Your Bids</Text>
 				</Group>
 			);
@@ -106,12 +125,18 @@ export const generateLegend = (bidsFilter: BidsFilter, showContributingBids?: bo
 				<>
 					{showContributingBids && (
 						<Group className={classes.cell}>
-							<Container className={`${classes.key} ${classes.contributing}`} />
+							<IconHexagonLetterC
+								size={16}
+								className={`${classes.icon} ${classes.contributing}`}
+							/>
 							<Text className={classes.value}>Contributing Bids</Text>
 						</Group>
 					)}
 					<Group className={classes.cell}>
-						<Container className={`${classes.key} ${classes.winning}`} />
+						<IconHexagonLetterW
+							size={16}
+							className={`${classes.icon} ${classes.winning}`}
+						/>
 						<Text className={classes.value}>Winning Bids</Text>
 					</Group>
 				</>

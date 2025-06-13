@@ -26,18 +26,10 @@
 					@apply gap-4;
 
 					> .cell {
-						@apply gap-2;
+						@apply gap-2 text-dark-300;
 
 						> .key {
 							@apply size-4 rounded-sm border border-solid;
-
-							&.contributing {
-								@apply bg-blue-100 border-blue-300;
-							}
-
-							&.winning {
-								@apply bg-yellow-100 border-yellow-300;
-							}
 
 							&.mine {
 								@apply bg-violet-100 border-violet-300;
@@ -76,8 +68,10 @@
 	> .table {
 		@apply flex-1 overflow-y-auto;
 
-		.empty {
-			@apply items-center justify-center h-[320px];
+		.placeholder {
+			@apply h-[90%];
+			@apply items-center justify-center;
+			@apply bg-gray-50;
 
 			> .icon {
 				@apply size-11 rounded-full bg-gray-100 text-gray-500;
@@ -86,6 +80,24 @@
 
 			> .text {
 				@apply paragraph-sm-g6;
+			}
+		}
+
+		tr {
+			&.mine {
+				@apply bg-gray-50;
+			}
+
+			> .firm {
+				@apply flex flex-row items-center justify-between;
+
+				> .badges {
+					@apply gap-1 flex-nowrap;
+
+					> .mine {
+						@apply text-dark-300;
+					}
+				}
 			}
 		}
 	}

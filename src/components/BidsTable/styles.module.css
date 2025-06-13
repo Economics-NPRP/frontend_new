@@ -70,6 +70,32 @@
 				@apply paragraph-sm-g6;
 			}
 		}
+
+		tr {
+			&.mine {
+				@apply bg-gray-50;
+			}
+
+			> .firm {
+				@apply flex flex-row items-center justify-between;
+
+				> .badges {
+					@apply gap-1 flex-nowrap;
+
+					> .mine {
+						@apply text-dark-300;
+					}
+
+					> .contributing {
+						@apply text-blue-600;
+					}
+
+					> .winning {
+						@apply text-yellow-600;
+					}
+				}
+			}
+		}
 	}
 
 	> .footer {
@@ -98,19 +124,17 @@
 		> .cell {
 			@apply gap-2;
 
-			> .key {
-				@apply size-4 rounded-sm border border-solid;
+			> .icon {
+				&.mine {
+					@apply text-dark-300;
+				}
 
 				&.contributing {
-					@apply bg-blue-100 border-blue-300;
+					@apply text-blue-600;
 				}
 
 				&.winning {
-					@apply bg-yellow-100 border-yellow-300;
-				}
-
-				&.mine {
-					@apply bg-violet-100 border-violet-300;
+					@apply text-yellow-600;
 				}
 			}
 
