@@ -67,18 +67,18 @@ export default function Prompt() {
 	return (
 		<Stack className={classes.root}>
 			<Switch value={currentState}>
-				<Switch.Case when="loading">
+				<Switch.Loading>
 					<LoadingOverlay />
-				</Switch.Case>
-				<Switch.Case when="upcoming">
+				</Switch.Loading>
+				<Switch.Upcoming>
 					<UpcomingOverlay />
-				</Switch.Case>
-				<Switch.Case when="unjoined">
+				</Switch.Upcoming>
+				<Switch.Unjoined>
 					<JoinOverlay />
-				</Switch.Case>
-				<Switch.Case when="ended">
+				</Switch.Unjoined>
+				<Switch.Ended>
 					<EndedOverlay />
-				</Switch.Case>
+				</Switch.Ended>
 			</Switch>
 			<Group className={classes.body}>
 				<Stack className={classes.content}>

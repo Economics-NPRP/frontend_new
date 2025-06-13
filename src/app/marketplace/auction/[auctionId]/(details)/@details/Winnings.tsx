@@ -60,7 +60,7 @@ export const Winnings = () => {
 			/>
 
 			<Switch value={currentState}>
-				<Switch.Case when="loading">
+				<Switch.Loading>
 					<Group className={classes.row}>
 						<Stack className={classes.cell}>
 							<Container className={classes.icon}>
@@ -84,7 +84,7 @@ export const Winnings = () => {
 							<Skeleton width={160} height={28} visible data-dark />
 						</Stack>
 					</Group>
-				</Switch.Case>
+				</Switch.Loading>
 				<Switch.Case when="unavailable">
 					<Stack className={classes.alert}>
 						<Title order={3} className={classes.title}>

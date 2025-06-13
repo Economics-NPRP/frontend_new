@@ -107,7 +107,7 @@ export default function Card() {
 				</Switch>
 			</Group>
 			<Switch value={currentState}>
-				<Switch.Case when={'loading'}>
+				<Switch.Loading>
 					<Stack className={classes.countdown}>
 						<LargeCountdown targetDate={auction.data.startDatetime} loading />
 					</Stack>
@@ -115,8 +115,8 @@ export default function Card() {
 						<Skeleton height={40} visible />
 						<Skeleton height={40} visible />
 					</Group>
-				</Switch.Case>
-				<Switch.Case when={'upcoming'}>
+				</Switch.Loading>
+				<Switch.Upcoming>
 					<Stack className={classes.countdown}>
 						<Text className={classes.title}>Starting In</Text>
 						<LargeCountdown targetDate={auction.data.startDatetime} />
@@ -158,8 +158,8 @@ export default function Card() {
 							</Switch.False>
 						</Switch>
 					</Group>
-				</Switch.Case>
-				<Switch.Case when={'live'}>
+				</Switch.Upcoming>
+				<Switch.Live>
 					<Stack className={classes.countdown}>
 						<Text className={classes.title}>Ending In</Text>
 						<LargeCountdown targetDate={auction.data.endDatetime} />
@@ -199,8 +199,8 @@ export default function Card() {
 							</Switch.False>
 						</Switch>
 					</Group>
-				</Switch.Case>
-				<Switch.Case when={'ended'}>
+				</Switch.Live>
+				<Switch.Ended>
 					<Stack className={classes.countdown}>
 						<Text className={classes.title}>Auction Ended</Text>
 						<LargeCountdown targetDate={auction.data.endDatetime} />
@@ -230,7 +230,7 @@ export default function Card() {
 							View Results
 						</Button>
 					</Group>
-				</Switch.Case>
+				</Switch.Ended>
 			</Switch>
 		</Stack>
 	);

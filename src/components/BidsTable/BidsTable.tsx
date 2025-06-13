@@ -310,11 +310,11 @@ export const BidsTable = ({
 					<Table.Tbody>{bidsData}</Table.Tbody>
 				</Table>
 				<Switch value={currentState}>
-					<Switch.Case when="loading">
+					<Switch.Loading>
 						<Stack className={classes.placeholder}>
 							<Loader color="gray" />
 						</Stack>
-					</Switch.Case>
+					</Switch.Loading>
 					<Switch.Case when="empty">
 						<Stack className={classes.placeholder}>
 							<Container className={classes.icon}>
