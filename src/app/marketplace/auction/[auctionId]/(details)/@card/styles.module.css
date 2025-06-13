@@ -2,6 +2,7 @@
 	@apply sticky top-24;
 	@apply w-[560px] items-stretch gap-0;
 	@apply bg-white;
+	@apply transition-shadow duration-500;
 
 	> .container {
 		@apply p-4;
@@ -14,12 +15,14 @@
 
 			img {
 				@apply object-cover object-center;
+				@apply transition-transform duration-700;
 			}
 
 			> .overlay {
 				@apply absolute -bottom-8 left-0 w-full h-full;
 				@apply justify-center items-center;
 				@apply opacity-25;
+				@apply transition-all duration-1000;
 
 				background-image: linear-gradient(
 					to top,
@@ -109,6 +112,20 @@
 
 		> .cta {
 			@apply flex-[50%] h-10;
+		}
+	}
+
+	&:hover {
+		@apply shadow-xs;
+
+		> .container > .image {
+			> img {
+				@apply scale-105;
+			}
+
+			> .overlay {
+				@apply bottom-0;
+			}
 		}
 	}
 }

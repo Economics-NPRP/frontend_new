@@ -6,7 +6,7 @@
 	> .header {
 		@apply gap-0;
 		@apply border border-solid border-gray-300;
-		@apply shadow-xs;
+		@apply transition-shadow duration-500;
 
 		> .top {
 			@apply items-stretch flex-col flex-nowrap;
@@ -69,6 +69,10 @@
 			> .bar {
 				@apply bg-maroon-500;
 			}
+		}
+
+		&:hover {
+			@apply shadow-xs;
 		}
 	}
 

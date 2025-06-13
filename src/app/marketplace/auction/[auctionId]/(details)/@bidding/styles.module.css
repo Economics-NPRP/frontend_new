@@ -10,6 +10,7 @@
 			> .header {
 				@apply gap-32 px-8 py-6 justify-between flex-nowrap;
 				@apply bg-white border border-solid border-gray-300;
+				@apply transition-shadow duration-500;
 
 				> .label {
 					@apply gap-0 items-start;
@@ -27,12 +28,17 @@
 						@apply display-md-sb;
 					}
 				}
+
+				&:hover {
+					@apply shadow-xs;
+				}
 			}
 		}
 
 		> .sidebar {
 			@apply w-[480px];
 			@apply gap-0 items-stretch;
+			@apply transition-shadow duration-500;
 
 			> .minBid {
 				@apply justify-between flex-nowrap;
@@ -191,12 +197,17 @@
 					}
 				}
 			}
+
+			&:hover {
+				@apply shadow-xs;
+			}
 		}
 	}
 
 	> .footer {
 		@apply px-8 py-4 gap-8;
 		@apply bg-white border border-solid border-gray-300;
+		@apply transition-shadow duration-500;
 
 		> .content {
 			@apply flex-auto;
@@ -247,6 +258,10 @@
 			&[data-disabled='true'] {
 				@apply bg-gray-200;
 			}
+		}
+
+		&:hover {
+			@apply shadow-xs;
 		}
 	}
 }

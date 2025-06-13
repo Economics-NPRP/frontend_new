@@ -212,6 +212,7 @@
 				@apply items-center justify-center flex-nowrap;
 				@apply mt-2 gap-0;
 				@apply bg-dark-600;
+				@apply transition-shadow duration-500;
 
 				> .cell {
 					@apply h-36;
@@ -256,6 +257,10 @@
 				> .divider {
 					@apply self-stretch;
 					@apply border-dark-400;
+				}
+
+				&:hover {
+					@apply shadow-xs;
 				}
 			}
 		}

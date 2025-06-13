@@ -49,7 +49,7 @@
 	}
 
 	&:hover {
-		@apply shadow-sm;
+		@apply shadow-xs;
 
 		> .image {
 			img {

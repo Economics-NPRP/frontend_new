@@ -20,6 +20,7 @@
 			@apply absolute -bottom-8 left-0 w-full h-full;
 			@apply justify-center items-center;
 			@apply opacity-25;
+			@apply transition-all duration-1000;
 
 			background-image: linear-gradient(
 				to top,
@@ -160,7 +161,7 @@
 	}
 
 	&:hover {
-		@apply shadow-sm;
+		@apply shadow-xs;
 
 		> .image {
 			> img {

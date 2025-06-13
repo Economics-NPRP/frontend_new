@@ -129,7 +129,7 @@
 		}
 
 		&:hover {
-			@apply shadow-sm;
+			@apply shadow-xs;
 		}
 	}
 
@@ -269,7 +269,7 @@
 		}
 
 		&:hover {
-			@apply shadow-sm;
+			@apply shadow-xs;
 		}
 	}
 

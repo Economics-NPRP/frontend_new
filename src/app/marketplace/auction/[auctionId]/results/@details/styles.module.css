@@ -6,6 +6,7 @@
 	> .details {
 		@apply gap-0 flex-auto flex-nowrap;
 		@apply col-span-6 row-span-1;
+		@apply transition-shadow duration-500;
 
 		> .image {
 			@apply w-[280px] self-stretch;
@@ -55,12 +56,17 @@
 				}
 			}
 		}
+
+		&:hover {
+			@apply shadow-xs;
+		}
 	}
 
 	> .properties {
 		@apply col-span-6 row-span-1 row-start-2;
 		@apply grid grid-cols-4 grid-rows-2 gap-0;
 		@apply bg-dark-600;
+		@apply transition-shadow duration-500;
 
 		> .cell {
 			@apply h-32;
@@ -82,11 +88,16 @@
 				@apply display-sm-w text-center;
 			}
 		}
+
+		&:hover {
+			@apply shadow-xs;
+		}
 	}
 
 	> .statistics {
 		@apply col-span-3 row-span-2;
 		@apply gap-0 items-stretch;
+		@apply transition-shadow duration-500;
 
 		> .section {
 			@apply px-8 py-6;
@@ -138,6 +149,10 @@
 					}
 				}
 			}
+		}
+
+		&:hover {
+			@apply shadow-xs;
 		}
 	}
 }
