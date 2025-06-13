@@ -6,19 +6,19 @@ import { Switch } from '@/components/SwitchCase';
 import { MyOpenAuctionResultsContext, SingleAuctionContext } from '@/contexts';
 import { useAuctionAvailability } from '@/hooks';
 import {
-	Alert,
-	Button,
+	ActionIcon,
 	Container,
 	Divider,
 	Group,
 	Skeleton,
 	Stack,
 	Text,
+	Title,
 	Tooltip,
 } from '@mantine/core';
 import {
+	IconArrowUpRight,
 	IconCoins,
-	IconExclamationCircle,
 	IconInfoCircle,
 	IconLeaf,
 	IconLicense,
@@ -37,7 +37,7 @@ export const Winnings = () => {
 		if (myOpenAuctionResults.isLoading || auction.isLoading) return 'loading';
 		if (!areResultsAvailable) return 'unavailable';
 		return 'available';
-	}, [myOpenAuctionResults.isLoading, areResultsAvailable]);
+	}, [myOpenAuctionResults.isLoading, auction.isLoading, areResultsAvailable]);
 
 	return (
 		<Stack className={`${classes.winnings} ${classes.section}`}>
@@ -58,6 +58,7 @@ export const Winnings = () => {
 					label: classes.label,
 				}}
 			/>
+
 			<Switch value={currentState}>
 				<Switch.Case when="loading">
 					<Group className={classes.row}>
@@ -66,41 +67,37 @@ export const Winnings = () => {
 								<IconLicense size={16} />
 							</Container>
 							<Text className={classes.key}>Estimated # of Permits</Text>
-							<Skeleton width={100} height={28} visible />
+							<Skeleton width={100} height={28} visible data-dark />
 						</Stack>
-						<Divider orientation="vertical" className={classes.divider} />
 						<Stack className={classes.cell}>
 							<Container className={classes.icon}>
 								<IconLeaf size={16} />
 							</Container>
 							<Text className={classes.key}>Estimated # of Emissions</Text>
-							<Skeleton width={120} height={28} visible />
+							<Skeleton width={120} height={28} visible data-dark />
 						</Stack>
-						<Divider orientation="vertical" className={classes.divider} />
 						<Stack className={classes.cell}>
 							<Container className={classes.icon}>
 								<IconCoins size={16} />
 							</Container>
 							<Text className={classes.key}>Estimated Final Bill</Text>
-							<Skeleton width={160} height={28} visible />
+							<Skeleton width={160} height={28} visible data-dark />
 						</Stack>
 					</Group>
 				</Switch.Case>
 				<Switch.Case when="unavailable">
-					<Alert
-						variant="light"
-						color="gray"
-						title={
-							auction.data.type === 'sealed'
+					<Stack className={classes.alert}>
+						<Title order={3} className={classes.title}>
+							{auction.data.type === 'sealed'
 								? 'Results are currently unavailable'
-								: 'You have not joined the auction yet'
-						}
-						icon={<IconExclamationCircle />}
-					>
-						{auction.data.type === 'sealed'
-							? 'The auction results will be released after the auction ends and all bids have been processed.'
-							: 'Please join the auction to see your estimated winnings.'}
-					</Alert>
+								: 'You have not joined the auction yet'}
+						</Title>
+						<Text className={classes.description}>
+							{auction.data.type === 'sealed'
+								? 'The auction results will be released after the auction ends and all bids have been processed.'
+								: 'Please join the auction to see your estimated winnings.'}
+						</Text>
+					</Stack>
 				</Switch.Case>
 				<Switch.Case when="available">
 					<Group className={classes.row}>
@@ -118,7 +115,6 @@ export const Winnings = () => {
 								<Text className={classes.unit}>permits</Text>
 							</Group>
 						</Stack>
-						<Divider orientation="vertical" className={classes.divider} />
 						<Stack className={classes.cell}>
 							<Container className={classes.icon}>
 								<IconLeaf size={16} />
@@ -136,14 +132,13 @@ export const Winnings = () => {
 								<Text className={classes.unit}>tCO2e</Text>
 							</Group>
 						</Stack>
-						<Divider orientation="vertical" className={classes.divider} />
 						<Stack className={classes.cell}>
 							<Container className={classes.icon}>
 								<IconCoins size={16} />
 							</Container>
 							<Text className={classes.key}>Estimated Final Bill</Text>
 							<Group className={classes.row}>
-								<CurrencyBadge />
+								<CurrencyBadge className={classes.badge} />
 								<Text className={classes.value}>
 									{format.number(
 										Math.round(myOpenAuctionResults.data.finalBill),
@@ -152,15 +147,16 @@ export const Winnings = () => {
 								</Text>
 							</Group>
 						</Stack>
+						<Tooltip label="View full auction results">
+							<ActionIcon
+								className={classes.cell}
+								component="a"
+								href={`/marketplace/auction/${auction.data.id}/results`}
+							>
+								<IconArrowUpRight size={24} />
+							</ActionIcon>
+						</Tooltip>
 					</Group>
-					<Button
-						className={classes.subtle}
-						component="a"
-						href={`/marketplace/auction/${auction.data.id}/results`}
-						variant="subtle"
-					>
-						View Full Results
-					</Button>
 				</Switch.Case>
 			</Switch>
 		</Stack>
