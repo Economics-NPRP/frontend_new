@@ -91,6 +91,7 @@
 			}
 
 			> .badges {
+				@apply min-h-7;
 				@apply gap-1 pb-2;
 			}
 		}

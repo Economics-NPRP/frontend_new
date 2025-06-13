@@ -8,7 +8,7 @@ import { AuctionType, IAuctionData } from '@/schema/models';
 import { colors } from '@/styles/mantine';
 import { AuctionCategory } from '@/types';
 import { Badge, BadgeProps, Skeleton, Tooltip } from '@mantine/core';
-import { IconAlarm, IconLock, IconLockOpen } from '@tabler/icons-react';
+import { IconAlarm, IconLock } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -29,14 +29,14 @@ export interface AuctionTypeBadgeProps extends BaseBadgeProps {
 export const AuctionTypeBadge = ({ type, className, ...props }: AuctionTypeBadgeProps) => {
 	const t = useTranslations();
 
-	return (
+	return type === 'open' ? null : (
 		<BaseBadge
 			className={`${classes.root} ${classes.auctionType} ${className}`}
 			variant="light"
-			leftSection={type === 'open' ? <IconLockOpen size={14} /> : <IconLock size={14} />}
+			leftSection={<IconLock size={14} />}
 			{...props}
 		>
-			{t(`constants.auctionType.${type}`)}
+			{t('constants.auctionType.sealed')}
 		</BaseBadge>
 	);
 };

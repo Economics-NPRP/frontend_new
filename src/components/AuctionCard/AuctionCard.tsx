@@ -12,6 +12,7 @@ import {
 } from '@/components/Badge';
 import { SmallCountdown } from '@/components/Countdown';
 import { Id } from '@/components/Id';
+import { Switch } from '@/components/SwitchCase';
 import { useAuctionAvailability, useJoinAuction } from '@/hooks';
 import { IAuctionData } from '@/schema/models';
 import { AuctionCategory } from '@/types';
@@ -70,174 +71,11 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 
 	const joinAuction = useJoinAuction(auction.id, () => router.push(url));
 
-	const isUpcomingFooter = (
-		<>
-			<Group className={classes.properties}>
-				<Stack className={classes.cell}>
-					<Text className={classes.subtext}>{t('components.auctionCard.startsIn')}</Text>
-					<Tooltip
-						label={DateTime.fromISO(auction.startDatetime).toLocaleString(
-							DateTime.DATETIME_FULL,
-						)}
-					>
-						<SmallCountdown
-							className={classes.value}
-							targetDate={auction.startDatetime}
-						/>
-					</Tooltip>
-				</Stack>
-				<Divider className={classes.divider} orientation="vertical" />
-				<Stack className={classes.cell}>
-					<Text className={classes.subtext}>{t('components.auctionCard.minBid')}</Text>
-					<Group className={classes.price}>
-						<CurrencyBadge />
-						<Text className={classes.value}>
-							{format.number(auction.minBid, 'money')}
-						</Text>
-					</Group>
-				</Stack>
-			</Group>
-			<Divider className={classes.divider} />
-			<Group className={classes.footer}>
-				{!auction.hasJoined && (
-					<>
-						<Button
-							className={`${classes.secondary} ${classes.button}`}
-							variant="outline"
-							component="a"
-							href={url}
-						>
-							View Auction
-						</Button>
-						<Button
-							className={`${classes.primary} ${classes.button}`}
-							onClick={() => joinAuction.mutate()}
-							rightSection={<IconCheckbox size={16} />}
-							loading={joinAuction.isPending}
-						>
-							Join Auction
-						</Button>
-					</>
-				)}
-				{auction.hasJoined && (
-					<Button
-						className={`${classes.primary} ${classes.button}`}
-						component="a"
-						href={url}
-						rightSection={<IconArrowUpRight size={16} />}
-					>
-						View Auction
-					</Button>
-				)}
-			</Group>
-		</>
-	);
-
-	const isLiveFooter = (
-		<>
-			<Group className={classes.properties}>
-				<Stack className={classes.cell}>
-					<Text className={classes.subtext}>{t('components.auctionCard.endsIn')}</Text>
-					<Tooltip
-						label={DateTime.fromISO(auction.endDatetime).toLocaleString(
-							DateTime.DATETIME_FULL,
-						)}
-					>
-						<SmallCountdown
-							className={classes.value}
-							targetDate={auction.endDatetime}
-						/>
-					</Tooltip>
-				</Stack>
-				<Divider className={classes.divider} orientation="vertical" />
-				<Stack className={classes.cell}>
-					<Text className={classes.subtext}>{t('components.auctionCard.minBid')}</Text>
-					<Group className={classes.price}>
-						<CurrencyBadge />
-						<Text className={classes.value}>
-							{format.number(auction.minBid, 'money')}
-						</Text>
-					</Group>
-				</Stack>
-			</Group>
-			<Divider className={classes.divider} />
-			<Group className={classes.footer}>
-				{!auction.hasJoined && (
-					<>
-						<Button
-							className={`${classes.secondary} ${classes.button}`}
-							variant="outline"
-							component="a"
-							href={url}
-						>
-							View Auction
-						</Button>
-						<Button
-							className={`${classes.primary} ${classes.button}`}
-							onClick={() => joinAuction.mutate()}
-							rightSection={<IconCheckbox size={16} />}
-							loading={joinAuction.isPending}
-						>
-							Join Auction
-						</Button>
-					</>
-				)}
-				{auction.hasJoined && (
-					<Button
-						className={`${classes.primary} ${classes.button}`}
-						component="a"
-						href={url}
-						rightSection={<IconArrowUpRight size={16} />}
-					>
-						View Auction
-					</Button>
-				)}
-			</Group>
-		</>
-	);
-
-	const hasEndedFooter = (
-		<>
-			<Group className={classes.properties}>
-				<Stack className={classes.cell}>
-					<Text className={classes.subtext}>{t('components.auctionCard.numBids')}</Text>
-					<Text className={classes.value}>
-						{/* TODO: show actual number of bids from backend */}
-						{format.number(auction.bids, 'money')} Bids
-					</Text>
-				</Stack>
-				<Divider className={classes.divider} orientation="vertical" />
-				<Stack className={classes.cell}>
-					<Text className={classes.subtext}>
-						{t('components.auctionCard.numBidders')}
-					</Text>
-					<Text className={classes.value}>
-						{/* TODO: show actual number of bidders from backend */}
-						{format.number(auction.bids, 'money')} Bidders
-					</Text>
-				</Stack>
-			</Group>
-			<Divider className={classes.divider} />
-			<Group className={classes.footer}>
-				<Button
-					className={`${classes.secondary} ${classes.button}`}
-					variant="outline"
-					component="a"
-					href={bidsUrl}
-				>
-					View Bids
-				</Button>
-				<Button
-					className={`${classes.primary} ${classes.button}`}
-					component="a"
-					href={resultsUrl}
-					rightSection={<IconAwardFilled size={14} />}
-				>
-					View Results
-				</Button>
-			</Group>
-		</>
-	);
+	const currentState = useMemo(() => {
+		if (isUpcoming) return 'upcoming';
+		if (isLive) return 'live';
+		if (hasEnded) return 'ended';
+	}, [isUpcoming, isLive, hasEnded]);
 
 	return (
 		<Stack className={`${classes.root} ${className}`} {...props}>
@@ -246,8 +84,14 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 				<Stack
 					className={`${classes.overlay} ${(hasEnded || isUpcoming) && classes.blurred}`}
 				>
-					{hasEnded && <Text className={classes.text}>Ended</Text>}
-					{isUpcoming && <Text className={classes.text}>Upcoming</Text>}
+					<Switch value={currentState}>
+						<Switch.Ended>
+							<Text className={classes.text}>Ended</Text>
+						</Switch.Ended>
+						<Switch.Upcoming>
+							<Text className={classes.text}>Upcoming</Text>
+						</Switch.Upcoming>
+					</Switch>
 				</Stack>
 			</UnstyledButton>
 			<Group className={classes.meta}>
@@ -290,9 +134,142 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 					<Id value={auction.id} variant={category} />
 				</Stack>
 				<Divider className={classes.divider} />
-				{isUpcoming && isUpcomingFooter}
-				{isLive && isLiveFooter}
-				{hasEnded && hasEndedFooter}
+				<Group className={classes.properties}>
+					<Stack className={classes.cell}>
+						<Switch value={currentState}>
+							<Switch.Upcoming>
+								<Text className={classes.subtext}>
+									{t('components.auctionCard.startsIn')}
+								</Text>
+								<Tooltip
+									label={DateTime.fromISO(auction.startDatetime).toLocaleString(
+										DateTime.DATETIME_FULL,
+									)}
+								>
+									<SmallCountdown
+										className={classes.value}
+										targetDate={auction.startDatetime}
+									/>
+								</Tooltip>
+							</Switch.Upcoming>
+							<Switch.Live>
+								<Text className={classes.subtext}>
+									{t('components.auctionCard.endsIn')}
+								</Text>
+								<Tooltip
+									label={DateTime.fromISO(auction.endDatetime).toLocaleString(
+										DateTime.DATETIME_FULL,
+									)}
+								>
+									<SmallCountdown
+										className={classes.value}
+										targetDate={auction.endDatetime}
+									/>
+								</Tooltip>
+							</Switch.Live>
+							<Switch.Ended>
+								<Text className={classes.subtext}>
+									{t('components.auctionCard.numBids')}
+								</Text>
+								<Text className={classes.value}>
+									{/* TODO: show actual number of bids from backend */}
+									{format.number(auction.bids, 'money')} Bids
+								</Text>
+							</Switch.Ended>
+						</Switch>
+					</Stack>
+					<Divider className={classes.divider} orientation="vertical" />
+					<Stack className={classes.cell}>
+						<Switch value={currentState}>
+							<Switch.Upcoming>
+								<Text className={classes.subtext}>
+									{t('components.auctionCard.minBid')}
+								</Text>
+								<Group className={classes.price}>
+									<CurrencyBadge />
+									<Text className={classes.value}>
+										{format.number(auction.minBid, 'money')}
+									</Text>
+								</Group>
+							</Switch.Upcoming>
+							<Switch.Live>
+								<Text className={classes.subtext}>
+									{t('components.auctionCard.minBid')}
+								</Text>
+								<Group className={classes.price}>
+									<CurrencyBadge />
+									<Text className={classes.value}>
+										{format.number(auction.minBid, 'money')}
+									</Text>
+								</Group>
+							</Switch.Live>
+							<Switch.Ended>
+								<Text className={classes.subtext}>
+									{t('components.auctionCard.numBidders')}
+								</Text>
+								<Text className={classes.value}>
+									{/* TODO: show actual number of bidders from backend */}
+									{format.number(auction.bids, 'money')} Bidders
+								</Text>
+							</Switch.Ended>
+						</Switch>
+					</Stack>
+				</Group>
+				<Divider className={classes.divider} />
+				<Group className={classes.footer}>
+					<Switch value={currentState}>
+						<Switch.Ended>
+							<Button
+								className={`${classes.secondary} ${classes.button}`}
+								variant="outline"
+								component="a"
+								href={bidsUrl}
+							>
+								View Bids
+							</Button>
+							<Button
+								className={`${classes.primary} ${classes.button}`}
+								component="a"
+								href={resultsUrl}
+								rightSection={<IconAwardFilled size={14} />}
+							>
+								View Results
+							</Button>
+						</Switch.Ended>
+						<Switch.Else>
+							<Switch value={auction.hasJoined}>
+								<Switch.True>
+									<Button
+										className={`${classes.primary} ${classes.button}`}
+										component="a"
+										href={url}
+										rightSection={<IconArrowUpRight size={16} />}
+									>
+										View Auction
+									</Button>
+								</Switch.True>
+								<Switch.False>
+									<Button
+										className={`${classes.secondary} ${classes.button}`}
+										variant="outline"
+										component="a"
+										href={url}
+									>
+										View Auction
+									</Button>
+									<Button
+										className={`${classes.primary} ${classes.button}`}
+										onClick={() => joinAuction.mutate()}
+										rightSection={<IconCheckbox size={16} />}
+										loading={joinAuction.isPending}
+									>
+										Join Auction
+									</Button>
+								</Switch.False>
+							</Switch>
+						</Switch.Else>
+					</Switch>
+				</Group>
 			</Stack>
 		</Stack>
 	);
