@@ -142,7 +142,7 @@ const FiltersCore = () => {
 							<IconTrash size={16} />
 						</ActionIcon>
 					</Tooltip>
-					<Tooltip label="Reset changes to filters">
+					<Tooltip label="Reset unsaved changes to filters">
 						<ActionIcon
 							className={`${classes.action} ${classes.square}`}
 							onClick={form.reset}

@@ -12,6 +12,10 @@
 		> .header {
 			@apply items-center justify-center gap-0;
 
+			> .loader {
+				@apply mb-4;
+			}
+
 			> .title {
 				@apply heading-2;
 			}

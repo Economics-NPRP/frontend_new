@@ -66,7 +66,13 @@ export const Bids = () => {
 						showContributingBids={hasEnded}
 						className={classes.table}
 						onViewAll={openBidsDrawer}
-						loading={auction.isLoading || paginatedBids.isLoading}
+						loading={
+							auction.isLoading ||
+							paginatedBids.isLoading ||
+							allWinningBids.isLoading ||
+							paginatedWinningBids.isLoading ||
+							myPaginatedBids.isLoading
+						}
 						hideHeader
 						withViewAllButton
 					/>

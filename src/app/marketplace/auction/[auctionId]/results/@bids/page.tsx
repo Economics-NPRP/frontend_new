@@ -94,6 +94,14 @@ export default function Bids() {
 						myPaginatedBids={myPaginatedBids}
 						myOpenAuctionResults={myOpenAuctionResults}
 						showContributingBids={hasEnded}
+						loading={
+							auction.isLoading ||
+							paginatedBids.isLoading ||
+							allWinningBids.isLoading ||
+							paginatedWinningBids.isLoading ||
+							myPaginatedBids.isLoading ||
+							myOpenAuctionResults.isLoading
+						}
 					/>
 				</Tabs.Panel>
 			</Tabs>

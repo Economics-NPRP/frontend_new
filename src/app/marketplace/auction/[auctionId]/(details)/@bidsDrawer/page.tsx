@@ -51,7 +51,13 @@ export default function Bids() {
 					myPaginatedBids={myPaginatedBids}
 					showContributingBids={hasEnded}
 					className={classes.table}
-					loading={auction.isLoading || paginatedBids.isLoading}
+					loading={
+						auction.isLoading ||
+						paginatedBids.isLoading ||
+						allWinningBids.isLoading ||
+						paginatedWinningBids.isLoading ||
+						myPaginatedBids.isLoading
+					}
 					onClose={closeBidsDrawer}
 					withCloseButton
 				/>

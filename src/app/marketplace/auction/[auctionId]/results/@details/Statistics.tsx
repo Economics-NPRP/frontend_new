@@ -2,10 +2,11 @@ import { useFormatter } from 'next-intl';
 import { useContext, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
+import { Switch } from '@/components/SwitchCase';
 import { AllOpenAuctionResultsContext, SingleAuctionContext } from '@/contexts';
 import { generateTrendData } from '@/helpers';
 import { DonutChart, PieChartCell, Sparkline } from '@mantine/charts';
-import { Group, Stack, Text } from '@mantine/core';
+import { Divider, Group, Loader, Stack, Text } from '@mantine/core';
 import { IconLeaf } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
@@ -57,47 +58,56 @@ export const Statistics = () => {
 
 	return (
 		<Stack className={classes.statistics}>
-			<Group className={`${classes.minBid} ${classes.section}`}>
-				<Stack className={classes.content}>
-					<Text className={classes.key}>Minimum Winning Bid</Text>
-					<Group className={classes.value}>
-						<CurrencyBadge />
-						<Text className={classes.amount}>
-							{format.number(
-								minBidsData[minBidsData.length - 1]['Minimum Winning Bid'],
-								'money',
-							)}
-						</Text>
+			<Switch value={auction.isLoading || allOpenAuctionResults.isLoading}>
+				<Switch.True>
+					<Loader className={classes.loader} />
+					<Text className={classes.loaderText}>Loading Auction Statistics...</Text>
+				</Switch.True>
+				<Switch.False>
+					<Group className={`${classes.minBid} ${classes.section}`}>
+						<Stack className={classes.content}>
+							<Text className={classes.key}>Minimum Winning Bid</Text>
+							<Group className={classes.value}>
+								<CurrencyBadge />
+								<Text className={classes.amount}>
+									{format.number(
+										minBidsData[minBidsData.length - 1]['Minimum Winning Bid'],
+										'money',
+									)}
+								</Text>
+							</Group>
+						</Stack>
+						<Sparkline
+							w={140}
+							h={80}
+							color="#000000"
+							data={minBidsData.map((data) => data['Minimum Winning Bid'])}
+							curveType="natural"
+						/>
 					</Group>
-				</Stack>
-				<Sparkline
-					w={140}
-					h={80}
-					color="#000000"
-					data={minBidsData.map((data) => data['Minimum Winning Bid'])}
-					curveType="natural"
-				/>
-			</Group>
-			<Stack className={`${classes.permits} ${classes.section}`}>
-				<DonutChart
-					classNames={{ label: classes.label }}
-					data={permitsData}
-					size={220}
-					tooltipDataSource="segment"
-					paddingAngle={2}
-					chartLabel="Permits Reserved by Firm"
-					withTooltip
-				/>
-				<Stack className={classes.content}>
-					<Text className={classes.key}>Total Permits Offered</Text>
-					<Group className={classes.value}>
-						<IconLeaf size={20} />
-						<Text className={classes.amount}>
-							{format.number(auction.data.permits)}
-						</Text>
-					</Group>
-				</Stack>
-			</Stack>
+					<Divider />
+					<Stack className={`${classes.permits} ${classes.section}`}>
+						<DonutChart
+							classNames={{ label: classes.label }}
+							data={permitsData}
+							size={220}
+							tooltipDataSource="segment"
+							paddingAngle={2}
+							chartLabel="Permits Reserved by Firm"
+							withTooltip
+						/>
+						<Stack className={classes.content}>
+							<Text className={classes.key}>Total Permits Offered</Text>
+							<Group className={classes.value}>
+								<IconLeaf size={20} />
+								<Text className={classes.amount}>
+									{format.number(auction.data.permits)}
+								</Text>
+							</Group>
+						</Stack>
+					</Stack>
+				</Switch.False>
+			</Switch>
 		</Stack>
 	);
 };

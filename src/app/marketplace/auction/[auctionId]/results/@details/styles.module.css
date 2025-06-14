@@ -96,12 +96,21 @@
 
 	> .statistics {
 		@apply col-span-3 row-span-2;
-		@apply gap-0 items-stretch;
+		@apply gap-0 items-center justify-center self-stretch;
+		@apply bg-white border border-solid border-gray-300;
 		@apply transition-shadow duration-500;
+
+		> .loader {
+			@apply mb-4;
+		}
+
+		> .loaderText {
+			@apply paragraph-sm text-center;
+		}
 
 		> .section {
 			@apply px-8 py-6;
-			@apply bg-white border border-solid border-gray-300;
+			@apply self-stretch;
 
 			&.minBid {
 				@apply flex-nowrap justify-between items-center;
