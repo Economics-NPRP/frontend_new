@@ -120,6 +120,7 @@ export default function Prompt() {
 							</Text>
 						</Stack>
 						<Sparkline
+							className={classes.sparkline}
 							w={140}
 							h={80}
 							color="#000000"
@@ -167,6 +168,8 @@ export default function Prompt() {
 					<Slider
 						classNames={{
 							root: classes.slider,
+							bar: classes.bar,
+							mark: classes.mark,
 							thumb: classes.thumb,
 						}}
 						marks={[

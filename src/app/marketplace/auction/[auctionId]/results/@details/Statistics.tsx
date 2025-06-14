@@ -60,7 +60,7 @@ export const Statistics = () => {
 		<Stack className={classes.statistics}>
 			<Switch value={auction.isLoading || allOpenAuctionResults.isLoading}>
 				<Switch.True>
-					<Loader className={classes.loader} />
+					<Loader color="gray" className={classes.loader} />
 					<Text className={classes.loaderText}>Loading Auction Statistics...</Text>
 				</Switch.True>
 				<Switch.False>

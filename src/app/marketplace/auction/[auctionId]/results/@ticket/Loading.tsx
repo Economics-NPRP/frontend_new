@@ -6,7 +6,7 @@ export const Loading = () => {
 	return (
 		<Stack className={`${classes.loading} ${classes.ticket}`}>
 			<Stack className={classes.header}>
-				<Loader className={classes.loader} />
+				<Loader color="gray" className={classes.loader} />
 				<Text className={classes.subtitle}>Loading Results...</Text>
 			</Stack>
 		</Stack>

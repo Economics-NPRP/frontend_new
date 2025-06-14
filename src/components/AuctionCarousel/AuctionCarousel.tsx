@@ -261,7 +261,7 @@ export const AuctionCarousel = ({ infinitePaginatedAuctions }: AuctionCarouselPr
 						{auctions}
 						{infinitePaginatedAuctions.hasNextPage && (
 							<CarouselSlide className={classes.loader}>
-								<Loader color="maroon" />
+								<Loader color="gray" />
 							</CarouselSlide>
 						)}
 					</Carousel>

@@ -7,7 +7,7 @@ export const LoadingOverlay = () => {
 		<Stack className={classes.overlay}>
 			<Container className={classes.background} />
 			<Stack className={`${classes.square} ${classes.content}`}>
-				<Loader className={classes.loader} />
+				<Loader color="gray" className={classes.loader} />
 				<Text className={classes.description}>Loading Auction...</Text>
 			</Stack>
 		</Stack>

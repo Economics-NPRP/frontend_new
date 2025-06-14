@@ -51,7 +51,11 @@ export default function EndedOverlay() {
 					>
 						View Results
 					</Button>
-					<Button onClick={viewInReadOnlyMode} variant="transparent">
+					<Button
+						className={classes.anchor}
+						onClick={viewInReadOnlyMode}
+						variant="transparent"
+					>
 						See the original page (read-only)
 					</Button>
 				</Stack>

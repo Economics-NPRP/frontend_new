@@ -129,3 +129,81 @@
 		}
 	}
 }
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+		}
+	}
+
+	@mixin dark {
+		.root {
+			@apply bg-dark-600;
+
+			> .container,
+			> .row,
+			> .countdown,
+			> .prompt {
+				@apply border-dark-400;
+			}
+
+			> .container > .image > .overlay {
+				@apply opacity-50;
+
+				&.blurred {
+					@apply opacity-100;
+
+					> .text {
+						@apply !text-white/50;
+					}
+				}
+			}
+
+			> .row > .section {
+				.subtext {
+					@apply !text-dark-50;
+				}
+
+				.price > .value {
+					@apply !text-white;
+				}
+			}
+
+			> .countdown {
+				background-image: repeating-linear-gradient(
+					135deg,
+					rgba(255, 255, 255, 0.01),
+					rgba(255, 255, 255, 0.01) 20px,
+					#0000 20px,
+					#0000 40px
+				);
+			}
+
+			> .prompt > .cta {
+				&.primary {
+					@apply bg-dark-400 text-white;
+
+					&:hover {
+						@apply bg-dark-300;
+					}
+				}
+
+				&.secondary {
+					@apply bg-dark-600 border-dark-400 text-white;
+
+					&:hover {
+						@apply bg-dark-500;
+					}
+				}
+			}
+		}
+	}
+}

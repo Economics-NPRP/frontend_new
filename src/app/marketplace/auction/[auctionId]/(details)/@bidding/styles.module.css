@@ -102,7 +102,7 @@
 
 			> .insertForm {
 				@apply px-12 py-8 gap-6 items-stretch;
-				@apply bg-dark-600;
+				@apply bg-dark-600 border border-t-0 border-solid border-dark-400;
 
 				> .header {
 					@apply gap-1;
@@ -118,7 +118,7 @@
 							@apply items-center justify-center;
 							@apply flex-nowrap;
 							@apply gap-4;
-							@apply text-white;
+							@apply text-dark-50;
 						}
 					}
 
@@ -128,7 +128,7 @@
 				}
 
 				> .error .list {
-					@apply text-white;
+					@apply text-dark-50;
 				}
 
 				> form {
@@ -139,13 +139,13 @@
 
 						> .section {
 							@apply gap-2 justify-between;
-							@apply text-white;
+							@apply text-dark-50;
 
 							> .key {
 								@apply gap-2;
 
 								> .icon {
-									@apply text-white;
+									@apply text-dark-50;
 								}
 
 								> .label {
@@ -305,6 +305,137 @@
 
 		> .button {
 			@apply w-[200px] mt-4;
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+		}
+	}
+
+	@mixin dark {
+		.root {
+			> .body {
+				> .content > .header {
+					@apply bg-dark-600 border-dark-400;
+
+					> .label > .bidders {
+						@apply text-white;
+					}
+				}
+
+				> .sidebar {
+					> .minBid,
+					> .minIncrement,
+					> .bids {
+						@apply bg-dark-600 border-dark-400;
+					}
+
+					> .minBid {
+						> .content > .subtext b {
+							@apply text-white;
+						}
+
+						> .sparkline {
+							--chart-color: #ffffff !important;
+						}
+					}
+
+					> .bids .indicator > .button {
+						@apply bg-dark-600 border-dark-400 text-white;
+
+						&:hover {
+							@apply bg-dark-500;
+						}
+					}
+
+					> .insertForm {
+						> .header > .row {
+							> .title {
+								@apply !text-white;
+							}
+						}
+
+						> form {
+							> .inputs > .section {
+								> .key > .label {
+									@apply !text-dark-50;
+								}
+
+								> .value {
+									@apply !text-dark-50;
+								}
+							}
+
+							> .summary {
+								> .row {
+									> .text {
+										@apply !text-dark-50;
+									}
+
+									> .cell > .value {
+										@apply !text-white;
+									}
+								}
+
+								> .button {
+									@apply bg-dark-400 text-white;
+
+									&:hover {
+										@apply bg-dark-300;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			> .footer {
+				@apply bg-dark-600 border-dark-400;
+
+				> .content > .slider {
+					.bar {
+						@apply bg-dark-300;
+					}
+
+					.mark {
+						@apply border-dark-300;
+					}
+				}
+
+				> .cta[data-disabled='true'] {
+					@apply bg-dark-500;
+				}
+			}
+		}
+
+		.overlay {
+			> .background {
+				@apply bg-black/10;
+			}
+
+			> .content {
+				@apply bg-dark-600;
+
+				> .button {
+					@apply bg-dark-400 text-white;
+
+					&:hover {
+						@apply bg-dark-300;
+					}
+				}
+			}
 		}
 	}
 }

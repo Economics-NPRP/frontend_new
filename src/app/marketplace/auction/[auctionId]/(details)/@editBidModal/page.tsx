@@ -169,13 +169,13 @@ export default function EditModal() {
 				</Stack>
 				<Group className={classes.actions}>
 					<Button
-						className={classes.button}
+						className={`${classes.secondary} ${classes.button}`}
 						variant="outline"
 						onClick={editModalActions.close}
 					>
 						Cancel
 					</Button>
-					<Button className={classes.button} type="submit">
+					<Button className={`${classes.primary} ${classes.button}`} type="submit">
 						Save Changes
 					</Button>
 				</Group>

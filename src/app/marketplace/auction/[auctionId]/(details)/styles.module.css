@@ -56,4 +56,18 @@
 		.root {
 		}
 	}
+
+	@mixin dark {
+		.root > .dashed {
+			background-image: repeating-linear-gradient(
+				90deg,
+				var(--mantine-color-dark-4) 0 8px,
+				#0000 0 16px
+			);
+		}
+
+		.bg > .gradient {
+			background: linear-gradient(to top, rgb(26, 27, 30) 0%, rgba(26, 27, 30, 0) 100%);
+		}
+	}
 }

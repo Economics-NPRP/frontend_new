@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { useCallback, useContext } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
+import { Switch } from '@/components/SwitchCase';
 import { throwError } from '@/helpers';
 import { placeBid } from '@/lib/bids/open';
 import { BiddingTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
@@ -106,9 +107,11 @@ export default function BidConfirmationModal() {
 			}}
 			centered
 		>
-			{mutation.isPending && <Loader />}
-			{!mutation.isPending && (
-				<>
+			<Switch value={mutation.isPending}>
+				<Switch.True>
+					<Loader color="gray" />
+				</Switch.True>
+				<Switch.False>
 					<Title order={2} className={classes.title}>
 						Place Your Bid(s)
 					</Title>
@@ -158,7 +161,7 @@ export default function BidConfirmationModal() {
 					</Group>
 					<Group className={classes.actions}>
 						<Button
-							className={classes.button}
+							className={`${classes.secondary} ${classes.button}`}
 							variant="outline"
 							onClick={bidConfirmationModalActions.close}
 						>
@@ -172,8 +175,8 @@ export default function BidConfirmationModal() {
 							Confirm and Place Bid(s)
 						</Button>
 					</Group>
-				</>
-			)}
+				</Switch.False>
+			</Switch>
 		</Modal>
 	);
 }

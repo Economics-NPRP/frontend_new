@@ -81,7 +81,7 @@
 					@apply absolute -top-4;
 					@apply size-12;
 					@apply flex justify-center items-center;
-					@apply bg-dark-400 text-white border-4 border-solid border-dark-600;
+					@apply bg-dark-400 text-dark-50 border-4 border-solid border-dark-600;
 					@apply rounded-full;
 				}
 

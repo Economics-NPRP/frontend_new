@@ -25,7 +25,7 @@
 				}
 
 				> .slash {
-					@apply text-white;
+					@apply text-dark-50;
 					@apply font-serif font-bold text-2xl;
 				}
 
@@ -59,26 +59,6 @@
 						@apply size-8;
 					}
 				}
-
-				> .viewActions {
-					@apply relative;
-					@apply h-8;
-					@apply px-1 gap-1;
-					@apply bg-white;
-
-					> .action {
-						@apply bg-transparent text-dark-600;
-						@apply z-10;
-
-						&[data-active='true'] {
-							@apply text-white;
-						}
-					}
-
-					> .indicator {
-						@apply bg-dark-600;
-					}
-				}
 			}
 
 			> .filters {
@@ -90,6 +70,26 @@
 
 				> .badge {
 					@apply bg-gray-200 text-dark-600;
+				}
+			}
+
+			.viewActions {
+				@apply relative;
+				@apply h-8;
+				@apply px-1 gap-1;
+				@apply bg-white;
+
+				> .action {
+					@apply bg-transparent text-dark-600;
+					@apply z-10;
+
+					&[data-active='true'] {
+						@apply text-white;
+					}
+				}
+
+				> .indicator {
+					@apply bg-dark-600;
 				}
 			}
 		}
@@ -357,13 +357,13 @@
 						}
 
 						> .subheading {
-							@apply !text-white;
+							@apply !text-dark-50;
 						}
 					}
 
 					> .settings {
 						> .label {
-							@apply !text-white;
+							@apply !text-dark-50;
 						}
 
 						> .action {

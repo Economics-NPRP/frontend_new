@@ -114,22 +114,34 @@ export const BidsTable = ({
 	//	Generate the filter badges
 	const filterBadges = useMemo(() => {
 		if (!bids) return null;
-		if (bidsFilter === 'all') return <Pill>No Filter Applied</Pill>;
+		if (bidsFilter === 'all') return <Pill className={classes.badge}>No Filter Applied</Pill>;
 		if (bidsFilter === 'winning')
 			return (
-				<Pill onRemove={() => setBidsFilter('all')} withRemoveButton>
+				<Pill
+					className={classes.badge}
+					onRemove={() => setBidsFilter('all')}
+					withRemoveButton
+				>
 					Winning Bids Only
 				</Pill>
 			);
 		if (bidsFilter === 'mine')
 			return (
-				<Pill onRemove={() => setBidsFilter('all')} withRemoveButton>
+				<Pill
+					className={classes.badge}
+					onRemove={() => setBidsFilter('all')}
+					withRemoveButton
+				>
 					My Bids Only
 				</Pill>
 			);
 		if (bidsFilter === 'contributing')
 			return (
-				<Pill onRemove={() => setBidsFilter('all')} withRemoveButton>
+				<Pill
+					className={classes.badge}
+					onRemove={() => setBidsFilter('all')}
+					withRemoveButton
+				>
 					Contributing Bids Only
 				</Pill>
 			);
@@ -355,7 +367,11 @@ export const BidsTable = ({
 						<Group className={classes.row}>
 							<Group className={classes.legend}>{legend}</Group>
 							<Divider orientation="vertical" />
-							<Button variant="outline" onClick={onViewAll}>
+							<Button
+								className={classes.button}
+								variant="outline"
+								onClick={onViewAll}
+							>
 								View All Bids
 							</Button>
 						</Group>

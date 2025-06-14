@@ -16,7 +16,28 @@
 
 	> .button {
 		@apply size-12;
-		@apply bg-white border border-solid border-gray-300 text-dark-600;
-		@apply shadow-sm;
+		@apply bg-dark-600 text-white;
+		@apply shadow-md;
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+		}
+	}
+
+	@mixin dark {
+		.indicator > .button {
+			@apply bg-white text-dark-600;
+		}
 	}
 }

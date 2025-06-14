@@ -55,7 +55,7 @@ export default function DeleteModal() {
 			<BiddingTable className={classes.table} readOnly displayDeletingOnly />
 			<Group className={classes.actions}>
 				<Button
-					className={classes.button}
+					className={`${classes.secondary} ${classes.button}`}
 					variant="outline"
 					onClick={deleteModalActions.close}
 				>

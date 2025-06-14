@@ -100,7 +100,8 @@
 					/* Dashed border */
 					background-image: repeating-linear-gradient(
 						90deg,
-						var(--mantine-color-gray-2) 0 12px,
+						#0000 0 8px,
+						var(--mantine-color-gray-3) 0 16px,
 						#0000 0 24px
 					);
 					background-position: bottom;
@@ -115,7 +116,8 @@
 						/* Dashed border */
 						background-image: repeating-linear-gradient(
 							0deg,
-							var(--mantine-color-gray-2) 0 12px,
+							#0000 0 8px,
+							var(--mantine-color-gray-3) 0 16px,
 							#0000 0 24px
 						);
 						background-position: right;
@@ -228,7 +230,7 @@
 					> .icon {
 						@apply size-9 flex items-center justify-center;
 						@apply mb-2;
-						@apply bg-dark-400 text-white;
+						@apply bg-dark-400 text-dark-50;
 						@apply rounded-sm;
 					}
 
@@ -270,6 +272,67 @@
 
 			> .table {
 				@apply h-[480px];
+			}
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+		}
+	}
+
+	@mixin dark {
+		.root {
+			> .details > .row .action {
+				@apply bg-dark-700 border-dark-400 text-white;
+
+				&:hover {
+					@apply bg-dark-600;
+				}
+			}
+
+			> .properties > .table > .row {
+				background-image: repeating-linear-gradient(
+					90deg,
+					#0000 0 8px,
+					var(--mantine-color-dark-4) 0 16px,
+					#0000 0 24px
+				);
+
+				> .cell {
+					background-image: repeating-linear-gradient(
+						0deg,
+						#0000 0 8px,
+						var(--mantine-color-dark-4) 0 16px,
+						#0000 0 24px
+					);
+				}
+			}
+
+			> .winnings {
+				> .alert > .title {
+					@apply text-white;
+				}
+
+				> .row > .cell > .row {
+					> .value {
+						@apply !text-white;
+					}
+
+					> .unit {
+						@apply !text-dark-50/50;
+					}
+				}
 			}
 		}
 	}

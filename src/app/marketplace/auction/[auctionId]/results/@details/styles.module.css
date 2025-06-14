@@ -76,7 +76,7 @@
 			> .icon {
 				@apply size-9 mb-2;
 				@apply flex items-center justify-center;
-				@apply bg-dark-400 text-white;
+				@apply bg-dark-400 text-dark-50;
 				@apply rounded-sm;
 			}
 

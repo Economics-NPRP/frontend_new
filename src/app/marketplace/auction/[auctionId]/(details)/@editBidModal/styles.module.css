@@ -70,3 +70,38 @@
 		}
 	}
 }
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+		}
+	}
+
+	@mixin dark {
+		.root > .inner > .content > .body > form > .actions > .button {
+			&.primary {
+				@apply bg-dark-400 text-white;
+
+				&:hover {
+					@apply bg-dark-300;
+				}
+			}
+
+			&.secondary {
+				@apply bg-dark-700 border-dark-400 text-white;
+
+				&:hover {
+					@apply bg-dark-600;
+				}
+			}
+		}
+	}
+}

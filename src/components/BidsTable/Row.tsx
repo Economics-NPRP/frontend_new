@@ -27,7 +27,9 @@ export const BidsTableRow = ({
 	return (
 		<Table.Tr className={`${isMine ? classes.mine : ''}`} {...props}>
 			<Table.Td className={classes.firm}>
-				<Anchor href={`/marketplace/company/${bid.bidder.id}`}>{bid.bidder.name}</Anchor>
+				<Anchor className={classes.anchor} href={`/marketplace/company/${bid.bidder.id}`}>
+					{bid.bidder.name}
+				</Anchor>
 				<Group className={classes.badges}>
 					{isMine && (
 						<Tooltip label="This is your bid" position="top">

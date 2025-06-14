@@ -128,7 +128,7 @@ export default function Card() {
 					</Stack>
 					<Group className={classes.prompt}>
 						<Button
-							className={classes.cta}
+							className={`${classes.secondary} ${classes.cta}`}
 							rightSection={<IconGitCompare size={16} />}
 							variant="outline"
 						>
@@ -138,7 +138,7 @@ export default function Card() {
 							<Switch.True>
 								<Tooltip label="Auction has not started yet">
 									<Button
-										className={classes.cta}
+										className={`${classes.primary} ${classes.cta}`}
 										rightSection={<IconGavel size={16} />}
 										disabled
 									>
@@ -148,7 +148,7 @@ export default function Card() {
 							</Switch.True>
 							<Switch.False>
 								<Button
-									className={classes.cta}
+									className={`${classes.primary} ${classes.cta}`}
 									onClick={() => joinAuction.mutate()}
 									rightSection={<IconCheckbox size={16} />}
 									loading={joinAuction.isPending}
@@ -171,7 +171,7 @@ export default function Card() {
 					</Stack>
 					<Group className={classes.prompt}>
 						<Button
-							className={classes.cta}
+							className={`${classes.secondary} ${classes.cta}`}
 							rightSection={<IconGitCompare size={16} />}
 							variant="outline"
 						>
@@ -180,7 +180,7 @@ export default function Card() {
 						<Switch value={auction.data.hasJoined}>
 							<Switch.True>
 								<Button
-									className={classes.cta}
+									className={`${classes.primary} ${classes.cta}`}
 									rightSection={<IconGavel size={16} />}
 									onClick={() => scrollToBidding({ alignment: 'center' })}
 								>
@@ -189,7 +189,7 @@ export default function Card() {
 							</Switch.True>
 							<Switch.False>
 								<Button
-									className={classes.cta}
+									className={`${classes.primary} ${classes.cta}`}
 									onClick={() => joinAuction.mutate()}
 									rightSection={<IconCheckbox size={16} />}
 									loading={joinAuction.isPending}
@@ -212,7 +212,7 @@ export default function Card() {
 					</Stack>
 					<Group className={classes.prompt}>
 						<Button
-							className={classes.cta}
+							className={`${classes.secondary} ${classes.cta}`}
 							component="a"
 							href={bidsUrl}
 							rightSection={<IconGavel size={16} />}
@@ -221,7 +221,7 @@ export default function Card() {
 							View Bids
 						</Button>
 						<Button
-							className={classes.cta}
+							className={`${classes.primary} ${classes.cta}`}
 							component="a"
 							href={resultsUrl}
 							rightSection={<IconAwardFilled size={16} />}

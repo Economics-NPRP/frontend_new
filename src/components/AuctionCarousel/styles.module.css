@@ -19,7 +19,7 @@
 
 				> .dots {
 					@apply gap-2;
-					@apply text-white;
+					@apply text-dark-50;
 				}
 
 				> .label {

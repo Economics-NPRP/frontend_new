@@ -196,7 +196,7 @@
 				@apply border-y border-0 border-solid border-dark-400;
 
 				> .permits {
-					@apply !text-white;
+					@apply !text-dark-50;
 				}
 			}
 
@@ -207,12 +207,16 @@
 					@apply border-dark-400 text-gray-300;
 				}
 
-				> .footer > .cell > .button {
+				> .properties > .cell .value {
+					@apply !text-dark-50;
+				}
+
+				> .footer > .button {
 					&.primary {
-						@apply bg-white text-dark-600;
+						@apply bg-dark-400 text-white;
 
 						&:hover {
-							@apply bg-gray-200;
+							@apply bg-dark-300;
 						}
 					}
 
@@ -220,10 +224,14 @@
 						@apply bg-dark-600 border-dark-400 text-white;
 
 						&:hover {
-							@apply bg-dark-700;
+							@apply bg-dark-500;
 						}
 					}
 				}
+			}
+
+			.divider {
+				@apply border-dark-400;
 			}
 		}
 	}
