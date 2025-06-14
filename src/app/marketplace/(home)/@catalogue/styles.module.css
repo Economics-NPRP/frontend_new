@@ -75,20 +75,29 @@
 
 			.viewActions {
 				@apply relative;
-				@apply h-8;
+				@apply h-10;
+				@apply justify-center items-center;
 				@apply px-1 gap-1;
 				@apply bg-white;
 
 				> .action {
-					@apply bg-transparent text-dark-600;
-					@apply z-10;
+					@apply w-20 h-8;
+					@apply px-2;
+					@apply bg-transparent text-dark-600 border-0;
+					@apply transition-colors;
+					@apply z-[1];
 
 					&[data-active='true'] {
 						@apply text-white;
 					}
+
+					&:not([data-active='true']):hover {
+						@apply bg-gray-100;
+					}
 				}
 
 				> .indicator {
+					@apply w-12 h-8;
 					@apply bg-dark-600;
 				}
 			}
@@ -374,6 +383,26 @@
 
 					> .filters > .heading {
 						@apply !text-gray-300;
+					}
+
+					.viewActions {
+						@apply bg-dark-500;
+
+						> .action {
+							@apply text-dark-50;
+
+							&[data-active='true'] {
+								@apply text-white;
+							}
+
+							&:not([data-active='true']):hover {
+								@apply bg-dark-400;
+							}
+						}
+
+						> .indicator {
+							@apply bg-dark-600;
+						}
 					}
 				}
 			}
