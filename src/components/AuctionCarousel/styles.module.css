@@ -80,6 +80,22 @@
 		@apply flex-nowrap;
 		@apply py-2;
 
+		> .placeholder {
+			@apply w-full h-[440px];
+			@apply justify-center items-center;
+
+			> .icon {
+				@apply size-12;
+				@apply flex justify-center items-center;
+				@apply bg-gray-100 text-gray-600;
+				@apply rounded-sm;
+			}
+
+			> .text {
+				@apply w-64 text-center paragraph-sm-g6;
+			}
+		}
+
 		> .carousel {
 			@apply w-full;
 			@apply flex-auto;
@@ -164,27 +180,33 @@
 		}
 	}
 	@mixin dark {
-		.root > .header {
-			@apply border-dark-400;
+		.root {
+			> .header {
+				@apply border-dark-400;
 
-			> .top {
-				> .left > .label {
-					> .heading {
-						@apply text-white;
+				> .top {
+					> .left > .label {
+						> .heading {
+							@apply text-white;
+						}
+
+						> .subheading {
+							@apply text-gray-300;
+						}
 					}
 
-					> .subheading {
-						@apply text-gray-300;
+					> .right {
+						@apply bg-dark-500;
+
+						> .dropdown input {
+							@apply border-none;
+						}
 					}
 				}
+			}
 
-				> .right {
-					@apply bg-dark-500;
-
-					> .dropdown input {
-						@apply border-none;
-					}
-				}
+			> .content > .placeholder > .icon {
+				@apply bg-dark-600 text-dark-300;
 			}
 		}
 	}

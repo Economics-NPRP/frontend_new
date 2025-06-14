@@ -6,12 +6,14 @@ import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'rea
 import { getLangDir } from 'rtl-detect';
 
 import { AuctionCard } from '@/components/AuctionCard';
+import { Switch } from '@/components/SwitchCase';
 import { IAuctionData } from '@/schema/models';
 import { SortedOffsetPaginatedInfiniteContextState } from '@/types';
 import { Carousel, CarouselSlide } from '@mantine/carousel';
 import {
 	ActionIcon,
 	Button,
+	Container,
 	Group,
 	Loader,
 	Progress,
@@ -25,6 +27,8 @@ import {
 	IconArrowUpRight,
 	IconChevronLeft,
 	IconChevronRight,
+	IconDatabaseOff,
+	IconExclamationCircle,
 	IconPointFilled,
 } from '@tabler/icons-react';
 
@@ -178,6 +182,16 @@ export const AuctionCarousel = ({ infinitePaginatedAuctions }: AuctionCarouselPr
 		));
 	}, [infinitePaginatedAuctions.data]);
 
+	const currentState = useMemo(() => {
+		if (infinitePaginatedAuctions.isLoading) return 'loading';
+		if (infinitePaginatedAuctions.isError) return 'error';
+		if (
+			infinitePaginatedAuctions.isSuccess &&
+			infinitePaginatedAuctions.data.pages.length === 0
+		)
+			return 'empty';
+	}, [infinitePaginatedAuctions.isLoading, infinitePaginatedAuctions.isError]);
+
 	return (
 		<Stack className={classes.root}>
 			<Stack className={classes.header}>
@@ -240,32 +254,58 @@ export const AuctionCarousel = ({ infinitePaginatedAuctions }: AuctionCarouselPr
 				/>
 			</Stack>
 			<Group className={classes.content}>
-				{infinitePaginatedAuctions.isError && (
-					<Text className={classes.error}>Error loading auctions</Text>
-				)}
-				{infinitePaginatedAuctions.isSuccess && (
-					<Carousel
-						classNames={{
-							root: classes.carousel,
-							viewport: classes.viewport,
-							indicators: classes.indicator,
-						}}
-						slidesToScroll={cardsPerScreen}
-						slideSize={`${100 / cardsPerScreen}%`}
-						slideGap={'md'}
-						align={'end'}
-						withControls={false}
-						getEmblaApi={setEmbla}
-						ref={containerRef}
-					>
-						{auctions}
-						{infinitePaginatedAuctions.hasNextPage && (
-							<CarouselSlide className={classes.loader}>
-								<Loader color="gray" />
-							</CarouselSlide>
-						)}
-					</Carousel>
-				)}
+				<Switch value={currentState}>
+					<Switch.Loading>
+						<Stack className={classes.placeholder}>
+							<Loader color="gray" />
+							<Text className={classes.text}>Loading Auctions...</Text>
+						</Stack>
+					</Switch.Loading>
+					<Switch.Error>
+						<Stack className={classes.placeholder}>
+							<Container className={classes.icon}>
+								<IconExclamationCircle size={24} />
+							</Container>
+							<Text className={classes.text}>
+								There was an error loading the auctions. Please try again later.
+							</Text>
+						</Stack>
+					</Switch.Error>
+					<Switch.Case when="empty">
+						<Stack className={classes.placeholder}>
+							<Container className={classes.icon}>
+								<IconDatabaseOff size={24} />
+							</Container>
+							<Text className={classes.text}>
+								There are no auctions available at the moment. Please check back
+								later.
+							</Text>
+						</Stack>
+					</Switch.Case>
+					<Switch.Else>
+						<Carousel
+							classNames={{
+								root: classes.carousel,
+								viewport: classes.viewport,
+								indicators: classes.indicator,
+							}}
+							slidesToScroll={cardsPerScreen}
+							slideSize={`${100 / cardsPerScreen}%`}
+							slideGap={'md'}
+							align={'end'}
+							withControls={false}
+							getEmblaApi={setEmbla}
+							ref={containerRef}
+						>
+							{auctions}
+							{infinitePaginatedAuctions.hasNextPage && (
+								<CarouselSlide className={classes.loader}>
+									<Loader color="gray" />
+								</CarouselSlide>
+							)}
+						</Carousel>
+					</Switch.Else>
+				</Switch>
 			</Group>
 		</Stack>
 	);
