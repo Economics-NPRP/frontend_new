@@ -74,7 +74,7 @@
 				@apply relative;
 				@apply justify-center items-center;
 				@apply gap-4 px-8 pt-12 pb-6;
-				@apply bg-dark-600;
+				@apply bg-dark-600 border border-solid border-dark-400;
 				@apply rounded-t-md;
 
 				> .icon {
@@ -163,6 +163,7 @@
 
 			> .divider {
 				@apply flex-nowrap justify-center items-center;
+				@apply bg-white;
 				@apply gap-2;
 
 				> .dot {
@@ -245,6 +246,94 @@
 
 		> .subtext {
 			@apply text-center paragraph-sm-g6;
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+		}
+	}
+
+	@mixin dark {
+		.root > .winner.ticket {
+			> .upper {
+				> .winnings {
+					> .subtext {
+						@apply !text-dark-50;
+					}
+
+					> .row {
+						> .value {
+							@apply !text-white;
+						}
+
+						> .unit {
+							@apply !text-dark-50;
+						}
+					}
+				}
+
+				> .percentage > .row {
+					> .key {
+						@apply !text-dark-50;
+					}
+
+					> .value {
+						@apply !text-dark-50;
+					}
+				}
+			}
+
+			> .middle {
+				@apply bg-dark-700 border-dark-500;
+
+				> .header {
+					@apply border-dark-400;
+				}
+			}
+
+			> .divider {
+				@apply bg-dark-700;
+
+				> .dot {
+					@apply bg-dark-700 border-dark-500;
+				}
+
+				> .line {
+					background-image: repeating-linear-gradient(
+						90deg,
+						#0000 0 8px,
+						var(--mantine-color-dark-5) 0 24px,
+						#0000 0 32px
+					);
+				}
+
+				> .label {
+					@apply !text-dark-50;
+				}
+			}
+
+			> .lower {
+				@apply border-dark-500;
+
+				background-image: repeating-linear-gradient(
+					135deg,
+					rgba(255, 255, 255, 0.01),
+					rgba(255, 255, 255, 0.01) 20px,
+					#0000 20px,
+					#0000 40px
+				);
+			}
 		}
 	}
 }

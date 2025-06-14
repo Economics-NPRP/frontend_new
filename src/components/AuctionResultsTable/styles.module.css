@@ -118,3 +118,59 @@
 		@apply gap-4;
 	}
 }
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+		}
+	}
+
+	@mixin dark {
+		.root {
+			> .header > .row > .settings {
+				> .dropdown input,
+				> .button {
+					@apply bg-dark-700 border-dark-400 text-white;
+
+					&:hover {
+						@apply bg-dark-600;
+					}
+				}
+			}
+
+			> .table {
+				.placeholder {
+					@apply bg-dark-600;
+				}
+
+				tr {
+					&.mine {
+						@apply bg-dark-600;
+					}
+
+					> .firm {
+						> .anchor {
+							@apply text-dark-50;
+						}
+
+						> .badges > .mine {
+							@apply text-dark-50;
+						}
+					}
+				}
+			}
+
+			.legend > .cell > .icon.mine {
+				@apply text-dark-50;
+			}
+		}
+	}
+}

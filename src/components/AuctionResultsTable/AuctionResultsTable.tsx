@@ -112,7 +112,7 @@ export const ResultsTable = ({
 				</Group>
 			</Stack>
 			<Container className={classes.table} ref={tableContainerRef}>
-				<Table highlightOnHover {...props}>
+				<Table highlightOnHover withColumnBorders stickyHeader {...props}>
 					<Table.Thead>
 						<Table.Tr>
 							<Table.Th>Firm</Table.Th>
@@ -178,7 +178,9 @@ const generateResultsRows = (
 				className={`${firm.id === currentUser.id ? classes.mine : ''}`}
 			>
 				<Table.Td className={classes.firm}>
-					<Anchor href={`/marketplace/company/${firm.id}`}>{firm.name}</Anchor>
+					<Anchor className={classes.anchor} href={`/marketplace/company/${firm.id}`}>
+						{firm.name}
+					</Anchor>
 					<Group className={classes.badges}>
 						{firm.id === currentUser.id && (
 							<Tooltip label="This is your result" position="top">

@@ -100,6 +100,10 @@
 		@apply bg-white border border-solid border-gray-300;
 		@apply transition-shadow duration-500;
 
+		> .divider {
+			@apply self-stretch;
+		}
+
 		> .loader {
 			@apply mb-4;
 		}
@@ -162,6 +166,51 @@
 
 		&:hover {
 			@apply shadow-xs;
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+		}
+	}
+
+	@mixin dark {
+		.root {
+			> .details {
+				> .image img {
+					@apply brightness-75;
+				}
+
+				> .content {
+					@apply bg-dark-600 border-dark-400;
+				}
+			}
+
+			> .properties > .cell > .value {
+				@apply !text-dark-50;
+			}
+
+			> .statistics {
+				@apply bg-dark-600 border-dark-400;
+
+				> .minBid > .sparkline {
+					--chart-color: #ffffff !important;
+				}
+
+				> .divider {
+					@apply border-dark-400;
+				}
+			}
 		}
 	}
 }

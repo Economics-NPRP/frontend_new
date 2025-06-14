@@ -46,3 +46,41 @@
 		}
 	}
 }
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+		}
+	}
+
+	@mixin dark {
+		.modal > .inner > .content > .body > .actions > .cta {
+			@apply bg-dark-400 text-white;
+
+			&:hover {
+				@apply bg-dark-300;
+			}
+		}
+
+		.overlay {
+			@apply bg-dark-600;
+			@apply border-dark-400;
+
+			> .button {
+				@apply bg-dark-400 text-white;
+
+				&:hover {
+					@apply bg-dark-300;
+				}
+			}
+		}
+	}
+}

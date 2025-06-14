@@ -32,7 +32,13 @@ export default function Ticket() {
 		if (auction.data.hasJoined && !areResultsAvailable) return 'live';
 		if (areResultsAvailable && isWinner) return 'winner';
 		if (areResultsAvailable && !isWinner) return 'loser';
-	}, [auction.data, areResultsAvailable, isWinner]);
+	}, [
+		auction.data.hasJoined,
+		auction.isLoading,
+		areResultsAvailable,
+		isWinner,
+		myOpenAuctionResults.isLoading,
+	]);
 
 	return (
 		<Stack className={classes.root}>

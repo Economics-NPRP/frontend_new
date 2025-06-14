@@ -6,13 +6,14 @@ import { Switch } from '@/components/SwitchCase';
 import { AllOpenAuctionResultsContext, SingleAuctionContext } from '@/contexts';
 import { generateTrendData } from '@/helpers';
 import { DonutChart, PieChartCell, Sparkline } from '@mantine/charts';
-import { Divider, Group, Loader, Stack, Text } from '@mantine/core';
+import { Divider, Group, Loader, Stack, Text, useMantineColorScheme } from '@mantine/core';
 import { IconLeaf } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
 export const Statistics = () => {
 	const format = useFormatter();
+	const { colorScheme } = useMantineColorScheme();
 	const auction = useContext(SingleAuctionContext);
 	const allOpenAuctionResults = useContext(AllOpenAuctionResultsContext);
 
@@ -41,7 +42,7 @@ export const Statistics = () => {
 				.map<PieChartCell>((result, index) => ({
 					name: result.firm.name,
 					value: result.permitsReserved,
-					color: `dark.${7 - index}`,
+					color: colorScheme === 'light' ? `dark.${7 - index}` : `gray.${index + 1}`,
 				}))
 				//	Add the remaining results as "Other Firms"
 				.concat([
@@ -50,11 +51,11 @@ export const Statistics = () => {
 						value: allOpenAuctionResults.data.results
 							.slice(5)
 							.reduce((acc, result) => acc + result.permitsReserved, 0),
-						color: '#eee',
+						color: colorScheme === 'light' ? '#eeeeee' : '#373a40',
 					},
 				])
 		);
-	}, [allOpenAuctionResults]);
+	}, [allOpenAuctionResults, colorScheme]);
 
 	return (
 		<Stack className={classes.statistics}>
@@ -78,6 +79,7 @@ export const Statistics = () => {
 							</Group>
 						</Stack>
 						<Sparkline
+							className={classes.sparkline}
 							w={140}
 							h={80}
 							color="#000000"
@@ -85,7 +87,7 @@ export const Statistics = () => {
 							curveType="natural"
 						/>
 					</Group>
-					<Divider />
+					<Divider className={classes.divider} />
 					<Stack className={`${classes.permits} ${classes.section}`}>
 						<DonutChart
 							classNames={{ label: classes.label }}
@@ -94,6 +96,7 @@ export const Statistics = () => {
 							tooltipDataSource="segment"
 							paddingAngle={2}
 							chartLabel="Permits Reserved by Firm"
+							strokeColor={colorScheme === 'light' ? '#ffffff' : '#25262b'}
 							withTooltip
 						/>
 						<Stack className={classes.content}>
