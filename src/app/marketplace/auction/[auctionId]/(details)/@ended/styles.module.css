@@ -33,11 +33,15 @@
 	@apply shadow-md;
 	@apply z-10;
 
+	width: calc(100vw - 16px);
+
 	> .text {
+		@apply flex-shrink-0;
 		@apply paragraph-sm text-center;
 	}
 
 	> .button {
+		@apply flex-shrink-0;
 		@apply h-7 px-3;
 
 		.section {
@@ -58,6 +62,10 @@
 					@apply mt-4;
 				}
 			}
+		}
+
+		.overlay {
+			@apply w-[unset];
 		}
 	}
 
