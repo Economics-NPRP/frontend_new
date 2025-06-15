@@ -1,5 +1,5 @@
 .root {
-	@apply min-w-[1000px] flex-[0_0_50%] p-8;
+	@apply min-w-[100vw] flex-[0_0_50%] p-2;
 
 	> .body {
 		@apply h-full;
@@ -13,6 +13,7 @@
 .indicator {
 	@apply fixed;
 	@apply left-0 top-1/2 -translate-y-1/2;
+	@apply z-10;
 
 	> .button {
 		@apply size-12;
@@ -24,14 +25,17 @@
 * {
 	@mixin larger-than $mantine-breakpoint-sm {
 		.root {
+			@apply p-4;
 		}
 	}
 	@mixin larger-than $mantine-breakpoint-md {
 		.root {
+			@apply min-w-[75vw];
 		}
 	}
 	@mixin larger-than $mantine-breakpoint-lg {
 		.root {
+			@apply min-w-[1000px] p-8;
 		}
 	}
 

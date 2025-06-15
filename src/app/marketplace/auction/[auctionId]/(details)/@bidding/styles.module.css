@@ -2,13 +2,13 @@
 	@apply relative;
 
 	> .body {
-		@apply gap-4 flex-nowrap items-stretch;
+		@apply flex-col gap-4 flex-nowrap items-stretch;
 
 		> .content {
 			@apply flex-auto;
 
 			> .header {
-				@apply gap-32 px-8 py-6 justify-between flex-nowrap;
+				@apply flex-col p-4 gap-4 flex-nowrap items-start;
 				@apply bg-white border border-solid border-gray-300;
 				@apply transition-shadow duration-500;
 
@@ -36,8 +36,7 @@
 		}
 
 		> .sidebar {
-			@apply w-[480px];
-			@apply gap-0 items-stretch;
+			@apply gap-0 items-stretch flex-shrink-0;
 			@apply transition-shadow duration-500;
 
 			> .minBid {
@@ -205,13 +204,15 @@
 	}
 
 	> .footer {
-		@apply px-8 py-4 gap-8;
+		@apply p-4 gap-4;
+		@apply flex-col flex-nowrap items-stretch;
 		@apply bg-white border border-solid border-gray-300;
 		@apply transition-shadow duration-500;
 
 		> .content {
+			@apply grid grid-cols-2 grid-rows-2;
 			@apply flex-auto;
-			@apply gap-4 items-center justify-center flex-nowrap;
+			@apply gap-0 items-center justify-center flex-nowrap;
 
 			> .cell {
 				@apply gap-1 items-baseline;
@@ -225,7 +226,7 @@
 				}
 
 				&:last-child {
-					@apply items-end;
+					@apply items-end justify-self-end;
 
 					p {
 						@apply text-right;
@@ -234,6 +235,7 @@
 			}
 
 			> .slider {
+				@apply row-start-2 col-span-2;
 				@apply flex-auto pointer-events-none;
 
 				.thumb {
@@ -242,21 +244,25 @@
 			}
 		}
 
-		> .total {
-			@apply gap-2;
+		> .summary {
+			@apply gap-4 flex-nowrap;
 
-			> .value {
-				@apply numeric-lg;
+			> .total {
+				@apply gap-2;
+
+				> .value {
+					@apply numeric-lg;
+				}
 			}
-		}
 
-		> .cta {
-			@apply w-[360px] h-10;
-			@apply bg-green-600;
-			@apply uppercase;
+			> .cta {
+				@apply flex-auto h-10;
+				@apply bg-green-600;
+				@apply uppercase;
 
-			&[data-disabled='true'] {
-				@apply bg-gray-200;
+				&[data-disabled='true'] {
+					@apply bg-gray-200;
+				}
 			}
 		}
 
@@ -269,7 +275,7 @@
 .overlay {
 	@apply absolute top-0 left-0;
 	@apply w-full h-full;
-	@apply justify-center items-center;
+	@apply p-4 justify-center items-center;
 	@apply z-10;
 
 	> .background {
@@ -282,7 +288,7 @@
 	}
 
 	> .content {
-		@apply w-[600px];
+		@apply sticky top-32 bottom-32;
 		@apply items-center;
 		@apply gap-2 px-12 py-8;
 		@apply bg-white;
@@ -312,14 +318,55 @@
 * {
 	@mixin larger-than $mantine-breakpoint-sm {
 		.root {
+			> .body > .content > .header {
+				@apply flex-row gap-16 px-6;
+				@apply items-center justify-between;
+			}
+
+			> .footer > .content {
+				@apply flex gap-4;
+			}
+		}
+
+		.overlay {
+			@apply p-16;
+
+			> .content {
+				@apply w-[600px];
+			}
 		}
 	}
 	@mixin larger-than $mantine-breakpoint-md {
-		.root {
+		.root > .body > .content > .header {
+			@apply px-8 py-6;
 		}
 	}
 	@mixin larger-than $mantine-breakpoint-lg {
 		.root {
+			> .body {
+				@apply flex-row;
+
+				> .sidebar {
+					@apply w-[480px];
+				}
+			}
+
+			> .footer {
+				@apply px-8 gap-8 flex-row;
+
+				> .summary {
+					@apply gap-8;
+
+					> .cta {
+						@apply w-[360px];
+					}
+				}
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-xl {
+		.root > .body > .content > .header {
+			@apply gap-32;
 		}
 	}
 
@@ -414,7 +461,7 @@
 					}
 				}
 
-				> .cta[data-disabled='true'] {
+				> .summary > .cta[data-disabled='true'] {
 					@apply bg-dark-500;
 				}
 			}

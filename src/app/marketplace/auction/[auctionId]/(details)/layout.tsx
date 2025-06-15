@@ -13,7 +13,7 @@ import {
 } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { PageProviders } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
-import { Button, Container, Group, Stack } from '@mantine/core';
+import { Button, Container, Stack } from '@mantine/core';
 import { IconArrowUpLeft } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
@@ -60,10 +60,10 @@ export default function AuctionPage({
 				>
 					Return to Catalogue
 				</Button>
-				<Group className={classes.details}>
+				<Container className={classes.details}>
 					{card}
 					{details}
-				</Group>
+				</Container>
 				{bidding}
 				{bidsDrawer}
 				{suggestions}

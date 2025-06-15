@@ -191,18 +191,20 @@ export default function Prompt() {
 					</Group>
 				</Group>
 				<Divider orientation="vertical" />
-				<Group className={classes.total}>
-					<CurrencyBadge />
-					<Text className={classes.value}>{format.number(grandTotal, 'money')}</Text>
+				<Group className={classes.summary}>
+					<Group className={classes.total}>
+						<CurrencyBadge />
+						<Text className={classes.value}>{format.number(grandTotal, 'money')}</Text>
+					</Group>
+					<Divider orientation="vertical" />
+					<Button
+						className={classes.cta}
+						disabled={readOnly || bids.length === 0 || isUpcoming || hasEnded}
+						onClick={bidConfirmationModalActions.open}
+					>
+						Place Bids
+					</Button>
 				</Group>
-				<Divider orientation="vertical" />
-				<Button
-					className={classes.cta}
-					disabled={readOnly || bids.length === 0 || isUpcoming || hasEnded}
-					onClick={bidConfirmationModalActions.open}
-				>
-					Place Bids
-				</Button>
 			</Group>
 		</Stack>
 	);

@@ -229,7 +229,7 @@ export const BidsTable = ({
 	}, [bidsFilter, bids.perPage, paginatedWinningBids?.perPage, myPaginatedBids?.perPage]);
 
 	const currentState = useMemo(() => {
-		if (loading) return 'loading';
+		if (!bidsData && loading) return 'loading';
 		if (!bidsData || bidsData.length === 0) return 'empty';
 		return 'ok';
 	}, [loading, bidsData]);
@@ -311,7 +311,7 @@ export const BidsTable = ({
 					</Group>
 				</Stack>
 			)}
-			<Container className={classes.table} ref={tableContainerRef}>
+			<Stack className={classes.table} ref={tableContainerRef}>
 				<Table highlightOnHover withColumnBorders stickyHeader {...props}>
 					<Table.Thead>
 						<Table.Tr>
@@ -342,7 +342,7 @@ export const BidsTable = ({
 						</Stack>
 					</Switch.Case>
 				</Switch>
-			</Container>
+			</Stack>
 			<Group className={classes.footer}>
 				<Group className={classes.pagination}>
 					<ActionIcon

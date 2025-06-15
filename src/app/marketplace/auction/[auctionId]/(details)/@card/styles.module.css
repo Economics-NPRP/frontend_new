@@ -1,6 +1,5 @@
 .root {
-	@apply sticky top-24;
-	@apply w-[560px] items-stretch gap-0;
+	@apply items-stretch gap-0;
 	@apply bg-white;
 	@apply transition-shadow duration-500;
 
@@ -51,7 +50,7 @@
 
 		> .section {
 			@apply flex-[50%];
-			@apply px-6 py-4 gap-0;
+			@apply p-2 gap-0;
 			@apply flex-nowrap items-center justify-center;
 			@apply border-0 border-r border-solid border-dark-400;
 
@@ -79,7 +78,7 @@
 				}
 
 				> .value {
-					@apply numeric-xl-w;
+					@apply numeric-lg-w;
 				}
 			}
 		}
@@ -133,14 +132,34 @@
 * {
 	@mixin larger-than $mantine-breakpoint-sm {
 		.root {
+			@apply w-[560px] self-center;
+
+			> .row > .section {
+				@apply px-6 py-4;
+
+				.price > .value {
+					@apply numeric-xl-w;
+				}
+			}
 		}
 	}
 	@mixin larger-than $mantine-breakpoint-md {
 		.root {
+			@apply sticky top-24;
+			@apply w-[520px] self-start flex-shrink-0;
+
+			> .row > .section {
+				@apply p-4;
+			}
 		}
 	}
-	@mixin larger-than $mantine-breakpoint-lg {
+	@mixin larger-than $mantine-breakpoint-xl {
 		.root {
+			@apply w-[560px];
+
+			> .row > .section {
+				@apply px-6 py-4;
+			}
 		}
 	}
 

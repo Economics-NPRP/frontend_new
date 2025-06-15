@@ -7,14 +7,17 @@ import { MyOpenAuctionResultsContext, SingleAuctionContext } from '@/contexts';
 import { useAuctionAvailability } from '@/hooks';
 import {
 	ActionIcon,
+	Button,
 	Container,
 	Divider,
 	Group,
+	Loader,
 	Skeleton,
 	Stack,
 	Text,
 	Title,
 	Tooltip,
+	useMatches,
 } from '@mantine/core';
 import {
 	IconArrowUpRight,
@@ -28,6 +31,12 @@ import classes from './styles.module.css';
 
 export const Winnings = () => {
 	const format = useFormatter();
+	const showButtonText = useMatches({
+		xs: true,
+		sm: false,
+		md: true,
+		xl: false,
+	});
 	const auction = useContext(SingleAuctionContext);
 	const myOpenAuctionResults = useContext(MyOpenAuctionResultsContext);
 
@@ -82,6 +91,9 @@ export const Winnings = () => {
 							</Container>
 							<Text className={classes.key}>Estimated Final Bill</Text>
 							<Skeleton width={160} height={28} visible data-dark />
+						</Stack>
+						<Stack className={classes.cell}>
+							<Loader color="gray" className={classes.loader} />
 						</Stack>
 					</Group>
 				</Switch.Loading>
@@ -148,13 +160,27 @@ export const Winnings = () => {
 							</Group>
 						</Stack>
 						<Tooltip label="View full auction results">
-							<ActionIcon
-								className={classes.cell}
-								component="a"
-								href={`/marketplace/auction/${auction.data.id}/results`}
-							>
-								<IconArrowUpRight size={24} />
-							</ActionIcon>
+							<Switch value={showButtonText}>
+								<Switch.True>
+									<Button
+										className={classes.cell}
+										component="a"
+										href={`/marketplace/auction/${auction.data.id}/results`}
+										rightSection={<IconArrowUpRight size={24} />}
+									>
+										View Full Results
+									</Button>
+								</Switch.True>
+								<Switch.False>
+									<ActionIcon
+										className={classes.cell}
+										component="a"
+										href={`/marketplace/auction/${auction.data.id}/results`}
+									>
+										<IconArrowUpRight size={24} />
+									</ActionIcon>
+								</Switch.False>
+							</Switch>
 						</Tooltip>
 					</Group>
 				</Switch.Case>

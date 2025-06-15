@@ -1,13 +1,14 @@
 .root {
-	@apply gap-16;
+	@apply gap-4;
 
 	> .button {
-		@apply self-start -mb-8;
+		@apply self-start;
 	}
 
 	> .details {
 		@apply relative;
-		@apply flex-nowrap gap-0 items-start;
+		@apply flex flex-col flex-nowrap gap-4;
+		@apply items-stretch justify-start self-stretch;
 	}
 
 	> .dashed {
@@ -46,14 +47,27 @@
 * {
 	@mixin larger-than $mantine-breakpoint-sm {
 		.root {
+			@apply gap-6;
 		}
 	}
 	@mixin larger-than $mantine-breakpoint-md {
 		.root {
+			> .details {
+				@apply gap-0 flex-row items-start;
+			}
 		}
 	}
-	@mixin larger-than $mantine-breakpoint-lg {
+	@mixin larger-than $mantine-breakpoint-xl {
 		.root {
+			@apply gap-16;
+
+			> .button {
+				@apply -mb-8;
+			}
+
+			> .details {
+				@apply gap-0 flex-row items-start;
+			}
 		}
 	}
 

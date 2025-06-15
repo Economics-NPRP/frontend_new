@@ -66,7 +66,8 @@ export const ResultsTable = ({
 	);
 
 	const currentState = useMemo(() => {
-		if (paginatedOpenAuctionResults.isLoading || auction.isLoading) return 'loading';
+		if (!resultsData && (paginatedOpenAuctionResults.isLoading || auction.isLoading))
+			return 'loading';
 		if (!paginatedOpenAuctionResults || paginatedOpenAuctionResults.data.results.length === 0)
 			return 'empty';
 		return 'ok';

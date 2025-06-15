@@ -143,6 +143,7 @@ export const BiddingTable = ({
 				withRowBorders
 				withColumnBorders
 				highlightOnHover
+				pinLastColumn={!readOnly}
 				sortStatus={sortStatus}
 				onSortStatusChange={setSortStatus}
 				selectedRecords={!readOnly ? selectedBids : undefined}

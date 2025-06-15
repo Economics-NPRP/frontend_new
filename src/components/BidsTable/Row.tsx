@@ -48,16 +48,18 @@ export const BidsTableRow = ({
 					)}
 				</Group>
 			</Table.Td>
-			<Table.Td>
+			<Table.Td className={classes.bid}>
 				<CurrencyBadge className="mr-1" />
 				{format.number(bid.amount, 'money')}
 			</Table.Td>
-			<Table.Td>{format.number(bid.permits)}</Table.Td>
-			<Table.Td>
+			<Table.Td className={classes.permit}>{format.number(bid.permits)}</Table.Td>
+			<Table.Td className={classes.total}>
 				<CurrencyBadge className="mr-1" />
 				{format.number(bid.amount * bid.permits, 'money')}
 			</Table.Td>
-			<Table.Td>{DateTime.fromISO(bid.timestamp).toRelative()}</Table.Td>
+			<Table.Td className={classes.timestamp}>
+				{DateTime.fromISO(bid.timestamp).toRelative()}
+			</Table.Td>
 		</Table.Tr>
 	);
 };

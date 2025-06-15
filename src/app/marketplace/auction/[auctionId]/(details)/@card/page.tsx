@@ -12,6 +12,7 @@ import { SingleAuctionContext } from '@/contexts';
 import { useAuctionAvailability, useJoinAuction } from '@/hooks';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Button, Container, Group, Skeleton, Stack, Text, Tooltip } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import {
 	IconAwardFilled,
 	IconCheckbox,
@@ -25,6 +26,7 @@ import classes from './styles.module.css';
 export default function Card() {
 	// const t = useTranslations();
 	const format = useFormatter();
+	const isMobile = useMediaQuery('(max-width: 48em)');
 	const auction = useContext(SingleAuctionContext);
 	const { scrollToBidding } = useContext(AuctionDetailsPageContext);
 
@@ -77,7 +79,9 @@ export default function Card() {
 					</Switch.True>
 					<Switch.False>
 						<Stack className={classes.section}>
-							<Text className={classes.subtext}>Permits Offered</Text>
+							<Text className={classes.subtext}>
+								{isMobile ? 'Permits' : 'Permits Offered'}
+							</Text>
 							<Group className={classes.price}>
 								<Container className={classes.icon}>
 									<IconLeaf size={14} />
@@ -88,7 +92,9 @@ export default function Card() {
 							</Group>
 						</Stack>
 						<Stack className={classes.section}>
-							<Text className={classes.subtext}>Minimum Bid</Text>
+							<Text className={classes.subtext}>
+								{isMobile ? 'Min. Bid' : 'Minimum Bid'}
+							</Text>
 							<Group className={classes.price}>
 								<CurrencyBadge className={classes.badge} />
 								<Text className={classes.value}>
@@ -97,7 +103,9 @@ export default function Card() {
 							</Group>
 						</Stack>
 						<Stack className={classes.section}>
-							<Text className={classes.subtext}>Minimum Increment</Text>
+							<Text className={classes.subtext}>
+								{isMobile ? 'Min. Incr.' : 'Minimum Increment'}
+							</Text>
 							<Group className={classes.price}>
 								<CurrencyBadge className={classes.badge} />
 								<Text className={classes.value}>{format.number(1, 'money')}</Text>
