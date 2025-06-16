@@ -39,6 +39,16 @@
 		}
 	}
 
+	@mixin rtl {
+		.indicator {
+			@apply right-0;
+
+			svg {
+				@apply -scale-x-100;
+			}
+		}
+	}
+
 	@mixin dark {
 		.indicator > .button {
 			@apply bg-white text-dark-600;

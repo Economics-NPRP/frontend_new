@@ -1,7 +1,8 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useCallback, useContext } from 'react';
+import { getLangDir } from 'rtl-detect';
 
 import { BidsTable } from '@/components/BidsTable';
 import {
@@ -21,6 +22,9 @@ import classes from './styles.module.css';
 
 export default function Bids() {
 	const t = useTranslations();
+	const locale = useLocale();
+	const direction = getLangDir(locale);
+
 	const auction = useContext(SingleAuctionContext);
 	const paginatedBids = useContext(PaginatedBidsContext);
 	const allWinningBids = useContext(AllWinningBidsContext);
@@ -67,7 +71,7 @@ export default function Bids() {
 			</Drawer>
 			<Tooltip
 				label={t('marketplace.auction.details.bidsDrawer.button.tooltip')}
-				position="right"
+				position={direction === 'ltr' ? 'right' : 'left'}
 			>
 				<Indicator
 					className={classes.indicator}
