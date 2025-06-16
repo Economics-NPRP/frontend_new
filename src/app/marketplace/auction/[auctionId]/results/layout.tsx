@@ -41,7 +41,9 @@ export default function AuctionResults({ bids, details, ongoing, ticket }: Aucti
 		{ provider: AllWinningBidsProvider },
 		{ provider: PaginatedWinningBidsProvider, props: { defaultPerPage: 20 } },
 		{ provider: MyPaginatedBidsProvider, props: { defaultPerPage: 20 } },
-		{ provider: PaginatedOpenAuctionResultsProvider, props: { defaultPerPage: 20 } },
+		{
+			provider: PaginatedOpenAuctionResultsProvider,
+		},
 		{ provider: MyOpenAuctionResultsProvider },
 		{ provider: PageProvider },
 	);

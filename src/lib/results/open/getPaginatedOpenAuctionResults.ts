@@ -15,8 +15,8 @@ import {
 export interface IGetPaginatedOpenAuctionResultsOptions extends IOffsetPagination {
 	auctionId: string;
 
-	sortBy?: string;
-	sortDirection?: SortDirection;
+	sortBy?: string | null;
+	sortDirection?: SortDirection | null;
 }
 
 const getDefaultData: (...errors: Array<string>) => OffsetPaginatedData<IAuctionResultsData> = (

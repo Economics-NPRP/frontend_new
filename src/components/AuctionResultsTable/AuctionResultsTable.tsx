@@ -24,6 +24,7 @@ import {
 	Text,
 	Title,
 	Tooltip,
+	useMatches,
 } from '@mantine/core';
 import { IconArrowNarrowDown, IconDatabaseOff, IconUserHexagon } from '@tabler/icons-react';
 
@@ -41,6 +42,7 @@ export const ResultsTable = ({
 }: ResultsTableProps) => {
 	// const t = useTranslations();
 	const format = useFormatter();
+	const isMobile = useMatches({ base: true, xs: false });
 	const tableContainerRef = useRef<HTMLDivElement>(null);
 	const myUser = useContext(MyUserContext);
 
@@ -91,13 +93,17 @@ export const ResultsTable = ({
 						</Text>
 					</Group>
 					<Group className={classes.settings}>
-						<Group className={classes.legend}>
-							<Group className={classes.cell}>
-								<IconUserHexagon size={16} />
-								<Text className={classes.value}>Your Results</Text>
-							</Group>
-						</Group>
-						<Divider orientation="vertical" className={classes.divider} />
+						{!isMobile && (
+							<>
+								<Group className={classes.legend}>
+									<Group className={classes.cell}>
+										<IconUserHexagon size={16} />
+										<Text className={classes.value}>Your Results</Text>
+									</Group>
+								</Group>
+								<Divider orientation="vertical" className={classes.divider} />
+							</>
+						)}
 						<Text className={classes.label}>Per page:</Text>
 						<Select
 							className={classes.dropdown}
@@ -116,13 +122,13 @@ export const ResultsTable = ({
 				<Table highlightOnHover withColumnBorders stickyHeader {...props}>
 					<Table.Thead>
 						<Table.Tr>
-							<Table.Th>Firm</Table.Th>
+							<Table.Th>Company</Table.Th>
 							<Table.Th>Total Bids</Table.Th>
+							<Table.Th>Winning Bids (% Won)</Table.Th>
 							<Table.Th className="flex items-center justify-between">
-								Winning Bids (% Won)
+								Permits Reserved (% Reserved)
 								<IconArrowNarrowDown size={14} />
 							</Table.Th>
-							<Table.Th>Permits Reserved (% Reserved)</Table.Th>
 							<Table.Th>Avg Price/Permit</Table.Th>
 							<Table.Th>Final Bill</Table.Th>
 						</Table.Tr>

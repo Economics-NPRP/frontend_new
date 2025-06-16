@@ -1,15 +1,15 @@
 .root {
 	@apply gap-4 items-start;
-	@apply grid grid-cols-9;
-	grid-template-rows: auto auto;
+	@apply grid grid-cols-3;
+	grid-template-rows: auto auto auto;
 
 	> .details {
-		@apply gap-0 flex-auto flex-nowrap;
-		@apply col-span-6 row-span-1;
+		@apply gap-0 flex-auto flex-col flex-nowrap;
+		@apply col-span-3 row-span-1;
 		@apply transition-shadow duration-500;
 
 		> .image {
-			@apply w-[280px] self-stretch;
+			@apply aspect-video self-stretch;
 			@apply relative;
 
 			img {
@@ -19,7 +19,7 @@
 
 		> .content {
 			@apply gap-2 px-8 py-6;
-			@apply flex-auto flex-nowrap justify-between items-stretch;
+			@apply flex-auto flex-nowrap justify-between items-stretch self-stretch;
 			@apply bg-white border border-solid border-gray-300;
 
 			> .breadcrumbs {
@@ -63,15 +63,26 @@
 	}
 
 	> .properties {
-		@apply col-span-6 row-span-1 row-start-2;
-		@apply grid grid-cols-4 grid-rows-2 gap-0;
+		@apply col-span-3 row-span-1 row-start-2;
+		@apply grid grid-cols-2 grid-rows-4 gap-0;
 		@apply bg-dark-600;
 		@apply transition-shadow duration-500;
 
 		> .cell {
 			@apply h-32;
 			@apply gap-0 items-center justify-center;
-			@apply border border-t-0 border-l-0 border-solid border-dark-400;
+			@apply border border-r-0 border-b-0 border-solid border-dark-400;
+
+			&:nth-child(4n) {
+				@apply border-r;
+			}
+
+			&:nth-child(5),
+			&:nth-child(6),
+			&:nth-child(7),
+			&:nth-child(8) {
+				@apply border-b;
+			}
 
 			> .icon {
 				@apply size-9 mb-2;
@@ -95,7 +106,7 @@
 	}
 
 	> .statistics {
-		@apply col-span-3 row-span-2;
+		@apply col-span-3;
 		@apply gap-0 items-center justify-center self-stretch;
 		@apply bg-white border border-solid border-gray-300;
 		@apply transition-shadow duration-500;
@@ -173,6 +184,17 @@
 * {
 	@mixin larger-than $mantine-breakpoint-sm {
 		.root {
+			> .details {
+				@apply flex-row;
+
+				> .image {
+					@apply w-[280px] aspect-[unset];
+				}
+			}
+
+			> .properties {
+				@apply grid-cols-4 grid-rows-2;
+			}
 		}
 	}
 	@mixin larger-than $mantine-breakpoint-md {
@@ -181,6 +203,17 @@
 	}
 	@mixin larger-than $mantine-breakpoint-lg {
 		.root {
+			@apply grid-cols-9;
+			grid-template-rows: auto auto;
+
+			> .details,
+			> .properties {
+				@apply col-span-6;
+			}
+
+			> .statistics {
+				@apply row-span-2;
+			}
 		}
 	}
 

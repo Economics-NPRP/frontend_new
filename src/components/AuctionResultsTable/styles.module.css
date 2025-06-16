@@ -8,7 +8,7 @@
 			@apply flex-nowrap gap-8 justify-between items-center;
 
 			> .label {
-				@apply gap-3 flex-nowrap items-baseline;
+				@apply flex-col gap-0 items-baseline;
 
 				> .title {
 					@apply heading-1;
@@ -20,7 +20,7 @@
 			}
 
 			> .settings {
-				@apply gap-2;
+				@apply gap-2 flex-nowrap;
 
 				> .legend {
 					@apply gap-4;
@@ -47,7 +47,7 @@
 				}
 
 				> .label {
-					@apply paragraph-sm;
+					@apply hidden paragraph-sm;
 				}
 
 				> .dropdown {
@@ -100,6 +100,33 @@
 				}
 			}
 		}
+
+		th,
+		td {
+			&:nth-child(1) {
+				@apply min-w-[120px];
+			}
+
+			&:nth-child(2) {
+				@apply min-w-[100px];
+			}
+
+			&:nth-child(3) {
+				@apply min-w-[160px];
+			}
+
+			&:nth-child(4) {
+				@apply min-w-[240px];
+			}
+
+			&:nth-child(5) {
+				@apply min-w-[160px];
+			}
+
+			&:nth-child(6) {
+				@apply min-w-[160px];
+			}
+		}
 	}
 
 	> .pagination {
@@ -120,16 +147,20 @@
 }
 
 * {
+	@mixin larger-than $mantine-breakpoint-xs {
+		.root > .header > .row:last-child {
+			@apply flex-row gap-8;
+		}
+	}
 	@mixin larger-than $mantine-breakpoint-sm {
-		.root {
-		}
-	}
-	@mixin larger-than $mantine-breakpoint-md {
-		.root {
-		}
-	}
-	@mixin larger-than $mantine-breakpoint-lg {
-		.root {
+		.root > .header > .row {
+			> .label {
+				@apply flex-row gap-3;
+			}
+
+			> .settings > .label {
+				@apply block;
+			}
 		}
 	}
 

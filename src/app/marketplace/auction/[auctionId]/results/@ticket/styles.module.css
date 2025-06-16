@@ -1,6 +1,6 @@
 .root {
 	@apply justify-center items-center pb-8;
-	height: calc(100vh - 96px);
+	min-height: calc(100vh - 96px);
 
 	> .header {
 		@apply self-stretch justify-between gap-8;
@@ -46,7 +46,7 @@
 			}
 
 			> .auctions {
-				@apply grid grid-cols-12 gap-4;
+				@apply grid grid-cols-3 gap-4;
 			}
 		}
 
@@ -67,7 +67,7 @@
 		}
 
 		&.winner {
-			@apply w-[400px];
+			@apply w-[320px];
 			@apply gap-0 items-stretch;
 
 			> .upper {
@@ -251,8 +251,15 @@
 }
 
 * {
-	@mixin larger-than $mantine-breakpoint-sm {
+	@mixin larger-than $mantine-breakpoint-xs {
 		.root {
+			> .winner.ticket {
+				@apply w-[400px];
+			}
+
+			> .loser.ticket > .auctions {
+				@apply grid-cols-6;
+			}
 		}
 	}
 	@mixin larger-than $mantine-breakpoint-md {
@@ -261,6 +268,9 @@
 	}
 	@mixin larger-than $mantine-breakpoint-lg {
 		.root {
+			> .loser.ticket > .auctions {
+				@apply grid-cols-12;
+			}
 		}
 	}
 
