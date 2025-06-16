@@ -1,4 +1,4 @@
-import { useFormatter } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import { useContext, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
@@ -30,6 +30,7 @@ import {
 import classes from './styles.module.css';
 
 export const Winnings = () => {
+	const t = useTranslations();
 	const format = useFormatter();
 	const showButtonText = useMatches({
 		xs: true,
@@ -53,10 +54,12 @@ export const Winnings = () => {
 			<Divider
 				label={
 					<Group className={classes.row}>
-						<Text className={classes.label}>Your Current Winnings</Text>
+						<Text className={classes.label}>
+							{t('marketplace.auction.details.details.winnings.title')}
+						</Text>
 						<Tooltip
 							position="top"
-							label="Estimated number of permits you will win based on the current winning bids"
+							label={t('marketplace.auction.details.details.winnings.info')}
 						>
 							<IconInfoCircle size={14} className={classes.info} />
 						</Tooltip>
@@ -75,21 +78,27 @@ export const Winnings = () => {
 							<Container className={classes.icon}>
 								<IconLicense size={16} />
 							</Container>
-							<Text className={classes.key}>Estimated # of Permits</Text>
+							<Text className={classes.key}>
+								{t('marketplace.auction.details.details.winnings.permits')}
+							</Text>
 							<Skeleton width={100} height={28} visible data-dark />
 						</Stack>
 						<Stack className={classes.cell}>
 							<Container className={classes.icon}>
 								<IconLeaf size={16} />
 							</Container>
-							<Text className={classes.key}>Estimated # of Emissions</Text>
+							<Text className={classes.key}>
+								{t('marketplace.auction.details.details.winnings.emissions')}
+							</Text>
 							<Skeleton width={120} height={28} visible data-dark />
 						</Stack>
 						<Stack className={classes.cell}>
 							<Container className={classes.icon}>
 								<IconCoins size={16} />
 							</Container>
-							<Text className={classes.key}>Estimated Final Bill</Text>
+							<Text className={classes.key}>
+								{t('marketplace.auction.details.details.winnings.bill')}
+							</Text>
 							<Skeleton width={160} height={28} visible data-dark />
 						</Stack>
 						<Stack className={classes.cell}>
@@ -101,13 +110,21 @@ export const Winnings = () => {
 					<Stack className={classes.alert}>
 						<Title order={3} className={classes.title}>
 							{auction.data.type === 'sealed'
-								? 'Results are currently unavailable'
-								: 'You have not joined the auction yet'}
+								? t(
+										'marketplace.auction.details.details.winnings.alert.sealed.title',
+									)
+								: t(
+										'marketplace.auction.details.details.winnings.alert.else.title',
+									)}
 						</Title>
 						<Text className={classes.description}>
 							{auction.data.type === 'sealed'
-								? 'The auction results will be released after the auction ends and all bids have been processed.'
-								: 'Please join the auction to see your estimated winnings.'}
+								? t(
+										'marketplace.auction.details.details.winnings.alert.sealed.description',
+									)
+								: t(
+										'marketplace.auction.details.details.winnings.alert.else.description',
+									)}
 						</Text>
 					</Stack>
 				</Switch.Case>
@@ -117,21 +134,25 @@ export const Winnings = () => {
 							<Container className={classes.icon}>
 								<IconLicense size={16} />
 							</Container>
-							<Text className={classes.key}>Estimated # of Permits</Text>
+							<Text className={classes.key}>
+								{t('marketplace.auction.details.details.winnings.permits')}
+							</Text>
 							<Group className={classes.row}>
 								<Text className={classes.value}>
 									{format.number(
 										Math.round(myOpenAuctionResults.data.permitsReserved),
 									)}
 								</Text>
-								<Text className={classes.unit}>permits</Text>
+								<Text className={classes.unit}>{t('constants.permits.unit')}</Text>
 							</Group>
 						</Stack>
 						<Stack className={classes.cell}>
 							<Container className={classes.icon}>
 								<IconLeaf size={16} />
 							</Container>
-							<Text className={classes.key}>Estimated # of Emissions</Text>
+							<Text className={classes.key}>
+								{t('marketplace.auction.details.details.winnings.emissions')}
+							</Text>
 							<Group className={classes.row}>
 								<Text className={classes.value}>
 									{format.number(
@@ -141,14 +162,18 @@ export const Winnings = () => {
 										),
 									)}
 								</Text>
-								<Text className={classes.unit}>tCO2e</Text>
+								<Text className={classes.unit}>
+									{t('constants.emissions.unit')}
+								</Text>
 							</Group>
 						</Stack>
 						<Stack className={classes.cell}>
 							<Container className={classes.icon}>
 								<IconCoins size={16} />
 							</Container>
-							<Text className={classes.key}>Estimated Final Bill</Text>
+							<Text className={classes.key}>
+								{t('marketplace.auction.details.details.winnings.bill')}
+							</Text>
 							<Group className={classes.row}>
 								<CurrencyBadge className={classes.badge} />
 								<Text className={classes.value}>
@@ -159,7 +184,9 @@ export const Winnings = () => {
 								</Text>
 							</Group>
 						</Stack>
-						<Tooltip label="View full auction results">
+						<Tooltip
+							label={t('marketplace.auction.details.details.winnings.cta.tooltip')}
+						>
 							<Switch value={showButtonText}>
 								<Switch.True>
 									<Button
@@ -168,7 +195,9 @@ export const Winnings = () => {
 										href={`/marketplace/auction/${auction.data.id}/results`}
 										rightSection={<IconArrowUpRight size={24} />}
 									>
-										View Full Results
+										{t(
+											'marketplace.auction.details.details.winnings.cta.label',
+										)}
 									</Button>
 								</Switch.True>
 								<Switch.False>

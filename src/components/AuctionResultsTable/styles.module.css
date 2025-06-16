@@ -175,6 +175,10 @@
 						@apply bg-dark-600;
 					}
 				}
+
+				> .legend > .cell {
+					@apply text-dark-50;
+				}
 			}
 
 			> .table {
@@ -197,10 +201,6 @@
 						}
 					}
 				}
-			}
-
-			.legend > .cell > .icon.mine {
-				@apply text-dark-50;
 			}
 		}
 	}

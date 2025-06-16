@@ -244,7 +244,7 @@ export const AuctionCarousel = ({ infinitePaginatedAuctions }: AuctionCarouselPr
 							href="/marketplace/search"
 							rightSection={<IconArrowUpRight size={16} />}
 						>
-							{t('constants.viewAll')}
+							{t('constants.view.all.label')}
 						</Button>
 					</Group>
 				</Group>
@@ -258,7 +258,7 @@ export const AuctionCarousel = ({ infinitePaginatedAuctions }: AuctionCarouselPr
 					<Switch.Loading>
 						<Stack className={classes.placeholder}>
 							<Loader color="gray" />
-							<Text className={classes.text}>Loading Auctions...</Text>
+							<Text className={classes.text}>{t('constants.loading.auctions')}</Text>
 						</Stack>
 					</Switch.Loading>
 					<Switch.Error>
@@ -267,7 +267,7 @@ export const AuctionCarousel = ({ infinitePaginatedAuctions }: AuctionCarouselPr
 								<IconExclamationCircle size={24} />
 							</Container>
 							<Text className={classes.text}>
-								There was an error loading the auctions. Please try again later.
+								{t('components.auctionCarousel.error')}
 							</Text>
 						</Stack>
 					</Switch.Error>
@@ -277,8 +277,7 @@ export const AuctionCarousel = ({ infinitePaginatedAuctions }: AuctionCarouselPr
 								<IconDatabaseOff size={24} />
 							</Container>
 							<Text className={classes.text}>
-								There are no auctions available at the moment. Please check back
-								later.
+								{t('components.auctionCarousel.empty')}
 							</Text>
 						</Stack>
 					</Switch.Case>

@@ -2,7 +2,7 @@
 
 import { sortBy } from 'lodash-es';
 import { DataTable } from 'mantine-datatable';
-import { useFormatter } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import { Ref, useCallback, useContext, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
@@ -27,6 +27,7 @@ export const BiddingTable = ({
 	ref,
 	...props
 }: BiddingTableProps) => {
+	const t = useTranslations();
 	const format = useFormatter();
 	const {
 		bids,
@@ -73,24 +74,38 @@ export const BiddingTable = ({
 					{
 						accessor: 'permit',
 						sortable: true,
-						title: 'Permits (% of Total)',
+						title: t(
+							'marketplace.auction.details.components.biddingTable.columns.permits',
+						),
 						render: (record) => (
 							<Text>
-								{format.number(record.permit)} (
-								{format.number((record.permit / totalPermits) * 100, 'money')}
-								%)
+								{t('constants.quantities.permits.unitlessWithPercentTotal', {
+									value: record.permit,
+									percent: (record.permit / totalPermits) * 100,
+								})}
 							</Text>
 						),
 					},
 					{
 						accessor: 'emissions',
 						sortable: true,
-						render: (record) => <Text>{format.number(record.emissions)} tCO2e</Text>,
+						title: t(
+							'marketplace.auction.details.components.biddingTable.columns.emissions',
+						),
+						render: (record) => (
+							<Text>
+								{t('constants.quantities.emissions.default', {
+									value: record.emissions,
+								})}
+							</Text>
+						),
 					},
 					{
 						accessor: 'bid',
 						sortable: true,
-						title: 'Price/Permit',
+						title: t(
+							'marketplace.auction.details.components.biddingTable.columns.bids',
+						),
 						render: (record) => (
 							<Group className={classes.cell}>
 								<CurrencyBadge />
@@ -101,14 +116,17 @@ export const BiddingTable = ({
 					{
 						accessor: 'subtotal',
 						sortable: true,
-						title: 'Subtotal (% of Total)',
+						title: t(
+							'marketplace.auction.details.components.biddingTable.columns.subtotals',
+						),
 						render: (record) => (
 							<Group className={classes.cell}>
 								<CurrencyBadge />
 								<Text>
-									{format.number(record.subtotal, 'money')} (
-									{format.number((record.subtotal / grandTotal) * 100, 'money')}
-									%)
+									{t('constants.quantities.currency.unitlessWithPercentTotal', {
+										value: record.subtotal,
+										percent: (record.subtotal / grandTotal) * 100,
+									})}
 								</Text>
 							</Group>
 						),
@@ -116,6 +134,9 @@ export const BiddingTable = ({
 					{
 						accessor: 'actions',
 						hidden: readOnly,
+						title: t(
+							'marketplace.auction.details.components.biddingTable.columns.actions',
+						),
 						cellsClassName: classes.actions,
 						width: 81,
 						render: (bidItem) => (
@@ -150,7 +171,7 @@ export const BiddingTable = ({
 				onSelectedRecordsChange={!readOnly ? selectedBidsHandlers.setState : undefined}
 				idAccessor="bid"
 				selectionTrigger="cell"
-				noRecordsText='No bids added yet. Use the "Insert Bids" form on the side to add bids.'
+				noRecordsText={t('marketplace.auction.details.components.biddingTable.empty')}
 				{...(ref && { tableRef: ref })}
 				{...props}
 			/>
@@ -160,7 +181,9 @@ export const BiddingTable = ({
 					disabled={selectedBids.length === 0}
 					onClick={() => onDeleteHandler(selectedBids)}
 				>
-					Delete {selectedBids.length} Bid Items
+					{t('marketplace.auction.details.components.biddingTable.delete', {
+						value: selectedBids.length,
+					})}
 				</Button>
 			)}
 		</>

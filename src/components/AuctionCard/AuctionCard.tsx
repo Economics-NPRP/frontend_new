@@ -86,18 +86,22 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 				>
 					<Switch value={currentState}>
 						<Switch.Ended>
-							<Text className={classes.text}>Ended</Text>
+							<Text className={classes.text}>
+								{t('constants.auctionStatus.ended.label')}
+							</Text>
 						</Switch.Ended>
 						<Switch.Upcoming>
-							<Text className={classes.text}>Upcoming</Text>
+							<Text className={classes.text}>
+								{t('constants.auctionStatus.upcoming.label')}
+							</Text>
 						</Switch.Upcoming>
 					</Switch>
 				</Stack>
 			</UnstyledButton>
 			<Group className={classes.meta}>
 				<Badge className={classes.permits} leftSection={<IconLicense size={14} />}>
-					{t('components.auctionCard.permits', {
-						permits: auction.permits,
+					{t('constants.quantities.permits.withEmissions', {
+						value: auction.permits,
 						emissions: 1800,
 					})}
 				</Badge>
@@ -139,7 +143,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 						<Switch value={currentState}>
 							<Switch.Upcoming>
 								<Text className={classes.subtext}>
-									{t('components.auctionCard.startsIn')}
+									{t('constants.auctionStatus.startsIn.label')}
 								</Text>
 								<Tooltip
 									label={DateTime.fromISO(auction.startDatetime).toLocaleString(
@@ -154,7 +158,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 							</Switch.Upcoming>
 							<Switch.Live>
 								<Text className={classes.subtext}>
-									{t('components.auctionCard.endsIn')}
+									{t('constants.auctionStatus.endsIn.label')}
 								</Text>
 								<Tooltip
 									label={DateTime.fromISO(auction.endDatetime).toLocaleString(
@@ -169,11 +173,13 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 							</Switch.Live>
 							<Switch.Ended>
 								<Text className={classes.subtext}>
-									{t('components.auctionCard.numBids')}
+									{t('components.auctionCard.numBids.label')}
 								</Text>
 								<Text className={classes.value}>
 									{/* TODO: show actual number of bids from backend */}
-									{format.number(auction.bids, 'money')} Bids
+									{t('constants.quantities.bids.default', {
+										value: auction.bids,
+									})}
 								</Text>
 							</Switch.Ended>
 						</Switch>
@@ -181,37 +187,28 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 					<Divider className={classes.divider} orientation="vertical" />
 					<Stack className={classes.cell}>
 						<Switch value={currentState}>
-							<Switch.Upcoming>
-								<Text className={classes.subtext}>
-									{t('components.auctionCard.minBid')}
-								</Text>
-								<Group className={classes.price}>
-									<CurrencyBadge />
-									<Text className={classes.value}>
-										{format.number(auction.minBid, 'money')}
-									</Text>
-								</Group>
-							</Switch.Upcoming>
-							<Switch.Live>
-								<Text className={classes.subtext}>
-									{t('components.auctionCard.minBid')}
-								</Text>
-								<Group className={classes.price}>
-									<CurrencyBadge />
-									<Text className={classes.value}>
-										{format.number(auction.minBid, 'money')}
-									</Text>
-								</Group>
-							</Switch.Live>
 							<Switch.Ended>
 								<Text className={classes.subtext}>
-									{t('components.auctionCard.numBidders')}
+									{t('components.auctionCard.numBidders.label')}
 								</Text>
 								<Text className={classes.value}>
 									{/* TODO: show actual number of bidders from backend */}
-									{format.number(auction.bids, 'money')} Bidders
+									{t('constants.quantities.bidders.default', {
+										value: auction.bids,
+									})}
 								</Text>
 							</Switch.Ended>
+							<Switch.Else>
+								<Text className={classes.subtext}>
+									{t('constants.minWinningBid.med')}
+								</Text>
+								<Group className={classes.price}>
+									<CurrencyBadge />
+									<Text className={classes.value}>
+										{format.number(auction.minBid, 'money')}
+									</Text>
+								</Group>
+							</Switch.Else>
 						</Switch>
 					</Stack>
 				</Group>
@@ -225,7 +222,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 								component="a"
 								href={bidsUrl}
 							>
-								View Bids
+								{t('constants.view.bids.label')}
 							</Button>
 							<Button
 								className={`${classes.primary} ${classes.button}`}
@@ -233,7 +230,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 								href={resultsUrl}
 								rightSection={<IconAwardFilled size={14} />}
 							>
-								View Results
+								{t('constants.view.results.label')}
 							</Button>
 						</Switch.Ended>
 						<Switch.Else>
@@ -245,7 +242,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 										href={url}
 										rightSection={<IconArrowUpRight size={16} />}
 									>
-										View Auction
+										{t('constants.view.auction.label')}
 									</Button>
 								</Switch.True>
 								<Switch.False>
@@ -255,7 +252,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 										component="a"
 										href={url}
 									>
-										View Auction
+										{t('constants.view.auction.label')}
 									</Button>
 									<Button
 										className={`${classes.primary} ${classes.button}`}
@@ -263,7 +260,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 										rightSection={<IconCheckbox size={16} />}
 										loading={joinAuction.isPending}
 									>
-										Join Auction
+										{t('constants.actions.joinAuction.label')}
 									</Button>
 								</Switch.False>
 							</Switch>

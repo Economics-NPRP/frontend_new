@@ -1,7 +1,7 @@
 'use client';
 
 import { MyUserContext } from 'contexts/MyUser';
-import { useFormatter } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { useCallback, useContext } from 'react';
 
@@ -29,6 +29,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import classes from './styles.module.css';
 
 export default function BidConfirmationModal() {
+	const t = useTranslations();
 	const format = useFormatter();
 	const queryClient = useQueryClient();
 	const myUser = useContext(MyUserContext);
@@ -70,8 +71,16 @@ export default function BidConfirmationModal() {
 
 			notifications.show({
 				color: 'green',
-				title: 'Bids placed successfully',
-				message: `You placed ${bids.length} bids for a total of QAR ${format.number(grandTotal, 'money')}`,
+				title: t(
+					'marketplace.auction.details.bidConfirmationModal.notifications.success.title',
+				),
+				message: t(
+					'marketplace.auction.details.bidConfirmationModal.notifications.success.message',
+					{
+						bids: bids.length,
+						total: grandTotal,
+					},
+				),
 				position: 'bottom-center',
 			});
 
@@ -82,7 +91,9 @@ export default function BidConfirmationModal() {
 		onError: ({ message }) => {
 			notifications.show({
 				color: 'red',
-				title: 'There was a problem placing your bids',
+				title: t(
+					'marketplace.auction.details.bidConfirmationModal.notifications.error.title',
+				),
 				message,
 				position: 'bottom-center',
 			});
@@ -113,23 +124,22 @@ export default function BidConfirmationModal() {
 				</Switch.True>
 				<Switch.False>
 					<Title order={2} className={classes.title}>
-						Place Your Bid(s)
+						{t('marketplace.auction.details.bidConfirmationModal.title')}
 					</Title>
 					<Text className={classes.description}>
-						You are about to place the following bids, review your bids before placing
-						them. Once placed, you cannot edit or delete the bids.
+						{t('marketplace.auction.details.bidConfirmationModal.description')}
 					</Text>
 					<BiddingTable className={classes.table} readOnly />
-					<Divider label="GRAND TOTAL" className={classes.divider} />
+					<Divider label={t('constants.grandTotal')} className={classes.divider} />
 					<Group className={classes.summary}>
 						<Stack className={classes.cell}>
 							<Container className={classes.icon}>
 								<IconLicense size={16} />
 							</Container>
-							<Text className={classes.key}>Permits</Text>
+							<Text className={classes.key}>{t('constants.permits.key')}</Text>
 							<Group className={classes.row}>
 								<Text className={classes.value}>{format.number(totalPermits)}</Text>
-								<Text className={classes.unit}>permits</Text>
+								<Text className={classes.unit}>{t('constants.permits.unit')}</Text>
 							</Group>
 						</Stack>
 						<Divider orientation="vertical" className={classes.divider} />
@@ -137,12 +147,14 @@ export default function BidConfirmationModal() {
 							<Container className={classes.icon}>
 								<IconLeaf size={16} />
 							</Container>
-							<Text className={classes.key}>Emissions</Text>
+							<Text className={classes.key}>{t('constants.emissions.key')}</Text>
 							<Group className={classes.row}>
 								<Text className={classes.value}>
 									{format.number(totalPermits * 1000)}
 								</Text>
-								<Text className={classes.unit}>tCO2e</Text>
+								<Text className={classes.unit}>
+									{t('constants.emissions.unit')}
+								</Text>
 							</Group>
 						</Stack>
 						<Divider orientation="vertical" className={classes.divider} />
@@ -150,7 +162,11 @@ export default function BidConfirmationModal() {
 							<Container className={classes.icon}>
 								<IconCoins size={16} />
 							</Container>
-							<Text className={classes.key}>Total Bid</Text>
+							<Text className={classes.key}>
+								{t(
+									'marketplace.auction.details.bidConfirmationModal.summary.totalBid.key',
+								)}
+							</Text>
 							<Group className={classes.row}>
 								<CurrencyBadge />
 								<Text className={classes.value}>
@@ -165,14 +181,14 @@ export default function BidConfirmationModal() {
 							variant="outline"
 							onClick={bidConfirmationModalActions.close}
 						>
-							Cancel
+							{t('constants.actions.cancel.label')}
 						</Button>
 						<Button
 							className={classes.button}
 							onClick={onPlaceBidHandler}
 							color="green"
 						>
-							Confirm and Place Bid(s)
+							{t('marketplace.auction.details.bidConfirmationModal.actions.confirm')}
 						</Button>
 					</Group>
 				</Switch.False>

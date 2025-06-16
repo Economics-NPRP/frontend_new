@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useContext, useState } from 'react';
 
 import { ResultsTable } from '@/components/AuctionResultsTable';
@@ -21,6 +22,7 @@ import { IconAward, IconGavel } from '@tabler/icons-react';
 import classes from './styles.module.css';
 
 export default function Bids() {
+	const t = useTranslations();
 	const auction = useContext(SingleAuctionContext);
 	const paginatedBids = useContext(PaginatedBidsContext);
 	const allWinningBids = useContext(AllWinningBidsContext);
@@ -60,14 +62,14 @@ export default function Bids() {
 						ref={setControlRef('results')}
 						leftSection={<IconAward size={16} />}
 					>
-						Auction Results
+						{t('marketplace.auction.results.bids.tabs.results')}
 					</Tabs.Tab>
 					<Tabs.Tab
 						value="all"
 						ref={setControlRef('all')}
 						leftSection={<IconGavel size={16} />}
 					>
-						All Bids
+						{t('marketplace.auction.results.bids.tabs.bids')}
 					</Tabs.Tab>
 
 					<FloatingIndicator

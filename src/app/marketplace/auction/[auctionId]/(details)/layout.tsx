@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
 import {
@@ -44,6 +45,8 @@ export default function AuctionPage({
 	bidding,
 	suggestions,
 }: AuctionDetailsProps) {
+	const t = useTranslations();
+
 	return withProviders(
 		<>
 			<Container className={classes.bg}>
@@ -58,7 +61,7 @@ export default function AuctionPage({
 					className={classes.button}
 					leftSection={<IconArrowUpLeft />}
 				>
-					Return to Catalogue
+					{t('constants.return.catalogue.label')}
 				</Button>
 				<Container className={classes.details}>
 					{card}

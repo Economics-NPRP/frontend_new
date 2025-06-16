@@ -1,4 +1,4 @@
-import { useFormatter } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import { useContext, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
@@ -12,6 +12,7 @@ import { IconLeaf } from '@tabler/icons-react';
 import classes from './styles.module.css';
 
 export const Statistics = () => {
+	const t = useTranslations();
 	const format = useFormatter();
 	const { colorScheme } = useMantineColorScheme();
 	const auction = useContext(SingleAuctionContext);
@@ -47,7 +48,7 @@ export const Statistics = () => {
 				//	Add the remaining results as "Other Firms"
 				.concat([
 					{
-						name: 'Other Firms',
+						name: t('marketplace.auction.results.details.statistics.chart.others'),
 						value: allOpenAuctionResults.data.results
 							.slice(5)
 							.reduce((acc, result) => acc + result.permitsReserved, 0),
@@ -62,12 +63,12 @@ export const Statistics = () => {
 			<Switch value={auction.isLoading || allOpenAuctionResults.isLoading}>
 				<Switch.True>
 					<Loader color="gray" className={classes.loader} />
-					<Text className={classes.loaderText}>Loading Auction Statistics...</Text>
+					<Text className={classes.loaderText}>{t('constants.loading.statistics')}</Text>
 				</Switch.True>
 				<Switch.False>
 					<Group className={`${classes.minBid} ${classes.section}`}>
 						<Stack className={classes.content}>
-							<Text className={classes.key}>Minimum Winning Bid</Text>
+							<Text className={classes.key}>{t('constants.minWinningBid.full')}</Text>
 							<Group className={classes.value}>
 								<CurrencyBadge />
 								<Text className={classes.amount}>
@@ -95,12 +96,16 @@ export const Statistics = () => {
 							size={220}
 							tooltipDataSource="segment"
 							paddingAngle={2}
-							chartLabel="Permits Reserved by Firm"
+							chartLabel={t(
+								'marketplace.auction.results.details.statistics.chart.label',
+							)}
 							strokeColor={colorScheme === 'light' ? '#ffffff' : '#25262b'}
 							withTooltip
 						/>
 						<Stack className={classes.content}>
-							<Text className={classes.key}>Total Permits Offered</Text>
+							<Text className={classes.key}>
+								{t('constants.permitsOffered.full')}
+							</Text>
 							<Group className={classes.value}>
 								<IconLeaf size={20} />
 								<Text className={classes.amount}>

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { ReactElement } from 'react';
 
 import { BidsTableRow } from '@/components/BidsTable/Row';
@@ -101,14 +102,21 @@ export const generateBidsRows = ({
 	}
 };
 
-export const generateLegend = (bidsFilter: BidsFilter, showContributingBids?: boolean) => {
+export const generateLegend = (
+	t: ReturnType<typeof useTranslations>,
+	bidsFilter: BidsFilter,
+	showContributingBids?: boolean,
+) => {
 	switch (bidsFilter) {
 		case 'all':
 			return (
 				<>
 					<Group className={classes.cell}>
 						<IconUserHexagon size={16} className={`${classes.icon} ${classes.mine}`} />
-						<Text className={classes.value}>Your Bids</Text>
+						<Text className={classes.value}>
+							{/* @ts-expect-error - cant get typing from locale file */}
+							{t('components.bidsTable.legend.mine.label')}
+						</Text>
 					</Group>
 					{showContributingBids && (
 						<Group className={classes.cell}>
@@ -116,7 +124,10 @@ export const generateLegend = (bidsFilter: BidsFilter, showContributingBids?: bo
 								size={16}
 								className={`${classes.icon} ${classes.contributing}`}
 							/>
-							<Text className={classes.value}>Contributing Bids</Text>
+							<Text className={classes.value}>
+								{/* @ts-expect-error - cant get typing from locale file */}
+								{t('components.bidsTable.legend.contributing.label')}
+							</Text>
 						</Group>
 					)}
 					<Group className={classes.cell}>
@@ -124,7 +135,10 @@ export const generateLegend = (bidsFilter: BidsFilter, showContributingBids?: bo
 							size={16}
 							className={`${classes.icon} ${classes.winning}`}
 						/>
-						<Text className={classes.value}>Winning Bids</Text>
+						<Text className={classes.value}>
+							{/* @ts-expect-error - cant get typing from locale file */}
+							{t('components.bidsTable.legend.winning.label')}
+						</Text>
 					</Group>
 				</>
 			);
@@ -132,7 +146,10 @@ export const generateLegend = (bidsFilter: BidsFilter, showContributingBids?: bo
 			return (
 				<Group className={classes.cell}>
 					<IconUserHexagon size={16} className={`${classes.icon} ${classes.mine}`} />
-					<Text className={classes.value}>Your Bids</Text>
+					<Text className={classes.value}>
+						{/* @ts-expect-error - cant get typing from locale file */}
+						{t('components.bidsTable.legend.mine.label')}
+					</Text>
 				</Group>
 			);
 		case 'mine':
@@ -144,7 +161,10 @@ export const generateLegend = (bidsFilter: BidsFilter, showContributingBids?: bo
 								size={16}
 								className={`${classes.icon} ${classes.contributing}`}
 							/>
-							<Text className={classes.value}>Contributing Bids</Text>
+							<Text className={classes.value}>
+								{/* @ts-expect-error - cant get typing from locale file */}
+								{t('components.bidsTable.legend.contributing.label')}
+							</Text>
 						</Group>
 					)}
 					<Group className={classes.cell}>
@@ -152,7 +172,10 @@ export const generateLegend = (bidsFilter: BidsFilter, showContributingBids?: bo
 							size={16}
 							className={`${classes.icon} ${classes.winning}`}
 						/>
-						<Text className={classes.value}>Winning Bids</Text>
+						<Text className={classes.value}>
+							{/* @ts-expect-error - cant get typing from locale file */}
+							{t('components.bidsTable.legend.winning.label')}
+						</Text>
 					</Group>
 				</>
 			);
@@ -160,7 +183,10 @@ export const generateLegend = (bidsFilter: BidsFilter, showContributingBids?: bo
 			return (
 				<Group className={classes.cell}>
 					<IconUserHexagon size={16} className={`${classes.icon} ${classes.mine}`} />
-					<Text className={classes.value}>Your Bids</Text>
+					<Text className={classes.value}>
+						{/* @ts-expect-error - cant get typing from locale file */}
+						{t('components.bidsTable.legend.mine.label')}
+					</Text>
 				</Group>
 			);
 		default:

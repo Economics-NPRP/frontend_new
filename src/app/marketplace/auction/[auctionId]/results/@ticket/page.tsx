@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useContext, useMemo } from 'react';
 
 import { Switch } from '@/components/SwitchCase';
@@ -16,6 +17,7 @@ import { IconArrowUpLeft } from '@tabler/icons-react';
 import classes from './styles.module.css';
 
 export default function Ticket() {
+	const t = useTranslations();
 	const auction = useContext(SingleAuctionContext);
 	const myOpenAuctionResults = useContext(MyOpenAuctionResultsContext);
 
@@ -44,7 +46,7 @@ export default function Ticket() {
 		<Stack className={classes.root}>
 			<Group className={classes.header}>
 				<Button component="a" href={'/marketplace'} leftSection={<IconArrowUpLeft />}>
-					Return to Catalogue
+					{t('constants.return.catalogue.label')}
 				</Button>
 			</Group>
 			<Switch value={currentState}>

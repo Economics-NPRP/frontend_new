@@ -1,9 +1,9 @@
 import { DateTime } from 'luxon';
-import { useFormatter } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { useContext } from 'react';
 
 import { WithSkeleton } from '@/components/WithSkeleton';
-import { PaginatedBidsContext, SingleAuctionContext } from '@/contexts';
+import { SingleAuctionContext } from '@/contexts';
 import { useAuctionAvailability } from '@/hooks';
 import { Divider, Group, Stack, Text } from '@mantine/core';
 import {
@@ -20,16 +20,15 @@ import {
 import classes from './styles.module.css';
 
 export const Properties = () => {
-	const format = useFormatter();
+	const t = useTranslations();
 	const auction = useContext(SingleAuctionContext);
-	const paginatedBids = useContext(PaginatedBidsContext);
 
 	const { areBidsAvailable } = useAuctionAvailability();
 
 	return (
 		<Stack className={`${classes.properties} ${classes.section}`}>
 			<Divider
-				label="Details"
+				label={t('marketplace.auction.details.details.properties.title')}
 				classNames={{
 					root: classes.divider,
 					label: classes.label,
@@ -39,23 +38,35 @@ export const Properties = () => {
 				<Group className={classes.row}>
 					<Group className={classes.cell}>
 						<IconHourglassEmpty size={16} className={classes.icon} />
-						<Text className={classes.key}>Permit Lifespan</Text>
+						<Text className={classes.key}>
+							{t('marketplace.auction.details.details.properties.permitLifespan.key')}
+						</Text>
 						<WithSkeleton loading={auction.isLoading} width={120} height={24}>
-							<Text className={classes.value}>1 year</Text>
+							<Text className={classes.value}>
+								{t('constants.quantities.years.default', { value: 1 })}
+							</Text>
 						</WithSkeleton>
 					</Group>
 					<Group className={classes.cell}>
 						<IconLeaf size={16} className={classes.icon} />
-						<Text className={classes.key}>Emissions Per Permit</Text>
+						<Text className={classes.key}>
+							{t(
+								'marketplace.auction.details.details.properties.emissionsPerPermit.key',
+							)}
+						</Text>
 						<WithSkeleton loading={auction.isLoading} width={120} height={24}>
-							<Text className={classes.value}>10,000 tCO2e</Text>
+							<Text className={classes.value}>
+								{t('constants.quantities.emissions.default', { value: 10000 })}
+							</Text>
 						</WithSkeleton>
 					</Group>
 				</Group>
 				<Group className={classes.row}>
 					<Group className={classes.cell}>
 						<IconClock size={16} className={classes.icon} />
-						<Text className={classes.key}>Auction Start Date</Text>
+						<Text className={classes.key}>
+							{t('marketplace.auction.details.details.properties.startDate.key')}
+						</Text>
 						<WithSkeleton loading={auction.isLoading} width={120} height={24}>
 							<Text className={classes.value}>
 								{DateTime.fromISO(auction.data.startDatetime).toLocaleString(
@@ -66,7 +77,9 @@ export const Properties = () => {
 					</Group>
 					<Group className={classes.cell}>
 						<IconAlarm size={16} className={classes.icon} />
-						<Text className={classes.key}>Auction End Date</Text>
+						<Text className={classes.key}>
+							{t('marketplace.auction.details.details.properties.endDate.key')}
+						</Text>
 						<WithSkeleton loading={auction.isLoading} width={120} height={24}>
 							<Text className={classes.value}>
 								{DateTime.fromISO(auction.data.endDatetime).toLocaleString(
@@ -79,36 +92,50 @@ export const Properties = () => {
 				<Group className={classes.row}>
 					<Group className={classes.cell}>
 						<IconEye size={16} className={classes.icon} />
-						<Text className={classes.key}>Number of Views</Text>
+						<Text className={classes.key}>
+							{t('marketplace.auction.details.details.properties.views.key')}
+						</Text>
 						<WithSkeleton loading={auction.isLoading} width={120} height={24}>
-							<Text className={classes.value}>{format.number(0)} views</Text>
+							<Text className={classes.value}>
+								{t('constants.quantities.views.default', { value: 0 })}
+							</Text>
 						</WithSkeleton>
 					</Group>
 					<Group className={classes.cell}>
 						<IconBuildingBank size={16} className={classes.icon} />
-						<Text className={classes.key}>Number of Bidders</Text>
+						<Text className={classes.key}>
+							{t('marketplace.auction.details.details.properties.bidders.key')}
+						</Text>
 						<WithSkeleton loading={auction.isLoading} width={120} height={24}>
-							<Text className={classes.value}>{format.number(0)} bidders</Text>
+							<Text className={classes.value}>
+								{t('constants.quantities.bidders.default', { value: 0 })}
+							</Text>
 						</WithSkeleton>
 					</Group>
 				</Group>
 				<Group className={classes.row}>
 					<Group className={classes.cell}>
 						<IconGavel size={16} className={classes.icon} />
-						<Text className={classes.key}>Number of Bids</Text>
-						<WithSkeleton loading={paginatedBids.isLoading} width={120} height={24}>
+						<Text className={classes.key}>
+							{t('marketplace.auction.details.details.properties.bids.key')}
+						</Text>
+						<WithSkeleton loading={auction.isLoading} width={120} height={24}>
 							<Text className={classes.value}>
 								{areBidsAvailable
-									? `${format.number(paginatedBids.data.totalCount)} bids`
+									? t('constants.quantities.bids.default', { value: 0 })
 									: 'N/A'}
 							</Text>
 						</WithSkeleton>
 					</Group>
 					<Group className={classes.cell}>
 						<IconBookmark size={16} className={classes.icon} />
-						<Text className={classes.key}>Number of Bookmarks</Text>
+						<Text className={classes.key}>
+							{t('marketplace.auction.details.details.properties.bookmarks.key')}
+						</Text>
 						<WithSkeleton loading={auction.isLoading} width={120} height={24}>
-							<Text className={classes.value}>{format.number(0)} bookmarks</Text>
+							<Text className={classes.value}>
+								{t('constants.quantities.bookmarks.default', { value: 0 })}
+							</Text>
 						</WithSkeleton>
 					</Group>
 				</Group>

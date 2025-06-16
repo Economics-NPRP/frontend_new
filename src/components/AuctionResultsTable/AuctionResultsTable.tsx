@@ -2,7 +2,7 @@
 
 import { IPaginatedOpenAuctionResultsContext } from 'contexts/PaginatedOpenAuctionResults';
 import { ISingleAuctionContext } from 'contexts/SingleAuction';
-import { createFormatter, useFormatter } from 'next-intl';
+import { createFormatter, useFormatter, useTranslations } from 'next-intl';
 import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
@@ -40,7 +40,7 @@ export const ResultsTable = ({
 	className,
 	...props
 }: ResultsTableProps) => {
-	// const t = useTranslations();
+	const t = useTranslations();
 	const format = useFormatter();
 	const isMobile = useMatches({ base: true, xs: false });
 	const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -49,12 +49,13 @@ export const ResultsTable = ({
 	const resultsData = useMemo(() => {
 		if (!paginatedOpenAuctionResults.data) return null;
 		return generateResultsRows(
+			t,
 			paginatedOpenAuctionResults.data.results,
 			auction.data,
 			myUser.data,
 			format,
 		);
-	}, [paginatedOpenAuctionResults.data.results, auction.data, myUser.data, format]);
+	}, [t, paginatedOpenAuctionResults.data.results, auction.data, myUser.data, format]);
 
 	//	Reset page when perPage changes
 	useEffect(() => paginatedOpenAuctionResults.setPage(1), [paginatedOpenAuctionResults.perPage]);
@@ -81,15 +82,27 @@ export const ResultsTable = ({
 				<Group className={classes.row}>
 					<Group className={classes.label}>
 						<Title order={2} className={classes.title}>
-							Results Table
+							{t('components.auctionResultsTable.title')}
 						</Title>
 						<Text className={classes.subtitle}>
-							Showing{' '}
-							{Math.min(
-								paginatedOpenAuctionResults.perPage,
-								paginatedOpenAuctionResults.data.totalCount,
-							)}{' '}
-							of {paginatedOpenAuctionResults.data.totalCount} results
+							{t('constants.pagination.offset.results', {
+								start: Math.min(
+									(paginatedOpenAuctionResults.page - 1) *
+										paginatedOpenAuctionResults.perPage +
+										1,
+									paginatedOpenAuctionResults.data.totalCount,
+								),
+								end:
+									(paginatedOpenAuctionResults.page - 1) *
+										paginatedOpenAuctionResults.perPage +
+										paginatedOpenAuctionResults.perPage >
+									paginatedOpenAuctionResults.data.totalCount
+										? paginatedOpenAuctionResults.data.totalCount
+										: (paginatedOpenAuctionResults.page - 1) *
+												paginatedOpenAuctionResults.perPage +
+											paginatedOpenAuctionResults.perPage,
+								total: paginatedOpenAuctionResults.data.totalCount,
+							})}
 						</Text>
 					</Group>
 					<Group className={classes.settings}>
@@ -98,13 +111,17 @@ export const ResultsTable = ({
 								<Group className={classes.legend}>
 									<Group className={classes.cell}>
 										<IconUserHexagon size={16} />
-										<Text className={classes.value}>Your Results</Text>
+										<Text className={classes.value}>
+											{t('components.auctionResultsTable.legend.mine.label')}
+										</Text>
 									</Group>
 								</Group>
 								<Divider orientation="vertical" className={classes.divider} />
 							</>
 						)}
-						<Text className={classes.label}>Per page:</Text>
+						<Text className={classes.label}>
+							{t('constants.pagination.perPage.label')}
+						</Text>
 						<Select
 							className={classes.dropdown}
 							w={80}
@@ -122,15 +139,23 @@ export const ResultsTable = ({
 				<Table highlightOnHover withColumnBorders stickyHeader {...props}>
 					<Table.Thead>
 						<Table.Tr>
-							<Table.Th>Company</Table.Th>
-							<Table.Th>Total Bids</Table.Th>
-							<Table.Th>Winning Bids (% Won)</Table.Th>
+							<Table.Th>
+								{t('components.auctionResultsTable.columns.company')}
+							</Table.Th>
+							<Table.Th>
+								{t('components.auctionResultsTable.columns.totalBids')}
+							</Table.Th>
+							<Table.Th>
+								{t('components.auctionResultsTable.columns.winningBids')}
+							</Table.Th>
 							<Table.Th className="flex items-center justify-between">
-								Permits Reserved (% Reserved)
+								{t('components.auctionResultsTable.columns.permits')}
 								<IconArrowNarrowDown size={14} />
 							</Table.Th>
-							<Table.Th>Avg Price/Permit</Table.Th>
-							<Table.Th>Final Bill</Table.Th>
+							<Table.Th>
+								{t('components.auctionResultsTable.columns.avgPrice')}
+							</Table.Th>
+							<Table.Th>{t('components.auctionResultsTable.columns.bill')}</Table.Th>
 						</Table.Tr>
 					</Table.Thead>
 					<Table.Tbody>{resultsData}</Table.Tbody>
@@ -146,7 +171,9 @@ export const ResultsTable = ({
 							<Container className={classes.icon}>
 								<IconDatabaseOff size={24} />
 							</Container>
-							<Text className={classes.text}>No bids found</Text>
+							<Text className={classes.text}>
+								{t('components.auctionResultsTable.empty')}
+							</Text>
 						</Stack>
 					</Switch.Case>
 				</Switch>
@@ -166,6 +193,7 @@ export const ResultsTable = ({
 };
 
 const generateResultsRows = (
+	t: ReturnType<typeof useTranslations>,
 	resultsData: Array<IAuctionResultsData>,
 	auctionData: IAuctionData,
 	currentUser: IUserData,
@@ -190,7 +218,11 @@ const generateResultsRows = (
 					</Anchor>
 					<Group className={classes.badges}>
 						{firm.id === currentUser.id && (
-							<Tooltip label="This is your result" position="top">
+							<Tooltip
+								// @ts-expect-error - cant get typing from locale file
+								label={t('components.auctionResultsTable.legend.mine.tooltip')}
+								position="top"
+							>
 								<IconUserHexagon size={14} className={classes.mine} />
 							</Tooltip>
 						)}
@@ -198,12 +230,18 @@ const generateResultsRows = (
 				</Table.Td>
 				<Table.Td>{format.number(totalBidsCount)}</Table.Td>
 				<Table.Td>
-					{format.number(winningBidsCount)} (
-					{format.number((winningBidsCount / totalBidsCount) * 100, 'money')}%)
+					{/* @ts-expect-error - cant get typing from locale file */}
+					{t('components.auctionResultsTable.data.winningBids', {
+						value: winningBidsCount,
+						percent: (winningBidsCount / totalBidsCount) * 100,
+					})}
 				</Table.Td>
 				<Table.Td>
-					{format.number(permitsReserved)} (
-					{format.number((permitsReserved / auctionData.permits) * 100, 'money')}%)
+					{/* @ts-expect-error - cant get typing from locale file */}
+					{t('components.auctionResultsTable.data.permits', {
+						value: permitsReserved,
+						percent: (permitsReserved / auctionData.permits) * 100,
+					})}
 				</Table.Td>
 				<Table.Td>
 					<CurrencyBadge className="mr-1" />

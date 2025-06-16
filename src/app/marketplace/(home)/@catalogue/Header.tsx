@@ -52,7 +52,7 @@ export const Header = () => {
 			index + paginatedAuctions.perPage > paginatedAuctions.data.totalCount
 				? paginatedAuctions.data.totalCount
 				: index + paginatedAuctions.perPage;
-		return `${index + 1} - ${end}`;
+		return `${Math.min(index + 1, paginatedAuctions.data.totalCount)} - ${end}`;
 	}, [paginatedAuctions.page, paginatedAuctions.perPage, paginatedAuctions.data.totalCount]);
 
 	const filterBadges = useMemo(() => {

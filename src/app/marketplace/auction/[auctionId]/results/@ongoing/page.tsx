@@ -1,6 +1,7 @@
 'use client';
 
 import { SingleAuctionContext } from 'contexts/SingleAuction';
+import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { useContext } from 'react';
 
@@ -12,8 +13,9 @@ import { IconArrowUpLeft } from '@tabler/icons-react';
 import classes from './styles.module.css';
 
 export default function OngoingOverlay() {
-	const { auctionId } = useParams();
+	const t = useTranslations();
 	const auction = useContext(SingleAuctionContext);
+	const { auctionId } = useParams();
 
 	const [isReadOnlyMode, { open: viewInReadOnlyMode }] = useDisclosure(false);
 
@@ -22,11 +24,10 @@ export default function OngoingOverlay() {
 	const isUpcomingState = (
 		<>
 			<Title order={2} className={classes.title}>
-				This Auction Has Not Started Yet
+				{t('marketplace.auction.results.ongoing.upcoming.title')}
 			</Title>
 			<Text className={classes.description}>
-				This auction does not have any results yet as it has not started. Please return to
-				the auction page and check back later once the auction is live.
+				{t('marketplace.auction.results.ongoing.upcoming.description')}
 			</Text>
 			<Stack className={classes.actions}>
 				<Button
@@ -35,7 +36,7 @@ export default function OngoingOverlay() {
 					href={`/marketplace/auction/${auctionId}`}
 					leftSection={<IconArrowUpLeft size={16} />}
 				>
-					Return to Auction Page
+					{t('constants.return.auctionPage.label')}
 				</Button>
 			</Stack>
 		</>
@@ -44,11 +45,10 @@ export default function OngoingOverlay() {
 	const isLiveState = (
 		<>
 			<Title order={2} className={classes.title}>
-				This Auction Is Still Ongoing
+				{t('marketplace.auction.results.ongoing.live.title')}
 			</Title>
 			<Text className={classes.description}>
-				You can take a look at the results, but please note that they are not final and may
-				change as the auction is still active.
+				{t('marketplace.auction.results.ongoing.live.description')}
 			</Text>
 			<Stack className={classes.actions}>
 				<Button
@@ -57,10 +57,10 @@ export default function OngoingOverlay() {
 					href={`/marketplace/auction/${auctionId}`}
 					leftSection={<IconArrowUpLeft size={16} />}
 				>
-					Return to Auction Page
+					{t('constants.return.auctionPage.label')}
 				</Button>
 				<Button onClick={viewInReadOnlyMode} variant="transparent">
-					View results as of now
+					{t('constants.view.resultsNow.label')}
 				</Button>
 			</Stack>
 		</>
@@ -88,7 +88,9 @@ export default function OngoingOverlay() {
 
 			{isReadOnlyMode && (
 				<Group className={classes.overlay}>
-					<Text className={classes.text}>Viewing tentative results</Text>
+					<Text className={classes.text}>
+						{t('marketplace.auction.results.ongoing.overlay.text')}
+					</Text>
 					<Button
 						classNames={{
 							root: classes.button,
@@ -98,7 +100,7 @@ export default function OngoingOverlay() {
 						href={`/marketplace/auction/${auctionId}`}
 						leftSection={<IconArrowUpLeft size={16} />}
 					>
-						Return to Auction Page
+						{t('constants.return.auctionPage.label')}
 					</Button>
 				</Group>
 			)}

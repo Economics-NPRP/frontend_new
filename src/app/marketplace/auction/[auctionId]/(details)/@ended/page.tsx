@@ -1,6 +1,7 @@
 'use client';
 
 import { SingleAuctionContext } from 'contexts/SingleAuction';
+import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { useContext } from 'react';
 
@@ -12,8 +13,9 @@ import { IconArrowUpRight } from '@tabler/icons-react';
 import classes from './styles.module.css';
 
 export default function EndedOverlay() {
-	const { auctionId } = useParams();
+	const t = useTranslations();
 	const auction = useContext(SingleAuctionContext);
+	const { auctionId } = useParams();
 
 	const [isReadOnlyMode, { open: viewInReadOnlyMode }] = useDisclosure(false);
 
@@ -36,11 +38,10 @@ export default function EndedOverlay() {
 				centered
 			>
 				<Title order={2} className={classes.title}>
-					This Auction Has Ended
+					{t('marketplace.auction.details.ended.title')}
 				</Title>
 				<Text className={classes.description}>
-					You cannot participate in this auction anymore as it has ended. You can choose
-					to take a look at the results, or view the page in read-only mode
+					{t('marketplace.auction.details.ended.description')}
 				</Text>
 				<Stack className={classes.actions}>
 					<Button
@@ -49,21 +50,23 @@ export default function EndedOverlay() {
 						href={`/marketplace/auction/${auctionId}/results`}
 						rightSection={<IconArrowUpRight size={16} />}
 					>
-						View Results
+						{t('constants.view.results.label')}
 					</Button>
 					<Button
 						className={classes.anchor}
 						onClick={viewInReadOnlyMode}
 						variant="transparent"
 					>
-						See the original page (read-only)
+						{t('marketplace.auction.details.ended.subtext')}
 					</Button>
 				</Stack>
 			</Modal>
 
 			{isReadOnlyMode && (
 				<Group className={classes.overlay}>
-					<Text className={classes.text}>Viewing the page in read-only mode</Text>
+					<Text className={classes.text}>
+						{t('marketplace.auction.details.ended.overlay')}
+					</Text>
 					<Button
 						classNames={{
 							root: classes.button,
@@ -73,7 +76,7 @@ export default function EndedOverlay() {
 						href={`/marketplace/auction/${auctionId}/results`}
 						rightSection={<IconArrowUpRight size={16} />}
 					>
-						View Results
+						{t('constants.view.results.label')}
 					</Button>
 				</Group>
 			)}

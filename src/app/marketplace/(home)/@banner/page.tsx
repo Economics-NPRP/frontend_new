@@ -11,7 +11,7 @@ export default function Banner() {
 	const t = useTranslations();
 	const locale = useLocale();
 
-	const date = DateTime.fromObject({ year: 2025, month: 1, day: 30 }).setLocale(locale);
+	const date = DateTime.fromObject({ year: 2025, month: 12, day: 20 }).setLocale(locale);
 
 	return (
 		<Container className={`${classes.root} bg-stagger-md`}>

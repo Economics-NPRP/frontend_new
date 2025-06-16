@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { useContext } from 'react';
 
@@ -9,6 +10,7 @@ import { IconCheckbox } from '@tabler/icons-react';
 import classes from './styles.module.css';
 
 export const UpcomingOverlay = () => {
+	const t = useTranslations();
 	const auction = useContext(SingleAuctionContext);
 	const { auctionId } = useParams();
 
@@ -19,11 +21,10 @@ export const UpcomingOverlay = () => {
 			<Container className={classes.background} />
 			<Stack className={classes.content}>
 				<Title order={2} className={classes.title}>
-					This Auction Has Not Started Yet
+					{t('marketplace.auction.details.bidding.upcomingOverlay.title')}
 				</Title>
 				<Text className={classes.description}>
-					You cannot participate in this auction yet as it has not started. Please check
-					back later once the auction is live.
+					{t('marketplace.auction.details.bidding.upcomingOverlay.description')}
 				</Text>
 				{!auction.data.hasJoined && (
 					<Button
@@ -32,7 +33,7 @@ export const UpcomingOverlay = () => {
 						rightSection={<IconCheckbox size={16} />}
 						loading={joinAuction.isPending}
 					>
-						Join Auction
+						{t('constants.actions.joinAuction.label')}
 					</Button>
 				)}
 			</Stack>

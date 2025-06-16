@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { useFormatter } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import { ComponentProps } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
@@ -22,6 +22,7 @@ export const BidsTableRow = ({
 	isContributing,
 	...props
 }: BidsTableRowProps) => {
+	const t = useTranslations();
 	const format = useFormatter();
 
 	return (
@@ -32,17 +33,26 @@ export const BidsTableRow = ({
 				</Anchor>
 				<Group className={classes.badges}>
 					{isMine && (
-						<Tooltip label="This is your bid" position="top">
+						<Tooltip
+							label={t('components.bidsTable.legend.mine.tooltip')}
+							position="top"
+						>
 							<IconUserHexagon size={14} className={classes.mine} />
 						</Tooltip>
 					)}
 					{isContributing && (
-						<Tooltip label="This bid is contributing to your final bill" position="top">
+						<Tooltip
+							label={t('components.bidsTable.legend.contributing.tooltip')}
+							position="top"
+						>
 							<IconHexagonLetterC size={14} className={classes.contributing} />
 						</Tooltip>
 					)}
 					{isWinning && (
-						<Tooltip label="This is a winning bid" position="top">
+						<Tooltip
+							label={t('components.bidsTable.legend.winning.tooltip')}
+							position="top"
+						>
 							<IconHexagonLetterW size={14} className={classes.winning} />
 						</Tooltip>
 					)}

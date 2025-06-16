@@ -31,7 +31,7 @@ export const CategoryCard = ({ category, className, ...props }: CategoryCardProp
 					{t(`constants.auctionCategory.${category}.title`)}
 				</Title>
 				<Text className={classes.value}>
-					{t('components.categoryCard.value', {
+					{t('constants.quantities.auctions.default', {
 						value: Math.round(Math.random() * 1000),
 					})}
 				</Text>

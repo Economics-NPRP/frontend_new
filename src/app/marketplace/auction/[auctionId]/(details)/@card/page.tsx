@@ -1,7 +1,7 @@
 'use client';
 
 import { DateTime } from 'luxon';
-import { useFormatter } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useContext, useMemo } from 'react';
 
@@ -24,7 +24,7 @@ import {
 import classes from './styles.module.css';
 
 export default function Card() {
-	// const t = useTranslations();
+	const t = useTranslations();
 	const format = useFormatter();
 	const isMobile = useMediaQuery('(max-width: 48em)');
 	const auction = useContext(SingleAuctionContext);
@@ -56,8 +56,18 @@ export default function Card() {
 					<Stack
 						className={`${classes.overlay} ${(hasEnded || isUpcoming) && classes.blurred}`}
 					>
-						{hasEnded && <Text className={classes.text}>Ended</Text>}
-						{isUpcoming && <Text className={classes.text}>Upcoming</Text>}
+						<Switch value={currentState}>
+							<Switch.Ended>
+								<Text className={classes.text}>
+									{t('constants.auctionStatus.ended.label')}
+								</Text>
+							</Switch.Ended>
+							<Switch.Upcoming>
+								<Text className={classes.text}>
+									{t('constants.auctionStatus.upcoming.label')}
+								</Text>
+							</Switch.Upcoming>
+						</Switch>
 					</Stack>
 				</Container>
 			</Container>
@@ -65,22 +75,36 @@ export default function Card() {
 				<Switch value={auction.isLoading}>
 					<Switch.True>
 						<Stack className={classes.section}>
-							<Text className={classes.subtext}>Permits Offered</Text>
+							<Text className={classes.subtext}>
+								{isMobile
+									? t('constants.permitsOffered.short')
+									: t('constants.permitsOffered.full')}
+							</Text>
 							<Skeleton width={120} height={24} data-dark visible />
 						</Stack>
 						<Stack className={classes.section}>
-							<Text className={classes.subtext}>Minimum Bid</Text>
+							<Text className={classes.subtext}>
+								{isMobile
+									? t('constants.minWinningBid.short')
+									: t('constants.minWinningBid.med')}
+							</Text>
 							<Skeleton width={120} height={24} data-dark visible />
 						</Stack>
 						<Stack className={classes.section}>
-							<Text className={classes.subtext}>Minimum Increment</Text>
+							<Text className={classes.subtext}>
+								{isMobile
+									? t('constants.minBidIncrement.short')
+									: t('constants.minBidIncrement.med')}
+							</Text>
 							<Skeleton width={120} height={24} data-dark visible />
 						</Stack>
 					</Switch.True>
 					<Switch.False>
 						<Stack className={classes.section}>
 							<Text className={classes.subtext}>
-								{isMobile ? 'Permits' : 'Permits Offered'}
+								{isMobile
+									? t('constants.permitsOffered.short')
+									: t('constants.permitsOffered.full')}
 							</Text>
 							<Group className={classes.price}>
 								<Container className={classes.icon}>
@@ -93,7 +117,9 @@ export default function Card() {
 						</Stack>
 						<Stack className={classes.section}>
 							<Text className={classes.subtext}>
-								{isMobile ? 'Min. Bid' : 'Minimum Bid'}
+								{isMobile
+									? t('constants.minWinningBid.short')
+									: t('constants.minWinningBid.med')}
 							</Text>
 							<Group className={classes.price}>
 								<CurrencyBadge className={classes.badge} />
@@ -104,7 +130,9 @@ export default function Card() {
 						</Stack>
 						<Stack className={classes.section}>
 							<Text className={classes.subtext}>
-								{isMobile ? 'Min. Incr.' : 'Minimum Increment'}
+								{isMobile
+									? t('constants.minBidIncrement.short')
+									: t('constants.minBidIncrement.med')}
 							</Text>
 							<Group className={classes.price}>
 								<CurrencyBadge className={classes.badge} />
@@ -126,7 +154,9 @@ export default function Card() {
 				</Switch.Loading>
 				<Switch.Upcoming>
 					<Stack className={classes.countdown}>
-						<Text className={classes.title}>Starting In</Text>
+						<Text className={classes.title}>
+							{t('constants.auctionStatus.startingIn.label')}
+						</Text>
 						<LargeCountdown targetDate={auction.data.startDatetime} />
 						<Text className={classes.subtext}>
 							{DateTime.fromISO(auction.data.startDatetime).toLocaleString(
@@ -140,17 +170,23 @@ export default function Card() {
 							rightSection={<IconGitCompare size={16} />}
 							variant="outline"
 						>
-							Compare Auctions
+							{t('marketplace.auction.details.card.actions.compare.label')}
 						</Button>
 						<Switch value={auction.data.hasJoined}>
 							<Switch.True>
-								<Tooltip label="Auction has not started yet">
+								<Tooltip
+									label={t(
+										'marketplace.auction.details.card.actions.startBidding.tooltipUpcoming',
+									)}
+								>
 									<Button
 										className={`${classes.primary} ${classes.cta}`}
 										rightSection={<IconGavel size={16} />}
 										disabled
 									>
-										Start Bidding
+										{t(
+											'marketplace.auction.details.card.actions.startBidding.label',
+										)}
 									</Button>
 								</Tooltip>
 							</Switch.True>
@@ -161,7 +197,7 @@ export default function Card() {
 									rightSection={<IconCheckbox size={16} />}
 									loading={joinAuction.isPending}
 								>
-									Join Auction
+									{t('constants.actions.joinAuction.label')}
 								</Button>
 							</Switch.False>
 						</Switch>
@@ -169,7 +205,9 @@ export default function Card() {
 				</Switch.Upcoming>
 				<Switch.Live>
 					<Stack className={classes.countdown}>
-						<Text className={classes.title}>Ending In</Text>
+						<Text className={classes.title}>
+							{t('constants.auctionStatus.endingIn.label')}
+						</Text>
 						<LargeCountdown targetDate={auction.data.endDatetime} />
 						<Text className={classes.subtext}>
 							{DateTime.fromISO(auction.data.endDatetime).toLocaleString(
@@ -183,7 +221,7 @@ export default function Card() {
 							rightSection={<IconGitCompare size={16} />}
 							variant="outline"
 						>
-							Compare Auctions
+							{t('marketplace.auction.details.card.actions.compare.label')}
 						</Button>
 						<Switch value={auction.data.hasJoined}>
 							<Switch.True>
@@ -192,7 +230,9 @@ export default function Card() {
 									rightSection={<IconGavel size={16} />}
 									onClick={() => scrollToBidding({ alignment: 'center' })}
 								>
-									Start Bidding
+									{t(
+										'marketplace.auction.details.card.actions.startBidding.label',
+									)}
 								</Button>
 							</Switch.True>
 							<Switch.False>
@@ -202,7 +242,7 @@ export default function Card() {
 									rightSection={<IconCheckbox size={16} />}
 									loading={joinAuction.isPending}
 								>
-									Join Auction
+									{t('constants.actions.joinAuction.label')}
 								</Button>
 							</Switch.False>
 						</Switch>
@@ -210,7 +250,9 @@ export default function Card() {
 				</Switch.Live>
 				<Switch.Ended>
 					<Stack className={classes.countdown}>
-						<Text className={classes.title}>Auction Ended</Text>
+						<Text className={classes.title}>
+							{t('constants.auctionStatus.auctionEnded.label')}
+						</Text>
 						<LargeCountdown targetDate={auction.data.endDatetime} />
 						<Text className={classes.subtext}>
 							{DateTime.fromISO(auction.data.endDatetime).toLocaleString(
@@ -226,7 +268,7 @@ export default function Card() {
 							rightSection={<IconGavel size={16} />}
 							variant="outline"
 						>
-							View Bids
+							{t('constants.view.bids.label')}
 						</Button>
 						<Button
 							className={`${classes.primary} ${classes.cta}`}
@@ -235,7 +277,7 @@ export default function Card() {
 							rightSection={<IconAwardFilled size={16} />}
 							onClick={() => scrollToBidding({ alignment: 'center' })}
 						>
-							View Results
+							{t('constants.view.results.label')}
 						</Button>
 					</Group>
 				</Switch.Ended>

@@ -235,6 +235,10 @@
 
 				.placeholder {
 					@apply bg-dark-600;
+
+					> .icon {
+						@apply bg-dark-500 text-dark-300;
+					}
 				}
 
 				tr {

@@ -1,7 +1,7 @@
+import { useTranslations } from 'next-intl';
 import { useContext } from 'react';
 
 import { BidsTable } from '@/components/BidsTable';
-import { Switch } from '@/components/SwitchCase';
 import {
 	AllWinningBidsContext,
 	MyPaginatedBidsContext,
@@ -11,12 +11,13 @@ import {
 } from '@/contexts';
 import { useAuctionAvailability } from '@/hooks';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
-import { Alert, Divider, Group, Stack, Text, Tooltip } from '@mantine/core';
-import { IconExclamationCircle, IconInfoCircle } from '@tabler/icons-react';
+import { Divider, Group, Stack, Text, Tooltip } from '@mantine/core';
+import { IconInfoCircle } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
 export const Bids = () => {
+	const t = useTranslations();
 	const auction = useContext(SingleAuctionContext);
 	const paginatedBids = useContext(PaginatedBidsContext);
 	const allWinningBids = useContext(AllWinningBidsContext);
@@ -31,10 +32,12 @@ export const Bids = () => {
 			<Divider
 				label={
 					<Group className={classes.row}>
-						<Text className={classes.label}>Bids Table</Text>
+						<Text className={classes.label}>
+							{t('marketplace.auction.details.details.bids.title')}
+						</Text>
 						<Tooltip
 							position="top"
-							label="View all bids placed on this auction, including your own and the winning bids"
+							label={t('marketplace.auction.details.details.bids.info')}
 						>
 							<IconInfoCircle size={14} className={classes.info} />
 						</Tooltip>
@@ -45,39 +48,25 @@ export const Bids = () => {
 					label: classes.label,
 				}}
 			/>
-			<Switch value={auction.isSuccess && !areBidsAvailable}>
-				<Switch.True>
-					<Alert
-						variant="light"
-						color="gray"
-						title="Bids are currently unavailable"
-						icon={<IconExclamationCircle />}
-					>
-						The list of bids submitted are not available during a sealed auction. Please
-						wait until the auction ends and the results are published.
-					</Alert>
-				</Switch.True>
-				<Switch.False>
-					<BidsTable
-						bids={paginatedBids}
-						allWinningBids={allWinningBids}
-						paginatedWinningBids={paginatedWinningBids}
-						myPaginatedBids={myPaginatedBids}
-						showContributingBids={hasEnded}
-						className={classes.table}
-						onViewAll={openBidsDrawer}
-						loading={
-							auction.isLoading ||
-							paginatedBids.isLoading ||
-							allWinningBids.isLoading ||
-							paginatedWinningBids.isLoading ||
-							myPaginatedBids.isLoading
-						}
-						hideHeader
-						withViewAllButton
-					/>
-				</Switch.False>
-			</Switch>
+			<BidsTable
+				bids={paginatedBids}
+				allWinningBids={allWinningBids}
+				paginatedWinningBids={paginatedWinningBids}
+				myPaginatedBids={myPaginatedBids}
+				showContributingBids={hasEnded}
+				className={classes.table}
+				onViewAll={openBidsDrawer}
+				loading={
+					auction.isLoading ||
+					paginatedBids.isLoading ||
+					allWinningBids.isLoading ||
+					paginatedWinningBids.isLoading ||
+					myPaginatedBids.isLoading
+				}
+				unavailable={auction.isSuccess && !areBidsAvailable}
+				hideHeader
+				withViewAllButton
+			/>
 		</Stack>
 	);
 };

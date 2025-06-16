@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormatter } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import { useCallback, useContext, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
@@ -14,7 +14,17 @@ import { UpcomingOverlay } from '@/pages/marketplace/auction/[auctionId]/(detail
 import { BiddingTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { Sparkline } from '@mantine/charts';
-import { Button, Divider, Group, Indicator, Slider, Stack, Text, Title } from '@mantine/core';
+import {
+	Button,
+	Divider,
+	Group,
+	Indicator,
+	Slider,
+	Stack,
+	Text,
+	Title,
+	Tooltip,
+} from '@mantine/core';
 import { IconGavel } from '@tabler/icons-react';
 
 import { EndedOverlay } from './EndedOverlay';
@@ -23,6 +33,7 @@ import { JoinOverlay } from './JoinOverlay';
 import classes from './styles.module.css';
 
 export default function Prompt() {
+	const t = useTranslations();
 	const format = useFormatter();
 	const auction = useContext(SingleAuctionContext);
 	const realtimeBids = useContext(RealtimeBidsContext);
@@ -85,14 +96,15 @@ export default function Prompt() {
 					<Group className={classes.header}>
 						<Stack className={classes.label}>
 							<Title order={2} className={classes.title}>
-								Bidding Table
+								{t('marketplace.auction.details.bidding.header.title')}
 							</Title>
 							<Text className={classes.subtitle}>
-								Add your bids to the table below. When you're ready, click the
-								"Place Bids" button to submit them all at once.
+								{t('marketplace.auction.details.bidding.header.subtitle')}
 							</Text>
 							<Text className={classes.bidders}>
-								Active Bidders: {realtimeBids.latest.data.activeBidders} Bidders
+								{t('marketplace.auction.details.bidding.header.bidders', {
+									value: realtimeBids.latest.data.activeBidders,
+								})}
 							</Text>
 						</Stack>
 						<MediumCountdown
@@ -105,7 +117,7 @@ export default function Prompt() {
 				<Stack className={classes.sidebar}>
 					<Group className={classes.minBid}>
 						<Stack className={classes.content}>
-							<Text className={classes.key}>Minimum Winning Bid</Text>
+							<Text className={classes.key}>{t('constants.minWinningBid.full')}</Text>
 							<Group className={classes.value}>
 								<CurrencyBadge />
 								<Text className={classes.amount}>
@@ -116,7 +128,8 @@ export default function Prompt() {
 								</Text>
 							</Group>
 							<Text className={classes.subtext}>
-								<b>34%</b> increase in the past 24 hours
+								<b>{format.number(34.52, 'money')}%</b>{' '}
+								{t('marketplace.auction.details.bidding.sidebar.minBid.subtext')}
 							</Text>
 						</Stack>
 						<Sparkline
@@ -129,7 +142,7 @@ export default function Prompt() {
 						/>
 					</Group>
 					<Group className={classes.minIncrement}>
-						<Text className={classes.key}>Minimum Bid Increment</Text>
+						<Text className={classes.key}>{t('constants.minBidIncrement.full')}</Text>
 						<Group className={classes.value}>
 							<CurrencyBadge />
 							<Text className={classes.amount}>
@@ -152,7 +165,7 @@ export default function Prompt() {
 								rightSection={<IconGavel size={16} />}
 								onClick={handleOpenDrawer}
 							>
-								View Bids
+								{t('constants.view.allBids.label')}
 							</Button>
 						</Indicator>
 					</Group>
@@ -163,7 +176,9 @@ export default function Prompt() {
 				<Group className={classes.content}>
 					<Group className={classes.cell}>
 						<Text className={classes.value}>{format.number(totalPermits)}</Text>
-						<Text className={classes.unit}>Permits Bid</Text>
+						<Text className={classes.unit}>
+							{t('marketplace.auction.details.bidding.footer.progress.left.unit')}
+						</Text>
 					</Group>
 					<Slider
 						classNames={{
@@ -187,7 +202,9 @@ export default function Prompt() {
 						<Text className={classes.value}>
 							{format.number(auction.data.permits - totalPermits)}
 						</Text>
-						<Text className={classes.unit}>Permits Left</Text>
+						<Text className={classes.unit}>
+							{t('marketplace.auction.details.bidding.footer.progress.right.unit')}
+						</Text>
 					</Group>
 				</Group>
 				<Divider orientation="vertical" />
@@ -197,13 +214,18 @@ export default function Prompt() {
 						<Text className={classes.value}>{format.number(grandTotal, 'money')}</Text>
 					</Group>
 					<Divider orientation="vertical" />
-					<Button
-						className={classes.cta}
-						disabled={readOnly || bids.length === 0 || isUpcoming || hasEnded}
-						onClick={bidConfirmationModalActions.open}
+					<Tooltip
+						position="top"
+						label={t('marketplace.auction.details.bidding.footer.cta.tooltip')}
 					>
-						Place Bids
-					</Button>
+						<Button
+							className={classes.cta}
+							disabled={readOnly || bids.length === 0 || isUpcoming || hasEnded}
+							onClick={bidConfirmationModalActions.open}
+						>
+							{t('constants.actions.placeBids.label')}
+						</Button>
+					</Tooltip>
 				</Group>
 			</Group>
 		</Stack>

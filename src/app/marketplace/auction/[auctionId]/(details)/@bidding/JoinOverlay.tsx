@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 
 import { useJoinAuction } from '@/hooks';
@@ -7,6 +8,7 @@ import { IconCheckbox } from '@tabler/icons-react';
 import classes from './styles.module.css';
 
 export const JoinOverlay = () => {
+	const t = useTranslations();
 	const { auctionId } = useParams();
 
 	const joinAuction = useJoinAuction(auctionId as string);
@@ -16,11 +18,10 @@ export const JoinOverlay = () => {
 			<Container className={classes.background} />
 			<Stack className={classes.content}>
 				<Title order={2} className={classes.title}>
-					Join The Auction
+					{t('marketplace.auction.details.bidding.joinOverlay.title')}
 				</Title>
 				<Text className={classes.description}>
-					You must first join the auction to participate in the bidding process. Click the
-					button below to join.
+					{t('marketplace.auction.details.bidding.joinOverlay.description')}
 				</Text>
 				<Button
 					className={classes.button}
@@ -28,7 +29,7 @@ export const JoinOverlay = () => {
 					rightSection={<IconCheckbox size={16} />}
 					loading={joinAuction.isPending}
 				>
-					Join Auction
+					{t('constants.actions.joinAuction.label')}
 				</Button>
 			</Stack>
 		</Stack>

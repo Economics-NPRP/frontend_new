@@ -21,7 +21,7 @@ export default function Categories() {
 					</Text>
 				</Stack>
 				<Button className={classes.action} rightSection={<IconArrowUpRight size={16} />}>
-					{t('constants.viewAll')}
+					{t('constants.view.all.label')}
 				</Button>
 			</Group>
 
