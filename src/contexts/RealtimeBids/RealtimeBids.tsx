@@ -49,6 +49,10 @@ export const RealtimeBidsProvider = ({ children, ...props }: PropsWithChildren) 
 			if (payload.type === 'new_bid') setStatus('new');
 			setLatest(payload);
 
+			//	Modify the page title to show theres a new bid
+			if (payload.type === 'new_bid')
+				document.title = `[NEW BID] ${document.title.replace(/^\[NEW BID\] /, '')}`;
+
 			//	Invalidate any related queries
 			queryClient.invalidateQueries({
 				queryKey: ['marketplace', auctionId, 'paginatedBids'],
@@ -76,6 +80,11 @@ export const RealtimeBidsProvider = ({ children, ...props }: PropsWithChildren) 
 		//	Add cleanup function
 		return () => eventSource.close();
 	}, [auctionId, areBidsAvailable]);
+
+	//	Reset the page title when the status changes to idle
+	useEffect(() => {
+		if (status === 'idle') document.title = document.title.replace(/^\[NEW BID\] /, '');
+	}, [status]);
 
 	return (
 		<Context.Provider

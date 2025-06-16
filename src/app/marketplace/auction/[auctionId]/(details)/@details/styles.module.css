@@ -1,5 +1,6 @@
 .root {
-	@apply flex-1 px-12 gap-7;
+	@apply min-w-0;
+	@apply flex-1 px-2 gap-7;
 	@apply items-stretch flex-nowrap;
 
 	> .section {
@@ -79,6 +80,7 @@
 				}
 
 				.action {
+					@apply size-9;
 					@apply border-gray-400 text-dark-300;
 				}
 			}
@@ -95,12 +97,14 @@
 				@apply gap-0;
 
 				> .row {
-					@apply h-12 flex-auto gap-0;
+					@apply h-24 flex-auto gap-0;
+					@apply flex-col flex-nowrap;
 
 					/* Dashed border */
 					background-image: repeating-linear-gradient(
 						90deg,
-						var(--mantine-color-gray-2) 0 12px,
+						#0000 0 8px,
+						var(--mantine-color-gray-3) 0 16px,
 						#0000 0 24px
 					);
 					background-position: bottom;
@@ -108,30 +112,31 @@
 					background-repeat: repeat-x;
 
 					> .cell {
-						@apply flex-[50%] h-full;
-						@apply px-6 gap-3;
+						@apply h-12;
+						@apply px-6 gap-3 self-stretch;
 						@apply flex-nowrap items-center justify-center;
 
 						/* Dashed border */
 						background-image: repeating-linear-gradient(
-							0deg,
-							var(--mantine-color-gray-2) 0 12px,
+							90deg,
+							#0000 0 8px,
+							var(--mantine-color-gray-3) 0 16px,
 							#0000 0 24px
 						);
-						background-position: right;
-						background-size: 1px 100%;
-						background-repeat: repeat-y;
+						background-position: bottom;
+						background-size: 100% 1px;
+						background-repeat: repeat-x;
 
 						> .icon {
 							@apply text-gray-600;
 						}
 
 						> .key {
+							@apply flex-auto;
 							@apply display-md-sb;
 						}
 
 						> .value {
-							@apply flex-auto;
 							@apply paragraph-md text-right;
 						}
 
@@ -140,7 +145,7 @@
 						}
 					}
 
-					&:nth-last-child(2) {
+					&:last-child {
 						@apply bg-none;
 					}
 				}
@@ -194,39 +199,83 @@
 		&.winnings {
 			@apply gap-4;
 
+			> .alert {
+				@apply h-36;
+				@apply items-center justify-center gap-0;
+				@apply bg-dark-600;
+
+				> .title {
+					@apply heading-3-w text-center;
+				}
+
+				> .description {
+					@apply paragraph-sm-g3 text-center;
+				}
+			}
+
 			> .row {
+				@apply grid grid-cols-2 grid-rows-2;
 				@apply items-center justify-center flex-nowrap;
-				@apply mt-2 gap-16;
+				@apply mt-2 gap-0;
+				@apply bg-dark-600;
+				@apply transition-shadow duration-500;
 
 				> .cell {
-					@apply gap-0 items-center;
+					@apply w-full h-36;
+					@apply px-6 py-4 gap-0;
+					@apply items-center justify-center;
+					@apply border border-r-0 border-b-0 border-solid border-dark-400;
+
+					&:nth-child(2n) {
+						@apply border-r;
+					}
+
+					&:nth-child(3),
+					&:nth-child(4) {
+						@apply border-b;
+					}
 
 					> .icon {
-						@apply size-12 flex items-center justify-center;
+						@apply size-9 flex items-center justify-center;
 						@apply mb-2;
-						@apply bg-white border border-solid border-gray-300 shadow-sm;
-						@apply text-dark-300;
+						@apply bg-dark-400 text-dark-50;
+						@apply rounded-sm;
 					}
 
 					> .key {
-						@apply paragraph-sm-g6;
+						@apply paragraph-sm-g3 text-center;
 					}
 
 					> .row {
 						@apply gap-1 items-baseline;
 
+						> .badge {
+							@apply bg-dark-400;
+							@apply text-dark-100;
+						}
+
 						> .value {
-							@apply numeric-md;
+							@apply numeric-md-w text-center;
 						}
 
 						> .unit {
-							@apply paragraph-sm;
+							@apply paragraph-sm-w;
+						}
+
+						> .badge,
+						> .unit {
+							@apply hidden;
 						}
 					}
 				}
 
 				> .divider {
-					@apply h-8 self-center;
+					@apply self-stretch;
+					@apply border-dark-400;
+				}
+
+				&:hover {
+					@apply shadow-xs;
 				}
 			}
 		}
@@ -236,6 +285,193 @@
 
 			> .table {
 				@apply h-[480px];
+			}
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			@apply px-8;
+
+			> .section.properties > .table > .row {
+				@apply h-12 flex-row;
+
+				> .cell {
+					@apply h-full flex-[50%];
+				}
+			}
+
+			> .section.winnings > .row {
+				@apply flex flex-row;
+
+				> .cell {
+					@apply w-[unset] flex-grow;
+					@apply border border-r-0;
+
+					&:last-child {
+						@apply w-20 flex-grow-0;
+					}
+
+					&:nth-child(2) {
+						@apply border-r-0;
+					}
+
+					> .row > .badge,
+					> .row > .unit {
+						@apply inline-grid;
+					}
+				}
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+			> .section.details > .row .action {
+				@apply size-7;
+			}
+
+			> .section.properties > .table > .row {
+				@apply h-24 flex-col;
+
+				> .cell {
+					@apply h-12;
+				}
+			}
+
+			> .section.winnings > .row {
+				@apply grid;
+
+				> .cell {
+					@apply w-full flex-grow;
+					@apply border border-r-0 border-b-0;
+
+					&:nth-child(2n) {
+						@apply border-r;
+					}
+
+					&:nth-child(3),
+					&:nth-child(4) {
+						@apply border-b;
+					}
+
+					&:last-child {
+						@apply w-full flex-grow;
+					}
+				}
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-xl {
+		.root {
+			@apply px-12;
+
+			> .section.properties > .table > .row {
+				@apply h-12 flex-row;
+
+				> .cell {
+					@apply h-full flex-[50%];
+				}
+			}
+
+			> .section.winnings > .row {
+				@apply flex flex-row;
+
+				> .cell {
+					@apply w-[unset] flex-grow;
+					@apply border border-r-0;
+
+					&:last-child {
+						@apply w-20 flex-grow-0;
+					}
+
+					&:nth-child(2) {
+						@apply border-r-0;
+					}
+				}
+			}
+		}
+	}
+
+	@mixin dark {
+		.root {
+			> .details > .row .action {
+				@apply bg-dark-700 border-dark-400 text-white;
+
+				&:hover {
+					@apply bg-dark-600;
+				}
+			}
+
+			> .properties > .table > .row {
+				background-image: repeating-linear-gradient(
+					90deg,
+					#0000 0 8px,
+					var(--mantine-color-dark-4) 0 16px,
+					#0000 0 24px
+				);
+
+				> .cell {
+					background-image: repeating-linear-gradient(
+						90deg,
+						#0000 0 8px,
+						var(--mantine-color-dark-4) 0 16px,
+						#0000 0 24px
+					);
+
+					@mixin larger-than $mantine-breakpoint-sm {
+						background-image: repeating-linear-gradient(
+							0deg,
+							#0000 0 8px,
+							var(--mantine-color-dark-4) 0 16px,
+							#0000 0 24px
+						);
+						background-position: right;
+						background-size: 1px 100%;
+						background-repeat: repeat-y;
+					}
+
+					@mixin larger-than $mantine-breakpoint-md {
+						background-image: repeating-linear-gradient(
+							90deg,
+							#0000 0 8px,
+							var(--mantine-color-dark-4) 0 16px,
+							#0000 0 24px
+						);
+						background-position: bottom;
+						background-size: 100% 1px;
+						background-repeat: repeat-x;
+					}
+
+					@mixin larger-than $mantine-breakpoint-xl {
+						background-image: repeating-linear-gradient(
+							0deg,
+							#0000 0 8px,
+							var(--mantine-color-dark-4) 0 16px,
+							#0000 0 24px
+						);
+						background-position: right;
+						background-size: 1px 100%;
+						background-repeat: repeat-y;
+					}
+				}
+			}
+
+			> .winnings {
+				> .alert > .title {
+					@apply text-white;
+				}
+
+				> .row > .cell > .row {
+					> .value {
+						@apply !text-white;
+					}
+
+					> .unit {
+						@apply !text-dark-50/50;
+					}
+				}
 			}
 		}
 	}

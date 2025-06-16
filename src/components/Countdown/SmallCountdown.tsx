@@ -6,14 +6,16 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { CountdownProps, CountdownUnitsArray } from '@/components/Countdown/constants';
 import classes from '@/components/Countdown/styles.module.css';
+import { Switch } from '@/components/SwitchCase';
 import { calculateCountdownInterval } from '@/hooks';
-import { Group, Text } from '@mantine/core';
+import { Group, Skeleton, Text } from '@mantine/core';
 import { useInViewport, useInterval } from '@mantine/hooks';
 
 export const SmallCountdown = ({
 	targetDate,
 	units,
 	displayOnly = false,
+	loading = false,
 	className,
 	...props
 }: CountdownProps) => {
@@ -87,9 +89,16 @@ export const SmallCountdown = ({
 
 	return (
 		<Group className={classes.root} {...props}>
-			<Text className={`${classes.text} ${className}`} ref={ref}>
-				{value}
-			</Text>
+			<Switch value={loading}>
+				<Switch.True>
+					<Skeleton width={120} height={20} visible data-dark />
+				</Switch.True>
+				<Switch.False>
+					<Text className={`${classes.text} ${className}`} ref={ref}>
+						{value}
+					</Text>
+				</Switch.False>
+			</Switch>
 		</Group>
 	);
 };

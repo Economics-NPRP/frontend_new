@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useCallback, useContext } from 'react';
 
 import { BiddingTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
@@ -12,6 +13,7 @@ import { Button, Group, Modal, Text, Title } from '@mantine/core';
 import classes from './styles.module.css';
 
 export default function DeleteModal() {
+	const t = useTranslations();
 	const {
 		bidsHandlers,
 		selectedBidsHandlers,
@@ -47,22 +49,22 @@ export default function DeleteModal() {
 			centered
 		>
 			<Title order={2} className={classes.title}>
-				Delete Your Bid(s)
+				{t('marketplace.auction.details.deleteBidModal.title')}
 			</Title>
 			<Text className={classes.description}>
-				Are you sure you want to delete the following bids? This action cannot be undone.
+				{t('marketplace.auction.details.deleteBidModal.description')}
 			</Text>
 			<BiddingTable className={classes.table} readOnly displayDeletingOnly />
 			<Group className={classes.actions}>
 				<Button
-					className={classes.button}
+					className={`${classes.secondary} ${classes.button}`}
 					variant="outline"
 					onClick={deleteModalActions.close}
 				>
-					Cancel
+					{t('constants.actions.cancel.label')}
 				</Button>
 				<Button className={classes.button} onClick={onDeleteHandler} color="red">
-					Delete Bid(s)
+					{t('marketplace.auction.details.deleteBidModal.actions.delete')}
 				</Button>
 			</Group>
 		</Modal>

@@ -36,6 +36,7 @@ export const QueryProvider = <T extends ContextState<unknown>>({
 			value={
 				{
 					data: queryResults.data || defaultData.data,
+					error: queryResults.error,
 					isLoading: queryResults.isLoading,
 					isError: queryResults.isError,
 					isSuccess: queryResults.isSuccess,

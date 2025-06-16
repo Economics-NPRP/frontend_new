@@ -5,6 +5,7 @@ import { DefaultPaginatedAuctionsContextData, PaginatedAuctionsContext } from '@
 import { SortDirection } from '@/types';
 import {
 	ActionIcon,
+	Button,
 	Container,
 	FloatingIndicator,
 	Group,
@@ -51,7 +52,7 @@ export const Header = () => {
 			index + paginatedAuctions.perPage > paginatedAuctions.data.totalCount
 				? paginatedAuctions.data.totalCount
 				: index + paginatedAuctions.perPage;
-		return `${index + 1} - ${end}`;
+		return `${Math.min(index + 1, paginatedAuctions.data.totalCount)} - ${end}`;
 	}, [paginatedAuctions.page, paginatedAuctions.perPage, paginatedAuctions.data.totalCount]);
 
 	const filterBadges = useMemo(() => {
@@ -185,24 +186,26 @@ export const Header = () => {
 				<Group>
 					<Group className={classes.viewActions} ref={setRootRef}>
 						<Tooltip label="Switch to grid view">
-							<ActionIcon
+							<Button
 								className={`${classes.action} ${classes.square}`}
 								ref={setControlRef('grid')}
 								onClick={() => setView('grid')}
 								data-active={view === 'grid'}
+								leftSection={<IconLayoutGrid size={16} />}
 							>
-								<IconLayoutGrid size={16} />
-							</ActionIcon>
+								Grid
+							</Button>
 						</Tooltip>
 						<Tooltip label="Switch to list view">
-							<ActionIcon
+							<Button
 								className={`${classes.action} ${classes.square}`}
 								ref={setControlRef('list')}
 								onClick={() => setView('list')}
 								data-active={view === 'list'}
+								leftSection={<IconListDetails size={16} />}
 							>
-								<IconListDetails size={16} />
-							</ActionIcon>
+								List
+							</Button>
 						</Tooltip>
 
 						<FloatingIndicator

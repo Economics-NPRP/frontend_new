@@ -38,3 +38,41 @@
 		}
 	}
 }
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+		}
+	}
+
+	@mixin dark {
+		.root > .list {
+			@apply bg-dark-600;
+
+			> .tab {
+				@apply text-dark-50;
+
+				&[data-active='true'] {
+					@apply text-white;
+				}
+
+				&:not([data-active='true']):hover {
+					@apply bg-dark-400;
+				}
+			}
+
+			> .indicator {
+				@apply bg-dark-700 border-0;
+				box-shadow: none;
+			}
+		}
+	}
+}

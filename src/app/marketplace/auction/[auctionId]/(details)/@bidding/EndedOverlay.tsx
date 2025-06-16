@@ -1,30 +1,32 @@
+import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 
 import { Button, Container, Stack, Text, Title } from '@mantine/core';
 import { IconArrowUpRight } from '@tabler/icons-react';
 
+import classes from './styles.module.css';
+
 export const EndedOverlay = () => {
+	const t = useTranslations();
 	const { auctionId } = useParams();
 
 	return (
-		<Stack className="absolute top-0 left-0 justify-center items-center w-full h-full z-10">
-			<Container
-				className="absolute top-0 left-0 w-full h-full -z-10 bg-black/30"
-				style={{ backdropFilter: 'blur(4px)' }}
-			/>
-			<Stack className="gap-2 px-12 py-8 bg-white items-center w-[600px]">
-				<Title className="text-center heading-2">This Auction Has Ended</Title>
-				<Text className="text-center paragraph-sm">
-					You cannot participate in this auction anymore as it has ended. You can choose
-					to take a look at the results, or view the page in read-only mode
+		<Stack className={classes.overlay}>
+			<Container className={classes.background} />
+			<Stack className={classes.content}>
+				<Title order={2} className={classes.title}>
+					{t('marketplace.auction.details.bidding.endedOverlay.title')}
+				</Title>
+				<Text className={classes.description}>
+					{t('marketplace.auction.details.bidding.endedOverlay.description')}
 				</Text>
 				<Button
-					className="w-[200px] mt-4"
+					className={classes.button}
 					component="a"
 					href={`/marketplace/auction/${auctionId}/results`}
 					rightSection={<IconArrowUpRight size={16} />}
 				>
-					View Results
+					{t('constants.view.results.label')}
 				</Button>
 			</Stack>
 		</Stack>

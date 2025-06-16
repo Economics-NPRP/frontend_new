@@ -1,9 +1,13 @@
+import { useTranslations } from 'next-intl';
+
 import { HeaderButton } from '@/components/Header/HeaderButton';
 import classes from '@/pages/(auth)/(external)/styles.module.css';
 import { Button, Group, Tooltip } from '@mantine/core';
 import { IconBox } from '@tabler/icons-react';
 
 export const Header = () => {
+	const t = useTranslations();
+
 	return (
 		<Group className={classes.header}>
 			<Tooltip label={'Return to Login Page'}>
@@ -19,7 +23,7 @@ export const Header = () => {
 					size="xs"
 					leftSection={<IconBox size={20} />}
 				>
-					ETS
+					{t('constants.website.name.short')}
 				</Button>
 			</Tooltip>
 			<Group className={classes.action}>

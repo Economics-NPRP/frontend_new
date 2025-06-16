@@ -1,8 +1,13 @@
+import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
 import { Header } from '@/pages/(auth)/(internal)/_components/Header';
 import classes from '@/pages/(auth)/(internal)/styles.module.css';
 import { Divider, Group } from '@mantine/core';
+
+export const metadata: Metadata = {
+	title: 'Register',
+};
 
 export interface RegisterProps {
 	contact: ReactNode;

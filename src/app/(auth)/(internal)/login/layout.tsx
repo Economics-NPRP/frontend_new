@@ -1,6 +1,11 @@
+import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
 import { Header } from '@/pages/(auth)/(internal)/_components/Header';
+
+export const metadata: Metadata = {
+	title: 'Login',
+};
 
 export interface LoginProps {
 	form: ReactNode;

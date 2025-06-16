@@ -1,7 +1,12 @@
+import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
 import classes from '@/pages/(auth)/(external)/styles.module.css';
 import { Stack, Text, Title } from '@mantine/core';
+
+export const metadata: Metadata = {
+	title: 'Onboarding',
+};
 
 export interface OnboardingProps {
 	details: ReactNode;

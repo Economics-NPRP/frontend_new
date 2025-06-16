@@ -1,17 +1,20 @@
-import { useFormatter } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import { useContext, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
+import { Switch } from '@/components/SwitchCase';
 import { AllOpenAuctionResultsContext, SingleAuctionContext } from '@/contexts';
 import { generateTrendData } from '@/helpers';
 import { DonutChart, PieChartCell, Sparkline } from '@mantine/charts';
-import { Group, Stack, Text } from '@mantine/core';
+import { Divider, Group, Loader, Stack, Text, useMantineColorScheme } from '@mantine/core';
 import { IconLeaf } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
 export const Statistics = () => {
+	const t = useTranslations();
 	const format = useFormatter();
+	const { colorScheme } = useMantineColorScheme();
 	const auction = useContext(SingleAuctionContext);
 	const allOpenAuctionResults = useContext(AllOpenAuctionResultsContext);
 
@@ -40,64 +43,79 @@ export const Statistics = () => {
 				.map<PieChartCell>((result, index) => ({
 					name: result.firm.name,
 					value: result.permitsReserved,
-					color: `dark.${7 - index}`,
+					color: colorScheme === 'light' ? `dark.${7 - index}` : `gray.${index + 1}`,
 				}))
 				//	Add the remaining results as "Other Firms"
 				.concat([
 					{
-						name: 'Other Firms',
+						name: t('marketplace.auction.results.details.statistics.chart.others'),
 						value: allOpenAuctionResults.data.results
 							.slice(5)
 							.reduce((acc, result) => acc + result.permitsReserved, 0),
-						color: '#eee',
+						color: colorScheme === 'light' ? '#eeeeee' : '#373a40',
 					},
 				])
 		);
-	}, [allOpenAuctionResults]);
+	}, [allOpenAuctionResults, colorScheme]);
 
 	return (
 		<Stack className={classes.statistics}>
-			<Group className={`${classes.minBid} ${classes.section}`}>
-				<Stack className={classes.content}>
-					<Text className={classes.key}>Minimum Winning Bid</Text>
-					<Group className={classes.value}>
-						<CurrencyBadge />
-						<Text className={classes.amount}>
-							{format.number(
-								minBidsData[minBidsData.length - 1]['Minimum Winning Bid'],
-								'money',
+			<Switch value={auction.isLoading || allOpenAuctionResults.isLoading}>
+				<Switch.True>
+					<Loader color="gray" className={classes.loader} />
+					<Text className={classes.loaderText}>{t('constants.loading.statistics')}</Text>
+				</Switch.True>
+				<Switch.False>
+					<Group className={`${classes.minBid} ${classes.section}`}>
+						<Stack className={classes.content}>
+							<Text className={classes.key}>{t('constants.minWinningBid.full')}</Text>
+							<Group className={classes.value}>
+								<CurrencyBadge />
+								<Text className={classes.amount}>
+									{format.number(
+										minBidsData[minBidsData.length - 1]['Minimum Winning Bid'],
+										'money',
+									)}
+								</Text>
+							</Group>
+						</Stack>
+						<Sparkline
+							className={classes.sparkline}
+							w={140}
+							h={80}
+							color="#000000"
+							data={minBidsData.map((data) => data['Minimum Winning Bid'])}
+							curveType="natural"
+						/>
+					</Group>
+					<Divider className={classes.divider} />
+					<Stack className={`${classes.permits} ${classes.section}`}>
+						<DonutChart
+							classNames={{ label: classes.label }}
+							data={permitsData}
+							size={220}
+							tooltipDataSource="segment"
+							paddingAngle={2}
+							chartLabel={t(
+								'marketplace.auction.results.details.statistics.chart.label',
 							)}
-						</Text>
-					</Group>
-				</Stack>
-				<Sparkline
-					w={140}
-					h={80}
-					color="#000000"
-					data={minBidsData.map((data) => data['Minimum Winning Bid'])}
-					curveType="natural"
-				/>
-			</Group>
-			<Stack className={`${classes.permits} ${classes.section}`}>
-				<DonutChart
-					classNames={{ label: classes.label }}
-					data={permitsData}
-					size={220}
-					tooltipDataSource="segment"
-					paddingAngle={2}
-					chartLabel="Permits Reserved by Firm"
-					withTooltip
-				/>
-				<Stack className={classes.content}>
-					<Text className={classes.key}>Total Permits Offered</Text>
-					<Group className={classes.value}>
-						<IconLeaf size={20} />
-						<Text className={classes.amount}>
-							{format.number(auction.data.permits)}
-						</Text>
-					</Group>
-				</Stack>
-			</Stack>
+							strokeColor={colorScheme === 'light' ? '#ffffff' : '#25262b'}
+							withTooltip
+						/>
+						<Stack className={classes.content}>
+							<Text className={classes.key}>
+								{t('constants.permitsOffered.full')}
+							</Text>
+							<Group className={classes.value}>
+								<IconLeaf size={20} />
+								<Text className={classes.amount}>
+									{format.number(auction.data.permits)}
+								</Text>
+							</Group>
+						</Stack>
+					</Stack>
+				</Switch.False>
+			</Switch>
 		</Stack>
 	);
 };

@@ -1,12 +1,13 @@
 .root {
 	> .inner > .content {
-		@apply min-w-[800px];
-		@apply px-16 pt-12 pb-8;
+		@apply p-6;
 		@apply justify-center items-center;
+
+		min-width: calc(100vw - 16px);
 
 		> .body {
 			@apply flex flex-col items-stretch justify-center;
-			@apply gap-4 p-0;
+			@apply gap-2 p-0;
 
 			> .title {
 				@apply text-center heading-2;
@@ -21,11 +22,38 @@
 			}
 
 			> .actions {
-				@apply mt-4 gap-2 justify-center flex-nowrap;
+				@apply gap-2 justify-center flex-nowrap;
 
 				> .button {
 					@apply flex-[50%];
 				}
+			}
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root > .inner > .content {
+			@apply min-w-[800px];
+			@apply px-16 pt-12;
+
+			> .body {
+				@apply gap-4;
+
+				> .actions {
+					@apply mt-4;
+				}
+			}
+		}
+	}
+
+	@mixin dark {
+		.root > .inner > .content > .body > .actions > .button.secondary {
+			@apply bg-dark-700 border-dark-400 text-white;
+
+			&:hover {
+				@apply bg-dark-600;
 			}
 		}
 	}

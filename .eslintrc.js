@@ -1,5 +1,5 @@
 module.exports = {
-	extends: ["plugin:@typescript-eslint/recommended", "prettier"],
+	extends: ["plugin:@next/next/recommended", "plugin:@typescript-eslint/recommended", "prettier"],
 	ignorePatterns: [
 		".github",
 		"**/*.cy.js",

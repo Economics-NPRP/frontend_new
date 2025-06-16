@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon';
+import { useTranslations } from 'next-intl';
 import { useContext } from 'react';
 
 import { LargeCountdown } from '@/components/Countdown';
@@ -8,21 +9,21 @@ import { Stack, Text, Title } from '@mantine/core';
 import classes from './styles.module.css';
 
 export const Ongoing = () => {
+	const t = useTranslations();
 	const auction = useContext(SingleAuctionContext);
 
 	return (
 		<Stack className={`${classes.ongoing} ${classes.ticket}`}>
 			<Stack className={classes.header}>
 				<Title order={2} className={classes.title}>
-					Results Not Yet Available
+					{t('marketplace.auction.results.ticket.ongoing.title')}
 				</Title>
 				<Text className={classes.subtitle}>
-					The auction is still ongoing. Results will be available once the auction ends
-					and all bids have been processed.
+					{t('marketplace.auction.results.ticket.ongoing.subtitle')}
 				</Text>
 			</Stack>
 			<Stack className={classes.countdown}>
-				<Text className={classes.title}>Ending In</Text>
+				<Text className={classes.title}>{t('constants.auctionStatus.endingIn.label')}</Text>
 				<LargeCountdown targetDate={auction.data.endDatetime} />
 				<Text className={classes.subtext}>
 					{DateTime.fromISO(auction.data.endDatetime).toLocaleString(

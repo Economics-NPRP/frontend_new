@@ -3,11 +3,10 @@
 import { useParams } from 'next/navigation';
 import { createContext, useContext } from 'react';
 
-import { KeysetPaginatedQueryProvider } from '@/contexts';
+import { KeysetPaginatedQueryProvider, MyUserContext } from '@/contexts';
 import { throwError } from '@/helpers';
 import { useAuctionAvailability } from '@/hooks';
 import { getPaginatedBids } from '@/lib/bids/open';
-import { CurrentUserContext } from '@/pages/globalContext';
 import { IBidData } from '@/schema/models';
 import {
 	KeysetPaginatedContextState,
@@ -25,8 +24,8 @@ export const MyPaginatedBidsProvider = ({
 	defaultPerPage,
 	children,
 }: KeysetPaginatedProviderProps) => {
+	const myUser = useContext(MyUserContext);
 	const { auctionId } = useParams();
-	const { currentUser } = useContext(CurrentUserContext);
 	const { areBidsAvailable } = useAuctionAvailability();
 
 	return (
@@ -35,12 +34,12 @@ export const MyPaginatedBidsProvider = ({
 			defaultPerPage={defaultPerPage}
 			context={Context}
 			defaultData={DefaultData}
-			queryKey={[currentUser.id, 'marketplace', auctionId as string, 'myPaginatedBids']}
+			queryKey={[myUser.data.id, 'marketplace', auctionId as string, 'myPaginatedBids']}
 			queryFn={(cursor, perPage) => () =>
 				throwError(
 					getPaginatedBids({
 						auctionId: auctionId as string,
-						bidderId: currentUser.id,
+						bidderId: myUser.data.id,
 						cursor,
 						perPage,
 					}),

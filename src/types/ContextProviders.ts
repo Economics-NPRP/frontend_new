@@ -23,13 +23,14 @@ export interface SortedOffsetPaginatedProviderProps extends PropsWithChildren {
 
 export interface ContextState<T> {
 	data: T;
+	error: Error | null;
 	isLoading: boolean;
 	isError: boolean;
 	isSuccess: boolean;
 }
 
 export interface InfiniteContextState<T>
-	extends Pick<ContextState<T>, 'isLoading' | 'isError' | 'isSuccess'> {
+	extends Pick<ContextState<T>, 'error' | 'isLoading' | 'isError' | 'isSuccess'> {
 	data: InfiniteData<T>;
 	isFetchingNextPage: boolean;
 	hasNextPage: boolean;
@@ -86,19 +87,21 @@ export const getDefaultContextState = <T>(defaultData?: T): ServerContextState<T
 		errors: [],
 		...defaultData,
 	} as ServerData<T>,
+	error: null,
 	isLoading: true,
 	isError: false,
 	isSuccess: false,
 });
 
-const getInfiniteContextState = <T>(): Pick<
-	InfiniteContextState<T>,
-	'data' | 'isFetchingNextPage' | 'hasNextPage' | 'fetchNextPage'
-> => ({
+const getInfiniteContextState = <T>(): InfiniteContextState<T> => ({
 	data: {
 		pages: [],
 		pageParams: [],
 	},
+	error: null,
+	isLoading: true,
+	isError: false,
+	isSuccess: false,
 	isFetchingNextPage: false,
 	hasNextPage: false,
 	fetchNextPage: () => {},

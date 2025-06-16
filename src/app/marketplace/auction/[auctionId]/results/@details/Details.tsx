@@ -3,8 +3,19 @@ import { useContext } from 'react';
 
 import { AuctionTypeBadge, CategoryBadge } from '@/components/Badge';
 import { Id } from '@/components/Id';
+import { Switch } from '@/components/SwitchCase';
+import { WithSkeleton } from '@/components/WithSkeleton';
 import { SingleAuctionContext } from '@/contexts';
-import { Anchor, Avatar, Breadcrumbs, Container, Group, Stack, Title } from '@mantine/core';
+import {
+	Anchor,
+	Avatar,
+	Breadcrumbs,
+	Container,
+	Group,
+	Skeleton,
+	Stack,
+	Title,
+} from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
@@ -22,36 +33,61 @@ export const Details = () => {
 				/>
 			</Container>
 			<Stack className={classes.content}>
-				<Breadcrumbs
-					separator={<IconChevronRight size={14} />}
-					classNames={{
-						root: classes.breadcrumbs,
-						separator: classes.separator,
-					}}
-				>
-					<Anchor href="/marketplace">Marketplace</Anchor>
-					<Anchor>Industry</Anchor>
-					<Anchor>Flare Gas Burning</Anchor>
-				</Breadcrumbs>
-				<Title className={classes.title}>Flare Gas Burning</Title>
+				<Switch value={auction.isLoading}>
+					<Switch.True>
+						<Breadcrumbs
+							separator={<IconChevronRight size={14} />}
+							classNames={{
+								root: classes.breadcrumbs,
+								separator: classes.separator,
+							}}
+						>
+							<Skeleton width={80} height={14} visible />
+							<Skeleton width={80} height={14} visible />
+							<Skeleton width={80} height={14} visible />
+						</Breadcrumbs>
+					</Switch.True>
+					<Switch.False>
+						<Breadcrumbs
+							separator={<IconChevronRight size={14} />}
+							classNames={{
+								root: classes.breadcrumbs,
+								separator: classes.separator,
+							}}
+						>
+							<Anchor href="/marketplace">Marketplace</Anchor>
+							<Anchor>Industry</Anchor>
+							<Anchor>Flare Gas Burning</Anchor>
+						</Breadcrumbs>
+					</Switch.False>
+				</Switch>
+				<WithSkeleton loading={auction.isLoading} width={360} height={40}>
+					<Title className={classes.title}>Flare Gas Burning</Title>
+				</WithSkeleton>
 				<Group className={classes.badges}>
-					<CategoryBadge category={'industry'} />
-					<AuctionTypeBadge type={auction.data.type} />
+					<CategoryBadge category={'industry'} loading={auction.isLoading} />
+					<AuctionTypeBadge type={auction.data.type} loading={auction.isLoading} />
 				</Group>
 				<Group className={classes.row}>
 					<Group className={classes.owner}>
-						<Avatar
-							className={classes.avatar}
-							name={auction.data.owner && auction.data.owner.name}
-						/>
-						<Anchor
-							className={classes.link}
-							href={`/marketplace/firm/${auction.data.ownerId}`}
-						>
-							{auction.data.owner && auction.data.owner.name}
-						</Anchor>
+						<WithSkeleton loading={auction.isLoading} width={40} height={40} circle>
+							<Avatar
+								className={classes.avatar}
+								name={auction.data.owner && auction.data.owner.name}
+							/>
+						</WithSkeleton>
+						<WithSkeleton loading={auction.isLoading} width={160} height={24}>
+							<Anchor
+								className={classes.link}
+								href={`/marketplace/firm/${auction.data.ownerId}`}
+							>
+								{auction.data.owner && auction.data.owner.name}
+							</Anchor>
+						</WithSkeleton>
 					</Group>
-					<Id className={classes.id} value={auction.data.id} variant="industry" />
+					<WithSkeleton loading={auction.isLoading} width={260} height={14}>
+						<Id className={classes.id} value={auction.data.id} variant="industry" />
+					</WithSkeleton>
 				</Group>
 			</Stack>
 		</Group>

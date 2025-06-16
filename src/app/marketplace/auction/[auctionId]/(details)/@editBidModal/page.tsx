@@ -1,7 +1,7 @@
 'use client';
 
 import { SingleAuctionContext } from 'contexts/SingleAuction';
-import { useFormatter } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
@@ -11,13 +11,14 @@ import {
 	AuctionDetailsPageContext,
 	DefaultAuctionDetailsPageContextData,
 } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
-import { Button, Group, Modal, Stack, Text, Title } from '@mantine/core';
+import { Alert, Button, Group, List, Modal, Stack, Text, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconCoins, IconLeaf, IconLicense } from '@tabler/icons-react';
+import { IconCoins, IconExclamationCircle, IconLeaf, IconLicense } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
 export default function EditModal() {
+	const t = useTranslations();
 	const format = useFormatter();
 
 	const auction = useContext(SingleAuctionContext);
@@ -45,18 +46,22 @@ export default function EditModal() {
 		validate: {
 			permit: (value) => {
 				const oldPermitValue = oldBid?.permit || 0;
-				if (!value) return 'Permit is required';
-				if (value < 1) return 'You must bid at least 1 permit';
-				if (value > auction.data.permits) return 'You cannot bid more than permits offered';
+				if (!value) return t('model.BiddingTableData.permit.required');
+				if (value < 1) return t('model.BiddingTableData.permit.oneOrMore');
+				if (value > auction.data.permits)
+					return t('model.BiddingTableData.permit.moreThanOffered');
 				if (value - oldPermitValue > auction.data.permits - totalPermits)
-					return `You cannot bid more than available permits. Please make sure to bid for less than or equal to ${auction.data.permits - totalPermits} permits`;
+					return t('model.BiddingTableData.permit.moreThanAvailableWithValue', {
+						value: auction.data.permits - totalPermits,
+					});
 				return false;
 			},
 			bid: (value) => {
-				if (!value) return 'Bid is required';
-				if (value < 1) return 'Bid must be greater than 0';
+				if (!value) return t('model.BiddingTableData.bid.required');
+				if (value < 1) return t('model.BiddingTableData.bid.oneOrMore');
+				//	TODO: add validation for min bid
 				if (bids.some((bid) => bid.bid === value && bid.bid !== editingBid))
-					return 'You have already bid this amount. Please edit the existing bid';
+					return t('model.BiddingTableData.bid.exists');
 				return false;
 			},
 		},
@@ -90,6 +95,14 @@ export default function EditModal() {
 		[bidsHandlers, editingBid],
 	);
 
+	const errorMessages = useMemo(
+		() =>
+			Object.values(form.errors).map((error, index) => (
+				<List.Item key={index}>{error}</List.Item>
+			)),
+		[form.errors],
+	);
+
 	return (
 		<Modal
 			opened={editModalOpened}
@@ -104,20 +117,32 @@ export default function EditModal() {
 			centered
 		>
 			<Title order={2} className={classes.title}>
-				Edit Your Bid
+				{t('marketplace.auction.details.editBidModal.title')}
 			</Title>
 			<Text className={classes.description}>
-				You can edit your bid by changing the number of permits and the price per permit.
-				Please ensure that your new bid does not exceed the available permits.
+				{t('marketplace.auction.details.editBidModal.description')}
 			</Text>
+			{errorMessages.length > 0 && (
+				<Alert
+					variant="light"
+					color="red"
+					title={t('marketplace.auction.details.editBidModal.error.title')}
+					icon={<IconExclamationCircle />}
+					className={classes.error}
+				>
+					<List className={classes.list}>{errorMessages}</List>
+				</Alert>
+			)}
 			<form onSubmit={form.onSubmit(onEditHandler)}>
 				<Stack className={classes.inputs}>
 					<Group className={classes.section}>
 						<Group className={classes.key}>
 							<IconLicense size={16} className={classes.icon} />
 							<Text className={classes.label}>
-								Permits to Bid{' '}
-								<b>(Originally {format.number(oldBid?.permit || 0)})</b>
+								{t.rich('marketplace.auction.details.editBidModal.permit.label', {
+									value: oldBid?.permit || 0,
+									b: (chunks) => <b>{chunks}</b>,
+								})}
 							</Text>
 						</Group>
 						<BiddingNumberInput
@@ -133,8 +158,10 @@ export default function EditModal() {
 						<Group className={classes.key}>
 							<IconLeaf size={16} className={classes.icon} />
 							<Text className={classes.label}>
-								Total Emissions{' '}
-								<b>(Originally {format.number(oldBid?.emissions || 0)} tCO2e)</b>
+								{t.rich('marketplace.auction.details.editBidModal.emission.label', {
+									value: oldBid?.emissions || 0,
+									b: (chunks) => <b>{chunks}</b>,
+								})}
 							</Text>
 						</Group>
 						<Text className={classes.value}>{format.number(emissions)} tCO2e</Text>
@@ -143,8 +170,10 @@ export default function EditModal() {
 						<Group className={classes.key}>
 							<IconCoins size={16} className={classes.icon} />
 							<Text className={classes.label}>
-								Price per Permit{' '}
-								<b>(Originally {format.number(oldBid?.bid || 0, 'money')})</b>
+								{t.rich('marketplace.auction.details.editBidModal.bid.label', {
+									value: oldBid?.bid || 0,
+									b: (chunks) => <b>{chunks}</b>,
+								})}
 							</Text>
 						</Group>
 						<BiddingNumberInput
@@ -158,7 +187,7 @@ export default function EditModal() {
 						/>
 					</Group>
 					<Group className={classes.summary}>
-						<Text className={classes.text}>Subtotal</Text>
+						<Text className={classes.text}>{t('constants.subtotal')}</Text>
 						<Group className={classes.cell}>
 							<CurrencyBadge />
 							<Text className={classes.value}>
@@ -169,14 +198,14 @@ export default function EditModal() {
 				</Stack>
 				<Group className={classes.actions}>
 					<Button
-						className={classes.button}
+						className={`${classes.secondary} ${classes.button}`}
 						variant="outline"
 						onClick={editModalActions.close}
 					>
-						Cancel
+						{t('constants.actions.cancel.label')}
 					</Button>
-					<Button className={classes.button} type="submit">
-						Save Changes
+					<Button className={`${classes.primary} ${classes.button}`} type="submit">
+						{t('constants.actions.saveChanges.label')}
 					</Button>
 				</Group>
 			</form>

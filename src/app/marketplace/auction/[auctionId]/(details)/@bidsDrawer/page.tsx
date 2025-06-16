@@ -1,6 +1,8 @@
 'use client';
 
+import { useLocale, useTranslations } from 'next-intl';
 import { useCallback, useContext } from 'react';
+import { getLangDir } from 'rtl-detect';
 
 import { BidsTable } from '@/components/BidsTable';
 import {
@@ -9,7 +11,9 @@ import {
 	PaginatedBidsContext,
 	PaginatedWinningBidsContext,
 	RealtimeBidsContext,
+	SingleAuctionContext,
 } from '@/contexts';
+import { useAuctionAvailability } from '@/hooks';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import { ActionIcon, Drawer, Indicator, Tooltip } from '@mantine/core';
 import { IconListDetails } from '@tabler/icons-react';
@@ -17,6 +21,11 @@ import { IconListDetails } from '@tabler/icons-react';
 import classes from './styles.module.css';
 
 export default function Bids() {
+	const t = useTranslations();
+	const locale = useLocale();
+	const direction = getLangDir(locale);
+
+	const auction = useContext(SingleAuctionContext);
 	const paginatedBids = useContext(PaginatedBidsContext);
 	const allWinningBids = useContext(AllWinningBidsContext);
 	const paginatedWinningBids = useContext(PaginatedWinningBidsContext);
@@ -24,6 +33,8 @@ export default function Bids() {
 	const realtimeBids = useContext(RealtimeBidsContext);
 	const { isBidsDrawerOpen, openBidsDrawer, closeBidsDrawer } =
 		useContext(AuctionDetailsPageContext);
+
+	const { hasEnded, areBidsAvailable } = useAuctionAvailability();
 
 	const handleOpenDrawer = useCallback(() => {
 		realtimeBids.setStatus('idle');
@@ -44,12 +55,24 @@ export default function Bids() {
 					allWinningBids={allWinningBids}
 					paginatedWinningBids={paginatedWinningBids}
 					myPaginatedBids={myPaginatedBids}
-					withCloseButton
-					onClose={closeBidsDrawer}
+					showContributingBids={hasEnded}
 					className={classes.table}
+					loading={
+						auction.isLoading ||
+						paginatedBids.isLoading ||
+						allWinningBids.isLoading ||
+						paginatedWinningBids.isLoading ||
+						myPaginatedBids.isLoading
+					}
+					unavailable={auction.isSuccess && !areBidsAvailable}
+					onClose={closeBidsDrawer}
+					withCloseButton
 				/>
 			</Drawer>
-			<Tooltip label="Open bids table" position="right">
+			<Tooltip
+				label={t('marketplace.auction.details.bidsDrawer.button.tooltip')}
+				position={direction === 'ltr' ? 'right' : 'left'}
+			>
 				<Indicator
 					className={classes.indicator}
 					size={8}

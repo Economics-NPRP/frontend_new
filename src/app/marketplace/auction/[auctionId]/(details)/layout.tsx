@@ -1,3 +1,5 @@
+import { Metadata } from 'next';
+import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
 import {
@@ -12,10 +14,14 @@ import {
 } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { PageProviders } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
-import { Button, Container, Group, Stack } from '@mantine/core';
+import { Button, Container, Stack } from '@mantine/core';
 import { IconArrowUpLeft } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
+
+export const metadata: Metadata = {
+	title: 'Details',
+};
 
 export interface AuctionDetailsProps {
 	bidConfirmationModal: ReactNode;
@@ -39,6 +45,8 @@ export default function AuctionPage({
 	bidding,
 	suggestions,
 }: AuctionDetailsProps) {
+	const t = useTranslations();
+
 	return withProviders(
 		<>
 			<Container className={classes.bg}>
@@ -53,12 +61,12 @@ export default function AuctionPage({
 					className={classes.button}
 					leftSection={<IconArrowUpLeft />}
 				>
-					Return to Catalogue
+					{t('constants.return.catalogue.label')}
 				</Button>
-				<Group className={classes.details}>
+				<Container className={classes.details}>
 					{card}
 					{details}
-				</Group>
+				</Container>
 				{bidding}
 				{bidsDrawer}
 				{suggestions}

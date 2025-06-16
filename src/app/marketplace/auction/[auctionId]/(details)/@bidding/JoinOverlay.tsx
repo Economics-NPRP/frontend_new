@@ -1,59 +1,37 @@
+import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
-import { useCallback } from 'react';
 
-import { throwError } from '@/helpers';
-import { joinAuction } from '@/lib/auctions';
-import { Button, Container, Loader, Stack, Text, Title } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useJoinAuction } from '@/hooks';
+import { Button, Container, Stack, Text, Title } from '@mantine/core';
+import { IconCheckbox } from '@tabler/icons-react';
+
+import classes from './styles.module.css';
 
 export const JoinOverlay = () => {
+	const t = useTranslations();
 	const { auctionId } = useParams();
-	const queryClient = useQueryClient();
 
-	const mutation = useMutation({
-		mutationFn: () => throwError(joinAuction(auctionId as string)),
-		onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey: ['marketplace', auctionId],
-			});
-		},
-		onError: ({ message }) => {
-			notifications.show({
-				color: 'red',
-				title: 'There was a problem joining the auction',
-				message,
-				position: 'bottom-center',
-			});
-		},
-		retry: false,
-	});
-
-	const onClickHandler = useCallback(() => mutation.mutate(), [mutation]);
+	const joinAuction = useJoinAuction(auctionId as string);
 
 	return (
-		<Stack className="absolute top-0 left-0 justify-center items-center w-full h-full z-10">
-			<Container
-				className="absolute top-0 left-0 w-full h-full -z-10 bg-black/30"
-				style={{ backdropFilter: 'blur(4px)' }}
-			/>
-			{mutation.isPending && (
-				<Stack className="bg-white items-center justify-center size-[200px]">
-					<Loader />
-				</Stack>
-			)}
-			{!mutation.isPending && (
-				<Stack className="gap-2 px-12 py-8 bg-white items-center w-[600px]">
-					<Title className="text-center heading-2">Join The Auction</Title>
-					<Text className="text-center paragraph-sm">
-						You must first join the auction to participate in the bidding process. Click
-						the button below to join.
-					</Text>
-					<Button className="w-[200px] mt-4" onClick={onClickHandler}>
-						Join Auction
-					</Button>
-				</Stack>
-			)}
+		<Stack className={classes.overlay}>
+			<Container className={classes.background} />
+			<Stack className={classes.content}>
+				<Title order={2} className={classes.title}>
+					{t('marketplace.auction.details.bidding.joinOverlay.title')}
+				</Title>
+				<Text className={classes.description}>
+					{t('marketplace.auction.details.bidding.joinOverlay.description')}
+				</Text>
+				<Button
+					className={classes.button}
+					onClick={() => joinAuction.mutate()}
+					rightSection={<IconCheckbox size={16} />}
+					loading={joinAuction.isPending}
+				>
+					{t('constants.actions.joinAuction.label')}
+				</Button>
+			</Stack>
 		</Stack>
 	);
 };

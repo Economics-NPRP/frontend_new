@@ -14,6 +14,7 @@ export const shadows: Partial<MantineShadowsValues> = {
 	lg: '6px 6px 0px 0px var(--shadow-color-1)',
 	md: '4px 4px 0px 0px var(--shadow-color-1)',
 	sm: '3px 3px 0px 0px var(--shadow-color-2)',
+	xs: '0px 1px 12px 0px var(--shadow-color-2)',
 };
 
 export const colors = {

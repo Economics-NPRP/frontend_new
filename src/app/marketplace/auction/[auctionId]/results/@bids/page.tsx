@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useContext, useState } from 'react';
 
 import { ResultsTable } from '@/components/AuctionResultsTable';
@@ -13,13 +14,15 @@ import {
 	PaginatedWinningBidsContext,
 	SingleAuctionContext,
 } from '@/contexts';
-import { AuctionResultsPageContext } from '@/pages/marketplace/auction/[auctionId]/results/constants';
+import { useAuctionAvailability } from '@/hooks';
+import { AuctionResultsPageContext } from '@/pages/marketplace/auction/[auctionId]/results/_components/Providers';
 import { FloatingIndicator, Tabs } from '@mantine/core';
-import { IconGavel, IconTrophy } from '@tabler/icons-react';
+import { IconAward, IconGavel } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
 export default function Bids() {
+	const t = useTranslations();
 	const auction = useContext(SingleAuctionContext);
 	const paginatedBids = useContext(PaginatedBidsContext);
 	const allWinningBids = useContext(AllWinningBidsContext);
@@ -28,6 +31,8 @@ export default function Bids() {
 	const paginatedOpenAuctionResults = useContext(PaginatedOpenAuctionResultsContext);
 	const myOpenAuctionResults = useContext(MyOpenAuctionResultsContext);
 	const { historyRef } = useContext(AuctionResultsPageContext);
+
+	const { hasEnded } = useAuctionAvailability();
 
 	const [currentTab, setCurrentTab] = useState<string | null>('results');
 	const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
@@ -55,16 +60,16 @@ export default function Bids() {
 					<Tabs.Tab
 						value="results"
 						ref={setControlRef('results')}
-						leftSection={<IconTrophy size={16} />}
+						leftSection={<IconAward size={16} />}
 					>
-						Auction Results
+						{t('marketplace.auction.results.bids.tabs.results')}
 					</Tabs.Tab>
 					<Tabs.Tab
 						value="all"
 						ref={setControlRef('all')}
 						leftSection={<IconGavel size={16} />}
 					>
-						All Bids
+						{t('marketplace.auction.results.bids.tabs.bids')}
 					</Tabs.Tab>
 
 					<FloatingIndicator
@@ -90,6 +95,15 @@ export default function Bids() {
 						paginatedWinningBids={paginatedWinningBids}
 						myPaginatedBids={myPaginatedBids}
 						myOpenAuctionResults={myOpenAuctionResults}
+						showContributingBids={hasEnded}
+						loading={
+							auction.isLoading ||
+							paginatedBids.isLoading ||
+							allWinningBids.isLoading ||
+							paginatedWinningBids.isLoading ||
+							myPaginatedBids.isLoading ||
+							myOpenAuctionResults.isLoading
+						}
 					/>
 				</Tabs.Panel>
 			</Tabs>

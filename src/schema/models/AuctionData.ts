@@ -30,7 +30,8 @@ export const BaseAuctionDataSchema = object({
 	image: nullish(pipe(string(), trim(), url())),
 	description: nullish(pipe(string(), trim())),
 	permits: PositiveNumberSchema(),
-	bids: PositiveNumberSchema(true),
+	bidsCount: PositiveNumberSchema(true),
+	biddersCount: PositiveNumberSchema(true),
 	minBid: PositiveNumberSchema(),
 	views: PositiveNumberSchema(true),
 	bookmarks: PositiveNumberSchema(true),
@@ -47,7 +48,8 @@ export const BaseAuctionDataSchema = object({
 export const CreateAuctionDataSchema = omit(BaseAuctionDataSchema, [
 	'id',
 
-	'bids',
+	'bidsCount',
+	'biddersCount',
 	'views',
 	'bookmarks',
 
@@ -75,7 +77,8 @@ export const DefaultAuctionData: IAuctionData = {
 	image: null,
 	description: null,
 	permits: 0,
-	bids: 0,
+	bidsCount: 0,
+	biddersCount: 0,
 	minBid: 0,
 	views: 0,
 	bookmarks: 0,

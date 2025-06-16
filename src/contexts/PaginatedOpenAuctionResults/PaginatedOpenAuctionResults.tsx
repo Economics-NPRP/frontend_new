@@ -16,7 +16,12 @@ import {
 
 export interface IPaginatedOpenAuctionResultsContext
 	extends SortedOffsetPaginatedContextState<IAuctionResultsData> {}
-const DefaultData = getDefaultSortedOffsetPaginatedContextState<IAuctionResultsData>();
+const DefaultData = getDefaultSortedOffsetPaginatedContextState<IAuctionResultsData>(
+	1,
+	20,
+	'permits_reserved',
+	'desc',
+);
 const Context = createContext<IPaginatedOpenAuctionResultsContext>(DefaultData);
 
 export const PaginatedOpenAuctionResultsProvider = ({
@@ -38,12 +43,14 @@ export const PaginatedOpenAuctionResultsProvider = ({
 			context={Context}
 			defaultData={DefaultData}
 			queryKey={['marketplace', auctionId as string, 'paginatedOpenAuctionResults']}
-			queryFn={(page, perPage) => () =>
+			queryFn={(page, perPage, sortBy, sortDirection) => () =>
 				throwError(
 					getPaginatedOpenAuctionResults({
 						auctionId: auctionId as string,
 						page,
 						perPage,
+						sortBy,
+						sortDirection,
 					}),
 				)
 			}

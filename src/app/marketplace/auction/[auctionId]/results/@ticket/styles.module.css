@@ -1,6 +1,6 @@
 .root {
 	@apply justify-center items-center pb-8;
-	height: calc(100vh - 96px);
+	min-height: calc(100vh - 96px);
 
 	> .header {
 		@apply self-stretch justify-between gap-8;
@@ -11,6 +11,10 @@
 
 		> .header {
 			@apply items-center justify-center gap-0;
+
+			> .loader {
+				@apply mb-4;
+			}
 
 			> .title {
 				@apply heading-2;
@@ -42,7 +46,7 @@
 			}
 
 			> .auctions {
-				@apply grid grid-cols-12 gap-4;
+				@apply grid grid-cols-3 gap-4;
 			}
 		}
 
@@ -63,21 +67,21 @@
 		}
 
 		&.winner {
-			@apply w-[400px];
+			@apply w-[320px];
 			@apply gap-0 items-stretch;
 
 			> .upper {
 				@apply relative;
 				@apply justify-center items-center;
 				@apply gap-4 px-8 pt-12 pb-6;
-				@apply bg-dark-600;
+				@apply bg-dark-600 border border-solid border-dark-400;
 				@apply rounded-t-md;
 
 				> .icon {
 					@apply absolute -top-4;
 					@apply size-12;
 					@apply flex justify-center items-center;
-					@apply bg-dark-400 text-white border-4 border-solid border-dark-600;
+					@apply bg-dark-400 text-dark-50 border-4 border-solid border-dark-600;
 					@apply rounded-full;
 				}
 
@@ -159,6 +163,7 @@
 
 			> .divider {
 				@apply flex-nowrap justify-center items-center;
+				@apply bg-white;
 				@apply gap-2;
 
 				> .dot {
@@ -241,6 +246,104 @@
 
 		> .subtext {
 			@apply text-center paragraph-sm-g6;
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-xs {
+		.root {
+			> .winner.ticket {
+				@apply w-[400px];
+			}
+
+			> .loser.ticket > .auctions {
+				@apply grid-cols-6;
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+			> .loser.ticket > .auctions {
+				@apply grid-cols-12;
+			}
+		}
+	}
+
+	@mixin dark {
+		.root > .winner.ticket {
+			> .upper {
+				> .winnings {
+					> .subtext {
+						@apply !text-dark-50;
+					}
+
+					> .row {
+						> .value {
+							@apply !text-white;
+						}
+
+						> .unit {
+							@apply !text-dark-50;
+						}
+					}
+				}
+
+				> .percentage > .row {
+					> .key {
+						@apply !text-dark-50;
+					}
+
+					> .value {
+						@apply !text-dark-50;
+					}
+				}
+			}
+
+			> .middle {
+				@apply bg-dark-700 border-dark-500;
+
+				> .header {
+					@apply border-dark-400;
+				}
+			}
+
+			> .divider {
+				@apply bg-dark-700;
+
+				> .dot {
+					@apply bg-dark-700 border-dark-500;
+				}
+
+				> .line {
+					background-image: repeating-linear-gradient(
+						90deg,
+						#0000 0 8px,
+						var(--mantine-color-dark-5) 0 24px,
+						#0000 0 32px
+					);
+				}
+
+				> .label {
+					@apply !text-dark-50;
+				}
+			}
+
+			> .lower {
+				@apply border-dark-500;
+
+				background-image: repeating-linear-gradient(
+					135deg,
+					rgba(255, 255, 255, 0.01),
+					rgba(255, 255, 255, 0.01) 20px,
+					#0000 20px,
+					#0000 40px
+				);
+			}
 		}
 	}
 }

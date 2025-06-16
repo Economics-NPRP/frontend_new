@@ -1,9 +1,9 @@
 import { SingleAuctionContext } from 'contexts/SingleAuction';
-import { useFormatter } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import { useCallback, useContext, useMemo, useState } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
-import { useUnsavedChanges } from '@/hooks';
+import { useAuctionAvailability, useUnsavedChanges } from '@/hooks';
 import { BiddingNumberInput } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingNumberInput';
 import { BiddingTableData } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
@@ -21,9 +21,12 @@ import {
 import classes from './styles.module.css';
 
 export const InsertForm = () => {
+	const t = useTranslations();
 	const format = useFormatter();
 	const auction = useContext(SingleAuctionContext);
 	const { bids, bidsHandlers, totalPermits } = useContext(AuctionDetailsPageContext);
+
+	const { isUpcoming, hasEnded } = useAuctionAvailability();
 
 	const [subtotal, setSubtotal] = useState(0);
 	const [emissions, setEmissions] = useState(0);
@@ -36,18 +39,20 @@ export const InsertForm = () => {
 		},
 		validate: {
 			permit: (value) => {
-				if (!value) return 'Permit is required';
-				if (value < 1) return 'You must bid at least 1 permit';
-				if (value > auction.data.permits) return 'You cannot bid more than permits offered';
+				if (!value) return t('model.BiddingTableData.permit.required');
+				if (value < 1) return t('model.BiddingTableData.permit.oneOrMore');
+				if (value > auction.data.permits)
+					return t('model.BiddingTableData.permit.moreThanOffered');
 				if (value > auction.data.permits - totalPermits)
-					return 'You cannot bid more than available permits. Please check the bid table';
+					return t('model.BiddingTableData.permit.moreThanAvailable');
 				return false;
 			},
 			bid: (value) => {
-				if (!value) return 'Bid is required';
-				if (value < 1) return 'Bid must be greater than 0';
+				if (!value) return t('model.BiddingTableData.bid.required');
+				if (value < 1) return t('model.BiddingTableData.bid.oneOrMore');
+				//	TODO: add validation for min bid
 				if (bids.some((bid) => bid.bid === value))
-					return 'You have already bid this amount. Please edit the existing bid';
+					return t('model.BiddingTableData.bid.exists');
 				return false;
 			},
 		},
@@ -84,7 +89,7 @@ export const InsertForm = () => {
 			<Stack className={classes.header}>
 				<Group className={classes.row}>
 					<Title order={3} className={classes.title}>
-						Insert Bids
+						{t('marketplace.auction.details.bidding.sidebar.insertForm.title')}
 					</Title>
 					<Group className={classes.dots}>
 						<IconCircleFilled size={6} />
@@ -95,14 +100,14 @@ export const InsertForm = () => {
 					</Group>
 				</Group>
 				<Text className={classes.description}>
-					Insert your bids to the bidding table using the form below
+					{t('marketplace.auction.details.bidding.sidebar.insertForm.description')}
 				</Text>
 			</Stack>
 			{errorMessages.length > 0 && (
 				<Alert
 					variant="light"
 					color="red"
-					title="There was a problem adding your bid"
+					title={t('marketplace.auction.details.bidding.sidebar.insertForm.error.title')}
 					icon={<IconExclamationCircle />}
 					className={classes.error}
 				>
@@ -114,14 +119,18 @@ export const InsertForm = () => {
 					<Group className={classes.section}>
 						<Group className={classes.key}>
 							<IconLicense size={16} className={classes.icon} />
-							<Text className={classes.label}>Permits to Bid</Text>
+							<Text className={classes.label}>
+								{t(
+									'marketplace.auction.details.bidding.sidebar.insertForm.permit.label',
+								)}
+							</Text>
 						</Group>
 						<BiddingNumberInput
 							placeholder="0"
 							max={auction.data.permits - totalPermits}
 							name="permit"
 							key={form.key('permit')}
-							disabled={!auction.data.hasJoined}
+							disabled={!auction.data.hasJoined || isUpcoming || hasEnded}
 							dark
 							{...form.getInputProps('permit')}
 						/>
@@ -129,20 +138,30 @@ export const InsertForm = () => {
 					<Group className={classes.section}>
 						<Group className={classes.key}>
 							<IconLeaf size={16} className={classes.icon} />
-							<Text className={classes.label}>Total Emissions</Text>
+							<Text className={classes.label}>
+								{t(
+									'marketplace.auction.details.bidding.sidebar.insertForm.emission.label',
+								)}
+							</Text>
 						</Group>
-						<Text className={classes.value}>{format.number(emissions)} tCO2e</Text>
+						<Text className={classes.value}>
+							{format.number(emissions)} {t('constants.emissions.unit')}
+						</Text>
 					</Group>
 					<Group className={classes.section}>
 						<Group className={classes.key}>
 							<IconCoins size={16} className={classes.icon} />
-							<Text className={classes.label}>Price per Permit</Text>
+							<Text className={classes.label}>
+								{t(
+									'marketplace.auction.details.bidding.sidebar.insertForm.bid.label',
+								)}
+							</Text>
 						</Group>
 						<BiddingNumberInput
 							placeholder="0.00"
 							name="bid"
 							key={form.key('bid')}
-							disabled={!auction.data.hasJoined}
+							disabled={!auction.data.hasJoined || isUpcoming || hasEnded}
 							decimalScale={2}
 							fixedDecimalScale
 							dark
@@ -152,7 +171,7 @@ export const InsertForm = () => {
 				</Stack>
 				<Stack className={classes.summary}>
 					<Group className={classes.row}>
-						<Text className={classes.text}>Subtotal</Text>
+						<Text className={classes.text}>{t('constants.subtotal')}</Text>
 						<Group className={classes.cell}>
 							<CurrencyBadge className={classes.badge} />
 							<Text className={classes.value}>
@@ -163,14 +182,13 @@ export const InsertForm = () => {
 					<Button
 						className={classes.button}
 						type="submit"
-						disabled={!auction.data.hasJoined}
+						disabled={!auction.data.hasJoined || isUpcoming || hasEnded}
 						leftSection={<IconArrowUpLeft size={16} />}
 					>
-						Add to Table
+						{t('marketplace.auction.details.bidding.sidebar.insertForm.add')}
 					</Button>
 					<Text className={classes.subtext}>
-						Pressing the above button will not submit your bid. It will only add it to
-						the table on the left
+						{t('marketplace.auction.details.bidding.sidebar.insertForm.subtext')}
 					</Text>
 				</Stack>
 			</form>

@@ -34,6 +34,38 @@
 
 			.section button {
 				@apply bg-white text-dark-600;
+
+				&[data-disabled='true'] {
+					@apply bg-dark-400 text-dark-200;
+				}
+			}
+		}
+	}
+}
+
+* {
+	@mixin dark {
+		.root,
+		.root.dark {
+			@apply border-dark-400;
+
+			> .wrapper {
+				.input {
+					@apply numeric-sm-n;
+				}
+
+				.section button {
+					@apply bg-dark-400 text-white;
+
+					&:hover {
+						@apply bg-dark-300;
+					}
+
+					&[data-disabled='true'] {
+						@apply bg-dark-400;
+						@apply opacity-40;
+					}
+				}
 			}
 		}
 	}

@@ -1,24 +1,27 @@
 'use client';
 
 // import { useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { generateBidsRows, generateLegend } from '@/components/BidsTable/helpers';
 import { BidsFilter } from '@/components/BidsTable/types';
+import { Switch } from '@/components/SwitchCase';
 import {
 	IAllWinningBidsContext,
 	IMyOpenAuctionResultsContext,
 	IMyPaginatedBidsContext,
 	IPaginatedBidsContext,
 	IPaginatedWinningBidsContext,
+	MyUserContext,
 } from '@/contexts';
-import { CurrentUserContext } from '@/pages/globalContext';
 import {
 	ActionIcon,
 	Button,
 	Container,
 	Divider,
 	Group,
+	Loader,
 	Menu,
 	Pill,
 	Radio,
@@ -35,6 +38,7 @@ import {
 	IconChevronLeft,
 	IconChevronRight,
 	IconDatabaseOff,
+	IconError404,
 	IconX,
 } from '@tabler/icons-react';
 
@@ -46,6 +50,11 @@ export interface BidsTableProps extends TableProps {
 	paginatedWinningBids?: IPaginatedWinningBidsContext;
 	myPaginatedBids?: IMyPaginatedBidsContext;
 	myOpenAuctionResults?: IMyOpenAuctionResultsContext;
+
+	showContributingBids?: boolean;
+
+	loading?: boolean;
+	unavailable?: boolean;
 
 	withCloseButton?: boolean;
 	onClose?: () => void;
@@ -62,6 +71,11 @@ export const BidsTable = ({
 	myPaginatedBids,
 	myOpenAuctionResults,
 
+	showContributingBids,
+
+	loading = false,
+	unavailable = false,
+
 	withCloseButton,
 	onClose,
 
@@ -73,9 +87,9 @@ export const BidsTable = ({
 	className,
 	...props
 }: BidsTableProps) => {
-	// const t = useTranslations();
+	const t = useTranslations();
 	const tableContainerRef = useRef<HTMLDivElement>(null);
-	const { currentUser } = useContext(CurrentUserContext);
+	const myUser = useContext(MyUserContext);
 
 	const [bidsFilter, setBidsFilter] = useState<BidsFilter>('all');
 
@@ -89,7 +103,7 @@ export const BidsTable = ({
 			myPaginatedBids,
 			myOpenAuctionResults,
 			bidsFilter,
-			currentUser,
+			myUser,
 		});
 	}, [
 		bids,
@@ -98,23 +112,46 @@ export const BidsTable = ({
 		myPaginatedBids,
 		myOpenAuctionResults,
 		bidsFilter,
-		currentUser,
+		myUser,
 	]);
 
 	//	Generate the filter badges
 	const filterBadges = useMemo(() => {
 		if (!bids) return null;
-		if (bidsFilter === 'all') return <Pill>No Filter Applied</Pill>;
+		if (bidsFilter === 'all')
+			return (
+				<Pill className={classes.badge}>
+					{t('components.bidsTable.filters.badges.all')}
+				</Pill>
+			);
 		if (bidsFilter === 'winning')
 			return (
-				<Pill onRemove={() => setBidsFilter('all')} withRemoveButton>
-					Winning Bids Only
+				<Pill
+					className={classes.badge}
+					onRemove={() => setBidsFilter('all')}
+					withRemoveButton
+				>
+					{t('components.bidsTable.filters.badges.winning')}
 				</Pill>
 			);
 		if (bidsFilter === 'mine')
 			return (
-				<Pill onRemove={() => setBidsFilter('all')} withRemoveButton>
-					My Bids Only
+				<Pill
+					className={classes.badge}
+					onRemove={() => setBidsFilter('all')}
+					withRemoveButton
+				>
+					{t('components.bidsTable.filters.badges.mine')}
+				</Pill>
+			);
+		if (bidsFilter === 'contributing')
+			return (
+				<Pill
+					className={classes.badge}
+					onRemove={() => setBidsFilter('all')}
+					withRemoveButton
+				>
+					{t('components.bidsTable.filters.badges.contributing')}
 				</Pill>
 			);
 	}, [bids, bidsFilter]);
@@ -122,8 +159,8 @@ export const BidsTable = ({
 	//	Generate the legend based on the bids filter
 	const legend = useMemo(() => {
 		if (!bids) return null;
-		return generateLegend(bidsFilter);
-	}, [bids, bidsFilter]);
+		return generateLegend(t, bidsFilter, showContributingBids);
+	}, [bids, t, bidsFilter, showContributingBids]);
 
 	const currentContextState = useMemo(() => {
 		if (bidsFilter === 'winning' && paginatedWinningBids) return paginatedWinningBids;
@@ -200,6 +237,13 @@ export const BidsTable = ({
 		if (myPaginatedBids) myPaginatedBids.setCursor(null);
 	}, [bidsFilter, bids.perPage, paginatedWinningBids?.perPage, myPaginatedBids?.perPage]);
 
+	const currentState = useMemo(() => {
+		if (!bidsData && loading) return 'loading';
+		if (unavailable) return 'unavailable';
+		if (!bidsData || bidsData.length === 0) return 'empty';
+		return 'ok';
+	}, [loading, bidsData]);
+
 	return (
 		<Stack className={`${classes.root} ${className}`}>
 			{!hideHeader && (
@@ -207,20 +251,23 @@ export const BidsTable = ({
 					<Group className={classes.row}>
 						<Group className={classes.label}>
 							<Title order={2} className={classes.title}>
-								Bids Table
+								{t('components.bidsTable.title')}
 							</Title>
 							<Text className={classes.subtitle}>
-								Showing{' '}
-								{Math.min(
-									currentContextState.perPage,
-									currentContextState.data.totalCount,
-								)}{' '}
-								{isExact ? 'of' : 'of about'} {currentContextState.data.totalCount}{' '}
-								bids
+								{t('constants.pagination.keyset.bids', {
+									count: Math.min(
+										currentContextState.perPage,
+										currentContextState.data.totalCount,
+									),
+									isExact,
+									total: currentContextState.data.totalCount,
+								})}
 							</Text>
 						</Group>
 						<Group className={classes.settings}>
-							<Text className={classes.label}>Per page:</Text>
+							<Text className={classes.label}>
+								{t('constants.pagination.perPage.label')}
+							</Text>
 							<Select
 								className={classes.dropdown}
 								w={80}
@@ -238,23 +285,39 @@ export const BidsTable = ({
 								<Menu.Dropdown className={classes.filterMenu}>
 									<Radio.Group
 										classNames={{ label: classes.label }}
-										label="Bids Filter"
+										label={t('components.bidsTable.filters.menu.title')}
 										value={bidsFilter}
 										onChange={(value) => setBidsFilter(value as BidsFilter)}
 									>
 										<Stack className={classes.options}>
-											<Radio value="all" label="Show all bids" />
 											<Radio
-												value="contributing"
-												label="Only show bids contributing to your final bill"
+												value="all"
+												label={t(
+													'components.bidsTable.filters.menu.options.all',
+												)}
 											/>
+											{showContributingBids && (
+												<Radio
+													value="contributing"
+													label={t(
+														'components.bidsTable.filters.menu.options.contributing',
+													)}
+												/>
+											)}
 											{paginatedWinningBids && (
 												<Radio
 													value="winning"
-													label="Only show winning bids"
+													label={t(
+														'components.bidsTable.filters.menu.options.winning',
+													)}
 												/>
 											)}
-											<Radio value="mine" label="Only show your bids" />
+											<Radio
+												value="mine"
+												label={t(
+													'components.bidsTable.filters.menu.options.mine',
+												)}
+											/>
 										</Stack>
 									</Radio.Group>
 								</Menu.Dropdown>
@@ -268,38 +331,57 @@ export const BidsTable = ({
 					</Group>
 					<Group className={classes.row}>
 						<Group className={classes.filters}>
-							<Text className={classes.label}>Filters:</Text>
+							<Text className={classes.label}>
+								{t('components.bidsTable.filters.label')}
+							</Text>
 							<Group className={classes.badges}>{filterBadges}</Group>
 						</Group>
 						<Group className={classes.legend}>{legend}</Group>
 					</Group>
 				</Stack>
 			)}
-			<Container className={classes.table} ref={tableContainerRef}>
+			<Stack className={classes.table} ref={tableContainerRef}>
 				<Table highlightOnHover withColumnBorders stickyHeader {...props}>
 					<Table.Thead>
 						<Table.Tr>
-							<Table.Th>Company</Table.Th>
+							<Table.Th>{t('components.bidsTable.columns.company')}</Table.Th>
 							<Table.Th className="flex items-center justify-between">
-								Bid
+								{t('components.bidsTable.columns.bid')}
 								<IconArrowNarrowDown size={14} />
 							</Table.Th>
-							<Table.Th>Permits</Table.Th>
-							<Table.Th>Total Bid</Table.Th>
-							<Table.Th>Timestamp</Table.Th>
+							<Table.Th>{t('constants.permits.key')}</Table.Th>
+							<Table.Th>{t('components.bidsTable.columns.totalBid')}</Table.Th>
+							<Table.Th>{t('components.bidsTable.columns.timestamp')}</Table.Th>
 						</Table.Tr>
 					</Table.Thead>
 					<Table.Tbody>{bidsData}</Table.Tbody>
 				</Table>
-				{(!bidsData || bidsData.length === 0) && (
-					<Stack className={classes.empty}>
-						<Container className={classes.icon}>
-							<IconDatabaseOff size={24} />
-						</Container>
-						<Text className={classes.text}>No bids found</Text>
-					</Stack>
-				)}
-			</Container>
+				<Switch value={currentState}>
+					<Switch.Loading>
+						<Stack className={classes.placeholder}>
+							<Loader color="gray" />
+						</Stack>
+					</Switch.Loading>
+					<Switch.Case when="unavailable">
+						<Stack className={classes.placeholder}>
+							<Container className={classes.icon}>
+								<IconError404 size={28} />
+							</Container>
+							<Text className={classes.text}>
+								{t('components.bidsTable.sealed.unavailable')}
+							</Text>
+						</Stack>
+					</Switch.Case>
+					<Switch.Case when="empty">
+						<Stack className={classes.placeholder}>
+							<Container className={classes.icon}>
+								<IconDatabaseOff size={24} />
+							</Container>
+							<Text className={classes.text}>{t('components.bidsTable.empty')}</Text>
+						</Stack>
+					</Switch.Case>
+				</Switch>
+			</Stack>
 			<Group className={classes.footer}>
 				<Group className={classes.pagination}>
 					<ActionIcon
@@ -324,8 +406,12 @@ export const BidsTable = ({
 						<Group className={classes.row}>
 							<Group className={classes.legend}>{legend}</Group>
 							<Divider orientation="vertical" />
-							<Button variant="outline" onClick={onViewAll}>
-								View All Bids
+							<Button
+								className={classes.button}
+								variant="outline"
+								onClick={onViewAll}
+							>
+								{t('constants.view.allBids.label')}
 							</Button>
 						</Group>
 					) : (

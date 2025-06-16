@@ -1,9 +1,12 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useContext, useMemo } from 'react';
 
+import { Switch } from '@/components/SwitchCase';
 import { MyOpenAuctionResultsContext, SingleAuctionContext } from '@/contexts';
 import { useAuctionAvailability } from '@/hooks';
+import { Loading } from '@/pages/marketplace/auction/[auctionId]/results/@ticket/Loading';
 import { Loser } from '@/pages/marketplace/auction/[auctionId]/results/@ticket/Loser';
 import { Ongoing } from '@/pages/marketplace/auction/[auctionId]/results/@ticket/Ongoing';
 import { Unjoined } from '@/pages/marketplace/auction/[auctionId]/results/@ticket/Unjoined';
@@ -14,6 +17,7 @@ import { IconArrowUpLeft } from '@tabler/icons-react';
 import classes from './styles.module.css';
 
 export default function Ticket() {
+	const t = useTranslations();
 	const auction = useContext(SingleAuctionContext);
 	const myOpenAuctionResults = useContext(MyOpenAuctionResultsContext);
 
@@ -24,21 +28,44 @@ export default function Ticket() {
 		[myOpenAuctionResults.data],
 	);
 
+	const currentState = useMemo(() => {
+		if (myOpenAuctionResults.isLoading || auction.isLoading) return 'loading';
+		if (!auction.data.hasJoined) return 'unjoined';
+		if (auction.data.hasJoined && !areResultsAvailable) return 'live';
+		if (areResultsAvailable && isWinner) return 'winner';
+		if (areResultsAvailable && !isWinner) return 'loser';
+	}, [
+		auction.data.hasJoined,
+		auction.isLoading,
+		areResultsAvailable,
+		isWinner,
+		myOpenAuctionResults.isLoading,
+	]);
+
 	return (
 		<Stack className={classes.root}>
 			<Group className={classes.header}>
-				<Button
-					component="a"
-					href={`/marketplace/auction/${auction.data.id}`}
-					leftSection={<IconArrowUpLeft />}
-				>
-					Return to Auction Page
+				<Button component="a" href={'/marketplace'} leftSection={<IconArrowUpLeft />}>
+					{t('constants.return.catalogue.label')}
 				</Button>
 			</Group>
-			{!auction.data.hasJoined && <Unjoined />}
-			{auction.data.hasJoined && !areResultsAvailable && <Ongoing />}
-			{areResultsAvailable && isWinner && <Winner />}
-			{areResultsAvailable && !isWinner && <Loser />}
+			<Switch value={currentState}>
+				<Switch.Loading>
+					<Loading />
+				</Switch.Loading>
+				<Switch.Case when="unjoined">
+					<Unjoined />
+				</Switch.Case>
+				<Switch.Live>
+					<Ongoing />
+				</Switch.Live>
+				<Switch.Case when="winner">
+					<Winner />
+				</Switch.Case>
+				<Switch.Case when="loser">
+					<Loser />
+				</Switch.Case>
+			</Switch>
 		</Stack>
 	);
 }

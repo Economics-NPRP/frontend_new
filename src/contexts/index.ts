@@ -5,6 +5,7 @@ export * from './InfinitePaginatedAuctions';
 export * from './MyOpenAuctionResults';
 export * from './MyPaginatedBids';
 export * from './MyPaginatedWinningBids';
+export * from './MyUser';
 export * from './PaginatedAuctions';
 export * from './PaginatedBids';
 export * from './PaginatedOpenAuctionResults';

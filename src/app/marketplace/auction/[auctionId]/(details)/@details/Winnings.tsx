@@ -1,13 +1,27 @@
-import { useFormatter } from 'next-intl';
-import { useContext } from 'react';
+import { useFormatter, useTranslations } from 'next-intl';
+import { useContext, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
+import { Switch } from '@/components/SwitchCase';
 import { MyOpenAuctionResultsContext, SingleAuctionContext } from '@/contexts';
 import { useAuctionAvailability } from '@/hooks';
-import { Alert, Button, Container, Divider, Group, Stack, Text, Tooltip } from '@mantine/core';
 import {
+	ActionIcon,
+	Button,
+	Container,
+	Divider,
+	Group,
+	Loader,
+	Skeleton,
+	Stack,
+	Text,
+	Title,
+	Tooltip,
+	useMatches,
+} from '@mantine/core';
+import {
+	IconArrowUpRight,
 	IconCoins,
-	IconExclamationCircle,
 	IconInfoCircle,
 	IconLeaf,
 	IconLicense,
@@ -16,21 +30,36 @@ import {
 import classes from './styles.module.css';
 
 export const Winnings = () => {
+	const t = useTranslations();
 	const format = useFormatter();
+	const showButtonText = useMatches({
+		xs: true,
+		sm: false,
+		md: true,
+		xl: false,
+	});
 	const auction = useContext(SingleAuctionContext);
 	const myOpenAuctionResults = useContext(MyOpenAuctionResultsContext);
 
 	const { areResultsAvailable } = useAuctionAvailability();
+
+	const currentState = useMemo(() => {
+		if (myOpenAuctionResults.isLoading || auction.isLoading) return 'loading';
+		if (!areResultsAvailable) return 'unavailable';
+		return 'available';
+	}, [myOpenAuctionResults.isLoading, auction.isLoading, areResultsAvailable]);
 
 	return (
 		<Stack className={`${classes.winnings} ${classes.section}`}>
 			<Divider
 				label={
 					<Group className={classes.row}>
-						<Text className={classes.label}>Your Current Winnings</Text>
+						<Text className={classes.label}>
+							{t('marketplace.auction.details.details.winnings.title')}
+						</Text>
 						<Tooltip
 							position="top"
-							label="Estimated number of permits you will win based on the current winning bids"
+							label={t('marketplace.auction.details.details.winnings.info')}
 						>
 							<IconInfoCircle size={14} className={classes.info} />
 						</Tooltip>
@@ -41,45 +70,89 @@ export const Winnings = () => {
 					label: classes.label,
 				}}
 			/>
-			{!areResultsAvailable && (
-				<Alert
-					variant="light"
-					color="gray"
-					title={
-						auction.data.type === 'sealed'
-							? 'Results are currently unavailable'
-							: 'You have not joined the auction yet'
-					}
-					icon={<IconExclamationCircle />}
-				>
-					{auction.data.type === 'sealed'
-						? 'The auction results will be released after the auction ends and all bids have been processed.'
-						: 'Please join the auction to see your estimated winnings.'}
-				</Alert>
-			)}
-			{areResultsAvailable && (
-				<>
+
+			<Switch value={currentState}>
+				<Switch.Loading>
 					<Group className={classes.row}>
 						<Stack className={classes.cell}>
 							<Container className={classes.icon}>
 								<IconLicense size={16} />
 							</Container>
-							<Text className={classes.key}>Estimated # of Permits</Text>
+							<Text className={classes.key}>
+								{t('marketplace.auction.details.details.winnings.permits')}
+							</Text>
+							<Skeleton width={100} height={28} visible data-dark />
+						</Stack>
+						<Stack className={classes.cell}>
+							<Container className={classes.icon}>
+								<IconLeaf size={16} />
+							</Container>
+							<Text className={classes.key}>
+								{t('marketplace.auction.details.details.winnings.emissions')}
+							</Text>
+							<Skeleton width={120} height={28} visible data-dark />
+						</Stack>
+						<Stack className={classes.cell}>
+							<Container className={classes.icon}>
+								<IconCoins size={16} />
+							</Container>
+							<Text className={classes.key}>
+								{t('marketplace.auction.details.details.winnings.bill')}
+							</Text>
+							<Skeleton width={160} height={28} visible data-dark />
+						</Stack>
+						<Stack className={classes.cell}>
+							<Loader color="gray" className={classes.loader} />
+						</Stack>
+					</Group>
+				</Switch.Loading>
+				<Switch.Case when="unavailable">
+					<Stack className={classes.alert}>
+						<Title order={3} className={classes.title}>
+							{auction.data.type === 'sealed'
+								? t(
+										'marketplace.auction.details.details.winnings.alert.sealed.title',
+									)
+								: t(
+										'marketplace.auction.details.details.winnings.alert.else.title',
+									)}
+						</Title>
+						<Text className={classes.description}>
+							{auction.data.type === 'sealed'
+								? t(
+										'marketplace.auction.details.details.winnings.alert.sealed.description',
+									)
+								: t(
+										'marketplace.auction.details.details.winnings.alert.else.description',
+									)}
+						</Text>
+					</Stack>
+				</Switch.Case>
+				<Switch.Case when="available">
+					<Group className={classes.row}>
+						<Stack className={classes.cell}>
+							<Container className={classes.icon}>
+								<IconLicense size={16} />
+							</Container>
+							<Text className={classes.key}>
+								{t('marketplace.auction.details.details.winnings.permits')}
+							</Text>
 							<Group className={classes.row}>
 								<Text className={classes.value}>
 									{format.number(
 										Math.round(myOpenAuctionResults.data.permitsReserved),
 									)}
 								</Text>
-								<Text className={classes.unit}>permits</Text>
+								<Text className={classes.unit}>{t('constants.permits.unit')}</Text>
 							</Group>
 						</Stack>
-						<Divider orientation="vertical" className={classes.divider} />
 						<Stack className={classes.cell}>
 							<Container className={classes.icon}>
 								<IconLeaf size={16} />
 							</Container>
-							<Text className={classes.key}>Estimated # of Emissions</Text>
+							<Text className={classes.key}>
+								{t('marketplace.auction.details.details.winnings.emissions')}
+							</Text>
 							<Group className={classes.row}>
 								<Text className={classes.value}>
 									{format.number(
@@ -89,17 +162,20 @@ export const Winnings = () => {
 										),
 									)}
 								</Text>
-								<Text className={classes.unit}>tCO2e</Text>
+								<Text className={classes.unit}>
+									{t('constants.emissions.unit')}
+								</Text>
 							</Group>
 						</Stack>
-						<Divider orientation="vertical" className={classes.divider} />
 						<Stack className={classes.cell}>
 							<Container className={classes.icon}>
 								<IconCoins size={16} />
 							</Container>
-							<Text className={classes.key}>Estimated Final Bill</Text>
+							<Text className={classes.key}>
+								{t('marketplace.auction.details.details.winnings.bill')}
+							</Text>
 							<Group className={classes.row}>
-								<CurrencyBadge />
+								<CurrencyBadge className={classes.badge} />
 								<Text className={classes.value}>
 									{format.number(
 										Math.round(myOpenAuctionResults.data.finalBill),
@@ -108,17 +184,36 @@ export const Winnings = () => {
 								</Text>
 							</Group>
 						</Stack>
+						<Tooltip
+							label={t('marketplace.auction.details.details.winnings.cta.tooltip')}
+						>
+							<Switch value={showButtonText}>
+								<Switch.True>
+									<Button
+										className={classes.cell}
+										component="a"
+										href={`/marketplace/auction/${auction.data.id}/results`}
+										rightSection={<IconArrowUpRight size={24} />}
+									>
+										{t(
+											'marketplace.auction.details.details.winnings.cta.label',
+										)}
+									</Button>
+								</Switch.True>
+								<Switch.False>
+									<ActionIcon
+										className={classes.cell}
+										component="a"
+										href={`/marketplace/auction/${auction.data.id}/results`}
+									>
+										<IconArrowUpRight size={24} />
+									</ActionIcon>
+								</Switch.False>
+							</Switch>
+						</Tooltip>
 					</Group>
-					<Button
-						className={classes.subtle}
-						component="a"
-						href={`/marketplace/auction/${auction.data.id}/results`}
-						variant="subtle"
-					>
-						View Full Results
-					</Button>
-				</>
-			)}
+				</Switch.Case>
+			</Switch>
 		</Stack>
 	);
 };

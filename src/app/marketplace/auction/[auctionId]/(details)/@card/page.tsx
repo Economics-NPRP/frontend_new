@@ -1,49 +1,48 @@
 'use client';
 
 import { DateTime } from 'luxon';
-import { useFormatter } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { useCallback, useContext } from 'react';
+import { useContext, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { LargeCountdown } from '@/components/Countdown';
+import { Switch } from '@/components/SwitchCase';
 import { SingleAuctionContext } from '@/contexts';
-import { throwError } from '@/helpers';
-import { joinAuction } from '@/lib/auctions';
+import { useAuctionAvailability, useJoinAuction } from '@/hooks';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
-import { Button, Container, Group, Stack, Text } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
-import { IconGavel, IconGitCompare, IconLeaf } from '@tabler/icons-react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Button, Container, Group, Skeleton, Stack, Text, Tooltip } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
+import {
+	IconAwardFilled,
+	IconCheckbox,
+	IconGavel,
+	IconGitCompare,
+	IconLeaf,
+} from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
 export default function Card() {
-	// const t = useTranslations();
+	const t = useTranslations();
 	const format = useFormatter();
-	const queryClient = useQueryClient();
+	const isMobile = useMediaQuery('(max-width: 48em)');
 	const auction = useContext(SingleAuctionContext);
 	const { scrollToBidding } = useContext(AuctionDetailsPageContext);
 
-	const mutation = useMutation({
-		mutationFn: () => throwError(joinAuction(auction.data.id as string)),
-		onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey: ['marketplace', auction.data.id],
-			});
-		},
-		onError: ({ message }) => {
-			notifications.show({
-				color: 'red',
-				title: 'There was a problem joining the auction',
-				message,
-				position: 'bottom-center',
-			});
-		},
-		retry: false,
-	});
+	const { isUpcoming, hasEnded, isLive } = useAuctionAvailability();
 
-	const handleJoinAuction = useCallback(() => mutation.mutate(), [mutation]);
+	const joinAuction = useJoinAuction(auction.data.id);
+
+	const bidsUrl = `/marketplace/auction/${auction.data.id}/results#history`;
+	const resultsUrl = `/marketplace/auction/${auction.data.id}/results`;
+
+	const currentState = useMemo(() => {
+		if (auction.isLoading) return 'loading';
+		if (isUpcoming) return 'upcoming';
+		if (isLive) return 'live';
+		if (hasEnded) return 'ended';
+	}, [auction.isLoading, isUpcoming, isLive, hasEnded]);
 
 	return (
 		<Stack className={classes.root}>
@@ -54,85 +53,235 @@ export default function Card() {
 						alt={'Image of a power plant'}
 						fill
 					/>
+					<Stack
+						className={`${classes.overlay} ${(hasEnded || isUpcoming) && classes.blurred}`}
+					>
+						<Switch value={currentState}>
+							<Switch.Ended>
+								<Text className={classes.text}>
+									{t('constants.auctionStatus.ended.label')}
+								</Text>
+							</Switch.Ended>
+							<Switch.Upcoming>
+								<Text className={classes.text}>
+									{t('constants.auctionStatus.upcoming.label')}
+								</Text>
+							</Switch.Upcoming>
+						</Switch>
+					</Stack>
 				</Container>
 			</Container>
 			<Group className={classes.row}>
-				{/* <Stack className={classes.section}>
-					<Text className={classes.subtext}>Buy Now Price</Text>
-					<Group className={classes.price}>
-						<CurrencyBadge className={classes.badge} />
-						<Text className={classes.value}>
-							{format.number(auction.data.minBid + 100, 'money')}
-						</Text>
-					</Group>
-				</Stack> */}
-				<Stack className={classes.section}>
-					<Text className={classes.subtext}>Permits Offered</Text>
-					<Group className={classes.price}>
-						<Container className={classes.icon}>
-							<IconLeaf size={14} />
-						</Container>
-						<Text className={classes.value}>{format.number(auction.data.permits)}</Text>
-					</Group>
-				</Stack>
-				<Stack className={classes.section}>
-					<Text className={classes.subtext}>Minimum Bid</Text>
-					<Group className={classes.price}>
-						<CurrencyBadge className={classes.badge} />
-						<Text className={classes.value}>
-							{format.number(auction.data.minBid, 'money')}
-						</Text>
-					</Group>
-				</Stack>
-				<Stack className={classes.section}>
-					<Text className={classes.subtext}>Minimum Increment</Text>
-					<Group className={classes.price}>
-						<CurrencyBadge className={classes.badge} />
-						<Text className={classes.value}>{format.number(1, 'money')}</Text>
-					</Group>
-				</Stack>
+				<Switch value={auction.isLoading}>
+					<Switch.True>
+						<Stack className={classes.section}>
+							<Text className={classes.subtext}>
+								{isMobile
+									? t('constants.permitsOffered.short')
+									: t('constants.permitsOffered.full')}
+							</Text>
+							<Skeleton width={120} height={24} data-dark visible />
+						</Stack>
+						<Stack className={classes.section}>
+							<Text className={classes.subtext}>
+								{isMobile
+									? t('constants.minWinningBid.short')
+									: t('constants.minWinningBid.med')}
+							</Text>
+							<Skeleton width={120} height={24} data-dark visible />
+						</Stack>
+						<Stack className={classes.section}>
+							<Text className={classes.subtext}>
+								{isMobile
+									? t('constants.minBidIncrement.short')
+									: t('constants.minBidIncrement.med')}
+							</Text>
+							<Skeleton width={120} height={24} data-dark visible />
+						</Stack>
+					</Switch.True>
+					<Switch.False>
+						<Stack className={classes.section}>
+							<Text className={classes.subtext}>
+								{isMobile
+									? t('constants.permitsOffered.short')
+									: t('constants.permitsOffered.full')}
+							</Text>
+							<Group className={classes.price}>
+								<Container className={classes.icon}>
+									<IconLeaf size={14} />
+								</Container>
+								<Text className={classes.value}>
+									{format.number(auction.data.permits)}
+								</Text>
+							</Group>
+						</Stack>
+						<Stack className={classes.section}>
+							<Text className={classes.subtext}>
+								{isMobile
+									? t('constants.minWinningBid.short')
+									: t('constants.minWinningBid.med')}
+							</Text>
+							<Group className={classes.price}>
+								<CurrencyBadge className={classes.badge} />
+								<Text className={classes.value}>
+									{format.number(auction.data.minBid, 'money')}
+								</Text>
+							</Group>
+						</Stack>
+						<Stack className={classes.section}>
+							<Text className={classes.subtext}>
+								{isMobile
+									? t('constants.minBidIncrement.short')
+									: t('constants.minBidIncrement.med')}
+							</Text>
+							<Group className={classes.price}>
+								<CurrencyBadge className={classes.badge} />
+								<Text className={classes.value}>{format.number(1, 'money')}</Text>
+							</Group>
+						</Stack>
+					</Switch.False>
+				</Switch>
 			</Group>
-			<Stack className={classes.countdown}>
-				<Text className={classes.title}>Ending In</Text>
-				<LargeCountdown targetDate={auction.data.endDatetime} />
-				<Text className={classes.subtext}>
-					{DateTime.fromISO(auction.data.endDatetime).toLocaleString(
-						DateTime.DATETIME_FULL,
-					)}
-				</Text>
-			</Stack>
-			<Group className={classes.prompt}>
-				{/* <Button
-					className={classes.cta}
-					rightSection={<IconShoppingBag size={16} />}
-					variant="outline"
-				>
-					Buy Now
-				</Button> */}
-				{auction.data.hasJoined && (
-					<>
+			<Switch value={currentState}>
+				<Switch.Loading>
+					<Stack className={classes.countdown}>
+						<LargeCountdown targetDate={auction.data.startDatetime} loading />
+					</Stack>
+					<Group className={classes.prompt}>
+						<Skeleton height={40} visible />
+						<Skeleton height={40} visible />
+					</Group>
+				</Switch.Loading>
+				<Switch.Upcoming>
+					<Stack className={classes.countdown}>
+						<Text className={classes.title}>
+							{t('constants.auctionStatus.startingIn.label')}
+						</Text>
+						<LargeCountdown targetDate={auction.data.startDatetime} />
+						<Text className={classes.subtext}>
+							{DateTime.fromISO(auction.data.startDatetime).toLocaleString(
+								DateTime.DATETIME_FULL,
+							)}
+						</Text>
+					</Stack>
+					<Group className={classes.prompt}>
 						<Button
-							className={classes.cta}
+							className={`${classes.secondary} ${classes.cta}`}
 							rightSection={<IconGitCompare size={16} />}
 							variant="outline"
 						>
-							Compare Auctions
+							{t('marketplace.auction.details.card.actions.compare.label')}
+						</Button>
+						<Switch value={auction.data.hasJoined}>
+							<Switch.True>
+								<Tooltip
+									label={t(
+										'marketplace.auction.details.card.actions.startBidding.tooltipUpcoming',
+									)}
+								>
+									<Button
+										className={`${classes.primary} ${classes.cta}`}
+										rightSection={<IconGavel size={16} />}
+										disabled
+									>
+										{t(
+											'marketplace.auction.details.card.actions.startBidding.label',
+										)}
+									</Button>
+								</Tooltip>
+							</Switch.True>
+							<Switch.False>
+								<Button
+									className={`${classes.primary} ${classes.cta}`}
+									onClick={() => joinAuction.mutate()}
+									rightSection={<IconCheckbox size={16} />}
+									loading={joinAuction.isPending}
+								>
+									{t('constants.actions.joinAuction.label')}
+								</Button>
+							</Switch.False>
+						</Switch>
+					</Group>
+				</Switch.Upcoming>
+				<Switch.Live>
+					<Stack className={classes.countdown}>
+						<Text className={classes.title}>
+							{t('constants.auctionStatus.endingIn.label')}
+						</Text>
+						<LargeCountdown targetDate={auction.data.endDatetime} />
+						<Text className={classes.subtext}>
+							{DateTime.fromISO(auction.data.endDatetime).toLocaleString(
+								DateTime.DATETIME_FULL,
+							)}
+						</Text>
+					</Stack>
+					<Group className={classes.prompt}>
+						<Button
+							className={`${classes.secondary} ${classes.cta}`}
+							rightSection={<IconGitCompare size={16} />}
+							variant="outline"
+						>
+							{t('marketplace.auction.details.card.actions.compare.label')}
+						</Button>
+						<Switch value={auction.data.hasJoined}>
+							<Switch.True>
+								<Button
+									className={`${classes.primary} ${classes.cta}`}
+									rightSection={<IconGavel size={16} />}
+									onClick={() => scrollToBidding({ alignment: 'center' })}
+								>
+									{t(
+										'marketplace.auction.details.card.actions.startBidding.label',
+									)}
+								</Button>
+							</Switch.True>
+							<Switch.False>
+								<Button
+									className={`${classes.primary} ${classes.cta}`}
+									onClick={() => joinAuction.mutate()}
+									rightSection={<IconCheckbox size={16} />}
+									loading={joinAuction.isPending}
+								>
+									{t('constants.actions.joinAuction.label')}
+								</Button>
+							</Switch.False>
+						</Switch>
+					</Group>
+				</Switch.Live>
+				<Switch.Ended>
+					<Stack className={classes.countdown}>
+						<Text className={classes.title}>
+							{t('constants.auctionStatus.auctionEnded.label')}
+						</Text>
+						<LargeCountdown targetDate={auction.data.endDatetime} />
+						<Text className={classes.subtext}>
+							{DateTime.fromISO(auction.data.endDatetime).toLocaleString(
+								DateTime.DATETIME_FULL,
+							)}
+						</Text>
+					</Stack>
+					<Group className={classes.prompt}>
+						<Button
+							className={`${classes.secondary} ${classes.cta}`}
+							component="a"
+							href={bidsUrl}
+							rightSection={<IconGavel size={16} />}
+							variant="outline"
+						>
+							{t('constants.view.bids.label')}
 						</Button>
 						<Button
-							className={classes.cta}
-							rightSection={<IconGavel size={16} />}
+							className={`${classes.primary} ${classes.cta}`}
+							component="a"
+							href={resultsUrl}
+							rightSection={<IconAwardFilled size={16} />}
 							onClick={() => scrollToBidding({ alignment: 'center' })}
 						>
-							Start Bidding
+							{t('constants.view.results.label')}
 						</Button>
-					</>
-				)}
-				{!auction.data.hasJoined && (
-					<Button className={classes.cta} onClick={handleJoinAuction}>
-						Join Auction
-					</Button>
-				)}
-			</Group>
+					</Group>
+				</Switch.Ended>
+			</Switch>
 		</Stack>
 	);
 }

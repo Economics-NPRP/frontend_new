@@ -1,12 +1,13 @@
 .root {
 	> .inner > .content {
-		@apply min-w-[800px];
-		@apply px-16 pt-12 pb-8;
+		@apply p-6;
 		@apply justify-center items-center;
+
+		min-width: calc(100vw - 16px);
 
 		> .body {
 			@apply flex flex-col items-stretch justify-center;
-			@apply gap-4 p-0;
+			@apply gap-2 p-0;
 
 			> .title {
 				@apply text-center text-pretty heading-2;
@@ -21,21 +22,22 @@
 			}
 
 			> .divider {
-				@apply my-4;
+				@apply my-4 uppercase;
 			}
 
 			> .summary {
 				@apply items-center justify-center flex-nowrap;
-				@apply mb-4 gap-16;
+				@apply mb-4 gap-8;
 
 				> .cell {
 					@apply gap-0 items-center;
 
 					> .icon {
-						@apply size-12 flex items-center justify-center;
-						@apply mb-2;
-						@apply bg-white border border-solid border-gray-300 shadow-sm;
-						@apply text-dark-300;
+						@apply size-10 flex items-center justify-center;
+						@apply mb-4;
+						@apply bg-gray-50;
+						@apply rounded-sm;
+						@apply text-gray-600;
 					}
 
 					> .key {
@@ -50,7 +52,7 @@
 						}
 
 						> .unit {
-							@apply paragraph-sm;
+							@apply hidden paragraph-sm;
 						}
 					}
 				}
@@ -61,7 +63,7 @@
 			}
 
 			> .actions {
-				@apply mt-4 gap-2 justify-center flex-nowrap;
+				@apply gap-2 justify-center flex-nowrap;
 
 				> .button {
 					@apply flex-[50%];
@@ -77,6 +79,47 @@
 
 			> .body {
 				@apply items-center justify-center;
+			}
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root > .inner > .content {
+			@apply min-w-[800px];
+			@apply px-16 pt-12;
+
+			> .body {
+				@apply gap-4;
+
+				> .summary {
+					@apply gap-16;
+
+					> .row > .unit {
+						@apply block;
+					}
+				}
+
+				> .actions {
+					@apply mt-4;
+				}
+			}
+		}
+	}
+
+	@mixin dark {
+		.root > .inner > .content > .body {
+			> .summary > .cell > .icon {
+				@apply bg-dark-600 text-dark-50;
+			}
+
+			> .actions > .button.secondary {
+				@apply bg-dark-700 border-dark-400 text-white;
+
+				&:hover {
+					@apply bg-dark-600;
+				}
 			}
 		}
 	}

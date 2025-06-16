@@ -142,7 +142,7 @@ const FiltersCore = () => {
 							<IconTrash size={16} />
 						</ActionIcon>
 					</Tooltip>
-					<Tooltip label="Reset changes to filters">
+					<Tooltip label="Reset unsaved changes to filters">
 						<ActionIcon
 							className={`${classes.action} ${classes.square}`}
 							onClick={form.reset}
@@ -168,7 +168,7 @@ const FiltersCore = () => {
 					chevron: classes.chevron,
 					content: classes.content,
 				}}
-				defaultValue={['type', 'sector']}
+				defaultValue={['type', 'status', 'sector']}
 				chevron={<IconPlus size={16} />}
 				multiple
 			>

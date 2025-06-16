@@ -1,3 +1,5 @@
+'use client';
+
 import { RefObject, createContext } from 'react';
 
 export const DefaultAuctionResultsPageContextData: IAuctionResultsPageContext = {

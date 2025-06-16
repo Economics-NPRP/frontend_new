@@ -34,8 +34,8 @@
 				backdrop-filter: blur(4px);
 
 				> .text {
-					@apply text-center uppercase tracking-[0.25rem] indent-1;
-					@apply display-xl-w;
+					@apply text-center uppercase tracking-[0.125rem] indent-1;
+					@apply display-2xl-w opacity-50;
 				}
 			}
 		}
@@ -92,14 +92,27 @@
 			}
 
 			> .badges {
+				@apply min-h-7;
 				@apply gap-1 pb-2;
 			}
 		}
 
-		> .footer {
+		.divider {
+			@apply border-gray-200;
+		}
+
+		> .properties {
 			@apply h-16;
 			@apply flex-nowrap;
 			@apply gap-0;
+
+			background-image: repeating-linear-gradient(
+				135deg,
+				rgba(0, 0, 0, 0.01),
+				rgba(0, 0, 0, 0.01) 20px,
+				#0000 20px,
+				#0000 40px
+			);
 
 			> .cell {
 				@apply h-12;
@@ -126,24 +139,29 @@
 						@apply numeric-lg;
 					}
 				}
+			}
+		}
 
-				> .button {
-					@apply w-full;
+		> .footer {
+			@apply p-2 gap-2;
+			@apply flex-nowrap;
 
-					&.primary {
-						@apply flex-[2_0_0%];
-					}
+			> .button {
+				@apply w-full max-h-9;
 
-					&.secondary {
-						@apply flex-[1_0_0%];
-					}
+				&.primary {
+					@apply flex-[3_0_0%];
+				}
+
+				&.secondary {
+					@apply flex-[2_0_0%];
 				}
 			}
 		}
 	}
 
 	&:hover {
-		@apply shadow-sm;
+		@apply shadow-xs;
 
 		> .image {
 			> img {
@@ -178,7 +196,7 @@
 				@apply border-y border-0 border-solid border-dark-400;
 
 				> .permits {
-					@apply !text-white;
+					@apply !text-dark-50;
 				}
 			}
 
@@ -189,12 +207,16 @@
 					@apply border-dark-400 text-gray-300;
 				}
 
-				> .footer > .cell > .button {
+				> .properties > .cell .value {
+					@apply !text-dark-50;
+				}
+
+				> .footer > .button {
 					&.primary {
-						@apply bg-white text-dark-600;
+						@apply bg-dark-400 text-white;
 
 						&:hover {
-							@apply bg-gray-200;
+							@apply bg-dark-300;
 						}
 					}
 
@@ -202,10 +224,14 @@
 						@apply bg-dark-600 border-dark-400 text-white;
 
 						&:hover {
-							@apply bg-dark-700;
+							@apply bg-dark-500;
 						}
 					}
 				}
+			}
+
+			.divider {
+				@apply border-dark-400;
 			}
 		}
 	}

@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
 import { InfinitePaginatedAuctionsProvider, PaginatedAuctionsProvider } from '@/contexts';
@@ -5,6 +6,10 @@ import { withProviders } from '@/helpers';
 import { Container } from '@mantine/core';
 
 import classes from './styles.module.css';
+
+export const metadata: Metadata = {
+	title: 'Home',
+};
 
 export interface HomeProps {
 	banner: ReactNode;

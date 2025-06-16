@@ -8,4 +8,5 @@ export interface CountdownProps extends ComponentProps<'div'> {
 	targetDate: DateTime | string;
 	units?: CountdownUnitsArray;
 	displayOnly?: boolean;
+	loading?: boolean;
 }
