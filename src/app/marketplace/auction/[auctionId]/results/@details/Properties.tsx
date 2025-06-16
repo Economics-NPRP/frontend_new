@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { useContext } from 'react';
 
 import { WithSkeleton } from '@/components/WithSkeleton';
-import { PaginatedBidsContext, SingleAuctionContext } from '@/contexts';
+import { SingleAuctionContext } from '@/contexts';
 import { useAuctionAvailability } from '@/hooks';
 import { Container, Group, Stack, Text } from '@mantine/core';
 import {
@@ -22,7 +22,6 @@ import classes from './styles.module.css';
 export const Properties = () => {
 	const t = useTranslations();
 	const auction = useContext(SingleAuctionContext);
-	const paginatedBids = useContext(PaginatedBidsContext);
 
 	const { areBidsAvailable } = useAuctionAvailability();
 
@@ -106,7 +105,9 @@ export const Properties = () => {
 				</Text>
 				<WithSkeleton width={64} height={20} loading={auction.isLoading} data-dark>
 					<Text className={classes.value}>
-						{t('constants.quantities.bidders.default', { value: 0 })}
+						{t('constants.quantities.bidders.default', {
+							value: auction.data.biddersCount,
+						})}
 					</Text>
 				</WithSkeleton>
 			</Stack>
@@ -121,7 +122,7 @@ export const Properties = () => {
 					<Text className={classes.value}>
 						{areBidsAvailable
 							? t('constants.quantities.bids.default', {
-									value: paginatedBids.data.totalCount,
+									value: auction.data.bidsCount,
 								})
 							: 'N/A'}
 					</Text>

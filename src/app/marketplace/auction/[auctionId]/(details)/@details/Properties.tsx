@@ -108,7 +108,9 @@ export const Properties = () => {
 						</Text>
 						<WithSkeleton loading={auction.isLoading} width={120} height={24}>
 							<Text className={classes.value}>
-								{t('constants.quantities.bidders.default', { value: 0 })}
+								{t('constants.quantities.bidders.default', {
+									value: auction.data.biddersCount,
+								})}
 							</Text>
 						</WithSkeleton>
 					</Group>
@@ -122,7 +124,9 @@ export const Properties = () => {
 						<WithSkeleton loading={auction.isLoading} width={120} height={24}>
 							<Text className={classes.value}>
 								{areBidsAvailable
-									? t('constants.quantities.bids.default', { value: 0 })
+									? t('constants.quantities.bids.default', {
+											value: auction.data.bidsCount,
+										})
 									: 'N/A'}
 							</Text>
 						</WithSkeleton>

@@ -168,7 +168,7 @@ const FiltersCore = () => {
 					chevron: classes.chevron,
 					content: classes.content,
 				}}
-				defaultValue={['type', 'sector']}
+				defaultValue={['type', 'status', 'sector']}
 				chevron={<IconPlus size={16} />}
 				multiple
 			>
