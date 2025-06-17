@@ -232,6 +232,9 @@
 				"short": "Dashboard",
 				"aria": "Return to dashboard button",
 				"tooltip": "Go back to your dashboard"
+			},
+			"home": {
+				"label": "Return to Home"
 			}
 		},
 		"view": {
@@ -342,6 +345,18 @@
 			},
 			"perPage": {
 				"label": "Per page:"
+			}
+		},
+		"pages": {
+			"dashboard": {
+				"admin": {
+					"home": {
+						"title": "Home"
+					},
+					"firms": {
+						"title": "Firms"
+					}
+				}
 			}
 		}
 	},
@@ -834,6 +849,22 @@
 				"settings": "Settings",
 				"logout": "Logout",
 				"savedAuctions": "Saved Auctions"
+			},
+			"admin": {
+				"tabs": {
+					"home": {
+						"label": "Home"
+					},
+					"auctions": {
+						"label": "Auctions"
+					},
+					"admins": {
+						"label": "Admins"
+					},
+					"firms": {
+						"label": "Firms"
+					}
+				}
 			}
 		},
 		"auctionCard": {

@@ -10,7 +10,7 @@ import { SearchBar } from './SearchBar';
 import { UserProfile } from './UserProfile';
 import classes from './styles.module.css';
 
-export const Header = () => {
+export const MarketplaceHeader = () => {
 	const t = useTranslations();
 
 	return (

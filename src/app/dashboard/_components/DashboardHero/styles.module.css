@@ -1,0 +1,23 @@
+.root {
+	> .navigation {
+		@apply gap-6;
+
+		> .breadcrumbs {
+			> a {
+				@apply paragraph-sm;
+			}
+
+			> .separator {
+				@apply mx-1;
+			}
+		}
+	}
+
+	> .title {
+		@apply heading-1;
+	}
+
+	> .description {
+		@apply paragraph-md text-justify;
+	}
+}

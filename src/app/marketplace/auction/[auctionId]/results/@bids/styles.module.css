@@ -40,19 +40,6 @@
 }
 
 * {
-	@mixin larger-than $mantine-breakpoint-sm {
-		.root {
-		}
-	}
-	@mixin larger-than $mantine-breakpoint-md {
-		.root {
-		}
-	}
-	@mixin larger-than $mantine-breakpoint-lg {
-		.root {
-		}
-	}
-
 	@mixin dark {
 		.root > .list {
 			@apply bg-dark-600;
