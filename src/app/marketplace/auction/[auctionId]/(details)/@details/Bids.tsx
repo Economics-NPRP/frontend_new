@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { useContext } from 'react';
 
-import { BidsTable } from '@/components/BidsTable';
+import { BidsTable } from '@/components/Tables/Bids';
 import {
 	AllWinningBidsContext,
 	MyPaginatedBidsContext,

@@ -1,8 +1,8 @@
 import { useTranslations } from 'next-intl';
 import { ReactElement } from 'react';
 
-import { BidsTableRow } from '@/components/BidsTable/Row';
-import { BidsFilter } from '@/components/BidsTable/types';
+import { BidsTableRow } from '@/components/Tables/Bids/Row';
+import { BidsFilter } from '@/components/Tables/Bids/types';
 import {
 	IAllWinningBidsContext,
 	IMyOpenAuctionResultsContext,
@@ -14,7 +14,7 @@ import {
 import { Group, Text } from '@mantine/core';
 import { IconHexagonLetterC, IconHexagonLetterW, IconUserHexagon } from '@tabler/icons-react';
 
-import classes from './styles.module.css';
+import classes from '../styles.module.css';
 
 interface GenerateBidsRowsParams {
 	bids: IPaginatedBidsContext;

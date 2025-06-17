@@ -22,30 +22,6 @@
 			> .settings {
 				@apply gap-2 flex-nowrap;
 
-				> .legend {
-					@apply gap-4;
-
-					> .cell {
-						@apply gap-2 text-dark-300;
-
-						> .key {
-							@apply size-4 rounded-sm border border-solid;
-
-							&.mine {
-								@apply bg-violet-100 border-violet-300;
-							}
-						}
-
-						> .value {
-							@apply paragraph-xs;
-						}
-					}
-				}
-
-				> .divider {
-					@apply mx-2;
-				}
-
 				> .label {
 					@apply hidden paragraph-sm;
 				}
@@ -62,16 +38,36 @@
 					@apply size-8;
 				}
 			}
+
+			> .filters {
+				@apply gap-2;
+
+				> .label {
+					@apply paragraph-sm;
+				}
+
+				> .badges > .badge {
+					@apply bg-gray-200 text-dark-600;
+				}
+			}
+
+			&:last-child {
+				@apply flex-col gap-2;
+			}
 		}
 	}
 
 	> .table {
-		@apply flex-1 overflow-y-auto;
+		@apply relative;
+		@apply flex-1 gap-0 overflow-y-auto;
+
+		&:has(.placeholder) {
+			@apply bg-gray-50;
+		}
 
 		.placeholder {
 			@apply h-[90%];
 			@apply items-center justify-center;
-			@apply bg-gray-50;
 
 			> .icon {
 				@apply size-11 rounded-full bg-gray-100 text-gray-500;
@@ -89,7 +85,12 @@
 			}
 
 			> .firm {
-				@apply flex flex-row items-center justify-between;
+				@apply flex flex-row items-center justify-between gap-2;
+
+				> .anchor {
+					@apply max-w-[160px];
+					@apply truncate;
+				}
 
 				> .badges {
 					@apply gap-1 flex-nowrap;
@@ -97,40 +98,63 @@
 					> .mine {
 						@apply text-dark-300;
 					}
+
+					> .contributing {
+						@apply text-blue-600;
+					}
+
+					> .winning {
+						@apply text-yellow-600;
+					}
 				}
-			}
-		}
-
-		th,
-		td {
-			&:nth-child(1) {
-				@apply min-w-[120px];
-			}
-
-			&:nth-child(2) {
-				@apply min-w-[100px];
-			}
-
-			&:nth-child(3) {
-				@apply min-w-[160px];
-			}
-
-			&:nth-child(4) {
-				@apply min-w-[240px];
-			}
-
-			&:nth-child(5) {
-				@apply min-w-[160px];
-			}
-
-			&:nth-child(6) {
-				@apply min-w-[160px];
 			}
 		}
 	}
 
-	> .pagination {
-		@apply self-center;
+	> .footer {
+		@apply justify-center items-center flex-nowrap gap-4;
+
+		&:has(.legend) {
+			@apply justify-between;
+		}
+
+		> .pagination {
+			@apply gap-2 justify-center;
+
+			> .button {
+				@apply size-8 border-gray-300;
+			}
+		}
+
+		> .row {
+			@apply gap-4 items-center;
+		}
+	}
+
+	.legend {
+		@apply gap-4;
+
+		> .cell {
+			@apply gap-2;
+
+			> .icon {
+				&.mine {
+					@apply text-dark-300;
+				}
+
+				&.contributing {
+					@apply text-blue-600;
+				}
+
+				&.winning {
+					@apply text-yellow-600;
+				}
+			}
+
+			> .value {
+				@apply paragraph-xs;
+			}
+		}
 	}
 }
 
@@ -166,9 +190,9 @@
 
 	@mixin dark {
 		.root {
-			> .header > .row > .settings {
-				> .dropdown input,
-				> .button {
+			> .header > .row {
+				> .settings > .dropdown input,
+				> .settings > .button {
 					@apply bg-dark-700 border-dark-400 text-white;
 
 					&:hover {
@@ -176,14 +200,22 @@
 					}
 				}
 
-				> .legend > .cell {
-					@apply text-dark-50;
+				> .filters > .badges > .badge {
+					@apply bg-dark-500 text-dark-100;
 				}
 			}
 
 			> .table {
+				&:has(.placeholder) {
+					@apply bg-dark-600;
+				}
+
 				.placeholder {
 					@apply bg-dark-600;
+
+					> .icon {
+						@apply bg-dark-500 text-dark-300;
+					}
 				}
 
 				tr {
@@ -201,6 +233,33 @@
 						}
 					}
 				}
+			}
+
+			> .footer {
+				> .pagination > .button {
+					@apply bg-dark-700 border-dark-400 text-white;
+
+					&:hover {
+						@apply bg-dark-600;
+					}
+
+					&:disabled {
+						@apply bg-dark-600;
+						@apply opacity-40;
+					}
+				}
+
+				> .row > .button {
+					@apply bg-dark-700 border-dark-400 text-white;
+
+					&:hover {
+						@apply bg-dark-600;
+					}
+				}
+			}
+
+			.legend > .cell > .icon.mine {
+				@apply text-dark-50;
 			}
 		}
 	}

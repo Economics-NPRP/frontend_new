@@ -3,8 +3,8 @@
 import { useTranslations } from 'next-intl';
 import { useContext, useState } from 'react';
 
-import { ResultsTable } from '@/components/AuctionResultsTable';
-import { BidsTable } from '@/components/BidsTable';
+import { ResultsTable } from '@/components/Tables/AuctionResults';
+import { BidsTable } from '@/components/Tables/Bids';
 import {
 	AllWinningBidsContext,
 	MyOpenAuctionResultsContext,
