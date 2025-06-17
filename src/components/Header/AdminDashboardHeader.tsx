@@ -36,23 +36,33 @@ export const AdminDashboardHeader = () => {
 					<HeaderButton variant="notifications" />
 				</Flex>
 				<PageTabs
-					tabs={[
+					pageMatcher={(pathname) => {
+						if (pathname.startsWith('/dashboard/a/auctions')) return 'auctions';
+						if (pathname.startsWith('/dashboard/a/admins')) return 'admins';
+						if (pathname.startsWith('/dashboard/a/firms')) return 'firms';
+						return 'home';
+					}}
+					pages={[
 						{
+							key: 'home',
 							label: t('components.header.admin.tabs.home.label'),
 							href: '/dashboard/a',
 							icon: <IconLayoutGrid size={14} />,
 						},
 						{
+							key: 'auctions',
 							label: t('components.header.admin.tabs.auctions.label'),
 							href: '/dashboard/a/auctions',
 							icon: <IconGavel size={14} />,
 						},
 						{
+							key: 'admins',
 							label: t('components.header.admin.tabs.admins.label'),
 							href: '/dashboard/a/admins',
 							icon: <IconUsers size={14} />,
 						},
 						{
+							key: 'firms',
 							label: t('components.header.admin.tabs.firms.label'),
 							href: '/dashboard/a/firms',
 							icon: <IconBuildings size={14} />,

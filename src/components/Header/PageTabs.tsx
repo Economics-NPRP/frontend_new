@@ -1,4 +1,6 @@
-import { useRouter } from 'next/navigation';
+'use client';
+
+import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
 
 import { FloatingIndicator, Tabs } from '@mantine/core';
@@ -6,17 +8,19 @@ import { FloatingIndicator, Tabs } from '@mantine/core';
 import classes from './styles.module.css';
 
 export interface PageTabsProps {
-	defaultTab?: string;
-	tabs: Array<{
+	pageMatcher: (pathname: string) => string | null;
+	pages: Array<{
+		key: string;
 		label: string;
 		href: string;
 		icon: React.ReactNode;
 	}>;
 }
-export const PageTabs = ({ defaultTab, tabs }: PageTabsProps) => {
+export const PageTabs = ({ pageMatcher, pages }: PageTabsProps) => {
 	const router = useRouter();
+	const pathname = usePathname();
 
-	const [currentTab, setCurrentTab] = useState<string | null>(defaultTab || tabs[0].href);
+	const [currentTab, setCurrentTab] = useState<string | null>(pageMatcher(pathname) || null);
 	const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
 	const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
 	const setControlRef = (val: string) => (node: HTMLButtonElement) => {
@@ -27,20 +31,23 @@ export const PageTabs = ({ defaultTab, tabs }: PageTabsProps) => {
 	const handleTabChange = useCallback(
 		(value: string | null) => {
 			if (!value) return;
+			const href = pages.find((page) => page.key === value)?.href;
+			if (!href) return;
+
 			setCurrentTab(value);
-			router.push(value);
+			router.push(href);
 		},
 		[router],
 	);
 
-	const tabsList = useMemo(
+	const pagesList = useMemo(
 		() =>
-			tabs.map(({ label, href, icon }) => (
-				<Tabs.Tab key={href} ref={setControlRef(href)} value={href} leftSection={icon}>
+			pages.map(({ key, label, icon }) => (
+				<Tabs.Tab key={key} ref={setControlRef(key)} value={key} leftSection={icon}>
 					{label}
 				</Tabs.Tab>
 			)),
-		[tabs],
+		[pages],
 	);
 
 	return (
@@ -56,7 +63,7 @@ export const PageTabs = ({ defaultTab, tabs }: PageTabsProps) => {
 			visibleFrom="md"
 		>
 			<Tabs.List ref={setRootRef}>
-				{tabsList}
+				{pagesList}
 
 				<FloatingIndicator
 					className={classes.indicator}
