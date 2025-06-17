@@ -28,11 +28,11 @@
 
 				.label {
 					@apply h-[unset];
-					@apply align-baseline gap-1;
+					@apply align-baseline gap-1.5;
 					@apply heading-3;
 
 					.subtext {
-						@apply paragraph-sm leading-none;
+						@apply display-sm-sb-d3 leading-none;
 					}
 				}
 			}
