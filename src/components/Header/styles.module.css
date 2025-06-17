@@ -37,6 +37,10 @@
 				}
 			}
 
+			&.pages {
+				@apply w-[unset] px-4;
+			}
+
 			&.user {
 				@apply w-20;
 			}

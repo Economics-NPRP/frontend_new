@@ -1,7 +1,9 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { useMemo } from 'react';
 
+import { PageDropdown } from '@/components/Header/PageDropdown';
 import { PageTabs } from '@/components/Header/PageTabs';
 import { Button, Center, Flex, Group, Text, Tooltip } from '@mantine/core';
 import { IconBox, IconBuildings, IconGavel, IconLayoutGrid, IconUsers } from '@tabler/icons-react';
@@ -12,6 +14,46 @@ import classes from './styles.module.css';
 
 export const AdminDashboardHeader = () => {
 	const t = useTranslations();
+
+	const pageMatcher = useMemo(
+		() => (pathname: string) => {
+			if (pathname.startsWith('/dashboard/a/auctions')) return 'auctions';
+			if (pathname.startsWith('/dashboard/a/admins')) return 'admins';
+			if (pathname.startsWith('/dashboard/a/firms')) return 'firms';
+			return 'home';
+		},
+		[],
+	);
+
+	const pages = useMemo(
+		() => [
+			{
+				key: 'home',
+				label: t('components.header.admin.tabs.home.label'),
+				href: '/dashboard/a',
+				icon: <IconLayoutGrid size={14} />,
+			},
+			{
+				key: 'auctions',
+				label: t('components.header.admin.tabs.auctions.label'),
+				href: '/dashboard/a/auctions',
+				icon: <IconGavel size={14} />,
+			},
+			{
+				key: 'admins',
+				label: t('components.header.admin.tabs.admins.label'),
+				href: '/dashboard/a/admins',
+				icon: <IconUsers size={14} />,
+			},
+			{
+				key: 'firms',
+				label: t('components.header.admin.tabs.firms.label'),
+				href: '/dashboard/a/firms',
+				icon: <IconBuildings size={14} />,
+			},
+		],
+		[t],
+	);
 
 	return (
 		<Center component="header" className={classes.root}>
@@ -33,44 +75,11 @@ export const AdminDashboardHeader = () => {
 							ETS <Text className={classes.subtext}>Admin</Text>
 						</Button>
 					</Tooltip>
+					<PageDropdown pageMatcher={pageMatcher} pages={pages} />
 					<HeaderButton variant="notifications" />
 				</Flex>
-				<PageTabs
-					pageMatcher={(pathname) => {
-						if (pathname.startsWith('/dashboard/a/auctions')) return 'auctions';
-						if (pathname.startsWith('/dashboard/a/admins')) return 'admins';
-						if (pathname.startsWith('/dashboard/a/firms')) return 'firms';
-						return 'home';
-					}}
-					pages={[
-						{
-							key: 'home',
-							label: t('components.header.admin.tabs.home.label'),
-							href: '/dashboard/a',
-							icon: <IconLayoutGrid size={14} />,
-						},
-						{
-							key: 'auctions',
-							label: t('components.header.admin.tabs.auctions.label'),
-							href: '/dashboard/a/auctions',
-							icon: <IconGavel size={14} />,
-						},
-						{
-							key: 'admins',
-							label: t('components.header.admin.tabs.admins.label'),
-							href: '/dashboard/a/admins',
-							icon: <IconUsers size={14} />,
-						},
-						{
-							key: 'firms',
-							label: t('components.header.admin.tabs.firms.label'),
-							href: '/dashboard/a/firms',
-							icon: <IconBuildings size={14} />,
-						},
-					]}
-				/>
+				<PageTabs pageMatcher={pageMatcher} pages={pages} />
 				<Flex className={classes.right}>
-					<HeaderButton className={classes.search} variant="search" hiddenFrom="md" />
 					<HeaderButton variant="accessibility" visibleFrom="xs" />
 					<HeaderButton variant="language" visibleFrom="xs" />
 					<HeaderButton variant="theme" visibleFrom="xs" />
