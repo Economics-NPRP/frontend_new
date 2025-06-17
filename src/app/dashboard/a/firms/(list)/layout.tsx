@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
+import { PaginatedFirmsProvider } from '@/contexts';
+import { withProviders } from '@/helpers';
 import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
 import { Stack } from '@mantine/core';
 
@@ -17,7 +19,7 @@ export interface FirmsListProps {
 export default function FirmsList({ table }: FirmsListProps) {
 	const t = useTranslations();
 
-	return (
+	return withProviders(
 		<Stack className={classes.root}>
 			<DashboardHero
 				title={t('constants.pages.dashboard.admin.firms.title')}
@@ -34,6 +36,7 @@ export default function FirmsList({ table }: FirmsListProps) {
 				]}
 			/>
 			{table}
-		</Stack>
+		</Stack>,
+		{ provider: PaginatedFirmsProvider },
 	);
 }
