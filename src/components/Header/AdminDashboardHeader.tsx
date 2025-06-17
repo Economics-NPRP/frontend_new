@@ -2,40 +2,21 @@
 
 import { useTranslations } from 'next-intl';
 
+import { PageTabs } from '@/components/Header/PageTabs';
 import { Button, Center, Flex, Group, Text, Tooltip } from '@mantine/core';
-import { IconArrowUpLeft, IconBox } from '@tabler/icons-react';
+import { IconBox, IconBuildings, IconGavel, IconLayoutGrid, IconUsers } from '@tabler/icons-react';
 
 import { HeaderButton } from './HeaderButton';
-import { SearchBar } from './SearchBar';
 import { UserProfile } from './UserProfile';
 import classes from './styles.module.css';
 
-export const Header = () => {
+export const AdminDashboardHeader = () => {
 	const t = useTranslations();
 
 	return (
 		<Center component="header" className={classes.root}>
 			<Group className={classes.container}>
 				<Flex className={classes.left}>
-					<Tooltip label={t('constants.return.dashboard.tooltip')}>
-						<Button
-							component="a"
-							href="/dashboard"
-							aria-label={t('constants.return.dashboard.aria')}
-							className={classes.dashboardButton}
-							variant="light"
-							size="xs"
-							leftSection={<IconArrowUpLeft size={14} />}
-							visibleFrom="sm"
-						>
-							<Text visibleFrom="lg" inherit>
-								{t('constants.return.dashboard.label')}
-							</Text>
-							<Text hiddenFrom="lg" inherit>
-								{t('constants.return.dashboard.short')}
-							</Text>
-						</Button>
-					</Tooltip>
 					<Tooltip label={t('constants.return.marketplace.tooltip')}>
 						<Button
 							component="a"
@@ -49,12 +30,35 @@ export const Header = () => {
 							size="xs"
 							leftSection={<IconBox size={20} />}
 						>
-							ETS
+							ETS <Text className={classes.subtext}>Admin</Text>
 						</Button>
 					</Tooltip>
 					<HeaderButton variant="notifications" />
 				</Flex>
-				<SearchBar />
+				<PageTabs
+					tabs={[
+						{
+							label: t('components.header.admin.tabs.home.label'),
+							href: '/dashboard/a',
+							icon: <IconLayoutGrid size={14} />,
+						},
+						{
+							label: t('components.header.admin.tabs.auctions.label'),
+							href: '/dashboard/a/auctions',
+							icon: <IconGavel size={14} />,
+						},
+						{
+							label: t('components.header.admin.tabs.admins.label'),
+							href: '/dashboard/a/admins',
+							icon: <IconUsers size={14} />,
+						},
+						{
+							label: t('components.header.admin.tabs.firms.label'),
+							href: '/dashboard/a/firms',
+							icon: <IconBuildings size={14} />,
+						},
+					]}
+				/>
 				<Flex className={classes.right}>
 					<HeaderButton className={classes.search} variant="search" hiddenFrom="md" />
 					<HeaderButton variant="accessibility" visibleFrom="xs" />

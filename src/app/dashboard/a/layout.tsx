@@ -3,8 +3,8 @@ import { PropsWithChildren } from 'react';
 
 export const metadata: Metadata = {
 	title: {
-		default: 'ETS Admin Dashboard',
-		template: '%s | ETS Admin Dashboard',
+		default: 'ETS Admin',
+		template: '%s | ETS Admin',
 	},
 };
 

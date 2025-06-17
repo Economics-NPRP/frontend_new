@@ -19,11 +19,21 @@
 			@apply text-dark-300;
 
 			&.logo {
-				@apply w-[unset] !border-l px-4;
+				@apply w-[unset] px-4;
 				@apply text-dark-600;
 
+				&:not(:first-child) {
+					@apply !border-l;
+				}
+
 				.label {
+					@apply h-[unset];
+					@apply align-baseline gap-1;
 					@apply heading-3;
+
+					.subtext {
+						@apply paragraph-sm leading-none;
+					}
 				}
 			}
 
@@ -75,6 +85,42 @@
 				@apply rounded-sm border border-solid border-gray-300;
 				@apply text-dark-600;
 				@apply display-xs;
+			}
+		}
+
+		> .tabs {
+			@apply flex flex-col items-center justify-start;
+			@apply gap-8;
+
+			> .list {
+				@apply relative;
+				@apply h-9 px-1 gap-1;
+				@apply justify-center items-center flex-nowrap;
+				@apply bg-gray-50;
+				@apply rounded-full;
+
+				> .tab {
+					@apply w-28 h-7;
+					@apply display-sm-sb-d3;
+					@apply transition-colors;
+					@apply rounded-full;
+					@apply z-[1];
+
+					&[data-active] {
+						@apply display-sm-sb-d6;
+					}
+
+					&:not([data-active]):hover {
+						@apply bg-gray-100;
+					}
+				}
+
+				> .indicator {
+					@apply h-7;
+					@apply bg-white border border-solid border-gray-300;
+					@apply rounded-full;
+					@apply shadow-xs;
+				}
 			}
 		}
 
@@ -213,6 +259,27 @@
 
 				> .shortcut {
 					@apply border-dark-400;
+				}
+			}
+
+			> .tabs > .list {
+				@apply bg-dark-500;
+
+				> .tab {
+					@apply text-dark-50;
+
+					&[data-active='true'] {
+						@apply text-white;
+					}
+
+					&:not([data-active='true']):hover {
+						@apply bg-dark-400;
+					}
+				}
+
+				> .indicator {
+					@apply bg-dark-600 border-0;
+					box-shadow: none;
 				}
 			}
 		}
