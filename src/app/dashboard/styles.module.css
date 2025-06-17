@@ -1,0 +1,17 @@
+.root {
+	@apply w-screen;
+	@apply flex flex-col items-center;
+	@apply px-2 pb-8 pt-20;
+
+	> .content {
+		@apply max-w-[1400px];
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			@apply px-4 pb-16 pt-24;
+		}
+	}
+}
