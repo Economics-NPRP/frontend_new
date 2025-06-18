@@ -5,16 +5,15 @@ import { createContext } from 'react';
 import { SortedOffsetPaginatedQueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
 import { getPaginatedFirms } from '@/lib/users/firms';
+import { IUserData } from '@/schema/models';
 import {
-	IAuctionResultsData,
 	SortedOffsetPaginatedContextState,
 	SortedOffsetPaginatedProviderProps,
 	getDefaultSortedOffsetPaginatedContextState,
 } from '@/types';
 
-export interface IPaginatedFirmsContext
-	extends SortedOffsetPaginatedContextState<IAuctionResultsData> {}
-const DefaultData = getDefaultSortedOffsetPaginatedContextState<IAuctionResultsData>(
+export interface IPaginatedFirmsContext extends SortedOffsetPaginatedContextState<IUserData> {}
+const DefaultData = getDefaultSortedOffsetPaginatedContextState<IUserData>(
 	1,
 	20,
 	'created_at',

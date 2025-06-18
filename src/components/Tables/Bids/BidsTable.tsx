@@ -94,7 +94,7 @@ export const BidsTable = ({
 	const [bidsFilter, setBidsFilter] = useState<BidsFilter>('all');
 
 	//	Generate the table rows
-	const bidsData = useMemo(() => {
+	const tableData = useMemo(() => {
 		if (!bids) return null;
 		return generateBidsRows({
 			bids,
@@ -238,11 +238,11 @@ export const BidsTable = ({
 	}, [bidsFilter, bids.perPage, paginatedWinningBids?.perPage, myPaginatedBids?.perPage]);
 
 	const currentState = useMemo(() => {
-		if (!bidsData && loading) return 'loading';
+		if (!tableData && loading) return 'loading';
 		if (unavailable) return 'unavailable';
-		if (!bidsData || bidsData.length === 0) return 'empty';
+		if (!tableData || tableData.length === 0) return 'empty';
 		return 'ok';
-	}, [loading, bidsData]);
+	}, [loading, tableData]);
 
 	return (
 		<Stack className={`${classes.root} ${className}`}>
@@ -362,7 +362,7 @@ export const BidsTable = ({
 							</Table.Th>
 						</Table.Tr>
 					</Table.Thead>
-					<Table.Tbody>{bidsData}</Table.Tbody>
+					<Table.Tbody>{tableData}</Table.Tbody>
 				</Table>
 				<Switch value={currentState}>
 					<Switch.Loading>

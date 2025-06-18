@@ -108,3 +108,45 @@ export const EndingSoonBadge = ({ auction, className, ...props }: EndingSoonBadg
 		)
 	);
 };
+
+export interface FirmStatusBadgeProps extends BaseBadgeProps {
+	//	TODO: replace with actual firm status type from types folder
+	status: 'verified' | 'unverified' | 'uninvited';
+}
+export const FirmStatusBadge = ({ status, className, ...props }: FirmStatusBadgeProps) => {
+	const t = useTranslations();
+
+	if (status === 'verified')
+		return (
+			<BaseBadge
+				className={`${classes.root} ${classes.firmStatus} ${classes.verified} ${className}`}
+				variant="light"
+				color="green"
+				{...props}
+			>
+				{t('constants.firmStatus.verified')}
+			</BaseBadge>
+		);
+
+	if (status === 'unverified')
+		return (
+			<BaseBadge
+				className={`${classes.root} ${classes.firmStatus} ${classes.unverified} ${className}`}
+				variant="light"
+				color="orange"
+				{...props}
+			>
+				{t('constants.firmStatus.unverified')}
+			</BaseBadge>
+		);
+
+	return (
+		<BaseBadge
+			className={`${classes.root} ${classes.firmStatus} ${classes.uninvited} ${className}`}
+			variant="light"
+			{...props}
+		>
+			{t('constants.firmStatus.uninvited')}
+		</BaseBadge>
+	);
+};

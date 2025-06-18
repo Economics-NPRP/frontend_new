@@ -45,7 +45,7 @@ export const ResultsTable = ({
 	const tableContainerRef = useRef<HTMLDivElement>(null);
 	const myUser = useContext(MyUserContext);
 
-	const resultsData = useMemo(() => {
+	const tableData = useMemo(() => {
 		if (!paginatedOpenAuctionResults.data) return null;
 		return generateResultsRows(
 			t,
@@ -68,7 +68,7 @@ export const ResultsTable = ({
 	);
 
 	const currentState = useMemo(() => {
-		if (!resultsData && (paginatedOpenAuctionResults.isLoading || auction.isLoading))
+		if (!tableData && (paginatedOpenAuctionResults.isLoading || auction.isLoading))
 			return 'loading';
 		if (!paginatedOpenAuctionResults || paginatedOpenAuctionResults.data.results.length === 0)
 			return 'empty';
@@ -162,7 +162,7 @@ export const ResultsTable = ({
 							</Table.Th>
 						</Table.Tr>
 					</Table.Thead>
-					<Table.Tbody>{resultsData}</Table.Tbody>
+					<Table.Tbody>{tableData}</Table.Tbody>
 				</Table>
 				<Switch value={currentState}>
 					<Switch.Loading>
