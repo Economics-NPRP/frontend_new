@@ -1,6 +1,7 @@
 'use client';
 
 import { DateTime } from 'luxon';
+import { DataTable } from 'mantine-datatable';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -34,7 +35,7 @@ import {
 	IconCopy,
 	IconDatabaseOff,
 	IconHelpHexagon,
-	IconUserHexagon,
+	IconInfoHexagon,
 } from '@tabler/icons-react';
 
 import classes from '../styles.module.css';
@@ -56,7 +57,7 @@ export const FirmsTable = ({
 }: firmsTableProps) => {
 	const t = useTranslations();
 	const format = useFormatter();
-	const tableContainerRef = useRef<HTMLDivElement>(null);
+	const tableContainerRef = useRef<HTMLTableElement>(null);
 
 	const [firmsFilter, setFirmsFilter] = useState<FirmsFilter>('all');
 
@@ -281,18 +282,162 @@ export const FirmsTable = ({
 					</Group>
 					<Group className={classes.legend}>
 						<Group className={classes.cell}>
-							<IconUserHexagon
+							<IconHelpHexagon
 								size={16}
-								className={`${classes.icon} ${classes.mine}`}
+								className={`${classes.icon} ${classes.unverified}`}
 							/>
 							<Text className={classes.value}>
 								{t('components.firmsTable.legend.unverified.label')}
 							</Text>
 						</Group>
+						<Group className={classes.cell}>
+							<IconInfoHexagon
+								size={16}
+								className={`${classes.icon} ${classes.uninvited}`}
+							/>
+							<Text className={classes.value}>
+								{t('components.firmsTable.legend.uninvited.label')}
+							</Text>
+						</Group>
 					</Group>
 				</Group>
 			</Stack>
-			<Stack className={classes.table} ref={tableContainerRef}>
+			{/* @ts-expect-error - data table props from library are not exposed */}
+			<DataTable
+				className={classes.table}
+				columns={[
+					{
+						accessor: 'name',
+						sortable: true,
+						title: t('components.firmsTable.columns.name'),
+						render: (record) => (
+							<>
+								<Anchor
+									className={classes.anchor}
+									href={`/dashboard/a/firms/${record.id}`}
+								>
+									{record.name}
+								</Anchor>
+								<Group className={classes.badges}>
+									{/* TODO: replace with actual verification or invitation check */}
+									{!record.emailVerified && (
+										<Tooltip
+											label={t(
+												'components.firmsTable.legend.unverified.tooltip',
+											)}
+											position="top"
+										>
+											<IconHelpHexagon
+												size={14}
+												className={classes.unverified}
+											/>
+										</Tooltip>
+									)}
+								</Group>
+							</>
+						),
+					},
+					{
+						accessor: 'sectors',
+						sortable: false,
+						title: t('components.firmsTable.columns.sectors'),
+						render: (record) => <Text className={classes.sectors}></Text>,
+					},
+					{
+						accessor: 'email',
+						sortable: true,
+						title: t('components.firmsTable.columns.email'),
+						render: (record) => (
+							<Anchor href={`mailto:${record.email}`} className={classes.anchor}>
+								{record.email}
+							</Anchor>
+						),
+					},
+					{
+						accessor: 'phone',
+						sortable: true,
+						title: t('components.firmsTable.columns.phone'),
+						render: (record) => (
+							<Anchor href={`tel:${record.phone}`} className={classes.anchor}>
+								{record.phone}
+							</Anchor>
+						),
+					},
+					{
+						accessor: 'crn',
+						sortable: true,
+						title: t('components.firmsTable.columns.crn'),
+						render: (record) => (
+							<>
+								<Text>1234567890</Text>
+								<CopyButton value={'1234567890'} timeout={2000}>
+									{({ copied, copy }) => (
+										<Tooltip label={copied ? 'Copied' : 'Copy'}>
+											<ActionIcon
+												color={copied ? 'teal' : 'gray'}
+												variant="light"
+												onClick={copy}
+											>
+												{copied ? (
+													<IconCheck size={14} />
+												) : (
+													<IconCopy size={14} />
+												)}
+											</ActionIcon>
+										</Tooltip>
+									)}
+								</CopyButton>
+							</>
+						),
+					},
+					{
+						accessor: 'status',
+						sortable: false,
+						title: t('components.firmsTable.columns.status'),
+						render: (record) => (
+							<FirmStatusBadge
+								status={record.emailVerified ? 'verified' : 'unverified'}
+							/>
+						),
+					},
+					{
+						accessor: 'createdAt',
+						sortable: true,
+						title: t('components.firmsTable.columns.createdAt'),
+						render: (record) =>
+							DateTime.fromISO(record.createdAt).toLocaleString(
+								DateTime.DATETIME_SHORT,
+							),
+					},
+					{
+						accessor: 'invitedBy',
+						sortable: false,
+						title: t('components.firmsTable.columns.invitedBy'),
+						render: (record) => (
+							//	TODO: add inviter id here
+							<Anchor href={`/dashboard/a/admins/`} className={classes.anchor}>
+								Placeholder Admin
+							</Anchor>
+						),
+					},
+				]}
+				records={firms.data.results}
+				striped
+				withRowBorders
+				withColumnBorders
+				highlightOnHover
+				pinLastColumn
+				// sortStatus={sortStatus}
+				// onSortStatusChange={setSortStatus}
+				// selectedRecords={!readOnly ? selectedBids : undefined}
+				// onSelectedRecordsChange={!readOnly ? selectedBidsHandlers.setState : undefined}
+				idAccessor="id"
+				selectionTrigger="cell"
+				noRecordsText={t('components.firmsTable.empty')}
+				scrollViewportRef={tableContainerRef}
+				{...props}
+			/>
+			{/* <Stack className={classes.table} ref={tableContainerRef}>
 				<Table highlightOnHover withColumnBorders stickyHeader {...props}>
 					<Table.Thead>
 						<Table.Tr>
@@ -340,7 +485,7 @@ export const FirmsTable = ({
 						</Stack>
 					</Switch.Case>
 				</Switch>
-			</Stack>
+			</Stack> */}
 			<Group className={classes.footer}>
 				{firms.isSuccess && (
 					<Pagination

@@ -990,6 +990,9 @@
         "unverified": {
           "label": "Unverified Companies",
           "tooltip": "This firm has not been verified or invited yet"
+        },
+        "uninvited": {
+          "label": "Newly Registered Companies"
         }
       }
     }
