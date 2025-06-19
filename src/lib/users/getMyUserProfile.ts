@@ -8,7 +8,7 @@ import { getSession } from '@/lib/auth';
 import { DefaultUserData, IUserData } from '@/schema/models';
 import { IOffsetPagination, ServerData } from '@/types';
 
-export interface IGetMyProfileOptions extends IOffsetPagination {
+export interface IGetMyUserProfileOptions extends IOffsetPagination {
 	auctionId: string;
 }
 
@@ -19,7 +19,7 @@ const getDefaultData: (...errors: Array<string>) => ServerData<IUserData> = (...
 });
 
 type IFunctionSignature = () => Promise<ServerData<IUserData>>;
-export const getMyProfile: IFunctionSignature = cache(async () => {
+export const getMyUserProfile: IFunctionSignature = cache(async () => {
 	const cookieHeaders = await getSession();
 	if (!cookieHeaders) return getDefaultData('You must be logged in to access this resource.');
 	const querySettings: RequestInit = {
@@ -30,7 +30,7 @@ export const getMyProfile: IFunctionSignature = cache(async () => {
 		},
 	};
 
-	const queryUrl = new URL('/v1/users/firms/profile', process.env.NEXT_PUBLIC_BACKEND_URL);
+	const queryUrl = new URL('/v1/users/profile', process.env.NEXT_PUBLIC_BACKEND_URL);
 
 	const response = await fetch(queryUrl, querySettings);
 	const rawData = camelCase(await response.json(), 5) as ServerData<unknown>;
@@ -48,6 +48,6 @@ export const getMyProfile: IFunctionSignature = cache(async () => {
 });
 
 //	@ts-expect-error - Preload doesn't return anything but signature requires a return
-export const preloadMyProfile: IFunctionSignature = async () => {
-	void getMyProfile();
+export const preloadMyUserProfile: IFunctionSignature = async () => {
+	void getMyUserProfile();
 };

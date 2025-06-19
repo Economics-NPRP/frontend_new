@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import { createContext, useContext } from 'react';
 
-import { KeysetPaginatedQueryProvider, MyUserContext } from '@/contexts';
+import { KeysetPaginatedQueryProvider, MyUserProfileContext } from '@/contexts';
 import { throwError } from '@/helpers';
 import { useAuctionAvailability } from '@/hooks';
 import { getPaginatedBids } from '@/lib/bids/open';
@@ -24,7 +24,7 @@ export const MyPaginatedBidsProvider = ({
 	defaultPerPage,
 	children,
 }: KeysetPaginatedProviderProps) => {
-	const myUser = useContext(MyUserContext);
+	const myUser = useContext(MyUserProfileContext);
 	const { auctionId } = useParams();
 	const { areBidsAvailable } = useAuctionAvailability();
 

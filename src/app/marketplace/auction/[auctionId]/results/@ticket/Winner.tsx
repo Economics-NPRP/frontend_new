@@ -2,7 +2,11 @@ import { useFormatter, useTranslations } from 'next-intl';
 import { useContext, useMemo } from 'react';
 
 import { CategoryBadge, CurrencyBadge } from '@/components/Badge';
-import { MyOpenAuctionResultsContext, MyUserContext, SingleAuctionContext } from '@/contexts';
+import {
+	MyOpenAuctionResultsContext,
+	MyUserProfileContext,
+	SingleAuctionContext,
+} from '@/contexts';
 import { useAuctionAvailability } from '@/hooks';
 import { Button, Container, Group, Progress, Stack, Text } from '@mantine/core';
 import { IconArrowUpRight, IconLeaf } from '@tabler/icons-react';
@@ -14,7 +18,7 @@ export const Winner = () => {
 	const format = useFormatter();
 	const auction = useContext(SingleAuctionContext);
 	const myOpenAuctionResults = useContext(MyOpenAuctionResultsContext);
-	const myUser = useContext(MyUserContext);
+	const myUser = useContext(MyUserProfileContext);
 
 	const percentage = useMemo(
 		() => (myOpenAuctionResults.data.permitsReserved / auction.data.permits) * 100,

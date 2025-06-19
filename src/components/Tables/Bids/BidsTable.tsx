@@ -13,7 +13,7 @@ import {
 	IMyPaginatedBidsContext,
 	IPaginatedBidsContext,
 	IPaginatedWinningBidsContext,
-	MyUserContext,
+	MyUserProfileContext,
 } from '@/contexts';
 import {
 	ActionIcon,
@@ -89,7 +89,7 @@ export const BidsTable = ({
 }: BidsTableProps) => {
 	const t = useTranslations();
 	const tableContainerRef = useRef<HTMLDivElement>(null);
-	const myUser = useContext(MyUserContext);
+	const myUser = useContext(MyUserProfileContext);
 
 	const [bidsFilter, setBidsFilter] = useState<BidsFilter>('all');
 

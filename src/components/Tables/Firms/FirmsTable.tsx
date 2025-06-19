@@ -9,7 +9,7 @@ import { CategoryBadge, FirmStatusBadge } from '@/components/Badge';
 import { FirmsFilter } from '@/components/Tables/Firms/types';
 import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
 import { IPaginatedFirmsContext } from '@/contexts';
-import { IUserData } from '@/schema/models';
+import { IFirmData } from '@/schema/models';
 import { AuctionCategory } from '@/types';
 import {
 	ActionIcon,
@@ -64,7 +64,7 @@ export const FirmsTable = ({
 
 	const [searchFilter, setSearchFilter] = useState('');
 	const [statusFilter, setStatusFilter] = useState<FirmsFilter>('all');
-	const [selectedFirms, selectedFirmsHandlers] = useListState<IUserData>([]);
+	const [selectedFirms, selectedFirmsHandlers] = useListState<IFirmData>([]);
 	const [sectorFilter, sectorFilterHandlers] = useListState<AuctionCategory>([]);
 
 	//	Generate the filter badges
@@ -400,13 +400,15 @@ export const FirmsTable = ({
 						sortable: false,
 						title: t('components.firmsTable.columns.sectors'),
 						width: 180,
-						render: (record) => {
+						render: (record: IFirmData) => {
 							const badges = useMemo(
 								() =>
 									record.sectors
 										.filter(
 											(sector) =>
-												AuctionCategoryVariants[sector.toLowerCase()],
+												AuctionCategoryVariants[
+													sector.toLowerCase() as AuctionCategory
+												],
 										)
 										.map((sector) => (
 											<CategoryBadge
@@ -417,7 +419,6 @@ export const FirmsTable = ({
 										)),
 								[record.sectors],
 							);
-							useEffect(() => console.log('Sectors:', badges), [badges]);
 
 							return (
 								<>

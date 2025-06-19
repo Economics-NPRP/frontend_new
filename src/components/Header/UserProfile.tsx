@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useContext } from 'react';
 
 import { Id } from '@/components/Id';
-import { MyUserContext } from '@/contexts';
+import { MyUserProfileContext } from '@/contexts';
 import { logout } from '@/lib/auth/logout';
 import {
 	Alert,
@@ -47,7 +47,7 @@ export const UserProfile = () => {
 	const t = useTranslations();
 	const router = useRouter();
 	const queryClient = useQueryClient();
-	const myUser = useContext(MyUserContext);
+	const myUser = useContext(MyUserProfileContext);
 
 	//	Clear cookies and redirect to login page
 	const handleLogout = useCallback(() => {
@@ -55,7 +55,7 @@ export const UserProfile = () => {
 			.then((res) => {
 				if (res.ok) {
 					queryClient.invalidateQueries({
-						queryKey: ['users', 'firms', 'mine'],
+						queryKey: ['users', 'mine'],
 					});
 					router.push('/login');
 				} else {

@@ -7,7 +7,7 @@ import {
 	IAllWinningBidsContext,
 	IMyOpenAuctionResultsContext,
 	IMyPaginatedBidsContext,
-	IMyUserContext,
+	IMyUserProfileContext,
 	IPaginatedBidsContext,
 	IPaginatedWinningBidsContext,
 } from '@/contexts';
@@ -23,7 +23,7 @@ interface GenerateBidsRowsParams {
 	myPaginatedBids?: IMyPaginatedBidsContext;
 	myOpenAuctionResults?: IMyOpenAuctionResultsContext;
 	bidsFilter: BidsFilter;
-	myUser: IMyUserContext;
+	myUser: IMyUserProfileContext;
 }
 export const generateBidsRows = ({
 	bids,

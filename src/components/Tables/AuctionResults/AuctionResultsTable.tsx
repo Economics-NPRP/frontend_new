@@ -6,7 +6,7 @@ import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { CurrencyBadge } from '@/components/Badge';
 import { Switch } from '@/components/SwitchCase';
 import { IPaginatedOpenAuctionResultsContext, ISingleAuctionContext } from '@/contexts';
-import { MyUserContext } from '@/contexts';
+import { MyUserProfileContext } from '@/contexts';
 import { IAuctionData, IUserData } from '@/schema/models';
 import { IAuctionResultsData } from '@/types';
 import {
@@ -43,7 +43,7 @@ export const ResultsTable = ({
 	const format = useFormatter();
 	const isMobile = useMatches({ base: true, xs: false });
 	const tableContainerRef = useRef<HTMLDivElement>(null);
-	const myUser = useContext(MyUserContext);
+	const myUser = useContext(MyUserProfileContext);
 
 	const tableData = useMemo(() => {
 		if (!paginatedOpenAuctionResults.data) return null;

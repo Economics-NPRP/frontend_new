@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import { PropsWithChildren, createContext, useContext } from 'react';
 
-import { MyUserContext, QueryProvider } from '@/contexts';
+import { MyUserProfileContext, QueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
 import { useAuctionAvailability } from '@/hooks';
 import { getMyOpenAuctionResults } from '@/lib/results/open';
@@ -19,7 +19,7 @@ const DefaultData = getDefaultContextState(DefaultMyAuctionResultsData);
 const Context = createContext<IMyOpenAuctionResultsContext>(DefaultData);
 
 export const MyOpenAuctionResultsProvider = ({ children }: PropsWithChildren) => {
-	const myUser = useContext(MyUserContext);
+	const myUser = useContext(MyUserProfileContext);
 	const { auctionId } = useParams();
 	const { areResultsAvailable } = useAuctionAvailability();
 

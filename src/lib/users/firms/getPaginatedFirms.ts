@@ -5,7 +5,7 @@ import { cache } from 'react';
 import 'server-only';
 
 import { getSession } from '@/lib/auth';
-import { IUserData } from '@/schema/models';
+import { IFirmData } from '@/schema/models';
 import { IOffsetPagination, OffsetPaginatedData, SortDirection } from '@/types';
 
 export interface IGetPaginatedFirmsOptions extends IOffsetPagination {
@@ -13,12 +13,12 @@ export interface IGetPaginatedFirmsOptions extends IOffsetPagination {
 	sortDirection?: SortDirection | null;
 }
 
-const getDefaultData: (...errors: Array<string>) => OffsetPaginatedData<IUserData> = (
+const getDefaultData: (...errors: Array<string>) => OffsetPaginatedData<IFirmData> = (
 	...errors
 ) => ({
 	ok: false,
 	errors: errors,
-	results: [] as Array<IUserData>,
+	results: [] as Array<IFirmData>,
 	page: 1,
 	pageCount: 1,
 	totalCount: 0,
@@ -28,7 +28,7 @@ const getDefaultData: (...errors: Array<string>) => OffsetPaginatedData<IUserDat
 
 type IFunctionSignature = (
 	options: IGetPaginatedFirmsOptions,
-) => Promise<OffsetPaginatedData<IUserData>>;
+) => Promise<OffsetPaginatedData<IFirmData>>;
 export const getPaginatedFirms: IFunctionSignature = cache(
 	async ({ page, perPage, sortBy, sortDirection }) => {
 		const cookieHeaders = await getSession();
@@ -57,8 +57,8 @@ export const getPaginatedFirms: IFunctionSignature = cache(
 
 		//	Parse results using schema and collect issues
 		const errors: Array<string> = [];
-		const results = rawData.results.reduce<Array<IUserData>>((acc, result) => {
-			acc.push(result as IUserData);
+		const results = rawData.results.reduce<Array<IFirmData>>((acc, result) => {
+			acc.push(result as IFirmData);
 			return acc;
 		}, []);
 
