@@ -12,7 +12,6 @@ export default function Hero() {
 
 	return (
 		<DashboardHero
-			title={firm.data.name}
 			returnButton={{
 				href: '/dashboard/a/firms',
 				label: t('constants.return.firmsList.label'),

@@ -31,6 +31,7 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
 };
 
 export interface FirmDetailsProps {
+	banner: ReactNode;
 	details: ReactNode;
 	environment: ReactNode;
 	hero: ReactNode;
@@ -38,6 +39,7 @@ export interface FirmDetailsProps {
 	users: ReactNode;
 }
 export default function FirmDetails({
+	banner,
 	details,
 	environment,
 	hero,
@@ -47,6 +49,7 @@ export default function FirmDetails({
 	return withProviders(
 		<Stack className={classes.root}>
 			{hero}
+			{banner}
 			{details}
 			{users}
 			{trading}

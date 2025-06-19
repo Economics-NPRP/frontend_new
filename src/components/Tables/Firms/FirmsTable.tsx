@@ -588,7 +588,6 @@ export const FirmsTable = ({
 				onSelectedRecordsChange={selectedFirmsHandlers.setState}
 				selectionColumnClassName={classes.selection}
 				fetching={firms.isLoading}
-				loaderBackgroundBlur={1}
 				idAccessor="id"
 				selectionTrigger="cell"
 				noRecordsText={t('components.firmsTable.empty')}
