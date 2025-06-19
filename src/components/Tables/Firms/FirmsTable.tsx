@@ -8,11 +8,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FirmStatusBadge } from '@/components/Badge';
 import { FirmsFilter } from '@/components/Tables/Firms/types';
 import { IPaginatedFirmsContext } from '@/contexts';
+import { IUserData } from '@/schema/models';
 import {
 	ActionIcon,
 	Anchor,
+	Button,
 	CopyButton,
+	Divider,
 	Group,
+	Input,
 	Menu,
 	Pagination,
 	Pill,
@@ -21,17 +25,21 @@ import {
 	Stack,
 	TableProps,
 	Text,
+	TextInput,
 	Title,
 	Tooltip,
 } from '@mantine/core';
+import { useListState, useMediaQuery } from '@mantine/hooks';
 import {
 	IconAdjustments,
+	IconArrowUpRight,
 	IconCheck,
 	IconCopy,
+	IconFileSearch,
 	IconHelpHexagon,
 	IconInfoHexagon,
-	IconPencil,
-	IconX,
+	IconMailShare,
+	IconSearch,
 } from '@tabler/icons-react';
 
 import classes from '../styles.module.css';
@@ -46,8 +54,11 @@ export const FirmsTable = ({
 	...props
 }: firmsTableProps) => {
 	const t = useTranslations();
+	const isMobile = useMediaQuery('(max-width: 48em)');
 	const tableContainerRef = useRef<HTMLTableElement>(null);
 
+	const [searchFilter, setSearchFilter] = useState('');
+	const [selectedFirms, selectedFirmsHandlers] = useListState<IUserData>([]);
 	const [firmsFilter, setFirmsFilter] = useState<FirmsFilter>('all');
 
 	//	Generate the filter badges
@@ -187,7 +198,7 @@ export const FirmsTable = ({
 						</Menu>
 					</Group>
 				</Group>
-				<Group className={classes.row}>
+				<Group className={`${classes.row} ${classes.wrapMobile}`}>
 					<Group className={classes.filters}>
 						<Text className={classes.label}>
 							{t('components.firmsTable.filters.label')}
@@ -215,6 +226,54 @@ export const FirmsTable = ({
 						</Group>
 					</Group>
 				</Group>
+				<Divider className={classes.divider} />
+				<Group className={`${classes.row} ${classes.wrapMobile}`}>
+					<TextInput
+						className={classes.search}
+						placeholder={t('components.firmsTable.search.placeholder')}
+						value={searchFilter}
+						onChange={(event) => setSearchFilter(event.currentTarget.value)}
+						leftSection={<IconSearch size={16} />}
+						rightSection={
+							searchFilter !== '' ? (
+								<Input.ClearButton onClick={() => setSearchFilter('')} />
+							) : undefined
+						}
+						rightSectionPointerEvents="auto"
+					/>
+					<Group className={classes.actions}>
+						<Text className={classes.count}>
+							{t('components.table.selected.count', { value: selectedFirms.length })}
+						</Text>
+						<Group className={classes.buttons}>
+							<Button
+								className={`${classes.secondary} ${classes.button}`}
+								variant="outline"
+								disabled={selectedFirms.length === 0}
+								rightSection={<IconFileSearch size={16} />}
+							>
+								{t(
+									`components.firmsTable.actions.audit.${isMobile ? 'short' : 'default'}`,
+									{
+										value: selectedFirms.length,
+									},
+								)}
+							</Button>
+							<Button
+								className={`${classes.primary} ${classes.button}`}
+								disabled={selectedFirms.length === 0}
+								rightSection={<IconMailShare size={16} />}
+							>
+								{t(
+									`components.firmsTable.actions.invite.${isMobile ? 'short' : 'default'}`,
+									{
+										value: selectedFirms.length,
+									},
+								)}
+							</Button>
+						</Group>
+					</Group>
+				</Group>
 			</Stack>
 			{/* @ts-expect-error - data table props from library are not exposed */}
 			<DataTable
@@ -224,7 +283,7 @@ export const FirmsTable = ({
 						accessor: 'name',
 						sortable: true,
 						title: t('components.firmsTable.columns.name'),
-						width: 280,
+						width: 240,
 						cellsClassName: `${classes.firm} ${classes.between}`,
 						ellipsis: true,
 						render: (record) => (
@@ -307,7 +366,13 @@ export const FirmsTable = ({
 								<Text>1234567890</Text>
 								<CopyButton value={'1234567890'} timeout={2000}>
 									{({ copied, copy }) => (
-										<Tooltip label={copied ? 'Copied' : 'Copy'}>
+										<Tooltip
+											label={
+												copied
+													? t('constants.actions.copied.label')
+													: t('constants.actions.copy.label')
+											}
+										>
 											<ActionIcon
 												className={classes.copy}
 												color={copied ? 'teal' : 'gray'}
@@ -366,18 +431,38 @@ export const FirmsTable = ({
 						title: t('constants.actions.actions.column'),
 						titleClassName: classes.actions,
 						cellsClassName: classes.actions,
-						width: 81,
-						render: () => (
+						render: (record) => (
 							<Group className={classes.cell}>
-								<ActionIcon className={classes.button} variant="filled">
-									<IconPencil size={16} />
-								</ActionIcon>
-								<ActionIcon
-									className={`${classes.delete} ${classes.button}`}
-									variant="filled"
+								<Tooltip
+									label={t('components.firmsTable.columns.actions.audit.tooltip')}
+									position="top"
 								>
-									<IconX size={16} />
-								</ActionIcon>
+									<ActionIcon
+										className={`${classes.secondary} ${classes.button}`}
+									>
+										<IconFileSearch size={16} />
+									</ActionIcon>
+								</Tooltip>
+								<Tooltip
+									label={t(
+										'components.firmsTable.columns.actions.invite.tooltip',
+									)}
+									position="top"
+								>
+									<ActionIcon
+										className={`${classes.secondary} ${classes.button}`}
+									>
+										<IconMailShare size={16} />
+									</ActionIcon>
+								</Tooltip>
+								<Button
+									className={`${classes.primary} ${classes.button}`}
+									component="a"
+									href={`/dashboard/a/firms/${record.id}`}
+									rightSection={<IconArrowUpRight size={16} />}
+								>
+									{t('constants.view.details.label')}
+								</Button>
 							</Group>
 						),
 					},
@@ -390,8 +475,9 @@ export const FirmsTable = ({
 				pinLastColumn
 				// sortStatus={sortStatus}
 				// onSortStatusChange={setSortStatus}
-				// selectedRecords={!readOnly ? selectedBids : undefined}
-				// onSelectedRecordsChange={!readOnly ? selectedBidsHandlers.setState : undefined}
+				selectedRecords={selectedFirms}
+				onSelectedRecordsChange={selectedFirmsHandlers.setState}
+				selectionColumnClassName={classes.selection}
 				fetching={firms.isLoading}
 				loaderBackgroundBlur={1}
 				idAccessor="id"
@@ -400,55 +486,6 @@ export const FirmsTable = ({
 				scrollViewportRef={tableContainerRef}
 				{...props}
 			/>
-			{/* <Stack className={classes.table} ref={tableContainerRef}>
-				<Table highlightOnHover withColumnBorders stickyHeader {...props}>
-					<Table.Thead>
-						<Table.Tr>
-							<Table.Th className="min-w-[120px]">
-								{t('components.firmsTable.columns.name')}
-							</Table.Th>
-							<Table.Th className="min-w-[120px]">
-								{t('components.firmsTable.columns.sectors')}
-							</Table.Th>
-							<Table.Th className="min-w-[120px]">
-								{t('components.firmsTable.columns.email')}
-							</Table.Th>
-							<Table.Th className="min-w-[120px]">
-								{t('components.firmsTable.columns.phone')}
-							</Table.Th>
-							<Table.Th className="min-w-[120px]">
-								{t('components.firmsTable.columns.crn')}
-							</Table.Th>
-							<Table.Th className="min-w-[80px]">
-								{t('components.firmsTable.columns.status')}
-							</Table.Th>
-							<Table.Th className="min-w-[160px] flex items-center justify-between">
-								{t('components.firmsTable.columns.createdAt')}
-								<IconArrowNarrowDown size={14} />
-							</Table.Th>
-							<Table.Th className="min-w-[160px]">
-								{t('components.firmsTable.columns.invitedBy')}
-							</Table.Th>
-						</Table.Tr>
-					</Table.Thead>
-					<Table.Tbody>{tableData}</Table.Tbody>
-				</Table>
-				<Switch value={currentState}>
-					<Switch.Loading>
-						<Stack className={classes.placeholder}>
-							<Loader color="gray" />
-						</Stack>
-					</Switch.Loading>
-					<Switch.Case when="empty">
-						<Stack className={classes.placeholder}>
-							<Container className={classes.icon}>
-								<IconDatabaseOff size={24} />
-							</Container>
-							<Text className={classes.text}>{t('components.firmsTable.empty')}</Text>
-						</Stack>
-					</Switch.Case>
-				</Switch>
-			</Stack> */}
 			<Group className={classes.footer}>
 				{firms.isSuccess && (
 					<Pagination

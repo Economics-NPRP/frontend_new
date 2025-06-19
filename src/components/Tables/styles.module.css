@@ -4,6 +4,10 @@
 	> .header {
 		@apply gap-2;
 
+		> .divider {
+			@apply my-2;
+		}
+
 		> .row {
 			@apply flex-nowrap gap-8 justify-between items-center;
 
@@ -51,7 +55,31 @@
 				}
 			}
 
-			&:last-child {
+			> .search {
+				@apply min-w-[200px];
+				@apply self-stretch;
+				@apply rounded-sm;
+			}
+
+			> .actions {
+				@apply flex-col-reverse items-center self-stretch;
+				@apply gap-2 flex-nowrap;
+
+				> .count {
+					@apply paragraph-sm-15;
+				}
+
+				> .buttons {
+					@apply self-stretch;
+					@apply gap-2 flex-nowrap;
+
+					> .button {
+						@apply flex-auto;
+					}
+				}
+			}
+
+			&.wrapMobile {
 				@apply flex-col gap-2;
 			}
 		}
@@ -84,8 +112,17 @@
 				@apply border-b-0;
 			}
 
-			&.gray {
+			&.gray,
+			&[data-selected='true'] {
 				@apply bg-gray-50;
+
+				> td {
+					@apply bg-gray-50;
+
+					&.selection::before {
+						@apply bg-[unset];
+					}
+				}
 			}
 
 			.anchor {
@@ -119,8 +156,13 @@
 				@apply min-h-[120px] text-center;
 			}
 
+			> .selection,
 			> .actions {
 				@apply bg-white;
+			}
+
+			> .actions {
+				@apply flex-nowrap items-center justify-center;
 
 				&:has(.button) {
 					@apply p-0 border-0;
@@ -128,12 +170,34 @@
 
 				> .cell {
 					@apply gap-0;
+					@apply flex-nowrap items-center justify-center;
 
 					.button {
-						@apply size-10;
+						@apply h-10;
+
+						&:not(.primary) {
+							@apply size-10;
+						}
 
 						&.delete {
 							@apply bg-red-600 text-white;
+						}
+
+						&.secondary {
+							@apply bg-gray-100 text-dark-300;
+							@apply border-0 border-r border-solid border-gray-300;
+
+							&:hover {
+								@apply bg-gray-200;
+							}
+
+							&:last-child {
+								@apply border-0;
+							}
+						}
+
+						&.primary {
+							@apply border-0;
 						}
 					}
 				}
@@ -212,8 +276,18 @@
 
 * {
 	@mixin larger-than $mantine-breakpoint-xs {
-		.root > .header > .row:last-child {
-			@apply flex-row gap-8;
+		.root > .header > .row {
+			&.wrapMobile {
+				@apply flex-row gap-8;
+			}
+
+			> .search {
+				@apply self-center;
+			}
+
+			> .actions {
+				@apply flex-row gap-4;
+			}
 		}
 	}
 	@mixin larger-than $mantine-breakpoint-sm {
@@ -225,6 +299,15 @@
 			> .settings > .label {
 				@apply block;
 			}
+
+			> .search {
+				@apply min-w-[240px];
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root > .header > .row > .search {
+			@apply min-w-[320px];
 		}
 	}
 
@@ -242,6 +325,40 @@
 
 				> .filters > .badges > .badge {
 					@apply bg-dark-500 text-dark-100;
+				}
+
+				> .actions > .buttons > .button {
+					&.primary {
+						@apply bg-dark-400 text-white;
+
+						&:hover {
+							@apply bg-dark-300;
+						}
+
+						&:disabled {
+							@apply opacity-25;
+
+							&:hover {
+								@apply bg-dark-400;
+							}
+						}
+					}
+
+					&.secondary {
+						@apply bg-dark-600 border-dark-400 text-white;
+
+						&:hover {
+							@apply bg-dark-500;
+						}
+
+						&:disabled {
+							@apply opacity-25;
+
+							&:hover {
+								@apply bg-dark-600;
+							}
+						}
+					}
 				}
 			}
 
@@ -263,12 +380,37 @@
 						@apply text-dark-50;
 					}
 
-					&.gray {
+					&.gray,
+					&[data-selected='true'] {
 						@apply bg-dark-600;
+
+						> td {
+							@apply bg-dark-600;
+						}
 					}
 
+					> .selection,
 					> .actions {
 						@apply bg-dark-700;
+					}
+
+					> .actions > .cell .button {
+						&.secondary,
+						&.primary {
+							@apply bg-dark-600 border-dark-400 text-white;
+
+							&:hover {
+								@apply bg-dark-400;
+							}
+
+							&:disabled {
+								@apply opacity-25;
+
+								&:hover {
+									@apply bg-dark-600;
+								}
+							}
+						}
 					}
 				}
 			}

@@ -329,7 +329,7 @@ export const BidsTable = ({
 							)}
 						</Group>
 					</Group>
-					<Group className={classes.row}>
+					<Group className={`${classes.row} ${classes.wrapMobile}`}>
 						<Group className={classes.filters}>
 							<Text className={classes.label}>
 								{t('components.bidsTable.filters.label')}

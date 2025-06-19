@@ -213,6 +213,14 @@
 					&:hover {
 						@apply bg-dark-300;
 					}
+
+					&:disabled {
+						@apply opacity-25;
+
+						&:hover {
+							@apply bg-dark-400;
+						}
+					}
 				}
 
 				&.secondary {
