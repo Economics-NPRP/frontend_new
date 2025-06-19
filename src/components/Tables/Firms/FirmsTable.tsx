@@ -5,17 +5,22 @@ import { DataTable } from 'mantine-datatable';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { FirmStatusBadge } from '@/components/Badge';
+import { CategoryBadge, FirmStatusBadge } from '@/components/Badge';
 import { FirmsFilter } from '@/components/Tables/Firms/types';
+import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
 import { IPaginatedFirmsContext } from '@/contexts';
 import { IUserData } from '@/schema/models';
+import { AuctionCategory } from '@/types';
 import {
 	ActionIcon,
 	Anchor,
+	Badge,
 	Button,
+	Checkbox,
 	CopyButton,
 	Divider,
 	Group,
+	HoverCard,
 	Input,
 	Menu,
 	Pagination,
@@ -58,49 +63,70 @@ export const FirmsTable = ({
 	const tableContainerRef = useRef<HTMLTableElement>(null);
 
 	const [searchFilter, setSearchFilter] = useState('');
+	const [statusFilter, setStatusFilter] = useState<FirmsFilter>('all');
 	const [selectedFirms, selectedFirmsHandlers] = useListState<IUserData>([]);
-	const [firmsFilter, setFirmsFilter] = useState<FirmsFilter>('all');
+	const [sectorFilter, sectorFilterHandlers] = useListState<AuctionCategory>([]);
 
 	//	Generate the filter badges
 	const filterBadges = useMemo(() => {
 		if (!firms) return null;
-		if (firmsFilter === 'all')
+		const output = [];
+
+		switch (statusFilter) {
+			case 'verified':
+				output.push(
+					<Pill
+						className={classes.badge}
+						onRemove={() => setStatusFilter('all')}
+						withRemoveButton
+					>
+						{t('components.firmsTable.filters.badges.verified')}
+					</Pill>,
+				);
+				break;
+			case 'unverified':
+				output.push(
+					<Pill
+						className={classes.badge}
+						onRemove={() => setStatusFilter('all')}
+						withRemoveButton
+					>
+						{t('components.firmsTable.filters.badges.unverified')}
+					</Pill>,
+				);
+				break;
+			case 'uninvited':
+				output.push(
+					<Pill
+						className={classes.badge}
+						onRemove={() => setStatusFilter('all')}
+						withRemoveButton
+					>
+						{t('components.firmsTable.filters.badges.uninvited')}
+					</Pill>,
+				);
+				break;
+		}
+
+		output.push(
+			...sectorFilter.map((sector, index) => (
+				<CategoryBadge
+					key={sector}
+					category={sector}
+					onRemove={() => sectorFilterHandlers.remove(index)}
+					withRemoveButton
+				/>
+			)),
+		);
+
+		if (output.length === 0)
 			return (
 				<Pill className={classes.badge}>
 					{t('components.firmsTable.filters.badges.all')}
 				</Pill>
 			);
-		if (firmsFilter === 'verified')
-			return (
-				<Pill
-					className={classes.badge}
-					onRemove={() => setFirmsFilter('all')}
-					withRemoveButton
-				>
-					{t('components.firmsTable.filters.badges.verified')}
-				</Pill>
-			);
-		if (firmsFilter === 'unverified')
-			return (
-				<Pill
-					className={classes.badge}
-					onRemove={() => setFirmsFilter('all')}
-					withRemoveButton
-				>
-					{t('components.firmsTable.filters.badges.unverified')}
-				</Pill>
-			);
-		if (firmsFilter === 'uninvited')
-			return (
-				<Pill
-					className={classes.badge}
-					onRemove={() => setFirmsFilter('all')}
-					withRemoveButton
-				>
-					{t('components.firmsTable.filters.badges.uninvited')}
-				</Pill>
-			);
-	}, [firms, firmsFilter, t]);
+		return output;
+	}, [firms, statusFilter, sectorFilter, t, sectorFilterHandlers]);
 
 	const handleChangePage = useCallback(
 		(page: number) => {
@@ -112,7 +138,7 @@ export const FirmsTable = ({
 	);
 
 	//	Reset the page when the bids filter or per page changes
-	useEffect(() => firms.setPage(1), [firmsFilter, firms.perPage]);
+	useEffect(() => firms.setPage(1), [statusFilter, firms.perPage]);
 
 	return (
 		<Stack className={`${classes.root} ${className}`}>
@@ -160,8 +186,8 @@ export const FirmsTable = ({
 									{t('components.firmsTable.filters.menu.status.label')}
 								</Menu.Label>
 								<Radio.Group
-									value={firmsFilter}
-									onChange={(value) => setFirmsFilter(value as FirmsFilter)}
+									value={statusFilter}
+									onChange={(value) => setStatusFilter(value as FirmsFilter)}
 								>
 									<Stack className={classes.options}>
 										<Radio
@@ -194,6 +220,47 @@ export const FirmsTable = ({
 								<Menu.Label className={classes.label}>
 									{t('components.firmsTable.filters.menu.sector.label')}
 								</Menu.Label>
+								<Checkbox.Group
+									value={sectorFilter}
+									onChange={(values) =>
+										sectorFilterHandlers.setState(
+											values as Array<AuctionCategory>,
+										)
+									}
+								>
+									<Stack className={classes.options}>
+										<Checkbox
+											className={classes.checkbox}
+											value="energy"
+											label={t('constants.auctionCategory.energy.title')}
+										/>
+										<Checkbox
+											className={classes.checkbox}
+											value="industry"
+											label={t('constants.auctionCategory.industry.title')}
+										/>
+										<Checkbox
+											className={classes.checkbox}
+											value="transport"
+											label={t('constants.auctionCategory.transport.title')}
+										/>
+										<Checkbox
+											className={classes.checkbox}
+											value="buildings"
+											label={t('constants.auctionCategory.buildings.title')}
+										/>
+										<Checkbox
+											className={classes.checkbox}
+											value="agriculture"
+											label={t('constants.auctionCategory.agriculture.title')}
+										/>
+										<Checkbox
+											className={classes.checkbox}
+											value="waste"
+											label={t('constants.auctionCategory.waste.title')}
+										/>
+									</Stack>
+								</Checkbox.Group>
 							</Menu.Dropdown>
 						</Menu>
 					</Group>
@@ -294,7 +361,7 @@ export const FirmsTable = ({
 								>
 									{record.name}
 								</Anchor>
-								<Group className={classes.badges}>
+								<Group className={classes.group}>
 									{/* TODO: replace with actual verification or invitation check */}
 									{!record.emailVerified && (
 										<Tooltip
@@ -332,7 +399,46 @@ export const FirmsTable = ({
 						accessor: 'sectors',
 						sortable: false,
 						title: t('components.firmsTable.columns.sectors'),
-						render: () => <Text className={classes.sectors}></Text>,
+						width: 180,
+						render: (record) => {
+							const badges = useMemo(
+								() =>
+									record.sectors
+										.filter(
+											(sector) =>
+												AuctionCategoryVariants[sector.toLowerCase()],
+										)
+										.map((sector) => (
+											<CategoryBadge
+												key={sector}
+												category={sector}
+												className={classes.categoryBadge}
+											/>
+										)),
+								[record.sectors],
+							);
+							useEffect(() => console.log('Sectors:', badges), [badges]);
+
+							return (
+								<>
+									<Group className={classes.group}>
+										{badges[0]}
+										{badges.length > 1 && (
+											<HoverCard position="top">
+												<HoverCard.Target>
+													<Badge variant="light">
+														+{badges.length - 1}
+													</Badge>
+												</HoverCard.Target>
+												<HoverCard.Dropdown className={classes.HoverCard}>
+													{badges.slice(1).map((badge) => badge)}
+												</HoverCard.Dropdown>
+											</HoverCard>
+										)}
+									</Group>
+								</>
+							);
+						},
 					},
 					{
 						accessor: 'email',
@@ -360,6 +466,7 @@ export const FirmsTable = ({
 						accessor: 'crn',
 						sortable: true,
 						title: t('components.firmsTable.columns.crn'),
+						width: 180,
 						cellsClassName: `${classes.crn} ${classes.between}`,
 						render: () => (
 							<>
@@ -395,6 +502,7 @@ export const FirmsTable = ({
 						accessor: 'status',
 						sortable: false,
 						title: t('components.firmsTable.columns.status'),
+						width: 160,
 						cellsClassName: classes.status,
 						render: (record) => (
 							<FirmStatusBadge

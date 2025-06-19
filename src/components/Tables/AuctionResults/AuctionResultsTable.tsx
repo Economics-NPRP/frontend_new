@@ -220,7 +220,7 @@ const generateResultsRows = (
 					<Anchor className={classes.anchor} href={`/marketplace/company/${firm.id}`}>
 						{firm.name}
 					</Anchor>
-					<Group className={classes.badges}>
+					<Group className={classes.group}>
 						{firm.id === currentUser.id && (
 							<Tooltip
 								// @ts-expect-error - cant get typing from locale file
