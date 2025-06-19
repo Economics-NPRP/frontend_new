@@ -30,6 +30,7 @@ export default function Hero() {
 					href: `/dashboard/a/firms/${firm.data.id}`,
 				},
 			]}
+			loading={firm.isLoading}
 		/>
 	);
 }

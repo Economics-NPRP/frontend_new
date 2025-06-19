@@ -1,18 +1,24 @@
 .root {
-	@apply relative;
+	@apply relative mb-16;
 
 	> .image {
 		@apply relative;
-		@apply h-[240px];
+		@apply h-[200px];
 		@apply overflow-hidden;
 		@apply rounded-lg;
+
+		> .placeholder {
+			@apply absolute top-0 left-0 w-full h-full;
+			@apply flex items-center justify-center;
+			@apply bg-gray-200 text-gray-500;
+		}
 
 		img {
 			@apply object-cover object-center;
 			@apply transition-transform duration-700;
 		}
 
-		> .overlay {
+		&:not(:has(.placeholder)) > .overlay {
 			@apply absolute top-0 left-0 w-full h-full;
 			@apply justify-center items-center;
 			@apply opacity-50;

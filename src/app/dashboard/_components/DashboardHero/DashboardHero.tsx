@@ -1,6 +1,17 @@
 import { useMemo } from 'react';
 
-import { Anchor, Breadcrumbs, Button, Divider, Group, Stack, Text, Title } from '@mantine/core';
+import { Switch } from '@/components/SwitchCase';
+import {
+	Anchor,
+	Breadcrumbs,
+	Button,
+	Divider,
+	Group,
+	Skeleton,
+	Stack,
+	Text,
+	Title,
+} from '@mantine/core';
 import { IconArrowUpLeft, IconChevronRight } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
@@ -16,12 +27,14 @@ export interface DashboardHeroProps {
 		label: string;
 		href: string;
 	}>;
+	loading?: boolean;
 }
 export const DashboardHero = ({
 	title,
 	description,
 	returnButton,
 	breadcrumbs,
+	loading = false,
 }: DashboardHeroProps) => {
 	const breadcrumbItems = useMemo(
 		() =>
@@ -51,15 +64,32 @@ export const DashboardHero = ({
 					</>
 				)}
 				{breadcrumbItems.length > 1 && (
-					<Breadcrumbs
-						separator={<IconChevronRight size={14} />}
-						classNames={{
-							root: classes.breadcrumbs,
-							separator: classes.separator,
-						}}
-					>
-						{breadcrumbItems}
-					</Breadcrumbs>
+					<Switch value={loading}>
+						<Switch.True>
+							<Breadcrumbs
+								separator={<IconChevronRight size={14} />}
+								classNames={{
+									root: classes.breadcrumbs,
+									separator: classes.separator,
+								}}
+							>
+								{breadcrumbItems.map((_, index) => (
+									<Skeleton key={index} width={80} height={14} visible />
+								))}
+							</Breadcrumbs>
+						</Switch.True>
+						<Switch.False>
+							<Breadcrumbs
+								separator={<IconChevronRight size={14} />}
+								classNames={{
+									root: classes.breadcrumbs,
+									separator: classes.separator,
+								}}
+							>
+								{breadcrumbItems}
+							</Breadcrumbs>
+						</Switch.False>
+					</Switch>
 				)}
 			</Group>
 			{title && (

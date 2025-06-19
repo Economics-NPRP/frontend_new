@@ -1,3 +1,148 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
+import { useContext, useMemo } from 'react';
+
+import { CategoryBadge, FirmStatusBadge } from '@/components/Badge';
+import { Id } from '@/components/Id';
+import { WithSkeleton } from '@/components/WithSkeleton';
+import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
+import { SingleFirmContext } from '@/contexts';
+import { AuctionCategory } from '@/types';
+import {
+	ActionIcon,
+	Anchor,
+	Container,
+	CopyButton,
+	Group,
+	Stack,
+	Text,
+	Title,
+	Tooltip,
+} from '@mantine/core';
+import {
+	IconCertificate,
+	IconCheck,
+	IconCopy,
+	IconMail,
+	IconPhone,
+	IconWorld,
+} from '@tabler/icons-react';
+
+import classes from './styles.module.css';
+
 export default function Details() {
-	return <></>;
+	const t = useTranslations();
+	const firm = useContext(SingleFirmContext);
+
+	const badges = useMemo(
+		() =>
+			firm.isLoading
+				? [
+						<FirmStatusBadge key={1} status="unverified" loading />,
+						<FirmStatusBadge key={2} status="unverified" loading />,
+						<FirmStatusBadge key={3} status="unverified" loading />,
+					]
+				: [
+						<FirmStatusBadge
+							key={'status'}
+							status={firm.data.emailVerified ? 'verified' : 'unverified'}
+						/>,
+						...firm.data.sectors
+							.filter(
+								(sector) =>
+									AuctionCategoryVariants[
+										sector.toLowerCase() as AuctionCategory
+									],
+							)
+							.map((sector) => (
+								<CategoryBadge
+									key={sector}
+									category={sector}
+									className={classes.categoryBadge}
+								/>
+							)),
+					],
+		[firm.data.sectors],
+	);
+
+	return (
+		<Stack className={classes.root}>
+			<Stack className={classes.label}>
+				<WithSkeleton loading={firm.isLoading} width={280} height={36}>
+					<Title order={1} className={classes.title}>
+						{firm.data.name}
+					</Title>
+				</WithSkeleton>
+				<WithSkeleton loading={firm.isLoading} width={160} height={24}>
+					<Id variant="company" value={firm.data.id} className={classes.id} />
+				</WithSkeleton>
+			</Stack>
+			<Group className={classes.badges}>{badges}</Group>
+			<Group className={classes.contact}>
+				<Stack className={classes.cell}>
+					<Container className={classes.icon}>
+						<IconMail size={16} />
+					</Container>
+					<Text className={classes.key}>Contact Email</Text>
+					<WithSkeleton width={140} height={20} loading={firm.isLoading} data-dark>
+						<Anchor href={`mailto:${firm.data.email}`} className={classes.value}>
+							{firm.data.email}
+						</Anchor>
+					</WithSkeleton>
+				</Stack>
+				<Stack className={classes.cell}>
+					<Container className={classes.icon}>
+						<IconPhone size={16} />
+					</Container>
+					<Text className={classes.key}>Contact Phone Number</Text>
+					<WithSkeleton width={80} height={20} loading={firm.isLoading} data-dark>
+						<Anchor href={`tel:${firm.data.phone}`} className={classes.value}>
+							{firm.data.phone}
+						</Anchor>
+					</WithSkeleton>
+				</Stack>
+				<Stack className={classes.cell}>
+					<Container className={classes.icon}>
+						<IconCertificate size={16} />
+					</Container>
+					<Text className={classes.key}>CRN</Text>
+					<Group className={classes.row}>
+						<WithSkeleton width={80} height={20} loading={firm.isLoading} data-dark>
+							<Text className={classes.value}>1234567890</Text>
+						</WithSkeleton>
+						<CopyButton value={'1234567890'} timeout={2000}>
+							{({ copied, copy }) => (
+								<Tooltip
+									label={
+										copied
+											? t('constants.actions.copied.label')
+											: t('constants.actions.copy.label')
+									}
+								>
+									<ActionIcon
+										className={classes.copy}
+										color={copied ? 'teal' : 'gray'}
+										variant="light"
+										onClick={copy}
+									>
+										{copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
+									</ActionIcon>
+								</Tooltip>
+							)}
+						</CopyButton>
+					</Group>
+				</Stack>
+				<Stack className={classes.cell}>
+					<Container className={classes.icon}>
+						<IconWorld size={16} />
+					</Container>
+					<Text className={classes.key}>Website</Text>
+					<WithSkeleton width={80} height={20} loading={firm.isLoading} data-dark>
+						<Anchor className={classes.value}>{firm.data.name}.com</Anchor>
+					</WithSkeleton>
+				</Stack>
+			</Group>
+		</Stack>
+	);
 }
