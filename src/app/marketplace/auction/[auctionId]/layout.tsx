@@ -10,7 +10,7 @@ type Props = {
 };
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
 	const { auctionId } = await params;
-	const auction = getSingleAuction(auctionId);
+	const auction = await getSingleAuction(auctionId);
 	if (!auction) {
 		return {
 			title: {

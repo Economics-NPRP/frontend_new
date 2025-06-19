@@ -235,6 +235,9 @@
 			},
 			"home": {
 				"label": "Return to Home"
+			},
+			"firmsList": {
+				"label": "Return to Firms List"
 			}
 		},
 		"view": {
