@@ -134,9 +134,7 @@ export const BiddingTable = ({
 					{
 						accessor: 'actions',
 						hidden: readOnly,
-						title: t(
-							'marketplace.auction.details.components.biddingTable.columns.actions',
-						),
+						title: t('constants.actions.actions.column'),
 						cellsClassName: classes.actions,
 						width: 81,
 						render: (bidItem) => (

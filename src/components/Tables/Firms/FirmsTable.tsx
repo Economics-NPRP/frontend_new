@@ -2,27 +2,23 @@
 
 import { DateTime } from 'luxon';
 import { DataTable } from 'mantine-datatable';
-import { useFormatter, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { FirmStatusBadge } from '@/components/Badge';
-import { Switch } from '@/components/SwitchCase';
 import { FirmsFilter } from '@/components/Tables/Firms/types';
 import { IPaginatedFirmsContext } from '@/contexts';
 import {
 	ActionIcon,
 	Anchor,
-	Container,
 	CopyButton,
 	Group,
-	Loader,
 	Menu,
 	Pagination,
 	Pill,
 	Radio,
 	Select,
 	Stack,
-	Table,
 	TableProps,
 	Text,
 	Title,
@@ -30,103 +26,29 @@ import {
 } from '@mantine/core';
 import {
 	IconAdjustments,
-	IconArrowNarrowDown,
 	IconCheck,
 	IconCopy,
-	IconDatabaseOff,
 	IconHelpHexagon,
 	IconInfoHexagon,
+	IconPencil,
+	IconX,
 } from '@tabler/icons-react';
 
 import classes from '../styles.module.css';
 
 export interface firmsTableProps extends TableProps {
 	firms: IPaginatedFirmsContext;
-
-	loading?: boolean;
-	unavailable?: boolean;
 }
 export const FirmsTable = ({
 	firms,
-
-	loading = false,
-	unavailable = false,
 
 	className,
 	...props
 }: firmsTableProps) => {
 	const t = useTranslations();
-	const format = useFormatter();
 	const tableContainerRef = useRef<HTMLTableElement>(null);
 
 	const [firmsFilter, setFirmsFilter] = useState<FirmsFilter>('all');
-
-	//	Generate the table rows
-	const tableData = useMemo(() => {
-		if (!firms) return null;
-		//	TODO: generate sector badges here once user data has sectors
-		const sectors = [];
-		return firms.data.results.map((firm) => (
-			<Table.Tr>
-				<Table.Td className={classes.firm}>
-					<Anchor className={classes.anchor} href={`/dashboard/a/firms/${firm.id}`}>
-						{firm.name}
-					</Anchor>
-					<Group className={classes.badges}>
-						{/* TODO: replace with actual verification or invitation check */}
-						{!firm.emailVerified && (
-							<Tooltip
-								label={t('components.firmsTable.legend.unverified.tooltip')}
-								position="top"
-							>
-								<IconHelpHexagon size={14} className={classes.unverified} />
-							</Tooltip>
-						)}
-					</Group>
-				</Table.Td>
-				<Table.Td className={classes.sectors}></Table.Td>
-				<Table.Td className={classes.email}>
-					<Anchor href={`mailto:${firm.email}`} className={classes.anchor}>
-						{firm.email}
-					</Anchor>
-				</Table.Td>
-				<Table.Td className={classes.phone}>
-					<Anchor href={`tel:${firm.phone}`} className={classes.anchor}>
-						{firm.phone}
-					</Anchor>
-				</Table.Td>
-				{/* TODO: replace with actual CRN once available */}
-				<Table.Td className={classes.crn}>
-					1234567890
-					<CopyButton value={'1234567890'} timeout={2000}>
-						{({ copied, copy }) => (
-							<Tooltip label={copied ? 'Copied' : 'Copy'}>
-								<ActionIcon
-									color={copied ? 'teal' : 'gray'}
-									variant="light"
-									onClick={copy}
-								>
-									{copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
-								</ActionIcon>
-							</Tooltip>
-						)}
-					</CopyButton>
-				</Table.Td>
-				<Table.Td className={classes.status}>
-					<FirmStatusBadge status={firm.emailVerified ? 'verified' : 'unverified'} />
-				</Table.Td>
-				<Table.Td className={classes.creationDate}>
-					{DateTime.fromISO(firm.createdAt).toLocaleString(DateTime.DATETIME_SHORT)}
-				</Table.Td>
-				<Table.Td className={classes.invitedBy}>
-					{/* TODO: add inviter id here */}
-					<Anchor href={`/dashboard/a/admins/`} className={classes.anchor}>
-						Placeholder Admin
-					</Anchor>
-				</Table.Td>
-			</Table.Tr>
-		));
-	}, [firms, t, format]);
 
 	//	Generate the filter badges
 	const filterBadges = useMemo(() => {
@@ -181,13 +103,6 @@ export const FirmsTable = ({
 	//	Reset the page when the bids filter or per page changes
 	useEffect(() => firms.setPage(1), [firmsFilter, firms.perPage]);
 
-	const currentState = useMemo(() => {
-		if (!tableData && loading) return 'loading';
-		if (unavailable) return 'unavailable';
-		if (!tableData || tableData.length === 0) return 'empty';
-		return 'ok';
-	}, [loading, tableData]);
-
 	return (
 		<Stack className={`${classes.root} ${className}`}>
 			<Stack className={classes.header}>
@@ -230,11 +145,10 @@ export const FirmsTable = ({
 								</ActionIcon>
 							</Menu.Target>
 							<Menu.Dropdown className={classes.filterMenu}>
-								<Menu.Label>
+								<Menu.Label className={classes.label}>
 									{t('components.firmsTable.filters.menu.status.label')}
 								</Menu.Label>
 								<Radio.Group
-									classNames={{ label: classes.label }}
 									value={firmsFilter}
 									onChange={(value) => setFirmsFilter(value as FirmsFilter)}
 								>
@@ -265,8 +179,8 @@ export const FirmsTable = ({
 										/>
 									</Stack>
 								</Radio.Group>
-								<Menu.Divider />
-								<Menu.Label>
+								<Menu.Divider className={classes.divider} />
+								<Menu.Label className={classes.label}>
 									{t('components.firmsTable.filters.menu.sector.label')}
 								</Menu.Label>
 							</Menu.Dropdown>
@@ -310,6 +224,9 @@ export const FirmsTable = ({
 						accessor: 'name',
 						sortable: true,
 						title: t('components.firmsTable.columns.name'),
+						width: 280,
+						cellsClassName: `${classes.firm} ${classes.between}`,
+						ellipsis: true,
 						render: (record) => (
 							<>
 								<Anchor
@@ -333,6 +250,21 @@ export const FirmsTable = ({
 											/>
 										</Tooltip>
 									)}
+									{/* TODO: replace with actual uninvited check */}
+									{new Date(record.createdAt).getTime() - Date.now() <
+										1000 * 60 * 60 * 24 * 3 && (
+										<Tooltip
+											label={t(
+												'components.firmsTable.legend.uninvited.tooltip',
+											)}
+											position="top"
+										>
+											<IconInfoHexagon
+												size={14}
+												className={classes.uninvited}
+											/>
+										</Tooltip>
+									)}
 								</Group>
 							</>
 						),
@@ -341,12 +273,14 @@ export const FirmsTable = ({
 						accessor: 'sectors',
 						sortable: false,
 						title: t('components.firmsTable.columns.sectors'),
-						render: (record) => <Text className={classes.sectors}></Text>,
+						render: () => <Text className={classes.sectors}></Text>,
 					},
 					{
 						accessor: 'email',
 						sortable: true,
 						title: t('components.firmsTable.columns.email'),
+						width: 200,
+						ellipsis: true,
 						render: (record) => (
 							<Anchor href={`mailto:${record.email}`} className={classes.anchor}>
 								{record.email}
@@ -367,13 +301,15 @@ export const FirmsTable = ({
 						accessor: 'crn',
 						sortable: true,
 						title: t('components.firmsTable.columns.crn'),
-						render: (record) => (
+						cellsClassName: `${classes.crn} ${classes.between}`,
+						render: () => (
 							<>
 								<Text>1234567890</Text>
 								<CopyButton value={'1234567890'} timeout={2000}>
 									{({ copied, copy }) => (
 										<Tooltip label={copied ? 'Copied' : 'Copy'}>
 											<ActionIcon
+												className={classes.copy}
 												color={copied ? 'teal' : 'gray'}
 												variant="light"
 												onClick={copy}
@@ -394,6 +330,7 @@ export const FirmsTable = ({
 						accessor: 'status',
 						sortable: false,
 						title: t('components.firmsTable.columns.status'),
+						cellsClassName: classes.status,
 						render: (record) => (
 							<FirmStatusBadge
 								status={record.emailVerified ? 'verified' : 'unverified'}
@@ -413,11 +350,35 @@ export const FirmsTable = ({
 						accessor: 'invitedBy',
 						sortable: false,
 						title: t('components.firmsTable.columns.invitedBy'),
-						render: (record) => (
+						ellipsis: true,
+						render: () => (
 							//	TODO: add inviter id here
-							<Anchor href={`/dashboard/a/admins/`} className={classes.anchor}>
+							<Anchor
+								href={`/dashboard/a/admins/`}
+								className={`${classes.anchor} max-w-[160px]`}
+							>
 								Placeholder Admin
 							</Anchor>
+						),
+					},
+					{
+						accessor: 'actions',
+						title: t('constants.actions.actions.column'),
+						titleClassName: classes.actions,
+						cellsClassName: classes.actions,
+						width: 81,
+						render: () => (
+							<Group className={classes.cell}>
+								<ActionIcon className={classes.button} variant="filled">
+									<IconPencil size={16} />
+								</ActionIcon>
+								<ActionIcon
+									className={`${classes.delete} ${classes.button}`}
+									variant="filled"
+								>
+									<IconX size={16} />
+								</ActionIcon>
+							</Group>
 						),
 					},
 				]}
@@ -431,6 +392,8 @@ export const FirmsTable = ({
 				// onSortStatusChange={setSortStatus}
 				// selectedRecords={!readOnly ? selectedBids : undefined}
 				// onSelectedRecordsChange={!readOnly ? selectedBidsHandlers.setState : undefined}
+				fetching={firms.isLoading}
+				loaderBackgroundBlur={1}
 				idAccessor="id"
 				selectionTrigger="cell"
 				noRecordsText={t('components.firmsTable.empty')}

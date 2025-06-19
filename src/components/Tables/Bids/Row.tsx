@@ -26,8 +26,8 @@ export const BidsTableRow = ({
 	const format = useFormatter();
 
 	return (
-		<Table.Tr className={`${isMine ? classes.mine : ''}`} {...props}>
-			<Table.Td className={classes.firm}>
+		<Table.Tr className={`${isMine ? classes.gray : ''}`} {...props}>
+			<Table.Td className={`${classes.firm} ${classes.between}`}>
 				<Anchor className={classes.anchor} href={`/marketplace/company/${bid.bidder.id}`}>
 					{bid.bidder.name}
 				</Anchor>

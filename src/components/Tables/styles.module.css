@@ -80,31 +80,61 @@
 		}
 
 		tr {
-			&.mine {
+			td {
+				@apply border-b-0;
+			}
+
+			&.gray {
 				@apply bg-gray-50;
 			}
 
-			> .firm {
+			.anchor {
+				@apply truncate;
+			}
+
+			.copy {
+				@apply h-6;
+				@apply rounded-sm;
+			}
+
+			> .between {
 				@apply flex flex-row items-center justify-between gap-2;
 
-				> .anchor {
-					@apply max-w-[160px];
-					@apply truncate;
+				&.firm {
+					> .anchor {
+						@apply max-w-[160px];
+					}
+
+					> .badges {
+						@apply gap-1 flex-nowrap;
+					}
 				}
 
-				> .badges {
-					@apply gap-1 flex-nowrap;
+				&.crn {
+					@apply h-10;
+				}
+			}
 
-					> .mine {
-						@apply text-dark-300;
-					}
+			> .status {
+				@apply min-h-[120px] text-center;
+			}
 
-					> .contributing {
-						@apply text-blue-600;
-					}
+			> .actions {
+				@apply bg-white;
 
-					> .winning {
-						@apply text-yellow-600;
+				&:has(.button) {
+					@apply p-0 border-0;
+				}
+
+				> .cell {
+					@apply gap-0;
+
+					.button {
+						@apply size-10;
+
+						&.delete {
+							@apply bg-red-600 text-white;
+						}
 					}
 				}
 			}
@@ -137,24 +167,30 @@
 		> .cell {
 			@apply gap-2;
 
-			> .icon {
-				&.mine {
-					@apply text-dark-300;
-				}
-
-				&.contributing {
-					@apply text-blue-600;
-				}
-
-				&.winning {
-					@apply text-yellow-600;
-				}
-			}
-
 			> .value {
 				@apply paragraph-xs;
 			}
 		}
+	}
+
+	.mine {
+		@apply text-dark-300;
+	}
+
+	.contributing {
+		@apply text-blue-600;
+	}
+
+	.winning {
+		@apply text-yellow-600;
+	}
+
+	.unverified {
+		@apply text-orange-600;
+	}
+
+	.uninvited {
+		@apply text-green-600;
 	}
 }
 
@@ -162,7 +198,11 @@
 	@apply px-6 py-4;
 
 	.label {
-		@apply display-md-sb mb-4;
+		@apply display-md-sb mb-4 p-0;
+	}
+
+	.divider {
+		@apply mt-8 my-4;
 	}
 
 	.options {
@@ -219,18 +259,16 @@
 				}
 
 				tr {
-					&.mine {
+					.anchor {
+						@apply text-dark-50;
+					}
+
+					&.gray {
 						@apply bg-dark-600;
 					}
 
-					> .firm {
-						> .anchor {
-							@apply text-dark-50;
-						}
-
-						> .badges > .mine {
-							@apply text-dark-50;
-						}
+					> .actions {
+						@apply bg-dark-700;
 					}
 				}
 			}
@@ -258,7 +296,7 @@
 				}
 			}
 
-			.legend > .cell > .icon.mine {
+			.mine {
 				@apply text-dark-50;
 			}
 		}

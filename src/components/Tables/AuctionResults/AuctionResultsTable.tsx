@@ -216,7 +216,7 @@ const generateResultsRows = (
 				key={`${firm.id}-${finalBill}`}
 				className={`${firm.id === currentUser.id ? classes.mine : ''}`}
 			>
-				<Table.Td className={classes.firm}>
+				<Table.Td className={`${classes.firm} ${classes.between}`}>
 					<Anchor className={classes.anchor} href={`/marketplace/company/${firm.id}`}>
 						{firm.name}
 					</Anchor>

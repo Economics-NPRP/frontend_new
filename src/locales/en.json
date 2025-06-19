@@ -275,6 +275,9 @@
       }
     },
     "actions": {
+      "actions": {
+        "column": "Actions"
+      },
       "cancel": {
         "label": "Cancel",
         "aria": "Cancel action",
@@ -992,7 +995,8 @@
           "tooltip": "This firm has not been verified or invited yet"
         },
         "uninvited": {
-          "label": "Newly Registered Companies"
+          "label": "Newly Registered Companies",
+          "tooltip": "This company is newly registered and hasn't been invited yet"
         }
       }
     }
