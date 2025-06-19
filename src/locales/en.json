@@ -374,7 +374,7 @@
 		},
 		"firmStatus": {
 			"verified": "Verified",
-			"unverified": "Unverified",
+			"unverified": "Pending",
 			"uninvited": "Newly Registered"
 		}
 	},
@@ -972,7 +972,7 @@
 						"label": "Firm Status",
 						"all": "Show all companies",
 						"verified": "Only show verified and active companies",
-						"unverified": "Only show unverified companies",
+						"unverified": "Only show companies with pending invitations",
 						"uninvited": "Only show newly registered companies who haven't been invited yet"
 					},
 					"sector": {
@@ -983,7 +983,7 @@
 				"badges": {
 					"all": "No Filter Applied",
 					"verified": "Verified Companies Only",
-					"unverified": "Unverified Companies Only",
+					"unverified": "Pending Companies Only",
 					"uninvited": "Newly Registered Companies Only"
 				}
 			},
@@ -1008,8 +1008,8 @@
 			"empty": "No companies found",
 			"legend": {
 				"unverified": {
-					"label": "Unverified Companies",
-					"tooltip": "This firm has not been verified or invited yet"
+					"label": "Pending Companies",
+					"tooltip": "This firm has been invited but has not yet accepted the invitation"
 				},
 				"uninvited": {
 					"label": "Newly Registered Companies",
