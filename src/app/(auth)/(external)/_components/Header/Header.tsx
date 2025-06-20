@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 import { HeaderButton } from '@/components/Header/HeaderButton';
 import classes from '@/pages/(auth)/(external)/styles.module.css';
@@ -12,7 +13,7 @@ export const Header = () => {
 		<Group className={classes.header}>
 			<Tooltip label={'Return to Login Page'}>
 				<Button
-					component="a"
+					component={Link}
 					href="/login"
 					aria-label={'Return to Login Page'}
 					classNames={{

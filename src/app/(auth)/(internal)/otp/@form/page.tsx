@@ -1,6 +1,7 @@
 'use client';
 
 // import { useLocale, useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ReactElement, useCallback, useState } from 'react';
 
@@ -90,7 +91,7 @@ export default function Form() {
 				</Button>
 				<Group className={classes.prompt}>
 					<Text className={classes.text}>Didn't receive your code? </Text>
-					<Anchor className={classes.link} href="/contact">
+					<Anchor component={Link} className={classes.link} href="/contact">
 						Resend
 					</Anchor>
 				</Group>

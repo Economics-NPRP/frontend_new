@@ -1,6 +1,8 @@
 'use client';
 
 // import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+
 import classes from '@/pages/(auth)/(external)/styles.module.css';
 import { Anchor, Avatar, Group, Stack, Text, Title } from '@mantine/core';
 import { IconMail, IconPhone } from '@tabler/icons-react';
@@ -33,7 +35,7 @@ export default function Details() {
 				<Text className={classes.text}>
 					Make verify the above information before proceeding. If you feel that any of the
 					information is incorrect, please{' '}
-					<Anchor className={classes.link} href="/register">
+					<Anchor component={Link} className={classes.link} href="/register">
 						contact us.
 					</Anchor>
 				</Text>

@@ -1,6 +1,7 @@
 'use client';
 
 import { createFormatter, useFormatter, useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
@@ -217,7 +218,11 @@ const generateResultsRows = (
 				className={`${firm.id === currentUser.id ? classes.mine : ''}`}
 			>
 				<Table.Td className={`${classes.firm} ${classes.between}`}>
-					<Anchor className={classes.anchor} href={`/marketplace/company/${firm.id}`}>
+					<Anchor
+						component={Link}
+						className={classes.anchor}
+						href={`/marketplace/company/${firm.id}`}
+					>
 						{firm.name}
 					</Anchor>
 					<Group className={classes.group}>

@@ -1,4 +1,5 @@
 import { useFormatter, useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useContext, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
@@ -191,7 +192,7 @@ export const Winnings = () => {
 								<Switch.True>
 									<Button
 										className={classes.cell}
-										component="a"
+										component={Link}
 										href={`/marketplace/auction/${auction.data.id}/results`}
 										rightSection={<IconArrowUpRight size={24} />}
 									>
@@ -203,7 +204,7 @@ export const Winnings = () => {
 								<Switch.False>
 									<ActionIcon
 										className={classes.cell}
-										component="a"
+										component={Link}
 										href={`/marketplace/auction/${auction.data.id}/results`}
 									>
 										<IconArrowUpRight size={24} />

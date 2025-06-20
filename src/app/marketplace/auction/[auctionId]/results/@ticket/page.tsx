@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useContext, useMemo } from 'react';
 
 import { Switch } from '@/components/SwitchCase';
@@ -45,7 +46,7 @@ export default function Ticket() {
 	return (
 		<Stack className={classes.root}>
 			<Group className={classes.header}>
-				<Button component="a" href={'/marketplace'} leftSection={<IconArrowUpLeft />}>
+				<Button component={Link} href={'/marketplace'} leftSection={<IconArrowUpLeft />}>
 					{t('constants.return.catalogue.label')}
 				</Button>
 			</Group>

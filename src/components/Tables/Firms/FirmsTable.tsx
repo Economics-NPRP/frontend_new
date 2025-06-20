@@ -3,6 +3,7 @@
 import { DateTime } from 'luxon';
 import { DataTable } from 'mantine-datatable';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { CategoryBadge, FirmStatusBadge } from '@/components/Badge';
@@ -356,6 +357,7 @@ export const FirmsTable = ({
 						render: (record) => (
 							<>
 								<Anchor
+									component={Link}
 									className={classes.anchor}
 									href={`/dashboard/a/firms/${record.id}`}
 								>
@@ -528,6 +530,7 @@ export const FirmsTable = ({
 						render: () => (
 							//	TODO: add inviter id here
 							<Anchor
+								component={Link}
 								href={`/dashboard/a/admins/`}
 								className={`${classes.anchor} max-w-[160px]`}
 							>
@@ -566,7 +569,7 @@ export const FirmsTable = ({
 								</Tooltip>
 								<Button
 									className={`${classes.primary} ${classes.button}`}
-									component="a"
+									component={Link}
 									href={`/dashboard/a/firms/${record.id}`}
 									rightSection={<IconArrowUpRight size={16} />}
 								>

@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import { useFormatter, useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { ComponentProps } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
@@ -28,7 +29,11 @@ export const BidsTableRow = ({
 	return (
 		<Table.Tr className={`${isMine ? classes.gray : ''}`} {...props}>
 			<Table.Td className={`${classes.firm} ${classes.between}`}>
-				<Anchor className={classes.anchor} href={`/marketplace/company/${bid.bidder.id}`}>
+				<Anchor
+					component={Link}
+					className={classes.anchor}
+					href={`/marketplace/company/${bid.bidder.id}`}
+				>
 					{bid.bidder.name}
 				</Anchor>
 				<Group className={classes.badges}>

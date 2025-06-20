@@ -1,3 +1,6 @@
+'use client';
+
+import Link from 'next/link';
 import { useMemo } from 'react';
 
 import { Switch } from '@/components/SwitchCase';
@@ -45,7 +48,7 @@ export const DashboardHero = ({
 	const breadcrumbItems = useMemo(
 		() =>
 			breadcrumbs.map(({ label, href }) => (
-				<Anchor key={label} href={href}>
+				<Anchor component={Link} key={label} href={href}>
 					{label}
 				</Anchor>
 			)),
@@ -59,7 +62,7 @@ export const DashboardHero = ({
 					<>
 						<Button
 							variant="light"
-							component="a"
+							component={Link}
 							href={returnButton.href}
 							size={buttonSize}
 							leftSection={<IconArrowUpLeft size={16} />}

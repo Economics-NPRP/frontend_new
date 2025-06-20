@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useMemo } from 'react';
 
 import { PageDropdown } from '@/components/Header/PageDropdown';
@@ -61,7 +62,7 @@ export const AdminDashboardHeader = () => {
 				<Flex className={classes.left}>
 					<Tooltip label={t('constants.return.marketplace.tooltip')}>
 						<Button
-							component="a"
+							component={Link}
 							href="/"
 							aria-label={t('constants.return.marketplace.aria')}
 							classNames={{

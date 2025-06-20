@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { HeaderButton } from '@/components/Header/HeaderButton';
 import classes from '@/pages/(auth)/(internal)/styles.module.css';
 import { Button, Group, Stack, Text, Title } from '@mantine/core';
@@ -17,7 +19,7 @@ export const Header = ({ heading, subheading, returnPage }: HeaderProps) => {
 			<Group className={classes.row}>
 				{returnPage && (
 					<Button
-						component="a"
+						component={Link}
 						href={returnPage.url}
 						variant="subtle"
 						leftSection={<IconArrowLeft size={16} />}

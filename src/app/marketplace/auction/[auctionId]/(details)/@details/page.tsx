@@ -1,6 +1,7 @@
 'use client';
 
 // import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useContext } from 'react';
 
 import { AuctionTypeBadge, CategoryBadge, EndingSoonBadge } from '@/components/Badge';
@@ -56,9 +57,16 @@ export default function Details() {
 									separator: classes.separator,
 								}}
 							>
-								<Anchor href="/marketplace">Marketplace</Anchor>
-								<Anchor>Industry</Anchor>
-								<Anchor>Flare Gas Burning</Anchor>
+								<Anchor component={Link} href="/marketplace">
+									Marketplace
+								</Anchor>
+								{/* TODO: change links once sectors are implemented in marketplace */}
+								<Anchor component={Link} href="/marketplace">
+									Industry
+								</Anchor>
+								<Anchor component={Link} href="/marketplace">
+									Flare Gas Burning
+								</Anchor>
 							</Breadcrumbs>
 						</Switch.False>
 					</Switch>
@@ -110,6 +118,7 @@ export default function Details() {
 						<WithSkeleton loading={auction.isLoading} width={160} height={24}>
 							<Anchor
 								className={classes.link}
+								component={Link}
 								href={`/marketplace/firm/${auction.data.ownerId}`}
 							>
 								{auction.data.owner && auction.data.owner.name}

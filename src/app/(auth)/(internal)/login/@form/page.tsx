@@ -1,6 +1,7 @@
 'use client';
 
 import { valibotResolver } from 'mantine-form-valibot-resolver';
+import Link from 'next/link';
 // import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { ReactElement, useCallback, useEffect, useState } from 'react';
@@ -119,7 +120,7 @@ export default function Form() {
 						key={form.key('remember')}
 						{...form.getInputProps('remember', { type: 'checkbox' })}
 					/>
-					<Anchor className={classes.link} href="/forgot">
+					<Anchor component={Link} className={classes.link} href="/forgot">
 						Forgot password?
 					</Anchor>
 				</Group>
@@ -131,7 +132,7 @@ export default function Form() {
 				</Button>
 				<Group className={classes.prompt}>
 					<Text className={classes.text}>Don't have an account? </Text>
-					<Anchor className={classes.link} href="/register">
+					<Anchor component={Link} className={classes.link} href="/register">
 						Click here
 					</Anchor>
 				</Group>

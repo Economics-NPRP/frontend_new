@@ -2,6 +2,7 @@
 
 import { EmblaCarouselType } from 'embla-carousel';
 import { useLocale, useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { getLangDir } from 'rtl-detect';
 
@@ -240,7 +241,7 @@ export const AuctionCarousel = ({ infinitePaginatedAuctions }: AuctionCarouselPr
 						</ActionIcon>
 						<Button
 							className={classes.action}
-							component="a"
+							component={Link}
 							href="/marketplace/search"
 							rightSection={<IconArrowUpRight size={16} />}
 						>
