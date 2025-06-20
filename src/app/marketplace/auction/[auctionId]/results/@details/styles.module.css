@@ -96,7 +96,7 @@
 			}
 
 			> .value {
-				@apply display-sm-w text-center;
+				@apply display-sm-15-sb-w text-center;
 			}
 		}
 

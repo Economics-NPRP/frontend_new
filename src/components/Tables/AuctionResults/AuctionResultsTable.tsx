@@ -1,13 +1,13 @@
 'use client';
 
-import { IPaginatedOpenAuctionResultsContext } from 'contexts/PaginatedOpenAuctionResults';
-import { ISingleAuctionContext } from 'contexts/SingleAuction';
 import { createFormatter, useFormatter, useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { Switch } from '@/components/SwitchCase';
-import { MyUserContext } from '@/contexts';
+import { IPaginatedOpenAuctionResultsContext, ISingleAuctionContext } from '@/contexts';
+import { MyUserProfileContext } from '@/contexts';
 import { IAuctionData, IUserData } from '@/schema/models';
 import { IAuctionResultsData } from '@/types';
 import {
@@ -28,7 +28,7 @@ import {
 } from '@mantine/core';
 import { IconArrowNarrowDown, IconDatabaseOff, IconUserHexagon } from '@tabler/icons-react';
 
-import classes from './styles.module.css';
+import classes from '../styles.module.css';
 
 export interface ResultsTableProps extends TableProps {
 	paginatedOpenAuctionResults: IPaginatedOpenAuctionResultsContext;
@@ -44,9 +44,9 @@ export const ResultsTable = ({
 	const format = useFormatter();
 	const isMobile = useMatches({ base: true, xs: false });
 	const tableContainerRef = useRef<HTMLDivElement>(null);
-	const myUser = useContext(MyUserContext);
+	const myUser = useContext(MyUserProfileContext);
 
-	const resultsData = useMemo(() => {
+	const tableData = useMemo(() => {
 		if (!paginatedOpenAuctionResults.data) return null;
 		return generateResultsRows(
 			t,
@@ -69,7 +69,7 @@ export const ResultsTable = ({
 	);
 
 	const currentState = useMemo(() => {
-		if (!resultsData && (paginatedOpenAuctionResults.isLoading || auction.isLoading))
+		if (!tableData && (paginatedOpenAuctionResults.isLoading || auction.isLoading))
 			return 'loading';
 		if (!paginatedOpenAuctionResults || paginatedOpenAuctionResults.data.results.length === 0)
 			return 'empty';
@@ -110,7 +110,10 @@ export const ResultsTable = ({
 							<>
 								<Group className={classes.legend}>
 									<Group className={classes.cell}>
-										<IconUserHexagon size={16} />
+										<IconUserHexagon
+											size={16}
+											className={`${classes.icon} ${classes.mine}`}
+										/>
 										<Text className={classes.value}>
 											{t('components.auctionResultsTable.legend.mine.label')}
 										</Text>
@@ -139,26 +142,28 @@ export const ResultsTable = ({
 				<Table highlightOnHover withColumnBorders stickyHeader {...props}>
 					<Table.Thead>
 						<Table.Tr>
-							<Table.Th>
+							<Table.Th className="min-w-[120px]">
 								{t('components.auctionResultsTable.columns.company')}
 							</Table.Th>
-							<Table.Th>
+							<Table.Th className="min-w-[100px]">
 								{t('components.auctionResultsTable.columns.totalBids')}
 							</Table.Th>
-							<Table.Th>
+							<Table.Th className="min-w-[160px]">
 								{t('components.auctionResultsTable.columns.winningBids')}
 							</Table.Th>
-							<Table.Th className="flex items-center justify-between">
+							<Table.Th className="min-w-[240px] flex items-center justify-between">
 								{t('components.auctionResultsTable.columns.permits')}
 								<IconArrowNarrowDown size={14} />
 							</Table.Th>
-							<Table.Th>
+							<Table.Th className="min-w-[160px]">
 								{t('components.auctionResultsTable.columns.avgPrice')}
 							</Table.Th>
-							<Table.Th>{t('components.auctionResultsTable.columns.bill')}</Table.Th>
+							<Table.Th className="min-w-[160px]">
+								{t('components.auctionResultsTable.columns.bill')}
+							</Table.Th>
 						</Table.Tr>
 					</Table.Thead>
-					<Table.Tbody>{resultsData}</Table.Tbody>
+					<Table.Tbody>{tableData}</Table.Tbody>
 				</Table>
 				<Switch value={currentState}>
 					<Switch.Loading>
@@ -212,11 +217,15 @@ const generateResultsRows = (
 				key={`${firm.id}-${finalBill}`}
 				className={`${firm.id === currentUser.id ? classes.mine : ''}`}
 			>
-				<Table.Td className={classes.firm}>
-					<Anchor className={classes.anchor} href={`/marketplace/company/${firm.id}`}>
+				<Table.Td className={`${classes.firm} ${classes.between}`}>
+					<Anchor
+						component={Link}
+						className={classes.anchor}
+						href={`/marketplace/company/${firm.id}`}
+					>
 						{firm.name}
 					</Anchor>
-					<Group className={classes.badges}>
+					<Group className={classes.group}>
 						{firm.id === currentUser.id && (
 							<Tooltip
 								// @ts-expect-error - cant get typing from locale file

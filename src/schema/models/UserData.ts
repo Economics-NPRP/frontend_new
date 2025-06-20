@@ -14,6 +14,8 @@ import {
 	url,
 } from 'valibot';
 
+import { IAdminData } from '@/schema/models/AdminData';
+import { IFirmData } from '@/schema/models/FirmData';
 import { TimestampSchema, UuidSchema } from '@/schema/utils';
 
 import { UserTypeSchema } from './UserType';
@@ -45,7 +47,10 @@ export const CreateUserDataSchema = omit(BaseUserDataSchema, [
 export const ReadUserDataSchema = BaseUserDataSchema;
 export const UpdateUserDataSchema = CreateUserDataSchema;
 
-export interface IUserData extends InferOutput<typeof BaseUserDataSchema> {}
+export interface IUserData
+	extends InferOutput<typeof BaseUserDataSchema>,
+		Partial<Pick<IFirmData, 'sectors' | 'permits'>>,
+		Partial<Pick<IAdminData, 'isSuperadmin'>> {}
 export interface ICreateUser extends InferInput<typeof CreateUserDataSchema> {}
 export interface IReadUser extends InferInput<typeof ReadUserDataSchema> {}
 export interface IUpdateUser extends InferInput<typeof UpdateUserDataSchema> {}

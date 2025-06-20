@@ -1,6 +1,6 @@
 .root {
 	> .navigation {
-		@apply gap-6;
+		@apply gap-4;
 
 		> .breadcrumbs {
 			> a {
@@ -19,5 +19,21 @@
 
 	> .description {
 		@apply paragraph-md text-justify;
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root > .navigation {
+			@apply gap-6;
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-xl {
+		.root {
+		}
 	}
 }

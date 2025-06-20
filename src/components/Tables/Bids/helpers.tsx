@@ -1,20 +1,20 @@
 import { useTranslations } from 'next-intl';
 import { ReactElement } from 'react';
 
-import { BidsTableRow } from '@/components/BidsTable/Row';
-import { BidsFilter } from '@/components/BidsTable/types';
+import { BidsTableRow } from '@/components/Tables/Bids/Row';
+import { BidsFilter } from '@/components/Tables/Bids/types';
 import {
 	IAllWinningBidsContext,
 	IMyOpenAuctionResultsContext,
 	IMyPaginatedBidsContext,
-	IMyUserContext,
+	IMyUserProfileContext,
 	IPaginatedBidsContext,
 	IPaginatedWinningBidsContext,
 } from '@/contexts';
 import { Group, Text } from '@mantine/core';
 import { IconHexagonLetterC, IconHexagonLetterW, IconUserHexagon } from '@tabler/icons-react';
 
-import classes from './styles.module.css';
+import classes from '../styles.module.css';
 
 interface GenerateBidsRowsParams {
 	bids: IPaginatedBidsContext;
@@ -23,7 +23,7 @@ interface GenerateBidsRowsParams {
 	myPaginatedBids?: IMyPaginatedBidsContext;
 	myOpenAuctionResults?: IMyOpenAuctionResultsContext;
 	bidsFilter: BidsFilter;
-	myUser: IMyUserContext;
+	myUser: IMyUserProfileContext;
 }
 export const generateBidsRows = ({
 	bids,

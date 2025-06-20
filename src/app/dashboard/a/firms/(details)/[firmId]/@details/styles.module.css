@@ -1,0 +1,95 @@
+.root {
+	@apply gap-4 items-center mb-8;
+
+	> .label {
+		@apply gap-1 items-center;
+
+		> .title {
+			@apply heading-1 text-center;
+		}
+	}
+
+	> .badges {
+		@apply gap-2;
+	}
+
+	> .contact {
+		@apply grid grid-cols-2 gap-0;
+		@apply self-stretch;
+		@apply bg-dark-600;
+		@apply transition-shadow duration-500;
+
+		> .cell {
+			@apply h-32;
+			@apply px-6;
+			@apply gap-0 items-center justify-center;
+			@apply border border-r-0 border-b-0 border-solid border-dark-400;
+
+			&:nth-child(4n) {
+				@apply border-r;
+			}
+
+			&:nth-child(5),
+			&:nth-child(6),
+			&:nth-child(7),
+			&:nth-child(8) {
+				@apply border-b;
+			}
+
+			> .icon {
+				@apply size-9 mb-2;
+				@apply flex items-center justify-center;
+				@apply bg-dark-400 text-dark-50;
+				@apply rounded-sm;
+			}
+
+			> .key {
+				@apply paragraph-sm-g3 text-center;
+			}
+
+			> .row {
+				@apply gap-2;
+
+				> .copy {
+					@apply size-6 min-w-[unset] min-h-[unset] rounded-sm;
+				}
+			}
+
+			.value {
+				@apply display-sm-15-sb-w text-center;
+			}
+		}
+
+		&:hover {
+			@apply shadow-xs;
+		}
+	}
+
+	> .actions {
+		@apply gap-2 flex-col items-stretch justify-center self-stretch;
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-xs {
+		.root {
+			> .contact {
+				@apply self-center;
+			}
+
+			> .actions {
+				@apply flex-row items-center;
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			@apply gap-6;
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root > .contact {
+			@apply grid-cols-4;
+		}
+	}
+}

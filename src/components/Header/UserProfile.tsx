@@ -1,11 +1,12 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useContext } from 'react';
 
 import { Id } from '@/components/Id';
-import { MyUserContext } from '@/contexts';
+import { MyUserProfileContext } from '@/contexts';
 import { logout } from '@/lib/auth/logout';
 import {
 	Alert,
@@ -47,7 +48,7 @@ export const UserProfile = () => {
 	const t = useTranslations();
 	const router = useRouter();
 	const queryClient = useQueryClient();
-	const myUser = useContext(MyUserContext);
+	const myUser = useContext(MyUserProfileContext);
 
 	//	Clear cookies and redirect to login page
 	const handleLogout = useCallback(() => {
@@ -55,7 +56,7 @@ export const UserProfile = () => {
 			.then((res) => {
 				if (res.ok) {
 					queryClient.invalidateQueries({
-						queryKey: ['users', 'firms', 'mine'],
+						queryKey: ['users', 'mine'],
 					});
 					router.push('/login');
 				} else {
@@ -147,7 +148,7 @@ export const UserProfile = () => {
 					itemLabel: 'flex-none',
 					itemSection: 'm-0',
 				}}
-				component="a"
+				component={Link}
 				href="/dashboard/profile"
 				rightSection={<IconArrowUpRight size={16} />}
 			>
@@ -172,10 +173,15 @@ export const UserProfile = () => {
 
 				<MenuDivider />
 				<MenuLabel>{t('components.header.user.marketplace')} </MenuLabel>
-				<MenuItem component="a" href="" leftSection={<IconHistory size={16} />} disabled>
+				<MenuItem component={Link} href="" leftSection={<IconHistory size={16} />} disabled>
 					{t('components.header.user.biddingHistory')}
 				</MenuItem>
-				<MenuItem component="a" href="" leftSection={<IconCalendar size={16} />} disabled>
+				<MenuItem
+					component={Link}
+					href=""
+					leftSection={<IconCalendar size={16} />}
+					disabled
+				>
 					{t('components.header.user.auctionCalendar')}
 				</MenuItem>
 				<MenuItem leftSection={<IconBookmark size={16} />} disabled>
@@ -184,24 +190,39 @@ export const UserProfile = () => {
 
 				<MenuDivider />
 				<MenuLabel>{t('components.header.user.dashboard')}</MenuLabel>
-				<MenuItem component="a" href="" leftSection={<IconLayoutGrid size={16} />} disabled>
+				<MenuItem
+					component={Link}
+					href=""
+					leftSection={<IconLayoutGrid size={16} />}
+					disabled
+				>
 					{t('components.header.user.myDashboard')}
 				</MenuItem>
-				<MenuItem component="a" href="" leftSection={<IconChartBar size={16} />} disabled>
+				<MenuItem
+					component={Link}
+					href=""
+					leftSection={<IconChartBar size={16} />}
+					disabled
+				>
 					{t('components.header.user.statistics')}
 				</MenuItem>
-				<MenuItem component="a" href="" leftSection={<IconCoins size={16} />} disabled>
+				<MenuItem component={Link} href="" leftSection={<IconCoins size={16} />} disabled>
 					{t('components.header.user.transactions')}
 				</MenuItem>
-				<MenuItem component="a" href="" leftSection={<IconLeaf size={16} />} disabled>
+				<MenuItem component={Link} href="" leftSection={<IconLeaf size={16} />} disabled>
 					{t('components.header.user.permits')}
 				</MenuItem>
 
 				<MenuDivider />
-				<MenuItem component="a" href="" leftSection={<IconHelp size={16} />} disabled>
+				<MenuItem component={Link} href="" leftSection={<IconHelp size={16} />} disabled>
 					{t('components.header.user.helpCenter')}
 				</MenuItem>
-				<MenuItem component="a" href="" leftSection={<IconSettings size={16} />} disabled>
+				<MenuItem
+					component={Link}
+					href=""
+					leftSection={<IconSettings size={16} />}
+					disabled
+				>
 					{t('components.header.user.settings')}
 				</MenuItem>
 				<MenuItem onClick={handleLogout} leftSection={<IconLogout size={16} />}>

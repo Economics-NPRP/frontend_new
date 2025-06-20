@@ -207,8 +207,18 @@
 					@apply border-dark-400 text-gray-300;
 				}
 
-				> .properties > .cell .value {
-					@apply !text-dark-50;
+				> .properties {
+					background-image: repeating-linear-gradient(
+						135deg,
+						rgba(255, 255, 255, 0.01),
+						rgba(255, 255, 255, 0.01) 20px,
+						#0000 20px,
+						#0000 40px
+					);
+
+					> .cell .value {
+						@apply !text-dark-50;
+					}
 				}
 
 				> .footer > .button {

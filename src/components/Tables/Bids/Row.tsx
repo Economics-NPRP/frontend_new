@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import { useFormatter, useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { ComponentProps } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
@@ -7,7 +8,7 @@ import { IBidData } from '@/schema/models';
 import { Anchor, Group, Table, Tooltip } from '@mantine/core';
 import { IconHexagonLetterC, IconHexagonLetterW, IconUserHexagon } from '@tabler/icons-react';
 
-import classes from './styles.module.css';
+import classes from '../styles.module.css';
 
 interface BidsTableRowProps extends ComponentProps<'tr'> {
 	bid: IBidData;
@@ -26,9 +27,13 @@ export const BidsTableRow = ({
 	const format = useFormatter();
 
 	return (
-		<Table.Tr className={`${isMine ? classes.mine : ''}`} {...props}>
-			<Table.Td className={classes.firm}>
-				<Anchor className={classes.anchor} href={`/marketplace/company/${bid.bidder.id}`}>
+		<Table.Tr className={`${isMine ? classes.gray : ''}`} {...props}>
+			<Table.Td className={`${classes.firm} ${classes.between}`}>
+				<Anchor
+					component={Link}
+					className={classes.anchor}
+					href={`/marketplace/company/${bid.bidder.id}`}
+				>
 					{bid.bidder.name}
 				</Anchor>
 				<Group className={classes.badges}>

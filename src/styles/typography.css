@@ -157,6 +157,14 @@
 		font-size: 15px;
 		line-height: 22px;
 	}
+	.display-sm-15-sb-w {
+		@apply font-sans;
+		@apply font-semibold;
+		@apply text-dark-50 dark:text-dark-600;
+
+		font-size: 15px;
+		line-height: 22px;
+	}
 	.display-sm-sb {
 		@apply font-sans;
 		@apply text-sm;

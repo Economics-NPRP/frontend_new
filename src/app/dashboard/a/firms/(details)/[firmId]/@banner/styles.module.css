@@ -1,0 +1,48 @@
+.root {
+	@apply relative mb-16;
+
+	> .image {
+		@apply relative;
+		@apply h-[200px];
+		@apply overflow-hidden;
+
+		> .placeholder {
+			@apply absolute top-0 left-0 w-full h-full;
+			@apply flex items-center justify-center;
+			@apply bg-gray-200 text-gray-500;
+		}
+
+		img {
+			@apply object-cover object-center;
+			@apply transition-transform duration-700;
+		}
+
+		&:not(:has(.placeholder)) > .overlay {
+			@apply absolute top-0 left-0 w-full h-full;
+			@apply justify-center items-center;
+			@apply opacity-50;
+
+			background-image: linear-gradient(to top, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 100%);
+		}
+	}
+
+	> .container {
+		@apply absolute -bottom-20 left-1/2 translate-x-[-50%];
+		@apply w-[unset];
+		@apply p-2;
+		@apply bg-white;
+		@apply rounded-full;
+
+		> .avatar {
+			@apply size-28;
+		}
+	}
+}
+
+* {
+	@mixin dark {
+		.root > .container {
+			@apply bg-dark-700;
+		}
+	}
+}

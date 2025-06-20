@@ -84,3 +84,12 @@ export const AuctionCategoryVariants: Partial<Record<AuctionCategory, AuctionCat
 		},
 	},
 };
+
+export const AuctionCategoryList: AuctionCategory[] = [
+	'energy',
+	'industry',
+	'transport',
+	'buildings',
+	'agriculture',
+	'waste',
+];

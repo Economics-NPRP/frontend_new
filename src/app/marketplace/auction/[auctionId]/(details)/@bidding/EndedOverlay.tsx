@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
 import { Button, Container, Stack, Text, Title } from '@mantine/core';
@@ -22,7 +23,7 @@ export const EndedOverlay = () => {
 				</Text>
 				<Button
 					className={classes.button}
-					component="a"
+					component={Link}
 					href={`/marketplace/auction/${auctionId}/results`}
 					rightSection={<IconArrowUpRight size={16} />}
 				>

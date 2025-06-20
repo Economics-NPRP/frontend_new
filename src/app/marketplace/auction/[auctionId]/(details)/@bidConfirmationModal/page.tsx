@@ -1,12 +1,12 @@
 'use client';
 
-import { MyUserContext } from 'contexts/MyUser';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { useCallback, useContext } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { Switch } from '@/components/SwitchCase';
+import { MyUserProfileContext } from '@/contexts';
 import { throwError } from '@/helpers';
 import { placeBid } from '@/lib/bids/open';
 import { BiddingTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
@@ -32,7 +32,7 @@ export default function BidConfirmationModal() {
 	const t = useTranslations();
 	const format = useFormatter();
 	const queryClient = useQueryClient();
-	const myUser = useContext(MyUserContext);
+	const myUser = useContext(MyUserProfileContext);
 	const { auctionId } = useParams();
 
 	const {

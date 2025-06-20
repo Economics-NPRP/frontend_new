@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon';
 import { useFormatter, useTranslations } from 'next-intl';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ComponentPropsWithRef, useMemo } from 'react';
 
@@ -79,7 +80,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 
 	return (
 		<Stack className={`${classes.root} ${className}`} {...props}>
-			<UnstyledButton className={classes.image} component="a" href={url}>
+			<UnstyledButton className={classes.image} component={Link} href={url}>
 				<Image src={src} alt={'Image of a power plant'} fill />
 				<Stack
 					className={`${classes.overlay} ${(hasEnded || isUpcoming) && classes.blurred}`}
@@ -113,12 +114,13 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 						<Stack className={classes.left}>
 							<Anchor
 								className={classes.company}
+								component={Link}
 								target="_blank"
 								href={`/marketplace/company/${auction.ownerId}`}
 							>
 								{auction.owner.name}
 							</Anchor>
-							<Anchor className={classes.heading} href={url}>
+							<Anchor component={Link} className={classes.heading} href={url}>
 								Flare Gas Burning
 							</Anchor>
 						</Stack>
@@ -219,14 +221,14 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 							<Button
 								className={`${classes.secondary} ${classes.button}`}
 								variant="outline"
-								component="a"
+								component={Link}
 								href={bidsUrl}
 							>
 								{t('constants.view.bids.label')}
 							</Button>
 							<Button
 								className={`${classes.primary} ${classes.button}`}
-								component="a"
+								component={Link}
 								href={resultsUrl}
 								rightSection={<IconAwardFilled size={14} />}
 							>
@@ -238,7 +240,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 								<Switch.True>
 									<Button
 										className={`${classes.primary} ${classes.button}`}
-										component="a"
+										component={Link}
 										href={url}
 										rightSection={<IconArrowUpRight size={16} />}
 									>
@@ -249,7 +251,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 									<Button
 										className={`${classes.secondary} ${classes.button}`}
 										variant="outline"
-										component="a"
+										component={Link}
 										href={url}
 									>
 										{t('constants.view.auction.label')}

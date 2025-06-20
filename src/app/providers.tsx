@@ -1,8 +1,8 @@
 'use client';
 
-import { MyUserProvider } from 'contexts/MyUser';
 import { ComponentPropsWithRef } from 'react';
 
+import { MyUserProfileProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { theme } from '@/styles/mantine';
 import { DirectionProvider, MantineProvider } from '@mantine/core';
@@ -35,7 +35,7 @@ export default function Providers({ children }: ProvidersProps) {
 
 	return withProviders(
 		<>{children}</>,
-		{ provider: MyUserProvider },
+		{ provider: MyUserProfileProvider },
 		{ provider: MantineProvider, props: { theme } },
 		{ provider: DirectionProvider },
 		{ provider: QueryClientProvider, props: { client: queryClient } },

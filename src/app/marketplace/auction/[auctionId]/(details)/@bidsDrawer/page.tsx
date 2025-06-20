@@ -4,7 +4,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useCallback, useContext } from 'react';
 import { getLangDir } from 'rtl-detect';
 
-import { BidsTable } from '@/components/BidsTable';
+import { BidsTable } from '@/components/Tables/Bids';
 import {
 	AllWinningBidsContext,
 	MyPaginatedBidsContext,

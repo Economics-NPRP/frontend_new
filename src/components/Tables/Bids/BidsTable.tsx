@@ -4,16 +4,16 @@
 import { useTranslations } from 'next-intl';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
-import { generateBidsRows, generateLegend } from '@/components/BidsTable/helpers';
-import { BidsFilter } from '@/components/BidsTable/types';
 import { Switch } from '@/components/SwitchCase';
+import { generateBidsRows, generateLegend } from '@/components/Tables/Bids/helpers';
+import { BidsFilter } from '@/components/Tables/Bids/types';
 import {
 	IAllWinningBidsContext,
 	IMyOpenAuctionResultsContext,
 	IMyPaginatedBidsContext,
 	IPaginatedBidsContext,
 	IPaginatedWinningBidsContext,
-	MyUserContext,
+	MyUserProfileContext,
 } from '@/contexts';
 import {
 	ActionIcon,
@@ -42,7 +42,7 @@ import {
 	IconX,
 } from '@tabler/icons-react';
 
-import classes from './styles.module.css';
+import classes from '../styles.module.css';
 
 export interface BidsTableProps extends TableProps {
 	bids: IPaginatedBidsContext;
@@ -89,12 +89,12 @@ export const BidsTable = ({
 }: BidsTableProps) => {
 	const t = useTranslations();
 	const tableContainerRef = useRef<HTMLDivElement>(null);
-	const myUser = useContext(MyUserContext);
+	const myUser = useContext(MyUserProfileContext);
 
 	const [bidsFilter, setBidsFilter] = useState<BidsFilter>('all');
 
 	//	Generate the table rows
-	const bidsData = useMemo(() => {
+	const tableData = useMemo(() => {
 		if (!bids) return null;
 		return generateBidsRows({
 			bids,
@@ -238,11 +238,11 @@ export const BidsTable = ({
 	}, [bidsFilter, bids.perPage, paginatedWinningBids?.perPage, myPaginatedBids?.perPage]);
 
 	const currentState = useMemo(() => {
-		if (!bidsData && loading) return 'loading';
+		if (!tableData && loading) return 'loading';
 		if (unavailable) return 'unavailable';
-		if (!bidsData || bidsData.length === 0) return 'empty';
+		if (!tableData || tableData.length === 0) return 'empty';
 		return 'ok';
-	}, [loading, bidsData]);
+	}, [loading, tableData]);
 
 	return (
 		<Stack className={`${classes.root} ${className}`}>
@@ -329,12 +329,12 @@ export const BidsTable = ({
 							)}
 						</Group>
 					</Group>
-					<Group className={classes.row}>
+					<Group className={`${classes.row} ${classes.wrapMobile}`}>
 						<Group className={classes.filters}>
 							<Text className={classes.label}>
 								{t('components.bidsTable.filters.label')}
 							</Text>
-							<Group className={classes.badges}>{filterBadges}</Group>
+							<Group className={classes.group}>{filterBadges}</Group>
 						</Group>
 						<Group className={classes.legend}>{legend}</Group>
 					</Group>
@@ -344,17 +344,25 @@ export const BidsTable = ({
 				<Table highlightOnHover withColumnBorders stickyHeader {...props}>
 					<Table.Thead>
 						<Table.Tr>
-							<Table.Th>{t('components.bidsTable.columns.company')}</Table.Th>
-							<Table.Th className="flex items-center justify-between">
+							<Table.Th className="min-w-[120px]">
+								{t('components.bidsTable.columns.company')}
+							</Table.Th>
+							<Table.Th className="min-w-[160px] flex items-center justify-between">
 								{t('components.bidsTable.columns.bid')}
 								<IconArrowNarrowDown size={14} />
 							</Table.Th>
-							<Table.Th>{t('constants.permits.key')}</Table.Th>
-							<Table.Th>{t('components.bidsTable.columns.totalBid')}</Table.Th>
-							<Table.Th>{t('components.bidsTable.columns.timestamp')}</Table.Th>
+							<Table.Th className="min-w-[80px]">
+								{t('constants.permits.key')}
+							</Table.Th>
+							<Table.Th className="min-w-[160px]">
+								{t('components.bidsTable.columns.totalBid')}
+							</Table.Th>
+							<Table.Th className="min-w-[120px]">
+								{t('components.bidsTable.columns.timestamp')}
+							</Table.Th>
 						</Table.Tr>
 					</Table.Thead>
-					<Table.Tbody>{bidsData}</Table.Tbody>
+					<Table.Tbody>{tableData}</Table.Tbody>
 				</Table>
 				<Switch value={currentState}>
 					<Switch.Loading>

@@ -2,6 +2,7 @@
 
 import { SingleAuctionContext } from 'contexts/SingleAuction';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useContext } from 'react';
 
@@ -46,7 +47,7 @@ export default function EndedOverlay() {
 				<Stack className={classes.actions}>
 					<Button
 						className={classes.cta}
-						component="a"
+						component={Link}
 						href={`/marketplace/auction/${auctionId}/results`}
 						rightSection={<IconArrowUpRight size={16} />}
 					>
@@ -72,7 +73,7 @@ export default function EndedOverlay() {
 							root: classes.button,
 							section: classes.section,
 						}}
-						component="a"
+						component={Link}
 						href={`/marketplace/auction/${auctionId}/results`}
 						rightSection={<IconArrowUpRight size={16} />}
 					>

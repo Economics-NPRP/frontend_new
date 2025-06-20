@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { ReactNode } from 'react';
 
 import {
@@ -55,7 +56,7 @@ export default function AuctionPage({
 			</Container>
 			<Stack className={classes.root}>
 				<Button
-					component="a"
+					component={Link}
 					// TODO: change to explore page when available
 					href="/marketplace"
 					className={classes.button}

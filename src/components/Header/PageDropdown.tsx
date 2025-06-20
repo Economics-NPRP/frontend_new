@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 
@@ -46,7 +47,7 @@ export const PageDropdown = ({ pageMatcher, pages }: PageDropdownProps) => {
 			pages.map(({ key, label, href, icon }) => (
 				<MenuItem
 					key={key}
-					component="a"
+					component={Link}
 					href={href}
 					className={`${key === currentPage.key ? classes.active : ''} ${classes.item}`}
 					leftSection={icon}

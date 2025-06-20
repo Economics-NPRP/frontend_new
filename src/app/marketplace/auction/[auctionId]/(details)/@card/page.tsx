@@ -3,6 +3,7 @@
 import { DateTime } from 'luxon';
 import { useFormatter, useTranslations } from 'next-intl';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useContext, useMemo } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
@@ -263,7 +264,7 @@ export default function Card() {
 					<Group className={classes.prompt}>
 						<Button
 							className={`${classes.secondary} ${classes.cta}`}
-							component="a"
+							component={Link}
 							href={bidsUrl}
 							rightSection={<IconGavel size={16} />}
 							variant="outline"
@@ -272,7 +273,7 @@ export default function Card() {
 						</Button>
 						<Button
 							className={`${classes.primary} ${classes.cta}`}
-							component="a"
+							component={Link}
 							href={resultsUrl}
 							rightSection={<IconAwardFilled size={16} />}
 							onClick={() => scrollToBidding({ alignment: 'center' })}

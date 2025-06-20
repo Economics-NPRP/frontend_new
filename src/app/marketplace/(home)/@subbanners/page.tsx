@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 import { Container, Mark, Text, UnstyledButton } from '@mantine/core';
 import { IconBellRinging, IconGavel, IconTrophy } from '@tabler/icons-react';
@@ -10,7 +11,7 @@ export default function SubBanners() {
 
 	return (
 		<>
-			<UnstyledButton className={classes.root} component="a" href="">
+			<UnstyledButton className={classes.root} component={Link} href="">
 				<Container className={classes.bg}>
 					<Container className={classes.graphic} />
 					<Container className={classes.graphic} />
@@ -27,7 +28,7 @@ export default function SubBanners() {
 				</Text>
 				<Text className={classes.text}>{t('marketplace.home.subbanner.1.text')}</Text>
 			</UnstyledButton>
-			<UnstyledButton className={classes.root} component="a" href="">
+			<UnstyledButton className={classes.root} component={Link} href="">
 				<Container className={classes.bg}>
 					<Container className={`${classes.graphic} bg-grid-md`} />
 					<Container className={classes.gradient} />
@@ -41,7 +42,7 @@ export default function SubBanners() {
 				</Text>
 				<Text className={classes.text}>{t('marketplace.home.subbanner.2.text')}</Text>
 			</UnstyledButton>
-			<UnstyledButton className={classes.root} component="a" href="">
+			<UnstyledButton className={classes.root} component={Link} href="">
 				<Container className={classes.bg}>
 					<Container className={classes.graphic}>
 						<svg width={'300'} height={'300'} style={{ overflow: 'visible' }}>

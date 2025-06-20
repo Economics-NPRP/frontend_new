@@ -1,0 +1,454 @@
+.root {
+	@apply gap-6;
+
+	> .header {
+		@apply gap-2;
+
+		> .divider {
+			@apply my-2;
+		}
+
+		> .row {
+			@apply flex-nowrap gap-8 justify-between items-center;
+
+			> .label {
+				@apply flex-col gap-0 items-baseline;
+
+				> .title {
+					@apply heading-1;
+				}
+
+				> .subtitle {
+					@apply paragraph-sm-g6;
+				}
+			}
+
+			> .settings {
+				@apply gap-2 flex-nowrap;
+
+				> .label {
+					@apply hidden paragraph-sm;
+				}
+
+				> .dropdown {
+					@apply flex-auto;
+
+					input {
+						@apply h-8 min-h-[unset];
+					}
+				}
+
+				> .button {
+					@apply size-8;
+				}
+			}
+
+			> .filters {
+				@apply flex-col gap-2 items-center;
+
+				> .label {
+					@apply paragraph-sm;
+				}
+
+				> .badges {
+					@apply gap-2 items-center justify-center;
+
+					> .badge {
+						@apply bg-gray-200 text-dark-600;
+					}
+				}
+			}
+
+			> .search {
+				@apply min-w-[200px];
+				@apply self-stretch;
+				@apply rounded-sm;
+			}
+
+			> .actions {
+				@apply flex-col-reverse items-center self-stretch;
+				@apply gap-2 flex-nowrap;
+
+				> .count {
+					@apply paragraph-sm-15;
+				}
+
+				> .buttons {
+					@apply self-stretch;
+					@apply gap-2 flex-nowrap;
+
+					> .button {
+						@apply flex-auto;
+					}
+				}
+			}
+
+			&.wrapMobile {
+				@apply flex-col gap-2;
+			}
+		}
+	}
+
+	> .table {
+		@apply relative;
+		@apply flex-1 gap-0 overflow-y-auto;
+
+		&:has(.placeholder) {
+			@apply bg-gray-50;
+		}
+
+		.placeholder {
+			@apply h-[90%];
+			@apply items-center justify-center;
+
+			> .icon {
+				@apply size-11 rounded-full bg-gray-100 text-gray-500;
+				@apply flex justify-center items-center;
+			}
+
+			> .text {
+				@apply paragraph-sm-g6;
+			}
+		}
+
+		tr {
+			td {
+				@apply border-b-0;
+			}
+
+			&.gray,
+			&[data-selected='true'] {
+				@apply bg-gray-50;
+
+				> td {
+					@apply bg-gray-50;
+
+					&.selection::before {
+						@apply bg-[unset];
+					}
+				}
+			}
+
+			.anchor {
+				@apply truncate;
+			}
+
+			.copy {
+				@apply size-6 min-w-[unset] min-h-[unset];
+				@apply rounded-sm;
+			}
+
+			.group {
+				@apply gap-1 flex-nowrap;
+			}
+
+			> .between {
+				@apply flex flex-row items-center justify-between gap-2;
+
+				&.firm {
+					> .anchor {
+						@apply max-w-[160px];
+					}
+				}
+			}
+
+			> .status {
+				@apply min-h-[120px] text-center;
+			}
+
+			> .selection,
+			> .actions {
+				@apply bg-white;
+			}
+
+			> .actions {
+				@apply flex-nowrap items-center justify-center;
+
+				&:has(.button) {
+					@apply p-0 border-0;
+				}
+
+				> .cell {
+					@apply gap-0;
+					@apply flex-nowrap items-center justify-center;
+
+					.button {
+						@apply h-10;
+
+						&:not(.primary) {
+							@apply size-10;
+						}
+
+						&.delete {
+							@apply bg-red-600 text-white;
+						}
+
+						&.secondary {
+							@apply bg-gray-100 text-dark-300;
+							@apply border-0 border-r border-solid border-gray-300;
+
+							&:hover {
+								@apply bg-gray-200;
+							}
+
+							&:last-child {
+								@apply border-0;
+							}
+						}
+
+						&.primary {
+							@apply border-0;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	> .footer {
+		@apply justify-center items-center flex-nowrap gap-4;
+
+		&:has(.legend) {
+			@apply justify-between;
+		}
+
+		> .pagination {
+			@apply gap-2 justify-center;
+
+			> .button {
+				@apply size-8 border-gray-300;
+			}
+		}
+
+		> .row {
+			@apply gap-4 items-center;
+		}
+	}
+
+	.legend {
+		@apply gap-4;
+
+		> .cell {
+			@apply gap-2;
+
+			> .value {
+				@apply paragraph-xs;
+			}
+		}
+	}
+
+	.mine {
+		@apply text-dark-300;
+	}
+
+	.contributing {
+		@apply text-blue-600;
+	}
+
+	.winning {
+		@apply text-yellow-600;
+	}
+
+	.unverified {
+		@apply text-orange-600;
+	}
+
+	.uninvited {
+		@apply text-green-600;
+	}
+}
+
+.filterMenu {
+	@apply px-6 pt-4 pb-6;
+
+	.label {
+		@apply display-md-sb mb-4 p-0;
+	}
+
+	.divider {
+		@apply m-4;
+	}
+
+	.options {
+		@apply gap-3;
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-xs {
+		.root > .header > .row {
+			&.wrapMobile {
+				@apply flex-row gap-8;
+			}
+
+			> .filters {
+				@apply flex-row items-start;
+
+				> .badges {
+					@apply items-start justify-start;
+				}
+			}
+
+			> .search {
+				@apply self-center;
+			}
+
+			> .actions {
+				@apply flex-row gap-4;
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root > .header > .row {
+			> .label {
+				@apply flex-row gap-3;
+			}
+
+			> .settings > .label {
+				@apply block;
+			}
+
+			> .search {
+				@apply min-w-[240px];
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root > .header > .row > .search {
+			@apply min-w-[320px];
+		}
+	}
+
+	@mixin dark {
+		.root {
+			> .header > .row {
+				> .settings > .dropdown input,
+				> .settings > .button {
+					@apply bg-dark-700 border-dark-400 text-white;
+
+					&:hover {
+						@apply bg-dark-600;
+					}
+				}
+
+				> .filters > .badges > .badge {
+					@apply bg-dark-500 text-dark-100;
+				}
+
+				> .actions > .buttons > .button {
+					&.primary {
+						@apply bg-dark-400 text-white;
+
+						&:hover {
+							@apply bg-dark-300;
+						}
+
+						&:disabled {
+							@apply opacity-25;
+
+							&:hover {
+								@apply bg-dark-400;
+							}
+						}
+					}
+
+					&.secondary {
+						@apply bg-dark-600 border-dark-400 text-white;
+
+						&:hover {
+							@apply bg-dark-500;
+						}
+
+						&:disabled {
+							@apply opacity-25;
+
+							&:hover {
+								@apply bg-dark-600;
+							}
+						}
+					}
+				}
+			}
+
+			> .table {
+				&:has(.placeholder) {
+					@apply bg-dark-600;
+				}
+
+				.placeholder {
+					@apply bg-dark-600;
+
+					> .icon {
+						@apply bg-dark-500 text-dark-300;
+					}
+				}
+
+				tr {
+					.anchor {
+						@apply text-dark-50;
+					}
+
+					&.gray,
+					&[data-selected='true'] {
+						@apply bg-dark-600;
+
+						> td {
+							@apply bg-dark-600;
+						}
+					}
+
+					> .selection,
+					> .actions {
+						@apply bg-dark-700;
+					}
+
+					> .actions > .cell .button {
+						&.secondary,
+						&.primary {
+							@apply bg-dark-600 border-dark-400 text-white;
+
+							&:hover {
+								@apply bg-dark-400;
+							}
+
+							&:disabled {
+								@apply opacity-25;
+
+								&:hover {
+									@apply bg-dark-600;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			> .footer {
+				> .pagination > .button {
+					@apply bg-dark-700 border-dark-400 text-white;
+
+					&:hover {
+						@apply bg-dark-600;
+					}
+
+					&:disabled {
+						@apply bg-dark-600;
+						@apply opacity-40;
+					}
+				}
+
+				> .row > .button {
+					@apply bg-dark-700 border-dark-400 text-white;
+
+					&:hover {
+						@apply bg-dark-600;
+					}
+				}
+			}
+
+			.mine {
+				@apply text-dark-50;
+			}
+		}
+	}
+}

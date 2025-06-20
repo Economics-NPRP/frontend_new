@@ -1,6 +1,16 @@
 .root {
 	@apply h-5;
 
+	.removeButton {
+		@apply size-6 min-w-[unset] min-h-[unset];
+		@apply text-current;
+
+		span,
+		svg {
+			@apply text-current;
+		}
+	}
+
 	&.currency {
 		@apply h-6;
 		@apply rounded-none;

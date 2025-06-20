@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 import { Button, Center, Flex, Group, Text, Tooltip } from '@mantine/core';
 import { IconArrowUpLeft, IconBox } from '@tabler/icons-react';
@@ -19,7 +20,7 @@ export const MarketplaceHeader = () => {
 				<Flex className={classes.left}>
 					<Tooltip label={t('constants.return.dashboard.tooltip')}>
 						<Button
-							component="a"
+							component={Link}
 							href="/dashboard"
 							aria-label={t('constants.return.dashboard.aria')}
 							className={classes.dashboardButton}
@@ -38,7 +39,7 @@ export const MarketplaceHeader = () => {
 					</Tooltip>
 					<Tooltip label={t('constants.return.marketplace.tooltip')}>
 						<Button
-							component="a"
+							component={Link}
 							href="/"
 							aria-label={t('constants.return.marketplace.aria')}
 							classNames={{

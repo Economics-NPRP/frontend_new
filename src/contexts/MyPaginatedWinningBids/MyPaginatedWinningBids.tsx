@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import { createContext, useContext } from 'react';
 
-import { MyUserContext, OffsetPaginatedQueryProvider } from '@/contexts';
+import { MyUserProfileContext, OffsetPaginatedQueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
 import { useAuctionAvailability } from '@/hooks';
 import { getMyPaginatedWinningBids } from '@/lib/bids/open';
@@ -23,7 +23,7 @@ export const MyPaginatedWinningBidsProvider = ({
 	defaultPerPage,
 	children,
 }: OffsetPaginatedProviderProps) => {
-	const myUser = useContext(MyUserContext);
+	const myUser = useContext(MyUserProfileContext);
 	const { auctionId } = useParams();
 	const { areBidsAvailable } = useAuctionAvailability();
 
