@@ -12,6 +12,7 @@ import { AuctionCategory } from '@/types';
 import {
 	ActionIcon,
 	Anchor,
+	Button,
 	Container,
 	CopyButton,
 	Group,
@@ -21,10 +22,14 @@ import {
 	Tooltip,
 } from '@mantine/core';
 import {
+	IconBan,
 	IconCertificate,
 	IconCheck,
 	IconCopy,
+	IconFileSearch,
+	IconFlag,
 	IconMail,
+	IconMailShare,
 	IconPhone,
 	IconWorld,
 } from '@tabler/icons-react';
@@ -84,7 +89,9 @@ export default function Details() {
 					<Container className={classes.icon}>
 						<IconMail size={16} />
 					</Container>
-					<Text className={classes.key}>Contact Email</Text>
+					<Text className={classes.key}>
+						{t('dashboard.admin.firms.details.details.email.label')}
+					</Text>
 					<WithSkeleton width={140} height={20} loading={firm.isLoading} data-dark>
 						<Anchor href={`mailto:${firm.data.email}`} className={classes.value}>
 							{firm.data.email}
@@ -95,7 +102,9 @@ export default function Details() {
 					<Container className={classes.icon}>
 						<IconPhone size={16} />
 					</Container>
-					<Text className={classes.key}>Contact Phone Number</Text>
+					<Text className={classes.key}>
+						{t('dashboard.admin.firms.details.details.phone.label')}
+					</Text>
 					<WithSkeleton width={80} height={20} loading={firm.isLoading} data-dark>
 						<Anchor href={`tel:${firm.data.phone}`} className={classes.value}>
 							{firm.data.phone}
@@ -106,7 +115,9 @@ export default function Details() {
 					<Container className={classes.icon}>
 						<IconCertificate size={16} />
 					</Container>
-					<Text className={classes.key}>CRN</Text>
+					<Text className={classes.key}>
+						{t('dashboard.admin.firms.details.details.crn.label')}
+					</Text>
 					<Group className={classes.row}>
 						<WithSkeleton width={80} height={20} loading={firm.isLoading} data-dark>
 							<Text className={classes.value}>1234567890</Text>
@@ -137,11 +148,27 @@ export default function Details() {
 					<Container className={classes.icon}>
 						<IconWorld size={16} />
 					</Container>
-					<Text className={classes.key}>Website</Text>
+					<Text className={classes.key}>
+						{t('dashboard.admin.firms.details.details.website.label')}
+					</Text>
 					<WithSkeleton width={80} height={20} loading={firm.isLoading} data-dark>
 						<Anchor className={classes.value}>{firm.data.name}.com</Anchor>
 					</WithSkeleton>
 				</Stack>
+			</Group>
+			<Group className={classes.actions}>
+				<Button color="red" leftSection={<IconFlag size={16} />}>
+					{t('dashboard.admin.firms.details.details.actions.report.label')}
+				</Button>
+				<Button color="red" leftSection={<IconBan size={16} />}>
+					{t('dashboard.admin.firms.details.details.actions.suspend.label')}
+				</Button>
+				<Button leftSection={<IconFileSearch size={16} />}>
+					{t('dashboard.admin.firms.details.details.actions.audit.label')}
+				</Button>
+				<Button leftSection={<IconMailShare size={16} />}>
+					{t('dashboard.admin.firms.details.details.actions.invite.label')}
+				</Button>
 			</Group>
 		</Stack>
 	);

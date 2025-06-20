@@ -1,0 +1,7 @@
+.root {
+	@apply h-[800px];
+	@apply col-span-12;
+	@apply items-center justify-center;
+	@apply bg-dark-600 text-white;
+	@apply border border-solid border-dark-400;
+}

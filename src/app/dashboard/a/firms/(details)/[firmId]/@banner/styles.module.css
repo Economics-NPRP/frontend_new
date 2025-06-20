@@ -5,7 +5,6 @@
 		@apply relative;
 		@apply h-[200px];
 		@apply overflow-hidden;
-		@apply rounded-lg;
 
 		> .placeholder {
 			@apply absolute top-0 left-0 w-full h-full;

@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import { SingleFirmProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { getSingleFirm } from '@/lib/users/firms';
-import { Stack } from '@mantine/core';
+import { Container, Stack } from '@mantine/core';
 
 import classes from './styles.module.css';
 
@@ -51,9 +51,11 @@ export default function FirmDetails({
 			{hero}
 			{banner}
 			{details}
-			{users}
-			{trading}
-			{environment}
+			<Container className={classes.content}>
+				{users}
+				{environment}
+				{trading}
+			</Container>
 		</Stack>,
 		{ provider: SingleFirmProvider },
 	);

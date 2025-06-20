@@ -1,5 +1,5 @@
 .root {
-	@apply gap-6 items-center;
+	@apply gap-6 items-center mb-8;
 
 	> .label {
 		@apply gap-1 items-center;
@@ -62,5 +62,9 @@
 		&:hover {
 			@apply shadow-xs;
 		}
+	}
+
+	> .actions {
+		@apply gap-2;
 	}
 }
