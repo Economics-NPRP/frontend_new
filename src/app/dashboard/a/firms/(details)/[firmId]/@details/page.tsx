@@ -157,16 +157,16 @@ export default function Details() {
 				</Stack>
 			</Group>
 			<Group className={classes.actions}>
-				<Button color="red" leftSection={<IconFlag size={16} />}>
+				<Button className={classes.button} color="red" leftSection={<IconFlag size={16} />}>
 					{t('dashboard.admin.firms.details.details.actions.report.label')}
 				</Button>
-				<Button color="red" leftSection={<IconBan size={16} />}>
+				<Button className={classes.button} color="red" leftSection={<IconBan size={16} />}>
 					{t('dashboard.admin.firms.details.details.actions.suspend.label')}
 				</Button>
-				<Button leftSection={<IconFileSearch size={16} />}>
+				<Button className={classes.button} leftSection={<IconFileSearch size={16} />}>
 					{t('dashboard.admin.firms.details.details.actions.audit.label')}
 				</Button>
-				<Button leftSection={<IconMailShare size={16} />}>
+				<Button className={classes.button} leftSection={<IconMailShare size={16} />}>
 					{t('dashboard.admin.firms.details.details.actions.invite.label')}
 				</Button>
 			</Group>

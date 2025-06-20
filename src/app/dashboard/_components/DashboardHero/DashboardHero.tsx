@@ -11,6 +11,7 @@ import {
 	Stack,
 	Text,
 	Title,
+	useMatches,
 } from '@mantine/core';
 import { IconArrowUpLeft, IconChevronRight } from '@tabler/icons-react';
 
@@ -36,6 +37,11 @@ export const DashboardHero = ({
 	breadcrumbs,
 	loading = false,
 }: DashboardHeroProps) => {
+	const buttonSize = useMatches({
+		base: 'xs',
+		sm: 'sm',
+	});
+
 	const breadcrumbItems = useMemo(
 		() =>
 			breadcrumbs.map(({ label, href }) => (
@@ -55,6 +61,7 @@ export const DashboardHero = ({
 							variant="light"
 							component="a"
 							href={returnButton.href}
+							size={buttonSize}
 							leftSection={<IconArrowUpLeft size={16} />}
 							className={classes.button}
 						>
