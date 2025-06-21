@@ -19,12 +19,16 @@
 		@apply my-auto gap-8;
 		@apply items-center justify-center;
 
+		> .stepper {
+			@apply flex flex-col items-center;
+		}
+
 		.section {
 			@apply w-[480px];
-			@apply items-stretch;
 
 			&.header {
 				@apply gap-1;
+				@apply items-stretch;
 
 				> .heading {
 					@apply text-center heading-2;
@@ -35,12 +39,31 @@
 				}
 			}
 
+			&.steps {
+				@apply w-[800px];
+				@apply mb-8;
+			}
+
 			&.inputs {
-				@apply gap-2;
+				@apply gap-4;
+				@apply flex flex-col items-stretch;
+
+				> .avatar {
+					@apply self-center text-center;
+					@apply flex flex-col items-center;
+
+					> .input {
+						@apply mt-4;
+					}
+				}
 			}
 
 			&.action {
 				@apply gap-2;
+
+				> .button {
+					@apply flex-auto;
+				}
 			}
 
 			> .details {

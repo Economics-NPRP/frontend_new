@@ -103,7 +103,7 @@ export default function Form() {
 			</Stack>
 
 			<Stack className={`${classes.action} ${classes.section}`}>
-				<Button type="submit" loading={form.submitting}>
+				<Button type="submit" className={classes.button} loading={form.submitting}>
 					Activate Account
 				</Button>
 				<Group className={classes.prompt}>
