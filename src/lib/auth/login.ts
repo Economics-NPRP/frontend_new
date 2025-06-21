@@ -1,5 +1,6 @@
 'use server';
 
+import { getTranslations } from 'next-intl/server';
 import { cookies } from 'next/headers';
 import 'server-only';
 
@@ -14,6 +15,8 @@ const getDefaultData: (...errors: Array<string>) => ServerData<{}> = (...errors)
 
 type IFunctionSignature = (options: ILoginData) => Promise<ServerData<{}>>;
 export const login: IFunctionSignature = async ({ email, password }) => {
+	const t = await getTranslations();
+
 	const loginData = new FormData();
 	loginData.append('username', email);
 	loginData.append('password', password);
@@ -30,10 +33,10 @@ export const login: IFunctionSignature = async ({ email, password }) => {
 
 	const response = await fetch(queryUrl, querySettings);
 
-	if (response.status === 401) return getDefaultData('Invalid email or password');
-	if (!response.ok) return getDefaultData('There was an error logging in');
+	if (response.status === 401) return getDefaultData(t('lib.auth.login.invalid'));
+	if (!response.ok) return getDefaultData(t('lib.auth.login.error'));
 	if (!response.headers || response.headers.getSetCookie().length === 0)
-		return getDefaultData('No cookies set in response');
+		return getDefaultData(t('lib.noCookies'));
 
 	const cookieStore = await cookies();
 	extractSessionCookies(response, (key, value, exp) => {

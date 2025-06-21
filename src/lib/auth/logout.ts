@@ -1,5 +1,6 @@
 'use server';
 
+import { getTranslations } from 'next-intl/server';
 import { cookies } from 'next/headers';
 import 'server-only';
 
@@ -14,8 +15,10 @@ const getDefaultData: (...errors: Array<string>) => ServerData<{}> = (...errors)
 
 type IFunctionSignature = () => Promise<ServerData<{}>>;
 export const logout: IFunctionSignature = async () => {
+	const t = await getTranslations();
+
 	const cookieHeaders = await getSession();
-	if (!cookieHeaders) return getDefaultData('You must be logged in to access this resource.');
+	if (!cookieHeaders) return getDefaultData(t('lib.notLoggedIn'));
 	const querySettings: RequestInit = {
 		method: 'POST',
 		headers: {
@@ -28,10 +31,10 @@ export const logout: IFunctionSignature = async () => {
 	const response = await fetch(queryUrl, querySettings);
 
 	if (response.status === 401 || response.status === 422)
-		return getDefaultData('You must be logged in to log out');
-	if (!response.ok) return getDefaultData('There was an error logging out');
+		return getDefaultData(t('lib.auth.logout.loggedIn'));
+	if (!response.ok) return getDefaultData(t('lib.auth.logout.error'));
 	if (!response.headers || response.headers.getSetCookie().length === 0)
-		return getDefaultData('No cookies set in response');
+		return getDefaultData(t('lib.noCookies'));
 
 	const cookieStore = await cookies();
 	extractSessionCookies(response, (key, value, exp) => {
