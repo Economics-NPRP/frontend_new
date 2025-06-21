@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 
 import { verifySession } from '@/lib/auth';
 
-const protectedRoutes = ['/marketplace'];
+const protectedRoutes = ['/marketplace', '/dashboard'];
 
 const otpRoute = '/otp';
 
