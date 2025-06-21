@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { CategoryBadge, FirmStatusBadge } from '@/components/Badge';
+import { Switch } from '@/components/SwitchCase';
 import { FirmsFilter } from '@/components/Tables/Firms/types';
 import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
 import { IPaginatedFirmsContext } from '@/contexts';
@@ -327,7 +328,7 @@ export const FirmsTable = ({
 									},
 								)}
 							</Button>
-							<Button
+							{/* <Button
 								className={`${classes.primary} ${classes.button}`}
 								disabled={selectedFirms.length === 0}
 								rightSection={<IconMailShare size={16} />}
@@ -338,7 +339,7 @@ export const FirmsTable = ({
 										value: selectedFirms.length,
 									},
 								)}
-							</Button>
+							</Button> */}
 						</Group>
 					</Group>
 				</Group>
@@ -509,6 +510,7 @@ export const FirmsTable = ({
 						cellsClassName: classes.status,
 						render: (record) => (
 							<FirmStatusBadge
+								//	TODO: replace with actual status check
 								status={record.emailVerified ? 'verified' : 'unverified'}
 							/>
 						),
@@ -545,28 +547,32 @@ export const FirmsTable = ({
 						cellsClassName: classes.actions,
 						render: (record) => (
 							<Group className={classes.cell}>
-								<Tooltip
-									label={t('components.firmsTable.columns.actions.audit.tooltip')}
-									position="top"
-								>
-									<ActionIcon
-										className={`${classes.secondary} ${classes.button}`}
-									>
-										<IconFileSearch size={16} />
-									</ActionIcon>
-								</Tooltip>
-								<Tooltip
-									label={t(
-										'components.firmsTable.columns.actions.invite.tooltip',
-									)}
-									position="top"
-								>
-									<ActionIcon
-										className={`${classes.secondary} ${classes.button}`}
-									>
-										<IconMailShare size={16} />
-									</ActionIcon>
-								</Tooltip>
+								<Switch value={record.emailVerified}>
+									<Switch.True>
+										<Tooltip
+											label={t(
+												'components.firmsTable.columns.actions.audit.tooltip',
+											)}
+											position="top"
+										>
+											<ActionIcon className={`${classes.button}`}>
+												<IconFileSearch size={16} />
+											</ActionIcon>
+										</Tooltip>
+									</Switch.True>
+									<Switch.False>
+										<Tooltip
+											label={t(
+												'components.firmsTable.columns.actions.invite.tooltip',
+											)}
+											position="top"
+										>
+											<ActionIcon className={`${classes.button}`}>
+												<IconMailShare size={16} />
+											</ActionIcon>
+										</Tooltip>
+									</Switch.False>
+								</Switch>
 								<Button
 									className={`${classes.primary} ${classes.button}`}
 									component={Link}
