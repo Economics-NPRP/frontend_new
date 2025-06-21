@@ -10,9 +10,14 @@ import { AuctionCategory } from '@/types';
 import { Button, Group, Input, MultiSelect, Stepper, TextInput } from '@mantine/core';
 import {
 	IconArrowNarrowRight,
+	IconBriefcase,
 	IconBuilding,
 	IconCertificate,
 	IconChartPie,
+	IconGlobe,
+	IconMail,
+	IconPhone,
+	IconWorld,
 } from '@tabler/icons-react';
 
 export default function Form() {
@@ -63,10 +68,51 @@ export default function Form() {
 						)}
 					/>
 				</Stepper.Step>
-				<Stepper.Step
-					label="Second Step"
-					description="Primary Contact Details"
-				></Stepper.Step>
+				<Stepper.Step label="Second Step" description="Primary Contact Details">
+					<TextInput
+						label="Full Name"
+						placeholder="Enter full name..."
+						name="fullName"
+						autoComplete="name"
+						required
+					/>
+					<TextInput
+						label="Position"
+						placeholder="Enter position..."
+						name="position"
+						leftSection={<IconBriefcase size={16} />}
+						required
+					/>
+					<TextInput
+						type="email"
+						label="Email Address"
+						placeholder="Enter email address..."
+						autoComplete="email"
+						leftSection={<IconMail size={16} />}
+						required
+					/>
+					<TextInput
+						label="Phone Number"
+						placeholder="Enter phone number..."
+						autoComplete="tel"
+						leftSection={<IconPhone size={16} />}
+						required
+					/>
+					<TextInput
+						label="Company Website"
+						placeholder="Enter website url..."
+						autoComplete="url"
+						leftSection={<IconWorld size={16} />}
+						required
+					/>
+					<TextInput
+						label="Headquarter Address"
+						placeholder="Enter address of company HQ..."
+						autoComplete="address"
+						leftSection={<IconBuilding size={16} />}
+						required
+					/>
+				</Stepper.Step>
 				<Stepper.Step label="Third Step" description="Upload Documents"></Stepper.Step>
 				<Stepper.Step label="Final Step" description="Preview Account"></Stepper.Step>
 			</Stepper>
