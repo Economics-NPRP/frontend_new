@@ -10,6 +10,8 @@
 		> img {
 			@apply object-cover object-center;
 			@apply brightness-75;
+
+			animation: fade 66s linear infinite;
 		}
 
 		> .overlay {
@@ -148,5 +150,23 @@
 		.root {
 			@apply items-center;
 		}
+	}
+}
+
+@keyframes fade {
+	0% {
+		opacity: 1;
+	}
+	15% {
+		opacity: 1;
+	}
+	17% {
+		opacity: 0;
+	}
+	98% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
 	}
 }
