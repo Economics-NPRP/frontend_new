@@ -1,7 +1,30 @@
 .root {
-	@apply w-screen h-screen;
-	@apply items-stretch justify-center;
-	@apply px-32 py-20 gap-8;
+	@apply w-screen min-h-screen;
+	@apply items-stretch justify-start;
+	@apply px-32 py-16 gap-8;
+
+	> .bg {
+		@apply absolute top-0 left-0 w-full h-full;
+		@apply overflow-hidden;
+		@apply -z-10;
+
+		> .graphic {
+			@apply absolute;
+			@apply border border-solid border-gray-200 rounded-full;
+
+			&:nth-child(1) {
+				@apply size-[800px] -top-[644px] -left-[280px];
+			}
+
+			&:nth-child(2) {
+				@apply size-[640px] top-[25vh] -right-[520px];
+			}
+
+			&:nth-child(3) {
+				@apply size-[1000px] -bottom-[920px] left-[10vw];
+			}
+		}
+	}
 
 	> .header {
 		@apply justify-between flex-nowrap;
@@ -16,8 +39,8 @@
 	}
 
 	> .content {
-		@apply my-auto gap-8;
-		@apply items-center justify-center;
+		@apply my-auto gap-12;
+		@apply items-center justify-start;
 
 		> .stepper {
 			@apply flex flex-col items-center;
@@ -48,6 +71,10 @@
 				@apply gap-4;
 				@apply flex flex-col items-stretch;
 
+				&:has(> .wide) {
+					@apply w-[1200px];
+				}
+
 				> .avatar {
 					@apply self-center text-center;
 					@apply flex flex-col items-center;
@@ -55,6 +82,10 @@
 					> .input {
 						@apply mt-4;
 					}
+				}
+
+				> .sectors {
+					@apply grid grid-cols-3 gap-4;
 				}
 			}
 
@@ -68,7 +99,7 @@
 
 			> .details {
 				@apply p-4;
-				@apply border border-gray-300 border-solid;
+				@apply border bg-white border-gray-300 border-solid;
 				@apply shadow-sm;
 
 				> .avatar {

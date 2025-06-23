@@ -6,6 +6,34 @@
 	}
 }
 
+.bg {
+	@apply absolute top-0 left-0 w-full h-full;
+	@apply -z-10;
+
+	> .pattern {
+		@apply absolute top-0 left-0 w-full h-[320px];
+
+		background:
+			linear-gradient(135deg, #f8f9fa 25%, transparent 25%) -24px 0,
+			linear-gradient(225deg, #f8f9fa 25%, transparent 25%) -24px 0,
+			linear-gradient(315deg, #f8f9fa 25%, transparent 25%),
+			linear-gradient(45deg, #f8f9fa 25%, transparent 25%);
+		background-size: 48px 48px;
+		background-color: #ffffff;
+	}
+
+	> .gradient {
+		@apply absolute top-0 left-0 w-full h-[320px];
+		@apply opacity-75;
+
+		background: linear-gradient(
+			to top,
+			rgba(255, 255, 255, 1) 25%,
+			rgba(255, 255, 255, 0) 100%
+		);
+	}
+}
+
 * {
 	@mixin larger-than $mantine-breakpoint-sm {
 		.root {

@@ -101,27 +101,45 @@
 		"auctionCategory": {
 			"energy": {
 				"alt": "Image of a power plant depicting the energy category",
-				"title": "Energy"
+				"title": "Energy",
+				"description": {
+					"register": "This sector includes all entities producing or supplying energy. Permits apply to emissions from sources like power plants, renewables, or electricity grids."
+				}
 			},
 			"industry": {
 				"alt": "Image of a crusher machine depicting the industry category",
-				"title": "Industry"
+				"title": "Industry",
+				"description": {
+					"register": "This category is relevant to companies in manufacturing and processing sectors, such as steel, cement, and chemical producers."
+				}
 			},
 			"transport": {
 				"alt": "Image of traffic causing pollution depicting the transport category",
-				"title": "Transport"
+				"title": "Transport",
+				"description": {
+					"register": "Designed for logistics, freight, aviation, and public transport operators, this sector manages permits tied to fuel-based emissions across all transport modes."
+				}
 			},
 			"buildings": {
 				"alt": "Image of a HVAC system depicting the buildings category",
-				"title": "Buildings"
+				"title": "Buildings",
+				"description": {
+					"register": "For real estate developers, property managers, and facility operators, this category covers emissions permits for building energy use, HVAC systems, and lighting."
+				}
 			},
 			"agriculture": {
 				"alt": "Image of a farm with cows depicting the agriculture category",
-				"title": "Agriculture"
+				"title": "Agriculture",
+				"description": {
+					"register": "Agricultural producers, agribusinesses, and food processors fall under this sector, with permits covering emissions from livestock, fertilizers, and land use."
+				}
 			},
 			"waste": {
 				"alt": "Image of waste glass and plastic depicting the waste category",
-				"title": "Waste"
+				"title": "Waste",
+				"description": {
+					"register": "Waste management firms—including landfill operators and recyclers—can acquire permits here for emissions from waste decomposition and treatment."
+				}
 			}
 		},
 		"auctionType": {

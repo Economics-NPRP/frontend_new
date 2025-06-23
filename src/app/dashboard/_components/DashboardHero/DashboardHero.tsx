@@ -61,7 +61,6 @@ export const DashboardHero = ({
 				{returnButton && (
 					<>
 						<Button
-							variant="light"
 							component={Link}
 							href={returnButton.href}
 							size={buttonSize}

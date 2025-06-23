@@ -5,7 +5,6 @@
 		@apply relative;
 		@apply h-[200px];
 		@apply overflow-hidden;
-		@apply rounded-sm;
 
 		> .placeholder {
 			@apply absolute top-0 left-0 w-full h-full;
@@ -41,11 +40,6 @@
 }
 
 * {
-	@mixin larger-than $mantine-breakpoint-sm {
-		.root > .image {
-			@apply rounded-md;
-		}
-	}
 	@mixin dark {
 		.root > .container {
 			@apply bg-dark-700;

@@ -47,16 +47,22 @@ export default function FirmDetails({
 	users,
 }: FirmDetailsProps) {
 	return withProviders(
-		<Stack className={classes.root}>
-			{hero}
-			{banner}
-			{details}
-			<Container className={classes.content}>
-				{users}
-				{environment}
-				{trading}
+		<>
+			<Container className={classes.bg}>
+				<Container className={classes.pattern} />
+				<Container className={classes.gradient} />
 			</Container>
-		</Stack>,
+			<Stack className={classes.root}>
+				{hero}
+				{banner}
+				{details}
+				<Container className={classes.content}>
+					{users}
+					{environment}
+					{trading}
+				</Container>
+			</Stack>
+		</>,
 		{ provider: SingleFirmProvider },
 	);
 }

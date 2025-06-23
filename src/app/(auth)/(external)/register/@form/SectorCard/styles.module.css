@@ -1,0 +1,105 @@
+.root {
+	@apply transition-shadow duration-300;
+	@apply border-0;
+
+	&:hover {
+		@apply shadow-xs;
+
+		> .content > .image {
+			> img {
+				@apply scale-105;
+			}
+
+			> .overlay {
+				@apply bottom-0;
+			}
+		}
+	}
+
+	&[data-checked='true'] {
+		@apply shadow-xs;
+
+		> .content > .details {
+			@apply bg-dark-600 border-dark-400;
+
+			> .label {
+				> .icon {
+					@apply bg-dark-400 text-dark-50;
+				}
+
+				> .title {
+					@apply heading-3-b-w;
+				}
+
+				> .description {
+					@apply paragraph-sm-w;
+				}
+			}
+		}
+	}
+
+	> .content {
+		@apply h-full;
+		@apply flex-auto;
+		@apply gap-0;
+
+		.image {
+			@apply h-[200px] flex-shrink-0 self-stretch;
+			@apply relative;
+			@apply overflow-hidden;
+
+			img {
+				@apply object-cover object-center;
+				@apply transition-transform duration-700;
+			}
+
+			> .overlay {
+				@apply absolute -bottom-8 left-0 w-full h-full;
+				@apply justify-center items-center;
+				@apply opacity-25;
+				@apply transition-all duration-1000;
+
+				background-image: linear-gradient(
+					to top,
+					rgba(0, 0, 0, 0.8) 20%,
+					rgba(0, 0, 0, 0) 100%
+				);
+			}
+		}
+
+		> .details {
+			@apply h-full;
+			@apply px-8 py-6;
+			@apply flex-nowrap gap-4 items-start;
+			@apply bg-white border border-solid border-gray-300;
+			@apply transition-colors duration-300;
+
+			> .label {
+				@apply flex-auto;
+				@apply gap-1;
+
+				> .icon {
+					@apply mb-2;
+					@apply size-10 flex-shrink-0;
+					@apply flex items-center justify-center;
+					@apply bg-gray-50 text-gray-600;
+					@apply rounded-sm;
+					@apply transition-colors duration-300;
+				}
+
+				> .title {
+					@apply heading-3-b;
+				}
+
+				> .description {
+					@apply paragraph-sm;
+				}
+			}
+
+			> .checkbox {
+				@apply mt-4;
+				@apply cursor-pointer;
+			}
+		}
+	}
+}

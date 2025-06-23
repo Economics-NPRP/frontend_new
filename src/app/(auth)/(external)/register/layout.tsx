@@ -1,8 +1,8 @@
+import { withProviders } from 'helpers/withProviders';
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
-import classes from '@/pages/(auth)/(external)/styles.module.css';
-import { Stack, Text, Title } from '@mantine/core';
+import { PageProvider } from '@/pages/(auth)/(external)/register/_components/Providers';
 
 export const metadata: Metadata = {
 	title: 'Register',
@@ -10,17 +10,14 @@ export const metadata: Metadata = {
 
 export interface RegisterProps {
 	form: ReactNode;
+	stepper: ReactNode;
 }
-export default function Register({ form }: RegisterProps) {
-	return (
+export default function Register({ form, stepper }: RegisterProps) {
+	return withProviders(
 		<>
-			<Stack className={`${classes.header} ${classes.section}`}>
-				<Title className={classes.heading}>Welcome to ETS!</Title>
-				<Text className={classes.subheading}>
-					Please complete the following steps to register your account.
-				</Text>
-			</Stack>
+			{stepper}
 			{form}
-		</>
+		</>,
+		{ provider: PageProvider },
 	);
 }
