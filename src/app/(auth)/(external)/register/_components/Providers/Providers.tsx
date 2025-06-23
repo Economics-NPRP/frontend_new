@@ -1,22 +1,41 @@
 'use client';
 
-import { PropsWithChildren, useCallback, useState } from 'react';
+import { PropsWithChildren, useCallback, useMemo, useState } from 'react';
 
 import { RegistrationPageContext } from '@/pages/(auth)/(external)/register/_components/Providers';
 
 export const PageProvider = ({ children }: PropsWithChildren) => {
 	const [activeStep, setActiveStep] = useState(0);
+	const [highestStepVisited, setHighestStepVisited] = useState(0);
 
-	const handleNextStep = useCallback(() => setActiveStep((prev) => prev + 1), []);
-	const handlePrevStep = useCallback(() => setActiveStep((prev) => prev - 1), []);
+	const handleStepChange = useCallback((step: number) => {
+		if (step < 0 || step > 4) return;
+		setActiveStep(step);
+		setHighestStepVisited((prev) => Math.max(prev, step));
+	}, []);
+
+	const handleNextStep = useCallback(
+		() => handleStepChange(activeStep + 1),
+		[activeStep, handleStepChange],
+	);
+	const handlePrevStep = useCallback(
+		() => handleStepChange(activeStep - 1),
+		[activeStep, handleStepChange],
+	);
+
+	const shouldAllowStepSelect = useMemo(
+		() => (step: number) => highestStepVisited >= step && activeStep !== step,
+		[highestStepVisited, activeStep],
+	);
 
 	return (
 		<RegistrationPageContext.Provider
 			value={{
 				activeStep,
-				setActiveStep,
+				handleStepChange,
 				handleNextStep,
 				handlePrevStep,
+				shouldAllowStepSelect,
 			}}
 		>
 			{children}

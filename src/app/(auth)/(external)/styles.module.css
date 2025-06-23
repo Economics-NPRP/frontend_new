@@ -4,7 +4,7 @@
 	@apply px-32 py-12 gap-8;
 
 	> .bg {
-		@apply absolute top-0 left-0 w-full h-full;
+		@apply fixed top-0 left-0 w-full h-full;
 		@apply overflow-hidden;
 		@apply -z-10;
 
@@ -71,8 +71,12 @@
 				@apply gap-4;
 				@apply flex flex-col items-stretch;
 
-				&:has(> .wide) {
+				&:has(> .sectors) {
 					@apply w-[1200px];
+				}
+
+				&:has(> .summary) {
+					@apply w-[800px];
 				}
 
 				> .avatar {

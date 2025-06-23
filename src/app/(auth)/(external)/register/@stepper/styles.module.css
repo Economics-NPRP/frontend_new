@@ -19,6 +19,17 @@
 			}
 		}
 
+		&[data-allow-click='true'] {
+			.icon {
+				@apply bg-gray-50 border border-solid border-gray-300;
+				@apply text-dark-300;
+			}
+
+			> .body > .label {
+				@apply opacity-75;
+			}
+		}
+
 		&[data-completed='true'] {
 			.icon {
 				@apply bg-green-600;
@@ -35,8 +46,12 @@
 
 			> .label {
 				@apply display-md-15-sb;
-				@apply opacity-50;
+				@apply opacity-25;
 			}
 		}
+	}
+
+	.content {
+		@apply hidden;
 	}
 }

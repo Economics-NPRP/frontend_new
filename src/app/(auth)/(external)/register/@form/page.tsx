@@ -2,11 +2,13 @@
 
 import { useContext } from 'react';
 
+import { AccountSummary } from '@/components/AccountSummary';
 import { AvatarUpload } from '@/components/AvatarUpload';
 import { Switch } from '@/components/SwitchCase';
 import { SectorCard } from '@/pages/(auth)/(external)/register/@form/SectorCard';
 import { RegistrationPageContext } from '@/pages/(auth)/(external)/register/_components/Providers';
 import classes from '@/pages/(auth)/(external)/styles.module.css';
+import { DefaultFirmData } from '@/schema/models';
 import {
 	Button,
 	Container,
@@ -25,6 +27,7 @@ import {
 	IconBuilding,
 	IconBuildingBank,
 	IconCertificate,
+	IconCheck,
 	IconMail,
 	IconPhone,
 	IconWorld,
@@ -96,7 +99,6 @@ export default function Form() {
 						</Text>
 					</Stack>
 					<Stack className={`${classes.inputs} ${classes.section}`}>
-						<span className={classes.wide} />
 						<Container className={classes.sectors}>
 							<SectorCard sector="energy" />
 							<SectorCard sector="industry" />
@@ -161,6 +163,27 @@ export default function Form() {
 						/>
 					</Stack>
 				</Switch.Case>
+				<Switch.Case when={3}>
+					<Stack className={`${classes.header} ${classes.section}`}>
+						<Title className={classes.heading}>Review Your Account Details</Title>
+						<Text className={classes.subheading}>
+							Please review the details below to ensure everything is correct before
+							proceeding.
+						</Text>
+					</Stack>
+					<Stack className={`${classes.inputs} ${classes.section}`}>
+						<AccountSummary
+							className={classes.summary}
+							firmData={{
+								name: 'New Company',
+								email: 'test@gmail.com',
+								phone: '+974 1234 5678',
+								type: 'firm',
+								sectors: ['industry', 'transport', 'buildings'],
+							}}
+						/>
+					</Stack>
+				</Switch.Case>
 			</Switch>
 
 			<Group className={`${classes.action} ${classes.section}`}>
@@ -169,13 +192,27 @@ export default function Form() {
 						Back
 					</Button>
 				)}
-				<Button
-					className={classes.button}
-					rightSection={<IconArrowNarrowRight size={20} />}
-					onClick={handleNextStep}
-				>
-					Continue
-				</Button>
+				<Switch value={activeStep === 3}>
+					<Switch.True>
+						<Button
+							className={classes.button}
+							color="green"
+							rightSection={<IconCheck size={16} />}
+							onClick={handleNextStep}
+						>
+							Create Account
+						</Button>
+					</Switch.True>
+					<Switch.False>
+						<Button
+							className={classes.button}
+							rightSection={<IconArrowNarrowRight size={20} />}
+							onClick={handleNextStep}
+						>
+							Continue
+						</Button>
+					</Switch.False>
+				</Switch>
 			</Group>
 		</>
 	);

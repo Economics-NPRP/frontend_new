@@ -4,16 +4,18 @@ import { createContext } from 'react';
 
 export const DefaultRegistrationPageContextData: IRegistrationPageContext = {
 	activeStep: 0,
-	setActiveStep: () => {},
+	handleStepChange: () => {},
 	handleNextStep: () => {},
 	handlePrevStep: () => {},
+	shouldAllowStepSelect: () => true,
 };
 
 export interface IRegistrationPageContext {
 	activeStep: number;
-	setActiveStep: (step: number) => void;
+	handleStepChange: (step: number) => void;
 	handleNextStep: () => void;
 	handlePrevStep: () => void;
+	shouldAllowStepSelect: (step: number) => boolean;
 }
 
 export const RegistrationPageContext = createContext<IRegistrationPageContext>(
