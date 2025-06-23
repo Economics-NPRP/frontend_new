@@ -1,3 +1,42 @@
 .root {
 	@apply w-[1000px];
+
+	.step {
+		&[data-progress='true'],
+		&[data-completed='true'] {
+			.icon {
+				@apply text-white;
+			}
+
+			> .body > .label {
+				@apply opacity-100;
+			}
+		}
+
+		&[data-progress='true'] {
+			.icon {
+				@apply bg-dark-600;
+			}
+		}
+
+		&[data-completed='true'] {
+			.icon {
+				@apply bg-green-600;
+			}
+		}
+
+		.icon {
+			@apply size-9 min-w-[unset] min-h-[unset] border-0;
+			@apply text-gray-300;
+		}
+
+		> .body {
+			@apply ml-3;
+
+			> .label {
+				@apply display-md-15-sb;
+				@apply opacity-50;
+			}
+		}
+	}
 }

@@ -1,7 +1,7 @@
 .root {
 	@apply w-screen min-h-screen;
 	@apply items-stretch justify-start;
-	@apply px-32 py-16 gap-8;
+	@apply px-32 py-12 gap-8;
 
 	> .bg {
 		@apply absolute top-0 left-0 w-full h-full;

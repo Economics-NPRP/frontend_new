@@ -119,6 +119,14 @@
 		font-size: 15px;
 		line-height: 22px;
 	}
+	.display-md-15-sb {
+		@apply font-sans;
+		@apply font-semibold;
+		@apply text-dark-600 dark:text-dark-50;
+
+		font-size: 15px;
+		line-height: 22px;
+	}
 	.display-md-sb {
 		@apply font-sans;
 		@apply text-base;
