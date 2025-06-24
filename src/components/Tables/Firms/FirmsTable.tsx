@@ -4,13 +4,14 @@ import { DateTime } from 'luxon';
 import { DataTable } from 'mantine-datatable';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { CategoryBadge, FirmStatusBadge } from '@/components/Badge';
 import { Switch } from '@/components/SwitchCase';
 import { FirmsFilter } from '@/components/Tables/Firms/types';
 import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
 import { IPaginatedFirmsContext } from '@/contexts';
+import { InvitationModalContext } from '@/pages/dashboard/a/firms/_components/InvitationModal';
 import { IFirmData } from '@/schema/models';
 import { AuctionCategory } from '@/types';
 import {
@@ -63,6 +64,8 @@ export const FirmsTable = ({
 	const t = useTranslations();
 	const isMobile = useMediaQuery('(max-width: 48em)');
 	const tableContainerRef = useRef<HTMLTableElement>(null);
+
+	const invitationModal = useContext(InvitationModalContext);
 
 	const [searchFilter, setSearchFilter] = useState('');
 	const [statusFilter, setStatusFilter] = useState<FirmsFilter>('all');
@@ -567,7 +570,10 @@ export const FirmsTable = ({
 											)}
 											position="top"
 										>
-											<ActionIcon className={`${classes.button}`}>
+											<ActionIcon
+												className={`${classes.button}`}
+												onClick={() => invitationModal.open(record)}
+											>
 												<IconMailShare size={16} />
 											</ActionIcon>
 										</Tooltip>

@@ -40,12 +40,26 @@
 			@apply gap-8;
 		}
 	}
-	@mixin larger-than $mantine-breakpoint-md {
-		.root {
-		}
-	}
-	@mixin larger-than $mantine-breakpoint-xl {
-		.root {
+
+	@mixin dark {
+		.bg {
+			> .pattern {
+				background:
+					linear-gradient(135deg, #141517 25%, transparent 25%) -24px 0,
+					linear-gradient(225deg, #141517 25%, transparent 25%) -24px 0,
+					linear-gradient(315deg, #141517 25%, transparent 25%),
+					linear-gradient(45deg, #141517 25%, transparent 25%);
+				background-size: 48px 48px;
+				background-color: #1a1b1e;
+			}
+
+			> .gradient {
+				background: linear-gradient(
+					to top,
+					rgba(26, 27, 30, 1) 25%,
+					rgba(26, 27, 30, 0) 100%
+				);
+			}
 		}
 	}
 }

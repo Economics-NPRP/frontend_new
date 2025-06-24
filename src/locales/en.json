@@ -1112,6 +1112,15 @@
               }
             }
           }
+        },
+        "invitationModal": {
+          "title": "Invite Company To ETS",
+          "description": "Review the account summary below to confirm the details of the firm you are inviting.",
+          "actions": {
+            "cta": {
+              "label": "Send Invite"
+            }
+          }
         }
       }
     }

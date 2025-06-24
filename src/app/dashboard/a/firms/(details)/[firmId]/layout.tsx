@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { SingleFirmProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { getSingleFirm } from '@/lib/users/firms';
+import { InvitationModalProvider } from '@/pages/dashboard/a/firms/_components/InvitationModal';
 import { Container, Stack } from '@mantine/core';
 
 import classes from './styles.module.css';
@@ -64,5 +65,6 @@ export default function FirmDetails({
 			</Stack>
 		</>,
 		{ provider: SingleFirmProvider },
+		{ provider: InvitationModalProvider },
 	);
 }

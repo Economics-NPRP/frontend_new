@@ -5,6 +5,7 @@ import { ReactNode } from 'react';
 import { PaginatedFirmsProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
+import { InvitationModalProvider } from '@/pages/dashboard/a/firms/_components/InvitationModal';
 import { Stack } from '@mantine/core';
 
 import classes from './styles.module.css';
@@ -38,5 +39,6 @@ export default function FirmsList({ table }: FirmsListProps) {
 			{table}
 		</Stack>,
 		{ provider: PaginatedFirmsProvider },
+		{ provider: InvitationModalProvider },
 	);
 }
