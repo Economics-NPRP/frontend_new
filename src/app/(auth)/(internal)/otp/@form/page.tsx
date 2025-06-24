@@ -2,12 +2,15 @@
 
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { ReactElement, useCallback, useState } from 'react';
+import { ReactElement, useCallback, useEffect, useState } from 'react';
 
+import { resendOtp } from '@/lib/auth/resendOtp';
 import { verifyOtp } from '@/lib/auth/verifyOtp';
 import classes from '@/pages/(auth)/(internal)/styles.module.css';
-import { Alert, Anchor, Button, Group, List, PinInput, Stack, Text } from '@mantine/core';
+import { Alert, Button, Group, List, PinInput, Stack, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { useInterval } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
 import { IconExclamationCircle } from '@tabler/icons-react';
 
 interface IOTPData {
@@ -17,7 +20,18 @@ interface IOTPData {
 export default function Form() {
 	const t = useTranslations();
 	const router = useRouter();
+	const [resent, setResent] = useState(false);
 	const [formError, setFormError] = useState<Array<ReactElement>>([]);
+
+	const [seconds, setSeconds] = useState(60);
+	const interval = useInterval(() => setSeconds((s) => s - 1), 1000, { autoInvoke: true });
+
+	useEffect(() => {
+		if (seconds <= 0) {
+			interval.stop();
+			setResent(false);
+		}
+	}, [seconds, interval]);
 
 	const form = useForm<IOTPData>({
 		mode: 'uncontrolled',
@@ -50,6 +64,31 @@ export default function Form() {
 		},
 		[form, router],
 	);
+
+	const handleResend = useCallback(() => {
+		//	Send resend request
+		resendOtp()
+			.then(() => {
+				notifications.show({
+					color: 'green',
+					title: t('auth.otp.notifications.resend.success.title'),
+					message: t('auth.otp.notifications.resend.success.message'),
+					position: 'bottom-center',
+				});
+				setResent(true);
+				setSeconds(60);
+				interval.start();
+			})
+			.catch((err) => {
+				console.error('Error resending OTP:', err);
+				notifications.show({
+					color: 'red',
+					title: t('auth.otp.notifications.resend.error.title'),
+					message: err.message,
+					position: 'bottom-center',
+				});
+			});
+	}, [form, router]);
 
 	return (
 		<form onSubmit={form.onSubmit(handleSubmit)}>
@@ -87,8 +126,13 @@ export default function Form() {
 					{t.rich('auth.otp.actions.prompt', {
 						t: (chunks) => <Text className={classes.text}>{chunks}</Text>,
 						a: (chunks) => (
-							//	TODO: add handler to resend OTP
-							<Anchor className={classes.link}>{chunks}</Anchor>
+							<Button
+								onClick={handleResend}
+								className={classes.link}
+								disabled={resent}
+							>
+								{resent ? t('auth.otp.actions.resent', { value: seconds }) : chunks}
+							</Button>
 						),
 					})}
 				</Group>

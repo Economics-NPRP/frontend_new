@@ -1140,7 +1140,8 @@
         "error": "There was an error during registration, make sure the token is valid"
       },
       "otp": {
-        "expired": "OTP code may have expired, please try logging in again."
+        "expired": "OTP code may have expired, please try logging in again.",
+        "invalid": "OTP code is invalid, please make sure the code is 6 numbers long"
       }
     },
     "notLoggedIn": "You must be logged in to access this resource.",
@@ -1326,13 +1327,25 @@
     "otp": {
       "error": {
         "message": "There was a problem verifying your OTP, please view the console for more details.",
-        "title": "There was an error logging in"
+        "title": "There was an error verifying your OTP"
       },
       "actions": {
-        "prompt": "<t>Didn't receive your code? </t><a>Resend</a>"
+        "prompt": "<t>Didn't receive your code? </t><a>Resend</a>",
+        "resent": "Resend in {value, number}"
       },
       "heading": "OTP Verification",
-      "subheading": "Verify your identity by entering the OTP sent to your email address."
+      "subheading": "Verify your identity by entering the OTP sent to your email address.",
+      "notifications": {
+        "resend": {
+          "success": {
+            "title": "Verification Email Resent",
+            "message": "Another email has been sent with your new OTP code"
+          },
+          "error": {
+            "title": "Error Resending OTP"
+          }
+        }
+      }
     }
   }
 }

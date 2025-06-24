@@ -95,6 +95,14 @@
 				> .text {
 					@apply text-center paragraph-sm-g6;
 				}
+
+				> .link {
+					@apply p-0 h-[unset] bg-transparent text-blue-600;
+
+					&[data-disabled='true'] {
+						@apply text-gray-300;
+					}
+				}
 			}
 		}
 
@@ -174,17 +182,23 @@
 					}
 
 					&.action button {
-						@apply bg-dark-400 text-white;
-
-						&:hover {
-							@apply bg-dark-300;
+						&.link[data-disabled='true'] {
+							@apply text-dark-300;
 						}
 
-						&:disabled {
-							@apply opacity-25;
+						&:not(.link) {
+							@apply bg-dark-400 text-white;
 
 							&:hover {
-								@apply bg-dark-400;
+								@apply bg-dark-300;
+							}
+
+							&:disabled {
+								@apply opacity-25;
+
+								&:hover {
+									@apply bg-dark-400;
+								}
 							}
 						}
 					}

@@ -1,6 +1,7 @@
 'use server';
 
 import { camelCase } from 'change-case/keys';
+import { getTranslations } from 'next-intl/server';
 import { cache } from 'react';
 import 'server-only';
 
@@ -20,6 +21,8 @@ const getDefaultData: (...errors: Array<string>) => ServerData<{}> = (...errors)
 
 type IFunctionSignature = (options: IPlaceBidOptions) => Promise<ServerData<{}>>;
 export const placeBid: IFunctionSignature = cache(async ({ auctionId, bids }) => {
+	const t = await getTranslations();
+
 	const cookieHeaders = await getSession();
 	if (!cookieHeaders) return getDefaultData(t('lib.notLoggedIn'));
 	const querySettings: RequestInit = {

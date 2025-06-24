@@ -14,11 +14,11 @@
 		@apply absolute top-0 left-0 w-full h-[320px];
 
 		background:
-			linear-gradient(135deg, #f8f9fa 25%, transparent 25%) -24px 0,
-			linear-gradient(225deg, #f8f9fa 25%, transparent 25%) -24px 0,
+			linear-gradient(135deg, #f8f9fa 25%, transparent 25%) -16px 0,
+			linear-gradient(225deg, #f8f9fa 25%, transparent 25%) -16px 0,
 			linear-gradient(315deg, #f8f9fa 25%, transparent 25%),
 			linear-gradient(45deg, #f8f9fa 25%, transparent 25%);
-		background-size: 48px 48px;
+		background-size: 32px 32px;
 		background-color: #ffffff;
 	}
 
@@ -45,11 +45,11 @@
 		.bg {
 			> .pattern {
 				background:
-					linear-gradient(135deg, #141517 25%, transparent 25%) -24px 0,
-					linear-gradient(225deg, #141517 25%, transparent 25%) -24px 0,
+					linear-gradient(135deg, #141517 25%, transparent 25%) -16px 0,
+					linear-gradient(225deg, #141517 25%, transparent 25%) -16px 0,
 					linear-gradient(315deg, #141517 25%, transparent 25%),
 					linear-gradient(45deg, #141517 25%, transparent 25%);
-				background-size: 48px 48px;
+				background-size: 32px 32px;
 				background-color: #1a1b1e;
 			}
 
