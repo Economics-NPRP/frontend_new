@@ -3,6 +3,7 @@ export * from './AuctionData';
 export * from './AuctionType';
 export * from './BidData';
 export * from './FirmData';
+export * from './GeneralUserData';
 export * from './LoginData';
 export * from './UserData';
 export * from './UserType';

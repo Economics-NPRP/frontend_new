@@ -1,6 +1,5 @@
 import {
 	InferInput,
-	InferOutput,
 	boolean,
 	email,
 	length,
@@ -14,10 +13,9 @@ import {
 	url,
 } from 'valibot';
 
-import { IAdminData } from '@/schema/models/AdminData';
-import { IFirmData } from '@/schema/models/FirmData';
 import { TimestampSchema, UuidSchema } from '@/schema/utils';
 
+import { CreateUserPasswordSchema, DefaultCreateUserPassword } from './LoginData';
 import { UserTypeSchema } from './UserType';
 
 export const BaseUserDataSchema = object({
@@ -36,37 +34,27 @@ export const BaseUserDataSchema = object({
 	createdAt: TimestampSchema(),
 });
 
-export const CreateUserDataSchema = omit(BaseUserDataSchema, [
-	'id',
-	'emailVerified',
-	'phoneVerified',
-	'isActive',
-	'createdAt',
-]);
+export const CreateUserDataSchema = omit(
+	object({
+		...BaseUserDataSchema.entries,
+		...CreateUserPasswordSchema.entries,
+	}),
+	['id', 'emailVerified', 'phoneVerified', 'isActive', 'createdAt'],
+);
 
 export const ReadUserDataSchema = BaseUserDataSchema;
 export const UpdateUserDataSchema = CreateUserDataSchema;
 
-export interface IUserData
-	extends InferOutput<typeof BaseUserDataSchema>,
-		Partial<Pick<IFirmData, 'sectors' | 'permits'>>,
-		Partial<Pick<IAdminData, 'isSuperadmin'>> {}
 export interface ICreateUser extends InferInput<typeof CreateUserDataSchema> {}
 export interface IReadUser extends InferInput<typeof ReadUserDataSchema> {}
 export interface IUpdateUser extends InferInput<typeof UpdateUserDataSchema> {}
 
-export const DefaultUserData: IUserData = {
-	id: '',
-	type: 'firm',
+export const DefaultCreateUser: ICreateUser = {
+	...DefaultCreateUserPassword,
 
+	type: 'firm',
 	name: '',
 	email: '',
 	phone: '',
 	image: null,
-
-	emailVerified: false,
-	phoneVerified: false,
-
-	isActive: true,
-	createdAt: '1970-01-01T00:00:00.000Z',
 };

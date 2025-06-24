@@ -1,7 +1,9 @@
 'use client';
 
+import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { useTranslations } from 'next-intl';
-import { useContext } from 'react';
+import { useRouter } from 'next/navigation';
+import { ReactElement, useCallback, useContext, useState } from 'react';
 
 import { AccountSummary } from '@/components/AccountSummary';
 import { AvatarUpload } from '@/components/AvatarUpload';
@@ -9,18 +11,23 @@ import { Switch } from '@/components/SwitchCase';
 import { SectorCard } from '@/pages/(auth)/(external)/register/@form/SectorCard';
 import { RegistrationPageContext } from '@/pages/(auth)/(external)/register/_components/Providers';
 import classes from '@/pages/(auth)/(external)/styles.module.css';
+import { CreateFirmDataSchema, DefaultCreateFirm, ICreateFirm } from '@/schema/models';
 import {
+	Alert,
 	Button,
 	Container,
 	Divider,
 	FileInput,
 	Group,
 	Input,
+	List,
+	PasswordInput,
 	Stack,
 	Text,
 	TextInput,
 	Title,
 } from '@mantine/core';
+import { useForm } from '@mantine/form';
 import {
 	IconArrowNarrowRight,
 	IconBriefcase,
@@ -28,6 +35,8 @@ import {
 	IconBuildingBank,
 	IconCertificate,
 	IconCheck,
+	IconExclamationCircle,
+	IconKey,
 	IconMail,
 	IconPhone,
 	IconWorld,
@@ -35,10 +44,62 @@ import {
 
 export default function Form() {
 	const t = useTranslations();
+	const router = useRouter();
 	const { activeStep, handleNextStep, handlePrevStep } = useContext(RegistrationPageContext);
+
+	const [formError, setFormError] = useState<Array<ReactElement>>([]);
+
+	const form = useForm<ICreateFirm>({
+		mode: 'uncontrolled',
+		initialValues: DefaultCreateFirm,
+		validate: valibotResolver(CreateFirmDataSchema),
+		onValuesChange: () => setFormError([]),
+	});
+
+	const handleSubmit = useCallback(
+		(formData: ICreateFirm) => {
+			form.setSubmitting(true);
+			setFormError([]);
+
+			//	Send registration request
+			// const registrationToken = searchParams.get('token');
+			// register({ registrationToken, password })
+			// 	.then((res) => {
+			// 		//	TODO: revert once backend returns cookies
+			// 		// if (res.ok) router.push('/marketplace');
+			// 		if (res.ok) router.push('/login');
+			// 		else {
+			// 			setFormError(
+			// 				(res.errors || []).map((error, index) => (
+			// 					<List.Item key={index}>{error}</List.Item>
+			// 				)),
+			// 			);
+			// 		}
+			// 		form.setSubmitting(false);
+			// 	})
+			// 	.catch((err) => {
+			// 		console.error('Error registering your account:', err);
+			// 		setFormError([
+			// 			<List.Item key={0}>{t('auth.onboarding.error.message')}</List.Item>,
+			// 		]);
+			// 		form.setSubmitting(false);
+			// 	});
+		},
+		[form, router],
+	);
 
 	return (
 		<>
+			{formError.length > 0 && (
+				<Alert
+					variant="light"
+					color="red"
+					title={t('auth.onboarding.error.title')}
+					icon={<IconExclamationCircle />}
+				>
+					<List>{formError}</List>
+				</Alert>
+			)}
 			<Switch value={activeStep}>
 				<Switch.Case when={0}>
 					<Stack className={`${classes.header} ${classes.section}`}>
@@ -63,6 +124,28 @@ export default function Form() {
 							autoComplete="company"
 							leftSection={<IconBuilding size={16} />}
 							required
+						/>
+						<PasswordInput
+							type="password"
+							label={t('auth.onboarding.form.password.label')}
+							placeholder={t('auth.onboarding.form.password.placeholder')}
+							autoComplete="current-password"
+							leftSection={<IconKey size={16} />}
+							disabled={form.submitting}
+							required
+							key={form.key('password')}
+							{...form.getInputProps('password')}
+						/>
+						<PasswordInput
+							type="password"
+							label={t('auth.onboarding.form.confirm.label')}
+							placeholder={t('auth.onboarding.form.confirm.placeholder')}
+							autoComplete="current-password"
+							leftSection={<IconKey size={16} />}
+							disabled={form.submitting}
+							required
+							key={form.key('confirmPassword')}
+							{...form.getInputProps('confirmPassword')}
 						/>
 						<TextInput
 							label={t('auth.register.form.first.crn.label')}

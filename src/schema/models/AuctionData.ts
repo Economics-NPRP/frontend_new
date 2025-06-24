@@ -14,9 +14,11 @@ import {
 
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
 
-//	TODO: Check why path alias is not working
 import { AuctionTypeSchema } from './AuctionType';
-import { BaseUserDataSchema, DefaultUserData } from './UserData';
+import { DefaultUserData } from './GeneralUserData';
+import { BaseUserDataSchema } from './UserData';
+
+//	TODO: Check why path alias is not working
 
 export const BaseAuctionDataSchema = object({
 	id: UuidSchema(),
