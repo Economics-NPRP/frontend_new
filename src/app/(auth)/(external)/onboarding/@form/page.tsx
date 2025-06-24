@@ -1,7 +1,7 @@
 'use client';
 
 import { valibotResolver } from 'mantine-form-valibot-resolver';
-// import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ReactElement, useCallback, useState } from 'react';
 
@@ -17,8 +17,7 @@ import { useForm } from '@mantine/form';
 import { IconExclamationCircle, IconKey } from '@tabler/icons-react';
 
 export default function Form() {
-	// const t = useTranslations();
-	// const locale = useLocale();
+	const t = useTranslations();
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const [formError, setFormError] = useState<Array<ReactElement>>([]);
@@ -54,10 +53,7 @@ export default function Form() {
 				.catch((err) => {
 					console.error('Error registering your account:', err);
 					setFormError([
-						<List.Item key={0}>
-							There was an error during registration, please view the console for more
-							details.
-						</List.Item>,
+						<List.Item key={0}>{t('auth.onboarding.error.message')}</List.Item>,
 					]);
 					form.setSubmitting(false);
 				});
@@ -72,7 +68,7 @@ export default function Form() {
 					<Alert
 						variant="light"
 						color="red"
-						title="There was an error registering your account"
+						title={t('auth.onboarding.error.title')}
 						icon={<IconExclamationCircle />}
 					>
 						<List>{formError}</List>
@@ -80,8 +76,8 @@ export default function Form() {
 				)}
 				<PasswordInput
 					type="password"
-					label="Password"
-					placeholder="Enter password..."
+					label={t('auth.onboarding.form.password.label')}
+					placeholder={t('auth.onboarding.form.password.placeholder')}
 					autoComplete="current-password"
 					leftSection={<IconKey size={16} />}
 					disabled={form.submitting}
@@ -91,8 +87,8 @@ export default function Form() {
 				/>
 				<PasswordInput
 					type="password"
-					label="Confirm Password"
-					placeholder="Confirm password..."
+					label={t('auth.onboarding.form.confirm.label')}
+					placeholder={t('auth.onboarding.form.confirm.placeholder')}
 					autoComplete="current-password"
 					leftSection={<IconKey size={16} />}
 					disabled={form.submitting}
@@ -103,13 +99,15 @@ export default function Form() {
 			</Stack>
 
 			<Stack className={`${classes.action} ${classes.section}`}>
-				<Button type="submit" className={classes.button} loading={form.submitting}>
-					Activate Account
+				<Button
+					type="submit"
+					className={`${classes.primary} ${classes.button}`}
+					loading={form.submitting}
+				>
+					{t('auth.onboarding.actions.cta.label')}
 				</Button>
 				<Group className={classes.prompt}>
-					<Text className={classes.text}>
-						Activating your account will log you in and redirect you to the marketplace.
-					</Text>
+					<Text className={classes.text}>{t('auth.onboarding.actions.prompt')}</Text>
 				</Group>
 			</Stack>
 		</form>

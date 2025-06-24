@@ -1,7 +1,6 @@
 'use client';
 
-// import { useLocale, useTranslations } from 'next-intl';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { ReactElement, useCallback, useState } from 'react';
 
@@ -16,8 +15,7 @@ interface IOTPData {
 }
 
 export default function Form() {
-	// const t = useTranslations();
-	// const locale = useLocale();
+	const t = useTranslations();
 	const router = useRouter();
 	const [formError, setFormError] = useState<Array<ReactElement>>([]);
 
@@ -46,11 +44,7 @@ export default function Form() {
 				})
 				.catch((err) => {
 					console.error('Error verifying OTP:', err);
-					setFormError([
-						<List.Item key={0}>
-							There was an error logging in, please view the console for more details.
-						</List.Item>,
-					]);
+					setFormError([<List.Item key={0}>{t('auth.otp.error.message')}</List.Item>]);
 					form.setSubmitting(false);
 				});
 		},
@@ -64,7 +58,7 @@ export default function Form() {
 					<Alert
 						variant="light"
 						color="red"
-						title="There was an error logging in"
+						title={t('auth.otp.error.title')}
 						icon={<IconExclamationCircle />}
 					>
 						<List>{formError}</List>
@@ -87,13 +81,16 @@ export default function Form() {
 
 			<Stack className={`${classes.action} ${classes.section}`}>
 				<Button type="submit" loading={form.submitting}>
-					Verify
+					{t('constants.actions.verify.label')}
 				</Button>
 				<Group className={classes.prompt}>
-					<Text className={classes.text}>Didn't receive your code? </Text>
-					<Anchor component={Link} className={classes.link} href="/contact">
-						Resend
-					</Anchor>
+					{t.rich('auth.otp.actions.prompt', {
+						t: (chunks) => <Text className={classes.text}>{chunks}</Text>,
+						a: (chunks) => (
+							//	TODO: add handler to resend OTP
+							<Anchor className={classes.link}>{chunks}</Anchor>
+						),
+					})}
 				</Group>
 			</Stack>
 		</form>

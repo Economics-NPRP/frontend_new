@@ -256,6 +256,9 @@
       },
       "firmsList": {
         "label": "Return to Firms List"
+      },
+      "login": {
+        "label": "Return to Login"
       }
     },
     "view": {
@@ -302,6 +305,9 @@
       "actions": {
         "column": "Actions"
       },
+      "back": {
+        "label": "Back"
+      },
       "cancel": {
         "label": "Cancel",
         "aria": "Cancel action",
@@ -332,6 +338,9 @@
         "label": "Continue",
         "aria": "Continue action",
         "tooltip": "Continue action"
+      },
+      "verify": {
+        "label": "Verify"
       }
     },
     "quantities": {
@@ -1128,5 +1137,179 @@
     "notLoggedIn": "You must be logged in to access this resource.",
     "noData": "No data was returned.",
     "noCookies": "No cookies set in response"
+  },
+  "auth": {
+    "onboarding": {
+      "heading": "Activate Your Account",
+      "subheading": "Please create a password to complete your registration and activate your account.",
+      "details": {
+        "prompt": "Verify the above information before proceeding. If you feel that any of the information is incorrect, please <a>contact us</a>."
+      },
+      "form": {
+        "password": {
+          "label": "Password",
+          "placeholder": "Enter password..."
+        },
+        "confirm": {
+          "label": "Confirm Password",
+          "placeholder": "Confirm password..."
+        }
+      },
+      "actions": {
+        "cta": {
+          "label": "Activate Account"
+        },
+        "prompt": "Activating your account will log you in and redirect you to the marketplace."
+      },
+      "error": {
+        "title": "There was an error registering your account",
+        "message": "There was an error during registration, please view the console for more details."
+      }
+    },
+    "register": {
+      "stepper": {
+        "first": {
+          "label": "Basic Information"
+        },
+        "second": {
+          "label": "Business Sector"
+        },
+        "third": {
+          "label": "Primary Contact Details"
+        },
+        "fourth": {
+          "label": "Review Details"
+        }
+      },
+      "heading": {
+        "first": "Welcome to ETS!",
+        "second": "Select Business Sectors",
+        "third": "Add Primary Company Representative",
+        "fourth": "Review Your Account Details"
+      },
+      "subheading": {
+        "first": "Please complete the following steps to register your account.",
+        "second": "Please select the sectors your company operates in. This is used to determine which auctions you can participate in.",
+        "third": "Please provide the details of the primary representative for your company. This person will be the main point of contact for your account.",
+        "fourth": "Please review the details below to ensure everything is correct before proceeding."
+      },
+      "form": {
+        "first": {
+          "logo": {
+            "label": "Company Logo",
+            "description": "Upload your company logo"
+          },
+          "name": {
+            "label": "Company Name",
+            "placeholder": "Enter company name..."
+          },
+          "crn": {
+            "label": "Commercial Registration Number (CRN)",
+            "placeholder": "Enter CRN..."
+          },
+          "iban": {
+            "label": "IBAN Number",
+            "placeholder": "Enter IBAN..."
+          },
+          "divider": "Upload Documents",
+          "uploadCrn": {
+            "label": "Upload Commercial Registration Card",
+            "placeholder": "Upload file..."
+          },
+          "uploadIban": {
+            "label": "Upload IBAN Certificate",
+            "placeholder": "Upload file..."
+          }
+        },
+        "third": {
+          "fullName": {
+            "label": "Full Name",
+            "placeholder": "Enter full name..."
+          },
+          "position": {
+            "label": "Position",
+            "placeholder": "Enter position..."
+          },
+          "email": {
+            "label": "Email Address",
+            "placeholder": "Enter email address..."
+          },
+          "phone": {
+            "label": "Phone Number",
+            "placeholder": "Enter phone number..."
+          },
+          "website": {
+            "label": "Company Website",
+            "placeholder": "Enter website url..."
+          },
+          "address": {
+            "label": "Headquarter Address",
+            "placeholder": "Enter address of company HQ..."
+          }
+        }
+      },
+      "actions": {
+        "create": {
+          "label": "Create Account"
+        }
+      }
+    },
+    "forgot": {
+      "form": {
+        "email": {
+          "label": "Email Address",
+          "placeholder": "Enter email address..."
+        }
+      },
+      "actions": {
+        "cta": {
+          "label": "Send Email"
+        },
+        "prompt": "Please note the email may take a few minutes to arrive."
+      },
+      "heading": "Forgot Your Password?",
+      "subheading": "No worries! Just enter your email address and we'll send you a link to reset it (valid for 24 hours)"
+    },
+    "login": {
+      "heading": "Login to ETS",
+      "subheading": "Welcome to the ETS platform, where you can trade carbon credits and manage emissions.",
+      "form": {
+        "email": {
+          "label": "Email Address",
+          "placeholder": "Enter email address..."
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "Enter password..."
+        },
+        "checkbox": {
+          "label": "Remember me"
+        },
+        "forgot": {
+          "label": "Forgot password?"
+        }
+      },
+      "actions": {
+        "cta": {
+          "label": "Login"
+        },
+        "prompt": "<t>Don't have an account? </t><a>Register here</a>"
+      },
+      "error": {
+        "message": "There was an error logging in, please view the console for more details.",
+        "title": "There was an error logging in"
+      }
+    },
+    "otp": {
+      "error": {
+        "message": "There was a problem verifying your OTP, please view the console for more details.",
+        "title": "There was an error logging in"
+      },
+      "actions": {
+        "prompt": "<t>Didn't receive your code? </t><a>Resend</a>"
+      },
+      "heading": "OTP Verification",
+      "subheading": "Verify your identity by entering the OTP sent to your email address."
+    }
   }
 }

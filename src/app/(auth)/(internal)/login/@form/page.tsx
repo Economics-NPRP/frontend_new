@@ -1,8 +1,8 @@
 'use client';
 
 import { valibotResolver } from 'mantine-form-valibot-resolver';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-// import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 
@@ -25,8 +25,7 @@ import { useForm } from '@mantine/form';
 import { IconExclamationCircle, IconKey, IconMail } from '@tabler/icons-react';
 
 export default function Form() {
-	// const t = useTranslations();
-	// const locale = useLocale();
+	const t = useTranslations();
 	const router = useRouter();
 	const [formError, setFormError] = useState<Array<ReactElement>>([]);
 
@@ -68,11 +67,7 @@ export default function Form() {
 				})
 				.catch((err) => {
 					console.error('Error logging in:', err);
-					setFormError([
-						<List.Item key={0}>
-							There was an error logging in, please view the console for more details.
-						</List.Item>,
-					]);
+					setFormError([<List.Item key={0}>{t('auth.login.error.message')}</List.Item>]);
 					form.setSubmitting(false);
 				});
 		},
@@ -86,7 +81,7 @@ export default function Form() {
 					<Alert
 						variant="light"
 						color="red"
-						title="There was an error logging in"
+						title={t('auth.login.error.title')}
 						icon={<IconExclamationCircle />}
 					>
 						<List>{formError}</List>
@@ -94,8 +89,8 @@ export default function Form() {
 				)}
 				<TextInput
 					type="email"
-					label="Email Address"
-					placeholder="Enter email address..."
+					label={t('auth.login.form.email.label')}
+					placeholder={t('auth.login.form.email.placeholder')}
 					autoComplete="email"
 					leftSection={<IconMail size={16} />}
 					disabled={form.submitting}
@@ -105,8 +100,8 @@ export default function Form() {
 				/>
 				<PasswordInput
 					type="password"
-					label="Password"
-					placeholder="Enter password..."
+					label={t('auth.login.form.password.label')}
+					placeholder={t('auth.login.form.password.placeholder')}
 					autoComplete="current-password"
 					leftSection={<IconKey size={16} />}
 					disabled={form.submitting}
@@ -116,25 +111,29 @@ export default function Form() {
 				/>
 				<Group className={classes.row}>
 					<Checkbox
-						label="Remember me"
+						label={t('auth.login.form.checkbox.label')}
 						key={form.key('remember')}
 						{...form.getInputProps('remember', { type: 'checkbox' })}
 					/>
 					<Anchor component={Link} className={classes.link} href="/forgot">
-						Forgot password?
+						{t('auth.login.form.forgot.label')}
 					</Anchor>
 				</Group>
 			</Stack>
 
 			<Stack className={`${classes.action} ${classes.section}`}>
 				<Button type="submit" loading={form.submitting}>
-					Login
+					{t('auth.login.actions.cta.label')}
 				</Button>
 				<Group className={classes.prompt}>
-					<Text className={classes.text}>Don't have an account? </Text>
-					<Anchor component={Link} className={classes.link} href="/register">
-						Click here
-					</Anchor>
+					{t.rich('auth.login.actions.prompt', {
+						t: (chunks) => <Text className={classes.text}>{chunks}</Text>,
+						a: (chunks) => (
+							<Anchor component={Link} className={classes.link} href="/register">
+								{chunks}
+							</Anchor>
+						),
+					})}
 				</Group>
 			</Stack>
 		</form>

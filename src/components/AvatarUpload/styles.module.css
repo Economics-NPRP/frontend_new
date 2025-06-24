@@ -1,6 +1,6 @@
 .root {
 	@apply relative;
-	@apply size-28;
+	@apply size-24;
 	@apply flex items-center justify-center;
 	@apply aspect-square;
 	@apply rounded-full;
@@ -8,6 +8,10 @@
 
 	> .avatar {
 		@apply size-full;
+
+		.icon {
+			@apply text-gray-500;
+		}
 	}
 
 	> .overlay {
@@ -33,7 +37,7 @@
 		}
 
 		> .text {
-			@apply display-sm-w text-center;
+			@apply display-xs-w text-center;
 			@apply !text-white;
 			@apply opacity-0;
 			@apply transition-opacity duration-300;

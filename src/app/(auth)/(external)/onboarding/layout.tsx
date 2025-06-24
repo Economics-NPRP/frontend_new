@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
 import classes from '@/pages/(auth)/(external)/styles.module.css';
@@ -13,13 +14,13 @@ export interface OnboardingProps {
 	form: ReactNode;
 }
 export default function Onboarding({ details, form }: OnboardingProps) {
+	const t = useTranslations();
+
 	return (
 		<>
 			<Stack className={`${classes.header} ${classes.section}`}>
-				<Title className={classes.heading}>Welcome to ETS!</Title>
-				<Text className={classes.subheading}>
-					Please complete the following steps to activate your account.
-				</Text>
+				<Title className={classes.heading}>{t('auth.onboarding.heading')}</Title>
+				<Text className={classes.subheading}>{t('auth.onboarding.subheading')}</Text>
 			</Stack>
 			{details}
 			{form}

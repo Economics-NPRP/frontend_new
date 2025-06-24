@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
 import { Header } from '@/pages/(auth)/(internal)/_components/Header';
@@ -11,14 +12,16 @@ export interface ForgotPasswordProps {
 	form: ReactNode;
 }
 export default function ForgotPassword({ form }: ForgotPasswordProps) {
+	const t = useTranslations();
+
 	return (
 		<>
 			<Header
-				heading="Forgot Your Password?"
-				subheading="No worries! Just enter your email address and we'll send you a link to reset it (valid for 24 hours)"
+				heading={t('auth.forgot.heading')}
+				subheading={t('auth.forgot.subheading')}
 				returnPage={{
 					url: '/login',
-					text: 'Back to Login',
+					text: t('constants.return.login.label'),
 				}}
 			/>
 			{form}

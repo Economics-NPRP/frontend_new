@@ -82,7 +82,7 @@
 					@apply mb-1;
 					@apply size-10 flex-shrink-0;
 					@apply flex items-center justify-center;
-					@apply bg-gray-50 text-gray-600;
+					@apply bg-gray-100 text-gray-600;
 					@apply rounded-sm;
 					@apply transition-colors duration-300;
 				}
@@ -99,6 +99,28 @@
 			> .checkbox {
 				@apply mt-4;
 				@apply cursor-pointer;
+			}
+		}
+	}
+}
+
+* {
+	@mixin dark {
+		.root {
+			&[data-checked='true'] > .content > .details {
+				@apply bg-white border-gray-300;
+
+				> .label > .icon {
+					@apply bg-gray-100 text-gray-600;
+				}
+			}
+
+			> .content > .details {
+				@apply bg-dark-600 border-dark-400;
+
+				> .label > .icon {
+					@apply bg-dark-400 text-dark-50;
+				}
 			}
 		}
 	}

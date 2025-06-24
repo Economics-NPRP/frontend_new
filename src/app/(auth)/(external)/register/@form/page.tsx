@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useContext } from 'react';
 
 import { AccountSummary } from '@/components/AccountSummary';
@@ -8,7 +9,6 @@ import { Switch } from '@/components/SwitchCase';
 import { SectorCard } from '@/pages/(auth)/(external)/register/@form/SectorCard';
 import { RegistrationPageContext } from '@/pages/(auth)/(external)/register/_components/Providers';
 import classes from '@/pages/(auth)/(external)/styles.module.css';
-import { DefaultFirmData } from '@/schema/models';
 import {
 	Button,
 	Container,
@@ -34,6 +34,7 @@ import {
 } from '@tabler/icons-react';
 
 export default function Form() {
+	const t = useTranslations();
 	const { activeStep, handleNextStep, handlePrevStep } = useContext(RegistrationPageContext);
 
 	return (
@@ -41,50 +42,52 @@ export default function Form() {
 			<Switch value={activeStep}>
 				<Switch.Case when={0}>
 					<Stack className={`${classes.header} ${classes.section}`}>
-						<Title className={classes.heading}>Welcome to ETS!</Title>
+						<Title className={classes.heading}>
+							{t('auth.register.heading.first')}
+						</Title>
 						<Text className={classes.subheading}>
-							Please complete the following steps to register your account.
+							{t('auth.register.subheading.first')}
 						</Text>
 					</Stack>
 					<Stack className={`${classes.inputs} ${classes.section}`}>
 						<Input.Wrapper
-							label="Company Logo"
-							description="Upload your company logo"
+							label={t('auth.register.form.first.logo.label')}
+							description={t('auth.register.form.first.logo.description')}
 							className={classes.avatar}
 						>
 							<AvatarUpload className={classes.input} />
 						</Input.Wrapper>
 						<TextInput
-							label="Company Name"
-							placeholder="Enter company name..."
+							label={t('auth.register.form.first.name.label')}
+							placeholder={t('auth.register.form.first.name.placeholder')}
 							autoComplete="company"
 							leftSection={<IconBuilding size={16} />}
 							required
 						/>
 						<TextInput
-							label="Commercial Registration Number (CRN)"
-							placeholder="Enter CRN..."
+							label={t('auth.register.form.first.crn.label')}
+							placeholder={t('auth.register.form.first.crn.placeholder')}
 							autoComplete="crn"
 							leftSection={<IconCertificate size={16} />}
 							required
 						/>
 						<TextInput
-							label="IBAN Number"
-							placeholder="Enter IBAN..."
+							label={t('auth.register.form.first.iban.label')}
+							placeholder={t('auth.register.form.first.iban.placeholder')}
 							autoComplete="crn"
 							leftSection={<IconBuildingBank size={16} />}
 							required
 						/>
-						<Divider label="Upload Documents" />
+						<Divider label={t('auth.register.form.first.divider')} />
 						<FileInput
-							label="Upload Commercial Registration Card"
-							placeholder="Upload file..."
+							label={t('auth.register.form.first.uploadCrn.label')}
+							placeholder={t('auth.register.form.first.uploadCrn.placeholder')}
 							required
 							clearable
 						/>
 						<FileInput
-							label="Upload IBAN Certificate"
-							placeholder="Upload file..."
+							label={t('auth.register.form.first.uploadIban.label')}
+							placeholder={t('auth.register.form.first.uploadIban.placeholder')}
 							required
 							clearable
 						/>
@@ -92,10 +95,11 @@ export default function Form() {
 				</Switch.Case>
 				<Switch.Case when={1}>
 					<Stack className={`${classes.header} ${classes.section}`}>
-						<Title className={classes.heading}>Select Business Sectors</Title>
+						<Title className={classes.heading}>
+							{t('auth.register.heading.second')}
+						</Title>
 						<Text className={classes.subheading}>
-							Please select the sectors your company operates in. This is used to
-							determine which auctions you can participate in.
+							{t('auth.register.subheading.second')}
 						</Text>
 					</Stack>
 					<Stack className={`${classes.inputs} ${classes.section}`}>
@@ -112,52 +116,51 @@ export default function Form() {
 				<Switch.Case when={2}>
 					<Stack className={`${classes.header} ${classes.section}`}>
 						<Title className={classes.heading}>
-							Add Primary Company Representative
+							{t('auth.register.heading.third')}
 						</Title>
 						<Text className={classes.subheading}>
-							Please provide the details of the primary representative for your
-							company. This person will be the main point of contact for your account.
+							{t('auth.register.subheading.third')}
 						</Text>
 					</Stack>
 					<Stack className={`${classes.inputs} ${classes.section}`}>
 						<TextInput
-							label="Full Name"
-							placeholder="Enter full name..."
+							label={t('auth.register.form.third.fullName.label')}
+							placeholder={t('auth.register.form.third.fullName.placeholder')}
 							name="fullName"
 							autoComplete="name"
 							required
 						/>
 						<TextInput
-							label="Position"
-							placeholder="Enter position..."
+							label={t('auth.register.form.third.position.label')}
+							placeholder={t('auth.register.form.third.position.placeholder')}
 							name="position"
 							leftSection={<IconBriefcase size={16} />}
 						/>
 						<TextInput
 							type="email"
-							label="Email Address"
-							placeholder="Enter email address..."
+							label={t('auth.register.form.third.email.label')}
+							placeholder={t('auth.register.form.third.email.placeholder')}
 							autoComplete="email"
 							leftSection={<IconMail size={16} />}
 							required
 						/>
 						<TextInput
-							label="Phone Number"
-							placeholder="Enter phone number..."
+							label={t('auth.register.form.third.phone.label')}
+							placeholder={t('auth.register.form.third.phone.placeholder')}
 							autoComplete="tel"
 							leftSection={<IconPhone size={16} />}
 							required
 						/>
 						<TextInput
-							label="Company Website"
-							placeholder="Enter website url..."
+							label={t('auth.register.form.third.website.label')}
+							placeholder={t('auth.register.form.third.website.placeholder')}
 							autoComplete="url"
 							leftSection={<IconWorld size={16} />}
 							required
 						/>
 						<TextInput
-							label="Headquarter Address"
-							placeholder="Enter address of company HQ..."
+							label={t('auth.register.form.third.address.label')}
+							placeholder={t('auth.register.form.third.address.placeholder')}
 							autoComplete="address"
 							leftSection={<IconBuilding size={16} />}
 						/>
@@ -165,10 +168,11 @@ export default function Form() {
 				</Switch.Case>
 				<Switch.Case when={3}>
 					<Stack className={`${classes.header} ${classes.section}`}>
-						<Title className={classes.heading}>Review Your Account Details</Title>
+						<Title className={classes.heading}>
+							{t('auth.register.heading.fourth')}
+						</Title>
 						<Text className={classes.subheading}>
-							Please review the details below to ensure everything is correct before
-							proceeding.
+							{t('auth.register.subheading.fourth')}
 						</Text>
 					</Stack>
 					<Stack className={`${classes.inputs} ${classes.section}`}>
@@ -188,28 +192,32 @@ export default function Form() {
 
 			<Group className={`${classes.action} ${classes.section}`}>
 				{activeStep !== 0 && (
-					<Button variant="outline" className={classes.button} onClick={handlePrevStep}>
-						Back
+					<Button
+						variant="outline"
+						className={`${classes.secondary} ${classes.button}`}
+						onClick={handlePrevStep}
+					>
+						{t('constants.actions.back.label')}
 					</Button>
 				)}
 				<Switch value={activeStep === 3}>
 					<Switch.True>
 						<Button
-							className={classes.button}
+							className={`${classes.success} ${classes.button}`}
 							color="green"
 							rightSection={<IconCheck size={16} />}
 							onClick={handleNextStep}
 						>
-							Create Account
+							{t('auth.register.actions.create.label')}
 						</Button>
 					</Switch.True>
 					<Switch.False>
 						<Button
-							className={classes.button}
+							className={`${classes.primary} ${classes.button}`}
 							rightSection={<IconArrowNarrowRight size={20} />}
 							onClick={handleNextStep}
 						>
-							Continue
+							{t('constants.actions.continue.label')}
 						</Button>
 					</Switch.False>
 				</Switch>

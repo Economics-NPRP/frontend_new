@@ -10,6 +10,7 @@ export const Background = () => {
 		() =>
 			AuctionCategoryList.sort(() => Math.random() - 0.5).map((category, imgIndex) => (
 				<Image
+					key={category}
 					src={AuctionCategoryVariants[category]!.image}
 					alt={
 						'Background image showing one of the different emission sectors available in ETS'

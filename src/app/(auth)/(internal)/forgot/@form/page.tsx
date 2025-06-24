@@ -1,14 +1,14 @@
 'use client';
 
-// import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
+
 import classes from '@/pages/(auth)/(internal)/styles.module.css';
 import { Button, Group, Stack, Text, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconMail } from '@tabler/icons-react';
 
 export default function Form() {
-	// const t = useTranslations();
-	// const locale = useLocale();
+	const t = useTranslations();
 
 	const form = useForm({
 		mode: 'uncontrolled',
@@ -19,8 +19,8 @@ export default function Form() {
 			<Stack className={`${classes.inputs} ${classes.section}`}>
 				<TextInput
 					type="email"
-					label="Email Address"
-					placeholder="Enter email address..."
+					label={t('auth.forgot.form.email.label')}
+					placeholder={t('auth.forgot.form.email.placeholder')}
 					autoComplete="email"
 					leftSection={<IconMail size={16} />}
 					required
@@ -30,11 +30,9 @@ export default function Form() {
 			</Stack>
 
 			<Stack className={`${classes.action} ${classes.section}`}>
-				<Button type="submit">Send Email</Button>
+				<Button type="submit">{t('auth.forgot.actions.cta.label')}</Button>
 				<Group className={classes.prompt}>
-					<Text className={classes.text}>
-						Please note the email may take a few minutes to arrive.
-					</Text>
+					<Text className={classes.text}>{t('auth.forgot.actions.prompt')}</Text>
 				</Group>
 			</Stack>
 		</form>

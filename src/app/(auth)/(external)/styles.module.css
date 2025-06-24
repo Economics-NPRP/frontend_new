@@ -1,7 +1,7 @@
 .root {
 	@apply w-screen min-h-screen;
-	@apply items-stretch justify-start;
-	@apply px-32 py-12 gap-8;
+	@apply p-4 items-stretch justify-start;
+	@apply gap-8;
 
 	> .bg {
 		@apply fixed top-0 left-0 w-full h-full;
@@ -47,7 +47,7 @@
 		}
 
 		.section {
-			@apply w-[480px];
+			@apply self-stretch;
 
 			&.header {
 				@apply gap-1;
@@ -63,21 +63,12 @@
 			}
 
 			&.steps {
-				@apply w-[800px];
 				@apply mb-8;
 			}
 
 			&.inputs {
 				@apply gap-4;
 				@apply flex flex-col items-stretch;
-
-				&:has(> .sectors) {
-					@apply w-[1200px];
-				}
-
-				&:has(> .summary) {
-					@apply w-[800px];
-				}
 
 				> .avatar {
 					@apply self-center text-center;
@@ -89,7 +80,7 @@
 				}
 
 				> .sectors {
-					@apply grid grid-cols-3 gap-4;
+					@apply grid grid-cols-1 gap-4;
 				}
 			}
 
@@ -98,6 +89,14 @@
 
 				> .button {
 					@apply flex-auto;
+
+					&.secondary {
+						@apply bg-white;
+
+						&:hover {
+							@apply bg-gray-50;
+						}
+					}
 				}
 			}
 
@@ -145,6 +144,120 @@
 
 		form {
 			@apply contents;
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-xs {
+		.root > .content .section {
+			@apply w-[480px] self-center;
+
+			&.steps {
+				@apply w-[800px];
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root > .content .section.inputs {
+			&:has(> .sectors),
+			&:has(> .summary) {
+				@apply w-[720px];
+			}
+
+			> .sectors {
+				@apply grid-cols-2;
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+			@apply px-32 py-12;
+
+			> .content .section.inputs {
+				&:has(> .sectors) {
+					@apply w-[960px];
+				}
+
+				&:has(> .summary) {
+					@apply w-[800px];
+				}
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root > .content .section.inputs {
+			&:has(> .sectors) {
+				@apply w-[1200px];
+			}
+
+			> .sectors {
+				@apply grid-cols-3;
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-3xl {
+		.root {
+		}
+	}
+
+	@mixin dark {
+		.root {
+			> .bg > .graphic {
+				@apply border-dark-500;
+			}
+
+			> .header > .logo {
+				@apply text-white;
+			}
+
+			> .content .section {
+				&.action > .button {
+					&.success {
+						@apply bg-green-600 text-white;
+
+						&:hover {
+							@apply bg-green-700;
+						}
+
+						&:disabled {
+							@apply opacity-25;
+
+							&:hover {
+								@apply bg-green-600;
+							}
+						}
+					}
+
+					&.primary {
+						@apply bg-dark-400 text-white;
+
+						&:hover {
+							@apply bg-dark-300;
+						}
+
+						&:disabled {
+							@apply opacity-25;
+
+							&:hover {
+								@apply bg-dark-400;
+							}
+						}
+					}
+
+					&.secondary {
+						@apply bg-dark-600 border-dark-400 text-white;
+
+						&:hover {
+							@apply bg-dark-500;
+						}
+					}
+				}
+
+				> .details {
+					@apply bg-dark-600 border-dark-400;
+				}
+			}
 		}
 	}
 }

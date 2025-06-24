@@ -151,6 +151,47 @@
 			@apply items-center;
 		}
 	}
+
+	@mixin dark {
+		.root {
+			> .bg {
+				> img {
+					@apply brightness-50;
+				}
+
+				> .overlay {
+					@apply opacity-75;
+				}
+			}
+
+			> .panel {
+				@apply bg-dark-700;
+				@apply border-dark-500;
+
+				.section {
+					&.inputs > .otp > .input input {
+						@apply bg-dark-600 text-white;
+					}
+
+					&.action button {
+						@apply bg-dark-400 text-white;
+
+						&:hover {
+							@apply bg-dark-300;
+						}
+
+						&:disabled {
+							@apply opacity-25;
+
+							&:hover {
+								@apply bg-dark-400;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 @keyframes fade {

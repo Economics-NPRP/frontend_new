@@ -14,7 +14,7 @@ export const AccountSummary = ({ firmData, className, ...props }: AccountSummary
 	const t = useTranslations();
 
 	const sectors = useMemo(
-		() => firmData.sectors.map((sector) => <CategoryBadge category={sector} />),
+		() => firmData.sectors.map((sector) => <CategoryBadge key={sector} category={sector} />),
 		[firmData.sectors],
 	);
 
