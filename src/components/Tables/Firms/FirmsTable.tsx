@@ -369,7 +369,7 @@ export const FirmsTable = ({
 								</Anchor>
 								<Group className={classes.group}>
 									{/* TODO: replace with actual verification or invitation check */}
-									{!record.emailVerified && (
+									{!record.isActive && (
 										<Tooltip
 											label={t(
 												'components.firmsTable.legend.unverified.tooltip',
@@ -514,7 +514,7 @@ export const FirmsTable = ({
 						render: (record) => (
 							<FirmStatusBadge
 								//	TODO: replace with actual status check
-								status={record.emailVerified ? 'verified' : 'unverified'}
+								status={record.isActive ? 'verified' : 'unverified'}
 							/>
 						),
 					},
@@ -550,7 +550,8 @@ export const FirmsTable = ({
 						cellsClassName: classes.actions,
 						render: (record) => (
 							<Group className={classes.cell}>
-								<Switch value={record.emailVerified}>
+								{/* TODO: replace with actual status check */}
+								<Switch value={record.isActive}>
 									<Switch.True>
 										<Tooltip
 											label={t(

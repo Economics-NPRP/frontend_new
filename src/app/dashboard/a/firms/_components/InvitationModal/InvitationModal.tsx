@@ -1,5 +1,6 @@
 'use client';
 
+import { useInviteUser } from 'hooks/useInviteUser';
 import { useTranslations } from 'next-intl';
 import { PropsWithChildren, useCallback, useContext, useState } from 'react';
 
@@ -18,6 +19,8 @@ import classes from './styles.module.css';
 export const InvitationModal = () => {
 	const t = useTranslations();
 	const { firmData, opened, close } = useContext(InvitationModalContext);
+
+	const inviteUser = useInviteUser(firmData.id, () => close());
 
 	return (
 		<Modal
@@ -53,6 +56,8 @@ export const InvitationModal = () => {
 					className={classes.button}
 					color="green"
 					rightSection={<IconSend size={16} />}
+					loading={inviteUser.isPending}
+					onClick={() => inviteUser.mutate()}
 				>
 					{t('dashboard.admin.firms.invitationModal.actions.cta.label')}
 				</Button>

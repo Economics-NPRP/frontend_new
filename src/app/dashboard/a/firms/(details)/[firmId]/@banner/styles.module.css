@@ -41,8 +41,14 @@
 
 * {
 	@mixin dark {
-		.root > .container {
-			@apply bg-dark-700;
+		.root {
+			> .image > .placeholder {
+				@apply bg-dark-600 text-dark-300;
+			}
+
+			> .container {
+				@apply bg-dark-700;
+			}
 		}
 	}
 }

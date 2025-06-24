@@ -1145,7 +1145,21 @@
     },
     "notLoggedIn": "You must be logged in to access this resource.",
     "noData": "No data was returned.",
-    "noCookies": "No cookies set in response"
+    "noCookies": "No cookies set in response",
+    "auction": {
+      "join": {
+        "error": "There was a problem joining the auction"
+      }
+    },
+    "invitations": {
+      "invite": {
+        "error": "There was an error inviting this company to the ETS platform.",
+        "success": {
+          "title": "Invitation Successfully Sent",
+          "message": "An email has been sent to the user with an invitation link."
+        }
+      }
+    }
   },
   "auth": {
     "onboarding": {

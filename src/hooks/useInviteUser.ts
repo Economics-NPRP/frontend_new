@@ -1,34 +1,33 @@
 import { useTranslations } from 'next-intl';
 
 import { throwError } from '@/helpers';
-import { joinAuction } from '@/lib/auctions';
+import { inviteUser } from '@/lib/invitations';
 import { ServerData } from '@/types';
 import { notifications } from '@mantine/notifications';
-import { UseMutationResult, useMutation, useQueryClient } from '@tanstack/react-query';
+import { UseMutationResult, useMutation } from '@tanstack/react-query';
 
-type JoinAuctionProps = (
+type InviteUserProps = (
 	id: string,
 	onSuccess?: () => void,
 ) => UseMutationResult<ServerData<{}>, Error, void, unknown>;
-export const useJoinAuction: JoinAuctionProps = (id, onSuccess) => {
+export const useInviteUser: InviteUserProps = (id, onSuccess) => {
 	const t = useTranslations();
-	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: () => throwError(joinAuction(id)),
+		mutationFn: () => throwError(inviteUser(id)),
 		onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey: ['marketplace', id],
-			});
-			queryClient.invalidateQueries({
-				queryKey: ['marketplace', 'paginatedAuctions'],
+			notifications.show({
+				color: 'green',
+				title: t('lib.invitations.invite.success.title'),
+				message: t('lib.invitations.invite.success.message'),
+				position: 'bottom-center',
 			});
 			onSuccess?.();
 		},
 		onError: (error: Error) => {
 			notifications.show({
 				color: 'red',
-				title: t('lib.auction.join.error'),
+				title: t('lib.invitations.invite.error'),
 				message: error.message,
 				position: 'bottom-center',
 			});
