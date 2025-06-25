@@ -2,10 +2,13 @@
 
 import { PropsWithChildren, useCallback, useMemo, useState } from 'react';
 
-import { RegistrationPageContext } from '@/pages/(auth)/(external)/register/_components/Providers';
+import {
+	DefaultRegistrationPageContextData,
+	RegistrationPageContext,
+} from '@/pages/(auth)/(external)/register/_components/Providers';
 
 export const PageProvider = ({ children }: PropsWithChildren) => {
-	const [activeStep, setActiveStep] = useState(0);
+	const [activeStep, setActiveStep] = useState(DefaultRegistrationPageContextData.activeStep);
 	const [highestStepVisited, setHighestStepVisited] = useState(0);
 
 	const handleStepChange = useCallback((step: number) => {

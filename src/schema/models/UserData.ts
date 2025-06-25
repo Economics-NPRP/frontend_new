@@ -15,7 +15,6 @@ import {
 
 import { TimestampSchema, UuidSchema } from '@/schema/utils';
 
-import { CreateUserPasswordSchema, DefaultCreateUserPassword } from './LoginData';
 import { UserTypeSchema } from './UserType';
 
 export const BaseUserDataSchema = object({
@@ -37,7 +36,6 @@ export const BaseUserDataSchema = object({
 export const CreateUserDataSchema = omit(
 	object({
 		...BaseUserDataSchema.entries,
-		...CreateUserPasswordSchema.entries,
 	}),
 	['id', 'emailVerified', 'phoneVerified', 'isActive', 'createdAt'],
 );
@@ -50,8 +48,6 @@ export interface IReadUser extends InferInput<typeof ReadUserDataSchema> {}
 export interface IUpdateUser extends InferInput<typeof UpdateUserDataSchema> {}
 
 export const DefaultCreateUser: ICreateUser = {
-	...DefaultCreateUserPassword,
-
 	type: 'firm',
 	name: '',
 	email: '',

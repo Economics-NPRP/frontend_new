@@ -84,6 +84,29 @@
 				}
 			}
 
+			&.message {
+				@apply h-[50vh];
+				@apply gap-1;
+				@apply items-stretch justify-center;
+
+				> .icon {
+					@apply self-center mb-4;
+					@apply text-green-600;
+				}
+
+				> .heading {
+					@apply text-center heading-2;
+				}
+
+				> .subheading {
+					@apply text-center paragraph-sm;
+				}
+
+				> .button {
+					@apply w-[320px] mt-6 self-center;
+				}
+			}
+
 			&.action {
 				@apply gap-2;
 
@@ -196,10 +219,6 @@
 			}
 		}
 	}
-	@mixin larger-than $mantine-breakpoint-3xl {
-		.root {
-		}
-	}
 
 	@mixin dark {
 		.root {
@@ -212,6 +231,22 @@
 			}
 
 			> .content .section {
+				&.message > .button {
+					@apply bg-dark-400 text-white;
+
+					&:hover {
+						@apply bg-dark-300;
+					}
+
+					&:disabled {
+						@apply opacity-25;
+
+						&:hover {
+							@apply bg-dark-400;
+						}
+					}
+				}
+
 				&.action > .button {
 					&.success {
 						@apply bg-green-600 text-white;

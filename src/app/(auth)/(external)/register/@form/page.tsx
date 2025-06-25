@@ -2,6 +2,7 @@
 
 import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ReactElement, useCallback, useContext, useState } from 'react';
 
@@ -21,7 +22,6 @@ import {
 	Group,
 	Input,
 	List,
-	PasswordInput,
 	Stack,
 	Text,
 	TextInput,
@@ -36,9 +36,9 @@ import {
 	IconCertificate,
 	IconCheck,
 	IconExclamationCircle,
-	IconKey,
 	IconMail,
 	IconPhone,
+	IconRosetteDiscountCheck,
 	IconWorld,
 } from '@tabler/icons-react';
 
@@ -124,28 +124,6 @@ export default function Form() {
 							autoComplete="company"
 							leftSection={<IconBuilding size={16} />}
 							required
-						/>
-						<PasswordInput
-							type="password"
-							label={t('auth.onboarding.form.password.label')}
-							placeholder={t('auth.onboarding.form.password.placeholder')}
-							autoComplete="current-password"
-							leftSection={<IconKey size={16} />}
-							disabled={form.submitting}
-							required
-							key={form.key('password')}
-							{...form.getInputProps('password')}
-						/>
-						<PasswordInput
-							type="password"
-							label={t('auth.onboarding.form.confirm.label')}
-							placeholder={t('auth.onboarding.form.confirm.placeholder')}
-							autoComplete="current-password"
-							leftSection={<IconKey size={16} />}
-							disabled={form.submitting}
-							required
-							key={form.key('confirmPassword')}
-							{...form.getInputProps('confirmPassword')}
 						/>
 						<TextInput
 							label={t('auth.register.form.first.crn.label')}
@@ -271,40 +249,56 @@ export default function Form() {
 						/>
 					</Stack>
 				</Switch.Case>
+				<Switch.Case when={4}>
+					<Stack className={`${classes.message} ${classes.section}`}>
+						<IconRosetteDiscountCheck size={64} className={classes.icon} />
+						<Title className={classes.heading}>
+							{t('auth.register.heading.fifth')}
+						</Title>
+						<Text className={classes.subheading}>
+							{t('auth.register.subheading.fifth')}
+						</Text>
+						<Button component={Link} href="/login" className={classes.button}>
+							{t('constants.return.login.label')}
+						</Button>
+					</Stack>
+				</Switch.Case>
 			</Switch>
 
-			<Group className={`${classes.action} ${classes.section}`}>
-				{activeStep !== 0 && (
-					<Button
-						variant="outline"
-						className={`${classes.secondary} ${classes.button}`}
-						onClick={handlePrevStep}
-					>
-						{t('constants.actions.back.label')}
-					</Button>
-				)}
-				<Switch value={activeStep === 3}>
-					<Switch.True>
+			{activeStep !== 4 && (
+				<Group className={`${classes.action} ${classes.section}`}>
+					{activeStep !== 0 && (
 						<Button
-							className={`${classes.success} ${classes.button}`}
-							color="green"
-							rightSection={<IconCheck size={16} />}
-							onClick={handleNextStep}
+							variant="outline"
+							className={`${classes.secondary} ${classes.button}`}
+							onClick={handlePrevStep}
 						>
-							{t('auth.register.actions.create.label')}
+							{t('constants.actions.back.label')}
 						</Button>
-					</Switch.True>
-					<Switch.False>
-						<Button
-							className={`${classes.primary} ${classes.button}`}
-							rightSection={<IconArrowNarrowRight size={20} />}
-							onClick={handleNextStep}
-						>
-							{t('constants.actions.continue.label')}
-						</Button>
-					</Switch.False>
-				</Switch>
-			</Group>
+					)}
+					<Switch value={activeStep === 3}>
+						<Switch.True>
+							<Button
+								className={`${classes.success} ${classes.button}`}
+								color="green"
+								rightSection={<IconCheck size={16} />}
+								onClick={handleNextStep}
+							>
+								{t('auth.register.actions.create.label')}
+							</Button>
+						</Switch.True>
+						<Switch.False>
+							<Button
+								className={`${classes.primary} ${classes.button}`}
+								rightSection={<IconArrowNarrowRight size={20} />}
+								onClick={handleNextStep}
+							>
+								{t('constants.actions.continue.label')}
+							</Button>
+						</Switch.False>
+					</Switch>
+				</Group>
+			)}
 		</>
 	);
 }
