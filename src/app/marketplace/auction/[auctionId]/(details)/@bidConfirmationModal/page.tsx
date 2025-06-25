@@ -8,7 +8,9 @@ import { CurrencyBadge } from '@/components/Badge';
 import { Switch } from '@/components/SwitchCase';
 import { MyUserProfileContext } from '@/contexts';
 import { throwError } from '@/helpers';
-import { placeBid } from '@/lib/bids/open';
+import { placeBid as placeOpenBid } from '@/lib/bids/open';
+import { placeBid as placeSealedBid } from '@/lib/bids/sealed/placeBid';
+import { SingleAuctionContext } from '@/contexts';
 import { BiddingTable } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/BiddingTable';
 import { AuctionDetailsPageContext } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
 import {
@@ -35,6 +37,8 @@ export default function BidConfirmationModal() {
 	const myUser = useContext(MyUserProfileContext);
 	const { auctionId } = useParams();
 
+	const auction = useContext(SingleAuctionContext);
+
 	const {
 		bids,
 		bidConfirmationModalOpened,
@@ -45,13 +49,22 @@ export default function BidConfirmationModal() {
 	} = useContext(AuctionDetailsPageContext);
 
 	const mutation = useMutation({
-		mutationFn: () =>
-			throwError(
-				placeBid({
-					auctionId: auctionId as string,
-					bids: bids.map(({ permit, bid }) => ({ permits: permit, amount: bid })),
-				}),
-			),
+		mutationFn: () => {
+			if (!auction || !auction.data) {
+				return Promise.reject(new Error('Auction data is not available.'));
+			}
+			return throwError(
+				auction.data.type === 'sealed'
+					? placeSealedBid({
+						auctionId: auctionId as string,
+						bids: bids.map(({ permit, bid }) => ({ permits: permit, amount: bid })),
+					})
+					: placeOpenBid({
+						auctionId: auctionId as string,
+						bids: bids.map(({ permit, bid }) => ({ permits: permit, amount: bid })),
+					})
+			);
+		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
 				queryKey: ['marketplace', auctionId, 'paginatedWinningBids'],

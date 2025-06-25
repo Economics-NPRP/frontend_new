@@ -14,7 +14,7 @@ export const UpcomingOverlay = () => {
 	const auction = useContext(SingleAuctionContext);
 	const { auctionId } = useParams();
 
-	const joinAuction = useJoinAuction(auctionId as string);
+	const joinAuction = useJoinAuction(auctionId as string, undefined, auction.data.type);
 
 	return (
 		<Stack className={classes.overlay}>

@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 import { useFormatter, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useContext, useMemo } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { LargeCountdown } from '@/components/Countdown';
@@ -33,7 +33,7 @@ export default function Card() {
 
 	const { isUpcoming, hasEnded, isLive } = useAuctionAvailability();
 
-	const joinAuction = useJoinAuction(auction.data.id);
+	const joinAuction = useJoinAuction(auction.data.id, undefined, auction.data.type);
 
 	const bidsUrl = `/marketplace/auction/${auction.data.id}/results#history`;
 	const resultsUrl = `/marketplace/auction/${auction.data.id}/results`;
