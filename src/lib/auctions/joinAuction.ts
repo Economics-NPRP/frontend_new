@@ -12,8 +12,9 @@ const getDefaultData: (...errors: Array<string>) => ServerData<{}> = (...errors)
 	errors: errors,
 });
 
-type IFunctionSignature = (auctionId: string) => Promise<ServerData<{}>>;
-export const joinAuction: IFunctionSignature = cache(async (auctionId) => {
+// Accept auctionType as a second parameter (default to 'open' for backward compatibility)
+type IFunctionSignature = (auctionId: string, auctionType?: 'open' | 'sealed') => Promise<ServerData<{}>>;
+export const joinAuction: IFunctionSignature = cache(async (auctionId, auctionType = 'open') => {
 	const cookieHeaders = await getSession();
 	if (!cookieHeaders) return getDefaultData('You must be logged in to access this resource.');
 	const querySettings: RequestInit = {
@@ -24,7 +25,9 @@ export const joinAuction: IFunctionSignature = cache(async (auctionId) => {
 		},
 	};
 
-	const queryUrl = new URL('/v1/auctions/o/join/', process.env.NEXT_PUBLIC_BACKEND_URL);
+	// Select the correct endpoint based on auction type
+	const joinPath = auctionType === 'sealed' ? '/v1/auctions/s/join/' : '/v1/auctions/o/join/';
+	const queryUrl = new URL(joinPath, process.env.NEXT_PUBLIC_BACKEND_URL);
 	queryUrl.searchParams.append('auction_id', auctionId);
 
 	const response = await fetch(queryUrl, querySettings);

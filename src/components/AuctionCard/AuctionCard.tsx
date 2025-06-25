@@ -70,7 +70,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 	const src = useMemo(() => imgs[Math.floor(Math.random() * imgs.length)], []);
 	const category = useMemo(() => categories[Math.floor(Math.random() * categories.length)], []);
 
-	const joinAuction = useJoinAuction(auction.id, () => router.push(url));
+	const joinAuction = useJoinAuction(auction.id, () => router.push(url), auction.type);
 
 	const currentState = useMemo(() => {
 		if (isUpcoming) return 'upcoming';

@@ -1,17 +1,19 @@
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
+import { useContext } from 'react';
 
 import { useJoinAuction } from '@/hooks';
 import { Button, Container, Stack, Text, Title } from '@mantine/core';
 import { IconCheckbox } from '@tabler/icons-react';
+import { SingleAuctionContext } from '@/contexts';
 
 import classes from './styles.module.css';
 
 export const JoinOverlay = () => {
 	const t = useTranslations();
 	const { auctionId } = useParams();
-
-	const joinAuction = useJoinAuction(auctionId as string);
+	const auction = useContext(SingleAuctionContext);
+	const joinAuction = useJoinAuction(auctionId as string, undefined, auction.data.type);
 
 	return (
 		<Stack className={classes.overlay}>
