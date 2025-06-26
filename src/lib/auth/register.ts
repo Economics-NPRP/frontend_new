@@ -38,10 +38,8 @@ export const register: IFunctionSignature = async ({ registrationToken, password
 	const response = await fetch(queryUrl, querySettings);
 
 	if (!response.ok) return getDefaultData(t('lib.auth.register.error'));
-
-	//	TODO: revert once backend returns cookies
-	// if (!response.headers || response.headers.getSetCookie().length === 0)
-	// 	return getDefaultData('No cookies set in response');
+	if (!response.headers || response.headers.getSetCookie().length === 0)
+		return getDefaultData(t('lib.noCookies'));
 
 	const cookieStore = await cookies();
 	extractSessionCookies(response, (key, value, exp) => {

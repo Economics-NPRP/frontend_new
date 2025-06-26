@@ -1266,7 +1266,11 @@
       },
       "register": {
         "noToken": "No registration token provided",
-        "error": "There was an error during registration, make sure the token is valid"
+        "error": "There was an error during registration, make sure the token is valid",
+        "success": {
+          "title": "Account Successfully Activated",
+          "message": "Welcome to the ETS platform! Your account has been successfully activated and you can now log in."
+        }
       },
       "otp": {
         "expired": "OTP code may have expired, please try logging in again.",

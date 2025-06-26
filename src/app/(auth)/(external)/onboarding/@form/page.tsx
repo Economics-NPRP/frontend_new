@@ -23,6 +23,7 @@ import {
 	Text,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { notifications } from '@mantine/notifications';
 import { IconExclamationCircle, IconKey } from '@tabler/icons-react';
 
 export default function Form() {
@@ -47,8 +48,15 @@ export default function Form() {
 			const registrationToken = searchParams.get('token');
 			register({ registrationToken, password })
 				.then((res) => {
-					if (res.ok) router.push('/marketplace');
-					else {
+					if (res.ok) {
+						notifications.show({
+							color: 'green',
+							title: t('lib.auth.register.success.title'),
+							message: t('lib.auth.register.success.message'),
+							position: 'bottom-center',
+						});
+						router.push('/marketplace');
+					} else {
 						setFormError(
 							(res.errors || []).map((error, index) => (
 								<List.Item key={index}>{error}</List.Item>
