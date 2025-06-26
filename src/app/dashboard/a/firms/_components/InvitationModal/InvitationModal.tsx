@@ -4,7 +4,7 @@ import { useInviteUser } from 'hooks/useInviteUser';
 import { useTranslations } from 'next-intl';
 import { PropsWithChildren, useCallback, useContext, useState } from 'react';
 
-import { AccountSummary } from '@/components/AccountSummary';
+import { FirmApplicationSummary } from '@/components/FirmApplicationSummary';
 import {
 	DefaultInvitationModalContextData,
 	InvitationModalContext,
@@ -43,7 +43,7 @@ export const InvitationModal = () => {
 					{t('dashboard.admin.firms.invitationModal.description')}
 				</Text>
 			</Stack>
-			<AccountSummary firmData={firmData} />
+			<FirmApplicationSummary firmData={firmData} />
 			<Group className={classes.actions}>
 				<Button
 					className={`${classes.secondary} ${classes.button}`}

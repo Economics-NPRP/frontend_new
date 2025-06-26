@@ -5,13 +5,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useContext, useEffect } from 'react';
 
-import { AccountSummary } from '@/components/AccountSummary';
 import { AvatarUpload } from '@/components/AvatarUpload';
+import { FirmApplicationSummary } from '@/components/FirmApplicationSummary';
 import { Switch } from '@/components/SwitchCase';
+import { createApplication } from '@/lib/users/firms/applications';
 import { SectorCard } from '@/pages/(auth)/(external)/register/@form/SectorCard';
 import { RegistrationPageContext } from '@/pages/(auth)/(external)/register/_components/Providers';
 import classes from '@/pages/(auth)/(external)/styles.module.css';
-import { ICreateFirm } from '@/schema/models';
+import { IFirmApplication } from '@/schema/models';
 import {
 	Alert,
 	Button,
@@ -48,33 +49,30 @@ export default function Form() {
 		useContext(RegistrationPageContext);
 
 	const handleSubmit = useCallback(
-		(formData: ICreateFirm) => {
+		(formData: IFirmApplication) => {
 			form.setSubmitting(true);
 			setFormError([]);
 
 			//	Send registration request
-			// const registrationToken = searchParams.get('token');
-			// register({ registrationToken, password })
-			// 	.then((res) => {
-			// 		//	TODO: revert once backend returns cookies
-			// 		// if (res.ok) router.push('/marketplace');
-			// 		if (res.ok) router.push('/login');
-			// 		else {
-			// 			setFormError(
-			// 				(res.errors || []).map((error, index) => (
-			// 					<List.Item key={index}>{error}</List.Item>
-			// 				)),
-			// 			);
-			// 		}
-			// 		form.setSubmitting(false);
-			// 	})
-			// 	.catch((err) => {
-			// 		console.error('Error registering your account:', err);
-			// 		setFormError([
-			// 			<List.Item key={0}>{t('auth.onboarding.error.message')}</List.Item>,
-			// 		]);
-			// 		form.setSubmitting(false);
-			// 	});
+			createApplication(formData)
+				.then((res) => {
+					if (res.ok) handleNextStep();
+					else {
+						setFormError(
+							(res.errors || []).map((error, index) => (
+								<List.Item key={index}>{error}</List.Item>
+							)),
+						);
+					}
+					form.setSubmitting(false);
+				})
+				.catch((err) => {
+					console.error('Error registering your account:', err);
+					setFormError([
+						<List.Item key={0}>{t('auth.register.error.message')}</List.Item>,
+					]);
+					form.setSubmitting(false);
+				});
 		},
 		[form, router],
 	);
@@ -86,7 +84,7 @@ export default function Form() {
 	}, [formError]);
 
 	return (
-		<>
+		<form onSubmit={form.onSubmit(handleSubmit)}>
 			{formError.length > 0 && (
 				<Alert
 					variant="light"
@@ -264,15 +262,9 @@ export default function Form() {
 						</Text>
 					</Stack>
 					<Stack className={`${classes.inputs} ${classes.section}`}>
-						<AccountSummary
+						<FirmApplicationSummary
 							className={classes.summary}
-							firmData={{
-								name: 'New Company',
-								email: 'test@gmail.com',
-								phone: '+974 1234 5678',
-								type: 'firm',
-								sectors: ['industry', 'transport', 'buildings'],
-							}}
+							firmData={form.getTransformedValues()}
 						/>
 						<Textarea
 							resize="vertical"
@@ -315,9 +307,10 @@ export default function Form() {
 						<Switch.True>
 							<Button
 								className={`${classes.success} ${classes.button}`}
+								type="submit"
 								color="green"
 								rightSection={<IconCheck size={16} />}
-								onClick={handleNextStep}
+								loading={form.submitting}
 							>
 								{t('auth.register.actions.create.label')}
 							</Button>
@@ -334,6 +327,6 @@ export default function Form() {
 					</Switch>
 				</Group>
 			)}
-		</>
+		</form>
 	);
 }

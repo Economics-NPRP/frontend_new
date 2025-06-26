@@ -2,16 +2,19 @@
 
 import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { PropsWithChildren, ReactElement, useCallback, useMemo, useState } from 'react';
+import { safeParse } from 'valibot';
 
 import {
 	DefaultRegistrationPageContextData,
 	RegistrationPageContext,
 } from '@/pages/(auth)/(external)/register/_components/Providers';
 import {
+	CreateFirmApplicationDataSchema,
 	DefaultCreateFirmApplication,
 	FirstFirmApplicationDataSchema,
 	FourthFirmApplicationDataSchema,
 	ICreateFirmApplication,
+	IFirmApplication,
 	SecondFirmApplicationDataSchema,
 	ThirdFirmApplicationDataSchema,
 } from '@/schema/models';
@@ -23,22 +26,24 @@ export const PageProvider = ({ children }: PropsWithChildren) => {
 	const [highestStepVisited, setHighestStepVisited] = useState(0);
 	const [formError, setFormError] = useState<Array<ReactElement>>([]);
 
-	const form = useForm<ICreateFirmApplication>({
+	const form = useForm<
+		ICreateFirmApplication,
+		(values: ICreateFirmApplication) => IFirmApplication
+	>({
 		mode: 'uncontrolled',
 		initialValues: DefaultCreateFirmApplication,
 		validate: (values) => {
 			//	@ts-expect-error - TODO: check why crn is giving an error
 			if (activeStep === 0) return valibotResolver(FirstFirmApplicationDataSchema)(values);
 			if (activeStep === 1) return valibotResolver(SecondFirmApplicationDataSchema)(values);
+			//	@ts-expect-error - TODO: check why websites is giving an error
 			if (activeStep === 2) return valibotResolver(ThirdFirmApplicationDataSchema)(values);
 			if (activeStep === 3) return valibotResolver(FourthFirmApplicationDataSchema)(values);
 			return {};
 		},
 		onValuesChange: () => setFormError([]),
-		transformValues: (values) => ({
-			...values,
-			websites: [values.websites] as unknown as string,
-		}),
+		transformValues: (values) =>
+			safeParse(CreateFirmApplicationDataSchema, values).output as IFirmApplication,
 	});
 
 	const handleStepChange = useCallback(
@@ -72,7 +77,8 @@ export const PageProvider = ({ children }: PropsWithChildren) => {
 	);
 
 	const shouldAllowStepSelect = useMemo(
-		() => (step: number) => highestStepVisited >= step && activeStep !== step,
+		() => (step: number) =>
+			highestStepVisited >= step && activeStep !== step && activeStep !== 4,
 		[highestStepVisited, activeStep],
 	);
 

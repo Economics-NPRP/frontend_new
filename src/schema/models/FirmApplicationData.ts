@@ -1,5 +1,6 @@
 import {
 	InferInput,
+	InferOutput,
 	array,
 	email,
 	integer,
@@ -43,7 +44,13 @@ export const BaseFirmApplicationDataSchema = object({
 	address: optional(pipe(string(), trim())),
 	//	TODO: change to list when list input is implemented
 	// websites: pipe(array(pipe(string(), trim(), nonEmpty(), url())), minLength(1)),
-	websites: pipe(string(), trim(), nonEmpty(), url()),
+	websites: pipe(
+		string(),
+		trim(),
+		nonEmpty(),
+		url(),
+		transform((value) => [value] as string[]),
+	),
 	sectors: pipe(array(picklist(AuctionCategoryList)), minLength(1), maxLength(6)),
 	message: optional(pipe(string(), trim())),
 });
@@ -70,11 +77,28 @@ export const CreateFirmApplicationDataSchema = BaseFirmApplicationDataSchema;
 export const ReadFirmApplicationDataSchema = BaseFirmApplicationDataSchema;
 export const UpdateFirmApplicationDataSchema = CreateFirmApplicationDataSchema;
 
+export interface IFirmApplication extends InferOutput<typeof BaseFirmApplicationDataSchema> {}
 export interface ICreateFirmApplication
 	extends InferInput<typeof CreateFirmApplicationDataSchema> {}
 export interface IReadFirmApplication extends InferInput<typeof ReadFirmApplicationDataSchema> {}
 export interface IUpdateFirmApplication
 	extends InferInput<typeof UpdateFirmApplicationDataSchema> {}
+
+export const DefaultFirmApplication: IFirmApplication = {
+	companyName: '',
+	crn: 0,
+	repEmail: '',
+	repPhone: '',
+	iban: '',
+	crnCertUrl: '',
+	ibanCertUrl: '',
+	repName: '',
+	repPosition: '',
+	address: '',
+	websites: [],
+	sectors: [],
+	message: '',
+};
 
 export const DefaultCreateFirmApplication: ICreateFirmApplication = {
 	companyName: '',
