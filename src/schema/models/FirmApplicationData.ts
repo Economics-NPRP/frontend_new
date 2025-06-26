@@ -11,6 +11,7 @@ import {
 	nullish,
 	number,
 	object,
+	omit,
 	optional,
 	pick,
 	picklist,
@@ -22,6 +23,9 @@ import {
 } from 'valibot';
 
 import { AuctionCategoryList } from '@/constants/AuctionCategory';
+import { TimestampSchema, UuidSchema } from '@/schema/utils';
+
+import { FirmApplicationStatusSchema } from './FirmApplicationStatus';
 
 export const BaseFirmApplicationDataSchema = object({
 	companyName: pipe(string(), trim(), nonEmpty()),
@@ -53,17 +57,29 @@ export const BaseFirmApplicationDataSchema = object({
 	),
 	sectors: pipe(array(picklist(AuctionCategoryList)), minLength(1), maxLength(6)),
 	message: optional(pipe(string(), trim())),
+
+	id: UuidSchema(),
+	status: FirmApplicationStatusSchema,
+	createdAt: TimestampSchema(),
 });
 
-export const FirstFirmApplicationDataSchema = pick(BaseFirmApplicationDataSchema, [
+export const CreateFirmApplicationDataSchema = omit(BaseFirmApplicationDataSchema, [
+	'id',
+	'status',
+	'createdAt',
+]);
+export const ReadFirmApplicationDataSchema = BaseFirmApplicationDataSchema;
+export const UpdateFirmApplicationDataSchema = CreateFirmApplicationDataSchema;
+
+export const FirstFirmApplicationDataSchema = pick(CreateFirmApplicationDataSchema, [
 	'companyName',
 	'crn',
 	'iban',
 	'crnCertUrl',
 	'ibanCertUrl',
 ]);
-export const SecondFirmApplicationDataSchema = pick(BaseFirmApplicationDataSchema, ['sectors']);
-export const ThirdFirmApplicationDataSchema = pick(BaseFirmApplicationDataSchema, [
+export const SecondFirmApplicationDataSchema = pick(CreateFirmApplicationDataSchema, ['sectors']);
+export const ThirdFirmApplicationDataSchema = pick(CreateFirmApplicationDataSchema, [
 	'repName',
 	'repPosition',
 	'repEmail',
@@ -71,11 +87,7 @@ export const ThirdFirmApplicationDataSchema = pick(BaseFirmApplicationDataSchema
 	'address',
 	'websites',
 ]);
-export const FourthFirmApplicationDataSchema = pick(BaseFirmApplicationDataSchema, ['message']);
-
-export const CreateFirmApplicationDataSchema = BaseFirmApplicationDataSchema;
-export const ReadFirmApplicationDataSchema = BaseFirmApplicationDataSchema;
-export const UpdateFirmApplicationDataSchema = CreateFirmApplicationDataSchema;
+export const FourthFirmApplicationDataSchema = pick(CreateFirmApplicationDataSchema, ['message']);
 
 export interface IFirmApplication extends InferOutput<typeof BaseFirmApplicationDataSchema> {}
 export interface ICreateFirmApplication
@@ -98,6 +110,9 @@ export const DefaultFirmApplication: IFirmApplication = {
 	websites: [],
 	sectors: [],
 	message: '',
+	id: '',
+	status: 'pending',
+	createdAt: new Date().toISOString(),
 };
 
 export const DefaultCreateFirmApplication: ICreateFirmApplication = {

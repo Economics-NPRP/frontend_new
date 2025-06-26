@@ -255,7 +255,7 @@
 				"label": "Return to Home"
 			},
 			"firmsList": {
-				"label": "Return to Firms List"
+				"label": "Return to List of Companies"
 			},
 			"login": {
 				"label": "Return to Login"
@@ -384,7 +384,7 @@
 			},
 			"offset": {
 				"results": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {results} =1 {result} other {results}}",
-				"firms": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {firms} =1 {firm} other {firms}}"
+				"firms": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {companies} =1 {company} other {companies}}"
 			},
 			"perPage": {
 				"label": "Per page:"
@@ -397,7 +397,10 @@
 						"title": "Home"
 					},
 					"firms": {
-						"title": "Firms"
+						"title": "Companies",
+						"applications": {
+							"title": "Company Applications"
+						}
 					}
 				}
 			}
@@ -758,8 +761,8 @@
 				"details": {
 					"statistics": {
 						"chart": {
-							"others": "Other Firms",
-							"label": "Permits Reserved by Firm"
+							"others": "Other Companies",
+							"label": "Permits Reserved by Company"
 						}
 					}
 				}
@@ -910,7 +913,7 @@
 						"label": "Admins"
 					},
 					"firms": {
-						"label": "Firms"
+						"label": "Companies"
 					}
 				}
 			}
@@ -995,18 +998,18 @@
 			"empty": "No results found"
 		},
 		"firmsTable": {
-			"title": "Firms Table",
+			"title": "List of Companies",
 			"filters": {
 				"menu": {
 					"status": {
-						"label": "Firm Status",
+						"label": "Company Status",
 						"all": "Show all companies",
 						"verified": "Only show verified and active companies",
 						"unverified": "Only show companies with pending invitations",
 						"uninvited": "Only show newly registered companies who haven't been invited yet"
 					},
 					"sector": {
-						"label": "Firm Sector"
+						"label": "Company Sector"
 					}
 				},
 				"label": "Filters:",
@@ -1039,7 +1042,7 @@
 			"legend": {
 				"unverified": {
 					"label": "Pending Companies",
-					"tooltip": "This firm has been invited but has not yet accepted the invitation"
+					"tooltip": "This company has been invited but has not yet accepted the invitation"
 				},
 				"uninvited": {
 					"label": "Newly Registered Companies",
@@ -1102,6 +1105,20 @@
 	"dashboard": {
 		"admin": {
 			"firms": {
+				"subbanner": {
+					"1": {
+						"text": "Click here to view all company applications",
+						"heading": "<mark>{value, plural, =0 {No new applications} =1 {1 new application} other {# new applications}}</mark> requiring review"
+					},
+					"2": {
+						"text": "Click here to create a new auction",
+						"heading": "Have excess permits? <mark>Auction them off!</mark>"
+					},
+					"3": {
+						"text": "Click here to view auction results",
+						"heading": "<mark>{value, plural, =0 {No auction} =1 {1 auction} other {# auctions}}</mark> {value, plural, =0 {has} =1 {has} other {have}} ended"
+					}
+				},
 				"details": {
 					"details": {
 						"email": {
@@ -1134,7 +1151,7 @@
 				},
 				"invitationModal": {
 					"title": "Invite Company To ETS",
-					"description": "Review the account summary below to confirm the details of the firm you are inviting.",
+					"description": "Review the account summary below to confirm the details of the company you are inviting.",
 					"actions": {
 						"cta": {
 							"label": "Send Invite"

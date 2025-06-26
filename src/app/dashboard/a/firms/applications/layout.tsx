@@ -11,21 +11,22 @@ import { Stack } from '@mantine/core';
 import classes from './styles.module.css';
 
 export const metadata: Metadata = {
-	title: 'Firms',
+	title: 'Firm Applications',
 };
 
-export interface FirmsListProps {
-	subbanners: ReactNode;
+export interface FirmApplicationsListProps {
 	table: ReactNode;
 }
-export default function FirmsList({ subbanners, table }: FirmsListProps) {
+export default function FirmApplicationsList({ table }: FirmApplicationsListProps) {
 	const t = useTranslations();
 
 	return withProviders(
 		<Stack className={classes.root}>
 			<DashboardHero
-				title={t('constants.pages.dashboard.admin.firms.title')}
-				returnButton={{ href: '/dashboard/a', label: t('constants.return.home.label') }}
+				returnButton={{
+					href: '/dashboard/a/firms',
+					label: t('constants.return.firmsList.label'),
+				}}
 				breadcrumbs={[
 					{
 						label: t('constants.pages.dashboard.admin.home.title'),
@@ -35,9 +36,12 @@ export default function FirmsList({ subbanners, table }: FirmsListProps) {
 						label: t('constants.pages.dashboard.admin.firms.title'),
 						href: '/dashboard/a/firms',
 					},
+					{
+						label: t('constants.pages.dashboard.admin.firms.applications.title'),
+						href: '/dashboard/a/firms/applications',
+					},
 				]}
 			/>
-			{subbanners}
 			{table}
 		</Stack>,
 		{ provider: PaginatedFirmsProvider },
