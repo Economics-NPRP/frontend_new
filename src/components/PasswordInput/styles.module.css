@@ -1,0 +1,41 @@
+.root {
+	@apply self-stretch items-stretch;
+	@apply gap-3;
+
+	> .strength {
+		@apply gap-2;
+
+		> .progress {
+			@apply h-1.5;
+			@apply flex-auto;
+			@apply rounded-full;
+		}
+	}
+
+	> .requirements {
+		@apply gap-2;
+
+		> .row {
+			@apply gap-2;
+
+			> .icon {
+				@apply text-red-600;
+			}
+
+			> .text {
+				@apply paragraph-sm;
+				@apply !text-red-600;
+			}
+
+			&.meets {
+				> .icon {
+					@apply text-green-600;
+				}
+
+				> .text {
+					@apply !text-green-600;
+				}
+			}
+		}
+	}
+}

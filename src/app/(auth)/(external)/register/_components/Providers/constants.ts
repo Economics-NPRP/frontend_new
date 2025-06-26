@@ -3,7 +3,7 @@
 import { createContext } from 'react';
 
 export const DefaultRegistrationPageContextData: IRegistrationPageContext = {
-	activeStep: 4,
+	activeStep: 0,
 	handleStepChange: () => {},
 	handleNextStep: () => {},
 	handlePrevStep: () => {},

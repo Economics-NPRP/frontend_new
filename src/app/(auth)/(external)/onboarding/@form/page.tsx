@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ReactElement, useCallback, useState } from 'react';
 
+import { PasswordInput } from '@/components/PasswordInput';
 import { register } from '@/lib/auth/register';
 import classes from '@/pages/(auth)/(external)/styles.module.css';
 import {
@@ -12,7 +13,15 @@ import {
 	DefaultCreateUserPassword,
 	ICreateUserPassword,
 } from '@/schema/models';
-import { Alert, Button, Group, List, PasswordInput, Stack, Text } from '@mantine/core';
+import {
+	Alert,
+	Button,
+	Group,
+	List,
+	PasswordInput as MantinePasswordInput,
+	Stack,
+	Text,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconExclamationCircle, IconKey } from '@tabler/icons-react';
 
@@ -38,9 +47,7 @@ export default function Form() {
 			const registrationToken = searchParams.get('token');
 			register({ registrationToken, password })
 				.then((res) => {
-					//	TODO: revert once backend returns cookies
-					// if (res.ok) router.push('/marketplace');
-					if (res.ok) router.push('/login');
+					if (res.ok) router.push('/marketplace');
 					else {
 						setFormError(
 							(res.errors || []).map((error, index) => (
@@ -75,17 +82,14 @@ export default function Form() {
 					</Alert>
 				)}
 				<PasswordInput
-					type="password"
 					label={t('auth.onboarding.form.password.label')}
 					placeholder={t('auth.onboarding.form.password.placeholder')}
-					autoComplete="current-password"
-					leftSection={<IconKey size={16} />}
 					disabled={form.submitting}
 					required
 					key={form.key('password')}
 					{...form.getInputProps('password')}
 				/>
-				<PasswordInput
+				<MantinePasswordInput
 					type="password"
 					label={t('auth.onboarding.form.confirm.label')}
 					placeholder={t('auth.onboarding.form.confirm.placeholder')}

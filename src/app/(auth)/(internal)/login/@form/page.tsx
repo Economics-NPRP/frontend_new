@@ -54,9 +54,8 @@ export default function Form() {
 			login(values)
 				.then((res) => {
 					if (res.ok) {
-						router.push('/otp');
-						// if (process.env.NODE_ENV === 'development') router.push('/marketplace');
-						// else router.push('/otp');
+						if (process.env.NODE_ENV === 'development') router.push('/marketplace');
+						else router.push('/otp');
 					} else {
 						setFormError(
 							(res.errors || []).map((error, index) => (
