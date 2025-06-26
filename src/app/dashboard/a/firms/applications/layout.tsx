@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
-import { PaginatedFirmsProvider } from '@/contexts';
+import { PaginatedFirmApplicationsProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
 import { InvitationModalProvider } from '@/pages/dashboard/a/firms/_components/InvitationModal';
@@ -44,7 +44,7 @@ export default function FirmApplicationsList({ table }: FirmApplicationsListProp
 			/>
 			{table}
 		</Stack>,
-		{ provider: PaginatedFirmsProvider },
+		{ provider: PaginatedFirmApplicationsProvider },
 		{ provider: InvitationModalProvider },
 	);
 }

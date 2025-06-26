@@ -34,10 +34,7 @@ export const createApplication: IFunctionSignature = cache(async (data) => {
 	//	If theres an issue, return the default data with errors
 	if (response.status === 409) return getDefaultData(t('lib.users.firms.applications.exists'));
 	if (response.status === 422)
-		return getDefaultData(
-			t('lib.users.firms.applications.validation'),
-			JSON.stringify(rawData.detail) ?? '',
-		);
+		return getDefaultData(t('lib.validationError'), JSON.stringify(rawData.detail) ?? '');
 	if (!rawData) return getDefaultData(t('lib.noData'));
 	if (rawData.detail) return getDefaultData(JSON.stringify(rawData.detail) ?? '');
 	if (rawData.errors) return getDefaultData(...rawData.errors);
