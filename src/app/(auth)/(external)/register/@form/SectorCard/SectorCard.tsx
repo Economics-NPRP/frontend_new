@@ -1,28 +1,23 @@
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
 import { AuctionCategory } from '@/types';
-import { Checkbox, Container, Group, Stack, Text } from '@mantine/core';
+import { Checkbox, CheckboxCardProps, Container, Group, Stack, Text } from '@mantine/core';
 
 import classes from './styles.module.css';
 
-export interface SectorCardProps {
+export interface SectorCardProps extends CheckboxCardProps {
 	sector: AuctionCategory;
 }
-export const SectorCard = ({ sector }: SectorCardProps) => {
+export const SectorCard = ({ sector, ...props }: SectorCardProps) => {
 	const t = useTranslations();
-	const [checked, setChecked] = useState(false);
 
 	const sectorData = useMemo(() => AuctionCategoryVariants[sector]!, [sector]);
 
 	return (
-		<Checkbox.Card
-			checked={checked}
-			onClick={() => setChecked((c) => !c)}
-			className={classes.root}
-		>
+		<Checkbox.Card value={sector} className={classes.root} {...props}>
 			<Stack className={classes.content}>
 				<Container className={classes.image}>
 					<Image src={sectorData.image} alt={'Image of a power plant'} fill />

@@ -2,6 +2,7 @@ export * from './AdminData';
 export * from './AuctionData';
 export * from './AuctionType';
 export * from './BidData';
+export * from './FirmApplicationData';
 export * from './FirmData';
 export * from './GeneralUserData';
 export * from './LoginData';

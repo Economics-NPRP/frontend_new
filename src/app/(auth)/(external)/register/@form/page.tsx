@@ -1,10 +1,9 @@
 'use client';
 
-import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ReactElement, useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 
 import { AccountSummary } from '@/components/AccountSummary';
 import { AvatarUpload } from '@/components/AvatarUpload';
@@ -12,11 +11,11 @@ import { Switch } from '@/components/SwitchCase';
 import { SectorCard } from '@/pages/(auth)/(external)/register/@form/SectorCard';
 import { RegistrationPageContext } from '@/pages/(auth)/(external)/register/_components/Providers';
 import classes from '@/pages/(auth)/(external)/styles.module.css';
-import { CreateFirmDataSchema, DefaultCreateFirm, ICreateFirm } from '@/schema/models';
+import { ICreateFirm } from '@/schema/models';
 import {
 	Alert,
 	Button,
-	Container,
+	Checkbox,
 	Divider,
 	FileInput,
 	Group,
@@ -25,9 +24,9 @@ import {
 	Stack,
 	Text,
 	TextInput,
+	Textarea,
 	Title,
 } from '@mantine/core';
-import { useForm } from '@mantine/form';
 import {
 	IconArrowNarrowRight,
 	IconBriefcase,
@@ -45,16 +44,8 @@ import {
 export default function Form() {
 	const t = useTranslations();
 	const router = useRouter();
-	const { activeStep, handleNextStep, handlePrevStep } = useContext(RegistrationPageContext);
-
-	const [formError, setFormError] = useState<Array<ReactElement>>([]);
-
-	const form = useForm<ICreateFirm>({
-		mode: 'uncontrolled',
-		initialValues: DefaultCreateFirm,
-		validate: valibotResolver(CreateFirmDataSchema),
-		onValuesChange: () => setFormError([]),
-	});
+	const { form, formError, setFormError, activeStep, handleNextStep, handlePrevStep } =
+		useContext(RegistrationPageContext);
 
 	const handleSubmit = useCallback(
 		(formData: ICreateFirm) => {
@@ -87,6 +78,12 @@ export default function Form() {
 		},
 		[form, router],
 	);
+
+	//	Scroll to top whenever step changes or there is an error
+	useEffect(() => window.scrollTo({ top: 0, behavior: 'smooth' }), [activeStep]);
+	useEffect(() => {
+		if (formError.length > 0) window.scrollTo({ top: 0, behavior: 'smooth' });
+	}, [formError]);
 
 	return (
 		<>
@@ -124,6 +121,8 @@ export default function Form() {
 							autoComplete="company"
 							leftSection={<IconBuilding size={16} />}
 							required
+							key={form.key('companyName')}
+							{...form.getInputProps('companyName')}
 						/>
 						<TextInput
 							label={t('auth.register.form.first.crn.label')}
@@ -131,6 +130,8 @@ export default function Form() {
 							autoComplete="crn"
 							leftSection={<IconCertificate size={16} />}
 							required
+							key={form.key('crn')}
+							{...form.getInputProps('crn')}
 						/>
 						<TextInput
 							label={t('auth.register.form.first.iban.label')}
@@ -138,6 +139,8 @@ export default function Form() {
 							autoComplete="crn"
 							leftSection={<IconBuildingBank size={16} />}
 							required
+							key={form.key('iban')}
+							{...form.getInputProps('iban')}
 						/>
 						<Divider label={t('auth.register.form.first.divider')} />
 						<FileInput
@@ -145,12 +148,16 @@ export default function Form() {
 							placeholder={t('auth.register.form.first.uploadCrn.placeholder')}
 							required
 							clearable
+							key={form.key('crnCertUrl')}
+							{...form.getInputProps('crnCertUrl')}
 						/>
 						<FileInput
 							label={t('auth.register.form.first.uploadIban.label')}
 							placeholder={t('auth.register.form.first.uploadIban.placeholder')}
 							required
 							clearable
+							key={form.key('ibanCertUrl')}
+							{...form.getInputProps('ibanCertUrl')}
 						/>
 					</Stack>
 				</Switch.Case>
@@ -164,14 +171,22 @@ export default function Form() {
 						</Text>
 					</Stack>
 					<Stack className={`${classes.inputs} ${classes.section}`}>
-						<Container className={classes.sectors}>
+						<Checkbox.Group
+							classNames={{
+								root: classes.sectors,
+								error: 'hidden',
+							}}
+							required
+							key={form.key('sectors')}
+							{...form.getInputProps('sectors')}
+						>
 							<SectorCard sector="energy" />
 							<SectorCard sector="industry" />
 							<SectorCard sector="transport" />
 							<SectorCard sector="buildings" />
 							<SectorCard sector="agriculture" />
 							<SectorCard sector="waste" />
-						</Container>
+						</Checkbox.Group>
 					</Stack>
 				</Switch.Case>
 				<Switch.Case when={2}>
@@ -190,12 +205,16 @@ export default function Form() {
 							name="fullName"
 							autoComplete="name"
 							required
+							key={form.key('repName')}
+							{...form.getInputProps('repName')}
 						/>
 						<TextInput
 							label={t('auth.register.form.third.position.label')}
 							placeholder={t('auth.register.form.third.position.placeholder')}
 							name="position"
 							leftSection={<IconBriefcase size={16} />}
+							key={form.key('repPosition')}
+							{...form.getInputProps('repPosition')}
 						/>
 						<TextInput
 							type="email"
@@ -204,6 +223,8 @@ export default function Form() {
 							autoComplete="email"
 							leftSection={<IconMail size={16} />}
 							required
+							key={form.key('repEmail')}
+							{...form.getInputProps('repEmail')}
 						/>
 						<TextInput
 							label={t('auth.register.form.third.phone.label')}
@@ -211,6 +232,8 @@ export default function Form() {
 							autoComplete="tel"
 							leftSection={<IconPhone size={16} />}
 							required
+							key={form.key('repPhone')}
+							{...form.getInputProps('repPhone')}
 						/>
 						<TextInput
 							label={t('auth.register.form.third.website.label')}
@@ -218,12 +241,16 @@ export default function Form() {
 							autoComplete="url"
 							leftSection={<IconWorld size={16} />}
 							required
+							key={form.key('websites')}
+							{...form.getInputProps('websites')}
 						/>
 						<TextInput
 							label={t('auth.register.form.third.address.label')}
 							placeholder={t('auth.register.form.third.address.placeholder')}
 							autoComplete="address"
 							leftSection={<IconBuilding size={16} />}
+							key={form.key('address')}
+							{...form.getInputProps('address')}
 						/>
 					</Stack>
 				</Switch.Case>
@@ -246,6 +273,14 @@ export default function Form() {
 								type: 'firm',
 								sectors: ['industry', 'transport', 'buildings'],
 							}}
+						/>
+						<Textarea
+							resize="vertical"
+							label={t('auth.register.form.fourth.message.label')}
+							description={t('auth.register.form.fourth.message.description')}
+							placeholder={t('auth.register.form.fourth.message.placeholder')}
+							key={form.key('message')}
+							{...form.getInputProps('message')}
 						/>
 					</Stack>
 				</Switch.Case>

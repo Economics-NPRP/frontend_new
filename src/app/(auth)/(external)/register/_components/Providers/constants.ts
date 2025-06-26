@@ -1,8 +1,17 @@
 'use client';
 
-import { createContext } from 'react';
+import { ReactElement, createContext } from 'react';
+
+import { ICreateFirmApplication } from '@/schema/models';
+import { UseFormReturnType } from '@mantine/form';
 
 export const DefaultRegistrationPageContextData: IRegistrationPageContext = {
+	form: {} as UseFormReturnType<
+		ICreateFirmApplication,
+		(values: ICreateFirmApplication) => ICreateFirmApplication
+	>,
+	formError: [],
+	setFormError: () => {},
 	activeStep: 0,
 	handleStepChange: () => {},
 	handleNextStep: () => {},
@@ -11,6 +20,12 @@ export const DefaultRegistrationPageContextData: IRegistrationPageContext = {
 };
 
 export interface IRegistrationPageContext {
+	form: UseFormReturnType<
+		ICreateFirmApplication,
+		(values: ICreateFirmApplication) => ICreateFirmApplication
+	>;
+	formError: Array<ReactElement>;
+	setFormError: (errors: Array<ReactElement>) => void;
 	activeStep: number;
 	handleStepChange: (step: number) => void;
 	handleNextStep: () => void;

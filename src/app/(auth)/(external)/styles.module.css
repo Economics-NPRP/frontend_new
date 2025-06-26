@@ -81,6 +81,10 @@
 
 				> .sectors {
 					@apply grid grid-cols-1 gap-4;
+
+					> div[role='group'] {
+						@apply contents;
+					}
 				}
 			}
 

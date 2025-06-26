@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { PasswordComplexityRegex } from '@/schema/models';
 import {
 	Group,
 	PasswordInput as MantinePasswordInput,
@@ -15,12 +16,14 @@ import classes from './styles.module.css';
 
 export interface PasswordInputProps extends MantinePasswordInputProps {}
 export const PasswordInput = ({
-	key,
+	defaultValue,
 	value,
 	onChange,
 	className,
 	...props
 }: PasswordInputProps) => {
+	//	eslint-disable-next-line
+	defaultValue;
 	const t = useTranslations();
 	const [internalValue, setInternalValue] = useState<string>((value as string) || '');
 
@@ -52,14 +55,17 @@ export const PasswordInput = ({
 
 	const requirementsText = useMemo(
 		() =>
-			requirements.map(({ test, label }) => (
-				<Group className={`${test(internalValue) ? classes.meets : ''} ${classes.row}`}>
+			requirements.map(({ test, label }, index) => (
+				<Group
+					className={`${test(internalValue) ? classes.meets : ''} ${classes.row}`}
+					key={index}
+				>
 					{test(internalValue) ? (
 						<IconCheck size={14} className={classes.icon} />
 					) : (
 						<IconX size={14} className={classes.icon} />
 					)}
-					<Text className={classes.text} key={label} children={label} />
+					<Text className={classes.text} children={label} />
 				</Group>
 			)),
 		[internalValue, requirements],
@@ -109,9 +115,10 @@ export const PasswordInput = ({
 				type="password"
 				autoComplete="current-password"
 				leftSection={<IconKey size={16} />}
-				key={key}
 				value={internalValue}
 				onChange={handleChange}
+				pattern={PasswordComplexityRegex.source}
+				minLength={8}
 				{...props}
 			/>
 			<Group className={classes.strength}>
