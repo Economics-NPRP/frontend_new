@@ -92,4 +92,30 @@
 			@apply grid-cols-4;
 		}
 	}
+
+	@mixin dark {
+		.root {
+			> .contact > .cell .value {
+				@apply !text-dark-50;
+			}
+
+			> .actions {
+				> .button.primary {
+					@apply bg-dark-400 text-white;
+
+					&:hover {
+						@apply bg-dark-300;
+					}
+
+					&:disabled {
+						@apply opacity-25;
+
+						&:hover {
+							@apply bg-dark-400;
+						}
+					}
+				}
+			}
+		}
+	}
 }

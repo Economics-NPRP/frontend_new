@@ -1,0 +1,61 @@
+.root {
+	@apply relative;
+	@apply size-24;
+	@apply flex items-center justify-center;
+	@apply aspect-square;
+	@apply rounded-full;
+	@apply overflow-hidden;
+
+	> .avatar {
+		@apply size-full;
+
+		.icon {
+			@apply text-gray-500;
+		}
+	}
+
+	> .overlay {
+		@apply absolute w-full h-full top-0 left-0;
+		@apply flex flex-col items-center justify-center;
+		@apply p-4 gap-1;
+		@apply bg-black/0;
+		@apply transition-colors duration-300;
+
+		&:hover {
+			@apply bg-black/75;
+
+			> .icon,
+			> .text {
+				@apply opacity-100;
+			}
+		}
+
+		> .icon {
+			@apply text-white;
+			@apply opacity-0;
+			@apply transition-opacity duration-300;
+		}
+
+		> .text {
+			@apply display-xs-w text-center;
+			@apply !text-white;
+			@apply opacity-0;
+			@apply transition-opacity duration-300;
+		}
+	}
+}
+
+* {
+	@mixin dark {
+		.root > .overlay {
+			&:hover {
+				@apply bg-white/90;
+			}
+
+			> .icon,
+			> .text {
+				@apply !text-dark-600;
+			}
+		}
+	}
+}

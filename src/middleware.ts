@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+import { ProtectedRoutes } from '@/constants/ProtectedRoutes';
 import { verifySession } from '@/lib/auth';
-
-const protectedRoutes = ['/marketplace'];
 
 const otpRoute = '/otp';
 
@@ -17,7 +16,7 @@ export async function middleware(req: NextRequest) {
 	}
 
 	//	If this is not a protected route, return the response immediately
-	if (!protectedRoutes.some((route) => req.nextUrl.pathname.startsWith(route))) return res;
+	if (!ProtectedRoutes.some((route) => req.nextUrl.pathname.startsWith(route))) return res;
 
 	//	If the user is not logged in, redirect to the login page
 	const verified = await verifySession(req, res);

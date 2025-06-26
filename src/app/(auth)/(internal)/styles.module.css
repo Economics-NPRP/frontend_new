@@ -10,6 +10,8 @@
 		> img {
 			@apply object-cover object-center;
 			@apply brightness-75;
+
+			animation: fade 66s linear infinite;
 		}
 
 		> .overlay {
@@ -93,6 +95,14 @@
 				> .text {
 					@apply text-center paragraph-sm-g6;
 				}
+
+				> .link {
+					@apply p-0 h-[unset] bg-transparent text-blue-600;
+
+					&[data-disabled='true'] {
+						@apply text-gray-300;
+					}
+				}
 			}
 		}
 
@@ -148,5 +158,70 @@
 		.root {
 			@apply items-center;
 		}
+	}
+
+	@mixin dark {
+		.root {
+			> .bg {
+				> img {
+					@apply brightness-50;
+				}
+
+				> .overlay {
+					@apply opacity-75;
+				}
+			}
+
+			> .panel {
+				@apply bg-dark-700;
+				@apply border-dark-500;
+
+				.section {
+					&.inputs > .otp > .input input {
+						@apply bg-dark-600 text-white;
+					}
+
+					&.action button {
+						&.link[data-disabled='true'] {
+							@apply text-dark-300;
+						}
+
+						&:not(.link) {
+							@apply bg-dark-400 text-white;
+
+							&:hover {
+								@apply bg-dark-300;
+							}
+
+							&:disabled {
+								@apply opacity-25;
+
+								&:hover {
+									@apply bg-dark-400;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@keyframes fade {
+	0% {
+		opacity: 1;
+	}
+	15% {
+		opacity: 1;
+	}
+	17% {
+		opacity: 0;
+	}
+	98% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
 	}
 }

@@ -142,7 +142,7 @@
 				@apply gap-1 flex-nowrap;
 			}
 
-			> .between {
+			.between {
 				@apply flex flex-row items-center justify-between gap-2;
 
 				&.firm {
@@ -174,9 +174,14 @@
 
 					.button {
 						@apply h-10;
+						@apply border-0 border-r border-solid border-dark-300;
 
 						&:not(.primary) {
 							@apply size-10;
+						}
+
+						&:last-child {
+							@apply border-0;
 						}
 
 						&.delete {
@@ -185,19 +190,11 @@
 
 						&.secondary {
 							@apply bg-gray-100 text-dark-300;
-							@apply border-0 border-r border-solid border-gray-300;
+							@apply border-gray-300;
 
 							&:hover {
 								@apply bg-gray-200;
 							}
-
-							&:last-child {
-								@apply border-0;
-							}
-						}
-
-						&.primary {
-							@apply border-0;
 						}
 					}
 				}
@@ -403,9 +400,11 @@
 					}
 
 					> .actions > .cell .button {
+						@apply border-dark-400;
+
 						&.secondary,
 						&.primary {
-							@apply bg-dark-600 border-dark-400 text-white;
+							@apply bg-dark-600 text-white;
 
 							&:hover {
 								@apply bg-dark-400;

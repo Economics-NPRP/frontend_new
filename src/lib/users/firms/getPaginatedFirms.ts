@@ -32,7 +32,7 @@ type IFunctionSignature = (
 export const getPaginatedFirms: IFunctionSignature = cache(
 	async ({ page, perPage, sortBy, sortDirection }) => {
 		const cookieHeaders = await getSession();
-		if (!cookieHeaders) return getDefaultData('You must be logged in to access this resource.');
+		if (!cookieHeaders) return getDefaultData(t('lib.notLoggedIn'));
 		const querySettings: RequestInit = {
 			method: 'GET',
 			headers: {
@@ -51,7 +51,7 @@ export const getPaginatedFirms: IFunctionSignature = cache(
 		const rawData = camelCase(await response.json(), 5) as OffsetPaginatedData<unknown>;
 
 		//	If theres an issue, return the default data with errors
-		if (!rawData) return getDefaultData('No data was returned.');
+		if (!rawData) return getDefaultData(t('lib.noData'));
 		if (rawData.detail) return getDefaultData(rawData.detail ?? '');
 		if (rawData.errors) return getDefaultData(...rawData.errors);
 

@@ -101,27 +101,45 @@
     "auctionCategory": {
       "energy": {
         "alt": "Image of a power plant depicting the energy category",
-        "title": "Energy"
+        "title": "Energy",
+        "description": {
+          "register": "This sector includes all entities producing or supplying energy. Permits apply to emissions from sources like power plants, renewables, or electricity grids."
+        }
       },
       "industry": {
         "alt": "Image of a crusher machine depicting the industry category",
-        "title": "Industry"
+        "title": "Industry",
+        "description": {
+          "register": "This category is relevant to companies in manufacturing and processing sectors, such as steel, cement, and chemical producers."
+        }
       },
       "transport": {
         "alt": "Image of traffic causing pollution depicting the transport category",
-        "title": "Transport"
+        "title": "Transport",
+        "description": {
+          "register": "Designed for logistics, freight, aviation, and public transport operators, this sector manages permits tied to fuel-based emissions across all transport modes."
+        }
       },
       "buildings": {
         "alt": "Image of a HVAC system depicting the buildings category",
-        "title": "Buildings"
+        "title": "Buildings",
+        "description": {
+          "register": "For real estate developers, property managers, and facility operators, this category covers emissions permits for building energy use, HVAC systems, and lighting."
+        }
       },
       "agriculture": {
         "alt": "Image of a farm with cows depicting the agriculture category",
-        "title": "Agriculture"
+        "title": "Agriculture",
+        "description": {
+          "register": "Agricultural producers, agribusinesses, and food processors fall under this sector, with permits covering emissions from livestock, fertilizers, and land use."
+        }
       },
       "waste": {
         "alt": "Image of waste glass and plastic depicting the waste category",
-        "title": "Waste"
+        "title": "Waste",
+        "description": {
+          "register": "Waste management firms—including landfill operators and recyclers—can acquire permits here for emissions from waste decomposition and treatment."
+        }
       }
     },
     "auctionType": {
@@ -237,7 +255,10 @@
         "label": "Return to Home"
       },
       "firmsList": {
-        "label": "Return to Firms List"
+        "label": "Return to List of Companies"
+      },
+      "login": {
+        "label": "Return to Login"
       }
     },
     "view": {
@@ -284,6 +305,9 @@
       "actions": {
         "column": "Actions"
       },
+      "back": {
+        "label": "Back"
+      },
       "cancel": {
         "label": "Cancel",
         "aria": "Cancel action",
@@ -314,6 +338,9 @@
         "label": "Continue",
         "aria": "Continue action",
         "tooltip": "Continue action"
+      },
+      "verify": {
+        "label": "Verify"
       }
     },
     "quantities": {
@@ -353,11 +380,12 @@
     },
     "pagination": {
       "keyset": {
-        "bids": "Showing {count, number} {isExact, select, true {of} false {of about} other {of}} {total, number} {total, plural, =0 {bids} =1 {bid} other {bids}}"
+        "bids": "Showing {count, number} {isExact, select, true {of} false {of about} other {of}} {total, number} {total, plural, =0 {bids} =1 {bid} other {bids}}",
+        "firmApplications": "Showing {count, number} {isExact, select, true {of} false {of about} other {of}} {total, number} {total, plural, =0 {applications} =1 {application} other {applications}}"
       },
       "offset": {
         "results": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {results} =1 {result} other {results}}",
-        "firms": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {firms} =1 {firm} other {firms}}"
+        "firms": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {companies} =1 {company} other {companies}}"
       },
       "perPage": {
         "label": "Per page:"
@@ -370,16 +398,20 @@
             "title": "Home"
           },
           "firms": {
-            "title": "Firms"
+            "title": "Companies",
+            "applications": {
+              "title": "Company Applications"
+            }
           }
         }
       }
     },
     "firmStatus": {
-      "verified": "Verified",
-      "unverified": "Pending",
-      "uninvited": "Newly Registered"
-    }
+      "approved": "Approved",
+      "pending": "Pending",
+      "rejected": "Rejected"
+    },
+    "na": "N/A"
   },
   "marketplace": {
     "home": {
@@ -731,8 +763,8 @@
         "details": {
           "statistics": {
             "chart": {
-              "others": "Other Firms",
-              "label": "Permits Reserved by Firm"
+              "others": "Other Companies",
+              "label": "Permits Reserved by Company"
             }
           }
         }
@@ -883,7 +915,7 @@
             "label": "Admins"
           },
           "firms": {
-            "label": "Firms"
+            "label": "Companies"
           }
         }
       }
@@ -968,18 +1000,18 @@
       "empty": "No results found"
     },
     "firmsTable": {
-      "title": "Firms Table",
+      "title": "List of Companies",
       "filters": {
         "menu": {
           "status": {
-            "label": "Firm Status",
+            "label": "Company Status",
             "all": "Show all companies",
             "verified": "Only show verified and active companies",
             "unverified": "Only show companies with pending invitations",
             "uninvited": "Only show newly registered companies who haven't been invited yet"
           },
           "sector": {
-            "label": "Firm Sector"
+            "label": "Company Sector"
           }
         },
         "label": "Filters:",
@@ -991,7 +1023,7 @@
         }
       },
       "columns": {
-        "name": "Company Name",
+        "name": "Name",
         "createdAt": "Creation Date",
         "sectors": "Sectors",
         "email": "Email",
@@ -1006,13 +1038,18 @@
           "invite": {
             "tooltip": "Invite this company to the platform"
           }
-        }
+        },
+        "iban": "IBAN",
+        "repName": "Name",
+        "repPosition": "Position",
+        "websites": "Company Website",
+        "address": "Company HQ Address"
       },
       "empty": "No companies found",
       "legend": {
         "unverified": {
           "label": "Pending Companies",
-          "tooltip": "This firm has been invited but has not yet accepted the invitation"
+          "tooltip": "This company has been invited but has not yet accepted the invitation"
         },
         "uninvited": {
           "label": "Newly Registered Companies",
@@ -1031,17 +1068,133 @@
           "default": "Invite {value, plural, =0 {Companies} =1 {Company} other {Companies}}",
           "short": "Invite"
         }
+      },
+      "groups": {
+        "company": "Company",
+        "representative": "Contact Details",
+        "miscellaneous": "Miscellaneous"
+      }
+    },
+    "firmApplicationsTable": {
+      "title": "List of Company Applications",
+      "filters": {
+        "menu": {
+          "status": {
+            "label": "Company Status",
+            "all": "Show all companies",
+            "approved": "Only show approved applications",
+            "pending": "Only show pending applications",
+            "rejected": "Only show rejected applications"
+          },
+          "sector": {
+            "label": "Company Sector"
+          }
+        },
+        "label": "Filters:",
+        "badges": {
+          "all": "No Filter Applied",
+          "approved": "Approved Applications Only",
+          "pending": "Pending Applications Only",
+          "rejected": "Rejected Applications Only"
+        }
+      },
+      "columns": {
+        "name": "Name",
+        "createdAt": "Creation Date",
+        "sectors": "Sectors",
+        "email": "Email",
+        "phone": "Phone Number",
+        "crn": "CRN",
+        "status": "Status",
+        "invitedBy": "Invited By",
+        "actions": {
+          "review": {
+            "tooltip": "Review this company's details and either approve or reject their application"
+          }
+        },
+        "iban": "IBAN",
+        "repName": "Name",
+        "repPosition": "Position",
+        "websites": "Company Website",
+        "address": "Company HQ Address"
+      },
+      "empty": "No companies found",
+      "legend": {
+        "pending": {
+          "label": "Pending Applications",
+          "tooltip": "This company has recently applied but has not yet been approved or rejected"
+        }
+      },
+      "search": {
+        "placeholder": "Search for a specific company..."
+      },
+      "actions": {
+        "review": {
+          "default": "Review Application"
+        }
+      },
+      "groups": {
+        "company": "Company",
+        "representative": "Contact Details",
+        "miscellaneous": "Miscellaneous"
       }
     },
     "table": {
       "selected": {
         "count": "{value, plural, =0 {No rows selected} =1 {1 row selected} other {# rows selected}}"
       }
+    },
+    "firmApplicationSummary": {
+      "columns": {
+        "name": "Company Name",
+        "crn": "Commercial Registration Number (CRN)",
+        "iban": "IBAN Number",
+        "sector": "Business Sectors",
+        "fullName": "Full Name",
+        "position": "Position",
+        "email": "Email Address",
+        "phone": "Phone Number",
+        "website": "Company Website",
+        "address": "Headquarter Address"
+      }
+    },
+    "passwordInput": {
+      "requirements": {
+        "number": {
+          "label": "Includes number"
+        },
+        "uppercase": {
+          "label": "Includes uppercase letter"
+        },
+        "lowercase": {
+          "label": "Includes lowercase letter"
+        },
+        "symbol": {
+          "label": "Includes special symbol"
+        },
+        "length": {
+          "label": "Includes at least 8 characters"
+        }
+      }
     }
   },
   "dashboard": {
     "admin": {
       "firms": {
+        "subbanner": {
+          "1": {
+            "text": "Click here to view all company applications",
+            "heading": "<mark>{value, plural, =0 {No new applications} =1 {1 new application} other {# new applications}}</mark> requiring review"
+          },
+          "2": {
+            "text": "Click here to create a new auction",
+            "heading": "Have excess permits? <mark>Auction them off!</mark>"
+          },
+          "3": {
+            "text": "Click here to view auction results",
+            "heading": "<mark>{value, plural, =0 {No auction} =1 {1 auction} other {# auctions}}</mark> {value, plural, =0 {has} =1 {has} other {have}} ended"
+          }
+        },
         "details": {
           "details": {
             "email": {
@@ -1070,6 +1223,293 @@
                 "label": "Suspend Company"
               }
             }
+          }
+        },
+        "invitationModal": {
+          "title": "Review Company Application",
+          "description": "Review the account summary below and  decide whether to approve or reject the application. If approved, an invitation will be sent to the company to join the ETS platform.",
+          "actions": {
+            "reject": {
+              "label": "Reject"
+            },
+            "approve": {
+              "label": "Approve and Send Invitation"
+            }
+          }
+        },
+        "rejectionModal": {
+          "title": "Reject Company Application",
+          "description": "Are you sure you want to reject this company application? The user will be notified with the reason you provide.",
+          "actions": {
+            "reject": {
+              "label": "Reject Application"
+            }
+          },
+          "reason": {
+            "label": "Rejection Reason",
+            "placeholder": "Enter reason...",
+            "description": "Please provide a reason for rejecting this application. The user will be notified with this reason."
+          }
+        }
+      }
+    }
+  },
+  "lib": {
+    "auth": {
+      "login": {
+        "invalid": "Invalid email or password",
+        "error": "There was an error logging in"
+      },
+      "logout": {
+        "loggedIn": "You must be logged in to log out",
+        "error": "There was an error logging out"
+      },
+      "register": {
+        "noToken": "No registration token provided",
+        "error": "There was an error during registration, make sure the token is valid",
+        "success": {
+          "title": "Account Successfully Activated",
+          "message": "Welcome to the ETS platform! Your account has been successfully activated and you can now log in."
+        }
+      },
+      "otp": {
+        "expired": "OTP code may have expired, please try logging in again.",
+        "invalid": "OTP code is invalid, please make sure the code is 6 numbers long"
+      }
+    },
+    "notLoggedIn": "You must be logged in to access this resource.",
+    "noData": "No data was returned.",
+    "noCookies": "No cookies set in response",
+    "validationError": "The data in the form does not match the expected format",
+    "auction": {
+      "join": {
+        "error": "There was a problem joining the auction"
+      }
+    },
+    "invitations": {
+      "invite": {
+        "error": "There was an error inviting this company to the ETS platform.",
+        "success": {
+          "title": "Invitation Successfully Sent",
+          "message": "An email has been sent to the user with an invitation link."
+        }
+      }
+    },
+    "users": {
+      "firms": {
+        "applications": {
+          "exists": "An application with the same CRN or email already exists",
+          "approve": {
+            "error": "There was an error approving the application",
+            "success": {
+              "title": "Application Approved",
+              "message": "The company has been approved and an invitation has been sent to the user."
+            }
+          },
+          "reject": {
+            "error": "There was an error rejecting the application",
+            "success": {
+              "title": "Application Rejected",
+              "message": "The company has been rejected and the user has been notified with the given reason."
+            }
+          }
+        }
+      }
+    }
+  },
+  "auth": {
+    "onboarding": {
+      "heading": "Activate Your Account",
+      "subheading": "Please create a password to complete your registration and activate your account.",
+      "details": {
+        "prompt": "Verify the above information before proceeding. If you feel that any of the information is incorrect, please <a>contact us</a>."
+      },
+      "form": {
+        "password": {
+          "label": "Password",
+          "placeholder": "Enter password..."
+        },
+        "confirm": {
+          "label": "Confirm Password",
+          "placeholder": "Confirm password..."
+        }
+      },
+      "actions": {
+        "cta": {
+          "label": "Activate Account"
+        },
+        "prompt": "Activating your account will log you in and redirect you to the marketplace."
+      },
+      "error": {
+        "title": "There was an error registering your account",
+        "message": "There was an error during registration, please view the console for more details."
+      }
+    },
+    "register": {
+      "stepper": {
+        "first": {
+          "label": "Basic Information"
+        },
+        "second": {
+          "label": "Business Sector"
+        },
+        "third": {
+          "label": "Primary Contact Details"
+        },
+        "fourth": {
+          "label": "Review Details"
+        }
+      },
+      "heading": {
+        "first": "Welcome to ETS!",
+        "second": "Select Business Sectors",
+        "third": "Add Primary Company Representative",
+        "fourth": "Review Your Account Details",
+        "fifth": "Company Registration Sent!"
+      },
+      "subheading": {
+        "first": "Please complete the following steps to register your account.",
+        "second": "Please select the sectors your company operates in. This is used to determine which auctions you can participate in.",
+        "third": "Please provide the details of the primary representative for your company. This person will be the main point of contact for your account.",
+        "fourth": "Please review the details below to ensure everything is correct before proceeding.",
+        "fifth": "Your application is currently under review by our admins. You will receive an email once your account is approved."
+      },
+      "form": {
+        "first": {
+          "logo": {
+            "label": "Company Logo",
+            "description": "Upload your company logo"
+          },
+          "name": {
+            "label": "Company Name",
+            "placeholder": "Enter company name..."
+          },
+          "crn": {
+            "label": "Commercial Registration Number (CRN)",
+            "placeholder": "Enter CRN..."
+          },
+          "iban": {
+            "label": "IBAN Number",
+            "placeholder": "Enter IBAN..."
+          },
+          "divider": "Upload Documents",
+          "uploadCrn": {
+            "label": "Upload Commercial Registration Card",
+            "placeholder": "Upload file..."
+          },
+          "uploadIban": {
+            "label": "Upload IBAN Certificate",
+            "placeholder": "Upload file..."
+          }
+        },
+        "third": {
+          "fullName": {
+            "label": "Full Name",
+            "placeholder": "Enter full name..."
+          },
+          "position": {
+            "label": "Position",
+            "placeholder": "Enter position..."
+          },
+          "email": {
+            "label": "Email Address",
+            "placeholder": "Enter email address..."
+          },
+          "phone": {
+            "label": "Phone Number",
+            "placeholder": "Enter phone number..."
+          },
+          "website": {
+            "label": "Company Website",
+            "placeholder": "Enter website url..."
+          },
+          "address": {
+            "label": "Headquarter Address",
+            "placeholder": "Enter address of company HQ..."
+          }
+        },
+        "fourth": {
+          "message": {
+            "label": "Message",
+            "placeholder": "Enter message...",
+            "description": "Leave a message for the admins to review your application. This is optional."
+          }
+        }
+      },
+      "actions": {
+        "create": {
+          "label": "Create Account"
+        }
+      },
+      "error": {
+        "message": "There was an error during registration, please view the console for more details."
+      }
+    },
+    "forgot": {
+      "form": {
+        "email": {
+          "label": "Email Address",
+          "placeholder": "Enter email address..."
+        }
+      },
+      "actions": {
+        "cta": {
+          "label": "Send Email"
+        },
+        "prompt": "Please note the email may take a few minutes to arrive."
+      },
+      "heading": "Forgot Your Password?",
+      "subheading": "No worries! Just enter your email address and we'll send you a link to reset it (valid for 24 hours)"
+    },
+    "login": {
+      "heading": "Login to ETS",
+      "subheading": "Welcome to the ETS platform, where you can trade carbon credits and manage emissions.",
+      "form": {
+        "email": {
+          "label": "Email Address",
+          "placeholder": "Enter email address..."
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "Enter password..."
+        },
+        "checkbox": {
+          "label": "Remember me"
+        },
+        "forgot": {
+          "label": "Forgot password?"
+        }
+      },
+      "actions": {
+        "cta": {
+          "label": "Login"
+        },
+        "prompt": "<t>Don't have an account? </t><a>Register here</a>"
+      },
+      "error": {
+        "message": "There was an error logging in, please view the console for more details.",
+        "title": "There was an error logging in"
+      }
+    },
+    "otp": {
+      "error": {
+        "message": "There was a problem verifying your OTP, please view the console for more details.",
+        "title": "There was an error verifying your OTP"
+      },
+      "actions": {
+        "prompt": "<t>Didn't receive your code? </t><a>Resend</a>",
+        "resent": "Resend in {value, number}"
+      },
+      "heading": "OTP Verification",
+      "subheading": "Verify your identity by entering the OTP sent to your email address.",
+      "notifications": {
+        "resend": {
+          "success": {
+            "title": "Verification Email Resent",
+            "message": "Another email has been sent with your new OTP code"
+          },
+          "error": {
+            "title": "Error Resending OTP"
           }
         }
       }

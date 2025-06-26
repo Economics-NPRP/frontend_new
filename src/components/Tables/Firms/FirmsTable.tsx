@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { CategoryBadge, FirmStatusBadge } from '@/components/Badge';
+import { CategoryBadge } from '@/components/Badge';
 import { FirmsFilter } from '@/components/Tables/Firms/types';
 import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
 import { IPaginatedFirmsContext } from '@/contexts';
@@ -26,7 +26,6 @@ import {
 	Menu,
 	Pagination,
 	Pill,
-	Radio,
 	Select,
 	Stack,
 	TableProps,
@@ -42,15 +41,12 @@ import {
 	IconCheck,
 	IconCopy,
 	IconFileSearch,
-	IconHelpHexagon,
-	IconInfoHexagon,
-	IconMailShare,
 	IconSearch,
 } from '@tabler/icons-react';
 
 import classes from '../styles.module.css';
 
-export interface firmsTableProps extends TableProps {
+export interface FirmsTableProps extends TableProps {
 	firms: IPaginatedFirmsContext;
 }
 export const FirmsTable = ({
@@ -58,7 +54,7 @@ export const FirmsTable = ({
 
 	className,
 	...props
-}: firmsTableProps) => {
+}: FirmsTableProps) => {
 	const t = useTranslations();
 	const isMobile = useMediaQuery('(max-width: 48em)');
 	const tableContainerRef = useRef<HTMLTableElement>(null);
@@ -139,7 +135,7 @@ export const FirmsTable = ({
 	);
 
 	//	Reset the page when the bids filter or per page changes
-	useEffect(() => firms.setPage(1), [statusFilter, firms.perPage]);
+	useEffect(() => firms.setPage(1), [statusFilter, sectorFilter, firms.perPage]);
 
 	return (
 		<Stack className={`${classes.root} ${className}`}>
@@ -183,41 +179,6 @@ export const FirmsTable = ({
 								</ActionIcon>
 							</Menu.Target>
 							<Menu.Dropdown className={classes.filterMenu}>
-								<Menu.Label className={classes.label}>
-									{t('components.firmsTable.filters.menu.status.label')}
-								</Menu.Label>
-								<Radio.Group
-									value={statusFilter}
-									onChange={(value) => setStatusFilter(value as FirmsFilter)}
-								>
-									<Stack className={classes.options}>
-										<Radio
-											value="all"
-											label={t(
-												'components.firmsTable.filters.menu.status.all',
-											)}
-										/>
-										<Radio
-											value="verified"
-											label={t(
-												'components.firmsTable.filters.menu.status.verified',
-											)}
-										/>
-										<Radio
-											value="unverified"
-											label={t(
-												'components.firmsTable.filters.menu.status.unverified',
-											)}
-										/>
-										<Radio
-											value="uninvited"
-											label={t(
-												'components.firmsTable.filters.menu.status.uninvited',
-											)}
-										/>
-									</Stack>
-								</Radio.Group>
-								<Menu.Divider className={classes.divider} />
 								<Menu.Label className={classes.label}>
 									{t('components.firmsTable.filters.menu.sector.label')}
 								</Menu.Label>
@@ -273,26 +234,7 @@ export const FirmsTable = ({
 						</Text>
 						<Group className={classes.badges}>{filterBadges}</Group>
 					</Group>
-					<Group className={classes.legend}>
-						<Group className={classes.cell}>
-							<IconHelpHexagon
-								size={16}
-								className={`${classes.icon} ${classes.unverified}`}
-							/>
-							<Text className={classes.value}>
-								{t('components.firmsTable.legend.unverified.label')}
-							</Text>
-						</Group>
-						<Group className={classes.cell}>
-							<IconInfoHexagon
-								size={16}
-								className={`${classes.icon} ${classes.uninvited}`}
-							/>
-							<Text className={classes.value}>
-								{t('components.firmsTable.legend.uninvited.label')}
-							</Text>
-						</Group>
-					</Group>
+					<Group className={classes.legend}></Group>
 				</Group>
 				<Divider className={classes.divider} />
 				<Group className={`${classes.row} ${classes.wrapMobile}`}>
@@ -327,18 +269,6 @@ export const FirmsTable = ({
 									},
 								)}
 							</Button>
-							<Button
-								className={`${classes.primary} ${classes.button}`}
-								disabled={selectedFirms.length === 0}
-								rightSection={<IconMailShare size={16} />}
-							>
-								{t(
-									`components.firmsTable.actions.invite.${isMobile ? 'short' : 'default'}`,
-									{
-										value: selectedFirms.length,
-									},
-								)}
-							</Button>
 						</Group>
 					</Group>
 				</Group>
@@ -346,237 +276,294 @@ export const FirmsTable = ({
 			{/* @ts-expect-error - data table props from library are not exposed */}
 			<DataTable
 				className={classes.table}
-				columns={[
+				groups={[
 					{
-						accessor: 'name',
-						sortable: true,
-						title: t('components.firmsTable.columns.name'),
-						width: 240,
-						cellsClassName: `${classes.firm} ${classes.between}`,
-						ellipsis: true,
-						render: (record) => (
-							<>
-								<Anchor
-									component={Link}
-									className={classes.anchor}
-									href={`/dashboard/a/firms/${record.id}`}
-								>
-									{record.name}
-								</Anchor>
-								<Group className={classes.group}>
-									{/* TODO: replace with actual verification or invitation check */}
-									{!record.emailVerified && (
-										<Tooltip
-											label={t(
-												'components.firmsTable.legend.unverified.tooltip',
-											)}
-											position="top"
-										>
-											<IconHelpHexagon
-												size={14}
-												className={classes.unverified}
-											/>
-										</Tooltip>
-									)}
-									{/* TODO: replace with actual uninvited check */}
-									{new Date(record.createdAt).getTime() - Date.now() <
-										1000 * 60 * 60 * 24 * 3 && (
-										<Tooltip
-											label={t(
-												'components.firmsTable.legend.uninvited.tooltip',
-											)}
-											position="top"
-										>
-											<IconInfoHexagon
-												size={14}
-												className={classes.uninvited}
-											/>
-										</Tooltip>
-									)}
-								</Group>
-							</>
-						),
-					},
-					{
-						accessor: 'sectors',
-						sortable: false,
-						title: t('components.firmsTable.columns.sectors'),
-						width: 180,
-						render: (record: IFirmData) => {
-							const badges = useMemo(
-								() =>
-									record.sectors
-										.filter(
-											(sector) =>
-												AuctionCategoryVariants[
-													sector.toLowerCase() as AuctionCategory
-												],
-										)
-										.map((sector) => (
-											<CategoryBadge
-												key={sector}
-												category={sector}
-												className={classes.categoryBadge}
-											/>
-										)),
-								[record.sectors],
-							);
+						id: 'company',
+						title: t('components.firmsTable.groups.company'),
+						columns: [
+							{
+								accessor: 'name',
+								sortable: true,
+								title: t('components.firmsTable.columns.name'),
+								width: 240,
+								ellipsis: true,
+								render: (record) => record.name,
+							},
+							{
+								accessor: 'sectors',
+								sortable: false,
+								title: t('components.firmsTable.columns.sectors'),
+								width: 180,
+								render: (record) => {
+									const badges = useMemo(
+										() =>
+											record.sectors
+												.filter(
+													(sector) =>
+														AuctionCategoryVariants[
+															sector.toLowerCase() as AuctionCategory
+														],
+												)
+												.map((sector) => (
+													<CategoryBadge
+														key={sector}
+														category={sector}
+														className={classes.categoryBadge}
+													/>
+												)),
+										[record.sectors],
+									);
 
-							return (
-								<>
-									<Group className={classes.group}>
-										{badges[0]}
-										{badges.length > 1 && (
-											<HoverCard position="top">
-												<HoverCard.Target>
-													<Badge variant="light">
-														+{badges.length - 1}
-													</Badge>
-												</HoverCard.Target>
-												<HoverCard.Dropdown className={classes.HoverCard}>
-													{badges.slice(1).map((badge) => badge)}
-												</HoverCard.Dropdown>
-											</HoverCard>
-										)}
-									</Group>
-								</>
-							);
-						},
-					},
-					{
-						accessor: 'email',
-						sortable: true,
-						title: t('components.firmsTable.columns.email'),
-						width: 200,
-						ellipsis: true,
-						render: (record) => (
-							<Anchor href={`mailto:${record.email}`} className={classes.anchor}>
-								{record.email}
-							</Anchor>
-						),
-					},
-					{
-						accessor: 'phone',
-						sortable: true,
-						title: t('components.firmsTable.columns.phone'),
-						render: (record) => (
-							<Anchor href={`tel:${record.phone}`} className={classes.anchor}>
-								{record.phone}
-							</Anchor>
-						),
-					},
-					{
-						accessor: 'crn',
-						sortable: true,
-						title: t('components.firmsTable.columns.crn'),
-						width: 180,
-						cellsClassName: `${classes.crn} ${classes.between}`,
-						render: () => (
-							<>
-								<Text>1234567890</Text>
-								<CopyButton value={'1234567890'} timeout={2000}>
-									{({ copied, copy }) => (
-										<Tooltip
-											label={
-												copied
-													? t('constants.actions.copied.label')
-													: t('constants.actions.copy.label')
-											}
-										>
-											<ActionIcon
-												className={classes.copy}
-												color={copied ? 'teal' : 'gray'}
-												variant="light"
-												onClick={copy}
-											>
-												{copied ? (
-													<IconCheck size={14} />
-												) : (
-													<IconCopy size={14} />
+									return (
+										<>
+											<Group className={classes.group}>
+												{badges[0]}
+												{badges.length > 1 && (
+													<HoverCard position="top">
+														<HoverCard.Target>
+															<Badge variant="light">
+																+{badges.length - 1}
+															</Badge>
+														</HoverCard.Target>
+														<HoverCard.Dropdown
+															className={classes.HoverCard}
+														>
+															{badges.slice(1).map((badge) => badge)}
+														</HoverCard.Dropdown>
+													</HoverCard>
 												)}
+											</Group>
+										</>
+									);
+								},
+							},
+							{
+								accessor: 'crn',
+								sortable: true,
+								title: t('components.firmsTable.columns.crn'),
+								width: 180,
+								render: () => (
+									<Group className={classes.between}>
+										{/* TODO: change when firm is joined with application table */}
+										<Text>1234567890</Text>
+										<CopyButton value={'1234567890'} timeout={2000}>
+											{({ copied, copy }) => (
+												<Tooltip
+													label={
+														copied
+															? t('constants.actions.copied.label')
+															: t('constants.actions.copy.label')
+													}
+												>
+													<ActionIcon
+														className={classes.copy}
+														color={copied ? 'teal' : 'gray'}
+														variant="light"
+														onClick={copy}
+													>
+														{copied ? (
+															<IconCheck size={14} />
+														) : (
+															<IconCopy size={14} />
+														)}
+													</ActionIcon>
+												</Tooltip>
+											)}
+										</CopyButton>
+									</Group>
+								),
+							},
+							{
+								accessor: 'iban',
+								sortable: true,
+								title: t('components.firmsTable.columns.iban'),
+								width: 180,
+								render: () => (
+									<Group className={classes.between}>
+										<Text>1234567890</Text>
+										<CopyButton value={'1234567890'} timeout={2000}>
+											{({ copied, copy }) => (
+												<Tooltip
+													label={
+														copied
+															? t('constants.actions.copied.label')
+															: t('constants.actions.copy.label')
+													}
+												>
+													<ActionIcon
+														className={classes.copy}
+														color={copied ? 'teal' : 'gray'}
+														variant="light"
+														onClick={copy}
+													>
+														{copied ? (
+															<IconCheck size={14} />
+														) : (
+															<IconCopy size={14} />
+														)}
+													</ActionIcon>
+												</Tooltip>
+											)}
+										</CopyButton>
+									</Group>
+								),
+							},
+						],
+					},
+					{
+						id: 'representative',
+						title: t('components.firmsTable.groups.representative'),
+						columns: [
+							{
+								accessor: 'repName',
+								sortable: true,
+								title: t('components.firmsTable.columns.repName'),
+								width: 280,
+								ellipsis: true,
+								//	TODO: change when firm is joined with application table
+								// render: (record) => record.repName,
+								render: () => t('constants.na'),
+							},
+							{
+								accessor: 'repPosition',
+								sortable: true,
+								title: t('components.firmsTable.columns.repPosition'),
+								width: 160,
+								ellipsis: true,
+								//	TODO: change when firm is joined with application table
+								// render: (record) => record.repPosition || t('constants.na'),
+								render: () => t('constants.na'),
+							},
+							{
+								accessor: 'repEmail',
+								sortable: true,
+								title: t('components.firmsTable.columns.email'),
+								width: 200,
+								ellipsis: true,
+								//	TODO: change when firm is joined with application table
+								// render: (record) => (
+								// 	<Anchor
+								// 		href={`mailto:${record.repEmail}`}
+								// 		className={classes.anchor}
+								// 	>
+								// 		{record.repEmail}
+								// 	</Anchor>
+								// ),
+								// render: (record) => record.repPosition || t('constants.na'),
+								render: () => t('constants.na'),
+							},
+							{
+								accessor: 'repPhone',
+								sortable: true,
+								title: t('components.firmsTable.columns.phone'),
+								//	TODO: change when firm is joined with application table
+								// render: (record) => (
+								// 	<Anchor
+								// 		href={`tel:${record.repPhone}`}
+								// 		className={classes.anchor}
+								// 	>
+								// 		{record.repPhone}
+								// 	</Anchor>
+								// ),
+								render: () => t('constants.na'),
+							},
+							{
+								accessor: 'websites',
+								sortable: true,
+								title: t('components.firmsTable.columns.websites'),
+								width: 240,
+								ellipsis: true,
+								//	TODO: change when firm is joined with application table
+								// render: (record) =>
+								// 	record.websites.length > 0 ? (
+								// 		<Anchor
+								// 			href={record.websites[0]}
+								// 			className={classes.anchor}
+								// 		>
+								// 			{record.websites[0]}
+								// 		</Anchor>
+								// 	) : (
+								// 		t('constants.na')
+								// 	),
+								render: () => t('constants.na'),
+							},
+							{
+								accessor: 'address',
+								sortable: true,
+								title: t('components.firmsTable.columns.address'),
+								width: 320,
+								ellipsis: true,
+								//	TODO: change when firm is joined with application table
+								// render: (record) => record.address || t('constants.na'),
+								render: () => t('constants.na'),
+							},
+						],
+					},
+					{
+						id: 'miscellaneous',
+						title: t('components.firmsTable.groups.miscellaneous'),
+						columns: [
+							{
+								accessor: 'createdAt',
+								sortable: true,
+								title: t('components.firmsTable.columns.createdAt'),
+								render: (record) =>
+									DateTime.fromISO(record.createdAt).toLocaleString(
+										DateTime.DATETIME_SHORT,
+									),
+							},
+							{
+								accessor: 'invitedBy',
+								sortable: false,
+								title: t('components.firmsTable.columns.invitedBy'),
+								ellipsis: true,
+								render: () => (
+									//	TODO: add inviter id here
+									<Anchor
+										component={Link}
+										href={`/dashboard/a/admins/`}
+										className={`${classes.anchor} max-w-[160px]`}
+									>
+										Placeholder Admin
+									</Anchor>
+								),
+							},
+						],
+					},
+					{
+						id: 'actions',
+						title: '',
+						className: classes.actions,
+						columns: [
+							{
+								accessor: 'actions',
+								title: t('constants.actions.actions.column'),
+								titleClassName: classes.actions,
+								cellsClassName: classes.actions,
+								render: (record) => (
+									<Group className={classes.cell}>
+										<Tooltip
+											label={t(
+												'components.firmsTable.columns.actions.audit.tooltip',
+											)}
+											position="top"
+										>
+											<ActionIcon className={`${classes.button}`}>
+												<IconFileSearch size={16} />
 											</ActionIcon>
 										</Tooltip>
-									)}
-								</CopyButton>
-							</>
-						),
-					},
-					{
-						accessor: 'status',
-						sortable: false,
-						title: t('components.firmsTable.columns.status'),
-						width: 160,
-						cellsClassName: classes.status,
-						render: (record) => (
-							<FirmStatusBadge
-								status={record.emailVerified ? 'verified' : 'unverified'}
-							/>
-						),
-					},
-					{
-						accessor: 'createdAt',
-						sortable: true,
-						title: t('components.firmsTable.columns.createdAt'),
-						render: (record) =>
-							DateTime.fromISO(record.createdAt).toLocaleString(
-								DateTime.DATETIME_SHORT,
-							),
-					},
-					{
-						accessor: 'invitedBy',
-						sortable: false,
-						title: t('components.firmsTable.columns.invitedBy'),
-						ellipsis: true,
-						render: () => (
-							//	TODO: add inviter id here
-							<Anchor
-								component={Link}
-								href={`/dashboard/a/admins/`}
-								className={`${classes.anchor} max-w-[160px]`}
-							>
-								Placeholder Admin
-							</Anchor>
-						),
-					},
-					{
-						accessor: 'actions',
-						title: t('constants.actions.actions.column'),
-						titleClassName: classes.actions,
-						cellsClassName: classes.actions,
-						render: (record) => (
-							<Group className={classes.cell}>
-								<Tooltip
-									label={t('components.firmsTable.columns.actions.audit.tooltip')}
-									position="top"
-								>
-									<ActionIcon
-										className={`${classes.secondary} ${classes.button}`}
-									>
-										<IconFileSearch size={16} />
-									</ActionIcon>
-								</Tooltip>
-								<Tooltip
-									label={t(
-										'components.firmsTable.columns.actions.invite.tooltip',
-									)}
-									position="top"
-								>
-									<ActionIcon
-										className={`${classes.secondary} ${classes.button}`}
-									>
-										<IconMailShare size={16} />
-									</ActionIcon>
-								</Tooltip>
-								<Button
-									className={`${classes.primary} ${classes.button}`}
-									component={Link}
-									href={`/dashboard/a/firms/${record.id}`}
-									rightSection={<IconArrowUpRight size={16} />}
-								>
-									{t('constants.view.details.label')}
-								</Button>
-							</Group>
-						),
+										<Button
+											className={`${classes.primary} ${classes.button}`}
+											component={Link}
+											href={`/dashboard/a/firms/${record.id}`}
+											rightSection={<IconArrowUpRight size={16} />}
+										>
+											{t('constants.view.details.label')}
+										</Button>
+									</Group>
+								),
+							},
+						],
 					},
 				]}
 				records={firms.data.results}

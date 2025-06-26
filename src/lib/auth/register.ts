@@ -1,5 +1,6 @@
 'use server';
 
+import { getTranslations } from 'next-intl/server';
 import { cookies } from 'next/headers';
 import 'server-only';
 
@@ -18,7 +19,9 @@ const getDefaultData: (...errors: Array<string>) => ServerData<{}> = (...errors)
 
 type IFunctionSignature = (options: IRegisterOptions) => Promise<ServerData<{}>>;
 export const register: IFunctionSignature = async ({ registrationToken, password }) => {
-	if (!registrationToken) return getDefaultData('No registration token provided');
+	const t = await getTranslations();
+
+	if (!registrationToken) return getDefaultData(t('lib.auth.register.noToken'));
 
 	const querySettings: RequestInit = {
 		method: 'POST',
@@ -34,14 +37,9 @@ export const register: IFunctionSignature = async ({ registrationToken, password
 	);
 	const response = await fetch(queryUrl, querySettings);
 
-	if (!response.ok)
-		return getDefaultData(
-			'There was an error during registration, make sure the token is valid',
-		);
-
-	//	TODO: revert once backend returns cookies
-	// if (!response.headers || response.headers.getSetCookie().length === 0)
-	// 	return getDefaultData('No cookies set in response');
+	if (!response.ok) return getDefaultData(t('lib.auth.register.error'));
+	if (!response.headers || response.headers.getSetCookie().length === 0)
+		return getDefaultData(t('lib.noCookies'));
 
 	const cookieStore = await cookies();
 	extractSessionCookies(response, (key, value, exp) => {

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
 import { Header } from '@/pages/(auth)/(internal)/_components/Header';
@@ -11,13 +12,11 @@ export interface LoginProps {
 	form: ReactNode;
 }
 export default function Login({ form }: LoginProps) {
+	const t = useTranslations();
+
 	return (
 		<>
-			<Header
-				heading="Login to ETS"
-				subheading="Welcome to the ETS platform, where you can trade carbon credits and manage
-						emissions."
-			/>
+			<Header heading={t('auth.login.heading')} subheading={t('auth.login.subheading')} />
 			{form}
 		</>
 	);

@@ -6,18 +6,60 @@
 	}
 }
 
+.bg {
+	@apply absolute top-0 left-0 w-full h-full;
+	@apply -z-10;
+
+	> .pattern {
+		@apply absolute top-0 left-0 w-full h-[320px];
+
+		background:
+			linear-gradient(135deg, #f8f9fa 25%, transparent 25%) -16px 0,
+			linear-gradient(225deg, #f8f9fa 25%, transparent 25%) -16px 0,
+			linear-gradient(315deg, #f8f9fa 25%, transparent 25%),
+			linear-gradient(45deg, #f8f9fa 25%, transparent 25%);
+		background-size: 32px 32px;
+		background-color: #ffffff;
+	}
+
+	> .gradient {
+		@apply absolute top-0 left-0 w-full h-[320px];
+		@apply opacity-75;
+
+		background: linear-gradient(
+			to top,
+			rgba(255, 255, 255, 1) 25%,
+			rgba(255, 255, 255, 0) 100%
+		);
+	}
+}
+
 * {
 	@mixin larger-than $mantine-breakpoint-sm {
 		.root {
 			@apply gap-8;
 		}
 	}
-	@mixin larger-than $mantine-breakpoint-md {
-		.root {
-		}
-	}
-	@mixin larger-than $mantine-breakpoint-xl {
-		.root {
+
+	@mixin dark {
+		.bg {
+			> .pattern {
+				background:
+					linear-gradient(135deg, #141517 25%, transparent 25%) -16px 0,
+					linear-gradient(225deg, #141517 25%, transparent 25%) -16px 0,
+					linear-gradient(315deg, #141517 25%, transparent 25%),
+					linear-gradient(45deg, #141517 25%, transparent 25%);
+				background-size: 32px 32px;
+				background-color: #1a1b1e;
+			}
+
+			> .gradient {
+				background: linear-gradient(
+					to top,
+					rgba(26, 27, 30, 1) 25%,
+					rgba(26, 27, 30, 0) 100%
+				);
+			}
 		}
 	}
 }

@@ -1,3 +1,4 @@
+import { camelCase } from 'change-case/keys';
 import { jwtDecode } from 'jwt-decode';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
@@ -32,28 +33,39 @@ export const createSession = async (req: NextRequest, res: NextResponse) => {
 	});
 };
 
+interface IValidationResponse {
+	isAuthenticated: boolean;
+	refreshed: boolean;
+	userId: string;
+	role: string;
+	message: string;
+	error: string | null;
+}
 export const verifySession = async (req: NextRequest, res: NextResponse) => {
 	const accessToken = req.cookies.get('ets_access_token');
 	const refreshToken = req.cookies.get('ets_refresh_token');
-	const sessionCookie = req.cookies.get('ets_session');
 
 	//	Initial check for tokens
 	if (!accessToken || !refreshToken) return null;
-	const { exp: accessExp } = jwtDecode(accessToken.value);
-	const { exp: refreshExp } = jwtDecode(refreshToken.value);
 
-	//	If the access token is expired, refresh the tokens
-	if ((accessExp || 0) < Date.now() / 1000) {
-		const initialSessionCookie = `ets_access_token=${accessToken.value}; ets_refresh_token=${refreshToken.value}`;
-		const queryUrl = new URL('/v1/auth/refresh', process.env.NEXT_PUBLIC_BACKEND_URL);
-		const response = await fetch(queryUrl, {
-			method: 'POST',
-			headers: {
-				Cookie: initialSessionCookie,
-			},
-		});
-		if (!response.ok) return null;
+	//	Validate the tokens by sending to server
+	let sessionCookie =
+		req.cookies.get('ets_session')?.value ||
+		`ets_access_token=${accessToken.value}; ets_refresh_token=${refreshToken.value}`;
+	const queryUrl = new URL('/v1/auth/validate', process.env.NEXT_PUBLIC_BACKEND_URL);
+	const response = await fetch(queryUrl, {
+		method: 'GET',
+		headers: {
+			Cookie: sessionCookie,
+		},
+	});
 
+	if (!response.ok) return null;
+
+	const data = camelCase(await response.json(), 5) as IValidationResponse;
+	if (!data.isAuthenticated) return null;
+
+	if (data.refreshed) {
 		const cookies = extractSessionCookies(response, (key, value, exp) => {
 			res.cookies.set(key, value, {
 				httpOnly: true,
@@ -63,24 +75,10 @@ export const verifySession = async (req: NextRequest, res: NextResponse) => {
 				path: '/',
 			});
 		});
-		return cookies[0].value;
+		sessionCookie = cookies[0].value;
 	}
 
-	//	If the session cookie is not yet set, create it
-	if (!sessionCookie) {
-		const sessionCookieValue = `ets_access_token=${accessToken.value}; ets_refresh_token=${refreshToken.value}`;
-		res.cookies.set('ets_session', sessionCookieValue, {
-			httpOnly: true,
-			secure: true,
-			expires: refreshExp ? refreshExp * 1000 : Date.now(),
-			sameSite: 'lax',
-			path: '/',
-		});
-		return sessionCookieValue;
-	}
-
-	//	In all other cases, return the session cookie
-	return sessionCookie?.value;
+	return sessionCookie;
 };
 
 export const getSession = async () => {

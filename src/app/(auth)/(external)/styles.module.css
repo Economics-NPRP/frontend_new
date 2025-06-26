@@ -1,7 +1,30 @@
 .root {
-	@apply w-screen h-screen;
-	@apply items-stretch justify-center;
-	@apply px-32 py-20 gap-8;
+	@apply w-screen min-h-screen;
+	@apply p-4 items-stretch justify-start;
+	@apply gap-8;
+
+	> .bg {
+		@apply fixed top-0 left-0 w-full h-full;
+		@apply overflow-hidden;
+		@apply -z-10;
+
+		> .graphic {
+			@apply absolute;
+			@apply border border-solid border-gray-200 rounded-full;
+
+			&:nth-child(1) {
+				@apply size-[800px] -top-[644px] -left-[280px];
+			}
+
+			&:nth-child(2) {
+				@apply size-[640px] top-[25vh] -right-[520px];
+			}
+
+			&:nth-child(3) {
+				@apply size-[1000px] -bottom-[920px] left-[10vw];
+			}
+		}
+	}
 
 	> .header {
 		@apply justify-between flex-nowrap;
@@ -16,15 +39,19 @@
 	}
 
 	> .content {
-		@apply my-auto gap-8;
-		@apply items-center justify-center;
+		@apply my-auto gap-12;
+		@apply items-center justify-start;
+
+		> .stepper {
+			@apply flex flex-col items-center;
+		}
 
 		.section {
-			@apply w-[480px];
-			@apply items-stretch;
+			@apply self-stretch;
 
 			&.header {
 				@apply gap-1;
+				@apply items-stretch;
 
 				> .heading {
 					@apply text-center heading-2;
@@ -35,17 +62,74 @@
 				}
 			}
 
+			&.steps {
+				@apply mb-8;
+			}
+
 			&.inputs {
-				@apply gap-2;
+				@apply gap-4;
+				@apply flex flex-col items-stretch;
+
+				> .avatar {
+					@apply self-center text-center;
+					@apply flex flex-col items-center;
+
+					> .input {
+						@apply mt-4;
+					}
+				}
+
+				> .sectors {
+					@apply grid grid-cols-1 gap-4;
+
+					> div[role='group'] {
+						@apply contents;
+					}
+				}
+			}
+
+			&.message {
+				@apply h-[50vh];
+				@apply gap-1;
+				@apply items-stretch justify-center;
+
+				> .icon {
+					@apply self-center mb-4;
+					@apply text-green-600;
+				}
+
+				> .heading {
+					@apply text-center heading-2;
+				}
+
+				> .subheading {
+					@apply text-center paragraph-sm;
+				}
+
+				> .button {
+					@apply w-[320px] mt-6 self-center;
+				}
 			}
 
 			&.action {
 				@apply gap-2;
+
+				> .button {
+					@apply flex-auto;
+
+					&.secondary {
+						@apply bg-white;
+
+						&:hover {
+							@apply bg-gray-50;
+						}
+					}
+				}
 			}
 
 			> .details {
 				@apply p-4;
-				@apply border border-gray-300 border-solid;
+				@apply border bg-white border-gray-300 border-solid;
 				@apply shadow-sm;
 
 				> .avatar {
@@ -87,6 +171,132 @@
 
 		form {
 			@apply contents;
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-xs {
+		.root > .content .section {
+			@apply w-[480px] self-center;
+
+			&.steps {
+				@apply w-[800px];
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root > .content .section.inputs {
+			&:has(> .sectors),
+			&:has(> .summary) {
+				@apply w-[720px];
+			}
+
+			> .sectors {
+				@apply grid-cols-2;
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+			@apply px-32 py-12;
+
+			> .content .section.inputs {
+				&:has(> .sectors) {
+					@apply w-[960px];
+				}
+
+				&:has(> .summary) {
+					@apply w-[800px];
+				}
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root > .content .section.inputs {
+			&:has(> .sectors) {
+				@apply w-[1200px];
+			}
+
+			> .sectors {
+				@apply grid-cols-3;
+			}
+		}
+	}
+
+	@mixin dark {
+		.root {
+			> .bg > .graphic {
+				@apply border-dark-500;
+			}
+
+			> .header > .logo {
+				@apply text-white;
+			}
+
+			> .content .section {
+				&.message > .button {
+					@apply bg-dark-400 text-white;
+
+					&:hover {
+						@apply bg-dark-300;
+					}
+
+					&:disabled {
+						@apply opacity-25;
+
+						&:hover {
+							@apply bg-dark-400;
+						}
+					}
+				}
+
+				&.action > .button {
+					&.success {
+						@apply bg-green-600 text-white;
+
+						&:hover {
+							@apply bg-green-700;
+						}
+
+						&:disabled {
+							@apply opacity-25;
+
+							&:hover {
+								@apply bg-green-600;
+							}
+						}
+					}
+
+					&.primary {
+						@apply bg-dark-400 text-white;
+
+						&:hover {
+							@apply bg-dark-300;
+						}
+
+						&:disabled {
+							@apply opacity-25;
+
+							&:hover {
+								@apply bg-dark-400;
+							}
+						}
+					}
+
+					&.secondary {
+						@apply bg-dark-600 border-dark-400 text-white;
+
+						&:hover {
+							@apply bg-dark-500;
+						}
+					}
+				}
+
+				> .details {
+					@apply bg-dark-600 border-dark-400;
+				}
+			}
 		}
 	}
 }

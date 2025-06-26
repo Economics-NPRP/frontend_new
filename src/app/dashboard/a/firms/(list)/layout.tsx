@@ -14,9 +14,10 @@ export const metadata: Metadata = {
 };
 
 export interface FirmsListProps {
+	subbanners: ReactNode;
 	table: ReactNode;
 }
-export default function FirmsList({ table }: FirmsListProps) {
+export default function FirmsList({ subbanners, table }: FirmsListProps) {
 	const t = useTranslations();
 
 	return withProviders(
@@ -35,6 +36,7 @@ export default function FirmsList({ table }: FirmsListProps) {
 					},
 				]}
 			/>
+			{subbanners}
 			{table}
 		</Stack>,
 		{ provider: PaginatedFirmsProvider },

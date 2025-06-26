@@ -1,6 +1,7 @@
 'use server';
 
 import { camelCase } from 'change-case/keys';
+import { getTranslations } from 'next-intl/server';
 import { cookies } from 'next/headers';
 import 'server-only';
 
@@ -14,6 +15,10 @@ const getDefaultData: (...errors: Array<string>) => ServerData<{}> = (...errors)
 
 type IFunctionSignature = (otp: string) => Promise<ServerData<{}>>;
 export const verifyOtp: IFunctionSignature = async (otp) => {
+	const t = await getTranslations();
+
+	if (!otp || otp.length !== 6) return getDefaultData(t('lib.auth.otp.invalid'));
+
 	const cookieStore = await cookies();
 	const otpToken = cookieStore.get('ets_otp_token');
 	const querySettings: RequestInit = {
@@ -33,11 +38,11 @@ export const verifyOtp: IFunctionSignature = async (otp) => {
 	//	If theres an issue, return the default data with errors
 	if (response.status === 422)
 		//	TODO: change message once otp tokens dont expire within 3 minutes, change to 'please resend otp'
-		return getDefaultData('OTP code may have expired, please try logging in again.');
+		return getDefaultData(t('lib.auth.otp.expired'));
 	if (rawData.detail) return getDefaultData(JSON.stringify(rawData.detail ?? ''));
 	if (rawData.errors) return getDefaultData(...rawData.errors);
 	if (!response.headers || response.headers.getSetCookie().length === 0)
-		return getDefaultData('No cookies set in response');
+		return getDefaultData(t('lib.noCookies'));
 
 	//	Extract access and refresh tokens from the response cookies and delete otp cookie
 	extractSessionCookies(response, (key, value, exp) => {

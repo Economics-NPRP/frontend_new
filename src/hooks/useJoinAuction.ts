@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl';
+
 import { throwError } from '@/helpers';
 import { joinAuction } from '@/lib/auctions';
 import { ServerData } from '@/types';
@@ -9,6 +11,7 @@ type JoinAuctionProps = (
 	onSuccess?: () => void,
 ) => UseMutationResult<ServerData<{}>, Error, void, unknown>;
 export const useJoinAuction: JoinAuctionProps = (id, onSuccess) => {
+	const t = useTranslations();
 	const queryClient = useQueryClient();
 
 	return useMutation({
@@ -25,7 +28,7 @@ export const useJoinAuction: JoinAuctionProps = (id, onSuccess) => {
 		onError: (error: Error) => {
 			notifications.show({
 				color: 'red',
-				title: 'There was a problem joining the auction',
+				title: t('lib.auction.join.error'),
 				message: error.message,
 				position: 'bottom-center',
 			});

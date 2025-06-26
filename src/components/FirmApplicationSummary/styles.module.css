@@ -1,0 +1,11 @@
+.root {
+	@apply items-center self-stretch;
+
+	> .avatar {
+		@apply size-24;
+	}
+
+	.sectors {
+		@apply gap-2;
+	}
+}

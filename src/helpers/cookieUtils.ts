@@ -41,9 +41,6 @@ export const extractSessionCookies: IFunctionSignature = (response, handler) => 
 	const sessionCookie = `ets_access_token=${accessToken}; ets_refresh_token=${refreshToken}`;
 	handler('ets_session', sessionCookie, sessionExp);
 
-	//	Make the access token expire at the same time as the refresh token so we can reference the old one during refresh
-	handler('ets_access_token', accessToken, sessionExp);
-
 	return [
 		{
 			key: 'ets_session',

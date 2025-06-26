@@ -2,7 +2,8 @@ import { InferInput, InferOutput, object, omit } from 'valibot';
 
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
 
-import { BaseUserDataSchema, DefaultUserData } from './UserData';
+import { DefaultUserData } from './GeneralUserData';
+import { BaseUserDataSchema } from './UserData';
 
 export const BaseBidDataSchema = object({
 	id: UuidSchema(),

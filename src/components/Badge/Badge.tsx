@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 
 import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
 import { useAuctionAvailability } from '@/hooks';
-import { AuctionType, IAuctionData } from '@/schema/models';
+import { AuctionType, FirmApplicationStatus, IAuctionData } from '@/schema/models';
 import { colors } from '@/styles/mantine';
 import { AuctionCategory } from '@/types';
 import { ActionIcon, Badge, BadgeProps, Skeleton, Tooltip } from '@mantine/core';
@@ -134,13 +134,12 @@ export const EndingSoonBadge = ({ auction, className, ...props }: EndingSoonBadg
 };
 
 export interface FirmStatusBadgeProps extends BaseBadgeProps {
-	//	TODO: replace with actual firm status type from types folder
-	status: 'verified' | 'unverified' | 'uninvited';
+	status: FirmApplicationStatus;
 }
 export const FirmStatusBadge = ({ status, className, ...props }: FirmStatusBadgeProps) => {
 	const t = useTranslations();
 
-	if (status === 'verified')
+	if (status === 'approved')
 		return (
 			<BaseBadge
 				className={`${classes.root} ${classes.firmStatus} ${classes.verified} ${className}`}
@@ -148,19 +147,19 @@ export const FirmStatusBadge = ({ status, className, ...props }: FirmStatusBadge
 				color="green"
 				{...props}
 			>
-				{t('constants.firmStatus.verified')}
+				{t('constants.firmStatus.approved')}
 			</BaseBadge>
 		);
 
-	if (status === 'unverified')
+	if (status === 'rejected')
 		return (
 			<BaseBadge
 				className={`${classes.root} ${classes.firmStatus} ${classes.unverified} ${className}`}
 				variant="light"
-				color="orange"
+				color="red"
 				{...props}
 			>
-				{t('constants.firmStatus.unverified')}
+				{t('constants.firmStatus.rejected')}
 			</BaseBadge>
 		);
 
@@ -168,9 +167,10 @@ export const FirmStatusBadge = ({ status, className, ...props }: FirmStatusBadge
 		<BaseBadge
 			className={`${classes.root} ${classes.firmStatus} ${classes.uninvited} ${className}`}
 			variant="light"
+			color="orange"
 			{...props}
 		>
-			{t('constants.firmStatus.uninvited')}
+			{t('constants.firmStatus.pending')}
 		</BaseBadge>
 	);
 };

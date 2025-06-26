@@ -1,6 +1,7 @@
 import { InferInput, InferOutput, boolean, object, omit } from 'valibot';
 
-import { BaseUserDataSchema, DefaultUserData } from '@/schema/models/UserData';
+import { DefaultUserData } from './GeneralUserData';
+import { BaseUserDataSchema } from './UserData';
 
 export const BaseAdminDataSchema = object({
 	...BaseUserDataSchema.entries,

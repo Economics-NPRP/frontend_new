@@ -9,20 +9,34 @@ import {
 	object,
 	partialCheck,
 	pipe,
+	regex,
 	string,
 	trim,
 } from 'valibot';
 
+export const PasswordComplexityRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/;
+//	TODO: use these regexes when i18n is done for schemas
+export const PasswordUppercaseRegex = /[A-Z]/;
+export const PasswordLowercaseRegex = /[a-z]/;
+export const PasswordNumberRegex = /\d/;
+export const PasswordSymbolRegex = /[^A-Za-z\d]/;
+
 export const LoginDataSchema = object({
 	email: pipe(string(), trim(), nonEmpty(), email()),
-	password: pipe(string(), trim(), nonEmpty(), minLength(8)),
+	password: pipe(string(), trim(), nonEmpty(), minLength(8), regex(PasswordComplexityRegex)),
 	remember: boolean(),
 });
 
 export const CreateUserPasswordSchema = pipe(
 	object({
-		password: pipe(string(), trim(), nonEmpty(), minLength(8)),
-		confirmPassword: pipe(string(), trim(), nonEmpty(), minLength(8)),
+		password: pipe(string(), trim(), nonEmpty(), minLength(8), regex(PasswordComplexityRegex)),
+		confirmPassword: pipe(
+			string(),
+			trim(),
+			nonEmpty(),
+			minLength(8),
+			regex(PasswordComplexityRegex),
+		),
 	}),
 	forward(
 		partialCheck(

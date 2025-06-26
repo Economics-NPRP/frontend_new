@@ -8,6 +8,7 @@ import { Id } from '@/components/Id';
 import { WithSkeleton } from '@/components/WithSkeleton';
 import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
 import { SingleFirmContext } from '@/contexts';
+import { InvitationModalContext } from '@/pages/dashboard/a/firms/_components/InvitationModal';
 import { AuctionCategory } from '@/types';
 import {
 	ActionIcon,
@@ -39,6 +40,7 @@ import classes from './styles.module.css';
 export default function Details() {
 	const t = useTranslations();
 	const firm = useContext(SingleFirmContext);
+	const invitationModal = useContext(InvitationModalContext);
 
 	const badges = useMemo(
 		() =>
@@ -163,10 +165,17 @@ export default function Details() {
 				<Button className={classes.button} color="red" leftSection={<IconBan size={16} />}>
 					{t('dashboard.admin.firms.details.details.actions.suspend.label')}
 				</Button>
-				<Button className={classes.button} leftSection={<IconFileSearch size={16} />}>
+				<Button
+					className={`${classes.primary} ${classes.button}`}
+					leftSection={<IconFileSearch size={16} />}
+				>
 					{t('dashboard.admin.firms.details.details.actions.audit.label')}
 				</Button>
-				<Button className={classes.button} leftSection={<IconMailShare size={16} />}>
+				<Button
+					className={`${classes.primary} ${classes.button}`}
+					leftSection={<IconMailShare size={16} />}
+					onClick={() => invitationModal.open(firm.data)}
+				>
 					{t('dashboard.admin.firms.details.details.actions.invite.label')}
 				</Button>
 			</Group>

@@ -1,6 +1,7 @@
 'use server';
 
 import { camelCase } from 'change-case/keys';
+import { getTranslations } from 'next-intl/server';
 import { cache } from 'react';
 import 'server-only';
 
@@ -30,8 +31,10 @@ type IFunctionSignature = (
 ) => Promise<OffsetPaginatedData<IBidData>>;
 export const getPaginatedWinningBids: IFunctionSignature = cache(
 	async ({ auctionId, page, perPage }) => {
+		const t = await getTranslations();
+
 		const cookieHeaders = await getSession();
-		if (!cookieHeaders) return getDefaultData('You must be logged in to access this resource.');
+		if (!cookieHeaders) return getDefaultData(t('lib.notLoggedIn'));
 		const querySettings: RequestInit = {
 			method: 'GET',
 			headers: {
@@ -49,7 +52,7 @@ export const getPaginatedWinningBids: IFunctionSignature = cache(
 		const rawData = camelCase(await response.json(), 5) as OffsetPaginatedData<unknown>;
 
 		//	If theres an issue, return the default data with errors
-		if (!rawData) return getDefaultData('No data was returned.');
+		if (!rawData) return getDefaultData(t('lib.noData'));
 		if (rawData.detail) return getDefaultData(rawData.detail ?? '');
 		if (rawData.errors) return getDefaultData(...rawData.errors);
 
