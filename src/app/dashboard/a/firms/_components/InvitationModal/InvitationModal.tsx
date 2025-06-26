@@ -1,39 +1,59 @@
 'use client';
 
-import { useInviteUser } from 'hooks/useInviteUser';
+import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { useTranslations } from 'next-intl';
 import { PropsWithChildren, useCallback, useContext, useState } from 'react';
+import { minLength, nonEmpty, object, pipe, string, trim } from 'valibot';
 
 import { FirmApplicationSummary } from '@/components/FirmApplicationSummary';
+import { useApplicationReview } from '@/hooks';
 import {
 	DefaultInvitationModalContextData,
 	InvitationModalContext,
 } from '@/pages/dashboard/a/firms/_components/InvitationModal/constants';
-import { IFirmData } from '@/schema/models';
-import { Button, Group, Modal, Stack, Text, Title } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import { IconSend } from '@tabler/icons-react';
+import { IFirmApplication } from '@/schema/models';
+import {
+	Button,
+	Group,
+	Modal,
+	ModalProps,
+	Stack,
+	Text,
+	Textarea,
+	Title,
+	useModalsStack,
+} from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { IconCheck, IconX } from '@tabler/icons-react';
+import { useQueryClient } from '@tanstack/react-query';
 
 import classes from './styles.module.css';
 
-export const InvitationModal = () => {
+export const InvitationModal = ({ className, ...props }: ModalProps) => {
 	const t = useTranslations();
-	const { firmData, opened, close } = useContext(InvitationModalContext);
+	const queryClient = useQueryClient();
+	const { data, openReject, close } = useContext(InvitationModalContext);
 
-	const inviteUser = useInviteUser(firmData.id, () => close());
+	const { approve } = useApplicationReview(data.id, {
+		onApproveSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ['dashboard', 'admin', 'paginatedFirmApplications'],
+			});
+			close();
+		},
+	});
 
 	return (
 		<Modal
 			classNames={{
-				root: classes.root,
+				root: `${classes.root} ${className}`,
 				inner: classes.inner,
 				content: classes.content,
 				body: classes.body,
 			}}
-			opened={opened}
-			onClose={close}
 			withCloseButton={false}
 			centered
+			{...props}
 		>
 			<Stack className={classes.header}>
 				<Title order={2} className={classes.title}>
@@ -43,7 +63,7 @@ export const InvitationModal = () => {
 					{t('dashboard.admin.firms.invitationModal.description')}
 				</Text>
 			</Stack>
-			<FirmApplicationSummary firmData={firmData} />
+			<FirmApplicationSummary firmData={data} />
 			<Group className={classes.actions}>
 				<Button
 					className={`${classes.secondary} ${classes.button}`}
@@ -54,41 +74,149 @@ export const InvitationModal = () => {
 				</Button>
 				<Button
 					className={classes.button}
-					color="green"
-					rightSection={<IconSend size={16} />}
-					loading={inviteUser.isPending}
-					onClick={() => inviteUser.mutate()}
+					color="red"
+					rightSection={<IconX size={16} />}
+					onClick={openReject}
 				>
-					{t('dashboard.admin.firms.invitationModal.actions.cta.label')}
+					{t('dashboard.admin.firms.invitationModal.actions.reject.label')}
+				</Button>
+				<Button
+					className={`${classes.primary} ${classes.button}`}
+					color="green"
+					rightSection={<IconCheck size={16} />}
+					loading={approve.isPending}
+					onClick={() => approve.mutate()}
+				>
+					{t('dashboard.admin.firms.invitationModal.actions.approve.label')}
 				</Button>
 			</Group>
 		</Modal>
 	);
 };
 
+export const RejectionModal = ({ className, ...props }: ModalProps) => {
+	const t = useTranslations();
+	const queryClient = useQueryClient();
+	const { data, close, closeReject } = useContext(InvitationModalContext);
+
+	const { reject } = useApplicationReview(data.id);
+
+	const form = useForm({
+		mode: 'uncontrolled',
+		validate: valibotResolver(
+			object({ reason: pipe(string(), trim(), nonEmpty(), minLength(10)) }),
+		),
+	});
+
+	const handleSubmit = useCallback(
+		({ reason }: { reason: string }) => {
+			form.setSubmitting(true);
+			reject.mutate(reason, {
+				onSuccess: () => {
+					form.setSubmitting(false);
+					queryClient.invalidateQueries({
+						queryKey: ['dashboard', 'admin', 'paginatedFirmApplications'],
+					});
+					closeReject();
+					close();
+				},
+				onError: (error: Error) => {
+					form.setSubmitting(false);
+					form.setErrors({ reason: error.message });
+				},
+			});
+		},
+		[form, reject, close],
+	);
+
+	return (
+		<Modal
+			classNames={{
+				root: `${classes.root} ${className}`,
+				inner: classes.inner,
+				content: classes.content,
+				body: classes.body,
+			}}
+			withCloseButton={false}
+			centered
+			{...props}
+		>
+			<Stack className={classes.header}>
+				<Title order={2} className={classes.title}>
+					{t('dashboard.admin.firms.rejectionModal.title')}
+				</Title>
+				<Text className={classes.description}>
+					{t('dashboard.admin.firms.rejectionModal.description')}
+				</Text>
+			</Stack>
+			<form onSubmit={form.onSubmit(handleSubmit)}>
+				<Textarea
+					label={t('dashboard.admin.firms.rejectionModal.reason.label')}
+					description={t('dashboard.admin.firms.rejectionModal.reason.description')}
+					placeholder={t('dashboard.admin.firms.rejectionModal.reason.placeholder')}
+					resize="vertical"
+					minRows={4}
+					minLength={10}
+					required
+					autosize
+					key={form.key('reason')}
+					{...form.getInputProps('reason')}
+				/>
+				<Group className={classes.actions}>
+					<Button
+						className={`${classes.secondary} ${classes.button}`}
+						variant="outline"
+						onClick={closeReject}
+					>
+						{t('constants.actions.cancel.label')}
+					</Button>
+					<Button
+						className={`${classes.primary} ${classes.button}`}
+						color="red"
+						rightSection={<IconX size={16} />}
+						type="submit"
+						loading={form.submitting}
+					>
+						{t('dashboard.admin.firms.rejectionModal.actions.reject.label')}
+					</Button>
+				</Group>
+			</form>
+		</Modal>
+	);
+};
+
 export const InvitationModalProvider = ({ children }: PropsWithChildren) => {
-	const [opened, { open, close }] = useDisclosure(DefaultInvitationModalContextData.opened);
-	const [firmData, setFirmData] = useState<IFirmData>(DefaultInvitationModalContextData.firmData);
+	const [data, setData] = useState<IFirmApplication>(DefaultInvitationModalContextData.data);
+	const stack = useModalsStack(['root', 'reject']);
 
 	const handleOpen = useCallback(
-		(firmData: IFirmData) => {
-			open();
-			setFirmData(firmData);
+		(data: IFirmApplication) => {
+			stack.open('root');
+			setData(data);
 		},
-		[open, setFirmData],
+		[stack, setData],
 	);
+
+	const handleClose = useCallback(() => {
+		stack.close('root');
+		setData(DefaultInvitationModalContextData.data);
+	}, [stack, setData]);
 
 	return (
 		<InvitationModalContext.Provider
 			value={{
-				firmData,
-				opened,
+				data,
 				open: handleOpen,
-				close,
+				close: handleClose,
+				openReject: () => stack.open('reject'),
+				closeReject: () => stack.close('reject'),
 			}}
 		>
 			{children}
-			<InvitationModal />
+			<Modal.Stack>
+				<InvitationModal {...stack.register('root')} />
+				<RejectionModal {...stack.register('reject')} />
+			</Modal.Stack>
 		</InvitationModalContext.Provider>
 	);
 };

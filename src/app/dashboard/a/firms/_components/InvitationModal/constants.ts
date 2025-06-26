@@ -2,20 +2,22 @@
 
 import { createContext } from 'react';
 
-import { DefaultFirmData, IFirmData } from '@/schema/models';
+import { DefaultFirmApplication, IFirmApplication } from '@/schema/models';
 
 export const DefaultInvitationModalContextData: IInvitationModalContext = {
-	firmData: DefaultFirmData,
-	opened: false,
+	data: DefaultFirmApplication,
 	open: () => {},
 	close: () => {},
+	openReject: () => {},
+	closeReject: () => {},
 };
 
 export interface IInvitationModalContext {
-	firmData: IFirmData;
-	opened: boolean;
-	open: (firmData: IFirmData) => void;
+	data: IFirmApplication;
+	open: (data: IFirmApplication) => void;
 	close: () => void;
+	openReject: () => void;
+	closeReject: () => void;
 }
 
 export const InvitationModalContext = createContext<IInvitationModalContext>(

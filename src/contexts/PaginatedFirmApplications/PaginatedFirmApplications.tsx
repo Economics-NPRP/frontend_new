@@ -1,11 +1,12 @@
 'use client';
 
-import { createContext, useState } from 'react';
+import { createContext, useMemo, useState } from 'react';
 
-import { KeysetPaginatedQueryProvider } from '@/contexts';
+import { FirmApplicationsFilter } from '@/components/Tables/FirmApplications';
+import { KeysetPaginatedQueryProvider, KeysetPaginatedQueryProviderProps } from '@/contexts';
 import { throwError } from '@/helpers';
 import { getPaginatedApplications } from '@/lib/users/firms/applications';
-import { FirmApplicationStatus, IFirmApplication } from '@/schema/models';
+import { IFirmApplication } from '@/schema/models';
 import {
 	KeysetPaginatedContextState,
 	KeysetPaginatedProviderProps,
@@ -14,10 +15,14 @@ import {
 
 export interface IPaginatedFirmApplicationsContext
 	extends KeysetPaginatedContextState<IFirmApplication> {
-	status?: FirmApplicationStatus;
-	setStatus?: (status: FirmApplicationStatus) => void;
+	status: FirmApplicationsFilter;
+	setStatus: (status: FirmApplicationsFilter) => void;
 }
-const DefaultData = getDefaultKeysetPaginatedContextState<IFirmApplication>();
+const DefaultData = {
+	...getDefaultKeysetPaginatedContextState<IFirmApplication>(),
+	status: 'pending' as FirmApplicationsFilter,
+	setStatus: () => {},
+};
 const Context = createContext<IPaginatedFirmApplicationsContext>(DefaultData);
 
 export const PaginatedFirmApplicationsProvider = ({
@@ -25,7 +30,25 @@ export const PaginatedFirmApplicationsProvider = ({
 	defaultPerPage,
 	children,
 }: KeysetPaginatedProviderProps) => {
-	const [status, setStatus] = useState<FirmApplicationStatus | undefined>(undefined);
+	const [status, setStatus] = useState<FirmApplicationsFilter>(DefaultData.status);
+
+	const queryKey = useMemo(
+		() => ['dashboard', 'admin', 'paginatedFirmApplications', status],
+		[status],
+	);
+	const queryFn = useMemo<
+		KeysetPaginatedQueryProviderProps<IPaginatedFirmApplicationsContext>['queryFn']
+	>(
+		() => (cursor, perPage) => () =>
+			throwError(
+				getPaginatedApplications({
+					status,
+					cursor,
+					perPage,
+				}),
+			),
+		[status],
+	);
 
 	return (
 		<KeysetPaginatedQueryProvider
@@ -33,16 +56,8 @@ export const PaginatedFirmApplicationsProvider = ({
 			defaultPerPage={defaultPerPage}
 			context={Context}
 			defaultData={DefaultData}
-			queryKey={['dashboard', 'admin', 'paginatedFirmApplications']}
-			queryFn={(cursor, perPage) => () =>
-				throwError(
-					getPaginatedApplications({
-						status,
-						cursor,
-						perPage,
-					}),
-				)
-			}
+			queryKey={queryKey}
+			queryFn={queryFn}
 			children={children}
 			status={status}
 			setStatus={setStatus}

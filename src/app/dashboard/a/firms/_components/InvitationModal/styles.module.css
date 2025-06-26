@@ -9,6 +9,14 @@
 			@apply flex flex-col items-stretch justify-center;
 			@apply gap-4 p-0;
 
+			form {
+				@apply contents;
+
+				textarea {
+					@apply h-[200px];
+				}
+			}
+
 			> .header {
 				@apply gap-0 flex-nowrap;
 
@@ -21,11 +29,15 @@
 				}
 			}
 
-			> .actions {
-				@apply gap-2 justify-center flex-nowrap;
+			.actions {
+				@apply flex-col gap-2 justify-center flex-nowrap;
 
 				> .button {
-					@apply flex-[50%];
+					@apply self-stretch;
+
+					&.primary {
+						@apply flex-auto;
+					}
 				}
 			}
 		}
@@ -45,11 +57,15 @@
 					@apply gap-1;
 				}
 
-				> .actions {
-					@apply self-center;
+				.actions {
+					@apply flex-row self-center;
 
 					> .button {
-						@apply w-[200px];
+						@apply w-[120px];
+
+						&.primary {
+							@apply w-[unset] flex-auto;
+						}
 					}
 				}
 			}
@@ -57,7 +73,7 @@
 	}
 
 	@mixin dark {
-		.root > .inner > .content > .body > .actions > .button.secondary {
+		.root > .inner > .content > .body .actions > .button.secondary {
 			@apply bg-dark-700 border-dark-400 text-white;
 
 			&:hover {

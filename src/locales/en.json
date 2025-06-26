@@ -1108,11 +1108,8 @@
         "status": "Status",
         "invitedBy": "Invited By",
         "actions": {
-          "audit": {
-            "tooltip": "Audit this company and view their activity"
-          },
-          "invite": {
-            "tooltip": "Invite this company to the platform"
+          "review": {
+            "tooltip": "Review this company's details and either approve or reject their application"
           }
         },
         "iban": "IBAN",
@@ -1132,13 +1129,8 @@
         "placeholder": "Search for a specific company..."
       },
       "actions": {
-        "audit": {
-          "default": "Audit {value, plural, =0 {Companies} =1 {Company} other {Companies}}",
-          "short": "Audit"
-        },
-        "invite": {
-          "default": "Invite {value, plural, =0 {Companies} =1 {Company} other {Companies}}",
-          "short": "Invite"
+        "review": {
+          "default": "Review Application"
         }
       },
       "groups": {
@@ -1234,12 +1226,29 @@
           }
         },
         "invitationModal": {
-          "title": "Invite Company To ETS",
-          "description": "Review the account summary below to confirm the details of the company you are inviting.",
+          "title": "Review Company Application",
+          "description": "Review the account summary below and  decide whether to approve or reject the application. If approved, an invitation will be sent to the company to join the ETS platform.",
           "actions": {
-            "cta": {
-              "label": "Send Invite"
+            "reject": {
+              "label": "Reject"
+            },
+            "approve": {
+              "label": "Approve and Send Invitation"
             }
+          }
+        },
+        "rejectionModal": {
+          "title": "Reject Company Application",
+          "description": "Are you sure you want to reject this company application? The user will be notified with the reason you provide.",
+          "actions": {
+            "reject": {
+              "label": "Reject Application"
+            }
+          },
+          "reason": {
+            "label": "Rejection Reason",
+            "placeholder": "Enter reason...",
+            "description": "Please provide a reason for rejecting this application. The user will be notified with this reason."
           }
         }
       }
@@ -1285,7 +1294,21 @@
     "users": {
       "firms": {
         "applications": {
-          "exists": "An application with the same CRN or email already exists"
+          "exists": "An application with the same CRN or email already exists",
+          "approve": {
+            "error": "There was an error approving the application",
+            "success": {
+              "title": "Application Approved",
+              "message": "The company has been approved and an invitation has been sent to the user."
+            }
+          },
+          "reject": {
+            "error": "There was an error rejecting the application",
+            "success": {
+              "title": "Application Rejected",
+              "message": "The company has been rejected and the user has been notified with the given reason."
+            }
+          }
         }
       }
     }

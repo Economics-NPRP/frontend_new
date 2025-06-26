@@ -40,8 +40,8 @@ import {
 	IconChevronLeft,
 	IconChevronRight,
 	IconCopy,
+	IconFileSearch,
 	IconHelpHexagon,
-	IconMailShare,
 	IconSearch,
 } from '@tabler/icons-react';
 
@@ -62,7 +62,6 @@ export const FirmApplicationsTable = ({
 	const invitationModal = useContext(InvitationModalContext);
 
 	const [searchFilter, setSearchFilter] = useState('');
-	const [statusFilter, setStatusFilter] = useState<FirmApplicationsFilter>('all');
 	const [sectorFilter, sectorFilterHandlers] = useListState<AuctionCategory>([]);
 
 	//	Generate the filter badges
@@ -70,12 +69,13 @@ export const FirmApplicationsTable = ({
 		if (!firmApplications) return null;
 		const output = [];
 
-		switch (statusFilter) {
+		switch (firmApplications.status) {
 			case 'approved':
 				output.push(
 					<Pill
+						key={'approved'}
 						className={classes.badge}
-						onRemove={() => setStatusFilter('all')}
+						onRemove={() => firmApplications.setStatus('all')}
 						withRemoveButton
 					>
 						{t('components.firmApplicationsTable.filters.badges.approved')}
@@ -85,8 +85,9 @@ export const FirmApplicationsTable = ({
 			case 'pending':
 				output.push(
 					<Pill
+						key={'pending'}
 						className={classes.badge}
-						onRemove={() => setStatusFilter('all')}
+						onRemove={() => firmApplications.setStatus('all')}
 						withRemoveButton
 					>
 						{t('components.firmApplicationsTable.filters.badges.pending')}
@@ -96,8 +97,9 @@ export const FirmApplicationsTable = ({
 			case 'rejected':
 				output.push(
 					<Pill
+						key={'rejected'}
 						className={classes.badge}
-						onRemove={() => setStatusFilter('all')}
+						onRemove={() => firmApplications.setStatus('all')}
 						withRemoveButton
 					>
 						{t('components.firmApplicationsTable.filters.badges.rejected')}
@@ -124,7 +126,7 @@ export const FirmApplicationsTable = ({
 				</Pill>
 			);
 		return output;
-	}, [firmApplications, statusFilter, sectorFilter, t, sectorFilterHandlers]);
+	}, [firmApplications, sectorFilter, t]);
 
 	const handlePrevPage = useCallback(() => {
 		if (!firmApplications.data.hasPrev) return;
@@ -141,7 +143,7 @@ export const FirmApplicationsTable = ({
 	//	Reset the page when the filter or per page changes
 	useEffect(
 		() => firmApplications.setCursor(null),
-		[statusFilter, sectorFilter, firmApplications.perPage],
+		[firmApplications.status, sectorFilter, firmApplications.perPage],
 	);
 
 	return (
@@ -188,9 +190,9 @@ export const FirmApplicationsTable = ({
 									)}
 								</Menu.Label>
 								<Radio.Group
-									value={statusFilter}
+									value={firmApplications.status}
 									onChange={(value) =>
-										setStatusFilter(value as FirmApplicationsFilter)
+										firmApplications.setStatus(value as FirmApplicationsFilter)
 									}
 								>
 									<Stack className={classes.options}>
@@ -576,19 +578,18 @@ export const FirmApplicationsTable = ({
 									<Group className={classes.cell}>
 										<Tooltip
 											label={t(
-												'components.firmApplicationsTable.columns.actions.invite.tooltip',
+												'components.firmApplicationsTable.columns.actions.review.tooltip',
 											)}
 											position="top"
 										>
 											<Button
 												className={`${classes.primary} ${classes.button}`}
 												onClick={() => invitationModal.open(record)}
-												rightSection={<IconMailShare size={16} />}
+												rightSection={<IconFileSearch size={16} />}
 												disabled={record.status !== 'pending'}
 											>
 												{t(
-													'components.firmApplicationsTable.actions.invite.default',
-													{ value: 1 },
+													'components.firmApplicationsTable.actions.review.default',
 												)}
 											</Button>
 										</Tooltip>
