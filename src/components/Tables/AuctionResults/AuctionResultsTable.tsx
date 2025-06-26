@@ -217,24 +217,26 @@ const generateResultsRows = (
 				key={`${firm.id}-${finalBill}`}
 				className={`${firm.id === currentUser.id ? classes.mine : ''}`}
 			>
-				<Table.Td className={`${classes.firm} ${classes.between}`}>
-					<Anchor
-						component={Link}
-						className={classes.anchor}
-						href={`/marketplace/company/${firm.id}`}
-					>
-						{firm.name}
-					</Anchor>
-					<Group className={classes.group}>
-						{firm.id === currentUser.id && (
-							<Tooltip
-								// @ts-expect-error - cant get typing from locale file
-								label={t('components.auctionResultsTable.legend.mine.tooltip')}
-								position="top"
-							>
-								<IconUserHexagon size={14} className={classes.mine} />
-							</Tooltip>
-						)}
+				<Table.Td>
+					<Group className={`${classes.firm} ${classes.between}`}>
+						<Anchor
+							component={Link}
+							className={classes.anchor}
+							href={`/marketplace/company/${firm.id}`}
+						>
+							{firm.name}
+						</Anchor>
+						<Group className={classes.group}>
+							{firm.id === currentUser.id && (
+								<Tooltip
+									// @ts-expect-error - cant get typing from locale file
+									label={t('components.auctionResultsTable.legend.mine.tooltip')}
+									position="top"
+								>
+									<IconUserHexagon size={14} className={classes.mine} />
+								</Tooltip>
+							)}
+						</Group>
 					</Group>
 				</Table.Td>
 				<Table.Td>{format.number(totalBidsCount)}</Table.Td>

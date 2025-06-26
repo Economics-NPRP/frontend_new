@@ -3,14 +3,13 @@
 import { DateTime } from 'luxon';
 import { DataTable } from 'mantine-datatable';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
-import { CategoryBadge } from '@/components/Badge';
-import { FirmsFilter } from '@/components/Tables/Firms/types';
+import { CategoryBadge, FirmStatusBadge } from '@/components/Badge';
+import { FirmApplicationsFilter } from '@/components/Tables/FirmApplications/types';
 import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
-import { IPaginatedFirmsContext } from '@/contexts';
-import { IFirmData } from '@/schema/models';
+import { IPaginatedFirmApplicationsContext } from '@/contexts';
+import { InvitationModalContext } from '@/pages/dashboard/a/firms/_components/InvitationModal';
 import { AuctionCategory } from '@/types';
 import {
 	ActionIcon,
@@ -24,8 +23,8 @@ import {
 	HoverCard,
 	Input,
 	Menu,
-	Pagination,
 	Pill,
+	Radio,
 	Select,
 	Stack,
 	TableProps,
@@ -34,72 +33,74 @@ import {
 	Title,
 	Tooltip,
 } from '@mantine/core';
-import { useListState, useMediaQuery } from '@mantine/hooks';
+import { useListState } from '@mantine/hooks';
 import {
 	IconAdjustments,
-	IconArrowUpRight,
 	IconCheck,
+	IconChevronLeft,
+	IconChevronRight,
 	IconCopy,
-	IconFileSearch,
+	IconHelpHexagon,
+	IconMailShare,
 	IconSearch,
 } from '@tabler/icons-react';
 
 import classes from '../styles.module.css';
 
-export interface FirmsTableProps extends TableProps {
-	firms: IPaginatedFirmsContext;
+export interface FirmApplicationsTableProps extends TableProps {
+	firmApplications: IPaginatedFirmApplicationsContext;
 }
-export const FirmsTable = ({
-	firms,
+export const FirmApplicationsTable = ({
+	firmApplications,
 
 	className,
 	...props
-}: FirmsTableProps) => {
+}: FirmApplicationsTableProps) => {
 	const t = useTranslations();
-	const isMobile = useMediaQuery('(max-width: 48em)');
 	const tableContainerRef = useRef<HTMLTableElement>(null);
 
+	const invitationModal = useContext(InvitationModalContext);
+
 	const [searchFilter, setSearchFilter] = useState('');
-	const [statusFilter, setStatusFilter] = useState<FirmsFilter>('all');
-	const [selectedFirms, selectedFirmsHandlers] = useListState<IFirmData>([]);
+	const [statusFilter, setStatusFilter] = useState<FirmApplicationsFilter>('all');
 	const [sectorFilter, sectorFilterHandlers] = useListState<AuctionCategory>([]);
 
 	//	Generate the filter badges
 	const filterBadges = useMemo(() => {
-		if (!firms) return null;
+		if (!firmApplications) return null;
 		const output = [];
 
 		switch (statusFilter) {
-			case 'verified':
+			case 'approved':
 				output.push(
 					<Pill
 						className={classes.badge}
 						onRemove={() => setStatusFilter('all')}
 						withRemoveButton
 					>
-						{t('components.firmsTable.filters.badges.verified')}
+						{t('components.firmApplicationsTable.filters.badges.approved')}
 					</Pill>,
 				);
 				break;
-			case 'unverified':
+			case 'pending':
 				output.push(
 					<Pill
 						className={classes.badge}
 						onRemove={() => setStatusFilter('all')}
 						withRemoveButton
 					>
-						{t('components.firmsTable.filters.badges.unverified')}
+						{t('components.firmApplicationsTable.filters.badges.pending')}
 					</Pill>,
 				);
 				break;
-			case 'uninvited':
+			case 'rejected':
 				output.push(
 					<Pill
 						className={classes.badge}
 						onRemove={() => setStatusFilter('all')}
 						withRemoveButton
 					>
-						{t('components.firmsTable.filters.badges.uninvited')}
+						{t('components.firmApplicationsTable.filters.badges.rejected')}
 					</Pill>,
 				);
 				break;
@@ -119,23 +120,29 @@ export const FirmsTable = ({
 		if (output.length === 0)
 			return (
 				<Pill className={classes.badge}>
-					{t('components.firmsTable.filters.badges.all')}
+					{t('components.firmApplicationsTable.filters.badges.all')}
 				</Pill>
 			);
 		return output;
-	}, [firms, statusFilter, sectorFilter, t, sectorFilterHandlers]);
+	}, [firmApplications, statusFilter, sectorFilter, t, sectorFilterHandlers]);
 
-	const handleChangePage = useCallback(
-		(page: number) => {
-			if (!firms || !tableContainerRef.current) return;
-			firms.setPage(page);
-			tableContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
-		},
-		[firms, tableContainerRef],
+	const handlePrevPage = useCallback(() => {
+		if (!firmApplications.data.hasPrev) return;
+		tableContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+		firmApplications.setCursor(firmApplications.data.cursorForPrevPage);
+	}, [firmApplications, tableContainerRef]);
+
+	const handleNextPage = useCallback(() => {
+		if (!firmApplications.data.hasNext) return;
+		tableContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+		firmApplications.setCursor(firmApplications.data.cursorForNextPage);
+	}, [firmApplications, tableContainerRef]);
+
+	//	Reset the page when the filter or per page changes
+	useEffect(
+		() => firmApplications.setCursor(null),
+		[statusFilter, sectorFilter, firmApplications.perPage],
 	);
-
-	//	Reset the page when the bids filter or per page changes
-	useEffect(() => firms.setPage(1), [statusFilter, sectorFilter, firms.perPage]);
 
 	return (
 		<Stack className={`${classes.root} ${className}`}>
@@ -143,20 +150,16 @@ export const FirmsTable = ({
 				<Group className={classes.row}>
 					<Group className={classes.label}>
 						<Title order={2} className={classes.title}>
-							{t('components.firmsTable.title')}
+							{t('components.firmApplicationsTable.title')}
 						</Title>
 						<Text className={classes.subtitle}>
-							{t('constants.pagination.offset.firms', {
-								start: Math.min(
-									(firms.page - 1) * firms.perPage + 1,
-									firms.data.totalCount,
+							{t('constants.pagination.keyset.firmApplications', {
+								count: Math.min(
+									firmApplications.perPage,
+									firmApplications.data.totalCount,
 								),
-								end:
-									(firms.page - 1) * firms.perPage + firms.perPage >
-									firms.data.totalCount
-										? firms.data.totalCount
-										: (firms.page - 1) * firms.perPage + firms.perPage,
-								total: firms.data.totalCount,
+								isExact: firmApplications.data.isExact,
+								total: firmApplications.data.totalCount,
 							})}
 						</Text>
 					</Group>
@@ -167,9 +170,9 @@ export const FirmsTable = ({
 						<Select
 							className={classes.dropdown}
 							w={80}
-							value={firms.perPage.toString()}
+							value={firmApplications.perPage.toString()}
 							data={['10', '20', '50', '100']}
-							onChange={(value) => firms.setPerPage(Number(value))}
+							onChange={(value) => firmApplications.setPerPage(Number(value))}
 							allowDeselect={false}
 						/>
 						<Menu position="bottom-end">
@@ -180,7 +183,48 @@ export const FirmsTable = ({
 							</Menu.Target>
 							<Menu.Dropdown className={classes.filterMenu}>
 								<Menu.Label className={classes.label}>
-									{t('components.firmsTable.filters.menu.sector.label')}
+									{t(
+										'components.firmApplicationsTable.filters.menu.status.label',
+									)}
+								</Menu.Label>
+								<Radio.Group
+									value={statusFilter}
+									onChange={(value) =>
+										setStatusFilter(value as FirmApplicationsFilter)
+									}
+								>
+									<Stack className={classes.options}>
+										<Radio
+											value="all"
+											label={t(
+												'components.firmApplicationsTable.filters.menu.status.all',
+											)}
+										/>
+										<Radio
+											value="approved"
+											label={t(
+												'components.firmApplicationsTable.filters.menu.status.approved',
+											)}
+										/>
+										<Radio
+											value="pending"
+											label={t(
+												'components.firmApplicationsTable.filters.menu.status.pending',
+											)}
+										/>
+										<Radio
+											value="rejected"
+											label={t(
+												'components.firmApplicationsTable.filters.menu.status.rejected',
+											)}
+										/>
+									</Stack>
+								</Radio.Group>
+								<Menu.Divider className={classes.divider} />
+								<Menu.Label className={classes.label}>
+									{t(
+										'components.firmApplicationsTable.filters.menu.sector.label',
+									)}
 								</Menu.Label>
 								<Checkbox.Group
 									value={sectorFilter}
@@ -230,17 +274,27 @@ export const FirmsTable = ({
 				<Group className={`${classes.row} ${classes.wrapMobile}`}>
 					<Group className={classes.filters}>
 						<Text className={classes.label}>
-							{t('components.firmsTable.filters.label')}
+							{t('components.firmApplicationsTable.filters.label')}
 						</Text>
 						<Group className={classes.badges}>{filterBadges}</Group>
 					</Group>
-					<Group className={classes.legend}></Group>
+					<Group className={classes.legend}>
+						<Group className={classes.cell}>
+							<IconHelpHexagon
+								size={16}
+								className={`${classes.icon} ${classes.unverified}`}
+							/>
+							<Text className={classes.value}>
+								{t('components.firmApplicationsTable.legend.pending.label')}
+							</Text>
+						</Group>
+					</Group>
 				</Group>
 				<Divider className={classes.divider} />
 				<Group className={`${classes.row} ${classes.wrapMobile}`}>
 					<TextInput
 						className={classes.search}
-						placeholder={t('components.firmsTable.search.placeholder')}
+						placeholder={t('components.firmApplicationsTable.search.placeholder')}
 						value={searchFilter}
 						onChange={(event) => setSearchFilter(event.currentTarget.value)}
 						leftSection={<IconSearch size={16} />}
@@ -251,26 +305,7 @@ export const FirmsTable = ({
 						}
 						rightSectionPointerEvents="auto"
 					/>
-					<Group className={classes.actions}>
-						<Text className={classes.count}>
-							{t('components.table.selected.count', { value: selectedFirms.length })}
-						</Text>
-						<Group className={classes.buttons}>
-							<Button
-								className={`${classes.secondary} ${classes.button}`}
-								variant="outline"
-								disabled={selectedFirms.length === 0}
-								rightSection={<IconFileSearch size={16} />}
-							>
-								{t(
-									`components.firmsTable.actions.audit.${isMobile ? 'short' : 'default'}`,
-									{
-										value: selectedFirms.length,
-									},
-								)}
-							</Button>
-						</Group>
-					</Group>
+					<Group className={classes.actions}></Group>
 				</Group>
 			</Stack>
 			{/* @ts-expect-error - data table props from library are not exposed */}
@@ -279,20 +314,39 @@ export const FirmsTable = ({
 				groups={[
 					{
 						id: 'company',
-						title: t('components.firmsTable.groups.company'),
+						title: t('components.firmApplicationsTable.groups.company'),
 						columns: [
 							{
 								accessor: 'name',
 								sortable: true,
-								title: t('components.firmsTable.columns.name'),
+								title: t('components.firmApplicationsTable.columns.name'),
 								width: 240,
 								ellipsis: true,
-								render: (record) => record.name,
+								render: (record) => (
+									<Group className={`${classes.firm} ${classes.between}`}>
+										<Text className={classes.anchor}>{record.companyName}</Text>
+										<Group className={classes.group}>
+											{record.status === 'pending' && (
+												<Tooltip
+													label={t(
+														'components.firmApplicationsTable.legend.pending.tooltip',
+													)}
+													position="top"
+												>
+													<IconHelpHexagon
+														size={14}
+														className={classes.unverified}
+													/>
+												</Tooltip>
+											)}
+										</Group>
+									</Group>
+								),
 							},
 							{
 								accessor: 'sectors',
 								sortable: false,
-								title: t('components.firmsTable.columns.sectors'),
+								title: t('components.firmApplicationsTable.columns.sectors'),
 								width: 180,
 								render: (record) => {
 									const badges = useMemo(
@@ -340,13 +394,12 @@ export const FirmsTable = ({
 							{
 								accessor: 'crn',
 								sortable: true,
-								title: t('components.firmsTable.columns.crn'),
+								title: t('components.firmApplicationsTable.columns.crn'),
 								width: 180,
-								render: () => (
+								render: (record) => (
 									<Group className={classes.between}>
-										{/* TODO: change when firm is joined with application table */}
-										<Text>1234567890</Text>
-										<CopyButton value={'1234567890'} timeout={2000}>
+										<Text>{record.crn}</Text>
+										<CopyButton value={record.crn.toString()} timeout={2000}>
 											{({ copied, copy }) => (
 												<Tooltip
 													label={
@@ -376,12 +429,12 @@ export const FirmsTable = ({
 							{
 								accessor: 'iban',
 								sortable: true,
-								title: t('components.firmsTable.columns.iban'),
+								title: t('components.firmApplicationsTable.columns.iban'),
 								width: 180,
-								render: () => (
+								render: (record) => (
 									<Group className={classes.between}>
-										<Text>1234567890</Text>
-										<CopyButton value={'1234567890'} timeout={2000}>
+										<Text>{record.iban}</Text>
+										<CopyButton value={record.iban} timeout={2000}>
 											{({ copied, copy }) => (
 												<Tooltip
 													label={
@@ -411,122 +464,101 @@ export const FirmsTable = ({
 						],
 					},
 					{
-						id: 'representative',
-						title: t('components.firmsTable.groups.representative'),
-						columns: [
-							{
-								accessor: 'repName',
-								sortable: true,
-								title: t('components.firmsTable.columns.repName'),
-								width: 280,
-								ellipsis: true,
-								//	TODO: change when firm is joined with application table
-								// render: (record) => record.repName,
-								render: () => t('constants.na'),
-							},
-							{
-								accessor: 'repPosition',
-								sortable: true,
-								title: t('components.firmsTable.columns.repPosition'),
-								width: 160,
-								ellipsis: true,
-								//	TODO: change when firm is joined with application table
-								// render: (record) => record.repPosition || t('constants.na'),
-								render: () => t('constants.na'),
-							},
-							{
-								accessor: 'repEmail',
-								sortable: true,
-								title: t('components.firmsTable.columns.email'),
-								width: 200,
-								ellipsis: true,
-								//	TODO: change when firm is joined with application table
-								// render: (record) => (
-								// 	<Anchor
-								// 		href={`mailto:${record.repEmail}`}
-								// 		className={classes.anchor}
-								// 	>
-								// 		{record.repEmail}
-								// 	</Anchor>
-								// ),
-								// render: (record) => record.repPosition || t('constants.na'),
-								render: () => t('constants.na'),
-							},
-							{
-								accessor: 'repPhone',
-								sortable: true,
-								title: t('components.firmsTable.columns.phone'),
-								//	TODO: change when firm is joined with application table
-								// render: (record) => (
-								// 	<Anchor
-								// 		href={`tel:${record.repPhone}`}
-								// 		className={classes.anchor}
-								// 	>
-								// 		{record.repPhone}
-								// 	</Anchor>
-								// ),
-								render: () => t('constants.na'),
-							},
-							{
-								accessor: 'websites',
-								sortable: true,
-								title: t('components.firmsTable.columns.websites'),
-								width: 240,
-								ellipsis: true,
-								//	TODO: change when firm is joined with application table
-								// render: (record) =>
-								// 	record.websites.length > 0 ? (
-								// 		<Anchor
-								// 			href={record.websites[0]}
-								// 			className={classes.anchor}
-								// 		>
-								// 			{record.websites[0]}
-								// 		</Anchor>
-								// 	) : (
-								// 		t('constants.na')
-								// 	),
-								render: () => t('constants.na'),
-							},
-							{
-								accessor: 'address',
-								sortable: true,
-								title: t('components.firmsTable.columns.address'),
-								width: 320,
-								ellipsis: true,
-								//	TODO: change when firm is joined with application table
-								// render: (record) => record.address || t('constants.na'),
-								render: () => t('constants.na'),
-							},
-						],
-					},
-					{
 						id: 'miscellaneous',
-						title: t('components.firmsTable.groups.miscellaneous'),
+						title: t('components.firmApplicationsTable.groups.miscellaneous'),
 						columns: [
+							{
+								accessor: 'status',
+								sortable: false,
+								title: t('components.firmApplicationsTable.columns.status'),
+								width: 160,
+								cellsClassName: classes.status,
+								render: (record) => <FirmStatusBadge status={record.status} />,
+							},
 							{
 								accessor: 'createdAt',
 								sortable: true,
-								title: t('components.firmsTable.columns.createdAt'),
+								title: t('components.firmApplicationsTable.columns.createdAt'),
 								render: (record) =>
 									DateTime.fromISO(record.createdAt).toLocaleString(
 										DateTime.DATETIME_SHORT,
 									),
 							},
+						],
+					},
+					{
+						id: 'representative',
+						title: t('components.firmApplicationsTable.groups.representative'),
+						columns: [
 							{
-								accessor: 'invitedBy',
-								sortable: false,
-								title: t('components.firmsTable.columns.invitedBy'),
+								accessor: 'repName',
+								sortable: true,
+								title: t('components.firmApplicationsTable.columns.repName'),
+								width: 280,
 								ellipsis: true,
-								render: () => (
-									//	TODO: add inviter id here
+								render: (record) => record.repName,
+							},
+							{
+								accessor: 'repPosition',
+								sortable: true,
+								title: t('components.firmApplicationsTable.columns.repPosition'),
+								width: 160,
+								ellipsis: true,
+								render: (record) => record.repPosition || t('constants.na'),
+							},
+							{
+								accessor: 'repEmail',
+								sortable: true,
+								title: t('components.firmApplicationsTable.columns.email'),
+								width: 200,
+								ellipsis: true,
+								render: (record) => (
 									<Anchor
-										component={Link}
-										href={`/dashboard/a/admins/`}
-										className={`${classes.anchor} max-w-[160px]`}
+										href={`mailto:${record.repEmail}`}
+										className={classes.anchor}
 									>
-										Placeholder Admin
+										{record.repEmail}
 									</Anchor>
 								),
+							},
+							{
+								accessor: 'repPhone',
+								sortable: true,
+								title: t('components.firmApplicationsTable.columns.phone'),
+								render: (record) => (
+									<Anchor
+										href={`tel:${record.repPhone}`}
+										className={classes.anchor}
+									>
+										{record.repPhone}
+									</Anchor>
+								),
+							},
+							{
+								accessor: 'websites',
+								sortable: true,
+								title: t('components.firmApplicationsTable.columns.websites'),
+								width: 240,
+								ellipsis: true,
+								render: (record) =>
+									record.websites.length > 0 ? (
+										<Anchor
+											href={record.websites[0]}
+											className={classes.anchor}
+										>
+											{record.websites[0]}
+										</Anchor>
+									) : (
+										t('constants.na')
+									),
+							},
+							{
+								accessor: 'address',
+								sortable: true,
+								title: t('components.firmApplicationsTable.columns.address'),
+								width: 320,
+								ellipsis: true,
+								render: (record) => record.address || t('constants.na'),
 							},
 						],
 					},
@@ -544,57 +576,59 @@ export const FirmsTable = ({
 									<Group className={classes.cell}>
 										<Tooltip
 											label={t(
-												'components.firmsTable.columns.actions.audit.tooltip',
+												'components.firmApplicationsTable.columns.actions.invite.tooltip',
 											)}
 											position="top"
 										>
-											<ActionIcon className={`${classes.button}`}>
-												<IconFileSearch size={16} />
-											</ActionIcon>
+											<Button
+												className={`${classes.primary} ${classes.button}`}
+												onClick={() => invitationModal.open(record)}
+												rightSection={<IconMailShare size={16} />}
+												disabled={record.status !== 'pending'}
+											>
+												{t(
+													'components.firmApplicationsTable.actions.invite.default',
+													{ value: 1 },
+												)}
+											</Button>
 										</Tooltip>
-										<Button
-											className={`${classes.primary} ${classes.button}`}
-											component={Link}
-											href={`/dashboard/a/firms/${record.id}`}
-											rightSection={<IconArrowUpRight size={16} />}
-										>
-											{t('constants.view.details.label')}
-										</Button>
 									</Group>
 								),
 							},
 						],
 					},
 				]}
-				records={firms.data.results}
+				records={firmApplications.data.results}
 				striped
 				withRowBorders
 				withColumnBorders
 				highlightOnHover
 				pinLastColumn
-				// sortStatus={sortStatus}
-				// onSortStatusChange={setSortStatus}
-				selectedRecords={selectedFirms}
-				onSelectedRecordsChange={selectedFirmsHandlers.setState}
-				selectionColumnClassName={classes.selection}
-				fetching={firms.isLoading}
+				fetching={firmApplications.isLoading}
 				idAccessor="id"
-				selectionTrigger="cell"
-				noRecordsText={t('components.firmsTable.empty')}
+				noRecordsText={t('components.firmApplicationsTable.empty')}
 				scrollViewportRef={tableContainerRef}
 				{...props}
 			/>
 			<Group className={classes.footer}>
-				{firms.isSuccess && (
-					<Pagination
-						className={classes.pagination}
-						value={firms.page}
-						total={firms.data.pageCount}
-						siblings={2}
-						boundaries={3}
-						onChange={handleChangePage}
-					/>
-				)}
+				<Group className={classes.pagination}>
+					<ActionIcon
+						className={classes.button}
+						variant="outline"
+						disabled={!firmApplications.data.hasPrev}
+						onClick={handlePrevPage}
+					>
+						<IconChevronLeft size={16} />
+					</ActionIcon>
+					<ActionIcon
+						className={classes.button}
+						variant="outline"
+						disabled={!firmApplications.data.hasNext}
+						onClick={handleNextPage}
+					>
+						<IconChevronRight size={16} />
+					</ActionIcon>
+				</Group>
 			</Group>
 		</Stack>
 	);

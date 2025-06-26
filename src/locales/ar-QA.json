@@ -1,919 +1,926 @@
 {
-	"constants": {
-		"website": {
-			"name": {
-				"short": "ETS"
-			}
-		},
-		"auctionCategory": {
-			"energy": {
-				"alt": "صورة لمحطة طاقة تمثل فئة الطاقة",
-				"title": "الطاقة"
-			},
-			"industry": {
-				"alt": "صورة لآلة تكسير تمثل فئة الصناعة",
-				"title": "الصناعة"
-			},
-			"transport": {
-				"alt": "صورة لحركة مرور تسبب تلوث تمثل فئة النقل",
-				"title": "النقل"
-			},
-			"buildings": {
-				"alt": "صورة لنظام تكييف تمثل فئة المباني",
-				"title": "المباني"
-			},
-			"agriculture": {
-				"alt": "صورة لمزرعة بها أبقار تمثل فئة الزراعة",
-				"title": "الزراعة"
-			},
-			"waste": {
-				"alt": "صورة لنفايات من الزجاج والبلاستيك تمثل فئة النفايات",
-				"title": "النفايات"
-			}
-		},
-		"auctionType": {
-			"open": "مفتوح",
-			"sealed": "مختوم"
-		},
-		"auctionStatus": {
-			"ending": {
-				"label": "ينتهي",
-				"tooltip": "ينتهي في {date}"
-			},
-			"endingIn": {
-				"label": "ينتهي خلال",
-				"tooltip": "ينتهي خلال {time}"
-			},
-			"endsIn": {
-				"label": "ينتهي خلال",
-				"tooltip": "ينتهي خلال {time}"
-			},
-			"ended": {
-				"label": "انتهى",
-				"tooltip": "انتهى في {date}"
-			},
-			"auctionEnded": {
-				"label": "انتهى المزاد",
-				"tooltip": "انتهى المزاد في {date}"
-			},
-			"upcoming": {
-				"label": "قريبًا",
-				"tooltip": "سيبدأ في {date}"
-			},
-			"startingIn": {
-				"label": "سيبدأ خلال",
-				"tooltip": "سيبدأ خلال {time}"
-			},
-			"startsIn": {
-				"label": "سيبدأ خلال",
-				"tooltip": "سيبدأ خلال {time}"
-			}
-		},
-		"currency": {
-			"QAR": {
-				"symbol": "ر.ق",
-				"name": "الريال القطري"
-			}
-		},
-		"minWinningBid": {
-			"full": "أدنى عرض فائز",
-			"med": "أدنى عرض",
-			"short": "الحد الأدنى"
-		},
-		"minBidIncrement": {
-			"full": "أدنى زيادة في العرض",
-			"med": "أقل زيادة",
-			"short": "زيادة أدنى"
-		},
-		"permits": {
-			"key": "التصاريح",
-			"unit": "تصاريح"
-		},
-		"permitsOffered": {
-			"full": "إجمالي التصاريح المعروضة",
-			"med": "التصاريح المعروضة",
-			"short": "تصاريح"
-		},
-		"emissions": {
-			"key": "الانبعاثات",
-			"unit": "طن مكافئ ثاني أكسيد الكربون"
-		},
-		"rating": {
-			"medium": "{rating, number, ::.00} من 5.00",
-			"long": "{rating, number, ::.00} من 5.00 ({reviews, plural, =0 {لا توجد مراجعات} =1 {مراجعة واحدة} other {# مراجعات}})"
-		},
-		"subtotal": "المجموع الفرعي",
-		"total": "الإجمالي",
-		"grandTotal": "الإجمالي الكلي",
-		"loading": {
-			"auction": "جاري تحميل المزاد...",
-			"auctions": "جاري تحميل المزادات...",
-			"results": "جاري تحميل النتائج...",
-			"bids": "جاري تحميل العروض...",
-			"bidders": "جاري تحميل المشاركين...",
-			"statistics": "جاري تحميل الإحصائيات...",
-			"profile": "جاري تحميل الملف الشخصي..."
-		},
-		"return": {
-			"catalogue": {
-				"label": "العودة إلى الكتالوج",
-				"aria": "العودة إلى كتالوج المزادات",
-				"tooltip": "العودة إلى كتالوج المزادات"
-			},
-			"auction": {
-				"label": "العودة إلى المزاد",
-				"aria": "العودة إلى المزاد",
-				"tooltip": "العودة إلى المزاد"
-			},
-			"auctionPage": {
-				"label": "العودة إلى صفحة المزاد",
-				"aria": "العودة إلى صفحة المزاد",
-				"tooltip": "العودة إلى صفحة المزاد"
-			},
-			"marketplace": {
-				"aria": "زر الصفحة الرئيسية",
-				"tooltip": "العودة إلى الصفحة الرئيسية للسوق"
-			},
-			"dashboard": {
-				"label": "العودة إلى لوحة التحكم",
-				"short": "لوحة التحكم",
-				"aria": "زر العودة إلى لوحة التحكم",
-				"tooltip": "العودة إلى لوحة التحكم الخاصة بك"
-			}
-		},
-		"view": {
-			"all": {
-				"label": "عرض الكل",
-				"aria": "عرض الكل",
-				"tooltip": "عرض الكل"
-			},
-			"allBids": {
-				"label": "عرض كل العروض",
-				"aria": "عرض كل العروض",
-				"tooltip": "عرض كل العروض"
-			},
-			"bids": {
-				"label": "عرض العروض",
-				"aria": "عرض كل العروض",
-				"tooltip": "عرض كل العروض"
-			},
-			"biddingHistory": {
-				"label": "عرض سجل العطاءات",
-				"aria": "عرض سجل العطاءات",
-				"tooltip": "عرض سجل العطاءات"
-			},
-			"auction": {
-				"label": "عرض المزاد",
-				"aria": "عرض المزاد",
-				"tooltip": "عرض المزاد"
-			},
-			"results": {
-				"label": "عرض النتائج",
-				"aria": "عرض نتائج المزاد",
-				"tooltip": "عرض نتائج المزاد"
-			},
-			"resultsNow": {
-				"label": "عرض النتائج حتى الآن",
-				"aria": "عرض نتائج المزاد حتى الآن",
-				"tooltip": "عرض نتائج المزاد حتى الآن"
-			}
-		},
-		"actions": {
-			"cancel": {
-				"label": "إلغاء",
-				"aria": "إلغاء العملية",
-				"tooltip": "إلغاء العملية"
-			},
-			"joinAuction": {
-				"label": "الانضمام إلى المزاد",
-				"aria": "الانضمام إلى المزاد",
-				"tooltip": "الانضمام إلى المزاد"
-			},
-			"placeBids": {
-				"label": "تقديم العطاءات",
-				"aria": "تقديم العطاءات",
-				"tooltip": "تقديم العطاءات"
-			},
-			"saveChanges": {
-				"label": "حفظ التغييرات",
-				"aria": "حفظ التغييرات",
-				"tooltip": "حفظ التغييرات"
-			},
-			"continue": {
-				"label": "متابعة",
-				"aria": "متابعة العملية",
-				"tooltip": "متابعة العملية"
-			}
-		},
-		"quantities": {
-			"auctions": {
-				"default": "{value, number} {value, plural, =0 {مزادات} =1 {مزاد} other {مزادات}}"
-			},
-			"bids": {
-				"default": "{value, number} {value, plural, =0 {عطاءات} =1 {عطاء} other {عطاءات}}"
-			},
-			"bidders": {
-				"default": "{value, number} {value, plural, =0 {مزايدين} =1 {مزايد} other {مزايدين}}"
-			},
-			"bookmarks": {
-				"default": "{value, number} {value, plural, =0 {علامات مرجعية} =1 {علامة مرجعية} other {علامات مرجعية}}"
-			},
-			"currency": {
-				"unitlessWithPercentTotal": "{value, number, ::.00} ({percent, number, ::.00}%)"
-			},
-			"emissions": {
-				"default": "{value, number, ::.00} {value, plural, =0 {طن مكافئ CO2} =1 {طن مكافئ CO2} other {طن مكافئ CO2}}"
-			},
-			"percent": {
-				"default": "{value, number, ::.00}%"
-			},
-			"permits": {
-				"default": "{value, number} {value, plural, =0 {تصاريح} =1 {تصريح} other {تصاريح}}",
-				"withEmissions": "{value, number} {value, plural, =0 {تصاريح} =1 {تصريح} other {تصاريح}} ({emissions, number, ::.00} طن مكافئ CO2)",
-				"withPercentTotal": "{value, number} {value, plural, =0 {تصاريح} =1 {تصريح} other {تصاريح}} ({percent, number, ::.00}%)",
-				"unitlessWithPercentTotal": "{value, number} ({percent, number, ::.00}%)"
-			},
-			"views": {
-				"default": "{value, number} {value, plural, =0 {مشاهدات} =1 {مشاهدة} other {مشاهدات}}"
-			},
-			"years": {
-				"default": "{value, number} {value, plural, =0 {سنوات} =1 {سنة} other {سنوات}}"
-			}
-		},
-		"pagination": {
-			"keyset": {
-				"bids": "عرض {count, number} {isExact, select, true {من} false {من حوالي} other {من}} {total, number} {total, plural, =0 {عطاءات} =1 {عطاء} other {عطاءات}}"
-			},
-			"offset": {
-				"results": "عرض {start, number} - {end, number} من {total, number} {total, plural, =0 {نتائج} =1 {نتيجة} other {نتائج}}"
-			},
-			"perPage": {
-				"label": "لكل صفحة:"
-			}
-		}
-	},
-	"marketplace": {
-		"home": {
-			"banner": {
-				"subtitle": "مزادات حكومية",
-				"title": "فترة المزاد القادمة",
-				"actions": {
-					"calendar": {
-						"tooltip": "افتح تقويم المزاد"
-					},
-					"explore": {
-						"tooltip": "عرض أحدث العروض في السوق",
-						"text": "استكشاف المزادات"
-					}
-				},
-				"startDate": "يبدأ في"
-			},
-			"subbanner": {
-				"1": {
-					"text": "اضغط هنا لعرض النشاطات الأخيرة",
-					"heading": "<mark>{value, plural, =0 {لا توجد مزايدات جديدة} =1 {مزايدة واحدة جديدة} other {# مزايدات جديدة}}</mark> للمزادات التي انضممت إليها"
-				},
-				"2": {
-					"text": "اضغط هنا لإنشاء مزاد جديد",
-					"heading": "هل لديك تصاريح زائدة؟ <mark>قم ببيعها بالمزاد!</mark>"
-				},
-				"3": {
-					"text": "اضغط هنا لعرض نتائج المزادات",
-					"heading": "<mark>{value, plural, =0 {لا مزادات} =1 {مزاد واحد} other {# مزادات}}</mark> {value, plural, =0 {انتهى} =1 {انتهى} other {انتهت}}"
-				}
-			},
-			"categories": {
-				"heading": "فئات المزادات",
-				"subheading": "تصفح المزادات حسب القطاع"
-			},
-			"ending": {
-				"heading": "تنتهي قريبًا",
-				"subheading": "هذه المزادات ستنتهي قريبًا، سارع بالمزايدة قبل فوات الأوان!",
-				"filter": {
-					"prompt": "تصفية حسب الفئة"
-				}
-			},
-			"catalogue": {
-				"filters": {
-					"count": "{value, plural, =0 {} =1 {تصفية واحدة مفعّلة} other {# تصفيات مفعّلة}}",
-					"boolean": "{value, plural, =0 {} =1 {تصفية مفعّلة} other {تصفية مفعّلة}}",
-					"total": "{value, plural, =0 {لا توجد تصفيات مفعّلة} =1 {تصفية واحدة مفعّلة} other {# تصفيات مفعّلة}}",
-					"accordion": {
-						"type": {
-							"title": "نوع المزاد",
-							"description": "تصفية المزادات المفتوحة أو المختومة. <a>ما الفرق؟</a>"
-						},
-						"status": {
-							"title": "حالة المزاد",
-							"description": "اعثر على المزادات الجارية أو المنتهية أو القادمة",
-							"options": {
-								"ongoing": "جارٍ",
-								"upcoming": "قريبًا",
-								"ended": "انتهى",
-								"all": "الكل"
-							}
-						},
-						"sector": {
-							"title": "القطاع",
-							"description": "تصفية المزادات حسب القطاع"
-						},
-						"owner": {
-							"title": "المالك",
-							"description": "ابحث عن مزادات لمالكين محددين"
-						},
-						"date": {
-							"title": "التاريخ",
-							"description": "تصفية المزادات حسب الفترة الزمنية"
-						},
-						"permits": {
-							"title": "عدد التصاريح المعروضة",
-							"description": "تصفية المزادات حسب عدد التصاريح"
-						},
-						"minBid": {
-							"title": "الحد الأدنى للعرض الفائز",
-							"description": "تصفية المزادات حسب الحد الأدنى المطلوب للفوز"
-						},
-						"price": {
-							"title": "سعر الشراء الفوري",
-							"description": "تصفية المزادات حسب سعر الشراء الفوري"
-						}
-					}
-				}
-			}
-		},
-		"auction": {
-			"details": {
-				"components": {
-					"biddingTable": {
-						"columns": {
-							"permits": "تصاريح (% من الإجمالي)",
-							"emissions": "الانبعاثات",
-							"bids": "السعر/للتصريح",
-							"subtotals": "الإجمالي الفرعي (% من الإجمالي)",
-							"actions": "الإجراءات"
-						},
-						"empty": "لم تتم إضافة أي مزايدات بعد. استخدم نموذج \"إدراج المزايدات\" على الجانب لإضافة عروضك.",
-						"delete": "حذف {value, plural, =0 {# عناصر مزايدة} =1 {عنصر مزايدة واحد} other {# عناصر مزايدة}}"
-					}
-				},
-				"bidConfirmationModal": {
-					"notifications": {
-						"success": {
-							"title": "تم تقديم العطاءات بنجاح",
-							"message": "قدمت {bids, plural, =0 {# عطاءات} =1 {عطاء واحد} other {# عطاءات}} بمجموع قدره {total, number, ::.00} ر.ق"
-						},
-						"error": {
-							"title": "حدثت مشكلة أثناء تقديم العطاءات"
-						}
-					},
-					"title": "تأكيد تقديم العطاءات",
-					"description": "أنت على وشك تقديم العطاءات التالية. راجعها جيدًا، فلن تتمكن من تعديلها أو حذفها بعد الإرسال.",
-					"summary": {
-						"totalBid": {
-							"key": "إجمالي العطاء"
-						}
-					},
-					"actions": {
-						"confirm": "تأكيد وتقديم العطاءات"
-					}
-				},
-				"bidding": {
-					"header": {
-						"title": "جدول العطاءات",
-						"subtitle": "أضف عطاءاتك في الجدول أدناه. عند الانتهاء، اضغط على زر \"تقديم العطاءات\" لإرسالها دفعة واحدة.",
-						"bidders": "المزايدون النشطون: {value, plural, =0 {# مزايدين} =1 {مزايد واحد} other {# مزايدين}}"
-					},
-					"sidebar": {
-						"minBid": {
-							"subtext": "زيادة خلال آخر 24 ساعة"
-						},
-						"increment": {
-							"title": "أدنى زيادة في العرض"
-						},
-						"insertForm": {
-							"title": "إدراج المزايدات",
-							"description": "استخدم هذا النموذج لإضافة عروضك إلى جدول العطاءات",
-							"error": {
-								"title": "حدثت مشكلة أثناء إضافة العرض"
-							},
-							"permit": {
-								"label": "عدد التصاريح"
-							},
-							"emission": {
-								"label": "إجمالي الانبعاثات"
-							},
-							"bid": {
-								"label": "السعر لكل تصريح"
-							},
-							"add": "أضف إلى الجدول",
-							"subtext": "لن يتم تقديم العطاء بالضغط على هذا الزر. سيتم فقط إضافته إلى الجدول على اليسار."
-						}
-					},
-					"footer": {
-						"progress": {
-							"left": {
-								"unit": "تصاريح تم المزايدة عليها"
-							},
-							"right": {
-								"unit": "تصاريح متبقية"
-							}
-						},
-						"cta": {
-							"tooltip": "قم بتأكيد كل عنصر في الجدول وقدم جميع العطاءات"
-						}
-					},
-					"endedOverlay": {
-						"title": "هذا المزاد انتهى",
-						"description": "لا يمكنك المشاركة في هذا المزاد بعد الآن لأنه انتهى. يمكنك الاطلاع على النتائج أو عرض الصفحة بوضع القراءة فقط."
-					},
-					"joinOverlay": {
-						"title": "انضم إلى المزاد",
-						"description": "يجب أن تنضم إلى المزاد أولاً للمشاركة. اضغط على الزر أدناه للانضمام."
-					},
-					"upcomingOverlay": {
-						"title": "المزاد لم يبدأ بعد",
-						"description": "لا يمكنك المشاركة في هذا المزاد بعد لأنه لم يبدأ. الرجاء العودة لاحقًا."
-					}
-				},
-				"bidsDrawer": {
-					"button": {
-						"tooltip": "فتح جدول العطاءات"
-					}
-				},
-				"card": {
-					"actions": {
-						"compare": {
-							"label": "مقارنة المزادات"
-						},
-						"startBidding": {
-							"label": "ابدأ المزايدة",
-							"tooltipUpcoming": "المزاد لم يبدأ بعد"
-						}
-					}
-				},
-				"deleteBidModal": {
-					"title": "حذف عطاءاتك",
-					"description": "هل أنت متأكد أنك تريد حذف العطاءات التالية؟ لا يمكن التراجع عن هذا الإجراء.",
-					"actions": {
-						"delete": "حذف العطاءات"
-					}
-				},
-				"details": {
-					"bids": {
-						"title": "جدول العطاءات",
-						"info": "عرض جميع العطاءات المقدمة، بما في ذلك العطاءات الفائزة وعطاؤك الخاص"
-					},
-					"properties": {
-						"title": "تفاصيل",
-						"permitLifespan": {
-							"key": "مدة صلاحية التصريح"
-						},
-						"emissionsPerPermit": {
-							"key": "انبعاثات لكل تصريح"
-						},
-						"startDate": {
-							"key": "تاريخ بدء المزاد"
-						},
-						"endDate": {
-							"key": "تاريخ انتهاء المزاد"
-						},
-						"views": {
-							"key": "عدد المشاهدات"
-						},
-						"bidders": {
-							"key": "عدد المزايدين"
-						},
-						"bids": {
-							"key": "عدد العطاءات"
-						},
-						"bookmarks": {
-							"key": "عدد العلامات المرجعية"
-						}
-					},
-					"winnings": {
-						"title": "مكاسبك الحالية",
-						"info": "عدد التصاريح المتوقع فوزك بها بناءً على العطاءات الفائزة الحالية",
-						"permits": "عدد التصاريح المتوقع",
-						"emissions": "الانبعاثات المتوقعة",
-						"bill": "الفاتورة النهائية المتوقعة",
-						"alert": {
-							"sealed": {
-								"title": "النتائج غير متاحة حاليًا",
-								"description": "سيتم إصدار النتائج بعد انتهاء المزاد ومعالجة جميع العطاءات."
-							},
-							"else": {
-								"title": "لم تنضم إلى المزاد بعد",
-								"description": "يرجى الانضمام للمزاد لعرض مكاسبك المتوقعة."
-							}
-						},
-						"cta": {
-							"tooltip": "عرض النتائج الكاملة للمزاد",
-							"label": "عرض النتائج الكاملة"
-						}
-					}
-				},
-				"editBidModal": {
-					"title": "تعديل عرضك",
-					"description": "يمكنك تعديل العرض من خلال تغيير عدد التصاريح والسعر لكل تصريح. تأكد من أن العرض الجديد لا يتجاوز التصاريح المتاحة.",
-					"error": {
-						"title": "حدثت مشكلة أثناء تعديل العرض"
-					},
-					"permit": {
-						"label": "تصاريح المزايدة <b>(الأصلية {value, number} {value, plural, =0 {تصاريح} =1 {تصريح} other {تصاريح}})</b>"
-					},
-					"emission": {
-						"label": "إجمالي الانبعاثات <b>(الأصلية {value, number, ::.00} طن مكافئ CO2)</b>"
-					},
-					"bid": {
-						"label": "السعر لكل تصريح <b>(الأصلي ر.ق {value, number, ::.00})</b>"
-					}
-				},
-				"ended": {
-					"title": "هذا المزاد انتهى",
-					"description": "لا يمكنك المشاركة في هذا المزاد بعد الآن. يمكنك الاطلاع على النتائج أو عرض الصفحة في وضع القراءة فقط.",
-					"subtext": "عرض الصفحة الأصلية (وضع قراءة فقط)",
-					"overlay": "عرض الصفحة في وضع القراءة فقط"
-				}
-			},
-			"results": {
-				"ticket": {
-					"loser": {
-						"title": "لم يتم منح أي تصاريح",
-						"subtitle": "لم تفز بأي تصاريح في هذا المزاد. ومع ذلك، يمكنك عرض سجل العطاءات وتحليل النتائج.",
-						"subtext": "اطلع على مزادات مماثلة قد تهمك:"
-					},
-					"ongoing": {
-						"title": "النتائج غير متاحة بعد",
-						"subtitle": "المزاد لا يزال جاريًا. ستتوفر النتائج بعد انتهائه ومعالجة العطاءات."
-					},
-					"unjoined": {
-						"title": "لم تنضم إلى هذا المزاد",
-						"subtitle": "يرجى الانضمام للمزاد لعرض النتائج والمشاركة."
-					},
-					"winner": {
-						"footer": {
-							"subtext": "بالنقر على \"متابعة\" ستنتقل إلى صفحة الدفع حيث يمكنك معرفة الخطوة التالية وتأكيد استلام التصاريح"
-						},
-						"title": "مكاسبك",
-						"winningsPercent": "نسبة المكاسب",
-						"properties": {
-							"header": {
-								"key": "الخاصية",
-								"value": "القيمة"
-							},
-							"subsector": {
-								"key": "المصدر"
-							},
-							"sector": {
-								"key": "القطاع"
-							},
-							"awardedTo": {
-								"key": "تم منحها لـ"
-							},
-							"emissions": {
-								"key": "عدد الانبعاثات"
-							}
-						},
-						"summary": {
-							"title": "الفاتورة النهائية",
-							"subtext": "مرر لأسفل لعرض العطاءات المستخدمة في الحساب"
-						}
-					}
-				},
-				"ongoing": {
-					"upcoming": {
-						"title": "هذا المزاد لم يبدأ بعد",
-						"description": "لا توجد نتائج حتى الآن لأنه لم يبدأ. يرجى العودة لاحقًا بعد أن يبدأ المزاد."
-					},
-					"live": {
-						"title": "المزاد لا يزال جاريًا",
-						"description": "يمكنك عرض النتائج المؤقتة، ولكنها ليست نهائية وقد تتغير."
-					},
-					"overlay": {
-						"text": "عرض النتائج المؤقتة"
-					}
-				},
-				"bids": {
-					"tabs": {
-						"results": "نتائج المزاد",
-						"bids": "جميع العطاءات"
-					}
-				},
-				"details": {
-					"statistics": {
-						"chart": {
-							"others": "شركات أخرى",
-							"label": "تصاريح محفوظة حسب الشركة"
-						}
-					}
-				}
-			}
-		}
-	},
-	"components": {
-		"countdown": {
-			"label": {
-				"long": {
-					"years": "سنوات",
-					"year": "سنة",
-					"quarters": "أرباع",
-					"quarter": "ربع",
-					"months": "أشهر",
-					"month": "شهر",
-					"weeks": "أسابيع",
-					"week": "أسبوع",
-					"days": "أيام",
-					"day": "يوم",
-					"hours": "ساعات",
-					"hour": "ساعة",
-					"minutes": "دقائق",
-					"minute": "دقيقة",
-					"seconds": "ثواني",
-					"second": "ثانية",
-					"milliseconds": "مللي ثانية",
-					"millisecond": "مللي ثانية",
-					"empty": "—"
-				},
-				"medium": {
-					"years": "س",
-					"year": "س",
-					"quarters": "ر",
-					"quarter": "ر",
-					"months": "ش",
-					"month": "ش",
-					"weeks": "أ",
-					"week": "أ",
-					"days": "ي",
-					"day": "ي",
-					"hours": "س",
-					"hour": "س",
-					"minutes": "د",
-					"minute": "د",
-					"seconds": "ث",
-					"second": "ث",
-					"milliseconds": "ملث",
-					"millisecond": "ملث",
-					"empty": "—"
-				},
-				"short": {
-					"years": "س",
-					"year": "س",
-					"quarters": "ر",
-					"quarter": "ر",
-					"months": "ش",
-					"month": "ش",
-					"weeks": "أ",
-					"week": "أ",
-					"days": "ي",
-					"day": "ي",
-					"hours": "س",
-					"hour": "س",
-					"minutes": "د",
-					"minute": "د",
-					"seconds": "ث",
-					"second": "ث",
-					"milliseconds": "م.ث",
-					"millisecond": "م.ث",
-					"empty": ""
-				}
-			},
-			"value": "٠\n١\n٢\n٣\n٤\n٥\n٦\n٧\n٨\n٩"
-		},
-		"header": {
-			"search": {
-				"prompt": "ابحث عن مزاد",
-				"promptTooltip": "افتح شريط البحث",
-				"shortcut": "K"
-			},
-			"buttons": {
-				"accessibility": {
-					"aria": "خيارات إمكانية الوصول",
-					"tooltip": "خيارات إمكانية الوصول"
-				},
-				"language": {
-					"en": {
-						"aria": "التبديل إلى اللغة العربية / Switch to Arabic",
-						"tooltip": "التبديل إلى اللغة العربية / Switch to Arabic"
-					},
-					"ar-QA": {
-						"aria": "Switch to English / التبديل إلى اللغة الإنجليزية",
-						"tooltip": "Switch to English / التبديل إلى اللغة الإنجليزية"
-					}
-				},
-				"notifications": {
-					"aria": "الإشعارات",
-					"tooltip": "الإشعارات"
-				},
-				"search": {
-					"aria": "زر البحث",
-					"tooltip": "ابحث عن مزاد"
-				},
-				"theme": {
-					"auto": {
-						"aria": "التبديل إلى الوضع اليدوي",
-						"tooltip": "التبديل إلى الوضع اليدوي"
-					},
-					"dark": {
-						"aria": "التبديل إلى الوضع الفاتح",
-						"tooltip": "التبديل إلى الوضع الفاتح"
-					},
-					"light": {
-						"aria": "التبديل إلى الوضع الداكن",
-						"tooltip": "التبديل إلى الوضع الداكن"
-					}
-				},
-				"user": {
-					"aria": "ملفي الشخصي",
-					"tooltip": "ملفي الشخصي"
-				}
-			},
-			"user": {
-				"profile": "الملف الشخصي",
-				"marketplace": "السوق",
-				"biddingHistory": "سجل العطاءات",
-				"auctionCalendar": "تقويم المزادات",
-				"dashboard": "لوحة التحكم",
-				"myDashboard": "لوحة التحكم الخاصة بي",
-				"statistics": "الإحصائيات",
-				"transactions": "المعاملات",
-				"permits": "التصاريح",
-				"helpCenter": "مركز المساعدة",
-				"settings": "الإعدادات",
-				"logout": "تسجيل الخروج",
-				"savedAuctions": "المزادات المحفوظة"
-			}
-		},
-		"auctionCard": {
-			"numBids": {
-				"label": "عدد العطاءات"
-			},
-			"numBidders": {
-				"label": "عدد المزايدين"
-			}
-		},
-		"bidsTable": {
-			"filters": {
-				"badges": {
-					"all": "لا توجد تصفية مفعّلة",
-					"winning": "العطاءات الفائزة فقط",
-					"mine": "عطاءاتي فقط",
-					"contributing": "العطاءات المساهمة فقط"
-				},
-				"menu": {
-					"title": "تصفية العطاءات",
-					"options": {
-						"all": "عرض كل العطاءات",
-						"contributing": "عرض العطاءات المساهمة فقط",
-						"winning": "عرض العطاءات الفائزة فقط",
-						"mine": "عرض عطاءاتك فقط"
-					}
-				},
-				"label": "التصفيات:"
-			},
-			"title": "جدول العطاءات",
-			"columns": {
-				"company": "الشركة",
-				"bid": "العطاء",
-				"totalBid": "إجمالي العطاء",
-				"timestamp": "الطابع الزمني"
-			},
-			"empty": "لم يتم العثور على عطاءات",
-			"legend": {
-				"mine": {
-					"label": "عطاءاتك",
-					"tooltip": "هذا عطاءك"
-				},
-				"contributing": {
-					"label": "عطاءات مساهمة",
-					"tooltip": "هذا العطاء يساهم في فاتورتك النهائية"
-				},
-				"winning": {
-					"label": "عطاءات فائزة",
-					"tooltip": "هذا عطاء فائز"
-				}
-			},
-			"sealed": {
-				"unavailable": "العطاءات غير متاحة أثناء المزاد المختوم. يرجى الانتظار حتى انتهاء المزاد ونشر النتائج."
-			}
-		},
-		"auctionCarousel": {
-			"error": "حدث خطأ أثناء تحميل المزادات. الرجاء المحاولة لاحقًا.",
-			"empty": "لا توجد مزادات متاحة حاليًا. الرجاء التحقق لاحقًا."
-		},
-		"auctionResultsTable": {
-			"title": "جدول النتائج",
-			"legend": {
-				"mine": {
-					"label": "نتيجتك",
-					"tooltip": "هذه هي نتيجتك"
-				}
-			},
-			"columns": {
-				"company": "الشركة",
-				"totalBids": "إجمالي العطاءات",
-				"winningBids": "العطاءات الفائزة (% الفوز)",
-				"permits": "التصاريح المحجوزة (% محجوز)",
-				"avgPrice": "متوسط السعر/للتصريح",
-				"bill": "الفاتورة النهائية"
-			},
-			"data": {
-				"winningBids": "{value, number} ({percent, number, ::.00}%)",
-				"permits": "{value, number} ({percent, number, ::.00}%)"
-			},
-			"empty": "لا توجد نتائج"
-		}
-	},
-	"model": {
-		"AuctionData": {
-			"isPrimaryMarket": {
-				"boolean": "يجب أن يكون السوق الأساسي قيمة منطقية (Boolean)، ولكن تم استلام {received}"
-			},
-			"title": {
-				"string": "يجب أن يكون عنوان المزاد نصًا، ولكن تم استلام {received}",
-				"required": "عنوان المزاد مطلوب",
-				"words": "يجب أن يحتوي عنوان المزاد على كلمة واحدة على الأقل، ولكن تم استلام {received}"
-			},
-			"image": {
-				"string": "يجب أن تكون صورة المزاد نصًا، ولكن تم استلام {received}",
-				"url": "يجب أن تكون صورة المزاد رابطًا صالحًا (URL)، ولكن تم استلام {received}"
-			},
-			"description": {
-				"string": "يجب أن يكون وصف المزاد نصًا، ولكن تم استلام {received}",
-				"words": "يجب أن يحتوي وصف المزاد على 3 كلمات على الأقل، ولكن تم استلام {received}"
-			},
-			"isVisible": {
-				"boolean": "يجب أن تكون خاصية الظهور قيمة منطقية (Boolean)، ولكن تم استلام {received}"
-			},
-			"hasJoined": {
-				"boolean": "يجب أن تكون خاصية المشاركة قيمة منطقية (Boolean)، ولكن تم استلام {received}"
-			}
-		},
-		"AuctionType": {
-			"picklist": "يجب أن يكون نوع المزاد إما 'مفتوح' أو 'مختوم'، ولكن تم استلام {received}",
-			"required": "نوع المزاد مطلوب"
-		},
-		"BiddingTableData": {
-			"permit": {
-				"required": "التصريح مطلوب",
-				"oneOrMore": "يجب أن تزايد على تصريح واحد على الأقل",
-				"moreThanOffered": "لا يمكنك المزايدة على تصاريح أكثر مما هو معروض في المزاد",
-				"moreThanAvailable": "لا يمكنك المزايدة على أكثر من عدد التصاريح المتاحة. الرجاء مراجعة جدول المزايدات",
-				"moreThanAvailableWithValue": "لا يمكنك المزايدة على أكثر من {value, number} تصريح. الرجاء التأكد من أن المزايدة أقل من أو تساوي هذا الرقم"
-			},
-			"bid": {
-				"required": "المزايدة مطلوبة",
-				"oneOrMore": "يجب أن تزايد على ريال قطري واحد على الأقل",
-				"minBid": "يجب أن تكون المزايدة مساوية أو أكبر من الحد الأدنى للمزايدة",
-				"exists": "لديك بالفعل مزايدة بهذا المبلغ في الجدول، الرجاء تعديلها بدلاً من إضافة واحدة جديدة"
-			}
-		},
-		"PositiveNumber": {
-			"number": "يجب أن يكون {key} رقمًا، ولكن تم استلام {received}",
-			"integer": "يجب أن يكون {key} عددًا صحيحًا، ولكن تم استلام {received}",
-			"positive": "يجب أن يكون {key} رقمًا موجبًا، ولكن تم استلام {received}"
-		},
-		"Timestamp": {
-			"string": "يجب أن يكون {key} نصًا، ولكن تم استلام {received}",
-			"isoTimestamp": "يجب أن يكون {key} طابعًا زمنيًا بصيغة ISO 8601 صالحًا (مثل: 2021-01-01T00:00:00Z)، ولكن تم استلام {received})"
-		},
-		"UserData": {
-			"name": {
-				"string": "يجب أن يكون اسم المستخدم نصًا، ولكن تم استلام {received}",
-				"required": "اسم المستخدم مطلوب",
-				"words": "يجب أن يحتوي اسم المستخدم على كلمة واحدة على الأقل، ولكن تم استلام {received}"
-			},
-			"email": {
-				"string": "يجب أن يكون بريد المستخدم الإلكتروني نصًا، ولكن تم استلام {received}",
-				"required": "البريد الإلكتروني للمستخدم مطلوب",
-				"email": "يجب أن يكون البريد الإلكتروني للمستخدم بريدًا إلكترونيًا صالحًا، ولكن تم استلام {received}"
-			},
-			"phone": {
-				"string": "يجب أن يكون رقم هاتف المستخدم نصًا، ولكن تم استلام {received}",
-				"required": "رقم هاتف المستخدم مطلوب",
-				"length": "يجب أن يتكون رقم الهاتف من 8 أرقام، ولكن تم استلام {received}"
-			},
-			"image": {
-				"string": "يجب أن تكون صورة الملف الشخصي للمستخدم نصًا، ولكن تم استلام {received}",
-				"url": "يجب أن تكون صورة الملف الشخصي للمستخدم رابطًا صالحًا (URL)، ولكن تم استلام {received}"
-			},
-			"emailVerified": {
-				"boolean": "يجب أن يكون تحقق البريد الإلكتروني قيمة منطقية (Boolean)، ولكن تم استلام {received}"
-			},
-			"phoneVerified": {
-				"boolean": "يجب أن يكون تحقق رقم الهاتف قيمة منطقية (Boolean)، ولكن تم استلام {received}"
-			},
-			"isActive": {
-				"boolean": "يجب أن تكون خاصية النشاط قيمة منطقية (Boolean)، ولكن تم استلام {received}"
-			}
-		},
-		"UserType": {
-			"picklist": "يجب أن يكون نوع المستخدم إما 'admin' أو 'user'، ولكن تم استلام {received}",
-			"required": "نوع المستخدم مطلوب"
-		},
-		"Uuid": {
-			"string": "يجب أن يكون {key} نصًا، ولكن تم استلام {received}",
-			"required": "{key} مطلوب",
-			"uuid": "يجب أن يكون {key} UUID صالحًا (مثل: 123e4567-e89b-12d3-a456-426614174000)، ولكن تم استلام {received}"
-		}
-	}
+  "constants": {
+    "website": {
+      "name": {
+        "short": "ETS"
+      }
+    },
+    "auctionCategory": {
+      "energy": {
+        "alt": "صورة لمحطة طاقة تمثل فئة الطاقة",
+        "title": "الطاقة"
+      },
+      "industry": {
+        "alt": "صورة لآلة تكسير تمثل فئة الصناعة",
+        "title": "الصناعة"
+      },
+      "transport": {
+        "alt": "صورة لحركة مرور تسبب تلوث تمثل فئة النقل",
+        "title": "النقل"
+      },
+      "buildings": {
+        "alt": "صورة لنظام تكييف تمثل فئة المباني",
+        "title": "المباني"
+      },
+      "agriculture": {
+        "alt": "صورة لمزرعة بها أبقار تمثل فئة الزراعة",
+        "title": "الزراعة"
+      },
+      "waste": {
+        "alt": "صورة لنفايات من الزجاج والبلاستيك تمثل فئة النفايات",
+        "title": "النفايات"
+      }
+    },
+    "auctionType": {
+      "open": "مفتوح",
+      "sealed": "مختوم"
+    },
+    "auctionStatus": {
+      "ending": {
+        "label": "ينتهي",
+        "tooltip": "ينتهي في {date}"
+      },
+      "endingIn": {
+        "label": "ينتهي خلال",
+        "tooltip": "ينتهي خلال {time}"
+      },
+      "endsIn": {
+        "label": "ينتهي خلال",
+        "tooltip": "ينتهي خلال {time}"
+      },
+      "ended": {
+        "label": "انتهى",
+        "tooltip": "انتهى في {date}"
+      },
+      "auctionEnded": {
+        "label": "انتهى المزاد",
+        "tooltip": "انتهى المزاد في {date}"
+      },
+      "upcoming": {
+        "label": "قريبًا",
+        "tooltip": "سيبدأ في {date}"
+      },
+      "startingIn": {
+        "label": "سيبدأ خلال",
+        "tooltip": "سيبدأ خلال {time}"
+      },
+      "startsIn": {
+        "label": "سيبدأ خلال",
+        "tooltip": "سيبدأ خلال {time}"
+      }
+    },
+    "currency": {
+      "QAR": {
+        "symbol": "ر.ق",
+        "name": "الريال القطري"
+      }
+    },
+    "minWinningBid": {
+      "full": "أدنى عرض فائز",
+      "med": "أدنى عرض",
+      "short": "الحد الأدنى"
+    },
+    "minBidIncrement": {
+      "full": "أدنى زيادة في العرض",
+      "med": "أقل زيادة",
+      "short": "زيادة أدنى"
+    },
+    "permits": {
+      "key": "التصاريح",
+      "unit": "تصاريح"
+    },
+    "permitsOffered": {
+      "full": "إجمالي التصاريح المعروضة",
+      "med": "التصاريح المعروضة",
+      "short": "تصاريح"
+    },
+    "emissions": {
+      "key": "الانبعاثات",
+      "unit": "طن مكافئ ثاني أكسيد الكربون"
+    },
+    "rating": {
+      "medium": "{rating, number, ::.00} من 5.00",
+      "long": "{rating, number, ::.00} من 5.00 ({reviews, plural, =0 {لا توجد مراجعات} =1 {مراجعة واحدة} other {# مراجعات}})"
+    },
+    "subtotal": "المجموع الفرعي",
+    "total": "الإجمالي",
+    "grandTotal": "الإجمالي الكلي",
+    "loading": {
+      "auction": "جاري تحميل المزاد...",
+      "auctions": "جاري تحميل المزادات...",
+      "results": "جاري تحميل النتائج...",
+      "bids": "جاري تحميل العروض...",
+      "bidders": "جاري تحميل المشاركين...",
+      "statistics": "جاري تحميل الإحصائيات...",
+      "profile": "جاري تحميل الملف الشخصي..."
+    },
+    "return": {
+      "catalogue": {
+        "label": "العودة إلى الكتالوج",
+        "aria": "العودة إلى كتالوج المزادات",
+        "tooltip": "العودة إلى كتالوج المزادات"
+      },
+      "auction": {
+        "label": "العودة إلى المزاد",
+        "aria": "العودة إلى المزاد",
+        "tooltip": "العودة إلى المزاد"
+      },
+      "auctionPage": {
+        "label": "العودة إلى صفحة المزاد",
+        "aria": "العودة إلى صفحة المزاد",
+        "tooltip": "العودة إلى صفحة المزاد"
+      },
+      "marketplace": {
+        "aria": "زر الصفحة الرئيسية",
+        "tooltip": "العودة إلى الصفحة الرئيسية للسوق"
+      },
+      "dashboard": {
+        "label": "العودة إلى لوحة التحكم",
+        "short": "لوحة التحكم",
+        "aria": "زر العودة إلى لوحة التحكم",
+        "tooltip": "العودة إلى لوحة التحكم الخاصة بك"
+      }
+    },
+    "view": {
+      "all": {
+        "label": "عرض الكل",
+        "aria": "عرض الكل",
+        "tooltip": "عرض الكل"
+      },
+      "allBids": {
+        "label": "عرض كل العروض",
+        "aria": "عرض كل العروض",
+        "tooltip": "عرض كل العروض"
+      },
+      "bids": {
+        "label": "عرض العروض",
+        "aria": "عرض كل العروض",
+        "tooltip": "عرض كل العروض"
+      },
+      "biddingHistory": {
+        "label": "عرض سجل العطاءات",
+        "aria": "عرض سجل العطاءات",
+        "tooltip": "عرض سجل العطاءات"
+      },
+      "auction": {
+        "label": "عرض المزاد",
+        "aria": "عرض المزاد",
+        "tooltip": "عرض المزاد"
+      },
+      "results": {
+        "label": "عرض النتائج",
+        "aria": "عرض نتائج المزاد",
+        "tooltip": "عرض نتائج المزاد"
+      },
+      "resultsNow": {
+        "label": "عرض النتائج حتى الآن",
+        "aria": "عرض نتائج المزاد حتى الآن",
+        "tooltip": "عرض نتائج المزاد حتى الآن"
+      }
+    },
+    "actions": {
+      "cancel": {
+        "label": "إلغاء",
+        "aria": "إلغاء العملية",
+        "tooltip": "إلغاء العملية"
+      },
+      "joinAuction": {
+        "label": "الانضمام إلى المزاد",
+        "aria": "الانضمام إلى المزاد",
+        "tooltip": "الانضمام إلى المزاد"
+      },
+      "placeBids": {
+        "label": "تقديم العطاءات",
+        "aria": "تقديم العطاءات",
+        "tooltip": "تقديم العطاءات"
+      },
+      "saveChanges": {
+        "label": "حفظ التغييرات",
+        "aria": "حفظ التغييرات",
+        "tooltip": "حفظ التغييرات"
+      },
+      "continue": {
+        "label": "متابعة",
+        "aria": "متابعة العملية",
+        "tooltip": "متابعة العملية"
+      }
+    },
+    "quantities": {
+      "auctions": {
+        "default": "{value, number} {value, plural, =0 {مزادات} =1 {مزاد} other {مزادات}}"
+      },
+      "bids": {
+        "default": "{value, number} {value, plural, =0 {عطاءات} =1 {عطاء} other {عطاءات}}"
+      },
+      "bidders": {
+        "default": "{value, number} {value, plural, =0 {مزايدين} =1 {مزايد} other {مزايدين}}"
+      },
+      "bookmarks": {
+        "default": "{value, number} {value, plural, =0 {علامات مرجعية} =1 {علامة مرجعية} other {علامات مرجعية}}"
+      },
+      "currency": {
+        "unitlessWithPercentTotal": "{value, number, ::.00} ({percent, number, ::.00}%)"
+      },
+      "emissions": {
+        "default": "{value, number, ::.00} {value, plural, =0 {طن مكافئ CO2} =1 {طن مكافئ CO2} other {طن مكافئ CO2}}"
+      },
+      "percent": {
+        "default": "{value, number, ::.00}%"
+      },
+      "permits": {
+        "default": "{value, number} {value, plural, =0 {تصاريح} =1 {تصريح} other {تصاريح}}",
+        "withEmissions": "{value, number} {value, plural, =0 {تصاريح} =1 {تصريح} other {تصاريح}} ({emissions, number, ::.00} طن مكافئ CO2)",
+        "withPercentTotal": "{value, number} {value, plural, =0 {تصاريح} =1 {تصريح} other {تصاريح}} ({percent, number, ::.00}%)",
+        "unitlessWithPercentTotal": "{value, number} ({percent, number, ::.00}%)"
+      },
+      "views": {
+        "default": "{value, number} {value, plural, =0 {مشاهدات} =1 {مشاهدة} other {مشاهدات}}"
+      },
+      "years": {
+        "default": "{value, number} {value, plural, =0 {سنوات} =1 {سنة} other {سنوات}}"
+      }
+    },
+    "pagination": {
+      "keyset": {
+        "bids": "عرض {count, number} {isExact, select, true {من} false {من حوالي} other {من}} {total, number} {total, plural, =0 {عطاءات} =1 {عطاء} other {عطاءات}}"
+      },
+      "offset": {
+        "results": "عرض {start, number} - {end, number} من {total, number} {total, plural, =0 {نتائج} =1 {نتيجة} other {نتائج}}"
+      },
+      "perPage": {
+        "label": "لكل صفحة:"
+      }
+    }
+  },
+  "marketplace": {
+    "home": {
+      "banner": {
+        "subtitle": "مزادات حكومية",
+        "title": "فترة المزاد القادمة",
+        "actions": {
+          "calendar": {
+            "tooltip": "افتح تقويم المزاد"
+          },
+          "explore": {
+            "tooltip": "عرض أحدث العروض في السوق",
+            "text": "استكشاف المزادات"
+          }
+        },
+        "startDate": "يبدأ في"
+      },
+      "subbanner": {
+        "1": {
+          "text": "اضغط هنا لعرض النشاطات الأخيرة",
+          "heading": "<mark>{value, plural, =0 {لا توجد مزايدات جديدة} =1 {مزايدة واحدة جديدة} other {# مزايدات جديدة}}</mark> للمزادات التي انضممت إليها"
+        },
+        "2": {
+          "text": "اضغط هنا لإنشاء مزاد جديد",
+          "heading": "هل لديك تصاريح زائدة؟ <mark>قم ببيعها بالمزاد!</mark>"
+        },
+        "3": {
+          "text": "اضغط هنا لعرض نتائج المزادات",
+          "heading": "<mark>{value, plural, =0 {لا مزادات} =1 {مزاد واحد} other {# مزادات}}</mark> {value, plural, =0 {انتهى} =1 {انتهى} other {انتهت}}"
+        }
+      },
+      "categories": {
+        "heading": "فئات المزادات",
+        "subheading": "تصفح المزادات حسب القطاع"
+      },
+      "ending": {
+        "heading": "تنتهي قريبًا",
+        "subheading": "هذه المزادات ستنتهي قريبًا، سارع بالمزايدة قبل فوات الأوان!",
+        "filter": {
+          "prompt": "تصفية حسب الفئة"
+        }
+      },
+      "catalogue": {
+        "filters": {
+          "count": "{value, plural, =0 {} =1 {تصفية واحدة مفعّلة} other {# تصفيات مفعّلة}}",
+          "boolean": "{value, plural, =0 {} =1 {تصفية مفعّلة} other {تصفية مفعّلة}}",
+          "total": "{value, plural, =0 {لا توجد تصفيات مفعّلة} =1 {تصفية واحدة مفعّلة} other {# تصفيات مفعّلة}}",
+          "accordion": {
+            "type": {
+              "title": "نوع المزاد",
+              "description": "تصفية المزادات المفتوحة أو المختومة. <a>ما الفرق؟</a>"
+            },
+            "status": {
+              "title": "حالة المزاد",
+              "description": "اعثر على المزادات الجارية أو المنتهية أو القادمة",
+              "options": {
+                "ongoing": "جارٍ",
+                "upcoming": "قريبًا",
+                "ended": "انتهى",
+                "all": "الكل"
+              }
+            },
+            "sector": {
+              "title": "القطاع",
+              "description": "تصفية المزادات حسب القطاع"
+            },
+            "owner": {
+              "title": "المالك",
+              "description": "ابحث عن مزادات لمالكين محددين"
+            },
+            "date": {
+              "title": "التاريخ",
+              "description": "تصفية المزادات حسب الفترة الزمنية"
+            },
+            "permits": {
+              "title": "عدد التصاريح المعروضة",
+              "description": "تصفية المزادات حسب عدد التصاريح"
+            },
+            "minBid": {
+              "title": "الحد الأدنى للعرض الفائز",
+              "description": "تصفية المزادات حسب الحد الأدنى المطلوب للفوز"
+            },
+            "price": {
+              "title": "سعر الشراء الفوري",
+              "description": "تصفية المزادات حسب سعر الشراء الفوري"
+            }
+          }
+        }
+      }
+    },
+    "auction": {
+      "details": {
+        "components": {
+          "biddingTable": {
+            "columns": {
+              "permits": "تصاريح (% من الإجمالي)",
+              "emissions": "الانبعاثات",
+              "bids": "السعر/للتصريح",
+              "subtotals": "الإجمالي الفرعي (% من الإجمالي)",
+              "actions": "الإجراءات"
+            },
+            "empty": "لم تتم إضافة أي مزايدات بعد. استخدم نموذج \"إدراج المزايدات\" على الجانب لإضافة عروضك.",
+            "delete": "حذف {value, plural, =0 {# عناصر مزايدة} =1 {عنصر مزايدة واحد} other {# عناصر مزايدة}}"
+          }
+        },
+        "bidConfirmationModal": {
+          "notifications": {
+            "success": {
+              "title": "تم تقديم العطاءات بنجاح",
+              "message": "قدمت {bids, plural, =0 {# عطاءات} =1 {عطاء واحد} other {# عطاءات}} بمجموع قدره {total, number, ::.00} ر.ق"
+            },
+            "error": {
+              "title": "حدثت مشكلة أثناء تقديم العطاءات"
+            }
+          },
+          "title": "تأكيد تقديم العطاءات",
+          "description": "أنت على وشك تقديم العطاءات التالية. راجعها جيدًا، فلن تتمكن من تعديلها أو حذفها بعد الإرسال.",
+          "summary": {
+            "totalBid": {
+              "key": "إجمالي العطاء"
+            }
+          },
+          "actions": {
+            "confirm": "تأكيد وتقديم العطاءات"
+          }
+        },
+        "bidding": {
+          "header": {
+            "title": "جدول العطاءات",
+            "subtitle": "أضف عطاءاتك في الجدول أدناه. عند الانتهاء، اضغط على زر \"تقديم العطاءات\" لإرسالها دفعة واحدة.",
+            "bidders": "المزايدون النشطون: {value, plural, =0 {# مزايدين} =1 {مزايد واحد} other {# مزايدين}}"
+          },
+          "sidebar": {
+            "minBid": {
+              "subtext": "زيادة خلال آخر 24 ساعة"
+            },
+            "increment": {
+              "title": "أدنى زيادة في العرض"
+            },
+            "insertForm": {
+              "title": "إدراج المزايدات",
+              "description": "استخدم هذا النموذج لإضافة عروضك إلى جدول العطاءات",
+              "error": {
+                "title": "حدثت مشكلة أثناء إضافة العرض"
+              },
+              "permit": {
+                "label": "عدد التصاريح"
+              },
+              "emission": {
+                "label": "إجمالي الانبعاثات"
+              },
+              "bid": {
+                "label": "السعر لكل تصريح"
+              },
+              "add": "أضف إلى الجدول",
+              "subtext": "لن يتم تقديم العطاء بالضغط على هذا الزر. سيتم فقط إضافته إلى الجدول على اليسار."
+            }
+          },
+          "footer": {
+            "progress": {
+              "left": {
+                "unit": "تصاريح تم المزايدة عليها"
+              },
+              "right": {
+                "unit": "تصاريح متبقية"
+              }
+            },
+            "cta": {
+              "tooltip": "قم بتأكيد كل عنصر في الجدول وقدم جميع العطاءات"
+            }
+          },
+          "endedOverlay": {
+            "title": "هذا المزاد انتهى",
+            "description": "لا يمكنك المشاركة في هذا المزاد بعد الآن لأنه انتهى. يمكنك الاطلاع على النتائج أو عرض الصفحة بوضع القراءة فقط."
+          },
+          "joinOverlay": {
+            "title": "انضم إلى المزاد",
+            "description": "يجب أن تنضم إلى المزاد أولاً للمشاركة. اضغط على الزر أدناه للانضمام."
+          },
+          "upcomingOverlay": {
+            "title": "المزاد لم يبدأ بعد",
+            "description": "لا يمكنك المشاركة في هذا المزاد بعد لأنه لم يبدأ. الرجاء العودة لاحقًا."
+          }
+        },
+        "bidsDrawer": {
+          "button": {
+            "tooltip": "فتح جدول العطاءات"
+          }
+        },
+        "card": {
+          "actions": {
+            "compare": {
+              "label": "مقارنة المزادات"
+            },
+            "startBidding": {
+              "label": "ابدأ المزايدة",
+              "tooltipUpcoming": "المزاد لم يبدأ بعد"
+            }
+          }
+        },
+        "deleteBidModal": {
+          "title": "حذف عطاءاتك",
+          "description": "هل أنت متأكد أنك تريد حذف العطاءات التالية؟ لا يمكن التراجع عن هذا الإجراء.",
+          "actions": {
+            "delete": "حذف العطاءات"
+          }
+        },
+        "details": {
+          "bids": {
+            "title": "جدول العطاءات",
+            "info": "عرض جميع العطاءات المقدمة، بما في ذلك العطاءات الفائزة وعطاؤك الخاص"
+          },
+          "properties": {
+            "title": "تفاصيل",
+            "permitLifespan": {
+              "key": "مدة صلاحية التصريح"
+            },
+            "emissionsPerPermit": {
+              "key": "انبعاثات لكل تصريح"
+            },
+            "startDate": {
+              "key": "تاريخ بدء المزاد"
+            },
+            "endDate": {
+              "key": "تاريخ انتهاء المزاد"
+            },
+            "views": {
+              "key": "عدد المشاهدات"
+            },
+            "bidders": {
+              "key": "عدد المزايدين"
+            },
+            "bids": {
+              "key": "عدد العطاءات"
+            },
+            "bookmarks": {
+              "key": "عدد العلامات المرجعية"
+            }
+          },
+          "winnings": {
+            "title": "مكاسبك الحالية",
+            "info": "عدد التصاريح المتوقع فوزك بها بناءً على العطاءات الفائزة الحالية",
+            "permits": "عدد التصاريح المتوقع",
+            "emissions": "الانبعاثات المتوقعة",
+            "bill": "الفاتورة النهائية المتوقعة",
+            "alert": {
+              "sealed": {
+                "title": "النتائج غير متاحة حاليًا",
+                "description": "سيتم إصدار النتائج بعد انتهاء المزاد ومعالجة جميع العطاءات."
+              },
+              "else": {
+                "title": "لم تنضم إلى المزاد بعد",
+                "description": "يرجى الانضمام للمزاد لعرض مكاسبك المتوقعة."
+              }
+            },
+            "cta": {
+              "tooltip": "عرض النتائج الكاملة للمزاد",
+              "label": "عرض النتائج الكاملة"
+            }
+          }
+        },
+        "editBidModal": {
+          "title": "تعديل عرضك",
+          "description": "يمكنك تعديل العرض من خلال تغيير عدد التصاريح والسعر لكل تصريح. تأكد من أن العرض الجديد لا يتجاوز التصاريح المتاحة.",
+          "error": {
+            "title": "حدثت مشكلة أثناء تعديل العرض"
+          },
+          "permit": {
+            "label": "تصاريح المزايدة <b>(الأصلية {value, number} {value, plural, =0 {تصاريح} =1 {تصريح} other {تصاريح}})</b>"
+          },
+          "emission": {
+            "label": "إجمالي الانبعاثات <b>(الأصلية {value, number, ::.00} طن مكافئ CO2)</b>"
+          },
+          "bid": {
+            "label": "السعر لكل تصريح <b>(الأصلي ر.ق {value, number, ::.00})</b>"
+          }
+        },
+        "ended": {
+          "title": "هذا المزاد انتهى",
+          "description": "لا يمكنك المشاركة في هذا المزاد بعد الآن. يمكنك الاطلاع على النتائج أو عرض الصفحة في وضع القراءة فقط.",
+          "subtext": "عرض الصفحة الأصلية (وضع قراءة فقط)",
+          "overlay": "عرض الصفحة في وضع القراءة فقط"
+        }
+      },
+      "results": {
+        "ticket": {
+          "loser": {
+            "title": "لم يتم منح أي تصاريح",
+            "subtitle": "لم تفز بأي تصاريح في هذا المزاد. ومع ذلك، يمكنك عرض سجل العطاءات وتحليل النتائج.",
+            "subtext": "اطلع على مزادات مماثلة قد تهمك:"
+          },
+          "ongoing": {
+            "title": "النتائج غير متاحة بعد",
+            "subtitle": "المزاد لا يزال جاريًا. ستتوفر النتائج بعد انتهائه ومعالجة العطاءات."
+          },
+          "unjoined": {
+            "title": "لم تنضم إلى هذا المزاد",
+            "subtitle": "يرجى الانضمام للمزاد لعرض النتائج والمشاركة."
+          },
+          "winner": {
+            "footer": {
+              "subtext": "بالنقر على \"متابعة\" ستنتقل إلى صفحة الدفع حيث يمكنك معرفة الخطوة التالية وتأكيد استلام التصاريح"
+            },
+            "title": "مكاسبك",
+            "winningsPercent": "نسبة المكاسب",
+            "properties": {
+              "header": {
+                "key": "الخاصية",
+                "value": "القيمة"
+              },
+              "subsector": {
+                "key": "المصدر"
+              },
+              "sector": {
+                "key": "القطاع"
+              },
+              "awardedTo": {
+                "key": "تم منحها لـ"
+              },
+              "emissions": {
+                "key": "عدد الانبعاثات"
+              }
+            },
+            "summary": {
+              "title": "الفاتورة النهائية",
+              "subtext": "مرر لأسفل لعرض العطاءات المستخدمة في الحساب"
+            }
+          }
+        },
+        "ongoing": {
+          "upcoming": {
+            "title": "هذا المزاد لم يبدأ بعد",
+            "description": "لا توجد نتائج حتى الآن لأنه لم يبدأ. يرجى العودة لاحقًا بعد أن يبدأ المزاد."
+          },
+          "live": {
+            "title": "المزاد لا يزال جاريًا",
+            "description": "يمكنك عرض النتائج المؤقتة، ولكنها ليست نهائية وقد تتغير."
+          },
+          "overlay": {
+            "text": "عرض النتائج المؤقتة"
+          }
+        },
+        "bids": {
+          "tabs": {
+            "results": "نتائج المزاد",
+            "bids": "جميع العطاءات"
+          }
+        },
+        "details": {
+          "statistics": {
+            "chart": {
+              "others": "شركات أخرى",
+              "label": "تصاريح محفوظة حسب الشركة"
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "countdown": {
+      "label": {
+        "long": {
+          "years": "سنوات",
+          "year": "سنة",
+          "quarters": "أرباع",
+          "quarter": "ربع",
+          "months": "أشهر",
+          "month": "شهر",
+          "weeks": "أسابيع",
+          "week": "أسبوع",
+          "days": "أيام",
+          "day": "يوم",
+          "hours": "ساعات",
+          "hour": "ساعة",
+          "minutes": "دقائق",
+          "minute": "دقيقة",
+          "seconds": "ثواني",
+          "second": "ثانية",
+          "milliseconds": "مللي ثانية",
+          "millisecond": "مللي ثانية",
+          "empty": "—"
+        },
+        "medium": {
+          "years": "س",
+          "year": "س",
+          "quarters": "ر",
+          "quarter": "ر",
+          "months": "ش",
+          "month": "ش",
+          "weeks": "أ",
+          "week": "أ",
+          "days": "ي",
+          "day": "ي",
+          "hours": "س",
+          "hour": "س",
+          "minutes": "د",
+          "minute": "د",
+          "seconds": "ث",
+          "second": "ث",
+          "milliseconds": "ملث",
+          "millisecond": "ملث",
+          "empty": "—"
+        },
+        "short": {
+          "years": "س",
+          "year": "س",
+          "quarters": "ر",
+          "quarter": "ر",
+          "months": "ش",
+          "month": "ش",
+          "weeks": "أ",
+          "week": "أ",
+          "days": "ي",
+          "day": "ي",
+          "hours": "س",
+          "hour": "س",
+          "minutes": "د",
+          "minute": "د",
+          "seconds": "ث",
+          "second": "ث",
+          "milliseconds": "م.ث",
+          "millisecond": "م.ث",
+          "empty": ""
+        }
+      },
+      "value": "٠\n١\n٢\n٣\n٤\n٥\n٦\n٧\n٨\n٩"
+    },
+    "header": {
+      "search": {
+        "prompt": "ابحث عن مزاد",
+        "promptTooltip": "افتح شريط البحث",
+        "shortcut": "K"
+      },
+      "buttons": {
+        "accessibility": {
+          "aria": "خيارات إمكانية الوصول",
+          "tooltip": "خيارات إمكانية الوصول"
+        },
+        "language": {
+          "en": {
+            "aria": "التبديل إلى اللغة العربية / Switch to Arabic",
+            "tooltip": "التبديل إلى اللغة العربية / Switch to Arabic"
+          },
+          "ar-QA": {
+            "aria": "Switch to English / التبديل إلى اللغة الإنجليزية",
+            "tooltip": "Switch to English / التبديل إلى اللغة الإنجليزية"
+          }
+        },
+        "notifications": {
+          "aria": "الإشعارات",
+          "tooltip": "الإشعارات"
+        },
+        "search": {
+          "aria": "زر البحث",
+          "tooltip": "ابحث عن مزاد"
+        },
+        "theme": {
+          "auto": {
+            "aria": "التبديل إلى الوضع اليدوي",
+            "tooltip": "التبديل إلى الوضع اليدوي"
+          },
+          "dark": {
+            "aria": "التبديل إلى الوضع الفاتح",
+            "tooltip": "التبديل إلى الوضع الفاتح"
+          },
+          "light": {
+            "aria": "التبديل إلى الوضع الداكن",
+            "tooltip": "التبديل إلى الوضع الداكن"
+          }
+        },
+        "user": {
+          "aria": "ملفي الشخصي",
+          "tooltip": "ملفي الشخصي"
+        }
+      },
+      "user": {
+        "profile": "الملف الشخصي",
+        "marketplace": "السوق",
+        "biddingHistory": "سجل العطاءات",
+        "auctionCalendar": "تقويم المزادات",
+        "dashboard": "لوحة التحكم",
+        "myDashboard": "لوحة التحكم الخاصة بي",
+        "statistics": "الإحصائيات",
+        "transactions": "المعاملات",
+        "permits": "التصاريح",
+        "helpCenter": "مركز المساعدة",
+        "settings": "الإعدادات",
+        "logout": "تسجيل الخروج",
+        "savedAuctions": "المزادات المحفوظة"
+      }
+    },
+    "auctionCard": {
+      "numBids": {
+        "label": "عدد العطاءات"
+      },
+      "numBidders": {
+        "label": "عدد المزايدين"
+      }
+    },
+    "bidsTable": {
+      "filters": {
+        "badges": {
+          "all": "لا توجد تصفية مفعّلة",
+          "winning": "العطاءات الفائزة فقط",
+          "mine": "عطاءاتي فقط",
+          "contributing": "العطاءات المساهمة فقط"
+        },
+        "menu": {
+          "title": "تصفية العطاءات",
+          "options": {
+            "all": "عرض كل العطاءات",
+            "contributing": "عرض العطاءات المساهمة فقط",
+            "winning": "عرض العطاءات الفائزة فقط",
+            "mine": "عرض عطاءاتك فقط"
+          }
+        },
+        "label": "التصفيات:"
+      },
+      "title": "جدول العطاءات",
+      "columns": {
+        "company": "الشركة",
+        "bid": "العطاء",
+        "totalBid": "إجمالي العطاء",
+        "timestamp": "الطابع الزمني"
+      },
+      "empty": "لم يتم العثور على عطاءات",
+      "legend": {
+        "mine": {
+          "label": "عطاءاتك",
+          "tooltip": "هذا عطاءك"
+        },
+        "contributing": {
+          "label": "عطاءات مساهمة",
+          "tooltip": "هذا العطاء يساهم في فاتورتك النهائية"
+        },
+        "winning": {
+          "label": "عطاءات فائزة",
+          "tooltip": "هذا عطاء فائز"
+        }
+      },
+      "sealed": {
+        "unavailable": "العطاءات غير متاحة أثناء المزاد المختوم. يرجى الانتظار حتى انتهاء المزاد ونشر النتائج."
+      }
+    },
+    "auctionCarousel": {
+      "error": "حدث خطأ أثناء تحميل المزادات. الرجاء المحاولة لاحقًا.",
+      "empty": "لا توجد مزادات متاحة حاليًا. الرجاء التحقق لاحقًا."
+    },
+    "auctionResultsTable": {
+      "title": "جدول النتائج",
+      "legend": {
+        "mine": {
+          "label": "نتيجتك",
+          "tooltip": "هذه هي نتيجتك"
+        }
+      },
+      "columns": {
+        "company": "الشركة",
+        "totalBids": "إجمالي العطاءات",
+        "winningBids": "العطاءات الفائزة (% الفوز)",
+        "permits": "التصاريح المحجوزة (% محجوز)",
+        "avgPrice": "متوسط السعر/للتصريح",
+        "bill": "الفاتورة النهائية"
+      },
+      "data": {
+        "winningBids": "{value, number} ({percent, number, ::.00}%)",
+        "permits": "{value, number} ({percent, number, ::.00}%)"
+      },
+      "empty": "لا توجد نتائج"
+    },
+    "firmApplicationsTable": {
+      "actions": {
+        "invite": {
+          "default": "دعوة {value ، الجمع ، = 0 {Companies} = 1 {Company} {الشركات الأخرى}}"
+        }
+      }
+    }
+  },
+  "model": {
+    "AuctionData": {
+      "isPrimaryMarket": {
+        "boolean": "يجب أن يكون السوق الأساسي قيمة منطقية (Boolean)، ولكن تم استلام {received}"
+      },
+      "title": {
+        "string": "يجب أن يكون عنوان المزاد نصًا، ولكن تم استلام {received}",
+        "required": "عنوان المزاد مطلوب",
+        "words": "يجب أن يحتوي عنوان المزاد على كلمة واحدة على الأقل، ولكن تم استلام {received}"
+      },
+      "image": {
+        "string": "يجب أن تكون صورة المزاد نصًا، ولكن تم استلام {received}",
+        "url": "يجب أن تكون صورة المزاد رابطًا صالحًا (URL)، ولكن تم استلام {received}"
+      },
+      "description": {
+        "string": "يجب أن يكون وصف المزاد نصًا، ولكن تم استلام {received}",
+        "words": "يجب أن يحتوي وصف المزاد على 3 كلمات على الأقل، ولكن تم استلام {received}"
+      },
+      "isVisible": {
+        "boolean": "يجب أن تكون خاصية الظهور قيمة منطقية (Boolean)، ولكن تم استلام {received}"
+      },
+      "hasJoined": {
+        "boolean": "يجب أن تكون خاصية المشاركة قيمة منطقية (Boolean)، ولكن تم استلام {received}"
+      }
+    },
+    "AuctionType": {
+      "picklist": "يجب أن يكون نوع المزاد إما 'مفتوح' أو 'مختوم'، ولكن تم استلام {received}",
+      "required": "نوع المزاد مطلوب"
+    },
+    "BiddingTableData": {
+      "permit": {
+        "required": "التصريح مطلوب",
+        "oneOrMore": "يجب أن تزايد على تصريح واحد على الأقل",
+        "moreThanOffered": "لا يمكنك المزايدة على تصاريح أكثر مما هو معروض في المزاد",
+        "moreThanAvailable": "لا يمكنك المزايدة على أكثر من عدد التصاريح المتاحة. الرجاء مراجعة جدول المزايدات",
+        "moreThanAvailableWithValue": "لا يمكنك المزايدة على أكثر من {value, number} تصريح. الرجاء التأكد من أن المزايدة أقل من أو تساوي هذا الرقم"
+      },
+      "bid": {
+        "required": "المزايدة مطلوبة",
+        "oneOrMore": "يجب أن تزايد على ريال قطري واحد على الأقل",
+        "minBid": "يجب أن تكون المزايدة مساوية أو أكبر من الحد الأدنى للمزايدة",
+        "exists": "لديك بالفعل مزايدة بهذا المبلغ في الجدول، الرجاء تعديلها بدلاً من إضافة واحدة جديدة"
+      }
+    },
+    "PositiveNumber": {
+      "number": "يجب أن يكون {key} رقمًا، ولكن تم استلام {received}",
+      "integer": "يجب أن يكون {key} عددًا صحيحًا، ولكن تم استلام {received}",
+      "positive": "يجب أن يكون {key} رقمًا موجبًا، ولكن تم استلام {received}"
+    },
+    "Timestamp": {
+      "string": "يجب أن يكون {key} نصًا، ولكن تم استلام {received}",
+      "isoTimestamp": "يجب أن يكون {key} طابعًا زمنيًا بصيغة ISO 8601 صالحًا (مثل: 2021-01-01T00:00:00Z)، ولكن تم استلام {received})"
+    },
+    "UserData": {
+      "name": {
+        "string": "يجب أن يكون اسم المستخدم نصًا، ولكن تم استلام {received}",
+        "required": "اسم المستخدم مطلوب",
+        "words": "يجب أن يحتوي اسم المستخدم على كلمة واحدة على الأقل، ولكن تم استلام {received}"
+      },
+      "email": {
+        "string": "يجب أن يكون بريد المستخدم الإلكتروني نصًا، ولكن تم استلام {received}",
+        "required": "البريد الإلكتروني للمستخدم مطلوب",
+        "email": "يجب أن يكون البريد الإلكتروني للمستخدم بريدًا إلكترونيًا صالحًا، ولكن تم استلام {received}"
+      },
+      "phone": {
+        "string": "يجب أن يكون رقم هاتف المستخدم نصًا، ولكن تم استلام {received}",
+        "required": "رقم هاتف المستخدم مطلوب",
+        "length": "يجب أن يتكون رقم الهاتف من 8 أرقام، ولكن تم استلام {received}"
+      },
+      "image": {
+        "string": "يجب أن تكون صورة الملف الشخصي للمستخدم نصًا، ولكن تم استلام {received}",
+        "url": "يجب أن تكون صورة الملف الشخصي للمستخدم رابطًا صالحًا (URL)، ولكن تم استلام {received}"
+      },
+      "emailVerified": {
+        "boolean": "يجب أن يكون تحقق البريد الإلكتروني قيمة منطقية (Boolean)، ولكن تم استلام {received}"
+      },
+      "phoneVerified": {
+        "boolean": "يجب أن يكون تحقق رقم الهاتف قيمة منطقية (Boolean)، ولكن تم استلام {received}"
+      },
+      "isActive": {
+        "boolean": "يجب أن تكون خاصية النشاط قيمة منطقية (Boolean)، ولكن تم استلام {received}"
+      }
+    },
+    "UserType": {
+      "picklist": "يجب أن يكون نوع المستخدم إما 'admin' أو 'user'، ولكن تم استلام {received}",
+      "required": "نوع المستخدم مطلوب"
+    },
+    "Uuid": {
+      "string": "يجب أن يكون {key} نصًا، ولكن تم استلام {received}",
+      "required": "{key} مطلوب",
+      "uuid": "يجب أن يكون {key} UUID صالحًا (مثل: 123e4567-e89b-12d3-a456-426614174000)، ولكن تم استلام {received}"
+    }
+  }
 }
