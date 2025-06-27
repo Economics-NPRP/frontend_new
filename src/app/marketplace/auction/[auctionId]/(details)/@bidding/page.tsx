@@ -73,7 +73,7 @@ export default function Prompt() {
 		if (isUpcoming) return 'upcoming';
 		if (isLive && !auction.data.hasJoined) return 'unjoined';
 		if (hasEnded) return 'ended';
-	}, [auction.isLoading, isUpcoming, isLive, hasEnded]);
+	}, [auction.isLoading, isUpcoming, isLive, auction.data.hasJoined, hasEnded]);
 
 	return (
 		<Stack className={classes.root}>
