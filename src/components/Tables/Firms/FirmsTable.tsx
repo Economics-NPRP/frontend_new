@@ -238,7 +238,7 @@ export const FirmsTable = ({
 						<Text className={classes.label}>
 							{t('components.firmsTable.filters.label')}
 						</Text>
-						<Group className={classes.badges}>{filterBadges}</Group>
+						<Group className={classes.group}>{filterBadges}</Group>
 					</Group>
 					<Group className={classes.legend}></Group>
 				</Group>

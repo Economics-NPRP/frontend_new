@@ -285,7 +285,7 @@ export const FirmApplicationsTable = ({
 						<Text className={classes.label}>
 							{t('components.firmApplicationsTable.filters.label')}
 						</Text>
-						<Group className={classes.badges}>{filterBadges}</Group>
+						<Group className={classes.group}>{filterBadges}</Group>
 					</Group>
 					<Group className={classes.legend}>
 						<Group className={classes.cell}>

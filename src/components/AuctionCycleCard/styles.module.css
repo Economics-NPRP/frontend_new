@@ -1,0 +1,164 @@
+.root {
+	@apply gap-0 self-stretch items-stretch flex-nowrap;
+	@apply transition-shadow duration-300;
+
+	&.draft {
+		> .left {
+			> .bg {
+			}
+
+			> .header > .wrapper > .indicator {
+				@apply bg-gray-200;
+			}
+		}
+	}
+
+	&.approved {
+		> .left > .header > .wrapper {
+			> .indicator {
+				@apply bg-green-600;
+			}
+		}
+	}
+
+	&.ongoing {
+		> .left > .header > .wrapper {
+			> .indicator {
+				@apply bg-blue-600;
+			}
+		}
+	}
+
+	&.ended {
+		> .left > .header > .wrapper {
+			> .indicator {
+				@apply bg-orange-600;
+			}
+		}
+	}
+
+	&:hover {
+		@apply shadow-xs;
+	}
+
+	> .left {
+		@apply relative;
+		@apply p-6 gap-6;
+		@apply flex-auto items-stretch;
+		@apply bg-white border border-solid border-gray-300;
+
+		> .bg {
+			@apply absolute;
+		}
+
+		> .header {
+			@apply mb-auto;
+			@apply flex-nowrap;
+			@apply gap-8 items-center justify-between;
+
+			> .wrapper {
+				@apply flex-nowrap;
+				@apply gap-4 items-start justify-start;
+
+				> .indicator {
+					@apply w-1 h-16;
+					@apply rounded-full;
+				}
+
+				> .content {
+					@apply gap-4 items-start justify-start;
+
+					> .label {
+						@apply gap-0 items-start;
+
+						> .title {
+							@apply heading-2;
+						}
+
+						> .subtitle {
+							@apply paragraph-sm-g6;
+						}
+					}
+
+					> .badges {
+						@apply gap-1.5;
+
+						> .badge {
+							@apply h-6;
+							@apply rounded-sm;
+
+							&.basic {
+								@apply bg-gray-100;
+								@apply display-xs-g6 normal-case;
+							}
+						}
+					}
+				}
+			}
+
+			> .team {
+				@apply items-end gap-2;
+				@apply p-2;
+
+				> .label {
+					@apply display-md-15-sb;
+				}
+			}
+		}
+
+		> .statistics {
+			> .progress {
+				@apply h-8;
+			}
+		}
+	}
+
+	> .right {
+		@apply gap-0 items-stretch flex-nowrap;
+		@apply bg-dark-600 border border-solid border-dark-400;
+
+		.divider {
+			@apply border-dark-400;
+		}
+
+		> .properties {
+			@apply w-72;
+			@apply gap-0 items-stretch justify-center;
+
+			> .cell {
+				@apply p-4 gap-2;
+				@apply items-center justify-center;
+
+				> .label {
+					@apply display-sm-15-sb-w;
+					@apply !text-white;
+				}
+
+				> .row {
+					@apply gap-1 items-baseline flex-nowrap;
+
+					> .icon {
+						@apply size-6;
+						@apply mr-1;
+						@apply flex items-center justify-center;
+						@apply bg-dark-400 text-dark-100;
+						@apply rounded-sm;
+					}
+
+					> .value {
+						@apply numeric-xl-w;
+					}
+
+					> .unit {
+						@apply display-sm-15-sb-w;
+					}
+				}
+			}
+		}
+
+		> .button {
+			@apply w-20 h-[unset];
+			@apply flex items-center justify-center;
+		}
+	}
+}

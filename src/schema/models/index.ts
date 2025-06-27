@@ -1,4 +1,6 @@
 export * from './AdminData';
+export * from './AuctionCycleData';
+export * from './AuctionCycleStatus';
 export * from './AuctionData';
 export * from './AuctionType';
 export * from './BidData';

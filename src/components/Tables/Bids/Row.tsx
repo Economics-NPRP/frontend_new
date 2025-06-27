@@ -36,7 +36,7 @@ export const BidsTableRow = ({
 				>
 					{bid.bidder.name}
 				</Anchor>
-				<Group className={classes.badges}>
+				<Group className={classes.group}>
 					{isMine && (
 						<Tooltip
 							label={t('components.bidsTable.legend.mine.tooltip')}
