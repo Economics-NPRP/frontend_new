@@ -287,7 +287,15 @@ export const FirmsTable = ({
 								title: t('components.firmsTable.columns.name'),
 								width: 240,
 								ellipsis: true,
-								render: (record) => record.name,
+								render: (record) => (
+									<Anchor
+										component={Link}
+										className={classes.anchor}
+										href={`/dashboard/a/firms/${record.id}`}
+									>
+										{record.name}
+									</Anchor>
+								),
 							},
 							{
 								accessor: 'sectors',
