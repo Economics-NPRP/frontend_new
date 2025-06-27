@@ -10,7 +10,7 @@ import { Stack } from '@mantine/core';
 import classes from './styles.module.css';
 
 export const metadata: Metadata = {
-	title: 'Firms',
+	title: 'Companies',
 };
 
 export interface FirmsListProps {

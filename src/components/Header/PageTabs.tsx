@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { FloatingIndicator, Tabs } from '@mantine/core';
 
@@ -37,7 +37,7 @@ export const PageTabs = ({ pageMatcher, pages }: PageTabsProps) => {
 			setCurrentTab(value);
 			router.push(href);
 		},
-		[router],
+		[pages, router],
 	);
 
 	const pagesList = useMemo(
@@ -47,8 +47,13 @@ export const PageTabs = ({ pageMatcher, pages }: PageTabsProps) => {
 					{label}
 				</Tabs.Tab>
 			)),
-		[pages],
+		[pages, setControlRef],
 	);
+
+	//	 Update the current tab when the pathname changes
+	useEffect(() => {
+		setCurrentTab(pageMatcher(pathname) || null);
+	}, [pathname, pageMatcher]);
 
 	return (
 		<Tabs
