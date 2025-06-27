@@ -406,6 +406,9 @@
             "applications": {
               "title": "Company Applications"
             }
+          },
+          "cycles": {
+            "title": "Auction Cycles"
           }
         }
       }
