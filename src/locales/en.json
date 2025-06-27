@@ -262,6 +262,7 @@
       }
     },
     "view": {
+      "label": "View",
       "all": {
         "label": "View All",
         "aria": "View all",
@@ -341,6 +342,9 @@
       },
       "verify": {
         "label": "Verify"
+      },
+      "review": {
+        "label": "Review"
       }
     },
     "quantities": {
@@ -411,7 +415,13 @@
       "pending": "Pending",
       "rejected": "Rejected"
     },
-    "na": "N/A"
+    "na": "N/A",
+    "download": {
+      "companyData": "Download all company data as CSV",
+      "applications": "Download all applications as CSV",
+      "bids": "Download all bids as CSV",
+      "results": "Download all auction results as CSV"
+    }
   },
   "marketplace": {
     "home": {

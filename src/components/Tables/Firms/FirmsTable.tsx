@@ -40,6 +40,7 @@ import {
 	IconArrowUpRight,
 	IconCheck,
 	IconCopy,
+	IconDownload,
 	IconFileSearch,
 	IconSearch,
 } from '@tabler/icons-react';
@@ -225,6 +226,11 @@ export const FirmsTable = ({
 								</Checkbox.Group>
 							</Menu.Dropdown>
 						</Menu>
+						<Tooltip label={t('constants.download.companyData')}>
+							<ActionIcon className={classes.button}>
+								<IconDownload size={16} />
+							</ActionIcon>
+						</Tooltip>
 					</Group>
 				</Group>
 				<Group className={`${classes.row} ${classes.wrapMobile}`}>
@@ -566,7 +572,11 @@ export const FirmsTable = ({
 											href={`/dashboard/a/firms/${record.id}`}
 											rightSection={<IconArrowUpRight size={16} />}
 										>
-											{t('constants.view.details.label')}
+											{t(
+												isMobile
+													? 'constants.view.label'
+													: 'constants.view.details.label',
+											)}
 										</Button>
 									</Group>
 								),

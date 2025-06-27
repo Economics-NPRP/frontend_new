@@ -11,6 +11,7 @@ import { MyUserProfileContext } from '@/contexts';
 import { IAuctionData, IUserData } from '@/schema/models';
 import { IAuctionResultsData } from '@/types';
 import {
+	ActionIcon,
 	Anchor,
 	Container,
 	Divider,
@@ -26,7 +27,12 @@ import {
 	Tooltip,
 	useMatches,
 } from '@mantine/core';
-import { IconArrowNarrowDown, IconDatabaseOff, IconUserHexagon } from '@tabler/icons-react';
+import {
+	IconArrowNarrowDown,
+	IconDatabaseOff,
+	IconDownload,
+	IconUserHexagon,
+} from '@tabler/icons-react';
 
 import classes from '../styles.module.css';
 
@@ -135,6 +141,11 @@ export const ResultsTable = ({
 							}
 							allowDeselect={false}
 						/>
+						<Tooltip label={t('constants.download.results')}>
+							<ActionIcon className={classes.button}>
+								<IconDownload size={16} />
+							</ActionIcon>
+						</Tooltip>
 					</Group>
 				</Group>
 			</Stack>

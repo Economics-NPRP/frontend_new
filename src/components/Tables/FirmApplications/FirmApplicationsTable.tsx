@@ -33,13 +33,14 @@ import {
 	Title,
 	Tooltip,
 } from '@mantine/core';
-import { useListState } from '@mantine/hooks';
+import { useListState, useMediaQuery } from '@mantine/hooks';
 import {
 	IconAdjustments,
 	IconCheck,
 	IconChevronLeft,
 	IconChevronRight,
 	IconCopy,
+	IconDownload,
 	IconFileSearch,
 	IconHelpHexagon,
 	IconSearch,
@@ -57,6 +58,7 @@ export const FirmApplicationsTable = ({
 	...props
 }: FirmApplicationsTableProps) => {
 	const t = useTranslations();
+	const isMobile = useMediaQuery('(max-width: 48em)');
 	const tableContainerRef = useRef<HTMLTableElement>(null);
 
 	const invitationModal = useContext(InvitationModalContext);
@@ -271,6 +273,11 @@ export const FirmApplicationsTable = ({
 								</Checkbox.Group>
 							</Menu.Dropdown>
 						</Menu>
+						<Tooltip label={t('constants.download.applications')}>
+							<ActionIcon className={classes.button}>
+								<IconDownload size={16} />
+							</ActionIcon>
+						</Tooltip>
 					</Group>
 				</Group>
 				<Group className={`${classes.row} ${classes.wrapMobile}`}>
@@ -589,7 +596,9 @@ export const FirmApplicationsTable = ({
 												disabled={record.status !== 'pending'}
 											>
 												{t(
-													'components.firmApplicationsTable.actions.review.default',
+													isMobile
+														? 'constants.actions.review.label'
+														: 'components.firmApplicationsTable.actions.review.default',
 												)}
 											</Button>
 										</Tooltip>

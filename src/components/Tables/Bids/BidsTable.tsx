@@ -31,6 +31,7 @@ import {
 	TableProps,
 	Text,
 	Title,
+	Tooltip,
 } from '@mantine/core';
 import {
 	IconAdjustments,
@@ -38,6 +39,7 @@ import {
 	IconChevronLeft,
 	IconChevronRight,
 	IconDatabaseOff,
+	IconDownload,
 	IconError404,
 	IconX,
 } from '@tabler/icons-react';
@@ -322,6 +324,11 @@ export const BidsTable = ({
 									</Radio.Group>
 								</Menu.Dropdown>
 							</Menu>
+							<Tooltip label={t('constants.download.bids')}>
+								<ActionIcon className={classes.button}>
+									<IconDownload size={16} />
+								</ActionIcon>
+							</Tooltip>
 							{withCloseButton && (
 								<ActionIcon className={classes.button} onClick={onClose}>
 									<IconX size={16} />
