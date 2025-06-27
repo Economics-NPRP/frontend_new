@@ -77,14 +77,14 @@ export const AdminDashboardHeader = () => {
 						</Button>
 					</Tooltip>
 					<PageDropdown pageMatcher={pageMatcher} pages={pages} />
-					<HeaderButton variant="notifications" />
+					<HeaderButton variant="marketplace" />
 				</Flex>
 				<PageTabs pageMatcher={pageMatcher} pages={pages} />
 				<Flex className={classes.right}>
 					<HeaderButton variant="accessibility" visibleFrom="xs" />
 					<HeaderButton variant="language" visibleFrom="xs" />
 					<HeaderButton variant="theme" visibleFrom="xs" />
-					<UserProfile />
+					<UserProfile variant="adminDashboard" />
 				</Flex>
 			</Group>
 		</Center>

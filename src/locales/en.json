@@ -886,10 +886,22 @@
         "user": {
           "aria": "My Profile",
           "tooltip": "My Profile"
+        },
+        "marketplace": {
+          "aria": "Go to Marketplace",
+          "tooltip": "Go to Marketplace"
         }
       },
       "user": {
-        "profile": "Go to Profile",
+        "profile": {
+          "cta": {
+            "marketplace": "Go to Marketplace",
+            "dashboard": "Go to Dashboard"
+          },
+          "error": {
+            "title": "There was an error displaying your profile"
+          }
+        },
         "marketplace": "Marketplace",
         "biddingHistory": "Bidding History",
         "auctionCalendar": "Auction Calendar",
@@ -900,7 +912,16 @@
         "permits": "Permits",
         "helpCenter": "Help Center",
         "settings": "Settings",
-        "logout": "Logout",
+        "logout": {
+          "label": "Logout",
+          "error": {
+            "title": "There was a problem logging out"
+          },
+          "success": {
+            "title": "Logged Out Successfully",
+            "message": "You have been logged out successfully. You can now close this tab or return to the login page."
+          }
+        },
         "savedAuctions": "Saved Auctions"
       },
       "admin": {
@@ -1080,8 +1101,8 @@
       "filters": {
         "menu": {
           "status": {
-            "label": "Company Status",
-            "all": "Show all companies",
+            "label": "Application Status",
+            "all": "Show all applications",
             "approved": "Only show approved applications",
             "pending": "Only show pending applications",
             "rejected": "Only show rejected applications"
@@ -1118,7 +1139,7 @@
         "websites": "Company Website",
         "address": "Company HQ Address"
       },
-      "empty": "No companies found",
+      "empty": "No applications found",
       "legend": {
         "pending": {
           "label": "Pending Applications",
@@ -1315,7 +1336,8 @@
           }
         }
       }
-    }
+    },
+    "unknownError": "An unknown error occurred."
   },
   "auth": {
     "onboarding": {
