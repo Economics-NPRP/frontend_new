@@ -5,8 +5,7 @@
 	> .banner {
 		@apply relative;
 		@apply h-32;
-		@apply flex-[0px] self-stretch;
-		@apply flex flex-col justify-center items-center;
+		@apply flex flex-col justify-center items-center self-stretch;
 		@apply overflow-hidden;
 		@apply py-4 px-8;
 		@apply border border-solid border-gray-300;
@@ -124,6 +123,10 @@
 	@mixin larger-than $mantine-breakpoint-sm {
 		.root {
 			@apply flex-row;
+
+			> .banner {
+				@apply flex-[0px];
+			}
 		}
 	}
 
