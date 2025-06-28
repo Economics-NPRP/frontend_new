@@ -51,6 +51,7 @@ export default function BidConfirmationModal() {
 					auctionId: auctionId as string,
 					bids: bids.map(({ permit, bid }) => ({ permits: permit, amount: bid })),
 				}),
+				`placeBid:${auctionId}`,
 			),
 		onSuccess: () => {
 			queryClient.invalidateQueries({

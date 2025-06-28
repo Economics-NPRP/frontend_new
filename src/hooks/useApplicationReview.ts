@@ -23,7 +23,7 @@ export const useApplicationReview: ApplicationReviewProps = (
 	const t = useTranslations();
 
 	const approve = useMutation({
-		mutationFn: () => throwError(approveApplication(id)),
+		mutationFn: () => throwError(approveApplication(id), `approveApplication:${id}`),
 		onSuccess: () => {
 			notifications.show({
 				color: 'green',
@@ -45,7 +45,8 @@ export const useApplicationReview: ApplicationReviewProps = (
 	});
 
 	const reject = useMutation({
-		mutationFn: (reason: string) => throwError(rejectApplication(id, reason)),
+		mutationFn: (reason: string) =>
+			throwError(rejectApplication(id, reason), `rejectApplication:${id}`),
 		onSuccess: () => {
 			notifications.show({
 				color: 'green',

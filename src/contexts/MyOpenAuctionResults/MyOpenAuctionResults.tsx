@@ -28,7 +28,12 @@ export const MyOpenAuctionResultsProvider = ({ children }: PropsWithChildren) =>
 			context={Context}
 			defaultData={DefaultData}
 			queryKey={[myUser.data.id, 'marketplace', auctionId as string, 'myOpenAuctionResults']}
-			queryFn={() => () => throwError(getMyOpenAuctionResults(auctionId as string))}
+			queryFn={() => () =>
+				throwError(
+					getMyOpenAuctionResults(auctionId as string),
+					`getMyOpenAuctionResults:${auctionId}`,
+				)
+			}
 			disabled={!areResultsAvailable}
 			children={children}
 		/>

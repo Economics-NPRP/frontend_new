@@ -80,6 +80,7 @@ export const InfinitePaginatedAuctionsProvider = ({
 						isLive: filters.status !== 'ended',
 						hasEnded: filters.status !== 'ongoing',
 					}),
+					'getInfinitePaginatedAuctions',
 				),
 		[filters.type, filters.status],
 	);

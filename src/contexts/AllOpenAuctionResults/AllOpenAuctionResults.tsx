@@ -43,6 +43,7 @@ export const AllOpenAuctionResultsProvider = ({
 						page,
 						perPage,
 					}),
+					`getAllOpenAuctionResults:${auctionId}`,
 				)
 			}
 			disabled={!areResultsAvailable}

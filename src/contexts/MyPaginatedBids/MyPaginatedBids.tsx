@@ -43,6 +43,7 @@ export const MyPaginatedBidsProvider = ({
 						cursor,
 						perPage,
 					}),
+					`getMyPaginatedBids:${auctionId}`,
 				)
 			}
 			disabled={!areBidsAvailable}

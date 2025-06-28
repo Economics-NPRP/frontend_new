@@ -15,14 +15,15 @@ const Context = createContext<ISingleFirmContext>(DefaultData);
 
 export const SingleFirmProvider = ({ children }: PropsWithChildren) => {
 	const { firmId } = useParams();
-	console.log(firmId);
 
 	return (
 		<QueryProvider
 			context={Context}
 			defaultData={DefaultData}
 			queryKey={['users', 'firms', firmId as string, 'singleFirm']}
-			queryFn={() => () => throwError(getSingleFirm(firmId as string))}
+			queryFn={() => () =>
+				throwError(getSingleFirm(firmId as string), `getSingleFirm:${firmId}`)
+			}
 			children={children}
 		/>
 	);

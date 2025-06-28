@@ -36,6 +36,7 @@ export const AllWinningBidsProvider = ({ children }: OffsetPaginatedProviderProp
 						page,
 						perPage,
 					}),
+					`getAllWinningBids:${auctionId}`,
 				)
 			}
 			disabled={!areBidsAvailable}

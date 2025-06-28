@@ -46,6 +46,7 @@ export const PaginatedFirmApplicationsProvider = ({
 					cursor,
 					perPage,
 				}),
+				'getPaginatedFirmApplications',
 			),
 		[status],
 	);
