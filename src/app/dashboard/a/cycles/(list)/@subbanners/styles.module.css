@@ -120,7 +120,7 @@
 }
 
 * {
-	@mixin larger-than $mantine-breakpoint-sm {
+	@mixin larger-than $mantine-breakpoint-md {
 		.root {
 			@apply flex-row;
 

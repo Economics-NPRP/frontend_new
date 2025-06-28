@@ -61,7 +61,7 @@ export const MarketplaceHeader = () => {
 					<HeaderButton variant="accessibility" visibleFrom="xs" />
 					<HeaderButton variant="language" visibleFrom="xs" />
 					<HeaderButton variant="theme" visibleFrom="xs" />
-					<UserProfile />
+					<UserProfile variant="marketplace" />
 				</Flex>
 			</Group>
 		</Center>

@@ -262,6 +262,7 @@
       }
     },
     "view": {
+      "label": "View",
       "all": {
         "label": "View All",
         "aria": "View all",
@@ -341,11 +342,15 @@
       },
       "verify": {
         "label": "Verify"
+      },
+      "review": {
+        "label": "Review"
       }
     },
     "quantities": {
       "auctions": {
-        "default": "{value, number} {value, plural, =0 {Auctions} =1 {Auction} other {Auctions}}"
+        "default": "{value, number} {value, plural, =0 {Auctions} =1 {Auction} other {Auctions}}",
+        "unitOnly": "{value, plural, =0 {Auctions} =1 {Auction} other {Auctions}}"
       },
       "bids": {
         "default": "{value, number} {value, plural, =0 {Bids} =1 {Bid} other {Bids}}"
@@ -385,10 +390,23 @@
       },
       "offset": {
         "results": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {results} =1 {result} other {results}}",
-        "firms": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {companies} =1 {company} other {companies}}"
+        "firms": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {companies} =1 {company} other {companies}}",
+        "auctionCycles": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {auction cycles} =1 {auction cycle} other {auction cycles}}"
       },
       "perPage": {
         "label": "Per page:"
+      },
+      "sortBy": {
+        "label": "Sort by:",
+        "lastUpdated": {
+          "label": "Last Updated"
+        },
+        "startDatetime": {
+          "label": "Start Date"
+        },
+        "auctionsCount": {
+          "label": "Number of Auctions"
+        }
       }
     },
     "pages": {
@@ -402,6 +420,9 @@
             "applications": {
               "title": "Company Applications"
             }
+          },
+          "cycles": {
+            "title": "Auction Cycles"
           }
         }
       }
@@ -411,7 +432,19 @@
       "pending": "Pending",
       "rejected": "Rejected"
     },
-    "na": "N/A"
+    "na": "N/A",
+    "download": {
+      "companyData": "Download all company data as CSV",
+      "applications": "Download all applications as CSV",
+      "bids": "Download all bids as CSV",
+      "results": "Download all auction results as CSV"
+    },
+    "auctionCycleStatus": {
+      "draft": "Draft",
+      "approved": "Approved",
+      "ongoing": "Ongoing",
+      "ended": "Ended"
+    }
   },
   "marketplace": {
     "home": {
@@ -886,10 +919,22 @@
         "user": {
           "aria": "My Profile",
           "tooltip": "My Profile"
+        },
+        "marketplace": {
+          "aria": "Go to Marketplace",
+          "tooltip": "Go to Marketplace"
         }
       },
       "user": {
-        "profile": "Go to Profile",
+        "profile": {
+          "cta": {
+            "marketplace": "Go to Marketplace",
+            "dashboard": "Go to Dashboard"
+          },
+          "error": {
+            "title": "There was an error displaying your profile"
+          }
+        },
         "marketplace": "Marketplace",
         "biddingHistory": "Bidding History",
         "auctionCalendar": "Auction Calendar",
@@ -900,7 +945,16 @@
         "permits": "Permits",
         "helpCenter": "Help Center",
         "settings": "Settings",
-        "logout": "Logout",
+        "logout": {
+          "label": "Logout",
+          "error": {
+            "title": "There was a problem logging out"
+          },
+          "success": {
+            "title": "Logged Out Successfully",
+            "message": "You have been logged out successfully. You can now close this tab or return to the login page."
+          }
+        },
         "savedAuctions": "Saved Auctions"
       },
       "admin": {
@@ -931,7 +985,7 @@
     "bidsTable": {
       "filters": {
         "badges": {
-          "all": "No Filter Applied",
+          "all": "Showing All Bids",
           "winning": "Winning Bids Only",
           "mine": "My Bids Only",
           "contributing": "Contributing Bids Only"
@@ -1016,7 +1070,7 @@
         },
         "label": "Filters:",
         "badges": {
-          "all": "No Filter Applied",
+          "all": "Showing All Companies",
           "verified": "Verified Companies Only",
           "unverified": "Pending Companies Only",
           "uninvited": "Newly Registered Companies Only"
@@ -1080,8 +1134,8 @@
       "filters": {
         "menu": {
           "status": {
-            "label": "Company Status",
-            "all": "Show all companies",
+            "label": "Application Status",
+            "all": "Show all applications",
             "approved": "Only show approved applications",
             "pending": "Only show pending applications",
             "rejected": "Only show rejected applications"
@@ -1092,7 +1146,7 @@
         },
         "label": "Filters:",
         "badges": {
-          "all": "No Filter Applied",
+          "all": "Showing All Applications",
           "approved": "Approved Applications Only",
           "pending": "Pending Applications Only",
           "rejected": "Rejected Applications Only"
@@ -1118,7 +1172,7 @@
         "websites": "Company Website",
         "address": "Company HQ Address"
       },
-      "empty": "No companies found",
+      "empty": "No applications found",
       "legend": {
         "pending": {
           "label": "Pending Applications",
@@ -1175,6 +1229,52 @@
         "length": {
           "label": "Includes at least 8 characters"
         }
+      }
+    },
+    "auctionCyclesTable": {
+      "title": "List of Auction Cycles",
+      "filters": {
+        "badges": {
+          "draft": "Draft Cycles Only",
+          "approved": "Approved Cycles Only",
+          "ongoing": "Ongoing Cycles Only",
+          "ended": "Ended Cycles Only",
+          "all": "Showing All Auction Cycles"
+        },
+        "menu": {
+          "status": {
+            "label": "Auction Cycle Status",
+            "all": "Show all auction cycles",
+            "draft": "Only show draft cycles",
+            "approved": "Only show approved cycles",
+            "ongoing": "Only show ongoing cycles",
+            "ended": "Only show ended cycles"
+          }
+        },
+        "label": "Filters: "
+      },
+      "search": {
+        "placeholder": "Search for a specific auction cycle..."
+      }
+    },
+    "auctionCycleCard": {
+      "header": {
+        "subtitle": "Last Updated: {value}",
+        "team": {
+          "label": "Planning Team"
+        }
+      },
+      "properties": {
+        "planning": {
+          "label": "Planning Team"
+        },
+        "numberAuctions": {
+          "label": "Number of Auctions"
+        }
+      },
+      "statistics": {
+        "title": "New Permits Distribution",
+        "subtitle": "Shows how many new permits will be flowing into the market during this cycle, grouped by sector"
       }
     }
   },
@@ -1315,7 +1415,8 @@
           }
         }
       }
-    }
+    },
+    "unknownError": "An unknown error occurred."
   },
   "auth": {
     "onboarding": {

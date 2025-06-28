@@ -1,9 +1,10 @@
 import { AuctionCategory } from '@/types';
 
-export type IdVariantType = 'company' | AuctionCategory;
+export type IdVariantType = 'company' | 'auctionCycle' | AuctionCategory;
 
 export const IdPrefixes: Partial<Record<IdVariantType, string>> = {
 	company: 'CO',
+	auctionCycle: 'CY',
 	energy: 'EN',
 	industry: 'IN',
 	transport: 'TR',

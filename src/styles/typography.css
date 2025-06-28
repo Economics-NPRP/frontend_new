@@ -403,6 +403,12 @@
 		@apply font-bold;
 		@apply text-white dark:text-dark-300;
 	}
+	.numeric-md-d3 {
+		@apply font-serif;
+		@apply text-lg;
+		@apply font-bold;
+		@apply text-dark-300 dark:text-dark-50;
+	}
 	.numeric-sm {
 		@apply font-serif;
 		@apply text-base;

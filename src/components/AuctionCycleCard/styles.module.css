@@ -1,0 +1,380 @@
+.root {
+	@apply flex-col self-stretch items-stretch flex-nowrap;
+	@apply gap-0;
+	@apply transition-shadow duration-300;
+
+	&.draft {
+		> .left {
+			> .bg {
+			}
+
+			> .header > .wrapper > .indicator {
+				@apply bg-gray-200;
+			}
+		}
+	}
+
+	&.approved {
+		> .left > .header > .wrapper {
+			> .indicator {
+				@apply bg-green-600;
+			}
+		}
+	}
+
+	&.ongoing {
+		> .left > .header > .wrapper {
+			> .indicator {
+				@apply bg-blue-600;
+			}
+		}
+	}
+
+	&.ended {
+		> .left > .header > .wrapper {
+			> .indicator {
+				@apply bg-orange-600;
+			}
+		}
+	}
+
+	&:hover {
+		@apply shadow-xs;
+	}
+
+	> .left {
+		@apply relative;
+		@apply p-4 gap-2;
+		@apply flex-auto items-stretch;
+		@apply bg-white border border-solid border-gray-300;
+
+		> .bg {
+			@apply absolute;
+		}
+
+		> .header {
+			@apply flex-col flex-nowrap;
+			@apply gap-4 items-stretch justify-center;
+
+			> .wrapper {
+				@apply flex-nowrap;
+				@apply gap-4 items-start justify-start;
+
+				> .indicator {
+					@apply w-1 h-16;
+					@apply rounded-full;
+				}
+
+				> .content {
+					@apply flex-auto;
+					@apply flex-col items-start justify-start;
+					@apply gap-4;
+
+					> .label {
+						@apply gap-0 items-start;
+
+						> .title {
+							@apply heading-2;
+						}
+
+						> .subtitle {
+							@apply paragraph-sm-g6;
+						}
+					}
+
+					> .badges {
+						@apply gap-1.5;
+						@apply justify-end;
+
+						> .badge {
+							@apply h-6;
+							@apply rounded-sm;
+
+							&.basic {
+								@apply bg-gray-100;
+								@apply display-xs-g6 normal-case;
+							}
+						}
+					}
+				}
+			}
+
+			> .team {
+				@apply items-center gap-2;
+				@apply p-2;
+
+				> .label {
+					@apply display-md-15-sb;
+				}
+			}
+		}
+
+		> .divider {
+			@apply border-gray-100;
+		}
+
+		> .statistics {
+			> .header {
+				@apply gap-8 items-center justify-between;
+
+				> .label {
+					@apply gap-0 items-start;
+
+					> .title {
+						@apply display-md-sb;
+					}
+
+					> .subtitle {
+						@apply paragraph-sm-g6;
+					}
+				}
+
+				> .wrapper {
+					@apply gap-2 flex-nowrap;
+
+					> .icon {
+						@apply size-6;
+						@apply flex items-center justify-center;
+						@apply bg-gray-50 text-gray-600;
+						@apply rounded-sm;
+					}
+
+					> .value {
+						@apply gap-1 flex-nowrap items-baseline;
+
+						> .amount {
+							@apply numeric-md-d3;
+						}
+
+						> .unit {
+							@apply paragraph-sm-g6;
+						}
+					}
+				}
+			}
+
+			> .progress {
+				@apply h-6;
+				@apply rounded-sm;
+
+				.section {
+					@apply transition-colors duration-300;
+
+					.label {
+						@apply display-sm-15;
+						@apply !text-white;
+					}
+				}
+			}
+		}
+	}
+
+	> .right {
+		@apply flex-col items-stretch flex-nowrap;
+		@apply gap-0;
+		@apply bg-dark-600 border border-t-0 border-solid border-dark-400;
+
+		.divider {
+			@apply border-dark-400;
+		}
+
+		> .properties {
+			@apply flex-col flex-nowrap;
+			@apply items-stretch;
+			@apply gap-0;
+
+			background-image: repeating-linear-gradient(
+				135deg,
+				rgba(255, 255, 255, 0.025),
+				rgba(255, 255, 255, 0.025) 20px,
+				#0000 20px,
+				#0000 40px
+			);
+
+			> .cell {
+				@apply px-8 py-4 gap-2;
+				@apply items-center justify-center;
+				@apply border-0 border-solid border-dark-400;
+
+				&:first-child {
+					@apply border-b;
+				}
+
+				> .label {
+					@apply display-sm-15-sb-w;
+					@apply !text-white;
+				}
+
+				> .row {
+					@apply gap-1 items-center flex-nowrap;
+
+					> .icon {
+						@apply size-6;
+						@apply mr-1;
+						@apply flex items-center justify-center;
+						@apply bg-dark-400 text-dark-100;
+						@apply rounded-sm;
+					}
+
+					> .value {
+						@apply self-baseline;
+						@apply numeric-xl-w;
+						@apply !text-white;
+					}
+
+					> .unit {
+						@apply self-baseline;
+						@apply display-sm-15-sb-w;
+						@apply !text-dark-50;
+					}
+				}
+			}
+		}
+
+		> .button {
+			@apply w-[unset] h-12;
+			@apply flex items-center justify-center;
+			@apply border-0 border-t border-solid border-dark-400;
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-xs {
+		.root {
+			> .left > .header {
+				@apply flex-row items-center justify-between;
+
+				> .team {
+					@apply items-end;
+				}
+			}
+
+			> .right > .properties {
+				@apply flex-row;
+
+				> .cell {
+					@apply flex-auto;
+
+					&:first-child {
+						@apply border-b-0 border-r;
+					}
+				}
+			}
+		}
+	}
+
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			@apply flex-row;
+
+			> .left {
+				@apply p-6;
+
+				> .header {
+					@apply flex-col items-stretch justify-center;
+
+					> .wrapper > .content {
+						> .label > .id {
+							@apply w-[unset];
+						}
+
+						> .badges {
+							@apply justify-start;
+						}
+					}
+
+					> .team {
+						@apply items-center;
+					}
+				}
+			}
+
+			> .right {
+				@apply flex-row;
+				@apply border-t border-l-0;
+
+				> .properties {
+					@apply flex-col;
+
+					> .cell:first-child {
+						@apply border-b border-r-0;
+					}
+				}
+
+				> .button {
+					@apply w-16 h-[unset];
+					@apply border-t-0 border-l;
+				}
+			}
+		}
+	}
+
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+			> .left > .header {
+				@apply flex-row items-center justify-between;
+
+				> .team {
+					@apply items-end;
+				}
+			}
+
+			> .right {
+				> .properties {
+					@apply flex-row;
+
+					> .cell:first-child {
+						@apply border-b-0 border-r;
+					}
+				}
+			}
+		}
+	}
+
+	@mixin larger-than $mantine-breakpoint-xl {
+		.root {
+			> .left > .header {
+				@apply gap-8;
+			}
+
+			> .right {
+				> .properties > .cell {
+					@apply px-12 py-8;
+				}
+
+				> .button {
+					@apply w-20;
+				}
+			}
+		}
+	}
+
+	@mixin dark {
+		.root {
+			> .left {
+				@apply bg-dark-600 border-dark-400;
+
+				> .header {
+					> .wrapper > .content > .badges > .badge.basic {
+						@apply bg-dark-500;
+					}
+
+					> .team .avatar {
+						@apply border-dark-600;
+					}
+				}
+			}
+
+			> .right > .properties {
+				background-image: repeating-linear-gradient(
+					135deg,
+					rgba(255, 255, 255, 0.01),
+					rgba(255, 255, 255, 0.01) 20px,
+					#0000 20px,
+					#0000 40px
+				);
+			}
+		}
+	}
+}

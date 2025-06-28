@@ -8,9 +8,11 @@ import { CurrencyBadge } from '@/components/Badge';
 import { Switch } from '@/components/SwitchCase';
 import { IPaginatedOpenAuctionResultsContext, ISingleAuctionContext } from '@/contexts';
 import { MyUserProfileContext } from '@/contexts';
+import { useOffsetPaginationText } from '@/hooks';
 import { IAuctionData, IUserData } from '@/schema/models';
 import { IAuctionResultsData } from '@/types';
 import {
+	ActionIcon,
 	Anchor,
 	Container,
 	Divider,
@@ -26,7 +28,12 @@ import {
 	Tooltip,
 	useMatches,
 } from '@mantine/core';
-import { IconArrowNarrowDown, IconDatabaseOff, IconUserHexagon } from '@tabler/icons-react';
+import {
+	IconArrowNarrowDown,
+	IconDatabaseOff,
+	IconDownload,
+	IconUserHexagon,
+} from '@tabler/icons-react';
 
 import classes from '../styles.module.css';
 
@@ -45,6 +52,7 @@ export const ResultsTable = ({
 	const isMobile = useMatches({ base: true, xs: false });
 	const tableContainerRef = useRef<HTMLDivElement>(null);
 	const myUser = useContext(MyUserProfileContext);
+	const paginationText = useOffsetPaginationText('results', paginatedOpenAuctionResults);
 
 	const tableData = useMemo(() => {
 		if (!paginatedOpenAuctionResults.data) return null;
@@ -84,26 +92,7 @@ export const ResultsTable = ({
 						<Title order={2} className={classes.title}>
 							{t('components.auctionResultsTable.title')}
 						</Title>
-						<Text className={classes.subtitle}>
-							{t('constants.pagination.offset.results', {
-								start: Math.min(
-									(paginatedOpenAuctionResults.page - 1) *
-										paginatedOpenAuctionResults.perPage +
-										1,
-									paginatedOpenAuctionResults.data.totalCount,
-								),
-								end:
-									(paginatedOpenAuctionResults.page - 1) *
-										paginatedOpenAuctionResults.perPage +
-										paginatedOpenAuctionResults.perPage >
-									paginatedOpenAuctionResults.data.totalCount
-										? paginatedOpenAuctionResults.data.totalCount
-										: (paginatedOpenAuctionResults.page - 1) *
-												paginatedOpenAuctionResults.perPage +
-											paginatedOpenAuctionResults.perPage,
-								total: paginatedOpenAuctionResults.data.totalCount,
-							})}
-						</Text>
+						<Text className={classes.subtitle}>{paginationText}</Text>
 					</Group>
 					<Group className={classes.settings}>
 						{!isMobile && (
@@ -135,6 +124,11 @@ export const ResultsTable = ({
 							}
 							allowDeselect={false}
 						/>
+						<Tooltip label={t('constants.download.results')}>
+							<ActionIcon className={classes.button}>
+								<IconDownload size={16} />
+							</ActionIcon>
+						</Tooltip>
 					</Group>
 				</Group>
 			</Stack>

@@ -9,6 +9,7 @@ import { CategoryBadge, FirmStatusBadge } from '@/components/Badge';
 import { FirmApplicationsFilter } from '@/components/Tables/FirmApplications/types';
 import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
 import { IPaginatedFirmApplicationsContext } from '@/contexts';
+import { useKeysetPaginationText } from '@/hooks';
 import { InvitationModalContext } from '@/pages/dashboard/a/firms/_components/InvitationModal';
 import { AuctionCategory } from '@/types';
 import {
@@ -33,13 +34,14 @@ import {
 	Title,
 	Tooltip,
 } from '@mantine/core';
-import { useListState } from '@mantine/hooks';
+import { useListState, useMediaQuery } from '@mantine/hooks';
 import {
 	IconAdjustments,
 	IconCheck,
 	IconChevronLeft,
 	IconChevronRight,
 	IconCopy,
+	IconDownload,
 	IconFileSearch,
 	IconHelpHexagon,
 	IconSearch,
@@ -57,7 +59,9 @@ export const FirmApplicationsTable = ({
 	...props
 }: FirmApplicationsTableProps) => {
 	const t = useTranslations();
+	const isMobile = useMediaQuery('(max-width: 48em)');
 	const tableContainerRef = useRef<HTMLTableElement>(null);
+	const paginationText = useKeysetPaginationText('firmApplications', firmApplications);
 
 	const invitationModal = useContext(InvitationModalContext);
 
@@ -149,21 +153,12 @@ export const FirmApplicationsTable = ({
 	return (
 		<Stack className={`${classes.root} ${className}`}>
 			<Stack className={classes.header}>
-				<Group className={classes.row}>
+				<Group className={`${classes.row} ${classes.wrapMobile}`}>
 					<Group className={classes.label}>
 						<Title order={2} className={classes.title}>
 							{t('components.firmApplicationsTable.title')}
 						</Title>
-						<Text className={classes.subtitle}>
-							{t('constants.pagination.keyset.firmApplications', {
-								count: Math.min(
-									firmApplications.perPage,
-									firmApplications.data.totalCount,
-								),
-								isExact: firmApplications.data.isExact,
-								total: firmApplications.data.totalCount,
-							})}
-						</Text>
+						<Text className={classes.subtitle}>{paginationText}</Text>
 					</Group>
 					<Group className={classes.settings}>
 						<Text className={classes.label}>
@@ -271,6 +266,11 @@ export const FirmApplicationsTable = ({
 								</Checkbox.Group>
 							</Menu.Dropdown>
 						</Menu>
+						<Tooltip label={t('constants.download.applications')}>
+							<ActionIcon className={classes.button}>
+								<IconDownload size={16} />
+							</ActionIcon>
+						</Tooltip>
 					</Group>
 				</Group>
 				<Group className={`${classes.row} ${classes.wrapMobile}`}>
@@ -278,7 +278,7 @@ export const FirmApplicationsTable = ({
 						<Text className={classes.label}>
 							{t('components.firmApplicationsTable.filters.label')}
 						</Text>
-						<Group className={classes.badges}>{filterBadges}</Group>
+						<Group className={classes.group}>{filterBadges}</Group>
 					</Group>
 					<Group className={classes.legend}>
 						<Group className={classes.cell}>
@@ -589,7 +589,9 @@ export const FirmApplicationsTable = ({
 												disabled={record.status !== 'pending'}
 											>
 												{t(
-													'components.firmApplicationsTable.actions.review.default',
+													isMobile
+														? 'constants.actions.review.label'
+														: 'components.firmApplicationsTable.actions.review.default',
 												)}
 											</Button>
 										</Tooltip>

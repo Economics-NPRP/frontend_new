@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
-import { PaginatedFirmsProvider } from '@/contexts';
+import { PaginatedAuctionCyclesProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
 import { Stack } from '@mantine/core';
@@ -10,20 +10,20 @@ import { Stack } from '@mantine/core';
 import classes from './styles.module.css';
 
 export const metadata: Metadata = {
-	title: 'Companies',
+	title: 'Auction Cycles',
 };
 
-export interface FirmsListProps {
+export interface CyclesListProps {
 	subbanners: ReactNode;
-	table: ReactNode;
+	list: ReactNode;
 }
-export default function FirmsList({ subbanners, table }: FirmsListProps) {
+export default function CyclesList({ subbanners, list }: CyclesListProps) {
 	const t = useTranslations();
 
 	return withProviders(
 		<Stack className={classes.root}>
 			<DashboardHero
-				title={t('constants.pages.dashboard.admin.firms.title')}
+				title={t('constants.pages.dashboard.admin.cycles.title')}
 				returnButton={{ href: '/dashboard/a', label: t('constants.return.home.label') }}
 				breadcrumbs={[
 					{
@@ -31,14 +31,14 @@ export default function FirmsList({ subbanners, table }: FirmsListProps) {
 						href: '/dashboard/a',
 					},
 					{
-						label: t('constants.pages.dashboard.admin.firms.title'),
-						href: '/dashboard/a/firms',
+						label: t('constants.pages.dashboard.admin.cycles.title'),
+						href: '/dashboard/a/cycles',
 					},
 				]}
 			/>
 			{subbanners}
-			{table}
+			{list}
 		</Stack>,
-		{ provider: PaginatedFirmsProvider },
+		{ provider: PaginatedAuctionCyclesProvider },
 	);
 }

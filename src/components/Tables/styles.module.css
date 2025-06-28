@@ -12,7 +12,7 @@
 			@apply flex-nowrap gap-8 justify-between items-center;
 
 			> .label {
-				@apply flex-col gap-0 items-baseline;
+				@apply flex-col gap-0 items-start flex-nowrap;
 
 				> .title {
 					@apply heading-1;
@@ -24,7 +24,7 @@
 			}
 
 			> .settings {
-				@apply gap-2 flex-nowrap;
+				@apply gap-2 flex-nowrap flex-shrink-0;
 
 				> .label {
 					@apply hidden paragraph-sm;
@@ -50,7 +50,7 @@
 					@apply paragraph-sm;
 				}
 
-				> .badges {
+				> .group {
 					@apply gap-2 items-center justify-center;
 
 					> .badge {
@@ -85,6 +85,15 @@
 
 			&.wrapMobile {
 				@apply flex-col gap-2;
+
+				> .label {
+					@apply items-center;
+
+					> .title,
+					> .subtitle {
+						@apply text-center;
+					}
+				}
 			}
 		}
 	}
@@ -276,6 +285,18 @@
 		.root > .header > .row {
 			&.wrapMobile {
 				@apply flex-row gap-8;
+
+				> .label {
+					@apply items-start;
+
+					> .title {
+						@apply text-left;
+					}
+
+					> .subtitle {
+						@apply text-left;
+					}
+				}
 			}
 
 			> .filters {
@@ -297,10 +318,6 @@
 	}
 	@mixin larger-than $mantine-breakpoint-sm {
 		.root > .header > .row {
-			> .label {
-				@apply flex-row gap-3;
-			}
-
 			> .settings > .label {
 				@apply block;
 			}
@@ -311,8 +328,18 @@
 		}
 	}
 	@mixin larger-than $mantine-breakpoint-md {
-		.root > .header > .row > .search {
-			@apply min-w-[320px];
+		.root > .header > .row {
+			&.wrapMobile > .label {
+				@apply items-baseline;
+			}
+
+			> .label {
+				@apply flex-row items-baseline gap-3;
+			}
+
+			> .search {
+				@apply min-w-[320px];
+			}
 		}
 	}
 
@@ -328,7 +355,7 @@
 					}
 				}
 
-				> .filters > .badges > .badge {
+				> .filters > .group > .badge {
 					@apply bg-dark-500 text-dark-100;
 				}
 

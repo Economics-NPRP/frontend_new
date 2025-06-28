@@ -4,20 +4,32 @@ import { useMemo } from 'react';
 
 import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
 import { useAuctionAvailability } from '@/hooks';
-import { AuctionType, FirmApplicationStatus, IAuctionData } from '@/schema/models';
+import {
+	AuctionCycleStatus,
+	AuctionType,
+	FirmApplicationStatus,
+	IAuctionData,
+} from '@/schema/models';
 import { colors } from '@/styles/mantine';
 import { AuctionCategory } from '@/types';
 import { ActionIcon, Badge, BadgeProps, Skeleton, Tooltip } from '@mantine/core';
-import { IconAlarm, IconLock, IconX } from '@tabler/icons-react';
+import {
+	IconActivity,
+	IconAlarm,
+	IconCheck,
+	IconLock,
+	IconPencil,
+	IconX,
+} from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
-interface BaseBadgeProps extends BadgeProps {
+export interface BaseBadgeProps extends BadgeProps {
 	loading?: boolean;
 	withRemoveButton?: boolean;
 	onRemove?: () => void;
 }
-const BaseBadge = ({
+export const BaseBadge = ({
 	className,
 	loading,
 	withRemoveButton,
@@ -171,6 +183,67 @@ export const FirmStatusBadge = ({ status, className, ...props }: FirmStatusBadge
 			{...props}
 		>
 			{t('constants.firmStatus.pending')}
+		</BaseBadge>
+	);
+};
+
+export interface AuctionCycleStatusBadgeProps extends BaseBadgeProps {
+	status: AuctionCycleStatus;
+}
+export const AuctionCycleStatusBadge = ({
+	status,
+	className,
+	...props
+}: AuctionCycleStatusBadgeProps) => {
+	const t = useTranslations();
+
+	if (status === 'draft')
+		return (
+			<BaseBadge
+				className={`${classes.root} ${classes.auctionCycleStatus} ${classes.draft} ${className}`}
+				variant="light"
+				leftSection={<IconPencil size={14} />}
+				{...props}
+			>
+				{t('constants.auctionCycleStatus.draft')}
+			</BaseBadge>
+		);
+
+	if (status === 'approved')
+		return (
+			<BaseBadge
+				className={`${classes.root} ${classes.auctionCycleStatus} ${classes.approved} ${className}`}
+				variant="light"
+				color="green"
+				leftSection={<IconCheck size={14} />}
+				{...props}
+			>
+				{t('constants.auctionCycleStatus.approved')}
+			</BaseBadge>
+		);
+
+	if (status === 'ongoing')
+		return (
+			<BaseBadge
+				className={`${classes.root} ${classes.auctionCycleStatus} ${classes.ongoing} ${className}`}
+				variant="light"
+				color="blue"
+				leftSection={<IconActivity size={14} />}
+				{...props}
+			>
+				{t('constants.auctionCycleStatus.ongoing')}
+			</BaseBadge>
+		);
+
+	return (
+		<BaseBadge
+			className={`${classes.root} ${classes.auctionCycleStatus} ${classes.ended} ${className}`}
+			variant="light"
+			color="orange"
+			leftSection={<IconAlarm size={14} />}
+			{...props}
+		>
+			{t('constants.auctionCycleStatus.ended')}
 		</BaseBadge>
 	);
 };

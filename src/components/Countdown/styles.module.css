@@ -79,11 +79,9 @@
 			@apply hidden;
 		}
 	}
-}
 
-* {
-	@mixin dark {
-		.root > .unit > .value > .cell {
+	&[data-dark] > .unit {
+		> .value > .cell {
 			@apply bg-white;
 
 			> .digit {
@@ -92,6 +90,32 @@
 
 			&:hover {
 				@apply bg-gray-100;
+			}
+		}
+
+		> .label {
+			@apply !text-dark-50;
+		}
+	}
+}
+
+* {
+	@mixin dark {
+		.root > .unit {
+			> .value > .cell {
+				@apply bg-white;
+
+				> .digit {
+					@apply text-dark-600 font-black;
+				}
+
+				&:hover {
+					@apply bg-gray-100;
+				}
+			}
+
+			> .label {
+				@apply !text-dark-50;
 			}
 		}
 	}

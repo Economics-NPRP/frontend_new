@@ -18,7 +18,7 @@ export const AdminDashboardHeader = () => {
 
 	const pageMatcher = useMemo(
 		() => (pathname: string) => {
-			if (pathname.startsWith('/dashboard/a/auctions')) return 'auctions';
+			if (pathname.startsWith('/dashboard/a/cycles')) return 'auctions';
 			if (pathname.startsWith('/dashboard/a/admins')) return 'admins';
 			if (pathname.startsWith('/dashboard/a/firms')) return 'firms';
 			return 'home';
@@ -37,7 +37,7 @@ export const AdminDashboardHeader = () => {
 			{
 				key: 'auctions',
 				label: t('components.header.admin.tabs.auctions.label'),
-				href: '/dashboard/a/auctions',
+				href: '/dashboard/a/cycles',
 				icon: <IconGavel size={14} />,
 			},
 			{
@@ -77,14 +77,14 @@ export const AdminDashboardHeader = () => {
 						</Button>
 					</Tooltip>
 					<PageDropdown pageMatcher={pageMatcher} pages={pages} />
-					<HeaderButton variant="notifications" />
+					<HeaderButton variant="marketplace" />
 				</Flex>
 				<PageTabs pageMatcher={pageMatcher} pages={pages} />
 				<Flex className={classes.right}>
 					<HeaderButton variant="accessibility" visibleFrom="xs" />
 					<HeaderButton variant="language" visibleFrom="xs" />
 					<HeaderButton variant="theme" visibleFrom="xs" />
-					<UserProfile />
+					<UserProfile variant="adminDashboard" />
 				</Flex>
 			</Group>
 		</Center>

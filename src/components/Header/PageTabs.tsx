@@ -1,7 +1,8 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
-import { useCallback, useMemo, useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { FloatingIndicator, Tabs } from '@mantine/core';
 
@@ -17,7 +18,6 @@ export interface PageTabsProps {
 	}>;
 }
 export const PageTabs = ({ pageMatcher, pages }: PageTabsProps) => {
-	const router = useRouter();
 	const pathname = usePathname();
 
 	const [currentTab, setCurrentTab] = useState<string | null>(pageMatcher(pathname) || null);
@@ -35,20 +35,32 @@ export const PageTabs = ({ pageMatcher, pages }: PageTabsProps) => {
 			if (!href) return;
 
 			setCurrentTab(value);
-			router.push(href);
 		},
-		[router],
+		[pages],
 	);
 
 	const pagesList = useMemo(
 		() =>
-			pages.map(({ key, label, icon }) => (
-				<Tabs.Tab key={key} ref={setControlRef(key)} value={key} leftSection={icon}>
+			pages.map(({ key, href, label, icon }) => (
+				<Tabs.Tab
+					component={Link}
+					//	@ts-expect-error - tabs component does not accept `href` prop, but were using link component
+					href={href}
+					key={key}
+					ref={setControlRef(key)}
+					value={key}
+					leftSection={icon}
+				>
 					{label}
 				</Tabs.Tab>
 			)),
-		[pages],
+		[pages, setControlRef],
 	);
+
+	//	 Update the current tab when the pathname changes
+	useEffect(() => {
+		setCurrentTab(pageMatcher(pathname) || null);
+	}, [pathname, pageMatcher]);
 
 	return (
 		<Tabs

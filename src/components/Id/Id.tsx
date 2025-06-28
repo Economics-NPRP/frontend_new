@@ -15,14 +15,14 @@ export const Id = ({ value, variant, truncate, className, ...props }: IdProps) =
 	const prefix = useMemo(() => IdPrefixes[variant], [variant]);
 	const text = useMemo(
 		() => (truncate ? `${prefix}-${value.split('-')[0]}-...` : `${prefix}-${value}`),
-		[prefix, value],
+		[prefix, value, truncate],
 	);
 
 	return (
 		<Popover disabled={!truncate}>
 			<PopoverTarget>
 				<Text
-					className={`${classes.root} ${truncate && classes.truncate} ${className}`}
+					className={`${classes.root} ${truncate && classes.short} ${className}`}
 					{...(truncate && { title: 'Click to view the full ID' })}
 					{...props}
 				>

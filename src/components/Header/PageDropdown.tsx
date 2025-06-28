@@ -21,7 +21,7 @@ export const PageDropdown = ({ pageMatcher, pages }: PageDropdownProps) => {
 
 	const currentPage = useMemo(
 		() => pages.find((page) => page.key === pageMatcher(pathname)) || pages[0],
-		[pathname, pages],
+		[pathname, pageMatcher, pages],
 	);
 
 	const dropdownButton = useMemo(

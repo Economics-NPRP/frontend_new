@@ -3,9 +3,10 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 
 import { Id } from '@/components/Id';
+import { Switch } from '@/components/SwitchCase';
 import { MyUserProfileContext } from '@/contexts';
 import { logout } from '@/lib/auth/logout';
 import {
@@ -44,7 +45,10 @@ import { useQueryClient } from '@tanstack/react-query';
 import { HeaderButton } from './HeaderButton';
 import classes from './styles.module.css';
 
-export const UserProfile = () => {
+export interface UserProfileProps {
+	variant: 'marketplace' | 'adminDashboard';
+}
+export const UserProfile = ({ variant }: UserProfileProps) => {
 	const t = useTranslations();
 	const router = useRouter();
 	const queryClient = useQueryClient();
@@ -58,12 +62,18 @@ export const UserProfile = () => {
 					queryClient.invalidateQueries({
 						queryKey: ['users', 'mine'],
 					});
+					notifications.show({
+						color: 'green',
+						title: t('components.header.user.logout.success.title'),
+						message: t('components.header.user.logout.success.message'),
+						position: 'bottom-center',
+					});
 					router.push('/login');
 				} else {
 					const errors = (res.errors || []).join(' ');
 					notifications.show({
 						color: 'red',
-						title: 'There was a problem logging out',
+						title: t('components.header.user.logout.error.title'),
 						message: errors,
 						position: 'bottom-center',
 					});
@@ -73,89 +83,18 @@ export const UserProfile = () => {
 				console.error('Error logging out:', err);
 				notifications.show({
 					color: 'red',
-					title: 'There was a problem logging out',
-					message: err.message ?? 'An unknown error occurred.',
+					title: t('components.header.user.logout.error.title'),
+					message: err.message ?? t('lib.unknownError'),
 					position: 'bottom-center',
 				});
 			});
 	}, [router]);
 
-	const profileLoading = (
-		<>
-			<Container className={`${classes.bg} bg-grid-sm`} />
-			<Skeleton className={classes.avatar} circle />
-			<Group className={classes.details}>
-				<Stack className={classes.id}>
-					<Skeleton className={classes.text} />
-					<Skeleton className={classes.text} />
-				</Stack>
-				<Stack className={classes.rating}>
-					<Rating
-						className={classes.value}
-						size={'xs'}
-						value={0}
-						fractions={3}
-						readOnly
-					/>
-					<Skeleton className={classes.subtext} />
-				</Stack>
-			</Group>
-		</>
-	);
-
-	const profileError = (
-		<Alert
-			variant="light"
-			color="red"
-			title="There was an error displaying your profile"
-			icon={<IconExclamationCircle />}
-			className="mb-4"
-		>
-			{myUser.error?.message}
-		</Alert>
-	);
-
-	const profileDetails = (
-		<>
-			<Container className={`${classes.bg} bg-grid-sm`} />
-			<Avatar
-				className={classes.avatar}
-				name={myUser.data.name}
-				color="initials"
-				size={'lg'}
-			/>
-			<Group className={classes.details}>
-				<Stack className={classes.id}>
-					<Id value={myUser.data.id} variant="company" truncate />
-					<Text className={classes.text}>{myUser.data.name}</Text>
-				</Stack>
-				<Stack className={classes.rating}>
-					<Rating
-						className={classes.value}
-						size={'xs'}
-						value={4.25}
-						fractions={3}
-						readOnly
-					/>
-					<Text className={classes.subtext}>
-						{t('constants.rating.medium', { rating: 4.2 })}
-					</Text>
-				</Stack>
-			</Group>
-			<MenuItem
-				classNames={{
-					item: classes.primary,
-					itemLabel: 'flex-none',
-					itemSection: 'm-0',
-				}}
-				component={Link}
-				href="/dashboard/profile"
-				rightSection={<IconArrowUpRight size={16} />}
-			>
-				{t('components.header.user.profile')}
-			</MenuItem>
-		</>
-	);
+	const currentState = useMemo(() => {
+		if (myUser.isError) return 'error';
+		if (myUser.isSuccess) return 'success';
+		return 'loading';
+	}, [myUser]);
 
 	return (
 		<Menu width={320} offset={4} position="bottom-end">
@@ -166,10 +105,96 @@ export const UserProfile = () => {
 			<MenuDropdown
 				className={`${classes.userDropdown} ${myUser.isLoading ? classes.loading : ''}`}
 			>
-				{myUser.isLoading && profileLoading}
-				{!myUser.isLoading && !myUser.isError && !myUser.isSuccess && profileLoading}
-				{myUser.isError && profileError}
-				{myUser.isSuccess && profileDetails}
+				<Switch value={currentState}>
+					<Switch.Loading>
+						<Container className={`${classes.bg} bg-grid-sm`} />
+						<Skeleton className={classes.avatar} circle />
+						<Group className={classes.details}>
+							<Stack className={classes.id}>
+								<Skeleton className={classes.text} />
+								<Skeleton className={classes.text} />
+							</Stack>
+							<Stack className={classes.rating}>
+								<Rating
+									className={classes.value}
+									size={'xs'}
+									value={0}
+									fractions={3}
+									readOnly
+								/>
+								<Skeleton className={classes.subtext} />
+							</Stack>
+						</Group>
+					</Switch.Loading>
+					<Switch.Error>
+						<Alert
+							variant="light"
+							color="red"
+							title={t('components.header.user.profile.error.title')}
+							icon={<IconExclamationCircle />}
+							className="mb-4"
+						>
+							{myUser.error?.message}
+						</Alert>
+					</Switch.Error>
+					<Switch.Else>
+						<Container className={`${classes.bg} bg-grid-sm`} />
+						<Avatar
+							className={classes.avatar}
+							name={myUser.data.name}
+							color="initials"
+							size={'lg'}
+						/>
+						<Group className={classes.details}>
+							<Stack className={classes.id}>
+								<Id value={myUser.data.id} variant="company" truncate />
+								<Text className={classes.text}>{myUser.data.name}</Text>
+							</Stack>
+							<Stack className={classes.rating}>
+								<Rating
+									className={classes.value}
+									size={'xs'}
+									value={4.25}
+									fractions={3}
+									readOnly
+								/>
+								<Text className={classes.subtext}>
+									{t('constants.rating.medium', { rating: 4.2 })}
+								</Text>
+							</Stack>
+						</Group>
+						<Switch value={variant}>
+							<Switch.Case when="marketplace">
+								<MenuItem
+									classNames={{
+										item: classes.primary,
+										itemLabel: 'flex-none',
+										itemSection: 'm-0',
+									}}
+									component={Link}
+									href={`/dashboard/${myUser.data.type === 'admin' ? 'a' : 'f'}`}
+									rightSection={<IconArrowUpRight size={16} />}
+								>
+									{t('components.header.user.profile.cta.dashboard')}
+								</MenuItem>
+							</Switch.Case>
+							<Switch.Case when="adminDashboard">
+								<MenuItem
+									classNames={{
+										item: classes.primary,
+										itemLabel: 'flex-none',
+										itemSection: 'm-0',
+									}}
+									component={Link}
+									href="/marketplace"
+									rightSection={<IconArrowUpRight size={16} />}
+								>
+									{t('components.header.user.profile.cta.marketplace')}
+								</MenuItem>
+							</Switch.Case>
+						</Switch>
+					</Switch.Else>
+				</Switch>
 
 				<MenuDivider />
 				<MenuLabel>{t('components.header.user.marketplace')} </MenuLabel>
@@ -226,7 +251,7 @@ export const UserProfile = () => {
 					{t('components.header.user.settings')}
 				</MenuItem>
 				<MenuItem onClick={handleLogout} leftSection={<IconLogout size={16} />}>
-					{t('components.header.user.logout')}
+					{t('components.header.user.logout.label')}
 				</MenuItem>
 			</MenuDropdown>
 		</Menu>

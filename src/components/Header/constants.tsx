@@ -3,6 +3,7 @@ import { Avatar, type MantineColorScheme } from '@mantine/core';
 import {
 	IconAccessible,
 	IconBell,
+	IconBuildingStore,
 	IconLanguage,
 	IconMoon,
 	IconSearch,
@@ -15,7 +16,8 @@ export type HeaderButtonVariantType =
 	| 'accessibility'
 	| 'theme'
 	| 'language'
-	| 'user';
+	| 'user'
+	| 'marketplace';
 
 export interface HeaderButtonData {
 	tooltip: string | ((args: never) => string);
@@ -54,6 +56,11 @@ export const HeaderButtonVariants: Record<HeaderButtonVariantType, HeaderButtonD
 		tooltip: `components.header.buttons.user.tooltip`,
 		ariaLabel: `components.header.buttons.user.aria`,
 		icon: <Avatar name="John Doe" color="initials" />,
+	},
+	marketplace: {
+		tooltip: 'components.header.buttons.marketplace.tooltip',
+		ariaLabel: 'components.header.buttons.marketplace.aria',
+		icon: <IconBuildingStore size={16} />,
 	},
 };
 
