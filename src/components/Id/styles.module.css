@@ -4,8 +4,8 @@
 	@apply paragraph-sm-g5;
 	@apply leading-none whitespace-nowrap;
 
-	&.truncate {
-		@apply cursor-pointer;
+	&.short {
+		@apply cursor-pointer truncate;
 	}
 
 	svg {

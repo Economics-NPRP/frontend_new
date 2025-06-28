@@ -10,7 +10,17 @@ import { MediumCountdown } from '@/components/Countdown';
 import { Id } from '@/components/Id';
 import { Switch } from '@/components/SwitchCase';
 import { IAuctionCycleData } from '@/schema/models';
-import { ActionIcon, Avatar, Container, Divider, Group, Stack, Text, Title } from '@mantine/core';
+import {
+	ActionIcon,
+	Avatar,
+	Button,
+	Container,
+	Group,
+	Stack,
+	Text,
+	Title,
+	useMatches,
+} from '@mantine/core';
 import { IconArrowUpRight, IconGavel } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
@@ -21,6 +31,9 @@ export interface AuctionCycleCardProps {
 export const AuctionCycleCard = ({ auctionCycleData }: AuctionCycleCardProps) => {
 	const t = useTranslations();
 	const format = useFormatter();
+
+	const truncate = useMatches({ base: false, xs: true, sm: false, md: true, lg: false });
+	const intervalFormat = useMatches({ base: DateTime.DATE_SHORT, md: DateTime.DATE_FULL });
 
 	// const distrbiution = useMemo(() => {
 	// 	//	Generate array of 6 random values and normalize them to sum to 100
@@ -62,8 +75,8 @@ export const AuctionCycleCard = ({ auctionCycleData }: AuctionCycleCardProps) =>
 	const interval = useMemo(() => {
 		const start = DateTime.fromISO(auctionCycleData.startDatetime);
 		const end = DateTime.fromISO(auctionCycleData.endDatetime);
-		return Interval.fromDateTimes(start, end).toLocaleString(DateTime.DATE_FULL);
-	}, [auctionCycleData.startDatetime, auctionCycleData.endDatetime]);
+		return Interval.fromDateTimes(start, end).toLocaleString(intervalFormat);
+	}, [auctionCycleData.startDatetime, auctionCycleData.endDatetime, intervalFormat]);
 
 	return (
 		<Group className={`${classes[auctionCycleData.status]} ${classes.root}`}>
@@ -74,7 +87,12 @@ export const AuctionCycleCard = ({ auctionCycleData }: AuctionCycleCardProps) =>
 						<Container className={classes.indicator} />
 						<Stack className={classes.content}>
 							<Stack className={classes.label}>
-								<Id variant="auctionCycle" value={auctionCycleData.id} />
+								<Id
+									variant="auctionCycle"
+									value={auctionCycleData.id}
+									truncate={truncate}
+									className={classes.id}
+								/>
 								<Title order={2} className={classes.title}>
 									{auctionCycleData.title}
 								</Title>
@@ -148,55 +166,71 @@ export const AuctionCycleCard = ({ auctionCycleData }: AuctionCycleCardProps) =>
 				</Stack> */}
 			</Stack>
 			<Group className={classes.right}>
-				<Stack className={classes.cell}>
-					<Text className={classes.label}>
-						{t('components.auctionCycleCard.properties.numberAuctions.label')}
-					</Text>
-					<Group className={classes.row}>
-						<Container className={classes.icon}>
-							<IconGavel size={16} />
-						</Container>
-						<Text className={classes.value}>
-							{format.number(auctionCycleData.auctionsCount)}
+				<Group className={classes.properties}>
+					<Stack className={classes.cell}>
+						<Text className={classes.label}>
+							{t('components.auctionCycleCard.properties.numberAuctions.label')}
 						</Text>
-						<Text className={classes.unit}>
-							{t('constants.quantities.auctions.unitOnly', {
-								value: auctionCycleData.auctionsCount,
-							})}
-						</Text>
-					</Group>
-				</Stack>
-				<Divider orientation="vertical" className={classes.divider} />
-				<Stack className={classes.cell}>
-					<Switch value={auctionCycleData.status}>
-						<Switch.Case when="ongoing">
-							<Text className={classes.label}>
-								{t('constants.auctionStatus.endingIn.label')}
+						<Group className={classes.row}>
+							<Container className={classes.icon}>
+								<IconGavel size={16} />
+							</Container>
+							<Text className={classes.value}>
+								{format.number(auctionCycleData.auctionsCount)}
 							</Text>
-							<MediumCountdown targetDate={auctionCycleData.endDatetime} data-dark />
-						</Switch.Case>
-						<Switch.Case when="ongoing">
-							<Text className={classes.label}>
-								{t('constants.auctionStatus.ended.label')}
+							<Text className={classes.unit}>
+								{t('constants.quantities.auctions.unitOnly', {
+									value: auctionCycleData.auctionsCount,
+								})}
 							</Text>
-							<MediumCountdown targetDate={auctionCycleData.endDatetime} data-dark />
-						</Switch.Case>
-						<Switch.Else>
-							<Text className={classes.label}>
-								{t('constants.auctionStatus.startingIn.label')}
-							</Text>
-							<MediumCountdown
-								targetDate={auctionCycleData.startDatetime}
-								data-dark
-							/>
-						</Switch.Else>
-					</Switch>
-				</Stack>
-				<Divider orientation="vertical" className={classes.divider} />
+						</Group>
+					</Stack>
+					<Stack className={classes.cell}>
+						<Switch value={auctionCycleData.status}>
+							<Switch.Case when="ongoing">
+								<Text className={classes.label}>
+									{t('constants.auctionStatus.endingIn.label')}
+								</Text>
+								<MediumCountdown
+									targetDate={auctionCycleData.endDatetime}
+									data-dark
+								/>
+							</Switch.Case>
+							<Switch.Case when="ongoing">
+								<Text className={classes.label}>
+									{t('constants.auctionStatus.ended.label')}
+								</Text>
+								<MediumCountdown
+									targetDate={auctionCycleData.endDatetime}
+									data-dark
+								/>
+							</Switch.Case>
+							<Switch.Else>
+								<Text className={classes.label}>
+									{t('constants.auctionStatus.startingIn.label')}
+								</Text>
+								<MediumCountdown
+									targetDate={auctionCycleData.startDatetime}
+									data-dark
+								/>
+							</Switch.Else>
+						</Switch>
+					</Stack>
+				</Group>
+				<Button
+					className={classes.button}
+					component={Link}
+					href={`/dashboard/a/cycles/${auctionCycleData.id}`}
+					rightSection={<IconArrowUpRight size={16} />}
+					hiddenFrom="sm"
+				>
+					{t('constants.view.details.label')}
+				</Button>
 				<ActionIcon
 					className={classes.button}
 					component={Link}
 					href={`/dashboard/a/cycles/${auctionCycleData.id}`}
+					visibleFrom="sm"
 				>
 					<IconArrowUpRight size={24} />
 				</ActionIcon>
