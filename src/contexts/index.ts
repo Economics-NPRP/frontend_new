@@ -6,6 +6,7 @@ export * from './MyOpenAuctionResults';
 export * from './MyPaginatedBids';
 export * from './MyPaginatedWinningBids';
 export * from './MyUserProfile';
+export * from './PaginatedAuctionCycles';
 export * from './PaginatedAuctions';
 export * from './PaginatedBids';
 export * from './PaginatedFirmApplications';

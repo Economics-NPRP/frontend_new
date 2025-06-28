@@ -153,7 +153,7 @@ export const FirmApplicationsTable = ({
 	return (
 		<Stack className={`${classes.root} ${className}`}>
 			<Stack className={classes.header}>
-				<Group className={classes.row}>
+				<Group className={`${classes.row} ${classes.wrapMobile}`}>
 					<Group className={classes.label}>
 						<Title order={2} className={classes.title}>
 							{t('components.firmApplicationsTable.title')}
