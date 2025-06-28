@@ -9,4 +9,5 @@ export interface CountdownProps extends ComponentProps<'div'> {
 	units?: CountdownUnitsArray;
 	displayOnly?: boolean;
 	loading?: boolean;
+	'data-dark'?: boolean;
 }

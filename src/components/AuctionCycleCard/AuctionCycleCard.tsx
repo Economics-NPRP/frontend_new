@@ -9,6 +9,7 @@ import { AuctionCycleStatusBadge, BaseBadge } from '@/components/Badge';
 import { MediumCountdown } from '@/components/Countdown';
 import { Id } from '@/components/Id';
 import { Switch } from '@/components/SwitchCase';
+import { WithSkeleton } from '@/components/WithSkeleton';
 import { IAuctionCycleData } from '@/schema/models';
 import {
 	ActionIcon,
@@ -16,6 +17,7 @@ import {
 	Button,
 	Container,
 	Group,
+	Skeleton,
 	Stack,
 	Text,
 	Title,
@@ -27,8 +29,13 @@ import classes from './styles.module.css';
 
 export interface AuctionCycleCardProps {
 	auctionCycleData: IAuctionCycleData;
+	loading?: boolean;
 }
-export const AuctionCycleCard = ({ auctionCycleData }: AuctionCycleCardProps) => {
+export const AuctionCycleCard = ({
+	auctionCycleData,
+	loading = false,
+	...props
+}: AuctionCycleCardProps) => {
 	const t = useTranslations();
 	const format = useFormatter();
 
@@ -79,45 +86,71 @@ export const AuctionCycleCard = ({ auctionCycleData }: AuctionCycleCardProps) =>
 	}, [auctionCycleData.startDatetime, auctionCycleData.endDatetime, intervalFormat]);
 
 	return (
-		<Group className={`${classes[auctionCycleData.status]} ${classes.root}`}>
+		<Group className={`${classes[auctionCycleData.status]} ${classes.root}`} {...props}>
 			<Stack className={classes.left}>
 				<Container className={classes.bg} />
 				<Group className={classes.header}>
 					<Group className={classes.wrapper}>
-						<Container className={classes.indicator} />
+						<WithSkeleton loading={loading} width={4} height={64} radius={4}>
+							<Container className={classes.indicator} />
+						</WithSkeleton>
 						<Stack className={classes.content}>
 							<Stack className={classes.label}>
-								<Id
-									variant="auctionCycle"
-									value={auctionCycleData.id}
-									truncate={truncate}
-									className={classes.id}
-								/>
-								<Title order={2} className={classes.title}>
-									{auctionCycleData.title}
-								</Title>
-								<Text className={classes.subtitle}>
-									{t('components.auctionCycleCard.header.subtitle', {
-										value: DateTime.fromISO(
-											auctionCycleData.updatedAt,
-										).toRelative(),
-									})}
-								</Text>
+								<WithSkeleton
+									loading={loading}
+									width={160}
+									height={14}
+									className="my-0.5"
+								>
+									<Id
+										variant="auctionCycle"
+										value={auctionCycleData.id}
+										truncate={truncate}
+										className={classes.id}
+									/>
+								</WithSkeleton>
+								<WithSkeleton
+									loading={loading}
+									width={240}
+									height={36}
+									className="my-0.5"
+								>
+									<Title order={2} className={classes.title}>
+										{auctionCycleData.title}
+									</Title>
+								</WithSkeleton>
+								<WithSkeleton
+									loading={loading}
+									width={140}
+									height={20}
+									className="my-0.5"
+								>
+									<Text className={classes.subtitle}>
+										{t('components.auctionCycleCard.header.subtitle', {
+											value: DateTime.fromISO(
+												auctionCycleData.updatedAt,
+											).toRelative(),
+										})}
+									</Text>
+								</WithSkeleton>
 							</Stack>
 							<Group className={classes.badges}>
 								<AuctionCycleStatusBadge
 									status={auctionCycleData.status}
 									className={classes.badge}
+									loading={loading}
 								/>
 								<BaseBadge
 									variant="light"
 									className={`${classes.basic} ${classes.badge}`}
+									loading={loading}
 								>
 									{duration}
 								</BaseBadge>
 								<BaseBadge
 									variant="light"
 									className={`${classes.basic} ${classes.badge}`}
+									loading={loading}
 								>
 									{interval}
 								</BaseBadge>
@@ -129,11 +162,52 @@ export const AuctionCycleCard = ({ auctionCycleData }: AuctionCycleCardProps) =>
 							{t('components.auctionCycleCard.header.team.label')}
 						</Text>
 						<Avatar.Group>
-							<Avatar />
-							<Avatar />
-							<Avatar />
-							<Avatar />
-							<Avatar>+5</Avatar>
+							<Switch value={loading}>
+								<Switch.True>
+									<Skeleton
+										visible
+										width={38}
+										height={38}
+										circle
+										className="-ml-3"
+									/>
+									<Skeleton
+										visible
+										width={38}
+										height={38}
+										circle
+										className="-ml-3"
+									/>
+									<Skeleton
+										visible
+										width={38}
+										height={38}
+										circle
+										className="-ml-3"
+									/>
+									<Skeleton
+										visible
+										width={38}
+										height={38}
+										circle
+										className="-ml-3"
+									/>
+									<Skeleton
+										visible
+										width={38}
+										height={38}
+										circle
+										className="-ml-3"
+									/>
+								</Switch.True>
+								<Switch.False>
+									<Avatar className={classes.avatar} />
+									<Avatar className={classes.avatar} />
+									<Avatar className={classes.avatar} />
+									<Avatar className={classes.avatar} />
+									<Avatar className={classes.avatar}>+5</Avatar>
+								</Switch.False>
+							</Switch>
 						</Avatar.Group>
 					</Stack>
 				</Group>
@@ -175,14 +249,16 @@ export const AuctionCycleCard = ({ auctionCycleData }: AuctionCycleCardProps) =>
 							<Container className={classes.icon}>
 								<IconGavel size={16} />
 							</Container>
-							<Text className={classes.value}>
-								{format.number(auctionCycleData.auctionsCount)}
-							</Text>
-							<Text className={classes.unit}>
-								{t('constants.quantities.auctions.unitOnly', {
-									value: auctionCycleData.auctionsCount,
-								})}
-							</Text>
+							<WithSkeleton loading={loading} width={100} height={32} data-dark>
+								<Text className={classes.value}>
+									{format.number(auctionCycleData.auctionsCount)}
+								</Text>
+								<Text className={classes.unit}>
+									{t('constants.quantities.auctions.unitOnly', {
+										value: auctionCycleData.auctionsCount,
+									})}
+								</Text>
+							</WithSkeleton>
 						</Group>
 					</Stack>
 					<Stack className={classes.cell}>
@@ -191,30 +267,27 @@ export const AuctionCycleCard = ({ auctionCycleData }: AuctionCycleCardProps) =>
 								<Text className={classes.label}>
 									{t('constants.auctionStatus.endingIn.label')}
 								</Text>
-								<MediumCountdown
-									targetDate={auctionCycleData.endDatetime}
-									data-dark
-								/>
 							</Switch.Case>
-							<Switch.Case when="ongoing">
+							<Switch.Case when="ended">
 								<Text className={classes.label}>
 									{t('constants.auctionStatus.ended.label')}
 								</Text>
-								<MediumCountdown
-									targetDate={auctionCycleData.endDatetime}
-									data-dark
-								/>
 							</Switch.Case>
 							<Switch.Else>
 								<Text className={classes.label}>
 									{t('constants.auctionStatus.startingIn.label')}
 								</Text>
-								<MediumCountdown
-									targetDate={auctionCycleData.startDatetime}
-									data-dark
-								/>
 							</Switch.Else>
 						</Switch>
+						<MediumCountdown
+							targetDate={
+								['ongoing', 'ended'].includes(auctionCycleData.status)
+									? auctionCycleData.endDatetime
+									: auctionCycleData.startDatetime
+							}
+							loading={loading}
+							data-dark
+						/>
 					</Stack>
 				</Group>
 				<Button
@@ -223,6 +296,7 @@ export const AuctionCycleCard = ({ auctionCycleData }: AuctionCycleCardProps) =>
 					href={`/dashboard/a/cycles/${auctionCycleData.id}`}
 					rightSection={<IconArrowUpRight size={16} />}
 					hiddenFrom="sm"
+					loading={loading}
 				>
 					{t('constants.view.details.label')}
 				</Button>
@@ -231,6 +305,7 @@ export const AuctionCycleCard = ({ auctionCycleData }: AuctionCycleCardProps) =>
 					component={Link}
 					href={`/dashboard/a/cycles/${auctionCycleData.id}`}
 					visibleFrom="sm"
+					loading={loading}
 				>
 					<IconArrowUpRight size={24} />
 				</ActionIcon>

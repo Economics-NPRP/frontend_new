@@ -29,6 +29,7 @@ export default function CyclesListComponent() {
 					endDatetime: DateTime.now().plus({ months: 3 }).toISO(),
 					updatedAt: DateTime.now().minus({ hours: 3 }).toISO(),
 				}}
+				loading
 			/>
 			<AuctionCycleCard
 				auctionCycleData={{

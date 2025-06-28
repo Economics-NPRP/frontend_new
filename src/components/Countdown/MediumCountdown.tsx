@@ -27,10 +27,20 @@ export const MediumCountdown = ({
 				<Switch.True>
 					<Stack className={classes.unit}>
 						<Group className={classes.value}>
-							<Skeleton width={24} height={44} visible data-dark />
-							<Skeleton width={24} height={44} visible data-dark />
+							<Skeleton
+								width={24}
+								height={44}
+								visible
+								data-dark={!props['data-dark']}
+							/>
+							<Skeleton
+								width={24}
+								height={44}
+								visible
+								data-dark={!props['data-dark']}
+							/>
 						</Group>
-						<Skeleton width={48} height={16} visible />
+						<Skeleton width={48} height={16} visible data-dark={props['data-dark']} />
 					</Stack>
 
 					<Stack className={classes.separator}>
@@ -40,10 +50,20 @@ export const MediumCountdown = ({
 
 					<Stack className={classes.unit}>
 						<Group className={classes.value}>
-							<Skeleton width={24} height={44} visible data-dark />
-							<Skeleton width={24} height={44} visible data-dark />
+							<Skeleton
+								width={24}
+								height={44}
+								visible
+								data-dark={!props['data-dark']}
+							/>
+							<Skeleton
+								width={24}
+								height={44}
+								visible
+								data-dark={!props['data-dark']}
+							/>
 						</Group>
-						<Skeleton width={48} height={16} visible />
+						<Skeleton width={48} height={16} visible data-dark={props['data-dark']} />
 					</Stack>
 
 					<Stack className={classes.separator}>
@@ -53,10 +73,20 @@ export const MediumCountdown = ({
 
 					<Stack className={classes.unit}>
 						<Group className={classes.value}>
-							<Skeleton width={24} height={44} visible data-dark />
-							<Skeleton width={24} height={44} visible data-dark />
+							<Skeleton
+								width={24}
+								height={44}
+								visible
+								data-dark={!props['data-dark']}
+							/>
+							<Skeleton
+								width={24}
+								height={44}
+								visible
+								data-dark={!props['data-dark']}
+							/>
 						</Group>
-						<Skeleton width={48} height={16} visible />
+						<Skeleton width={48} height={16} visible data-dark={props['data-dark']} />
 					</Stack>
 				</Switch.True>
 				<Switch.False>

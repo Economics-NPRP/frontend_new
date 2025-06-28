@@ -185,8 +185,8 @@
 
 			background-image: repeating-linear-gradient(
 				135deg,
-				rgba(255, 255, 255, 0.01),
-				rgba(255, 255, 255, 0.01) 20px,
+				rgba(255, 255, 255, 0.025),
+				rgba(255, 255, 255, 0.025) 20px,
 				#0000 20px,
 				#0000 40px
 			);
@@ -206,7 +206,7 @@
 				}
 
 				> .row {
-					@apply gap-1 items-baseline flex-nowrap;
+					@apply gap-1 items-center flex-nowrap;
 
 					> .icon {
 						@apply size-6;
@@ -217,11 +217,13 @@
 					}
 
 					> .value {
+						@apply self-baseline;
 						@apply numeric-xl-w;
 						@apply !text-white;
 					}
 
 					> .unit {
+						@apply self-baseline;
 						@apply display-sm-15-sb-w;
 						@apply !text-dark-50;
 					}
@@ -312,7 +314,6 @@
 		.root {
 			> .left > .header {
 				@apply flex-row items-center justify-between;
-				@apply gap-8;
 
 				> .team {
 					@apply items-end;
@@ -332,13 +333,19 @@
 	}
 
 	@mixin larger-than $mantine-breakpoint-xl {
-		.root > .right {
-			> .properties > .cell {
-				@apply px-12 py-8;
+		.root {
+			> .left > .header {
+				@apply gap-8;
 			}
 
-			> .button {
-				@apply w-20;
+			> .right {
+				> .properties > .cell {
+					@apply px-12 py-8;
+				}
+
+				> .button {
+					@apply w-20;
+				}
 			}
 		}
 	}
@@ -348,12 +355,25 @@
 			> .left {
 				@apply bg-dark-600 border-dark-400;
 
-				> .header > .wrapper > .content > .badges > .badge.basic {
-					@apply bg-dark-500;
+				> .header {
+					> .wrapper > .content > .badges > .badge.basic {
+						@apply bg-dark-500;
+					}
+
+					> .team .avatar {
+						@apply border-dark-600;
+					}
 				}
 			}
 
-			> .right > .cell {
+			> .right > .properties {
+				background-image: repeating-linear-gradient(
+					135deg,
+					rgba(255, 255, 255, 0.01),
+					rgba(255, 255, 255, 0.01) 20px,
+					#0000 20px,
+					#0000 40px
+				);
 			}
 		}
 	}
