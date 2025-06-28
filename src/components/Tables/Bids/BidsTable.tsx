@@ -15,6 +15,9 @@ import {
 	IPaginatedWinningBidsContext,
 	MyUserProfileContext,
 } from '@/contexts';
+import { useKeysetPaginationText } from '@/hooks';
+import { IBidData } from '@/schema/models';
+import { KeysetPaginatedData } from '@/types';
 import {
 	ActionIcon,
 	Button,
@@ -170,6 +173,18 @@ export const BidsTable = ({
 		return bids;
 	}, [bids, paginatedWinningBids, myPaginatedBids, bidsFilter]);
 
+	const paginationText = useKeysetPaginationText('bids', {
+		perPage: currentContextState.perPage,
+		//	@ts-expect-error - we are making a custom context state here so its missing some properties
+		data: {
+			isExact:
+				bidsFilter === 'winning' && paginatedWinningBids
+					? true
+					: (currentContextState.data as KeysetPaginatedData<IBidData>).isExact,
+			totalCount: currentContextState.data.totalCount,
+		},
+	});
+
 	const handleSetPerPage = useCallback(
 		(value: string | null) => {
 			bids.setPerPage(Number(value));
@@ -178,12 +193,6 @@ export const BidsTable = ({
 		},
 		[bids, paginatedWinningBids, myPaginatedBids],
 	);
-
-	const isExact = useMemo(() => {
-		if (bidsFilter === 'winning' && paginatedWinningBids) return true;
-		if (bidsFilter === 'mine' && myPaginatedBids) return myPaginatedBids.data.isExact;
-		return bids.data.isExact;
-	}, [bidsFilter, bids.data.isExact, myPaginatedBids?.data.isExact]);
 
 	const hasPrev = useMemo(() => {
 		if (bidsFilter === 'winning' && paginatedWinningBids)
@@ -255,16 +264,7 @@ export const BidsTable = ({
 							<Title order={2} className={classes.title}>
 								{t('components.bidsTable.title')}
 							</Title>
-							<Text className={classes.subtitle}>
-								{t('constants.pagination.keyset.bids', {
-									count: Math.min(
-										currentContextState.perPage,
-										currentContextState.data.totalCount,
-									),
-									isExact,
-									total: currentContextState.data.totalCount,
-								})}
-							</Text>
+							<Text className={classes.subtitle}>{paginationText}</Text>
 						</Group>
 						<Group className={classes.settings}>
 							<Text className={classes.label}>

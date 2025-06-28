@@ -10,6 +10,7 @@ import { CategoryBadge } from '@/components/Badge';
 import { FirmsFilter } from '@/components/Tables/Firms/types';
 import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
 import { IPaginatedFirmsContext } from '@/contexts';
+import { useOffsetPaginationText } from '@/hooks';
 import { IFirmData } from '@/schema/models';
 import { AuctionCategory } from '@/types';
 import {
@@ -59,6 +60,7 @@ export const FirmsTable = ({
 	const t = useTranslations();
 	const isMobile = useMediaQuery('(max-width: 48em)');
 	const tableContainerRef = useRef<HTMLTableElement>(null);
+	const paginationText = useOffsetPaginationText('firms', firms);
 
 	const [searchFilter, setSearchFilter] = useState('');
 	const [statusFilter, setStatusFilter] = useState<FirmsFilter>('all');
@@ -146,20 +148,7 @@ export const FirmsTable = ({
 						<Title order={2} className={classes.title}>
 							{t('components.firmsTable.title')}
 						</Title>
-						<Text className={classes.subtitle}>
-							{t('constants.pagination.offset.firms', {
-								start: Math.min(
-									(firms.page - 1) * firms.perPage + 1,
-									firms.data.totalCount,
-								),
-								end:
-									(firms.page - 1) * firms.perPage + firms.perPage >
-									firms.data.totalCount
-										? firms.data.totalCount
-										: (firms.page - 1) * firms.perPage + firms.perPage,
-								total: firms.data.totalCount,
-							})}
-						</Text>
+						<Text className={classes.subtitle}>{paginationText}</Text>
 					</Group>
 					<Group className={classes.settings}>
 						<Text className={classes.label}>

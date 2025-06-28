@@ -292,7 +292,8 @@ export const AuctionCycleCard = ({
 				</Group>
 				<Button
 					className={classes.button}
-					component={Link}
+					//	@ts-expect-error - component cannot accept either component or string
+					component={loading ? 'button' : Link}
 					href={`/dashboard/a/cycles/${auctionCycleData.id}`}
 					rightSection={<IconArrowUpRight size={16} />}
 					hiddenFrom="sm"
@@ -302,7 +303,8 @@ export const AuctionCycleCard = ({
 				</Button>
 				<ActionIcon
 					className={classes.button}
-					component={Link}
+					//	@ts-expect-error - component cannot accept either component or string
+					component={loading ? 'button' : Link}
 					href={`/dashboard/a/cycles/${auctionCycleData.id}`}
 					visibleFrom="sm"
 					loading={loading}
