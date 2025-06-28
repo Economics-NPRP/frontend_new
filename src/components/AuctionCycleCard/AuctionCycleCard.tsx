@@ -1,7 +1,7 @@
 'use client';
 
 import { DateTime, Interval } from 'luxon';
-import { useTranslations } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useMemo } from 'react';
 
@@ -10,17 +10,7 @@ import { MediumCountdown } from '@/components/Countdown';
 import { Id } from '@/components/Id';
 import { Switch } from '@/components/SwitchCase';
 import { IAuctionCycleData } from '@/schema/models';
-import {
-	ActionIcon,
-	Avatar,
-	Container,
-	Divider,
-	Group,
-	Progress,
-	Stack,
-	Text,
-	Title,
-} from '@mantine/core';
+import { ActionIcon, Avatar, Container, Divider, Group, Stack, Text, Title } from '@mantine/core';
 import { IconArrowUpRight, IconGavel } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
@@ -30,6 +20,31 @@ export interface AuctionCycleCardProps {
 }
 export const AuctionCycleCard = ({ auctionCycleData }: AuctionCycleCardProps) => {
 	const t = useTranslations();
+	const format = useFormatter();
+
+	// const distrbiution = useMemo(() => {
+	// 	//	Generate array of 6 random values and normalize them to sum to 100
+	// 	const values = new Array(6).fill(0).map(() => Math.floor(Math.random() * 100));
+	// 	const sum = values.reduce((acc, val) => acc + val, 0);
+	// 	const normalizedValues = values.map((val) => (val / sum) * 100);
+
+	// 	return normalizedValues
+	// 		.sort((a, b) => b - a)
+	// 		.map((value, index) => (
+	// 			<Progress.Section
+	// 				key={index}
+	// 				value={value}
+	// 				color={AuctionCategoryVariants[AuctionCategoryList[index]]?.color.token}
+	// 				className={`${classes[AuctionCategoryVariants[AuctionCategoryList[index]]!.color.token!]} ${classes.section}`}
+	// 			>
+	// 				{value > 10 && (
+	// 					<Progress.Label className={classes.label}>
+	// 						{t('constants.quantities.percent.default', { value })}
+	// 					</Progress.Label>
+	// 				)}
+	// 			</Progress.Section>
+	// 		));
+	// }, [t]);
 
 	const duration = useMemo(() => {
 		const start = DateTime.fromISO(auctionCycleData.startDatetime);
@@ -104,65 +119,78 @@ export const AuctionCycleCard = ({ auctionCycleData }: AuctionCycleCardProps) =>
 						</Avatar.Group>
 					</Stack>
 				</Group>
-				<Divider className={classes.divider} />
+				{/* <Divider className={classes.divider} />
 				<Stack className={classes.statistics}>
-					<Progress.Root className={classes.progress}>
-						<Progress.Section value={59}></Progress.Section>
-						<Progress.Section value={35}></Progress.Section>
-						<Progress.Section value={6}></Progress.Section>
-					</Progress.Root>
-				</Stack>
+					<Group className={classes.header}>
+						<Stack className={classes.label}>
+							<Text className={classes.title}>
+								{t('components.auctionCycleCard.statistics.title')}
+							</Text>
+							<Text className={classes.subtitle}>
+								{t('components.auctionCycleCard.statistics.subtitle')}
+							</Text>
+						</Stack>
+						<Group className={classes.wrapper}>
+							<Container className={classes.icon}>
+								<IconLeaf size={16} />
+							</Container>
+							<Group className={classes.value}>
+								<Text className={classes.amount}>
+									{format.number(auctionCycleData.emissionsCount, 'money')}
+								</Text>
+								<Text className={classes.unit}>
+									{t('constants.emissions.unit')}
+								</Text>
+							</Group>
+						</Group>
+					</Group>
+					<Progress.Root className={classes.progress}>{distrbiution}</Progress.Root>
+				</Stack> */}
 			</Stack>
 			<Group className={classes.right}>
-				<Stack className={classes.properties}>
-					<Stack className={classes.cell}>
-						<Text className={classes.label}>
-							{t('components.auctionCycleCard.properties.numberAuctions.label')}
+				<Stack className={classes.cell}>
+					<Text className={classes.label}>
+						{t('components.auctionCycleCard.properties.numberAuctions.label')}
+					</Text>
+					<Group className={classes.row}>
+						<Container className={classes.icon}>
+							<IconGavel size={16} />
+						</Container>
+						<Text className={classes.value}>
+							{format.number(auctionCycleData.auctionsCount)}
 						</Text>
-						<Group className={classes.row}>
-							<Container className={classes.icon}>
-								<IconGavel size={16} />
-							</Container>
-							<Text className={classes.value}>{auctionCycleData.auctionsCount}</Text>
-							<Text className={classes.unit}>
-								{t('constants.quantities.auctions.unitOnly', {
-									value: auctionCycleData.auctionsCount,
-								})}
+						<Text className={classes.unit}>
+							{t('constants.quantities.auctions.unitOnly', {
+								value: auctionCycleData.auctionsCount,
+							})}
+						</Text>
+					</Group>
+				</Stack>
+				<Divider orientation="vertical" className={classes.divider} />
+				<Stack className={classes.cell}>
+					<Switch value={auctionCycleData.status}>
+						<Switch.Case when="ongoing">
+							<Text className={classes.label}>
+								{t('constants.auctionStatus.endingIn.label')}
 							</Text>
-						</Group>
-					</Stack>
-					<Divider className={classes.divider} />
-					<Stack className={classes.cell}>
-						<Switch value={auctionCycleData.status}>
-							<Switch.Case when="ongoing">
-								<Text className={classes.label}>
-									{t('constants.auctionStatus.endingIn.label')}
-								</Text>
-								<MediumCountdown
-									targetDate={auctionCycleData.endDatetime}
-									data-dark
-								/>
-							</Switch.Case>
-							<Switch.Case when="ongoing">
-								<Text className={classes.label}>
-									{t('constants.auctionStatus.ended.label')}
-								</Text>
-								<MediumCountdown
-									targetDate={auctionCycleData.endDatetime}
-									data-dark
-								/>
-							</Switch.Case>
-							<Switch.Else>
-								<Text className={classes.label}>
-									{t('constants.auctionStatus.startingIn.label')}
-								</Text>
-								<MediumCountdown
-									targetDate={auctionCycleData.startDatetime}
-									data-dark
-								/>
-							</Switch.Else>
-						</Switch>
-					</Stack>
+							<MediumCountdown targetDate={auctionCycleData.endDatetime} data-dark />
+						</Switch.Case>
+						<Switch.Case when="ongoing">
+							<Text className={classes.label}>
+								{t('constants.auctionStatus.ended.label')}
+							</Text>
+							<MediumCountdown targetDate={auctionCycleData.endDatetime} data-dark />
+						</Switch.Case>
+						<Switch.Else>
+							<Text className={classes.label}>
+								{t('constants.auctionStatus.startingIn.label')}
+							</Text>
+							<MediumCountdown
+								targetDate={auctionCycleData.startDatetime}
+								data-dark
+							/>
+						</Switch.Else>
+					</Switch>
 				</Stack>
 				<Divider orientation="vertical" className={classes.divider} />
 				<ActionIcon

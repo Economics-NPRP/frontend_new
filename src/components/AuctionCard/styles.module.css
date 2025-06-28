@@ -125,7 +125,7 @@
 				}
 
 				> .subtext {
-					@apply paragraph-xs text-right uppercase;
+					@apply paragraph-xs text-center uppercase truncate;
 				}
 
 				.value {

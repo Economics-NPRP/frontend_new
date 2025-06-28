@@ -1235,6 +1235,10 @@
 				"numberAuctions": {
 					"label": "Number of Auctions"
 				}
+			},
+			"statistics": {
+				"title": "New Permits Distribution",
+				"subtitle": "Shows how many new permits will be flowing into the market during this cycle, grouped by sector"
 			}
 		}
 	},

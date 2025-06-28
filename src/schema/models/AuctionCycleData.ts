@@ -11,6 +11,7 @@ export const BaseAuctionCycleDataSchema = object({
 	title: pipe(string(), trim(), nonEmpty()),
 	status: AuctionCycleStatusSchema,
 	auctionsCount: PositiveNumberSchema(true),
+	emissionsCount: PositiveNumberSchema(true),
 
 	startDatetime: TimestampSchema(),
 	endDatetime: TimestampSchema(),
@@ -32,6 +33,7 @@ export const DefaultAuctionCycleData: IAuctionCycleData = {
 	title: '',
 	status: 'draft',
 	auctionsCount: 0,
+	emissionsCount: 0,
 	startDatetime: '1970-01-01T00:00:00.000Z',
 	endDatetime: '1970-01-01T00:00:00.000Z',
 	updatedAt: '1970-01-01T00:00:00.000Z',

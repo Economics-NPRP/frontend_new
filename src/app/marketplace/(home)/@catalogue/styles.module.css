@@ -36,7 +36,7 @@
 			}
 
 			> .settings {
-				@apply gap-2;
+				@apply gap-2 flex-nowrap;
 
 				> .label {
 					@apply ml-1;
@@ -311,35 +311,31 @@
 
 * {
 	@mixin larger-than $mantine-breakpoint-xs {
-		.root {
-			> .header {
-				> .row {
-					@apply flex-row justify-between;
+		.root > .catalogue {
+			@apply grid-cols-6;
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root > .header {
+			> .row {
+				@apply flex-row flex-nowrap justify-between;
 
-					> .label {
-						@apply flex-row gap-2;
-					}
+				> .label {
+					@apply flex-row flex-nowrap gap-2;
 				}
-			}
-
-			> .catalogue {
-				@apply grid-cols-6;
 			}
 		}
 	}
-
 	@mixin larger-than $mantine-breakpoint-md {
 		.root > .catalogue {
 			@apply col-span-9;
 		}
 	}
-
 	@mixin larger-than $mantine-breakpoint-lg {
 		.root > .catalogue {
 			@apply grid-cols-9;
 		}
 	}
-
 	@mixin larger-than $mantine-breakpoint-xl {
 		.root > .filters > form > .footer {
 			@apply flex-row justify-between items-center;
