@@ -1,8 +1,9 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-import { Container, Group, Mark, Text, UnstyledButton } from '@mantine/core';
-import { IconBellRinging, IconGavel, IconTrophy } from '@tabler/icons-react';
+import { ActionBanner } from '@/components/ActionBanner';
+import { Group, Mark } from '@mantine/core';
+import { IconAlertHexagon, IconCreditCard, IconFileSearch } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -11,74 +12,35 @@ export default function SubBanners() {
 
 	return (
 		<Group className={classes.root}>
-			<UnstyledButton
-				className={classes.banner}
+			<ActionBanner
+				icon={<IconFileSearch size={32} />}
+				heading={t('dashboard.admin.firms.subbanner.1.heading')}
+				subheading={t.rich('dashboard.admin.firms.subbanner.1.text', {
+					value: Math.round(Math.random() * 1000),
+					mark: (chunks) => <Mark className={classes.highlight}>{chunks}</Mark>,
+				})}
 				component={Link}
 				href="/dashboard/a/firms/applications"
-			>
-				<Container className={classes.bg}>
-					<Container className={classes.graphic} />
-					<Container className={classes.graphic} />
-					<Container className={classes.graphic} />
-					<Container className={classes.gradient} />
-				</Container>
-
-				<IconBellRinging size={20} />
-				<Text className={classes.heading}>
-					{t.rich('dashboard.admin.firms.subbanner.1.heading', {
-						value: Math.round(Math.random() * 1000),
-						mark: (chunks) => <Mark className={classes.highlight}>{chunks}</Mark>,
-					})}
-				</Text>
-				<Text className={classes.text}>{t('dashboard.admin.firms.subbanner.1.text')}</Text>
-			</UnstyledButton>
-			{/* TODO: change other banners into something else */}
-			<UnstyledButton className={classes.banner} component={Link} href="">
-				<Container className={classes.bg}>
-					<Container className={`${classes.graphic} bg-grid-md`} />
-					<Container className={classes.gradient} />
-				</Container>
-
-				<IconGavel size={20} />
-				<Text className={classes.heading}>
-					{t.rich('dashboard.admin.firms.subbanner.2.heading', {
-						mark: (chunks) => <Mark className={classes.highlight}>{chunks}</Mark>,
-					})}
-				</Text>
-				<Text className={classes.text}>{t('dashboard.admin.firms.subbanner.2.text')}</Text>
-			</UnstyledButton>
-			<UnstyledButton className={classes.banner} component={Link} href="">
-				<Container className={classes.bg}>
-					<Container className={classes.graphic}>
-						<svg width={'300'} height={'300'} style={{ overflow: 'visible' }}>
-							<polygon
-								points={'150,0 0,300 300,300'}
-								fill={'none'}
-								strokeWidth={'1.5'}
-							/>
-						</svg>
-					</Container>
-					<Container className={classes.graphic}>
-						<svg width={'300'} height={'300'} style={{ overflow: 'visible' }}>
-							<polygon
-								points={'150,0 0,300 300,300'}
-								fill={'none'}
-								strokeWidth={'1.5'}
-							/>
-						</svg>
-					</Container>
-					<Container className={classes.gradient} />
-				</Container>
-
-				<IconTrophy size={20} />
-				<Text className={classes.heading}>
-					{t.rich('dashboard.admin.firms.subbanner.3.heading', {
-						value: Math.round(Math.random() * 100),
-						mark: (chunks) => <Mark className={classes.highlight}>{chunks}</Mark>,
-					})}
-				</Text>
-				<Text className={classes.text}>{t('dashboard.admin.firms.subbanner.3.text')}</Text>
-			</UnstyledButton>
+			/>
+			<ActionBanner
+				icon={<IconAlertHexagon size={32} />}
+				heading={t('dashboard.admin.firms.subbanner.2.heading')}
+				subheading={t.rich('dashboard.admin.firms.subbanner.2.text', {
+					value: Math.round(Math.random() * 1000),
+				})}
+				component={Link}
+				href="/dashboard/a/firms/audits"
+			/>
+			<ActionBanner
+				icon={<IconCreditCard size={32} />}
+				heading={t('dashboard.admin.firms.subbanner.3.heading')}
+				subheading={t.rich('dashboard.admin.firms.subbanner.3.text', {
+					value: Math.round(Math.random() * 100),
+					mark: (chunks) => <Mark className={classes.highlight}>{chunks}</Mark>,
+				})}
+				component={Link}
+				href="/dashboard/a/firms/transactions"
+			/>
 		</Group>
 	);
 }

@@ -16,7 +16,8 @@
 			@apply display-md-15 text-center;
 
 			> mark {
-				@apply text-maroon-600 bg-transparent;
+				@apply bg-transparent;
+				@apply underline underline-offset-4 decoration-2 decoration-dashed;
 			}
 		}
 
@@ -135,7 +136,7 @@
 			@apply border-dark-400;
 
 			> .heading > mark {
-				@apply text-maroon-300;
+				@apply !text-white;
 			}
 
 			.graphic {
