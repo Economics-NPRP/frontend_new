@@ -1,10 +1,9 @@
 .root {
 	@apply relative;
-	@apply h-32;
 	@apply flex flex-col justify-center items-center self-stretch;
 	@apply overflow-hidden;
-	@apply py-4 px-8;
-	@apply border border-solid border-gray-300 text-dark-600;
+	@apply px-8 py-6;
+	@apply bg-white border border-solid border-gray-300 text-dark-600;
 	@apply transition-all duration-500;
 
 	> .heading {
@@ -54,7 +53,7 @@
 		}
 	}
 
-	&:nth-of-type(1) > .bg {
+	&.id1 > .bg {
 		> .gradient {
 			background: radial-gradient(
 				at center top,
@@ -80,7 +79,7 @@
 		}
 	}
 
-	&:nth-of-type(2) > .bg {
+	&.id2 > .bg {
 		> .gradient {
 			background: radial-gradient(
 				at center top,
@@ -94,7 +93,7 @@
 		}
 	}
 
-	&:nth-of-type(3) > .bg {
+	&.id3 > .bg {
 		> .gradient {
 			background: radial-gradient(
 				at center top,
@@ -129,7 +128,7 @@
 
 	@mixin dark {
 		.root {
-			@apply border-dark-400 text-dark-50;
+			@apply bg-dark-700 border-dark-400 text-dark-50;
 
 			> .heading > mark,
 			> .text > mark {
@@ -141,7 +140,7 @@
 				@apply !border-dark-500 !stroke-dark-500;
 			}
 
-			&:nth-of-type(1) > .bg > .gradient {
+			&.id1 > .bg > .gradient {
 				background: radial-gradient(
 					at center top,
 					rgba(0, 156, 128, 0.2) 0%,
@@ -149,7 +148,7 @@
 				);
 			}
 
-			&:nth-of-type(2) > .bg > .gradient {
+			&.id2 > .bg > .gradient {
 				background: radial-gradient(
 					at center top,
 					rgba(233, 197, 107, 0.15) 0%,
@@ -157,7 +156,7 @@
 				);
 			}
 
-			&:nth-of-type(3) > .bg > .gradient {
+			&.id3 > .bg > .gradient {
 				background: radial-gradient(
 					at center top,
 					rgba(65, 148, 179, 0.25) 0%,

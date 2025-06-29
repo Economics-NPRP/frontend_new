@@ -1,0 +1,63 @@
+.root {
+	@apply relative;
+	@apply justify-between items-stretch self-stretch;
+	@apply overflow-hidden flex-nowrap;
+	@apply py-6 px-8 gap-0;
+	@apply bg-white border border-solid border-gray-300 text-dark-600;
+	@apply transition-all duration-500;
+
+	> .row {
+		@apply justify-between self-stretch flex-nowrap;
+
+		> .title {
+			@apply display-md-sb-g6;
+			@apply truncate;
+			@apply mb-1;
+		}
+
+		> .icon {
+			@apply text-gray-500;
+		}
+
+		> .value {
+			@apply gap-1 flex-nowrap;
+
+			> .amount {
+				@apply numeric-xl;
+				@apply self-baseline;
+			}
+
+			> .unit {
+				@apply display-sm-sb-d3;
+				@apply self-baseline;
+			}
+		}
+	}
+
+	> .comparison {
+		@apply truncate;
+		@apply paragraph-sm-g6 text-left;
+	}
+
+	> .icon {
+		@apply size-16;
+		@apply absolute -bottom-2 -right-2;
+		@apply text-gray-100;
+	}
+
+	&:hover {
+		@apply shadow-xs;
+	}
+}
+
+* {
+	@mixin dark {
+		.root {
+			@apply bg-dark-700 border-dark-400 text-dark-50;
+
+			> .icon {
+				@apply text-dark-600;
+			}
+		}
+	}
+}

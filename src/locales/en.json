@@ -196,6 +196,10 @@
 			"med": "Mininmum Increment",
 			"short": "Min. Incr."
 		},
+		"auctions": {
+			"key": "Auctions",
+			"unit": "auctions"
+		},
 		"permits": {
 			"key": "Permits",
 			"unit": "permits"
@@ -444,6 +448,16 @@
 			"approved": "Approved",
 			"ongoing": "Ongoing",
 			"ended": "Ended"
+		},
+		"trend": {
+			"positive": "+{value, number, ::.00}%",
+			"negative": "-{value, number, ::.00}%"
+		},
+		"firms": {
+			"key": "Companies"
+		},
+		"transactions": {
+			"key": "Transactions"
 		}
 	},
 	"marketplace": {
@@ -1276,6 +1290,9 @@
 				"title": "New Permits Distribution",
 				"subtitle": "Shows how many new permits will be flowing into the market during this cycle, grouped by sector"
 			}
+		},
+		"statCard": {
+			"comparison": "Compared to previous {comparison, select, year {year} month {month} day {day} other {period}}"
 		}
 	},
 	"dashboard": {
@@ -1350,6 +1367,24 @@
 						"placeholder": "Enter reason...",
 						"description": "Please provide a reason for rejecting this application. The user will be notified with this reason."
 					}
+				},
+				"stats": {
+					"newRegistrations": {
+						"title": "Newly Registered Companies",
+						"tooltip": "Number of new companies that registered this month"
+					},
+					"approvalRate": {
+						"title": "Approval Rate",
+						"tooltip": "Percentage of applications approved this month"
+					},
+					"unpaid": {
+						"title": "Total Unpaid Transactions",
+						"tooltip": "Total number of transactions that are unpaid this month"
+					},
+					"sectorDiversity": {
+						"title": "Sector Diversity Index",
+						"tooltip": "Measures how diverse the sectors of the newly registered companies are, calculate using Shannon's Diversity Index"
+					}
 				}
 			},
 			"cycles": {
@@ -1361,6 +1396,20 @@
 					"presets": {
 						"heading": "Manage Cycle Presets",
 						"subheading": "Click here to add, edit, or delete cycle presets"
+					}
+				},
+				"stats": {
+					"totalAuctions": {
+						"title": "Total Auctions",
+						"tooltip": "Total number of auctions created this year"
+					},
+					"totalPermits": {
+						"title": "Total Permits Allocated",
+						"tooltip": "How many permits were allocated this year, also shows equivalent amount in tCO2e"
+					},
+					"kpis": {
+						"title": "Average KPI Completion",
+						"tooltip": "The average KPI completion for all auction cycles this year"
 					}
 				}
 			}

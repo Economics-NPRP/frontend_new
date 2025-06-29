@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { ActionBanner } from '@/components/ActionBanner';
 import { Mark } from '@mantine/core';
-import { IconAward, IconBellRinging, IconCirclePlus } from '@tabler/icons-react';
+import { IconAward, IconBolt, IconCirclePlus } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -13,7 +13,8 @@ export default function SubBanners() {
 	return (
 		<>
 			<ActionBanner
-				icon={<IconBellRinging size={32} />}
+				className={classes.root}
+				icon={<IconBolt size={32} />}
 				heading={t('marketplace.home.subbanner.1.heading')}
 				subheading={t.rich('marketplace.home.subbanner.1.text', {
 					value: Math.round(Math.random() * 1000),
@@ -21,17 +22,19 @@ export default function SubBanners() {
 				})}
 				component={Link}
 				href=""
-				className={classes.root}
+				index={1}
 			/>
 			<ActionBanner
+				className={classes.root}
 				icon={<IconCirclePlus size={32} />}
 				heading={t('marketplace.home.subbanner.2.heading')}
 				subheading={t('marketplace.home.subbanner.2.text')}
 				component={Link}
 				href=""
-				className={classes.root}
+				index={2}
 			/>
 			<ActionBanner
+				className={classes.root}
 				icon={<IconAward size={32} />}
 				heading={t('marketplace.home.subbanner.3.heading')}
 				subheading={t.rich('marketplace.home.subbanner.3.text', {
@@ -40,7 +43,7 @@ export default function SubBanners() {
 				})}
 				component={Link}
 				href=""
-				className={classes.root}
+				index={3}
 			/>
 		</>
 	);

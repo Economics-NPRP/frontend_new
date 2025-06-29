@@ -1,170 +1,42 @@
 .root {
-	@apply flex-col;
+	@apply grid grid-cols-1 gap-2;
 	@apply self-stretch;
 
+	> .stat {
+		@apply col-span-1;
+	}
+
 	> .banner {
-		@apply relative;
-		@apply h-32;
-		@apply flex flex-col justify-center items-center self-stretch;
-		@apply overflow-hidden;
-		@apply py-4 px-8;
-		@apply border border-solid border-gray-300;
-		@apply transition-all duration-500;
-
-		> .heading {
-			@apply mt-2;
-			@apply display-md-15 text-center;
-
-			> mark {
-				@apply bg-transparent;
-				@apply underline underline-offset-4 decoration-2 decoration-dashed;
-			}
-		}
-
-		> .text {
-			@apply paragraph-sm text-center;
-		}
-
-		> .bg {
-			@apply absolute top-0 left-0;
-			@apply w-full h-full max-w-none;
-			@apply pointer-events-none;
-
-			> .gradient {
-				@apply absolute;
-				@apply w-full h-[50%] -top-4;
-				@apply transition-all duration-500;
-			}
-
-			> .graphic {
-				@apply absolute;
-			}
-		}
-
-		> *:not(.bg) {
-			@apply z-10;
-		}
-
-		&:hover {
-			@apply shadow-xs;
-
-			.gradient {
-				@apply !top-0;
-			}
-		}
-
-		&:nth-of-type(1) > .bg {
-			> .gradient {
-				background: radial-gradient(
-					at center top,
-					rgba(0, 156, 128, 0.15) 0%,
-					hsla(169, 100%, 80%, 0) 75%
-				);
-			}
-
-			> .graphic {
-				@apply border border-solid border-gray-200 rounded-full;
-
-				&:nth-child(1) {
-					@apply size-[190px] top-[54px] -left-[60px];
-				}
-
-				&:nth-child(2) {
-					@apply size-[360px] -top-[300px] left-[200px];
-				}
-
-				&:nth-child(3) {
-					@apply size-[190px] -top-[140px] left-[300px];
-				}
-			}
-		}
-
-		&:nth-of-type(2) > .bg {
-			> .gradient {
-				background: radial-gradient(
-					at center top,
-					rgba(233, 197, 107, 0.25) 0%,
-					hsla(43, 74%, 80%, 0) 75%
-				);
-			}
-
-			> .graphic {
-				@apply w-full h-[200px] -bottom-[160px];
-			}
-		}
-
-		&:nth-of-type(3) > .bg {
-			> .gradient {
-				background: radial-gradient(
-					at center top,
-					rgba(65, 148, 179, 0.2) 0%,
-					hsla(196, 47%, 80%, 0) 75%
-				);
-			}
-
-			> .graphic {
-				@apply size-[300px];
-				@apply stroke-gray-200;
-
-				&:nth-child(1) {
-					@apply -top-[250px] -left-[92px];
-					@apply rotate-[40deg];
-				}
-
-				&:nth-child(2) {
-					@apply -top-[206px] -right-[250px];
-					@apply rotate-[107deg];
-				}
-			}
-		}
+		@apply col-span-1;
 	}
 }
 
 * {
-	@mixin larger-than $mantine-breakpoint-sm {
+	@mixin larger-than $mantine-breakpoint-md {
 		.root {
-			@apply flex-row;
+			@apply grid-cols-6;
+			@apply gap-4;
+
+			> .stat {
+				@apply col-span-3;
+			}
 
 			> .banner {
-				@apply flex-[0px];
+				@apply col-span-2;
 			}
 		}
 	}
 
-	@mixin dark {
-		.root > .banner {
-			@apply border-dark-400;
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+			@apply grid-cols-12;
 
-			> .heading > mark {
-				@apply !text-white;
+			> .stat {
+				@apply col-span-3;
 			}
 
-			.graphic {
-				@apply !border-dark-500 !stroke-dark-500;
-			}
-
-			&:nth-of-type(1) > .bg > .gradient {
-				background: radial-gradient(
-					at center top,
-					rgba(0, 156, 128, 0.2) 0%,
-					hsla(169, 100%, 80%, 0) 75%
-				);
-			}
-
-			&:nth-of-type(2) > .bg > .gradient {
-				background: radial-gradient(
-					at center top,
-					rgba(233, 197, 107, 0.15) 0%,
-					hsla(43, 74%, 80%, 0) 75%
-				);
-			}
-
-			&:nth-of-type(3) > .bg > .gradient {
-				background: radial-gradient(
-					at center top,
-					rgba(65, 148, 179, 0.25) 0%,
-					hsla(196, 47%, 80%, 0) 75%
-				);
+			> .banner {
+				@apply col-span-4;
 			}
 		}
 	}
