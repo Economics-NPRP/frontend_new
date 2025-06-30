@@ -1,0 +1,55 @@
+.root {
+	@apply w-full h-[72px];
+	@apply px-8;
+	@apply justify-between items-stretch;
+	@apply bg-white border-0 border-b border-solid border-gray-300;
+
+	> .left {
+		@apply gap-6;
+
+		> .return {
+			@apply text-dark-300 bg-gray-100;
+			@apply font-normal;
+
+			&:hover {
+				@apply bg-gray-200;
+			}
+		}
+
+		> .divider {
+			@apply border-gray-100;
+		}
+
+		> .title {
+			@apply heading-2;
+		}
+	}
+
+	> .right {
+		> .button {
+			@apply size-12;
+		}
+	}
+}
+
+* {
+	@mixin dark {
+		.root {
+			@apply bg-dark-600 border-dark-400;
+
+			> .left {
+				> .return {
+					@apply text-dark-50 bg-dark-500;
+
+					&:hover {
+						@apply bg-dark-400;
+					}
+				}
+
+				> .divider {
+					@apply border-dark-500;
+				}
+			}
+		}
+	}
+}

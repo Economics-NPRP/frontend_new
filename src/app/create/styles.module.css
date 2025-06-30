@@ -1,0 +1,39 @@
+.root {
+	@apply w-screen h-screen;
+	@apply flex flex-col;
+	@apply gap-0;
+
+	> .row {
+		@apply flex-auto flex-nowrap items-stretch;
+		@apply gap-0;
+
+		> .column {
+			@apply flex-auto flex-nowrap items-stretch;
+			@apply gap-0;
+
+			> .content {
+				@apply relative;
+				@apply max-w-[1400px] flex-auto;
+				@apply bg-gray-50;
+
+				> .gradient {
+					@apply absolute top-0 left-0 w-full h-[280px];
+
+					background-image: linear-gradient(
+						to bottom,
+						rgba(255, 255, 255, 1) 0%,
+						rgba(255, 255, 255, 0) 100%
+					);
+				}
+			}
+		}
+	}
+}
+
+* {
+	@mixin dark {
+		.root > .row > .column > .content {
+			@apply bg-dark-700;
+		}
+	}
+}

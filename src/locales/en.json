@@ -261,6 +261,9 @@
 			"firmsList": {
 				"label": "Return to List of Companies"
 			},
+			"cyclesList": {
+				"label": "Return to List of Auction Cycles"
+			},
 			"login": {
 				"label": "Return to Login"
 			}

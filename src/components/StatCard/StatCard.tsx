@@ -39,6 +39,11 @@ export const StatCard = ({
 	const t = useTranslations();
 	const format = useFormatter();
 
+	const adjustedDiff = useMemo(
+		() => (diff !== undefined ? (negateDiff ? -diff : diff) : undefined),
+		[diff, negateDiff],
+	);
+
 	const amount = useMemo(() => {
 		switch (type) {
 			case 'currency':
@@ -65,7 +70,10 @@ export const StatCard = ({
 
 	return (
 		<Tooltip label={tooltip} disabled={!tooltip}>
-			<Stack className={`${classes.root} ${className}`} {...props}>
+			<Stack
+				className={`${classes.root} ${adjustedDiff !== undefined && (adjustedDiff > 0 ? classes.positive : classes.negative)} ${className}`}
+				{...props}
+			>
 				<Group className={classes.row}>
 					<Text className={classes.title}>{title}</Text>
 					{tooltip && <IconInfoCircle className={classes.icon} size={16} />}

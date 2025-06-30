@@ -23,7 +23,7 @@ export default function SubBanners() {
 		<Group className={classes.root}>
 			<StatCard
 				className={classes.stat}
-				icon={<IconBuildingPlus size={64} />}
+				icon={<IconBuildingPlus size={80} />}
 				title={t('dashboard.admin.firms.stats.newRegistrations.title')}
 				tooltip={t('dashboard.admin.firms.stats.newRegistrations.tooltip')}
 				type="integer"
@@ -34,7 +34,7 @@ export default function SubBanners() {
 			/>
 			<StatCard
 				className={classes.stat}
-				icon={<IconCircleDashedCheck size={64} />}
+				icon={<IconCircleDashedCheck size={80} />}
 				title={t('dashboard.admin.firms.stats.approvalRate.title')}
 				tooltip={t('dashboard.admin.firms.stats.approvalRate.tooltip')}
 				type="percentage"
@@ -44,7 +44,7 @@ export default function SubBanners() {
 			/>
 			<StatCard
 				className={classes.stat}
-				icon={<IconReceipt size={64} />}
+				icon={<IconReceipt size={80} />}
 				title={t('dashboard.admin.firms.stats.unpaid.title')}
 				tooltip={t('dashboard.admin.firms.stats.unpaid.tooltip')}
 				type="integer"
@@ -55,7 +55,7 @@ export default function SubBanners() {
 			/>
 			<StatCard
 				className={classes.stat}
-				icon={<IconChartPie4 size={64} />}
+				icon={<IconChartPie4 size={80} />}
 				title={t('dashboard.admin.firms.stats.sectorDiversity.title')}
 				tooltip={t('dashboard.admin.firms.stats.sectorDiversity.tooltip')}
 				type="index"

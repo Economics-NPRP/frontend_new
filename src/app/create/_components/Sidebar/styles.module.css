@@ -1,7 +1,14 @@
 .root {
-	@apply w-[320px];
+	@apply px-8 py-4;
+	@apply bg-white border-0 border-r border-solid border-gray-300;
 
 	.step {
+		@apply w-72;
+		@apply mt-2;
+
+		--stepper-icon-size: 2rem;
+		min-height: calc(var(--stepper-icon-size) + 1.5rem);
+
 		&[data-progress='true'],
 		&[data-completed='true'] {
 			.icon {
@@ -16,6 +23,10 @@
 		&[data-progress='true'] {
 			.icon {
 				@apply bg-dark-600;
+			}
+
+			> .body > .description {
+				@apply block mb-8;
 			}
 		}
 
@@ -41,45 +52,37 @@
 		}
 
 		.icon {
-			@apply size-9 min-w-[unset] min-h-[unset] border-0;
+			@apply size-8 min-w-[unset] min-h-[unset] border-0;
 			@apply text-gray-300;
 		}
 
 		> .body {
-			@apply hidden;
 			@apply ml-3;
 
 			> .label {
+				@apply mt-1;
 				@apply display-md-15-sb;
 				@apply opacity-25;
 			}
-		}
-	}
 
-	.content {
-		@apply hidden;
+			> .description {
+				@apply paragraph-sm-g6;
+				@apply hidden;
+			}
+		}
 	}
 }
 
 * {
 	@mixin larger-than $mantine-breakpoint-md {
-		.root {
-			@apply w-[800px];
-
-			.step > .body {
-				@apply block;
-			}
-		}
-	}
-
-	@mixin larger-than $mantine-breakpoint-lg {
-		.root {
-			@apply w-[1000px];
+		.root .step > .body {
 		}
 	}
 
 	@mixin dark {
 		.root {
+			@apply bg-dark-600 border-dark-400;
+
 			.step {
 				&[data-progress='true']:not([data-completed='true']) {
 					.icon {
@@ -105,13 +108,13 @@
 				.icon {
 					@apply bg-dark-600 text-dark-300;
 				}
-			}
 
-			.separator {
-				@apply bg-dark-500;
+				.separator {
+					@apply border-dark-500;
 
-				&[data-active='true'] {
-					@apply bg-dark-50;
+					&[data-active='true'] {
+						@apply border-dark-50;
+					}
 				}
 			}
 		}

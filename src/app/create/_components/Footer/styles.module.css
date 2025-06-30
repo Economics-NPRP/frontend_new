@@ -1,0 +1,13 @@
+.root {
+	@apply px-8 py-4;
+	@apply bg-white border-0 border-t border-solid border-gray-300;
+	@apply justify-between;
+}
+
+* {
+	@mixin dark {
+		.root {
+			@apply bg-dark-600 border-dark-400;
+		}
+	}
+}

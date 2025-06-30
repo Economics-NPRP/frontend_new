@@ -21,7 +21,7 @@ export default function SubBanners() {
 		<Container className={classes.root}>
 			<StatCard
 				className={classes.stat}
-				icon={<IconGavel size={64} />}
+				icon={<IconGavel size={80} />}
 				title={t('dashboard.admin.cycles.stats.totalAuctions.title')}
 				tooltip={t('dashboard.admin.cycles.stats.totalAuctions.tooltip')}
 				type="integer"
@@ -32,7 +32,7 @@ export default function SubBanners() {
 			/>
 			<StatCard
 				className={classes.stat}
-				icon={<IconLeaf size={64} />}
+				icon={<IconLeaf size={80} />}
 				title={t('dashboard.admin.cycles.stats.totalPermits.title')}
 				tooltip={t('dashboard.admin.cycles.stats.totalPermits.tooltip')}
 				type="integer"
@@ -43,7 +43,7 @@ export default function SubBanners() {
 			/>
 			<StatCard
 				className={classes.stat}
-				icon={<IconTargetArrow size={64} />}
+				icon={<IconTargetArrow size={80} />}
 				title={t('dashboard.admin.cycles.stats.kpis.title')}
 				tooltip={t('dashboard.admin.cycles.stats.kpis.tooltip')}
 				type="percentage"
@@ -57,7 +57,7 @@ export default function SubBanners() {
 				heading={t('dashboard.admin.cycles.actions.create.heading')}
 				subheading={t('dashboard.admin.cycles.actions.create.subheading')}
 				component={Link}
-				href="/dashboard/a/cycles/create"
+				href="/create/cycle"
 				index={1}
 			/>
 			<ActionBanner
