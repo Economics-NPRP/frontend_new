@@ -1,5 +1,5 @@
 .root {
-	@apply max-w-[480px] gap-8;
+	@apply gap-8 items-center;
 
 	> .header {
 		@apply gap-1;
@@ -12,5 +12,197 @@
 		> .subheading {
 			@apply text-center paragraph-sm;
 		}
+	}
+
+	&.first {
+		@apply max-w-[480px] items-stretch;
+	}
+
+	&.second {
+		@apply self-stretch;
+
+		> .header {
+			@apply max-w-[640px];
+		}
+
+		> .section {
+			@apply self-stretch items-stretch;
+
+			> .header {
+				@apply gap-4 items-center justify-between;
+
+				> .label {
+					@apply gap-0 items-start;
+
+					> .row {
+						@apply gap-2;
+
+						> .heading {
+							@apply display-lg;
+						}
+					}
+
+					> .subheading {
+						@apply paragraph-sm-g6;
+					}
+				}
+			}
+
+			> .content {
+				@apply h-[240px];
+				@apply items-stretch justify-center flex-nowrap;
+				@apply p-2 gap-4;
+				@apply overflow-x-auto;
+				@apply bg-gray-50 border border-solid border-gray-300;
+
+				> .card {
+					@apply w-60;
+					@apply gap-0 items-stretch;
+					@apply bg-white border border-solid border-gray-300;
+					@apply transition-shadow duration-300;
+
+					> .header {
+						@apply px-4 py-3 gap-2;
+						@apply flex-nowrap items-center justify-center;
+
+						> .label {
+							@apply flex-auto;
+							@apply gap-0 items-start;
+
+							> .name {
+								@apply display-sm-sb-d6;
+							}
+
+							> .meta {
+								@apply paragraph-sm-g6;
+							}
+						}
+					}
+
+					> .details {
+						@apply flex-auto;
+						@apply p-4 gap-3;
+						@apply border-0 border-y border-solid border-gray-300;
+
+						> .row {
+							@apply gap-2;
+							@apply flex-nowrap items-center justify-start;
+
+							> .icon {
+								@apply text-dark-300;
+							}
+
+							> .value {
+								@apply paragraph-sm;
+							}
+						}
+					}
+
+					> .footer {
+						@apply p-2 gap-2 flex-nowrap;
+
+						> .button {
+							@apply h-8;
+							@apply flex-[50%];
+						}
+					}
+
+					&:hover {
+						@apply shadow-xs;
+					}
+				}
+
+				> .add {
+					@apply w-32;
+					@apply p-4 gap-3;
+					@apply flex flex-col items-center justify-center;
+					@apply transition-colors duration-300;
+
+					background-image: repeating-linear-gradient(
+							0deg,
+							#dee2e6,
+							#dee2e6 16px,
+							transparent 16px,
+							transparent 32px,
+							#dee2e6 32px
+						),
+						repeating-linear-gradient(
+							90deg,
+							#dee2e6,
+							#dee2e6 16px,
+							transparent 16px,
+							transparent 32px,
+							#dee2e6 32px
+						),
+						repeating-linear-gradient(
+							180deg,
+							#dee2e6,
+							#dee2e6 16px,
+							transparent 16px,
+							transparent 32px,
+							#dee2e6 32px
+						),
+						repeating-linear-gradient(
+							270deg,
+							#dee2e6,
+							#dee2e6 16px,
+							transparent 16px,
+							transparent 32px,
+							#dee2e6 32px
+						);
+					background-size:
+						1px 100%,
+						100% 1px,
+						1px 100%,
+						100% 1px;
+					background-position:
+						0 0,
+						0 0,
+						100% 0,
+						0 100%;
+					background-repeat: no-repeat;
+					animation: borderAnimation 1s linear infinite;
+					animation-play-state: paused;
+
+					> .icon {
+						@apply size-12;
+						@apply flex items-center justify-center;
+						@apply bg-white border border-solid border-gray-300 text-gray-600;
+						@apply rounded-sm;
+						@apply transition-colors duration-300;
+					}
+
+					> .text {
+						@apply display-sm-sb-d3;
+					}
+
+					&:hover {
+						@apply bg-gray-100;
+						animation-play-state: running;
+
+						> .icon {
+							@apply bg-gray-50;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@keyframes borderAnimation {
+	from {
+		background-position:
+			0 0,
+			-32px 0,
+			100% -32px,
+			0 100%;
+	}
+	to {
+		background-position:
+			0 -32px,
+			0 0,
+			100% 0,
+			-32px 100%;
 	}
 }

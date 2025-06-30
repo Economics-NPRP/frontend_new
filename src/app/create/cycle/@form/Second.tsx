@@ -1,8 +1,22 @@
+import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
 
-import { Stack, Text, TextInput, Title } from '@mantine/core';
-import { DatePickerInput } from '@mantine/dates';
-import { IconCalendar, IconLabel } from '@tabler/icons-react';
+import { BaseBadge } from '@/components/Badge';
+import { IAdminData } from '@/schema/models';
+import {
+	Avatar,
+	Button,
+	Container,
+	Divider,
+	Group,
+	Stack,
+	Text,
+	Title,
+	Tooltip,
+	UnstyledButton,
+} from '@mantine/core';
+import { useListState } from '@mantine/hooks';
+import { IconMail, IconPhone, IconPlus } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -19,24 +33,183 @@ export const SecondStep = () => {
 					{t('create.cycle.second.header.subheading')}
 				</Text>
 			</Stack>
-			<Stack className={classes.inputs}>
-				<TextInput
-					label={t('create.cycle.second.name.label')}
-					placeholder={t('create.cycle.second.name.placeholder')}
-					autoComplete="company"
-					leftSection={<IconLabel size={16} />}
-					required
-				/>
-				<DatePickerInput
-					label={t('create.cycle.second.date.label')}
-					placeholder={t('create.cycle.second.date.placeholder')}
-					leftSection={<IconCalendar size={16} />}
-					type="range"
-					numberOfColumns={2}
-					clearable
-					required
-				/>
+			<MemberSelection
+				title={t('create.cycle.second.manager.heading')}
+				description={t('create.cycle.second.manager.subheading')}
+				maxMembers={1}
+			/>
+			<MemberSelection
+				title={t('create.cycle.second.operator.heading')}
+				description={t('create.cycle.second.operator.subheading')}
+				maxMembers={6}
+			/>
+			<MemberSelection
+				title={t('create.cycle.second.allocator.heading')}
+				description={t('create.cycle.second.allocator.subheading')}
+				maxMembers={3}
+			/>
+			<MemberSelection
+				title={t('create.cycle.second.auditor.heading')}
+				description={t('create.cycle.second.auditor.subheading')}
+				maxMembers={1}
+			/>
+			<MemberSelection
+				title={t('create.cycle.second.finance.heading')}
+				description={t('create.cycle.second.finance.subheading')}
+				maxMembers={1}
+			/>
+			<Divider className={classes.divider} />
+		</Stack>
+	);
+};
+
+interface MemberSelectionProps {
+	title: string;
+	description: string;
+	maxMembers: number;
+}
+const MemberSelection = ({ title, description, maxMembers }: MemberSelectionProps) => {
+	const t = useTranslations();
+
+	const [selected, selectedHandlers] = useListState<IAdminData>([
+		{
+			id: 'a523474c-af06-45af-ae30-04092a61d94c',
+			name: 'Person A',
+			email: 'test@gmail.com',
+			phone: '12345678',
+			type: 'admin',
+			createdAt: DateTime.now().toISO(),
+			emailVerified: true,
+			phoneVerified: true,
+			isActive: true,
+			isSuperadmin: true,
+		},
+		{
+			id: 'a523474c-af06-45af-ae30-04092a61d94d',
+			name: 'Person B',
+			email: 'test@gmail.com',
+			phone: '12345678',
+			type: 'admin',
+			createdAt: DateTime.now().toISO(),
+			emailVerified: true,
+			phoneVerified: true,
+			isActive: true,
+			isSuperadmin: true,
+		},
+		{
+			id: 'a523474c-af06-45af-ae30-04092a61d94e',
+			name: 'Person C',
+			email: 'test@gmail.com',
+			phone: '12345678',
+			type: 'admin',
+			createdAt: DateTime.now().toISO(),
+			emailVerified: true,
+			phoneVerified: true,
+			isActive: true,
+			isSuperadmin: true,
+		},
+	]);
+
+	return (
+		<Stack className={classes.section}>
+			<Group className={classes.header}>
+				<Stack className={classes.label}>
+					<Group className={classes.row}>
+						<Text className={classes.heading}>{title}</Text>
+						<BaseBadge
+							variant="light"
+							className={classes.badge}
+							color={
+								selected.length > maxMembers
+									? 'red'
+									: selected.length === maxMembers
+										? 'green'
+										: 'gray'
+							}
+						>
+							{t('create.cycle.second.selectionBadge.label', {
+								value: selected.length,
+								max: maxMembers,
+							})}
+						</BaseBadge>
+					</Group>
+					<Text className={classes.subheading}>{description}</Text>
+				</Stack>
+				<Tooltip
+					label={t('create.cycle.second.viewResponsibilities.tooltip')}
+					position="top"
+				>
+					<Button variant="outline" className={classes.button}>
+						{t('create.cycle.second.viewResponsibilities.label')}
+					</Button>
+				</Tooltip>
+			</Group>
+			<Group className={classes.content}>
+				{selected.map((member) => (
+					<MemberCard key={member.id} data={member} />
+				))}
+				{selected.length < maxMembers && (
+					<UnstyledButton className={classes.add}>
+						<Container className={classes.icon}>
+							<IconPlus size={24} />
+						</Container>
+						<Text className={classes.text}>
+							{t('create.cycle.second.selectionAdd.label')}
+						</Text>
+					</UnstyledButton>
+				)}
+			</Group>
+		</Stack>
+	);
+};
+
+interface MemberCardProps {
+	data: IAdminData;
+}
+const MemberCard = ({ data }: MemberCardProps) => {
+	const t = useTranslations();
+
+	return (
+		<Stack className={classes.card}>
+			<Group className={classes.header}>
+				<Avatar color="initials" name={data.name} />
+				<Stack className={classes.label}>
+					<Text className={classes.name}>{data.name}</Text>
+					<Text className={classes.meta}>
+						{DateTime.now()
+							.minus({ hours: Math.random() * 12 })
+							.toRelative()}
+					</Text>
+				</Stack>
+			</Group>
+			<Stack className={classes.details}>
+				<Group className={classes.row}>
+					<IconMail size={16} className={classes.icon} />
+					<Text className={classes.value}>{data.email}</Text>
+				</Group>
+				<Group className={classes.row}>
+					<IconPhone size={16} className={classes.icon} />
+					<Text className={classes.value}>{data.phone}</Text>
+				</Group>
 			</Stack>
+			<Group className={classes.footer}>
+				<Button
+					component="a"
+					variant="outline"
+					className={classes.button}
+					href={`mailto:${data.email}`}
+				>
+					{t('constants.actions.email.label')}
+				</Button>
+				<Button
+					component="a"
+					variant="outline"
+					className={classes.button}
+					href={`tel:${data.phone}`}
+				>
+					{t('constants.actions.call.label')}
+				</Button>
+			</Group>
 		</Stack>
 	);
 };

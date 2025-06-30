@@ -31,6 +31,7 @@
 		> .button {
 			@apply size-16;
 			@apply border-0 border-l border-solid border-gray-200;
+			@apply text-dark-300;
 
 			&:last-child {
 				@apply border-r;
@@ -63,7 +64,7 @@
 			}
 
 			> .right > .button {
-				@apply border-dark-400;
+				@apply border-dark-400 text-dark-100;
 			}
 		}
 	}
