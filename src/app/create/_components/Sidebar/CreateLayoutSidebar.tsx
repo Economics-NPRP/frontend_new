@@ -1,14 +1,16 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useContext, useMemo } from 'react';
 
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
-import { Stack, Stepper } from '@mantine/core';
-import { IconCheck } from '@tabler/icons-react';
+import { Button, Divider, Stack, Stepper, Text } from '@mantine/core';
+import { IconArrowUpRight, IconCheck } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
 export const CreateLayoutSidebar = () => {
+	const t = useTranslations();
 	const { steps, activeStep, handleStepChange, shouldAllowStepSelect } =
 		useContext(CreateLayoutContext);
 
@@ -44,6 +46,20 @@ export const CreateLayoutSidebar = () => {
 				orientation="vertical"
 				children={stepComponents}
 			/>
+			<Divider className={classes.divider} />
+			<Stack className={classes.help}>
+				<Text className={classes.title}>{t('create.layout.sidebar.help.title')}</Text>
+				<Text className={classes.description}>
+					{t('create.layout.sidebar.help.description')}
+				</Text>
+				<Button
+					className={classes.button}
+					variant="outline"
+					rightSection={<IconArrowUpRight size={16} />}
+				>
+					{t('constants.actions.contactUs.label')}
+				</Button>
+			</Stack>
 		</Stack>
 	);
 };

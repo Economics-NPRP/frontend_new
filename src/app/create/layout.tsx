@@ -28,7 +28,8 @@ export default async function CreateLayout({
 			<Group className={classes.row}>
 				<CreateLayoutSidebar />
 				<Stack className={classes.column}>
-					<Container className={`${classes.content} bg-stagger-lg`} component="main">
+					<Container className={classes.content} component="main">
+						<Container className={`${classes.bg} bg-stagger-md`} />
 						<Container className={classes.gradient} />
 						{children}
 					</Container>

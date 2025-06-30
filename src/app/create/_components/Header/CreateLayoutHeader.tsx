@@ -36,7 +36,10 @@ export const CreateLayoutHeader = () => {
 				<HeaderButton className={classes.button} variant="accessibility" />
 				<HeaderButton className={classes.button} variant="language" />
 				<HeaderButton className={classes.button} variant="theme" />
-				<UserProfile className={classes.button} variant="marketplace" />
+				<UserProfile
+					className={`${classes.user} ${classes.button}`}
+					variant="marketplace"
+				/>
 			</Group>
 		</Group>
 	);

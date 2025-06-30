@@ -6,30 +6,30 @@ import { IconCalendar, IconLabel } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
-export const FirstStep = () => {
+export const SecondStep = () => {
 	const t = useTranslations();
 
 	return (
-		<Stack className={`${classes.first} ${classes.root}`}>
+		<Stack className={`${classes.second} ${classes.root}`}>
 			<Stack className={classes.header}>
 				<Title order={2} className={classes.heading}>
-					{t('create.cycle.first.header.heading')}
+					{t('create.cycle.second.header.heading')}
 				</Title>
 				<Text className={classes.subheading}>
-					{t('create.cycle.first.header.subheading')}
+					{t('create.cycle.second.header.subheading')}
 				</Text>
 			</Stack>
 			<Stack className={classes.inputs}>
 				<TextInput
-					label={t('create.cycle.first.name.label')}
-					placeholder={t('create.cycle.first.name.placeholder')}
+					label={t('create.cycle.second.name.label')}
+					placeholder={t('create.cycle.second.name.placeholder')}
 					autoComplete="company"
 					leftSection={<IconLabel size={16} />}
 					required
 				/>
 				<DatePickerInput
-					label={t('create.cycle.first.date.label')}
-					placeholder={t('create.cycle.first.date.placeholder')}
+					label={t('create.cycle.second.date.label')}
+					placeholder={t('create.cycle.second.date.placeholder')}
 					leftSection={<IconCalendar size={16} />}
 					type="range"
 					numberOfColumns={2}

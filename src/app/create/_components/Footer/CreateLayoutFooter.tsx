@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useContext } from 'react';
 
 import { Switch } from '@/components/SwitchCase';
@@ -10,6 +11,7 @@ import { IconArrowNarrowRight, IconCheck } from '@tabler/icons-react';
 import classes from './styles.module.css';
 
 export const CreateLayoutFooter = () => {
+	const t = useTranslations();
 	const { completeLabel, steps, activeStep, handleNextStep, handlePrevStep } =
 		useContext(CreateLayoutContext);
 
@@ -18,24 +20,24 @@ export const CreateLayoutFooter = () => {
 			<Group className={classes.left}>
 				<Switch value={activeStep}>
 					<Switch.Case when={0}>
-						<Button className={`${classes.back} ${classes.button}`} variant="light">
-							Cancel
+						<Button className={`${classes.back} ${classes.button}`} variant="outline">
+							{t('constants.actions.cancel.label')}
 						</Button>
 					</Switch.Case>
 					<Switch.Else>
 						<Button
 							className={`${classes.back} ${classes.button}`}
-							variant="light"
+							variant="outline"
 							onClick={handlePrevStep}
 						>
-							Back
+							{t('constants.actions.back.label')}
 						</Button>
 					</Switch.Else>
 				</Switch>
 			</Group>
 			<Group className={classes.right}>
-				<Button className={`${classes.secondary} ${classes.button}`} variant="transparent">
-					Save Draft
+				<Button className={`${classes.secondary} ${classes.button}`} variant="subtle">
+					{t('constants.actions.saveDraft.label')}
 				</Button>
 				<Switch value={activeStep}>
 					<Switch.Case when={steps.length - 1}>
@@ -54,7 +56,7 @@ export const CreateLayoutFooter = () => {
 							onClick={handleNextStep}
 							rightSection={<IconArrowNarrowRight size={16} />}
 						>
-							Continue
+							{t('constants.actions.continue.label')}
 						</Button>
 					</Switch.Else>
 				</Switch>

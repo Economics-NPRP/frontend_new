@@ -2,12 +2,80 @@
 	@apply px-8 py-4;
 	@apply bg-white border-0 border-t border-solid border-gray-300;
 	@apply justify-between;
+
+	background-image: repeating-linear-gradient(
+		135deg,
+		rgba(0, 0, 0, 0.01),
+		rgba(0, 0, 0, 0.01) 20px,
+		#0000 20px,
+		#0000 40px
+	);
+
+	.button {
+		@apply h-9;
+
+		&.back {
+			@apply w-32;
+		}
+
+		&.secondary {
+			@apply px-4;
+			@apply display-sm-sb-d3;
+			@apply underline underline-offset-4 decoration-2 decoration-dashed decoration-gray-500;
+
+			&:hover {
+				@apply bg-gray-50 decoration-gray-600;
+			}
+		}
+
+		&.primary {
+			@apply w-64;
+		}
+	}
+
+	> .right {
+		@apply gap-2;
+	}
 }
 
 * {
 	@mixin dark {
 		.root {
 			@apply bg-dark-600 border-dark-400;
+
+			background-image: repeating-linear-gradient(
+				135deg,
+				rgba(255, 255, 255, 0.01),
+				rgba(255, 255, 255, 0.01) 20px,
+				#0000 20px,
+				#0000 40px
+			);
+
+			.button {
+				&.back {
+					@apply bg-dark-500 border-dark-300 text-white;
+
+					&:hover {
+						@apply bg-dark-400;
+					}
+				}
+
+				&.secondary {
+					@apply decoration-dark-300;
+
+					&:hover {
+						@apply bg-dark-500 decoration-dark-200;
+					}
+				}
+
+				&.primary {
+					@apply bg-dark-400 text-white;
+
+					&:hover {
+						@apply bg-dark-300;
+					}
+				}
+			}
 		}
 	}
 }

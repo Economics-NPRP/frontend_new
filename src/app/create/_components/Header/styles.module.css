@@ -1,5 +1,5 @@
 .root {
-	@apply w-full h-[72px];
+	@apply w-full h-16;
 	@apply px-8;
 	@apply justify-between items-stretch;
 	@apply bg-white border-0 border-b border-solid border-gray-300;
@@ -26,8 +26,19 @@
 	}
 
 	> .right {
+		@apply gap-0;
+
 		> .button {
-			@apply size-12;
+			@apply size-16;
+			@apply border-0 border-l border-solid border-gray-200;
+
+			&:last-child {
+				@apply border-r;
+			}
+
+			&.user {
+				@apply w-24;
+			}
 		}
 	}
 }
@@ -49,6 +60,10 @@
 				> .divider {
 					@apply border-dark-500;
 				}
+			}
+
+			> .right > .button {
+				@apply border-dark-400;
 			}
 		}
 	}
