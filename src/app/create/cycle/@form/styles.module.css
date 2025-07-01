@@ -20,7 +20,7 @@
 	}
 
 	&.first {
-		@apply max-w-[582px] items-stretch;
+		@apply items-stretch;
 
 		.calendar {
 			@apply px-6 py-4 mt-4;

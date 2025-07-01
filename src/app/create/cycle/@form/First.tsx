@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 
-import { Input, Stack, Text, TextInput, Title } from '@mantine/core';
+import { Input, Stack, Text, TextInput, Title, useMatches } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { IconLabel } from '@tabler/icons-react';
 
@@ -8,6 +8,7 @@ import classes from './styles.module.css';
 
 export const FirstStep = () => {
 	const t = useTranslations();
+	const numCalendarColumns = useMatches({ base: 1, md: 2, lg: 3 });
 
 	return (
 		<Stack className={`${classes.first} ${classes.root}`}>
@@ -32,7 +33,11 @@ export const FirstStep = () => {
 					description={t('create.cycle.first.date.placeholder')}
 					required
 				>
-					<DatePicker className={classes.calendar} type="range" numberOfColumns={2} />
+					<DatePicker
+						className={classes.calendar}
+						type="range"
+						numberOfColumns={numCalendarColumns}
+					/>
 				</Input.Wrapper>
 			</Stack>
 		</Stack>
