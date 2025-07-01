@@ -200,6 +200,10 @@
       "key": "Auctions",
       "unit": "auctions"
     },
+    "cycles": {
+      "key": "Cycles",
+      "unit": "cycles"
+    },
     "permits": {
       "key": "Permits",
       "unit": "permits",
@@ -1427,6 +1431,10 @@
           "presets": {
             "heading": "Manage Cycle Presets",
             "subheading": "Click here to add, edit, or delete cycle presets"
+          },
+          "auctions": {
+            "heading": "View All Auctions",
+            "subheading": "View all auctions created, including those in draft states"
           }
         },
         "stats": {
@@ -1439,8 +1447,12 @@
             "tooltip": "How many permits were allocated this year, also shows equivalent amount in tCO2e"
           },
           "kpis": {
-            "title": "Average KPI Completion",
-            "tooltip": "The average KPI completion for all auction cycles this year"
+            "title": "Average KPI Achievement",
+            "tooltip": "The average KPI achievement score for all auction cycles this year"
+          },
+          "totalCycles": {
+            "title": "Total Auction Cycles",
+            "tooltip": "Total number of auction cycles created this year"
           }
         }
       }

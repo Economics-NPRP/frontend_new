@@ -18,11 +18,25 @@
 			@apply gap-4;
 
 			> .stat {
-				@apply col-span-2;
+				@apply col-span-3;
 			}
 
 			> .banner {
+				@apply col-span-2;
+			}
+		}
+	}
+
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+			@apply grid-cols-12;
+
+			> .stat {
 				@apply col-span-3;
+			}
+
+			> .banner {
+				@apply col-span-4;
 			}
 		}
 	}
