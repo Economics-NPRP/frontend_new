@@ -77,6 +77,7 @@ export const PaginatedAuctionsProvider = ({
 					isLive: filters.status === 'ongoing',
 					hasEnded: filters.status === 'ended',
 				}),
+				'getPaginatedAuctions',
 			),
 		[filters.type, filters.status],
 	);

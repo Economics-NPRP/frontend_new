@@ -196,9 +196,18 @@
       "med": "Mininmum Increment",
       "short": "Min. Incr."
     },
+    "auctions": {
+      "key": "Auctions",
+      "unit": "auctions"
+    },
     "permits": {
       "key": "Permits",
-      "unit": "permits"
+      "unit": "permits",
+      "unitShort": "pmts"
+    },
+    "bids": {
+      "key": "Bids",
+      "unit": "bids"
     },
     "permitsOffered": {
       "full": "Total Permits Offered",
@@ -256,6 +265,9 @@
       },
       "firmsList": {
         "label": "Return to List of Companies"
+      },
+      "cyclesList": {
+        "label": "Return to List of Auction Cycles"
       },
       "login": {
         "label": "Return to Login"
@@ -345,6 +357,24 @@
       },
       "review": {
         "label": "Review"
+      },
+      "saveDraft": {
+        "label": "Save Draft"
+      },
+      "contactUs": {
+        "label": "Contact Us"
+      },
+      "email": {
+        "label": "Email"
+      },
+      "call": {
+        "label": "Call"
+      },
+      "importFromCSV": {
+        "label": "Import From CSV"
+      },
+      "exportToCSV": {
+        "label": "Export To CSV"
       }
     },
     "quantities": {
@@ -434,6 +464,7 @@
     },
     "na": "N/A",
     "download": {
+      "default": "Download as CSV",
       "companyData": "Download all company data as CSV",
       "applications": "Download all applications as CSV",
       "bids": "Download all bids as CSV",
@@ -444,6 +475,20 @@
       "approved": "Approved",
       "ongoing": "Ongoing",
       "ended": "Ended"
+    },
+    "trend": {
+      "positive": "+{value, number, ::.00}%",
+      "negative": "-{value, number, ::.00}%"
+    },
+    "firms": {
+      "key": "Companies",
+      "unit": "companies"
+    },
+    "transactions": {
+      "key": "Transactions"
+    },
+    "days": {
+      "unit": "days"
     }
   },
   "marketplace": {
@@ -464,16 +509,16 @@
       },
       "subbanner": {
         "1": {
-          "text": "Click here to view recent activity",
-          "heading": "<mark>{value, plural, =0 {No new bids} =1 {1 new bid} other {# new bids}}</mark> for your enrolled auctions"
+          "text": "<mark>{value, plural, =0 {No new bids} =1 {1 new bid} other {# new bids}}</mark> for your enrolled auctions",
+          "heading": "Visit Notification Center"
         },
         "2": {
-          "text": "Click here to create a new auction",
-          "heading": "Have excess permits? <mark>Auction them off!</mark>"
+          "text": "Have excess permits? Auction them off!",
+          "heading": "Create New Auction"
         },
         "3": {
-          "text": "Click here to view auction results",
-          "heading": "<mark>{value, plural, =0 {No auction} =1 {1 auction} other {# auctions}}</mark> {value, plural, =0 {has} =1 {has} other {have}} ended"
+          "text": "<mark>{value, plural, =0 {No auction} =1 {1 auction} other {# auctions}}</mark> {value, plural, =0 {has} =1 {has} other {have}} ended in the past 24 hours",
+          "heading": "View Auction Results"
         }
       },
       "categories": {
@@ -1276,6 +1321,9 @@
         "title": "New Permits Distribution",
         "subtitle": "Shows how many new permits will be flowing into the market during this cycle, grouped by sector"
       }
+    },
+    "statCard": {
+      "comparison": "Compared to previous {comparison, select, year {year} month {month} day {day} other {period}}"
     }
   },
   "dashboard": {
@@ -1283,16 +1331,16 @@
       "firms": {
         "subbanner": {
           "1": {
-            "text": "Click here to view all company applications",
-            "heading": "<mark>{value, plural, =0 {No new applications} =1 {1 new application} other {# new applications}}</mark> requiring review"
+            "text": "<mark>{value, plural, =0 {No new applications} =1 {1 new application} other {# new applications}}</mark> requiring review",
+            "heading": "View Applications"
           },
           "2": {
-            "text": "Click here to create a new auction",
-            "heading": "Have excess permits? <mark>Auction them off!</mark>"
+            "text": "{value, plural, =0 {No suspicious activity} other {Suspicious activity}} detected, click here to review the audit logs",
+            "heading": "Inspect Audit Logs"
           },
           "3": {
-            "text": "Click here to view auction results",
-            "heading": "<mark>{value, plural, =0 {No auction} =1 {1 auction} other {# auctions}}</mark> {value, plural, =0 {has} =1 {has} other {have}} ended"
+            "text": "<mark>{value, plural, =0 {No companies} =1 {1 company} other {# companies}}</mark> {value, plural, =0 {have} =1 {has} other {have}} unpaid transactions",
+            "heading": "Track Payments"
           }
         },
         "details": {
@@ -1349,6 +1397,50 @@
             "label": "Rejection Reason",
             "placeholder": "Enter reason...",
             "description": "Please provide a reason for rejecting this application. The user will be notified with this reason."
+          }
+        },
+        "stats": {
+          "newRegistrations": {
+            "title": "Newly Registered Companies",
+            "tooltip": "Number of new companies that registered this month"
+          },
+          "approvalRate": {
+            "title": "Approval Rate",
+            "tooltip": "Percentage of applications approved this month"
+          },
+          "unpaid": {
+            "title": "Total Unpaid Transactions",
+            "tooltip": "Total number of transactions that are unpaid this month"
+          },
+          "sectorDiversity": {
+            "title": "Sector Diversity Index",
+            "tooltip": "Measures how diverse the sectors of the newly registered companies are, calculate using Shannon's Diversity Index"
+          }
+        }
+      },
+      "cycles": {
+        "actions": {
+          "create": {
+            "heading": "Create New Cycle",
+            "subheading": "Draft a new cycle and start planning upcoming auctions"
+          },
+          "presets": {
+            "heading": "Manage Cycle Presets",
+            "subheading": "Click here to add, edit, or delete cycle presets"
+          }
+        },
+        "stats": {
+          "totalAuctions": {
+            "title": "Total Auctions",
+            "tooltip": "Total number of auctions created this year"
+          },
+          "totalPermits": {
+            "title": "Total Permits Allocated",
+            "tooltip": "How many permits were allocated this year, also shows equivalent amount in tCO2e"
+          },
+          "kpis": {
+            "title": "Average KPI Completion",
+            "tooltip": "The average KPI completion for all auction cycles this year"
           }
         }
       }
@@ -1612,6 +1704,181 @@
           "error": {
             "title": "Error Resending OTP"
           }
+        }
+      }
+    }
+  },
+  "create": {
+    "cycle": {
+      "title": "Create New Auction Cycle",
+      "complete": {
+        "label": "Create Cycle"
+      },
+      "first": {
+        "steps": {
+          "label": "Basic Information",
+          "description": "Set the name and duration of this auction cycle"
+        },
+        "header": {
+          "heading": "Set Up Auction Cycle",
+          "subheading": "Start by giving your auction cycle a clear name and selecting the date range during which it will be active."
+        },
+        "name": {
+          "label": "Auction Cycle Name",
+          "placeholder": "Enter name for auction cycle..."
+        },
+        "date": {
+          "label": "Start and End Dates",
+          "placeholder": "Select the start and end date for this auction cycle..."
+        }
+      },
+      "second": {
+        "steps": {
+          "label": "Team Assignment",
+          "description": "Assign internal teams or managers to oversee this cycle"
+        },
+        "header": {
+          "heading": "Assign Responsible Teams",
+          "subheading": "Choose which admins will be responsible for this auction cycle and related activities, such as creating and managing auctions, distributing permits, and analysing statistics"
+        },
+        "manager": {
+          "heading": "Cycle Manager",
+          "subheading": "Responsible for overseeing the auction cycle and managing planning and execution activities"
+        },
+        "viewResponsibilities": {
+          "label": "View Responsibilities",
+          "tooltip": "View what permissions and responsibilities this role has and what actions they can take"
+        },
+        "selectionBadge": {
+          "label": "{value, number} / {max, number}"
+        },
+        "selectionAdd": {
+          "label": "Add Admin"
+        },
+        "operator": {
+          "heading": "Auction Operator",
+          "subheading": "Responsible for setting up and configuring auctions, including setting dates, minimum bid, and other auction parameters."
+        },
+        "allocator": {
+          "heading": "Permit Strategist",
+          "subheading": "Responsible for deciding how many free permits to distribute based on regulatory goals, sector performance, or national policy."
+        },
+        "auditor": {
+          "heading": "Auditor",
+          "subheading": "View-only access for inspecting data, logs, and compliance during the cycle."
+        },
+        "finance": {
+          "heading": "Finance Officer",
+          "subheading": "Has access to finances for auction cycle and handles payment-related activity"
+        }
+      },
+      "third": {
+        "steps": {
+          "label": "Define KPIs (Optional)",
+          "description": "Set target metrics to track the performance of this cycle"
+        },
+        "header": {
+          "heading": "Define Performance Targets (Optional)",
+          "subheading": "Optionally set targets for key performance indicators (KPIs) to track progress and measure the success of this cycle."
+        },
+        "table": {
+          "summary": {
+            "header": "Total / Avg"
+          }
+        },
+        "permitDistribution": {
+          "title": "Permit Distribution",
+          "totalPermits": {
+            "label": "Total Permit Inflow",
+            "tooltip": "How many permits should be distributed and auctioned off in this auction cycle?"
+          },
+          "avgPerAuction": {
+            "label": "Average Permits Per Auction",
+            "tooltip": "How many permits should each auction have on average?"
+          },
+          "avgFree": {
+            "label": "Average Free Permits Per Company",
+            "tooltip": "Set the target average number of permits each company should be given for free"
+          },
+          "avgWon": {
+            "label": "Average Permits Won Per Company",
+            "tooltip": "How many permits on average should each company win during this cycle?"
+          }
+        },
+        "financial": {
+          "title": "Economic",
+          "revenue": {
+            "label": "Total Revenue",
+            "tooltip": "How much revenue should be generated during this auction cycle"
+          },
+          "avgWinningBid": {
+            "label": "Average Winning Bid",
+            "tooltip": "How much should the average winning bid be in QAR"
+          },
+          "avgTotalPayment": {
+            "label": "Average Total Cost Per Company",
+            "tooltip": "Decide how much each company should expect to pay on average during this auction cycle"
+          }
+        },
+        "participation": {
+          "title": "Participation",
+          "totalFirms": {
+            "label": "Total Companies Participating",
+            "tooltip": "Set how many companies you expect to participate in this auction cycle"
+          },
+          "avgJoinedAuctions": {
+            "label": "Average No. of Auctions Joined Per Company",
+            "tooltip": "How many auctions should each company join on average?"
+          },
+          "percentWinners": {
+            "label": "Average Auction Winning Percentage",
+            "tooltip": "The percentage of participating companies who end up as winners in an auction"
+          },
+          "percentWinning": {
+            "label": "Average Company Winning Rate",
+            "tooltip": "Set expected winning rate of companies during this auction cycle (i.e, how many of their joined auctions they should win)"
+          },
+          "avgBidsAuction": {
+            "label": "Average No. of Bids Per Auction",
+            "tooltip": "How many bids should be placed on average per auction"
+          },
+          "avgBidsFirm": {
+            "label": "Average No. of Bids Per Company",
+            "tooltip": "How many bids on average should each company place on a single auction"
+          }
+        },
+        "longTerm": {
+          "title": "Long Term Targets",
+          "holdingTime": {
+            "label": "Average Permit Holding Time",
+            "tooltip": "Decide the average time each company should take between acquiring a permit obtained in this cycle, until actually using it"
+          },
+          "percentCarryOver": {
+            "label": "Average Percent Carry-Over",
+            "tooltip": "What percentage of the permits acquired in this cycle are companies expected to carry over to the next cycle, measures hoarding and stockpiling"
+          },
+          "percentResold": {
+            "label": "Average Percent Resale",
+            "tooltip": "Shows how often companies resell permits rather than use them"
+          },
+          "expiryRate": {
+            "label": "Average Percent Expiry Rate",
+            "tooltip": "Set the expected average percentage of permits that end up expired without being used"
+          }
+        }
+      },
+      "fourth": {
+        "steps": {
+          "label": "Review & Create",
+          "description": "Review all settings and create the auction cycle"
+        }
+      }
+    },
+    "layout": {
+      "sidebar": {
+        "help": {
+          "title": "Having trouble with the form?",
+          "description": "Feel free to reach out to us for assistance. We are here to help you with any issues you may face during this process."
         }
       }
     }

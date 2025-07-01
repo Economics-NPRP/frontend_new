@@ -45,6 +45,7 @@ export const PaginatedFirmsProvider = ({
 						sortBy,
 						sortDirection,
 					}),
+					'getPaginatedFirms',
 				)
 			}
 			children={children}

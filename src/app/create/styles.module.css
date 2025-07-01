@@ -1,0 +1,60 @@
+.root {
+	@apply w-screen h-screen;
+	@apply max-h-screen;
+	@apply flex flex-col;
+	@apply gap-0;
+
+	> .row {
+		@apply min-h-0;
+		@apply flex-auto flex-nowrap items-stretch;
+		@apply gap-0;
+
+		> .column {
+			@apply min-w-0;
+			@apply flex-auto flex-nowrap items-stretch;
+			@apply gap-0;
+
+			> .content {
+				@apply relative;
+				@apply flex flex-col items-center justify-start;
+				@apply flex-auto overflow-y-auto;
+				@apply px-8 py-16;
+
+				> .bg {
+					@apply fixed top-0 left-0 w-full h-full;
+					@apply bg-gray-50;
+					@apply -z-10;
+				}
+
+				> .gradient {
+					@apply fixed top-0 left-0 w-full h-full;
+					@apply -z-10;
+
+					background-image: linear-gradient(
+						to bottom,
+						rgba(255, 255, 255, 1) 10%,
+						rgba(255, 255, 255, 0.1) 100%
+					);
+				}
+			}
+		}
+	}
+}
+
+* {
+	@mixin dark {
+		.root > .row > .column > .content {
+			> .bg {
+				@apply bg-dark-700;
+			}
+
+			> .gradient {
+				background-image: linear-gradient(
+					to bottom,
+					rgba(26, 27, 30, 1) 10%,
+					rgba(26, 27, 30, 0.1) 100%
+				);
+			}
+		}
+	}
+}

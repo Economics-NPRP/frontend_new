@@ -427,4 +427,10 @@
 		@apply font-normal;
 		@apply text-dark-50 dark:text-dark-300;
 	}
+	.numeric-sm-d6 {
+		@apply font-serif;
+		@apply text-base;
+		@apply font-semibold;
+		@apply text-dark-600 dark:text-dark-50;
+	}
 }

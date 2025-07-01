@@ -52,6 +52,7 @@ export const PaginatedOpenAuctionResultsProvider = ({
 						sortBy,
 						sortDirection,
 					}),
+					`getPaginatedOpenAuctionResults:${auctionId}`,
 				)
 			}
 			disabled={!areResultsAvailable}

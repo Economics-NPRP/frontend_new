@@ -56,6 +56,10 @@ export default async function RootLayout({
 										minimumFractionDigits: 2,
 										maximumFractionDigits: 2,
 									},
+									index: {
+										minimumFractionDigits: 3,
+										maximumFractionDigits: 3,
+									},
 								},
 							}}
 							messages={messages}

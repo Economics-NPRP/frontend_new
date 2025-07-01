@@ -1,3 +1,5 @@
+'use client';
+
 import { SingleAuctionContext } from 'contexts/SingleAuction';
 import { useContext, useMemo } from 'react';
 

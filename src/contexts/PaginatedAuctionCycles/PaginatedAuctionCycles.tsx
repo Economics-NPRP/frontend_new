@@ -58,6 +58,7 @@ export const PaginatedAuctionCyclesProvider = ({
 					sortBy,
 					sortDirection,
 				}),
+				'getPaginatedAuctionCycles',
 			),
 		[status],
 	);

@@ -10,6 +10,7 @@ import { Switch } from '@/components/SwitchCase';
 import { MyUserProfileContext } from '@/contexts';
 import { logout } from '@/lib/auth/logout';
 import {
+	ActionIconProps,
 	Alert,
 	Avatar,
 	Container,
@@ -45,10 +46,10 @@ import { useQueryClient } from '@tanstack/react-query';
 import { HeaderButton } from './HeaderButton';
 import classes from './styles.module.css';
 
-export interface UserProfileProps {
+export interface UserProfileProps extends ActionIconProps {
 	variant: 'marketplace' | 'adminDashboard';
 }
-export const UserProfile = ({ variant }: UserProfileProps) => {
+export const UserProfile = ({ variant, className, ...props }: UserProfileProps) => {
 	const t = useTranslations();
 	const router = useRouter();
 	const queryClient = useQueryClient();
@@ -99,7 +100,11 @@ export const UserProfile = ({ variant }: UserProfileProps) => {
 	return (
 		<Menu width={320} offset={4} position="bottom-end">
 			<MenuTarget>
-				<HeaderButton className={classes.user} variant="user" />
+				<HeaderButton
+					className={`${classes.user} ${className}`}
+					variant="user"
+					{...props}
+				/>
 			</MenuTarget>
 
 			<MenuDropdown

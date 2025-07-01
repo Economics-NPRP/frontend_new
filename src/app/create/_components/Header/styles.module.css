@@ -1,0 +1,97 @@
+.root {
+	@apply w-full h-14;
+	@apply px-6;
+	@apply justify-between items-stretch flex-nowrap;
+	@apply bg-white border-0 border-b border-solid border-gray-300;
+
+	> .left {
+		@apply gap-6 flex-nowrap;
+
+		> .return {
+			@apply size-7;
+			@apply flex-shrink-0;
+			@apply text-dark-300 bg-gray-100;
+			@apply font-normal;
+
+			&:hover {
+				@apply bg-gray-200;
+			}
+		}
+
+		> .divider {
+			@apply border-gray-100;
+		}
+
+		> .title {
+			@apply heading-3;
+		}
+	}
+
+	> .right {
+		@apply gap-0 flex-nowrap;
+
+		> .button {
+			@apply size-14;
+			@apply border-0 border-l border-solid border-gray-200;
+			@apply text-dark-300;
+
+			&:last-child {
+				@apply border-r;
+			}
+
+			&.user {
+				@apply w-20;
+			}
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+			@apply px-8 h-16;
+
+			> .left {
+				> .return {
+					@apply w-[unset];
+				}
+
+				> .title {
+					@apply heading-2;
+				}
+			}
+
+			> .right > .button {
+				@apply size-16;
+
+				&.user {
+					@apply w-24;
+				}
+			}
+		}
+	}
+
+	@mixin dark {
+		.root {
+			@apply bg-dark-600 border-dark-400;
+
+			> .left {
+				> .return {
+					@apply text-dark-50 bg-dark-500;
+
+					&:hover {
+						@apply bg-dark-400;
+					}
+				}
+
+				> .divider {
+					@apply border-dark-500;
+				}
+			}
+
+			> .right > .button {
+				@apply border-dark-400 text-dark-100;
+			}
+		}
+	}
+}

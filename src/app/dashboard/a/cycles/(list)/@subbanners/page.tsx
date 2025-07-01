@@ -1,8 +1,16 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-import { Container, Group, Mark, Text, UnstyledButton } from '@mantine/core';
-import { IconBellRinging, IconGavel, IconTrophy } from '@tabler/icons-react';
+import { ActionBanner } from '@/components/ActionBanner';
+import { StatCard } from '@/components/StatCard';
+import { Container } from '@mantine/core';
+import {
+	IconCirclePlus,
+	IconGavel,
+	IconLeaf,
+	IconStackFront,
+	IconTargetArrow,
+} from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -10,75 +18,57 @@ export default function SubBanners() {
 	const t = useTranslations();
 
 	return (
-		<Group className={classes.root}>
-			<UnstyledButton
+		<Container className={classes.root}>
+			<StatCard
+				className={classes.stat}
+				icon={<IconGavel size={80} />}
+				title={t('dashboard.admin.cycles.stats.totalAuctions.title')}
+				tooltip={t('dashboard.admin.cycles.stats.totalAuctions.tooltip')}
+				type="integer"
+				unit={t('constants.auctions.key')}
+				value={Math.random() * 1000}
+				diff={Math.random() * 20 - 10}
+				comparison="year"
+			/>
+			<StatCard
+				className={classes.stat}
+				icon={<IconLeaf size={80} />}
+				title={t('dashboard.admin.cycles.stats.totalPermits.title')}
+				tooltip={t('dashboard.admin.cycles.stats.totalPermits.tooltip')}
+				type="integer"
+				unit={t('constants.permits.key')}
+				value={Math.random() * 1000}
+				diff={Math.random() * 20 - 10}
+				comparison="year"
+			/>
+			<StatCard
+				className={classes.stat}
+				icon={<IconTargetArrow size={80} />}
+				title={t('dashboard.admin.cycles.stats.kpis.title')}
+				tooltip={t('dashboard.admin.cycles.stats.kpis.tooltip')}
+				type="percentage"
+				value={Math.random() * 1000}
+				diff={Math.random() * 20 - 10}
+				comparison="year"
+			/>
+			<ActionBanner
 				className={classes.banner}
+				icon={<IconCirclePlus size={32} />}
+				heading={t('dashboard.admin.cycles.actions.create.heading')}
+				subheading={t('dashboard.admin.cycles.actions.create.subheading')}
 				component={Link}
-				href="/dashboard/a/firms/applications"
-			>
-				<Container className={classes.bg}>
-					<Container className={classes.graphic} />
-					<Container className={classes.graphic} />
-					<Container className={classes.graphic} />
-					<Container className={classes.gradient} />
-				</Container>
-
-				<IconBellRinging size={20} />
-				<Text className={classes.heading}>
-					{t.rich('dashboard.admin.firms.subbanner.1.heading', {
-						value: Math.round(Math.random() * 1000),
-						mark: (chunks) => <Mark className={classes.highlight}>{chunks}</Mark>,
-					})}
-				</Text>
-				<Text className={classes.text}>{t('dashboard.admin.firms.subbanner.1.text')}</Text>
-			</UnstyledButton>
-			{/* TODO: change other banners into something else */}
-			<UnstyledButton className={classes.banner} component={Link} href="">
-				<Container className={classes.bg}>
-					<Container className={`${classes.graphic} bg-grid-md`} />
-					<Container className={classes.gradient} />
-				</Container>
-
-				<IconGavel size={20} />
-				<Text className={classes.heading}>
-					{t.rich('dashboard.admin.firms.subbanner.2.heading', {
-						mark: (chunks) => <Mark className={classes.highlight}>{chunks}</Mark>,
-					})}
-				</Text>
-				<Text className={classes.text}>{t('dashboard.admin.firms.subbanner.2.text')}</Text>
-			</UnstyledButton>
-			<UnstyledButton className={classes.banner} component={Link} href="">
-				<Container className={classes.bg}>
-					<Container className={classes.graphic}>
-						<svg width={'300'} height={'300'} style={{ overflow: 'visible' }}>
-							<polygon
-								points={'150,0 0,300 300,300'}
-								fill={'none'}
-								strokeWidth={'1.5'}
-							/>
-						</svg>
-					</Container>
-					<Container className={classes.graphic}>
-						<svg width={'300'} height={'300'} style={{ overflow: 'visible' }}>
-							<polygon
-								points={'150,0 0,300 300,300'}
-								fill={'none'}
-								strokeWidth={'1.5'}
-							/>
-						</svg>
-					</Container>
-					<Container className={classes.gradient} />
-				</Container>
-
-				<IconTrophy size={20} />
-				<Text className={classes.heading}>
-					{t.rich('dashboard.admin.firms.subbanner.3.heading', {
-						value: Math.round(Math.random() * 100),
-						mark: (chunks) => <Mark className={classes.highlight}>{chunks}</Mark>,
-					})}
-				</Text>
-				<Text className={classes.text}>{t('dashboard.admin.firms.subbanner.3.text')}</Text>
-			</UnstyledButton>
-		</Group>
+				href="/create/cycle"
+				index={1}
+			/>
+			<ActionBanner
+				className={classes.banner}
+				icon={<IconStackFront size={32} />}
+				heading={t('dashboard.admin.cycles.actions.presets.heading')}
+				subheading={t('dashboard.admin.cycles.actions.presets.subheading')}
+				component={Link}
+				href="/dashboard/a/cycles/presets"
+				index={2}
+			/>
+		</Container>
 	);
 }

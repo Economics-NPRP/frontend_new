@@ -1,3 +1,5 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
 
 import { throwError } from '@/helpers';
@@ -15,7 +17,7 @@ export const useJoinAuction: JoinAuctionProps = (id, onSuccess) => {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: () => throwError(joinAuction(id)),
+		mutationFn: () => throwError(joinAuction(id), `joinAuction:${id}`),
 		onSuccess: () => {
 			queryClient.invalidateQueries({
 				queryKey: ['marketplace', id],
