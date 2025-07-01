@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useContext } from 'react';
 
 import { Switch } from '@/components/SwitchCase';
@@ -12,7 +13,7 @@ import classes from './styles.module.css';
 
 export const CreateLayoutFooter = () => {
 	const t = useTranslations();
-	const { completeLabel, steps, activeStep, handleNextStep, handlePrevStep } =
+	const { returnHref, completeLabel, steps, activeStep, handleNextStep, handlePrevStep } =
 		useContext(CreateLayoutContext);
 
 	return (
@@ -20,7 +21,12 @@ export const CreateLayoutFooter = () => {
 			<Group className={classes.left}>
 				<Switch value={activeStep}>
 					<Switch.Case when={0}>
-						<Button className={`${classes.back} ${classes.button}`} variant="outline">
+						<Button
+							component={Link}
+							href={returnHref}
+							className={`${classes.back} ${classes.button}`}
+							variant="outline"
+						>
 							{t('constants.actions.cancel.label')}
 						</Button>
 					</Switch.Case>
@@ -34,9 +40,20 @@ export const CreateLayoutFooter = () => {
 						</Button>
 					</Switch.Else>
 				</Switch>
+				<Button
+					className={`${classes.secondary} ${classes.button}`}
+					variant="subtle"
+					hiddenFrom="sm"
+				>
+					{t('constants.actions.saveDraft.label')}
+				</Button>
 			</Group>
 			<Group className={classes.right}>
-				<Button className={`${classes.secondary} ${classes.button}`} variant="subtle">
+				<Button
+					className={`${classes.secondary} ${classes.button}`}
+					variant="subtle"
+					visibleFrom="sm"
+				>
 					{t('constants.actions.saveDraft.label')}
 				</Button>
 				<Switch value={activeStep}>

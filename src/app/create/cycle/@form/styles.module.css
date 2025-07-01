@@ -204,11 +204,12 @@
 	}
 
 	&.third {
+		@apply min-h-0;
 		@apply self-stretch;
 
 		> .table {
 			@apply grid gap-2;
-			@apply overflow-x-auto overflow-y-hidden;
+			@apply overflow-auto;
 
 			grid-template-columns: minmax(200px, 4fr) repeat(6, minmax(120px, 1fr)) minmax(
 					160px,
@@ -368,6 +369,10 @@
 * {
 	@mixin dark {
 		.root {
+			&.first .calendar {
+				@apply bg-dark-600 border-dark-400;
+			}
+
 			&.second > .section {
 				> .content {
 					@apply bg-dark-700 border-dark-500;
@@ -441,6 +446,52 @@
 
 					&:hover {
 						@apply bg-dark-600;
+					}
+				}
+			}
+
+			&.third > .table {
+				> .cell {
+					&:not(.summary) {
+						@apply opacity-80;
+					}
+
+					&.summary {
+						@apply bg-dark-600;
+
+						> .label {
+							@apply !text-dark-50;
+						}
+					}
+				}
+
+				> .section > .rows {
+					@apply bg-dark-600 border-dark-400;
+
+					> .row > .value {
+						&.energy > .wrapper > .input {
+							@apply bg-yellow-600/15;
+						}
+
+						&.industry > .wrapper > .input {
+							@apply bg-maroon-600/15;
+						}
+
+						&.transport > .wrapper > .input {
+							@apply bg-salmon-600/15;
+						}
+
+						&.buildings > .wrapper > .input {
+							@apply bg-purple-600/15;
+						}
+
+						&.agriculture > .wrapper > .input {
+							@apply bg-palm-600/15;
+						}
+
+						&.waste > .wrapper > .input {
+							@apply bg-skyline-600/15;
+						}
 					}
 				}
 			}

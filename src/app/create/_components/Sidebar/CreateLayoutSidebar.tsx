@@ -28,7 +28,7 @@ export const CreateLayoutSidebar = () => {
 	);
 
 	return (
-		<Stack className={classes.root}>
+		<Stack className={classes.root} visibleFrom="md">
 			<Stepper
 				classNames={{
 					root: classes.stepper,

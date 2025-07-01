@@ -1,13 +1,15 @@
 .root {
-	@apply w-full h-16;
-	@apply px-8;
-	@apply justify-between items-stretch;
+	@apply w-full h-14;
+	@apply px-6;
+	@apply justify-between items-stretch flex-nowrap;
 	@apply bg-white border-0 border-b border-solid border-gray-300;
 
 	> .left {
-		@apply gap-6;
+		@apply gap-6 flex-nowrap;
 
 		> .return {
+			@apply size-7;
+			@apply flex-shrink-0;
 			@apply text-dark-300 bg-gray-100;
 			@apply font-normal;
 
@@ -21,15 +23,15 @@
 		}
 
 		> .title {
-			@apply heading-2;
+			@apply heading-3;
 		}
 	}
 
 	> .right {
-		@apply gap-0;
+		@apply gap-0 flex-nowrap;
 
 		> .button {
-			@apply size-16;
+			@apply size-14;
 			@apply border-0 border-l border-solid border-gray-200;
 			@apply text-dark-300;
 
@@ -38,13 +40,37 @@
 			}
 
 			&.user {
-				@apply w-24;
+				@apply w-20;
 			}
 		}
 	}
 }
 
 * {
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+			@apply px-8 h-16;
+
+			> .left {
+				> .return {
+					@apply w-[unset];
+				}
+
+				> .title {
+					@apply heading-2;
+				}
+			}
+
+			> .right > .button {
+				@apply size-16;
+
+				&.user {
+					@apply w-24;
+				}
+			}
+		}
+	}
+
 	@mixin dark {
 		.root {
 			@apply bg-dark-600 border-dark-400;

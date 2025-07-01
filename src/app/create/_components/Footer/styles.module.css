@@ -1,7 +1,8 @@
 .root {
+	@apply flex-col gap-2 flex-nowrap;
 	@apply px-8 py-4;
 	@apply bg-white border-0 border-t border-solid border-gray-300;
-	@apply justify-between;
+	@apply items-stretch justify-center;
 
 	background-image: repeating-linear-gradient(
 		135deg,
@@ -14,8 +15,9 @@
 	.button {
 		@apply h-9;
 
-		&.back {
-			@apply w-32;
+		&.back,
+		&.primary {
+			@apply flex-auto;
 		}
 
 		&.secondary {
@@ -27,18 +29,32 @@
 				@apply bg-gray-50 decoration-gray-600;
 			}
 		}
-
-		&.primary {
-			@apply w-64;
-		}
 	}
 
+	> .left,
 	> .right {
 		@apply gap-2;
 	}
 }
 
 * {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			@apply flex-row gap-4;
+			@apply items-center justify-between;
+
+			.button {
+				&.back {
+					@apply w-32;
+				}
+
+				&.primary {
+					@apply w-64;
+				}
+			}
+		}
+	}
+
 	@mixin dark {
 		.root {
 			@apply bg-dark-600 border-dark-400;
