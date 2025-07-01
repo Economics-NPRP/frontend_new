@@ -7,6 +7,7 @@ import { Switch } from '@/components/SwitchCase';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { FirstStep } from '@/pages/create/cycle/@form/First';
 import { SecondStep } from '@/pages/create/cycle/@form/Second';
+import { ThirdStep } from '@/pages/create/cycle/@form/Third';
 
 export default function CreateCycleLayout() {
 	const t = useTranslations();
@@ -45,6 +46,9 @@ export default function CreateCycleLayout() {
 			</Switch.Case>
 			<Switch.Case when={1}>
 				<SecondStep />
+			</Switch.Case>
+			<Switch.Case when={2}>
+				<ThirdStep />
 			</Switch.Case>
 		</Switch>
 	);

@@ -12,10 +12,24 @@
 		> .subheading {
 			@apply text-center paragraph-sm;
 		}
+
+		> .actions {
+			@apply mt-2;
+			@apply gap-2 justify-center items-center;
+		}
 	}
 
 	&.first {
-		@apply max-w-[480px] items-stretch;
+		@apply max-w-[582px] items-stretch;
+
+		.calendar {
+			@apply px-6 py-4 mt-4;
+			@apply bg-white border border-solid border-gray-300;
+
+			&:hover {
+				@apply shadow-xs;
+			}
+		}
 	}
 
 	&.second {
@@ -183,6 +197,250 @@
 						> .icon {
 							@apply bg-gray-50;
 						}
+					}
+				}
+			}
+		}
+	}
+
+	&.third {
+		@apply self-stretch;
+
+		> .table {
+			@apply grid gap-2;
+			@apply overflow-x-auto overflow-y-hidden;
+
+			grid-template-columns: minmax(200px, 4fr) repeat(6, minmax(120px, 1fr)) minmax(
+					160px,
+					2fr
+				);
+			grid-auto-rows: auto;
+
+			> .cell {
+				@apply w-full h-12;
+				@apply items-center justify-center;
+				@apply gap-1;
+
+				> .label {
+					@apply display-sm-w uppercase;
+				}
+
+				&:first-child {
+					@apply col-start-2;
+				}
+
+				&:not(.summary) {
+					@apply !text-white;
+
+					> .label {
+						@apply !text-white;
+					}
+				}
+
+				&.energy {
+					@apply bg-yellow-600;
+				}
+
+				&.industry {
+					@apply bg-maroon-600;
+				}
+
+				&.transport {
+					@apply bg-salmon-600;
+				}
+
+				&.buildings {
+					@apply bg-purple-600;
+				}
+
+				&.agriculture {
+					@apply bg-palm-600;
+				}
+
+				&.waste {
+					@apply bg-skyline-600;
+				}
+
+				&.summary {
+					@apply bg-gray-200;
+
+					> .label {
+						@apply !text-dark-300;
+					}
+				}
+			}
+
+			> .section {
+				@apply gap-2;
+				@apply col-span-8;
+
+				> .title {
+					@apply heading-3;
+				}
+
+				> .rows {
+					@apply gap-0;
+					@apply bg-white border border-solid border-gray-300;
+					@apply transition-shadow duration-300;
+
+					> .row {
+						@apply h-16;
+						@apply grid gap-2;
+						@apply items-stretch;
+
+						grid-template-columns:
+							minmax(200px, 4fr) repeat(6, minmax(120px, 1fr))
+							minmax(160px, 2fr);
+						grid-template-rows: 1fr;
+
+						> .label {
+							@apply pl-6 p-4;
+							@apply items-center justify-between flex-nowrap;
+
+							> .text {
+								@apply paragraph-sm truncate;
+							}
+
+							> .help {
+								@apply min-w-[unset] min-h-[unset];
+								@apply size-6;
+								@apply text-gray-600;
+								@apply rounded-sm;
+							}
+						}
+
+						> .value {
+							@apply gap-1 items-center justify-center;
+
+							> .wrapper {
+								@apply w-full h-full;
+
+								> .input {
+									@apply w-full h-full;
+									@apply border-0 outline-0;
+									@apply numeric-sm-d6 text-center;
+								}
+							}
+
+							> .text {
+								@apply numeric-sm-d6;
+							}
+
+							> .unit {
+								@apply paragraph-sm-g6;
+							}
+
+							&.energy > .wrapper > .input {
+								@apply bg-yellow-600/10;
+							}
+
+							&.industry > .wrapper > .input {
+								@apply bg-maroon-600/10;
+							}
+
+							&.transport > .wrapper > .input {
+								@apply bg-salmon-600/10;
+							}
+
+							&.buildings > .wrapper > .input {
+								@apply bg-purple-600/10;
+							}
+
+							&.agriculture > .wrapper > .input {
+								@apply bg-palm-600/10;
+							}
+
+							&.waste > .wrapper > .input {
+								@apply bg-skyline-600/10;
+							}
+						}
+					}
+
+					&:hover {
+						@apply shadow-xs;
+					}
+				}
+			}
+		}
+	}
+}
+
+* {
+	@mixin dark {
+		.root {
+			&.second > .section {
+				> .content {
+					@apply bg-dark-700 border-dark-500;
+
+					> .card {
+						@apply bg-dark-600 border-dark-400;
+
+						> .details {
+							@apply border-dark-400;
+						}
+
+						> .footer > .button {
+							@apply bg-dark-500 border-dark-300 text-white;
+
+							&:hover {
+								@apply bg-dark-400;
+							}
+						}
+					}
+
+					> .add {
+						background-image: repeating-linear-gradient(
+								0deg,
+								#373a40,
+								#373a40 16px,
+								transparent 16px,
+								transparent 32px,
+								#373a40 32px
+							),
+							repeating-linear-gradient(
+								90deg,
+								#373a40,
+								#373a40 16px,
+								transparent 16px,
+								transparent 32px,
+								#373a40 32px
+							),
+							repeating-linear-gradient(
+								180deg,
+								#373a40,
+								#373a40 16px,
+								transparent 16px,
+								transparent 32px,
+								#373a40 32px
+							),
+							repeating-linear-gradient(
+								270deg,
+								#373a40,
+								#373a40 16px,
+								transparent 16px,
+								transparent 32px,
+								#373a40 32px
+							);
+
+						> .icon {
+							@apply bg-dark-600 border-dark-400 text-dark-50;
+						}
+
+						&:hover {
+							@apply bg-dark-600;
+
+							> .icon {
+								@apply bg-dark-400;
+							}
+						}
+					}
+				}
+
+				> .header > .button {
+					@apply bg-dark-700 border-dark-400 text-white;
+
+					&:hover {
+						@apply bg-dark-600;
 					}
 				}
 			}

@@ -10,6 +10,7 @@
 		@apply gap-0;
 
 		> .column {
+			@apply min-w-0;
 			@apply flex-auto flex-nowrap items-stretch;
 			@apply gap-0;
 
@@ -17,16 +18,16 @@
 				@apply relative;
 				@apply flex flex-col items-center justify-start;
 				@apply flex-auto overflow-y-auto;
-				@apply p-16;
+				@apply px-8 py-16;
 
 				> .bg {
-					@apply absolute top-0 left-0 w-full h-full;
+					@apply fixed top-0 left-0 w-full h-full;
 					@apply bg-gray-50;
 					@apply -z-10;
 				}
 
 				> .gradient {
-					@apply absolute top-0 left-0 w-full h-full;
+					@apply fixed top-0 left-0 w-full h-full;
 					@apply -z-10;
 
 					background-image: linear-gradient(

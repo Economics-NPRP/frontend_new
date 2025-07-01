@@ -202,7 +202,12 @@
     },
     "permits": {
       "key": "Permits",
-      "unit": "permits"
+      "unit": "permits",
+      "unitShort": "pmts"
+    },
+    "bids": {
+      "key": "Bids",
+      "unit": "bids"
     },
     "permitsOffered": {
       "full": "Total Permits Offered",
@@ -364,6 +369,12 @@
       },
       "call": {
         "label": "Call"
+      },
+      "importFromCSV": {
+        "label": "Import From CSV"
+      },
+      "exportToCSV": {
+        "label": "Export To CSV"
       }
     },
     "quantities": {
@@ -453,6 +464,7 @@
     },
     "na": "N/A",
     "download": {
+      "default": "Download as CSV",
       "companyData": "Download all company data as CSV",
       "applications": "Download all applications as CSV",
       "bids": "Download all bids as CSV",
@@ -469,10 +481,14 @@
       "negative": "-{value, number, ::.00}%"
     },
     "firms": {
-      "key": "Companies"
+      "key": "Companies",
+      "unit": "companies"
     },
     "transactions": {
       "key": "Transactions"
+    },
+    "days": {
+      "unit": "days"
     }
   },
   "marketplace": {
@@ -1758,8 +1774,97 @@
       },
       "third": {
         "steps": {
-          "label": "Define KPIs",
-          "description": "Optionally set target metrics to track the performance of this cycle"
+          "label": "Define KPIs (Optional)",
+          "description": "Set target metrics to track the performance of this cycle"
+        },
+        "header": {
+          "heading": "Define Performance Targets (Optional)",
+          "subheading": "Optionally set targets for key performance indicators (KPIs) to track progress and measure the success of this cycle."
+        },
+        "table": {
+          "summary": {
+            "header": "Total / Avg"
+          }
+        },
+        "permitDistribution": {
+          "title": "Permit Distribution",
+          "totalPermits": {
+            "label": "Total Permit Inflow",
+            "tooltip": "How many permits should be distributed and auctioned off in this auction cycle?"
+          },
+          "avgPerAuction": {
+            "label": "Average Permits Per Auction",
+            "tooltip": "How many permits should each auction have on average?"
+          },
+          "avgFree": {
+            "label": "Average Free Permits Per Company",
+            "tooltip": "Set the target average number of permits each company should be given for free"
+          },
+          "avgWon": {
+            "label": "Average Permits Won Per Company",
+            "tooltip": "How many permits on average should each company win during this cycle?"
+          }
+        },
+        "financial": {
+          "title": "Economic",
+          "revenue": {
+            "label": "Total Revenue",
+            "tooltip": "How much revenue should be generated during this auction cycle"
+          },
+          "avgWinningBid": {
+            "label": "Average Winning Bid",
+            "tooltip": "How much should the average winning bid be in QAR"
+          },
+          "avgTotalPayment": {
+            "label": "Average Total Cost Per Company",
+            "tooltip": "Decide how much each company should expect to pay on average during this auction cycle"
+          }
+        },
+        "participation": {
+          "title": "Participation",
+          "totalFirms": {
+            "label": "Total Companies Participating",
+            "tooltip": "Set how many companies you expect to participate in this auction cycle"
+          },
+          "avgJoinedAuctions": {
+            "label": "Average No. of Auctions Joined Per Company",
+            "tooltip": "How many auctions should each company join on average?"
+          },
+          "percentWinners": {
+            "label": "Average Auction Winning Percentage",
+            "tooltip": "The percentage of participating companies who end up as winners in an auction"
+          },
+          "percentWinning": {
+            "label": "Average Company Winning Rate",
+            "tooltip": "Set expected winning rate of companies during this auction cycle (i.e, how many of their joined auctions they should win)"
+          },
+          "avgBidsAuction": {
+            "label": "Average No. of Bids Per Auction",
+            "tooltip": "How many bids should be placed on average per auction"
+          },
+          "avgBidsFirm": {
+            "label": "Average No. of Bids Per Company",
+            "tooltip": "How many bids on average should each company place on a single auction"
+          }
+        },
+        "longTerm": {
+          "title": "Long Term Targets",
+          "holdingTime": {
+            "label": "Average Permit Holding Time",
+            "tooltip": "Decide the average time each company should take between acquiring a permit obtained in this cycle, until actually using it"
+          },
+          "percentCarryOver": {
+            "label": "Average Percent Carry-Over",
+            "tooltip": "What percentage of the permits acquired in this cycle are companies expected to carry over to the next cycle, measures hoarding and stockpiling"
+          },
+          "percentResold": {
+            "label": "Average Percent Resale",
+            "tooltip": "Shows how often companies resell permits rather than use them"
+          },
+          "expiryRate": {
+            "label": "Average Percent Expiry Rate",
+            "tooltip": "Set the expected average percentage of permits that end up expired without being used"
+          }
         }
       },
       "fourth": {
