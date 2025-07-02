@@ -177,16 +177,18 @@ export const ResultsTable = ({
 					</Switch.Case>
 				</Switch>
 			</Container>
-			{paginatedOpenAuctionResults.isSuccess && (
-				<Pagination
-					className={classes.pagination}
-					value={paginatedOpenAuctionResults.page}
-					total={paginatedOpenAuctionResults.data.pageCount}
-					siblings={2}
-					boundaries={3}
-					onChange={handleChangePage}
-				/>
-			)}
+			<Group className={classes.footer}>
+				{paginatedOpenAuctionResults.isSuccess && (
+					<Pagination
+						className={classes.pagination}
+						value={paginatedOpenAuctionResults.page}
+						total={paginatedOpenAuctionResults.data.pageCount}
+						siblings={2}
+						boundaries={3}
+						onChange={handleChangePage}
+					/>
+				)}
+			</Group>
 		</Stack>
 	);
 };

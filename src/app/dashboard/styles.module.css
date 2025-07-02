@@ -1,10 +1,16 @@
 .root {
-	@apply w-screen;
+	@apply w-screen min-h-screen;
 	@apply flex flex-col items-center;
 	@apply px-2 pb-8 pt-20;
 
+	&:has(.noscroll) {
+		@apply h-screen;
+	}
+
 	> .content {
-		@apply max-w-[1400px];
+		@apply max-w-[1400px] min-h-0;
+		@apply flex-auto;
+		@apply flex flex-col items-stretch;
 	}
 }
 

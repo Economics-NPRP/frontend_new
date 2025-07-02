@@ -2,31 +2,30 @@ import { Metadata } from 'next';
 import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
-import { PaginatedFirmApplicationsProvider } from '@/contexts';
+import { PaginatedAuctionsProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
-import { InvitationModalProvider } from '@/pages/dashboard/a/firms/_components/InvitationModal';
 import layoutClasses from '@/pages/dashboard/styles.module.css';
 import { Stack } from '@mantine/core';
 
 import classes from './styles.module.css';
 
 export const metadata: Metadata = {
-	title: 'Company Applications',
+	title: 'All Auctions',
 };
 
-export interface FirmApplicationsListProps {
+export interface AllAuctionsListProps {
 	table: ReactNode;
 }
-export default function FirmApplicationsList({ table }: FirmApplicationsListProps) {
+export default function AllAuctionsList({ table }: AllAuctionsListProps) {
 	const t = useTranslations();
 
 	return withProviders(
 		<Stack className={`${classes.root} ${layoutClasses.noscroll}`}>
 			<DashboardHero
 				returnButton={{
-					href: '/dashboard/a/firms',
-					label: t('constants.return.firmsList.label'),
+					href: '/dashboard/a/cycles',
+					label: t('constants.return.cyclesList.label'),
 				}}
 				breadcrumbs={[
 					{
@@ -34,18 +33,24 @@ export default function FirmApplicationsList({ table }: FirmApplicationsListProp
 						href: '/dashboard/a',
 					},
 					{
-						label: t('constants.pages.dashboard.admin.firms.title'),
-						href: '/dashboard/a/firms',
+						label: t('constants.pages.dashboard.admin.cycles.title'),
+						href: '/dashboard/a/cycles',
 					},
 					{
-						label: t('constants.pages.dashboard.admin.firms.applications.title'),
-						href: '/dashboard/a/firms/applications',
+						label: t('constants.pages.dashboard.admin.cycles.auctions.title'),
+						href: '/dashboard/a/cycles/auctions',
 					},
 				]}
 			/>
 			{table}
 		</Stack>,
-		{ provider: PaginatedFirmApplicationsProvider },
-		{ provider: InvitationModalProvider },
+		{
+			provider: PaginatedAuctionsProvider,
+			props: {
+				defaultPerPage: 20,
+				defaultSortBy: 'created_at',
+				defaultSortDirection: 'desc',
+			},
+		},
 	);
 }

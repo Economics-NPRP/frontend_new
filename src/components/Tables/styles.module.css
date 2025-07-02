@@ -211,6 +211,11 @@
 		}
 	}
 
+	> .list {
+		@apply relative;
+		@apply flex-1 overflow-y-auto;
+	}
+
 	> .footer {
 		@apply justify-center items-center flex-nowrap gap-4;
 
@@ -243,7 +248,8 @@
 		}
 	}
 
-	.mine {
+	.mine,
+	.sealed {
 		@apply text-dark-300;
 	}
 

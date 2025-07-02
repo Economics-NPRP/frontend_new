@@ -425,7 +425,8 @@
       "offset": {
         "results": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {results} =1 {result} other {results}}",
         "firms": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {companies} =1 {company} other {companies}}",
-        "auctionCycles": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {auction cycles} =1 {auction cycle} other {auction cycles}}"
+        "auctionCycles": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {auction cycles} =1 {auction cycle} other {auction cycles}}",
+        "auctions": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {auctions} =1 {auction} other {auctions}}"
       },
       "perPage": {
         "label": "Per page:"
@@ -456,7 +457,10 @@
             }
           },
           "cycles": {
-            "title": "Auction Cycles"
+            "title": "Auction Cycles",
+            "auctions": {
+              "title": "All Auctions"
+            }
           }
         }
       }
@@ -472,7 +476,8 @@
       "companyData": "Download all company data as CSV",
       "applications": "Download all applications as CSV",
       "bids": "Download all bids as CSV",
-      "results": "Download all auction results as CSV"
+      "results": "Download all auction results as CSV",
+      "auctions": "Download all auctions as CSV"
     },
     "auctionCycleStatus": {
       "draft": "Draft",
@@ -1328,6 +1333,46 @@
     },
     "statCard": {
       "comparison": "Compared to previous {comparison, select, year {year} month {month} day {day} other {period}}"
+    },
+    "auctionsTable": {
+      "filters": {
+        "badges": {
+          "upcoming": "Upcoming Auctions Only",
+          "ongoing": "Ongoing Auctions Only",
+          "ended": "Ended Auctions Only",
+          "all": "Showing All Auctions"
+        },
+        "menu": {
+          "status": {
+            "label": "Auction Status",
+            "all": "Show auctions with all statuses",
+            "upcoming": "Only show upcoming auctions",
+            "ongoing": "Only show ongoing auctions",
+            "ended": "Only show ended auctions"
+          },
+          "sector": {
+            "label": "Auction Sector"
+          }
+        },
+        "label": "Filters: "
+      },
+      "legend": {
+        "sealed": {
+          "label": "Sealed Auctions",
+          "tooltip": "This is a sealed auction"
+        }
+      },
+      "search": {
+        "placeholder": "Search for a specific auction..."
+      },
+      "empty": "No auctions found",
+      "title": "Auction Catalogue",
+      "groups": {
+        "details": "Auction Details"
+      },
+      "columns": {
+        "name": "Name"
+      }
     }
   },
   "dashboard": {

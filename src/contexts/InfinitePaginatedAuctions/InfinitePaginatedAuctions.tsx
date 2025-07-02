@@ -19,7 +19,7 @@ import {
 export interface IInfinitePaginatedAuctionsContext
 	extends SortedOffsetPaginatedInfiniteContextState<IAuctionData> {
 	filters: IAuctionFilters;
-	setFilters: (filters: IAuctionFilters) => void;
+	setAllFilters: (filters: IAuctionFilters) => void;
 	removeFilter: (key: keyof IAuctionFilters, value?: string) => void;
 }
 const DefaultData: IInfinitePaginatedAuctionsContext = {
@@ -31,7 +31,7 @@ const DefaultData: IInfinitePaginatedAuctionsContext = {
 		sector: [],
 		owner: [],
 	},
-	setFilters: () => {},
+	setAllFilters: () => {},
 	removeFilter: () => {},
 };
 const Context = createContext<IInfinitePaginatedAuctionsContext>(DefaultData);
@@ -44,17 +44,17 @@ export const InfinitePaginatedAuctionsProvider = ({
 	defaultFilters,
 	children,
 }: PaginatedAuctionsProviderProps) => {
-	const [filters, setFilters] = useState(defaultFilters || DefaultData.filters);
+	const [filters, setAllFilters] = useState(defaultFilters || DefaultData.filters);
 
 	const removeFilter = useCallback<IInfinitePaginatedAuctionsContext['removeFilter']>(
 		(key, value) => {
 			if (value) {
-				setFilters((filters) => ({
+				setAllFilters((filters) => ({
 					...filters,
 					[key]: (filters[key] as Array<string>).filter((v) => v !== value),
 				}));
 			} else {
-				setFilters((filters) => ({ ...filters, [key]: DefaultData.filters[key] }));
+				setAllFilters((filters) => ({ ...filters, [key]: DefaultData.filters[key] }));
 			}
 		},
 		[],
@@ -97,7 +97,7 @@ export const InfinitePaginatedAuctionsProvider = ({
 			queryFn={queryFn}
 			children={children}
 			filters={filters}
-			setFilters={setFilters}
+			setAllFilters={setAllFilters}
 			removeFilter={removeFilter}
 		/>
 	);
