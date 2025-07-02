@@ -5,9 +5,11 @@ import { ActionBanner } from '@/components/ActionBanner';
 import { StatCard } from '@/components/StatCard';
 import { Container } from '@mantine/core';
 import {
+	IconCalendar,
 	IconCirclePlus,
 	IconGavel,
 	IconLeaf,
+	IconListSearch,
 	IconStackFront,
 	IconTargetArrow,
 } from '@tabler/icons-react';
@@ -19,6 +21,17 @@ export default function SubBanners() {
 
 	return (
 		<Container className={classes.root}>
+			<StatCard
+				className={classes.stat}
+				icon={<IconCalendar size={80} />}
+				title={t('dashboard.admin.cycles.stats.totalCycles.title')}
+				tooltip={t('dashboard.admin.cycles.stats.totalCycles.tooltip')}
+				type="integer"
+				unit={t('constants.cycles.key')}
+				value={Math.random() * 1000}
+				diff={Math.random() * 20 - 10}
+				comparison="year"
+			/>
 			<StatCard
 				className={classes.stat}
 				icon={<IconGavel size={80} />}
@@ -47,7 +60,7 @@ export default function SubBanners() {
 				title={t('dashboard.admin.cycles.stats.kpis.title')}
 				tooltip={t('dashboard.admin.cycles.stats.kpis.tooltip')}
 				type="percentage"
-				value={Math.random() * 1000}
+				value={Math.random() * 100}
 				diff={Math.random() * 20 - 10}
 				comparison="year"
 			/>
@@ -62,12 +75,21 @@ export default function SubBanners() {
 			/>
 			<ActionBanner
 				className={classes.banner}
+				icon={<IconListSearch size={32} />}
+				heading={t('dashboard.admin.cycles.actions.auctions.heading')}
+				subheading={t('dashboard.admin.cycles.actions.auctions.subheading')}
+				component={Link}
+				href="/dashboard/a/cycles/auctions"
+				index={2}
+			/>
+			<ActionBanner
+				className={classes.banner}
 				icon={<IconStackFront size={32} />}
 				heading={t('dashboard.admin.cycles.actions.presets.heading')}
 				subheading={t('dashboard.admin.cycles.actions.presets.subheading')}
 				component={Link}
 				href="/dashboard/a/cycles/presets"
-				index={2}
+				index={3}
 			/>
 		</Container>
 	);

@@ -1,0 +1,11 @@
+.root {
+	@apply gap-6 items-center self-stretch;
+
+	> .group {
+		@apply gap-1 items-start;
+
+		> .title {
+			@apply heading-3 text-left;
+		}
+	}
+}

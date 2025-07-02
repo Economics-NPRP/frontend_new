@@ -70,16 +70,28 @@
 				@apply gap-2 flex-nowrap;
 
 				> .count {
+					@apply h-8;
 					@apply paragraph-sm-15;
+					@apply rounded-sm;
+					@apply transition-colors duration-300;
+
+					&:hover {
+						@apply bg-gray-100;
+					}
+
+					> .label {
+						@apply flex flex-row items-center justify-start;
+					}
+
+					> .remove {
+						@apply text-xs;
+					}
 				}
 
 				> .buttons {
-					@apply self-stretch;
+					@apply flex-col;
+					@apply self-stretch items-stretch;
 					@apply gap-2 flex-nowrap;
-
-					> .button {
-						@apply flex-auto;
-					}
 				}
 			}
 
@@ -211,6 +223,11 @@
 		}
 	}
 
+	> .list {
+		@apply relative;
+		@apply flex-1 overflow-y-auto;
+	}
+
 	> .footer {
 		@apply justify-center items-center flex-nowrap gap-4;
 
@@ -243,11 +260,13 @@
 		}
 	}
 
-	.mine {
+	.mine,
+	.draftCycle {
 		@apply text-dark-300;
 	}
 
-	.contributing {
+	.contributing,
+	.ongoingCycle {
 		@apply text-blue-600;
 	}
 
@@ -255,7 +274,8 @@
 		@apply text-yellow-600;
 	}
 
-	.unverified {
+	.unverified,
+	.ending {
 		@apply text-orange-600;
 	}
 
@@ -282,6 +302,15 @@
 
 * {
 	@mixin larger-than $mantine-breakpoint-xs {
+		.root > .header > .row > .actions > .buttons {
+			@apply flex-row items-center;
+
+			> .button {
+				@apply flex-[50%];
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-sm {
 		.root > .header > .row {
 			&.wrapMobile {
 				@apply flex-row gap-8;
@@ -307,23 +336,20 @@
 				}
 			}
 
-			> .search {
-				@apply self-center;
-			}
-
-			> .actions {
-				@apply flex-row gap-4;
-			}
-		}
-	}
-	@mixin larger-than $mantine-breakpoint-sm {
-		.root > .header > .row {
 			> .settings > .label {
 				@apply block;
 			}
 
 			> .search {
-				@apply min-w-[240px];
+				@apply self-center;
+			}
+
+			> .actions {
+				@apply flex-row;
+
+				> .buttons > .button {
+					@apply flex-auto;
+				}
 			}
 		}
 	}
@@ -338,7 +364,7 @@
 			}
 
 			> .search {
-				@apply min-w-[320px];
+				@apply min-w-[240px];
 			}
 		}
 	}
@@ -353,41 +379,51 @@
 					&:hover {
 						@apply bg-dark-600;
 					}
+
+					&:disabled {
+						@apply opacity-60;
+					}
 				}
 
 				> .filters > .group > .badge {
 					@apply bg-dark-500 text-dark-100;
 				}
 
-				> .actions > .buttons > .button {
-					&.primary {
-						@apply bg-dark-400 text-white;
-
-						&:hover {
-							@apply bg-dark-300;
-						}
-
-						&:disabled {
-							@apply opacity-25;
-
-							&:hover {
-								@apply bg-dark-400;
-							}
-						}
+				> .actions {
+					> .count:hover {
+						@apply bg-dark-600;
 					}
 
-					&.secondary {
-						@apply bg-dark-600 border-dark-400 text-white;
-
-						&:hover {
-							@apply bg-dark-500;
-						}
-
-						&:disabled {
-							@apply opacity-25;
+					> .buttons > .button {
+						&.primary {
+							@apply bg-dark-400 text-white;
 
 							&:hover {
-								@apply bg-dark-600;
+								@apply bg-dark-300;
+							}
+
+							&:disabled {
+								@apply opacity-25;
+
+								&:hover {
+									@apply bg-dark-400;
+								}
+							}
+						}
+
+						&.secondary {
+							@apply bg-dark-600 border-dark-400 text-white;
+
+							&:hover {
+								@apply bg-dark-500;
+							}
+
+							&:disabled {
+								@apply opacity-25;
+
+								&:hover {
+									@apply bg-dark-600;
+								}
 							}
 						}
 					}

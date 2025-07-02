@@ -14,21 +14,21 @@ export default function SubBanners() {
 		<>
 			<ActionBanner
 				className={classes.root}
-				icon={<IconBolt size={32} />}
-				heading={t('marketplace.home.subbanner.1.heading')}
-				subheading={t.rich('marketplace.home.subbanner.1.text', {
-					value: Math.round(Math.random() * 1000),
-					mark: (chunks) => <Mark className={classes.highlight}>{chunks}</Mark>,
-				})}
+				icon={<IconCirclePlus size={32} />}
+				heading={t('marketplace.home.subbanner.2.heading')}
+				subheading={t('marketplace.home.subbanner.2.text')}
 				component={Link}
 				href=""
 				index={1}
 			/>
 			<ActionBanner
 				className={classes.root}
-				icon={<IconCirclePlus size={32} />}
-				heading={t('marketplace.home.subbanner.2.heading')}
-				subheading={t('marketplace.home.subbanner.2.text')}
+				icon={<IconBolt size={32} />}
+				heading={t('marketplace.home.subbanner.1.heading')}
+				subheading={t.rich('marketplace.home.subbanner.1.text', {
+					value: Math.round(Math.random() * 1000),
+					mark: (chunks) => <Mark className={classes.highlight}>{chunks}</Mark>,
+				})}
 				component={Link}
 				href=""
 				index={2}

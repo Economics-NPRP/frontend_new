@@ -398,24 +398,26 @@ export const BidsTable = ({
 				</Switch>
 			</Stack>
 			<Group className={classes.footer}>
-				<Group className={classes.pagination}>
-					<ActionIcon
-						className={classes.button}
-						variant="outline"
-						disabled={!hasPrev}
-						onClick={handlePrevPage}
-					>
-						<IconChevronLeft size={16} />
-					</ActionIcon>
-					<ActionIcon
-						className={classes.button}
-						variant="outline"
-						disabled={!hasNext}
-						onClick={handleNextPage}
-					>
-						<IconChevronRight size={16} />
-					</ActionIcon>
-				</Group>
+				{bids.isSuccess && (
+					<Group className={classes.pagination}>
+						<ActionIcon
+							className={classes.button}
+							variant="outline"
+							disabled={!hasPrev}
+							onClick={handlePrevPage}
+						>
+							<IconChevronLeft size={16} />
+						</ActionIcon>
+						<ActionIcon
+							className={classes.button}
+							variant="outline"
+							disabled={!hasNext}
+							onClick={handleNextPage}
+						>
+							<IconChevronRight size={16} />
+						</ActionIcon>
+					</Group>
+				)}
 				{hideHeader &&
 					(withViewAllButton ? (
 						<Group className={classes.row}>

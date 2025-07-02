@@ -6,7 +6,7 @@ import { useMemo } from 'react';
 import { KeysetPaginatedContextState, OffsetPaginatedContextState } from '@/types';
 
 export const useOffsetPaginationText = (
-	type: 'results' | 'firms' | 'auctionCycles',
+	type: 'results' | 'firms' | 'auctionCycles' | 'auctions',
 	{ page, perPage, data: { totalCount } }: OffsetPaginatedContextState<unknown>,
 ) => {
 	const t = useTranslations();

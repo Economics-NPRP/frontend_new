@@ -16,8 +16,10 @@ import { ActionIcon, Badge, BadgeProps, Skeleton, Tooltip } from '@mantine/core'
 import {
 	IconActivity,
 	IconAlarm,
+	IconCalendarClock,
 	IconCheck,
 	IconLock,
+	IconLockOpen2,
 	IconPencil,
 	IconTrendingDown,
 	IconTrendingUp,
@@ -63,11 +65,28 @@ export const BaseBadge = ({
 
 export interface AuctionTypeBadgeProps extends BaseBadgeProps {
 	type: AuctionType;
+	showOpen?: boolean;
 }
-export const AuctionTypeBadge = ({ type, className, ...props }: AuctionTypeBadgeProps) => {
+export const AuctionTypeBadge = ({
+	type,
+	showOpen,
+	className,
+	...props
+}: AuctionTypeBadgeProps) => {
 	const t = useTranslations();
 
-	return type === 'open' ? null : (
+	return type === 'open' ? (
+		showOpen ? (
+			<BaseBadge
+				className={`${classes.root} ${classes.auctionType} ${classes.open} ${className}`}
+				variant="light"
+				leftSection={<IconLockOpen2 size={14} />}
+				{...props}
+			>
+				{t('constants.auctionType.open')}
+			</BaseBadge>
+		) : null
+	) : (
 		<BaseBadge
 			className={`${classes.root} ${classes.auctionType} ${className}`}
 			variant="light"
@@ -274,4 +293,50 @@ export const TrendBadge = ({ diff, negate, className, ...props }: TrendBadgeProp
 				: t('constants.trend.negative', { value: Math.abs(diff) })}
 		</BaseBadge>
 	);
+};
+
+export interface AuctionStatusBadgeProps extends BaseBadgeProps {
+	auctionData: IAuctionData;
+}
+export const AuctionStatusBadge = ({ auctionData }: AuctionStatusBadgeProps) => {
+	const t = useTranslations();
+	const { isUpcoming, hasEnded, isLive } = useAuctionAvailability(auctionData);
+
+	if (isUpcoming)
+		return (
+			<BaseBadge
+				className={classes.upcoming}
+				variant="light"
+				color="gray"
+				leftSection={<IconCalendarClock size={14} />}
+			>
+				{t('constants.auctionStatus.upcoming.label')}
+			</BaseBadge>
+		);
+
+	if (isLive)
+		return (
+			<BaseBadge
+				className={classes.ongoing}
+				variant="light"
+				color="blue"
+				leftSection={<IconActivity size={14} />}
+			>
+				{t('constants.auctionStatus.ongoing.label')}
+			</BaseBadge>
+		);
+
+	if (hasEnded)
+		return (
+			<BaseBadge
+				className={classes.ended}
+				variant="light"
+				color="orange"
+				leftSection={<IconAlarm size={14} />}
+			>
+				{t('constants.auctionStatus.ended.label')}
+			</BaseBadge>
+		);
+
+	return null;
 };

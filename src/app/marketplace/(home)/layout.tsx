@@ -54,11 +54,6 @@ export default function Home({
 		},
 		{
 			provider: PaginatedAuctionsProvider,
-			props: {
-				defaultPerPage: 12,
-				defaultSortBy: 'created_at',
-				defaultSortDirection: 'desc',
-			},
 		},
 	);
 }

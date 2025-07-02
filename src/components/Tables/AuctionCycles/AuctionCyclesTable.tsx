@@ -245,7 +245,7 @@ export const AuctionCyclesTable = ({
 					/>
 				</Group>
 			</Stack>
-			<Stack>
+			<Stack className={classes.list} ref={tableContainerRef}>
 				<AuctionCycleCard
 					auctionCycleData={{
 						id: 'b8b3441f-ca52-4c79-8ea1-7a8c4c56d19c',
@@ -270,6 +270,18 @@ export const AuctionCyclesTable = ({
 						updatedAt: DateTime.now().minus({ hours: 3 }).toISO(),
 					}}
 					loading
+				/>
+				<AuctionCycleCard
+					auctionCycleData={{
+						id: 'b8b3441f-ca52-4c79-8ea1-7a8c4c56d19c',
+						title: 'Summer 2025',
+						status: 'approved',
+						auctionsCount: 367,
+						emissionsCount: 143559152,
+						startDatetime: DateTime.now().plus({ days: 3 }).toISO(),
+						endDatetime: DateTime.now().plus({ months: 3 }).toISO(),
+						updatedAt: DateTime.now().minus({ hours: 3 }).toISO(),
+					}}
 				/>
 				<AuctionCycleCard
 					auctionCycleData={{

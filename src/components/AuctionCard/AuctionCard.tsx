@@ -134,7 +134,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 						</Group>
 					</Group>
 					<Group className={classes.badges}>
-						<AuctionTypeBadge type={auction.type} />
+						<AuctionTypeBadge type={auction.type} showOpen />
 						<EndingSoonBadge auction={auction} />
 					</Group>
 					<Id value={auction.id} variant={category} />

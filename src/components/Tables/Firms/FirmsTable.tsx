@@ -4,17 +4,24 @@ import { DateTime } from 'luxon';
 import { DataTable } from 'mantine-datatable';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { CategoryBadge } from '@/components/Badge';
+import { SummaryTableGroup } from '@/components/SummaryTable';
 import { FirmsFilter } from '@/components/Tables/Firms/types';
+import {
+	SelectionSummaryContext,
+	SelectionSummaryProvider,
+} from '@/components/Tables/_components/SelectionSummary';
 import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
 import { IPaginatedFirmsContext } from '@/contexts';
+import { withProviders } from '@/helpers';
 import { useOffsetPaginationText } from '@/hooks';
 import { IFirmData } from '@/schema/models';
 import { AuctionCategory } from '@/types';
 import {
 	ActionIcon,
+	Alert,
 	Anchor,
 	Badge,
 	Button,
@@ -43,6 +50,9 @@ import {
 	IconCopy,
 	IconDownload,
 	IconFileSearch,
+	IconFilterSearch,
+	IconInfoCircle,
+	IconReportAnalytics,
 	IconSearch,
 } from '@tabler/icons-react';
 
@@ -51,7 +61,7 @@ import classes from '../styles.module.css';
 export interface FirmsTableProps extends TableProps {
 	firms: IPaginatedFirmsContext;
 }
-export const FirmsTable = ({
+const _FirmsTable = ({
 	firms,
 
 	className,
@@ -61,7 +71,9 @@ export const FirmsTable = ({
 	const isMobile = useMediaQuery('(max-width: 48em)');
 	const tableContainerRef = useRef<HTMLTableElement>(null);
 	const paginationText = useOffsetPaginationText('firms', firms);
+	const { open } = useContext(SelectionSummaryContext);
 
+	const [showSelectedOnly, setShowSelectedOnly] = useState(false);
 	const [searchFilter, setSearchFilter] = useState('');
 	const [statusFilter, setStatusFilter] = useState<FirmsFilter>('all');
 	const [selectedFirms, selectedFirmsHandlers] = useListState<IFirmData>([]);
@@ -71,6 +83,17 @@ export const FirmsTable = ({
 	const filterBadges = useMemo(() => {
 		if (!firms) return null;
 		const output = [];
+
+		if (showSelectedOnly)
+			return (
+				<Pill
+					className={classes.badge}
+					onRemove={() => setShowSelectedOnly(false)}
+					withRemoveButton
+				>
+					{t('components.table.selected.filterSelectedBadge')}
+				</Pill>
+			);
 
 		switch (statusFilter) {
 			case 'verified':
@@ -126,7 +149,140 @@ export const FirmsTable = ({
 				</Pill>
 			);
 		return output;
-	}, [firms, statusFilter, sectorFilter, t, sectorFilterHandlers]);
+	}, [firms, showSelectedOnly, statusFilter, sectorFilter, t, sectorFilterHandlers]);
+
+	const generateSummaryGroups = useMemo(
+		() => (selected: Array<IFirmData>) => [
+			{
+				title: t('components.firmsTable.summary.distribution.title'),
+				rows: [
+					{
+						label: t('components.firmsTable.summary.distribution.total'),
+						value: t('constants.quantities.firms.default', {
+							value: selected.length,
+						}),
+					},
+					{
+						label: t('components.firmsTable.summary.sector.energy'),
+						value: t('constants.quantities.firms.default', {
+							value: selected.filter((record) => record.sectors.includes('energy'))
+								.length,
+						}),
+					},
+					{
+						label: t('components.firmsTable.summary.sector.industry'),
+						value: t('constants.quantities.firms.default', {
+							value: selected.filter((record) => record.sectors.includes('industry'))
+								.length,
+						}),
+					},
+					{
+						label: t('components.firmsTable.summary.sector.transport'),
+						value: t('constants.quantities.firms.default', {
+							value: selected.filter((record) => record.sectors.includes('transport'))
+								.length,
+						}),
+					},
+					{
+						label: t('components.firmsTable.summary.sector.buildings'),
+						value: t('constants.quantities.firms.default', {
+							value: selected.filter((record) => record.sectors.includes('buildings'))
+								.length,
+						}),
+					},
+					{
+						label: t('components.firmsTable.summary.sector.agriculture'),
+						value: t('constants.quantities.firms.default', {
+							value: selected.filter((record) =>
+								record.sectors.includes('agriculture'),
+							).length,
+						}),
+					},
+					{
+						label: t('components.firmsTable.summary.sector.waste'),
+						value: t('constants.quantities.firms.default', {
+							value: selected.filter((record) => record.sectors.includes('waste'))
+								.length,
+						}),
+					},
+				],
+			},
+			{
+				title: t('components.firmsTable.summary.numSectors.title'),
+				rows: [
+					{
+						label: t('components.table.selected.summary.min'),
+						value: t('constants.quantities.sectors.default', {
+							value: Math.min(...selected.map((record) => record.sectors.length)),
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.avg'),
+						value: t('constants.quantities.sectors.decimals', {
+							value:
+								selected.reduce((acc, record) => acc + record.sectors.length, 0) /
+								selected.length,
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.max'),
+						value: t('constants.quantities.sectors.default', {
+							value: Math.max(...selected.map((record) => record.sectors.length)),
+						}),
+					},
+				],
+			},
+			{
+				title: t('components.firmsTable.summary.createdDate.title'),
+				rows: [
+					{
+						label: t('components.table.selected.summary.min'),
+						value: t('constants.quantities.days.decimals', {
+							value: Math.min(
+								...selected.map(
+									(record) =>
+										DateTime.now().diff(
+											DateTime.fromISO(record.createdAt),
+											'days',
+										).days,
+								),
+							),
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.avg'),
+						value: t('constants.quantities.days.decimals', {
+							value:
+								selected.reduce(
+									(acc, record) =>
+										acc +
+										DateTime.now().diff(
+											DateTime.fromISO(record.createdAt),
+											'days',
+										).days,
+									0,
+								) / selected.length,
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.max'),
+						value: t('constants.quantities.days.decimals', {
+							value: Math.max(
+								...selected.map(
+									(record) =>
+										DateTime.now().diff(
+											DateTime.fromISO(record.createdAt),
+											'days',
+										).days,
+								),
+							),
+						}),
+					},
+				],
+			},
+		],
+		[t],
+	);
 
 	const handleChangePage = useCallback(
 		(page: number) => {
@@ -140,6 +296,11 @@ export const FirmsTable = ({
 	//	Reset the page when the bids filter or per page changes
 	useEffect(() => firms.setPage(1), [statusFilter, sectorFilter, firms.perPage]);
 
+	//	If we are showing selected only and there are no selected auctions, disable the filter
+	useEffect(() => {
+		if (showSelectedOnly && selectedFirms.length === 0) setShowSelectedOnly(false);
+	}, [showSelectedOnly, selectedFirms.length]);
+
 	return (
 		<Stack className={`${classes.root} ${className}`}>
 			<Stack className={classes.header}>
@@ -148,7 +309,13 @@ export const FirmsTable = ({
 						<Title order={2} className={classes.title}>
 							{t('components.firmsTable.title')}
 						</Title>
-						<Text className={classes.subtitle}>{paginationText}</Text>
+						<Text className={classes.subtitle}>
+							{showSelectedOnly
+								? t('components.table.selected.paginationText', {
+										value: selectedFirms.length,
+									})
+								: paginationText}
+						</Text>
 					</Group>
 					<Group className={classes.settings}>
 						<Text className={classes.label}>
@@ -161,10 +328,11 @@ export const FirmsTable = ({
 							data={['10', '20', '50', '100']}
 							onChange={(value) => firms.setPerPage(Number(value))}
 							allowDeselect={false}
+							disabled={showSelectedOnly}
 						/>
-						<Menu position="bottom-end">
+						<Menu position="bottom-end" disabled={showSelectedOnly}>
 							<Menu.Target>
-								<ActionIcon className={classes.button}>
+								<ActionIcon className={classes.button} disabled={showSelectedOnly}>
 									<IconAdjustments size={16} />
 								</ActionIcon>
 							</Menu.Target>
@@ -245,15 +413,51 @@ export const FirmsTable = ({
 							) : undefined
 						}
 						rightSectionPointerEvents="auto"
+						disabled={showSelectedOnly}
 					/>
 					<Group className={classes.actions}>
-						<Text className={classes.count}>
-							{t('components.table.selected.count', { value: selectedFirms.length })}
-						</Text>
+						<Pill
+							classNames={{
+								root: classes.count,
+								label: classes.label,
+								remove: classes.remove,
+							}}
+							variant="subtle"
+							onRemove={() => selectedFirmsHandlers.setState([])}
+							withRemoveButton={selectedFirms.length > 0}
+						>
+							{t('components.table.selected.count', {
+								value: selectedFirms.length,
+							})}
+						</Pill>
 						<Group className={classes.buttons}>
 							<Button
 								className={`${classes.secondary} ${classes.button}`}
 								variant="outline"
+								disabled={selectedFirms.length === 0}
+								rightSection={<IconReportAnalytics size={16} />}
+								onClick={() =>
+									open(
+										selectedFirms,
+										generateSummaryGroups as () => Array<SummaryTableGroup>,
+									)
+								}
+							>
+								{t('components.table.selected.viewSummary')}
+							</Button>
+							<Button
+								className={`${classes.secondary} ${classes.button}`}
+								variant="outline"
+								disabled={selectedFirms.length === 0}
+								rightSection={<IconFilterSearch size={16} />}
+								onClick={() => setShowSelectedOnly((prev) => !prev)}
+							>
+								{showSelectedOnly
+									? t('components.table.selected.resetFilter')
+									: t('components.table.selected.filterSelected')}
+							</Button>
+							<Button
+								className={`${classes.primary} ${classes.button}`}
 								disabled={selectedFirms.length === 0}
 								rightSection={<IconFileSearch size={16} />}
 							>
@@ -268,6 +472,17 @@ export const FirmsTable = ({
 					</Group>
 				</Group>
 			</Stack>
+			{showSelectedOnly && (
+				<Alert
+					color="blue"
+					icon={<IconInfoCircle size={16} />}
+					title={t('components.table.selected.info.title')}
+					onClose={() => setShowSelectedOnly(false)}
+					withCloseButton
+				>
+					{t('components.table.selected.info.message')}
+				</Alert>
+			)}
 			{/* @ts-expect-error - data table props from library are not exposed */}
 			<DataTable
 				className={classes.table}
@@ -573,7 +788,7 @@ export const FirmsTable = ({
 						],
 					},
 				]}
-				records={firms.data.results}
+				records={showSelectedOnly ? selectedFirms : firms.data.results}
 				striped
 				withRowBorders
 				withColumnBorders
@@ -592,7 +807,7 @@ export const FirmsTable = ({
 				{...props}
 			/>
 			<Group className={classes.footer}>
-				{firms.isSuccess && (
+				{firms.isSuccess && !showSelectedOnly && (
 					<Pagination
 						className={classes.pagination}
 						value={firms.page}
@@ -606,3 +821,5 @@ export const FirmsTable = ({
 		</Stack>
 	);
 };
+export const FirmsTable = (props: FirmsTableProps) =>
+	withProviders(<_FirmsTable {...props} />, { provider: SelectionSummaryProvider });

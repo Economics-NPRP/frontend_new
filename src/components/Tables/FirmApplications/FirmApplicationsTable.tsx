@@ -6,14 +6,22 @@ import { useTranslations } from 'next-intl';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { CategoryBadge, FirmStatusBadge } from '@/components/Badge';
+import { SummaryTableGroup } from '@/components/SummaryTable';
 import { FirmApplicationsFilter } from '@/components/Tables/FirmApplications/types';
+import {
+	SelectionSummaryContext,
+	SelectionSummaryProvider,
+} from '@/components/Tables/_components/SelectionSummary';
 import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
 import { IPaginatedFirmApplicationsContext } from '@/contexts';
+import { withProviders } from '@/helpers';
 import { useKeysetPaginationText } from '@/hooks';
 import { InvitationModalContext } from '@/pages/dashboard/a/firms/_components/InvitationModal';
+import { IFirmApplication } from '@/schema/models';
 import { AuctionCategory } from '@/types';
 import {
 	ActionIcon,
+	Alert,
 	Anchor,
 	Badge,
 	Button,
@@ -43,7 +51,10 @@ import {
 	IconCopy,
 	IconDownload,
 	IconFileSearch,
+	IconFilterSearch,
 	IconHelpHexagon,
+	IconInfoCircle,
+	IconReportAnalytics,
 	IconSearch,
 } from '@tabler/icons-react';
 
@@ -52,7 +63,7 @@ import classes from '../styles.module.css';
 export interface FirmApplicationsTableProps extends TableProps {
 	firmApplications: IPaginatedFirmApplicationsContext;
 }
-export const FirmApplicationsTable = ({
+const _FirmApplicationsTable = ({
 	firmApplications,
 
 	className,
@@ -64,14 +75,28 @@ export const FirmApplicationsTable = ({
 	const paginationText = useKeysetPaginationText('firmApplications', firmApplications);
 
 	const invitationModal = useContext(InvitationModalContext);
+	const { open } = useContext(SelectionSummaryContext);
 
+	const [showSelectedOnly, setShowSelectedOnly] = useState(false);
 	const [searchFilter, setSearchFilter] = useState('');
 	const [sectorFilter, sectorFilterHandlers] = useListState<AuctionCategory>([]);
+	const [selectedApplications, selectedApplicationsHandlers] = useListState<IFirmApplication>([]);
 
 	//	Generate the filter badges
 	const filterBadges = useMemo(() => {
 		if (!firmApplications) return null;
 		const output = [];
+
+		if (showSelectedOnly)
+			return (
+				<Pill
+					className={classes.badge}
+					onRemove={() => setShowSelectedOnly(false)}
+					withRemoveButton
+				>
+					{t('components.table.selected.filterSelectedBadge')}
+				</Pill>
+			);
 
 		switch (firmApplications.status) {
 			case 'approved':
@@ -130,7 +155,163 @@ export const FirmApplicationsTable = ({
 				</Pill>
 			);
 		return output;
-	}, [firmApplications, sectorFilter, t]);
+	}, [firmApplications, showSelectedOnly, sectorFilter, sectorFilterHandlers, t]);
+
+	const generateSummaryGroups = useMemo(
+		() => (selected: Array<IFirmApplication>) => [
+			{
+				title: t('components.firmApplicationsTable.summary.distribution.title'),
+				rows: [
+					{
+						label: t('components.firmApplicationsTable.summary.distribution.total'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.length,
+						}),
+					},
+					{
+						label: t('components.firmApplicationsTable.summary.distribution.approved'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.filter((record) => record.status === 'approved').length,
+						}),
+					},
+					{
+						label: t('components.firmApplicationsTable.summary.distribution.pending'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.filter((record) => record.status === 'pending').length,
+						}),
+					},
+					{
+						label: t('components.firmApplicationsTable.summary.distribution.rejected'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.filter((record) => record.status === 'rejected').length,
+						}),
+					},
+				],
+			},
+			{
+				title: t('components.firmApplicationsTable.summary.sector.title'),
+				rows: [
+					{
+						label: t('components.firmApplicationsTable.summary.sector.energy'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.filter((record) => record.sectors.includes('energy'))
+								.length,
+						}),
+					},
+					{
+						label: t('components.firmApplicationsTable.summary.sector.industry'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.filter((record) => record.sectors.includes('industry'))
+								.length,
+						}),
+					},
+					{
+						label: t('components.firmApplicationsTable.summary.sector.transport'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.filter((record) => record.sectors.includes('transport'))
+								.length,
+						}),
+					},
+					{
+						label: t('components.firmApplicationsTable.summary.sector.buildings'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.filter((record) => record.sectors.includes('buildings'))
+								.length,
+						}),
+					},
+					{
+						label: t('components.firmApplicationsTable.summary.sector.agriculture'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.filter((record) =>
+								record.sectors.includes('agriculture'),
+							).length,
+						}),
+					},
+					{
+						label: t('components.firmApplicationsTable.summary.sector.waste'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.filter((record) => record.sectors.includes('waste'))
+								.length,
+						}),
+					},
+				],
+			},
+			{
+				title: t('components.firmApplicationsTable.summary.numSectors.title'),
+				rows: [
+					{
+						label: t('components.table.selected.summary.min'),
+						value: t('constants.quantities.sectors.default', {
+							value: Math.min(...selected.map((record) => record.sectors.length)),
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.avg'),
+						value: t('constants.quantities.sectors.decimals', {
+							value:
+								selected.reduce((acc, record) => acc + record.sectors.length, 0) /
+								selected.length,
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.max'),
+						value: t('constants.quantities.sectors.default', {
+							value: Math.max(...selected.map((record) => record.sectors.length)),
+						}),
+					},
+				],
+			},
+			{
+				title: t('components.firmApplicationsTable.summary.createdDate.title'),
+				rows: [
+					{
+						label: t('components.table.selected.summary.min'),
+						value: t('constants.quantities.days.decimals', {
+							value: Math.min(
+								...selected.map(
+									(record) =>
+										DateTime.now().diff(
+											DateTime.fromISO(record.createdAt),
+											'days',
+										).days,
+								),
+							),
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.avg'),
+						value: t('constants.quantities.days.decimals', {
+							value:
+								selected.reduce(
+									(acc, record) =>
+										acc +
+										DateTime.now().diff(
+											DateTime.fromISO(record.createdAt),
+											'days',
+										).days,
+									0,
+								) / selected.length,
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.max'),
+						value: t('constants.quantities.days.decimals', {
+							value: Math.max(
+								...selected.map(
+									(record) =>
+										DateTime.now().diff(
+											DateTime.fromISO(record.createdAt),
+											'days',
+										).days,
+								),
+							),
+						}),
+					},
+				],
+			},
+		],
+		[t],
+	);
 
 	const handlePrevPage = useCallback(() => {
 		if (!firmApplications.data.hasPrev) return;
@@ -150,6 +331,11 @@ export const FirmApplicationsTable = ({
 		[firmApplications.status, sectorFilter, firmApplications.perPage],
 	);
 
+	//	If we are showing selected only and there are no selected auctions, disable the filter
+	useEffect(() => {
+		if (showSelectedOnly && selectedApplications.length === 0) setShowSelectedOnly(false);
+	}, [showSelectedOnly, selectedApplications.length]);
+
 	return (
 		<Stack className={`${classes.root} ${className}`}>
 			<Stack className={classes.header}>
@@ -158,7 +344,13 @@ export const FirmApplicationsTable = ({
 						<Title order={2} className={classes.title}>
 							{t('components.firmApplicationsTable.title')}
 						</Title>
-						<Text className={classes.subtitle}>{paginationText}</Text>
+						<Text className={classes.subtitle}>
+							{showSelectedOnly
+								? t('components.table.selected.paginationText', {
+										value: selectedApplications.length,
+									})
+								: paginationText}
+						</Text>
 					</Group>
 					<Group className={classes.settings}>
 						<Text className={classes.label}>
@@ -171,10 +363,11 @@ export const FirmApplicationsTable = ({
 							data={['10', '20', '50', '100']}
 							onChange={(value) => firmApplications.setPerPage(Number(value))}
 							allowDeselect={false}
+							disabled={showSelectedOnly}
 						/>
-						<Menu position="bottom-end">
+						<Menu position="bottom-end" disabled={showSelectedOnly}>
 							<Menu.Target>
-								<ActionIcon className={classes.button}>
+								<ActionIcon className={classes.button} disabled={showSelectedOnly}>
 									<IconAdjustments size={16} />
 								</ActionIcon>
 							</Menu.Target>
@@ -306,10 +499,64 @@ export const FirmApplicationsTable = ({
 							) : undefined
 						}
 						rightSectionPointerEvents="auto"
+						disabled={showSelectedOnly}
 					/>
-					<Group className={classes.actions}></Group>
+					<Group className={classes.actions}>
+						<Pill
+							classNames={{
+								root: classes.count,
+								label: classes.label,
+								remove: classes.remove,
+							}}
+							variant="subtle"
+							onRemove={() => selectedApplicationsHandlers.setState([])}
+							withRemoveButton={selectedApplications.length > 0}
+						>
+							{t('components.table.selected.count', {
+								value: selectedApplications.length,
+							})}
+						</Pill>
+						<Group className={classes.buttons}>
+							<Button
+								className={`${classes.secondary} ${classes.button}`}
+								variant="outline"
+								disabled={selectedApplications.length === 0}
+								rightSection={<IconReportAnalytics size={16} />}
+								onClick={() =>
+									open(
+										selectedApplications,
+										generateSummaryGroups as () => Array<SummaryTableGroup>,
+									)
+								}
+							>
+								{t('components.table.selected.viewSummary')}
+							</Button>
+							<Button
+								className={`${classes.secondary} ${classes.button}`}
+								variant="outline"
+								disabled={selectedApplications.length === 0}
+								rightSection={<IconFilterSearch size={16} />}
+								onClick={() => setShowSelectedOnly((prev) => !prev)}
+							>
+								{showSelectedOnly
+									? t('components.table.selected.resetFilter')
+									: t('components.table.selected.filterSelected')}
+							</Button>
+						</Group>
+					</Group>
 				</Group>
 			</Stack>
+			{showSelectedOnly && (
+				<Alert
+					color="blue"
+					icon={<IconInfoCircle size={16} />}
+					title={t('components.table.selected.info.title')}
+					onClose={() => setShowSelectedOnly(false)}
+					withCloseButton
+				>
+					{t('components.table.selected.info.message')}
+				</Alert>
+			)}
 			{/* @ts-expect-error - data table props from library are not exposed */}
 			<DataTable
 				className={classes.table}
@@ -471,7 +718,7 @@ export const FirmApplicationsTable = ({
 						columns: [
 							{
 								accessor: 'status',
-								sortable: false,
+								sortable: true,
 								title: t('components.firmApplicationsTable.columns.status'),
 								width: 160,
 								cellsClassName: classes.status,
@@ -601,12 +848,15 @@ export const FirmApplicationsTable = ({
 						],
 					},
 				]}
-				records={firmApplications.data.results}
+				records={showSelectedOnly ? selectedApplications : firmApplications.data.results}
 				striped
 				withRowBorders
 				withColumnBorders
 				highlightOnHover
 				pinLastColumn
+				selectedRecords={selectedApplications}
+				onSelectedRecordsChange={selectedApplicationsHandlers.setState}
+				selectionColumnClassName={classes.selection}
 				fetching={firmApplications.isLoading}
 				idAccessor="id"
 				noRecordsText={t('components.firmApplicationsTable.empty')}
@@ -614,25 +864,29 @@ export const FirmApplicationsTable = ({
 				{...props}
 			/>
 			<Group className={classes.footer}>
-				<Group className={classes.pagination}>
-					<ActionIcon
-						className={classes.button}
-						variant="outline"
-						disabled={!firmApplications.data.hasPrev}
-						onClick={handlePrevPage}
-					>
-						<IconChevronLeft size={16} />
-					</ActionIcon>
-					<ActionIcon
-						className={classes.button}
-						variant="outline"
-						disabled={!firmApplications.data.hasNext}
-						onClick={handleNextPage}
-					>
-						<IconChevronRight size={16} />
-					</ActionIcon>
-				</Group>
+				{firmApplications.isSuccess && !showSelectedOnly && (
+					<Group className={classes.pagination}>
+						<ActionIcon
+							className={classes.button}
+							variant="outline"
+							disabled={!firmApplications.data.hasPrev}
+							onClick={handlePrevPage}
+						>
+							<IconChevronLeft size={16} />
+						</ActionIcon>
+						<ActionIcon
+							className={classes.button}
+							variant="outline"
+							disabled={!firmApplications.data.hasNext}
+							onClick={handleNextPage}
+						>
+							<IconChevronRight size={16} />
+						</ActionIcon>
+					</Group>
+				)}
 			</Group>
 		</Stack>
 	);
 };
+export const FirmApplicationsTable = (props: FirmApplicationsTableProps) =>
+	withProviders(<_FirmApplicationsTable {...props} />, { provider: SelectionSummaryProvider });

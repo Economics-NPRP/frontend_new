@@ -97,8 +97,8 @@ const FiltersCore = () => {
 	}, [paginatedAuctions.filters]);
 
 	const handleClearFilters = useCallback(
-		() => paginatedAuctions.setFilters({}),
-		[paginatedAuctions.setFilters],
+		() => paginatedAuctions.setAllFilters({}),
+		[paginatedAuctions.setAllFilters],
 	);
 
 	const numFilters = useMemo(() => {
@@ -126,7 +126,7 @@ const FiltersCore = () => {
 	}, [paginatedAuctions.filters]);
 
 	return (
-		<form onSubmit={form.onSubmit((value) => paginatedAuctions.setFilters(value))}>
+		<form onSubmit={form.onSubmit((value) => paginatedAuctions.setAllFilters(value))}>
 			<Group className={classes.footer}>
 				<Text className={classes.value}>
 					{t('marketplace.home.catalogue.filters.total', {
@@ -222,13 +222,13 @@ const FiltersCore = () => {
 							<Container className={classes.values}>
 								<Radio
 									className={classes.checkbox}
-									label="Ongoing"
-									value="ongoing"
+									label="Upcoming"
+									value="upcoming"
 								/>
 								<Radio
 									className={classes.checkbox}
-									label="Upcoming"
-									value="upcoming"
+									label="Ongoing"
+									value="ongoing"
 								/>
 								<Radio className={classes.checkbox} label="Ended" value="ended" />
 								<Radio className={classes.checkbox} label="All" value="all" />
