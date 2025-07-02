@@ -471,7 +471,7 @@ export const FirmApplicationsTable = ({
 						columns: [
 							{
 								accessor: 'status',
-								sortable: false,
+								sortable: true,
 								title: t('components.firmApplicationsTable.columns.status'),
 								width: 160,
 								cellsClassName: classes.status,

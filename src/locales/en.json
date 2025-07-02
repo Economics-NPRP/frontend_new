@@ -178,6 +178,10 @@
       "startsIn": {
         "label": "Starts in",
         "tooltip": "Starts in {time}"
+      },
+      "ongoing": {
+        "label": "Ongoing",
+        "tooltip": "Ongoing since {date}"
       }
     },
     "currency": {
@@ -498,7 +502,9 @@
     },
     "days": {
       "unit": "days"
-    }
+    },
+    "yes": "Yes",
+    "no": "No"
   },
   "marketplace": {
     "home": {
@@ -1340,7 +1346,9 @@
           "upcoming": "Upcoming Auctions Only",
           "ongoing": "Ongoing Auctions Only",
           "ended": "Ended Auctions Only",
-          "all": "Showing All Auctions"
+          "all": "Showing All Auctions",
+          "open": "Open Auctions",
+          "sealed": "Sealed Auctions"
         },
         "menu": {
           "status": {
@@ -1352,6 +1360,9 @@
           },
           "sector": {
             "label": "Auction Sector"
+          },
+          "type": {
+            "label": "Auction Type"
           }
         },
         "label": "Filters: "
@@ -1360,6 +1371,18 @@
         "sealed": {
           "label": "Sealed Auctions",
           "tooltip": "This is a sealed auction"
+        },
+        "ending": {
+          "label": "Auction Ending Soon",
+          "tooltip": "This auction is ending soon"
+        },
+        "draftCycle": {
+          "label": "From Draft Cycle",
+          "tooltip": "This auction is part of an auction cycle has a draft status"
+        },
+        "ongoingCycle": {
+          "label": "From Ongoing Cycle",
+          "tooltip": "This auction is part of an ongoing auction cycle"
         }
       },
       "search": {
@@ -1368,10 +1391,39 @@
       "empty": "No auctions found",
       "title": "Auction Catalogue",
       "groups": {
-        "details": "Auction Details"
+        "details": "Auction Details",
+        "economic": "Economic",
+        "permit": "Permit Information",
+        "owner": "Auction Owner",
+        "miscellaneous": "Miscellaneous"
       },
       "columns": {
-        "name": "Name"
+        "name": "Name",
+        "type": "Type",
+        "status": "Status",
+        "description": "Description",
+        "startDatetime": "Start Date",
+        "endDatetime": "End Date",
+        "minBid": "Minimum Bid",
+        "minIncrement": "Minimum Increment",
+        "actions": {
+          "marketplace": {
+            "tooltip": "View auction page in the marketplace"
+          }
+        },
+        "sector": "Sector",
+        "permits": "Permits Offered",
+        "emissions": "Emissions Per Permit",
+        "lifespan": "Permit Lifespan",
+        "owner": "Name",
+        "email": "Email",
+        "phone": "Phone Number",
+        "isGovernment": "Is Admin?",
+        "createdAt": "Created At",
+        "views": "Views",
+        "bidders": "Bidders",
+        "bids": "Bids",
+        "bookmarks": "Bookmarks"
       }
     }
   },

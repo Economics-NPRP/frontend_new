@@ -17,6 +17,10 @@
 		@apply display-sm-sb-d3;
 	}
 
+	&.auctionType.open {
+		@apply bg-gray-100 text-gray-600;
+	}
+
 	&.ending {
 		@apply bg-red-600;
 	}
@@ -37,6 +41,11 @@
 			&.auctionType {
 				@apply bg-dark-400;
 				@apply text-gray-300;
+
+				&.open {
+					@apply bg-dark-500;
+					@apply text-dark-200;
+				}
 			}
 		}
 	}

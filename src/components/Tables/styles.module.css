@@ -249,11 +249,12 @@
 	}
 
 	.mine,
-	.sealed {
+	.draftCycle {
 		@apply text-dark-300;
 	}
 
-	.contributing {
+	.contributing,
+	.ongoingCycle {
 		@apply text-blue-600;
 	}
 
@@ -261,7 +262,8 @@
 		@apply text-yellow-600;
 	}
 
-	.unverified {
+	.unverified,
+	.ending {
 		@apply text-orange-600;
 	}
 

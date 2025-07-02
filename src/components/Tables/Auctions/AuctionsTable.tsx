@@ -1,15 +1,26 @@
 'use client';
 
+import { DateTime } from 'luxon';
 import { DataTable } from 'mantine-datatable';
-import { useTranslations } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import {
+	AuctionStatusBadge,
+	AuctionTypeBadge,
+	CategoryBadge,
+	CurrencyBadge,
+} from '@/components/Badge';
 import { IPaginatedAuctionsContext } from '@/contexts';
-import { useOffsetPaginationText } from '@/hooks';
+import { ENDING_SOON_THRESHOLD, useOffsetPaginationText } from '@/hooks';
 import { IAuctionStatus } from '@/pages/marketplace/(home)/@catalogue/constants';
+import { IAuctionData } from '@/schema/models';
 import { AuctionCategory } from '@/types';
 import {
 	ActionIcon,
+	Anchor,
+	Button,
 	Checkbox,
 	Divider,
 	Group,
@@ -26,12 +37,15 @@ import {
 	Title,
 	Tooltip,
 } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
+import { useListState, useMediaQuery } from '@mantine/hooks';
 import {
 	IconAdjustments,
+	IconAlertHexagon,
+	IconArrowUpRight,
+	IconBuildingStore,
 	IconDownload,
 	IconHelpHexagon,
-	IconHexagonLetterS,
+	IconHexagonLetterO,
 	IconSearch,
 } from '@tabler/icons-react';
 
@@ -47,11 +61,13 @@ export const AuctionsTable = ({
 	...props
 }: AuctionsTableProps) => {
 	const t = useTranslations();
+	const format = useFormatter();
 	const isMobile = useMediaQuery('(max-width: 48em)');
 	const tableContainerRef = useRef<HTMLTableElement>(null);
 	const paginationText = useOffsetPaginationText('auctions', auctions);
 
 	const [searchFilter, setSearchFilter] = useState('');
+	const [selectedAuctions, selectedAuctionsHandlers] = useListState<IAuctionData>([]);
 
 	//	Generate the filter badges
 	const filterBadges = useMemo(() => {
@@ -96,6 +112,25 @@ export const AuctionsTable = ({
 				);
 				break;
 		}
+
+		if (auctions.filters.type)
+			output.push(
+				...auctions.filters.type.map((type, index) => (
+					<Pill
+						key={`type-${index}`}
+						className={classes.badge}
+						onRemove={() =>
+							auctions.setArrayFilter(
+								'type',
+								(auctions.filters.type || []).filter((t) => t !== type),
+							)
+						}
+						withRemoveButton
+					>
+						{t(`components.auctionsTable.filters.badges.${type}`)}
+					</Pill>
+				)),
+			);
 
 		if (output.length === 0)
 			return (
@@ -146,6 +181,32 @@ export const AuctionsTable = ({
 								</ActionIcon>
 							</Menu.Target>
 							<Menu.Dropdown className={classes.filterMenu}>
+								<Menu.Label className={classes.label}>
+									{t('components.auctionsTable.filters.menu.type.label')}
+								</Menu.Label>
+								<Checkbox.Group
+									value={auctions.filters.type}
+									onChange={(values) =>
+										auctions.setArrayFilter(
+											'type',
+											values as Array<IAuctionStatus>,
+										)
+									}
+								>
+									<Stack className={classes.options}>
+										<Checkbox
+											className={classes.checkbox}
+											value="open"
+											label={t('constants.auctionType.open')}
+										/>
+										<Checkbox
+											className={classes.checkbox}
+											value="sealed"
+											label={t('constants.auctionType.sealed')}
+										/>
+									</Stack>
+								</Checkbox.Group>
+								<Menu.Divider className={classes.divider} />
 								<Menu.Label className={classes.label}>
 									{t('components.auctionsTable.filters.menu.status.label')}
 								</Menu.Label>
@@ -246,12 +307,30 @@ export const AuctionsTable = ({
 					</Group>
 					<Group className={classes.legend}>
 						<Group className={classes.cell}>
-							<IconHexagonLetterS
+							<IconHelpHexagon
 								size={16}
-								className={`${classes.icon} ${classes.sealed}`}
+								className={`${classes.icon} ${classes.draftCycle}`}
 							/>
 							<Text className={classes.value}>
-								{t('components.auctionsTable.legend.sealed.label')}
+								{t('components.auctionsTable.legend.draftCycle.label')}
+							</Text>
+						</Group>
+						<Group className={classes.cell}>
+							<IconHexagonLetterO
+								size={16}
+								className={`${classes.icon} ${classes.ongoingCycle}`}
+							/>
+							<Text className={classes.value}>
+								{t('components.auctionsTable.legend.ongoingCycle.label')}
+							</Text>
+						</Group>
+						<Group className={classes.cell}>
+							<IconAlertHexagon
+								size={16}
+								className={`${classes.icon} ${classes.ending}`}
+							/>
+							<Text className={classes.value}>
+								{t('components.auctionsTable.legend.ending.label')}
 							</Text>
 						</Group>
 					</Group>
@@ -271,7 +350,13 @@ export const AuctionsTable = ({
 						}
 						rightSectionPointerEvents="auto"
 					/>
-					<Group className={classes.actions}></Group>
+					<Group className={classes.actions}>
+						<Text className={classes.count}>
+							{t('components.table.selected.count', {
+								value: selectedAuctions.length,
+							})}
+						</Text>
+					</Group>
 				</Group>
 			</Stack>
 			{/* @ts-expect-error - data table props from library are not exposed */}
@@ -290,181 +375,341 @@ export const AuctionsTable = ({
 								ellipsis: true,
 								render: (record) => (
 									<Group className={`${classes.firm} ${classes.between}`}>
-										<Text className={classes.anchor}>{record.title}</Text>
+										<Anchor
+											component={Link}
+											className={classes.anchor}
+											href={`/dashboard/a/cycles/auctions/${record.id}`}
+										>
+											{record.title}
+										</Anchor>
 										<Group className={classes.group}>
-											{record.type === 'sealed' && (
+											{false && (
 												<Tooltip
 													label={t(
-														'components.auctionsTable.legend.sealed.tooltip',
+														'components.auctionsTable.legend.draftCycle.tooltip',
 													)}
 													position="top"
 												>
-													<IconHexagonLetterS
+													<IconHelpHexagon
 														size={14}
-														className={classes.sealed}
+														className={classes.draftCycle}
 													/>
 												</Tooltip>
 											)}
+											{false && (
+												<Tooltip
+													label={t(
+														'components.auctionsTable.legend.ongoingCycle.tooltip',
+													)}
+													position="top"
+												>
+													<IconHexagonLetterO
+														size={14}
+														className={classes.ongoingCycle}
+													/>
+												</Tooltip>
+											)}
+											{new Date(record.endDatetime).getTime() - Date.now() <
+												ENDING_SOON_THRESHOLD &&
+												new Date(record.endDatetime).getTime() >
+													Date.now() && (
+													<Tooltip
+														label={t(
+															'components.auctionsTable.legend.ending.tooltip',
+														)}
+														position="top"
+													>
+														<IconAlertHexagon
+															size={14}
+															className={classes.ending}
+														/>
+													</Tooltip>
+												)}
 										</Group>
 									</Group>
 								),
 							},
+							{
+								accessor: 'type',
+								sortable: true,
+								title: t('components.auctionsTable.columns.type'),
+								width: 120,
+								cellsClassName: classes.status,
+								render: (record) => (
+									<AuctionTypeBadge type={record.type} showOpen />
+								),
+							},
+							{
+								accessor: 'sector',
+								sortable: true,
+								title: t('components.auctionsTable.columns.sector'),
+								width: 160,
+								//	TODO: add sector once available
+								cellsClassName: classes.status,
+								render: () => <CategoryBadge category={'industry'} />,
+							},
+							{
+								accessor: 'status',
+								sortable: true,
+								title: t('components.auctionsTable.columns.status'),
+								width: 120,
+								cellsClassName: classes.status,
+								render: (record) => <AuctionStatusBadge auctionData={record} />,
+							},
+							{
+								accessor: 'startDatetime',
+								sortable: true,
+								title: t('components.auctionsTable.columns.startDatetime'),
+								width: 160,
+								render: (record) =>
+									DateTime.fromISO(record.startDatetime).toLocaleString(
+										DateTime.DATETIME_MED,
+									),
+							},
+							{
+								accessor: 'endDatetime',
+								sortable: true,
+								title: t('components.auctionsTable.columns.endDatetime'),
+								width: 160,
+								render: (record) =>
+									DateTime.fromISO(record.endDatetime).toLocaleString(
+										DateTime.DATETIME_MED,
+									),
+							},
 						],
 					},
-					// {
-					// 	id: 'economic'
-					// 	//	Min bid, min increment
-					// },
-					// {
-					// 	id: 'permit',
-					// 	//	sector, permits offered, emissions per permit, total emissions, permit lifespan
-					// },
+					{
+						id: 'economic',
+						title: t('components.auctionsTable.groups.economic'),
+						columns: [
+							{
+								accessor: 'minBid',
+								sortable: true,
+								title: t('components.auctionsTable.columns.minBid'),
+								width: 160,
+								cellsClassName: classes.cell,
+								render: (record) => (
+									<>
+										<CurrencyBadge className="mr-1" />
+										{format.number(record.minBid, 'money')}
+									</>
+								),
+							},
+							{
+								accessor: 'minIncrement',
+								sortable: true,
+								title: t('components.auctionsTable.columns.minIncrement'),
+								width: 180,
+								cellsClassName: classes.cell,
+								render: () => (
+									<>
+										<CurrencyBadge className="mr-1" />
+										{/* TODO: add min increment once available */}
+										{format.number(1, 'money')}
+									</>
+								),
+							},
+						],
+					},
+					{
+						id: 'permit',
+						title: t('components.auctionsTable.groups.permit'),
+						columns: [
+							{
+								accessor: 'permits',
+								sortable: true,
+								title: t('components.auctionsTable.columns.permits'),
+								width: 160,
+								render: (record) =>
+									t('constants.quantities.permits.default', {
+										value: record.permits,
+									}),
+							},
+							{
+								accessor: 'emissions',
+								sortable: true,
+								title: t('components.auctionsTable.columns.emissions'),
+								width: 200,
+								render: () =>
+									t('constants.quantities.emissions.default', {
+										//	TODO: add emissions once available
+										value: 1000,
+									}),
+							},
+							{
+								accessor: 'lifespan',
+								sortable: true,
+								title: t('components.auctionsTable.columns.lifespan'),
+								width: 160,
+								render: () =>
+									t('constants.quantities.years.default', {
+										//	TODO: add lifespan once available
+										value: 1,
+									}),
+							},
+						],
+					},
+					{
+						id: 'owner',
+						title: t('components.auctionsTable.groups.owner'),
+						columns: [
+							{
+								accessor: 'owner',
+								sortable: true,
+								title: t('components.auctionsTable.columns.owner'),
+								width: 240,
+								ellipsis: true,
+								render: (record) => (
+									<Anchor
+										component={Link}
+										className={classes.anchor}
+										href={`/dashboard/a/firms/${record.ownerId}`}
+									>
+										{record.owner.name}
+									</Anchor>
+								),
+							},
+							{
+								accessor: 'email',
+								sortable: true,
+								title: t('components.auctionsTable.columns.email'),
+								width: 200,
+								ellipsis: true,
+								render: (record) => (
+									<Anchor
+										className={classes.anchor}
+										href={`mailto:${record.owner.email}`}
+									>
+										{record.owner.email}
+									</Anchor>
+								),
+							},
+							{
+								accessor: 'phone',
+								sortable: true,
+								title: t('components.auctionsTable.columns.phone'),
+								render: (record) => (
+									<Anchor
+										className={classes.anchor}
+										href={`tel:${record.owner.phone}`}
+									>
+										{record.owner.phone}
+									</Anchor>
+								),
+							},
+							{
+								accessor: 'isGovernment',
+								sortable: true,
+								title: t('components.auctionsTable.columns.isGovernment'),
+								width: 120,
+								render: (record) =>
+									record.owner.type === 'admin'
+										? t('constants.yes')
+										: t('constants.no'),
+							},
+						],
+					},
 					// {
 					// 	id: 'miscellaneous',
 					// 	//	Number of views, bidders, bids, bookmarks
 					// 	//	Creation date
 					// },
-					// {
-					// 	id: 'owner'
-					// 	//	Name
-					// 	//	Email
-					// 	//	Is government
-					// },
-					// {
-					// 	id: 'miscellaneous',
-					// 	title: t('components.firmApplicationsTable.groups.miscellaneous'),
-					// 	columns: [
-					// 		{
-					// 			accessor: 'status',
-					// 			sortable: false,
-					// 			title: t('components.firmApplicationsTable.columns.status'),
-					// 			width: 160,
-					// 			cellsClassName: classes.status,
-					// 			render: (record) => <FirmStatusBadge status={record.status} />,
-					// 		},
-					// 		{
-					// 			accessor: 'createdAt',
-					// 			sortable: true,
-					// 			title: t('components.firmApplicationsTable.columns.createdAt'),
-					// 			render: (record) =>
-					// 				DateTime.fromISO(record.createdAt).toLocaleString(
-					// 					DateTime.DATETIME_SHORT,
-					// 				),
-					// 		},
-					// 	],
-					// },
-					// {
-					// 	id: 'representative',
-					// 	title: t('components.firmApplicationsTable.groups.representative'),
-					// 	columns: [
-					// 		{
-					// 			accessor: 'repName',
-					// 			sortable: true,
-					// 			title: t('components.firmApplicationsTable.columns.repName'),
-					// 			width: 280,
-					// 			ellipsis: true,
-					// 			render: (record) => record.repName,
-					// 		},
-					// 		{
-					// 			accessor: 'repPosition',
-					// 			sortable: true,
-					// 			title: t('components.firmApplicationsTable.columns.repPosition'),
-					// 			width: 160,
-					// 			ellipsis: true,
-					// 			render: (record) => record.repPosition || t('constants.na'),
-					// 		},
-					// 		{
-					// 			accessor: 'repEmail',
-					// 			sortable: true,
-					// 			title: t('components.firmApplicationsTable.columns.email'),
-					// 			width: 200,
-					// 			ellipsis: true,
-					// 			render: (record) => (
-					// 				<Anchor
-					// 					href={`mailto:${record.repEmail}`}
-					// 					className={classes.anchor}
-					// 				>
-					// 					{record.repEmail}
-					// 				</Anchor>
-					// 			),
-					// 		},
-					// 		{
-					// 			accessor: 'repPhone',
-					// 			sortable: true,
-					// 			title: t('components.firmApplicationsTable.columns.phone'),
-					// 			render: (record) => (
-					// 				<Anchor
-					// 					href={`tel:${record.repPhone}`}
-					// 					className={classes.anchor}
-					// 				>
-					// 					{record.repPhone}
-					// 				</Anchor>
-					// 			),
-					// 		},
-					// 		{
-					// 			accessor: 'websites',
-					// 			sortable: true,
-					// 			title: t('components.firmApplicationsTable.columns.websites'),
-					// 			width: 240,
-					// 			ellipsis: true,
-					// 			render: (record) =>
-					// 				record.websites.length > 0 ? (
-					// 					<Anchor
-					// 						href={record.websites[0]}
-					// 						className={classes.anchor}
-					// 					>
-					// 						{record.websites[0]}
-					// 					</Anchor>
-					// 				) : (
-					// 					t('constants.na')
-					// 				),
-					// 		},
-					// 		{
-					// 			accessor: 'address',
-					// 			sortable: true,
-					// 			title: t('components.firmApplicationsTable.columns.address'),
-					// 			width: 320,
-					// 			ellipsis: true,
-					// 			render: (record) => record.address || t('constants.na'),
-					// 		},
-					// 	],
-					// },
-					// {
-					// 	id: 'actions',
-					// 	title: '',
-					// 	className: classes.actions,
-					// 	columns: [
-					// 		{
-					// 			accessor: 'actions',
-					// 			title: t('constants.actions.actions.column'),
-					// 			titleClassName: classes.actions,
-					// 			cellsClassName: classes.actions,
-					// 			render: (record) => (
-					// 				<Group className={classes.cell}>
-					// 					<Tooltip
-					// 						label={t(
-					// 							'components.firmApplicationsTable.columns.actions.review.tooltip',
-					// 						)}
-					// 						position="top"
-					// 					>
-					// 						<Button
-					// 							className={`${classes.primary} ${classes.button}`}
-					// 							onClick={() => invitationModal.open(record)}
-					// 							rightSection={<IconFileSearch size={16} />}
-					// 							disabled={record.status !== 'pending'}
-					// 						>
-					// 							{t(
-					// 								isMobile
-					// 									? 'constants.actions.review.label'
-					// 									: 'components.firmApplicationsTable.actions.review.default',
-					// 							)}
-					// 						</Button>
-					// 					</Tooltip>
-					// 				</Group>
-					// 			),
-					// 		},
-					// 	],
-					// },
+					{
+						id: 'miscellaneous',
+						title: t('components.auctionsTable.groups.miscellaneous'),
+						columns: [
+							{
+								accessor: 'views',
+								sortable: true,
+								title: t('components.auctionsTable.columns.views'),
+								width: 100,
+								render: (record) =>
+									t('constants.quantities.views.default', {
+										value: record.views || 0,
+									}),
+							},
+							{
+								accessor: 'bidders',
+								sortable: true,
+								title: t('components.auctionsTable.columns.bidders'),
+								width: 120,
+								render: (record) =>
+									t('constants.quantities.bidders.default', {
+										value: record.biddersCount || 0,
+									}),
+							},
+							{
+								accessor: 'bids',
+								sortable: true,
+								title: t('components.auctionsTable.columns.bids'),
+								width: 120,
+								render: (record) =>
+									t('constants.quantities.bids.default', {
+										value: record.bidsCount || 0,
+									}),
+							},
+							{
+								accessor: 'bookmarks',
+								sortable: true,
+								title: t('components.auctionsTable.columns.bookmarks'),
+								width: 140,
+								render: () =>
+									t('constants.quantities.bookmarks.default', {
+										//	TODO: add bookmarks once available
+										value: 0,
+									}),
+							},
+							{
+								accessor: 'createdAt',
+								sortable: true,
+								title: t('components.auctionsTable.columns.createdAt'),
+								width: 160,
+								render: (record) =>
+									DateTime.fromISO(record.createdAt).toLocaleString(
+										DateTime.DATETIME_SHORT,
+									),
+							},
+						],
+					},
+					{
+						id: 'actions',
+						title: '',
+						className: classes.actions,
+						columns: [
+							{
+								accessor: 'actions',
+								title: t('constants.actions.actions.column'),
+								titleClassName: classes.actions,
+								cellsClassName: classes.actions,
+								render: (record) => (
+									<Group className={classes.cell}>
+										<Tooltip
+											label={t(
+												'components.auctionsTable.columns.actions.marketplace.tooltip',
+											)}
+											position="top"
+										>
+											<ActionIcon className={`${classes.button}`}>
+												<IconBuildingStore size={16} />
+											</ActionIcon>
+										</Tooltip>
+										<Button
+											className={`${classes.primary} ${classes.button}`}
+											component={Link}
+											href={`/dashboard/a/cycles/auctions/${record.id}`}
+											rightSection={<IconArrowUpRight size={16} />}
+										>
+											{t(
+												isMobile
+													? 'constants.view.label'
+													: 'constants.view.details.label',
+											)}
+										</Button>
+									</Group>
+								),
+							},
+						],
+					},
 				]}
 				records={auctions.data.results}
 				striped
@@ -472,6 +717,11 @@ export const AuctionsTable = ({
 				withColumnBorders
 				highlightOnHover
 				pinLastColumn
+				// sortStatus={sortStatus}
+				// onSortStatusChange={setSortStatus}
+				selectedRecords={selectedAuctions}
+				onSelectedRecordsChange={selectedAuctionsHandlers.setState}
+				selectionColumnClassName={classes.selection}
 				fetching={auctions.isLoading}
 				idAccessor="id"
 				noRecordsText={t('components.auctionsTable.empty')}
