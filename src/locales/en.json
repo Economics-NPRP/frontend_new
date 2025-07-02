@@ -383,6 +383,9 @@
       },
       "exportToCSV": {
         "label": "Export To CSV"
+      },
+      "close": {
+        "label": "Close"
       }
     },
     "quantities": {
@@ -391,13 +394,16 @@
         "unitOnly": "{value, plural, =0 {Auctions} =1 {Auction} other {Auctions}}"
       },
       "bids": {
-        "default": "{value, number} {value, plural, =0 {Bids} =1 {Bid} other {Bids}}"
+        "default": "{value, number} {value, plural, =0 {Bids} =1 {Bid} other {Bids}}",
+        "decimals": "{value, number, ::.00} {value, plural, =0 {Bids} =1 {Bid} other {Bids}}"
       },
       "bidders": {
-        "default": "{value, number} {value, plural, =0 {Bidders} =1 {Bidder} other {Bidders}}"
+        "default": "{value, number} {value, plural, =0 {Bidders} =1 {Bidder} other {Bidders}}",
+        "decimals": "{value, number, ::.00} {value, plural, =0 {Bidders} =1 {Bidder} other {Bidders}}"
       },
       "bookmarks": {
-        "default": "{value, number} {value, plural, =0 {Bookmarks} =1 {Bookmark} other {Bookmarks}}"
+        "default": "{value, number} {value, plural, =0 {Bookmarks} =1 {Bookmark} other {Bookmarks}}",
+        "decimals": "{value, number, ::.00} {value, plural, =0 {Bookmarks} =1 {Bookmark} other {Bookmarks}}"
       },
       "currency": {
         "unitlessWithPercentTotal": "{value, number, ::.00} ({percent, number, ::.00}%)"
@@ -410,15 +416,34 @@
       },
       "permits": {
         "default": "{value, number} {value, plural, =0 {Permits} =1 {Permit} other {Permits}}",
+        "decimals": "{value, number, ::.00} {value, plural, =0 {Permits} =1 {Permit} other {Permits}}",
         "withEmissions": "{value, number} {value, plural, =0 {Permits} =1 {Permit} other {Permits}} ({emissions, number, ::.00} tCO2e)",
         "withPercentTotal": "{value, number} {value, plural, =0 {Permits} =1 {Permit} other {Permits}} ({percent, number, ::.00}%)",
         "unitlessWithPercentTotal": "{value, number} ({percent, number, ::.00}%)"
       },
       "views": {
-        "default": "{value, number} {value, plural, =0 {Views} =1 {View} other {Views}}"
+        "default": "{value, number} {value, plural, =0 {Views} =1 {View} other {Views}}",
+        "decimals": "{value, number, ::.00} {value, plural, =0 {Views} =1 {View} other {Views}}"
       },
       "years": {
-        "default": "{value, number} {value, plural, =0 {Years} =1 {Year} other {Years}}"
+        "default": "{value, number} {value, plural, =0 {Years} =1 {Year} other {Years}}",
+        "decimals": "{value, number, ::.00} {value, plural, =0 {Years} =1 {Year} other {Years}}"
+      },
+      "days": {
+        "default": "{value, number} {value, plural, =0 {Days} =1 {Day} other {Days}}",
+        "decimals": "{value, number, ::.00} {value, plural, =0 {Days} =1 {Day} other {Days}}"
+      },
+      "applications": {
+        "default": "{value, number} {value, plural, =0 {Applications} =1 {Application} other {Applications}}",
+        "decimals": "{value, number, ::.00} {value, plural, =0 {Applications} =1 {Application} other {Applications}}"
+      },
+      "firms": {
+        "default": "{value, number} {value, plural, =0 {Companies} =1 {Company} other {Companies}}",
+        "decimals": "{value, number, ::.00} {value, plural, =0 {Companies} =1 {Company} other {Companies}}"
+      },
+      "sectors": {
+        "default": "{value, number} {value, plural, =0 {Sectors} =1 {Sector} other {Sectors}}",
+        "decimals": "{value, number, ::.00} {value, plural, =0 {Sectors} =1 {Sector} other {Sectors}}"
       }
     },
     "pagination": {
@@ -1187,6 +1212,26 @@
         "company": "Company",
         "representative": "Contact Details",
         "miscellaneous": "Miscellaneous"
+      },
+      "summary": {
+        "numSectors": {
+          "title": "Number of Sectors"
+        },
+        "distribution": {
+          "title": "Company Distribution",
+          "total": "Total Companies"
+        },
+        "sector": {
+          "energy": "Energy Companies",
+          "industry": "Industry Companies",
+          "transport": "Transport Companies",
+          "buildings": "Buildings Companies",
+          "agriculture": "Agriculture Companies",
+          "waste": "Waste Companies"
+        },
+        "createdDate": {
+          "title": "Company"
+        }
       }
     },
     "firmApplicationsTable": {
@@ -1251,6 +1296,30 @@
         "company": "Company",
         "representative": "Contact Details",
         "miscellaneous": "Miscellaneous"
+      },
+      "summary": {
+        "distribution": {
+          "title": "Application Distribution",
+          "total": "Total Applications",
+          "approved": "Approved Applications",
+          "pending": "Pending Applications",
+          "rejected": "Rejected Applications"
+        },
+        "sector": {
+          "energy": "Energy Companies",
+          "industry": "Industry Companies",
+          "transport": "Transport Companies",
+          "buildings": "Buildings Companies",
+          "agriculture": "Agriculture Companies",
+          "waste": "Waste Companies",
+          "title": "Sector Distribution"
+        },
+        "createdDate": {
+          "title": "Application Age"
+        },
+        "numSectors": {
+          "title": "Number of Sectors"
+        }
       }
     },
     "table": {
@@ -1264,6 +1333,14 @@
         "info": {
           "title": "Viewing Selected Records Only",
           "message": "Note that the table is currently displaying only the selected records. To view all records, please clear the selection or disable the filter."
+        },
+        "summary": {
+          "title": "Selection Summary",
+          "description": "You have selected {value, number} {value, plural, =0 {records} =1 {record} other {records}}. The following table summarizes the selected records and provides options for further actions. Use this overview to quickly review key information and proceed with the next steps.",
+          "min": "Minimum",
+          "avg": "Average",
+          "max": "Maximum",
+          "total": "Total"
         }
       }
     },
@@ -1433,6 +1510,61 @@
         "bidders": "Bidders",
         "bids": "Bids",
         "bookmarks": "Bookmarks"
+      },
+      "summary": {
+        "distribution": {
+          "title": "Auction Distribution",
+          "total": "Total Auctions",
+          "ending": "Ending Soon",
+          "sealed": "Sealed Auctions",
+          "open": "Open Auctions",
+          "upcoming": "Upcoming Auctions",
+          "ongoing": "Ongoing Auctions",
+          "ended": "Ended Auctions",
+          "government": "Government Auctions"
+        },
+        "minBid": {
+          "title": "Minimum Bid"
+        },
+        "minIncrement": {
+          "title": "Minimum Increment"
+        },
+        "permitsOffered": {
+          "title": "Permits Offered"
+        },
+        "emissions": {
+          "title": "Emissions Per Permit"
+        },
+        "lifespan": {
+          "title": "Permit Lifespan"
+        },
+        "miscellaneous": {
+          "title": "Miscellaneous"
+        },
+        "numViews": {
+          "title": "Number of Views"
+        },
+        "sector": {
+          "title": "Sector Distribution",
+          "energy": "Energy Auctions",
+          "industry": "Industry Auctions",
+          "transport": "Transport Auctions",
+          "buildings": "Buildings Auctions",
+          "agriculture": "Agriculture Auctions",
+          "waste": "Waste Auctions"
+        },
+        "numBidders": {
+          "title": "Number of Bidders"
+        },
+        "numBids": {
+          "title": "Number of Bids"
+        },
+        "numBookmarks": {
+          "title": "Number of Bookmarks"
+        },
+        "createdDate": {
+          "title": "Auction Age"
+        }
       }
     }
   },

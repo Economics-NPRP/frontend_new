@@ -6,9 +6,15 @@ import { useTranslations } from 'next-intl';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { CategoryBadge, FirmStatusBadge } from '@/components/Badge';
+import { SummaryTableGroup } from '@/components/SummaryTable';
 import { FirmApplicationsFilter } from '@/components/Tables/FirmApplications/types';
+import {
+	SelectionSummaryContext,
+	SelectionSummaryProvider,
+} from '@/components/Tables/_components/SelectionSummary';
 import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
 import { IPaginatedFirmApplicationsContext } from '@/contexts';
+import { withProviders } from '@/helpers';
 import { useKeysetPaginationText } from '@/hooks';
 import { InvitationModalContext } from '@/pages/dashboard/a/firms/_components/InvitationModal';
 import { IFirmApplication } from '@/schema/models';
@@ -57,7 +63,7 @@ import classes from '../styles.module.css';
 export interface FirmApplicationsTableProps extends TableProps {
 	firmApplications: IPaginatedFirmApplicationsContext;
 }
-export const FirmApplicationsTable = ({
+const _FirmApplicationsTable = ({
 	firmApplications,
 
 	className,
@@ -69,6 +75,7 @@ export const FirmApplicationsTable = ({
 	const paginationText = useKeysetPaginationText('firmApplications', firmApplications);
 
 	const invitationModal = useContext(InvitationModalContext);
+	const { open } = useContext(SelectionSummaryContext);
 
 	const [showSelectedOnly, setShowSelectedOnly] = useState(false);
 	const [searchFilter, setSearchFilter] = useState('');
@@ -149,6 +156,162 @@ export const FirmApplicationsTable = ({
 			);
 		return output;
 	}, [firmApplications, showSelectedOnly, sectorFilter, sectorFilterHandlers, t]);
+
+	const generateSummaryGroups = useMemo(
+		() => (selected: Array<IFirmApplication>) => [
+			{
+				title: t('components.firmApplicationsTable.summary.distribution.title'),
+				rows: [
+					{
+						label: t('components.firmApplicationsTable.summary.distribution.total'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.length,
+						}),
+					},
+					{
+						label: t('components.firmApplicationsTable.summary.distribution.approved'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.filter((record) => record.status === 'approved').length,
+						}),
+					},
+					{
+						label: t('components.firmApplicationsTable.summary.distribution.pending'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.filter((record) => record.status === 'pending').length,
+						}),
+					},
+					{
+						label: t('components.firmApplicationsTable.summary.distribution.rejected'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.filter((record) => record.status === 'rejected').length,
+						}),
+					},
+				],
+			},
+			{
+				title: t('components.firmApplicationsTable.summary.sector.title'),
+				rows: [
+					{
+						label: t('components.firmApplicationsTable.summary.sector.energy'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.filter((record) => record.sectors.includes('energy'))
+								.length,
+						}),
+					},
+					{
+						label: t('components.firmApplicationsTable.summary.sector.industry'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.filter((record) => record.sectors.includes('industry'))
+								.length,
+						}),
+					},
+					{
+						label: t('components.firmApplicationsTable.summary.sector.transport'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.filter((record) => record.sectors.includes('transport'))
+								.length,
+						}),
+					},
+					{
+						label: t('components.firmApplicationsTable.summary.sector.buildings'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.filter((record) => record.sectors.includes('buildings'))
+								.length,
+						}),
+					},
+					{
+						label: t('components.firmApplicationsTable.summary.sector.agriculture'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.filter((record) =>
+								record.sectors.includes('agriculture'),
+							).length,
+						}),
+					},
+					{
+						label: t('components.firmApplicationsTable.summary.sector.waste'),
+						value: t('constants.quantities.applications.default', {
+							value: selected.filter((record) => record.sectors.includes('waste'))
+								.length,
+						}),
+					},
+				],
+			},
+			{
+				title: t('components.firmApplicationsTable.summary.numSectors.title'),
+				rows: [
+					{
+						label: t('components.table.selected.summary.min'),
+						value: t('constants.quantities.sectors.default', {
+							value: Math.min(...selected.map((record) => record.sectors.length)),
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.avg'),
+						value: t('constants.quantities.sectors.decimals', {
+							value:
+								selected.reduce((acc, record) => acc + record.sectors.length, 0) /
+								selected.length,
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.max'),
+						value: t('constants.quantities.sectors.default', {
+							value: Math.max(...selected.map((record) => record.sectors.length)),
+						}),
+					},
+				],
+			},
+			{
+				title: t('components.firmApplicationsTable.summary.createdDate.title'),
+				rows: [
+					{
+						label: t('components.table.selected.summary.min'),
+						value: t('constants.quantities.days.decimals', {
+							value: Math.min(
+								...selected.map(
+									(record) =>
+										DateTime.now().diff(
+											DateTime.fromISO(record.createdAt),
+											'days',
+										).days,
+								),
+							),
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.avg'),
+						value: t('constants.quantities.days.decimals', {
+							value:
+								selected.reduce(
+									(acc, record) =>
+										acc +
+										DateTime.now().diff(
+											DateTime.fromISO(record.createdAt),
+											'days',
+										).days,
+									0,
+								) / selected.length,
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.max'),
+						value: t('constants.quantities.days.decimals', {
+							value: Math.max(
+								...selected.map(
+									(record) =>
+										DateTime.now().diff(
+											DateTime.fromISO(record.createdAt),
+											'days',
+										).days,
+								),
+							),
+						}),
+					},
+				],
+			},
+		],
+		[t],
+	);
 
 	const handlePrevPage = useCallback(() => {
 		if (!firmApplications.data.hasPrev) return;
@@ -359,6 +522,12 @@ export const FirmApplicationsTable = ({
 								variant="outline"
 								disabled={selectedApplications.length === 0}
 								rightSection={<IconReportAnalytics size={16} />}
+								onClick={() =>
+									open(
+										selectedApplications,
+										generateSummaryGroups as () => Array<SummaryTableGroup>,
+									)
+								}
 							>
 								{t('components.table.selected.viewSummary')}
 							</Button>
@@ -719,3 +888,5 @@ export const FirmApplicationsTable = ({
 		</Stack>
 	);
 };
+export const FirmApplicationsTable = (props: FirmApplicationsTableProps) =>
+	withProviders(<_FirmApplicationsTable {...props} />, { provider: SelectionSummaryProvider });

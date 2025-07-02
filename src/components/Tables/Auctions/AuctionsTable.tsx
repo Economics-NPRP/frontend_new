@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 import { DataTable } from 'mantine-datatable';
 import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import {
 	AuctionStatusBadge,
@@ -12,7 +12,13 @@ import {
 	CategoryBadge,
 	CurrencyBadge,
 } from '@/components/Badge';
+import { SummaryTableGroup } from '@/components/SummaryTable';
+import {
+	SelectionSummaryContext,
+	SelectionSummaryProvider,
+} from '@/components/Tables/_components/SelectionSummary';
 import { IPaginatedAuctionsContext } from '@/contexts';
+import { withProviders } from '@/helpers';
 import { ENDING_SOON_THRESHOLD, useOffsetPaginationText } from '@/hooks';
 import { IAuctionStatus } from '@/pages/marketplace/(home)/@catalogue/constants';
 import { IAuctionData } from '@/schema/models';
@@ -58,7 +64,7 @@ import classes from '../styles.module.css';
 export interface AuctionsTableProps extends TableProps {
 	auctions: IPaginatedAuctionsContext;
 }
-export const AuctionsTable = ({
+const _AuctionsTable = ({
 	auctions,
 
 	className,
@@ -69,6 +75,7 @@ export const AuctionsTable = ({
 	const isMobile = useMediaQuery('(max-width: 48em)');
 	const tableContainerRef = useRef<HTMLTableElement>(null);
 	const paginationText = useOffsetPaginationText('auctions', auctions);
+	const { open } = useContext(SelectionSummaryContext);
 
 	const [showSelectedOnly, setShowSelectedOnly] = useState(false);
 	const [searchFilter, setSearchFilter] = useState('');
@@ -156,6 +163,473 @@ export const AuctionsTable = ({
 			);
 		return output;
 	}, [auctions, auctions.filters.status, auctions.filters.type, showSelectedOnly, t]);
+
+	const generateSummaryGroups = useMemo(
+		() => (selected: Array<IAuctionData>) => [
+			{
+				title: t('components.auctionsTable.summary.distribution.title'),
+				rows: [
+					{
+						label: t('components.auctionsTable.summary.distribution.total'),
+						value: t('constants.quantities.auctions.default', {
+							value: selected.length,
+						}),
+					},
+					{
+						label: t('components.auctionsTable.summary.distribution.ending'),
+						value: t('constants.quantities.auctions.default', {
+							value: selected.filter(
+								(record) =>
+									new Date(record.endDatetime).getTime() - Date.now() <
+										ENDING_SOON_THRESHOLD &&
+									new Date(record.endDatetime).getTime() > Date.now(),
+							).length,
+						}),
+					},
+					{
+						label: t('components.auctionsTable.summary.distribution.sealed'),
+						value: t('constants.quantities.auctions.default', {
+							value: selected.filter((record) => record.type === 'sealed').length,
+						}),
+					},
+					{
+						label: t('components.auctionsTable.summary.distribution.open'),
+						value: t('constants.quantities.auctions.default', {
+							value: selected.filter((record) => record.type === 'open').length,
+						}),
+					},
+					{
+						label: t('components.auctionsTable.summary.distribution.upcoming'),
+						value: t('constants.quantities.auctions.default', {
+							value: selected.filter(
+								(record) => new Date(record.startDatetime).getTime() > Date.now(),
+							).length,
+						}),
+					},
+					{
+						label: t('components.auctionsTable.summary.distribution.ongoing'),
+						value: t('constants.quantities.auctions.default', {
+							value: selected.filter(
+								(record) =>
+									new Date(record.startDatetime).getTime() <= Date.now() &&
+									new Date(record.endDatetime).getTime() > Date.now(),
+							).length,
+						}),
+					},
+					{
+						label: t('components.auctionsTable.summary.distribution.ended'),
+						value: t('constants.quantities.auctions.default', {
+							value: selected.filter(
+								(record) => new Date(record.endDatetime).getTime() < Date.now(),
+							).length,
+						}),
+					},
+					{
+						label: t('components.auctionsTable.summary.distribution.government'),
+						value: t('constants.quantities.auctions.default', {
+							value: selected.filter((record) => record.owner.type === 'admin')
+								.length,
+						}),
+					},
+				],
+			},
+			{
+				//	TODO: add sector data here
+				title: t('components.auctionsTable.summary.sector.title'),
+				rows: [
+					{
+						label: t('components.auctionsTable.summary.sector.energy'),
+						value: t('constants.quantities.auctions.default', {
+							value: selected.filter(() => false).length,
+						}),
+					},
+					{
+						label: t('components.auctionsTable.summary.sector.industry'),
+						value: t('constants.quantities.auctions.default', {
+							value: selected.filter(() => false).length,
+						}),
+					},
+					{
+						label: t('components.auctionsTable.summary.sector.transport'),
+						value: t('constants.quantities.auctions.default', {
+							value: selected.filter(() => false).length,
+						}),
+					},
+					{
+						label: t('components.auctionsTable.summary.sector.buildings'),
+						value: t('constants.quantities.auctions.default', {
+							value: selected.filter(() => false).length,
+						}),
+					},
+					{
+						label: t('components.auctionsTable.summary.sector.agriculture'),
+						value: t('constants.quantities.auctions.default', {
+							value: selected.filter(() => false).length,
+						}),
+					},
+					{
+						label: t('components.auctionsTable.summary.sector.waste'),
+						value: t('constants.quantities.auctions.default', {
+							value: selected.filter(() => false).length,
+						}),
+					},
+				],
+			},
+			{
+				title: t('components.auctionsTable.summary.minBid.title'),
+				rows: [
+					{
+						label: t('components.table.selected.summary.min'),
+						value: (
+							<>
+								<CurrencyBadge className="mr-1" />
+								{format.number(
+									Math.min(...selected.map((record) => record.minBid)),
+									'money',
+								)}
+							</>
+						),
+					},
+					{
+						label: t('components.table.selected.summary.avg'),
+						value: (
+							<>
+								<CurrencyBadge className="mr-1" />
+								{format.number(
+									selected.reduce((acc, record) => acc + record.minBid, 0) /
+										selected.length,
+									'money',
+								)}
+							</>
+						),
+					},
+					{
+						label: t('components.table.selected.summary.max'),
+						value: (
+							<>
+								<CurrencyBadge className="mr-1" />
+								{format.number(
+									Math.max(...selected.map((record) => record.minBid)),
+									'money',
+								)}
+							</>
+						),
+					},
+				],
+			},
+			{
+				//	TODO: add min increment here
+				title: t('components.auctionsTable.summary.minIncrement.title'),
+				rows: [
+					{
+						label: t('components.table.selected.summary.min'),
+						value: (
+							<>
+								<CurrencyBadge className="mr-1" />
+								{format.number(Math.min(...selected.map(() => 0)), 'money')}
+							</>
+						),
+					},
+					{
+						label: t('components.table.selected.summary.avg'),
+						value: (
+							<>
+								<CurrencyBadge className="mr-1" />
+								{format.number(
+									selected.reduce((acc) => acc + 0, 0) / selected.length,
+									'money',
+								)}
+							</>
+						),
+					},
+					{
+						label: t('components.table.selected.summary.max'),
+						value: (
+							<>
+								<CurrencyBadge className="mr-1" />
+								{format.number(Math.max(...selected.map(() => 0)), 'money')}
+							</>
+						),
+					},
+				],
+			},
+			{
+				title: t('components.auctionsTable.summary.permitsOffered.title'),
+				rows: [
+					{
+						label: t('components.table.selected.summary.min'),
+						value: (
+							<>
+								<CurrencyBadge className="mr-1" />
+								{t('constants.quantities.permits.default', {
+									value: Math.min(...selected.map((record) => record.permits)),
+								})}
+							</>
+						),
+					},
+					{
+						label: t('components.table.selected.summary.avg'),
+						value: (
+							<>
+								<CurrencyBadge className="mr-1" />
+								{t('constants.quantities.permits.decimals', {
+									value:
+										selected.reduce((acc, record) => acc + record.permits, 0) /
+										selected.length,
+								})}
+							</>
+						),
+					},
+					{
+						label: t('components.table.selected.summary.max'),
+						value: (
+							<>
+								<CurrencyBadge className="mr-1" />
+								{t('constants.quantities.permits.default', {
+									value: Math.max(...selected.map((record) => record.permits)),
+								})}
+							</>
+						),
+					},
+				],
+			},
+			{
+				//	TODO: add emissions here
+				title: t('components.auctionsTable.summary.emissions.title'),
+				rows: [
+					{
+						label: t('components.table.selected.summary.min'),
+						value: (
+							<>
+								<CurrencyBadge className="mr-1" />
+								{t('constants.quantities.emissions.default', {
+									value: Math.min(...selected.map(() => 0)),
+								})}
+							</>
+						),
+					},
+					{
+						label: t('components.table.selected.summary.avg'),
+						value: (
+							<>
+								<CurrencyBadge className="mr-1" />
+								{t('constants.quantities.emissions.default', {
+									value: selected.reduce((acc) => acc + 0, 0) / selected.length,
+								})}
+							</>
+						),
+					},
+					{
+						label: t('components.table.selected.summary.max'),
+						value: (
+							<>
+								<CurrencyBadge className="mr-1" />
+								{t('constants.quantities.emissions.default', {
+									value: Math.max(...selected.map(() => 0)),
+								})}
+							</>
+						),
+					},
+				],
+			},
+			{
+				//	TODO: add lifespan here
+				title: t('components.auctionsTable.summary.lifespan.title'),
+				rows: [
+					{
+						label: t('components.table.selected.summary.min'),
+						value: t('constants.quantities.years.default', {
+							value: Math.min(...selected.map(() => 0)),
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.avg'),
+						value: t('constants.quantities.years.decimals', {
+							value: selected.reduce((acc) => acc + 0, 0) / selected.length,
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.max'),
+						value: t('constants.quantities.years.default', {
+							value: Math.max(...selected.map(() => 0)),
+						}),
+					},
+				],
+			},
+			{
+				title: t('components.auctionsTable.summary.numViews.title'),
+				rows: [
+					{
+						label: t('components.table.selected.summary.min'),
+						value: t('constants.quantities.views.default', {
+							value: Math.min(...selected.map((record) => record.views)),
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.avg'),
+						value: t('constants.quantities.views.decimals', {
+							value:
+								selected.reduce((acc, record) => acc + record.views, 0) /
+								selected.length,
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.max'),
+						value: t('constants.quantities.views.default', {
+							value: Math.max(...selected.map((record) => record.views)),
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.total'),
+						value: t('constants.quantities.views.default', {
+							value: selected.reduce((acc, record) => acc + record.views, 0),
+						}),
+					},
+				],
+			},
+			{
+				title: t('components.auctionsTable.summary.numBidders.title'),
+				rows: [
+					{
+						label: t('components.table.selected.summary.min'),
+						value: t('constants.quantities.bidders.default', {
+							value: Math.min(...selected.map((record) => record.biddersCount)),
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.avg'),
+						value: t('constants.quantities.bidders.decimals', {
+							value:
+								selected.reduce((acc, record) => acc + record.biddersCount, 0) /
+								selected.length,
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.max'),
+						value: t('constants.quantities.bidders.default', {
+							value: Math.max(...selected.map((record) => record.biddersCount)),
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.total'),
+						value: t('constants.quantities.bidders.default', {
+							value: selected.reduce((acc, record) => acc + record.biddersCount, 0),
+						}),
+					},
+				],
+			},
+			{
+				title: t('components.auctionsTable.summary.numBids.title'),
+				rows: [
+					{
+						label: t('components.table.selected.summary.min'),
+						value: t('constants.quantities.bids.default', {
+							value: Math.min(...selected.map((record) => record.bidsCount)),
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.avg'),
+						value: t('constants.quantities.bids.decimals', {
+							value:
+								selected.reduce((acc, record) => acc + record.bidsCount, 0) /
+								selected.length,
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.max'),
+						value: t('constants.quantities.bids.default', {
+							value: Math.max(...selected.map((record) => record.bidsCount)),
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.total'),
+						value: t('constants.quantities.bids.default', {
+							value: selected.reduce((acc, record) => acc + record.bidsCount, 0),
+						}),
+					},
+				],
+			},
+			{
+				//	TODO: add bookmark data here
+				title: t('components.auctionsTable.summary.numBookmarks.title'),
+				rows: [
+					{
+						label: t('components.table.selected.summary.min'),
+						value: t('constants.quantities.bookmarks.default', {
+							value: Math.min(...selected.map(() => 0)),
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.avg'),
+						value: t('constants.quantities.bookmarks.decimals', {
+							value: selected.reduce((acc) => acc + 0, 0) / selected.length,
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.max'),
+						value: t('constants.quantities.bookmarks.default', {
+							value: Math.max(...selected.map(() => 0)),
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.total'),
+						value: t('constants.quantities.bookmarks.default', {
+							value: selected.reduce((acc) => acc + 0, 0),
+						}),
+					},
+				],
+			},
+			{
+				title: t('components.auctionsTable.summary.createdDate.title'),
+				rows: [
+					{
+						label: t('components.table.selected.summary.min'),
+						value: t('constants.quantities.days.decimals', {
+							value: Math.min(
+								...selected.map(
+									(record) =>
+										DateTime.now().diff(
+											DateTime.fromISO(record.createdAt),
+											'days',
+										).days,
+								),
+							),
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.avg'),
+						value: t('constants.quantities.days.decimals', {
+							value:
+								selected.reduce(
+									(acc, record) =>
+										acc +
+										DateTime.now().diff(
+											DateTime.fromISO(record.createdAt),
+											'days',
+										).days,
+									0,
+								) / selected.length,
+						}),
+					},
+					{
+						label: t('components.table.selected.summary.max'),
+						value: t('constants.quantities.days.decimals', {
+							value: Math.max(
+								...selected.map(
+									(record) =>
+										DateTime.now().diff(
+											DateTime.fromISO(record.createdAt),
+											'days',
+										).days,
+								),
+							),
+						}),
+					},
+				],
+			},
+		],
+		[t, format],
+	);
 
 	const handleChangePage = useCallback(
 		(newPage: number) => {
@@ -400,6 +874,12 @@ export const AuctionsTable = ({
 								variant="outline"
 								disabled={selectedAuctions.length === 0}
 								rightSection={<IconReportAnalytics size={16} />}
+								onClick={() =>
+									open(
+										selectedAuctions,
+										generateSummaryGroups as () => Array<SummaryTableGroup>,
+									)
+								}
 							>
 								{t('components.table.selected.viewSummary')}
 							</Button>
@@ -808,3 +1288,5 @@ export const AuctionsTable = ({
 		</Stack>
 	);
 };
+export const AuctionsTable = (props: AuctionsTableProps) =>
+	withProviders(<_AuctionsTable {...props} />, { provider: SelectionSummaryProvider });
