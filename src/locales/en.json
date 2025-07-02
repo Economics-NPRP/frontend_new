@@ -1255,7 +1255,16 @@
     },
     "table": {
       "selected": {
-        "count": "{value, plural, =0 {No rows selected} =1 {1 row selected} other {# rows selected}}"
+        "count": "{value, plural, =0 {No rows selected} =1 {1 row selected} other {# rows selected}}",
+        "viewSummary": "View Summary",
+        "filterSelected": "Only Show Selected",
+        "resetFilter": "Show All",
+        "filterSelectedBadge": "Selected Records Only",
+        "paginationText": "Showing {value, number} selected {value, plural, =0 {records} =1 {record} other {records}}",
+        "info": {
+          "title": "Viewing Selected Records Only",
+          "message": "Note that the table is currently displaying only the selected records. To view all records, please clear the selection or disable the filter."
+        }
       }
     },
     "firmApplicationSummary": {

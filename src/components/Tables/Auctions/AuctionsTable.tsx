@@ -19,6 +19,7 @@ import { IAuctionData } from '@/schema/models';
 import { AuctionCategory } from '@/types';
 import {
 	ActionIcon,
+	Alert,
 	Anchor,
 	Button,
 	Checkbox,
@@ -44,8 +45,11 @@ import {
 	IconArrowUpRight,
 	IconBuildingStore,
 	IconDownload,
+	IconFilterSearch,
 	IconHelpHexagon,
 	IconHexagonLetterO,
+	IconInfoCircle,
+	IconReportAnalytics,
 	IconSearch,
 } from '@tabler/icons-react';
 
@@ -66,6 +70,7 @@ export const AuctionsTable = ({
 	const tableContainerRef = useRef<HTMLTableElement>(null);
 	const paginationText = useOffsetPaginationText('auctions', auctions);
 
+	const [showSelectedOnly, setShowSelectedOnly] = useState(false);
 	const [searchFilter, setSearchFilter] = useState('');
 	const [selectedAuctions, selectedAuctionsHandlers] = useListState<IAuctionData>([]);
 
@@ -73,6 +78,17 @@ export const AuctionsTable = ({
 	const filterBadges = useMemo(() => {
 		if (!auctions) return null;
 		const output = [];
+
+		if (showSelectedOnly)
+			return (
+				<Pill
+					className={classes.badge}
+					onRemove={() => setShowSelectedOnly(false)}
+					withRemoveButton
+				>
+					{t('components.table.selected.filterSelectedBadge')}
+				</Pill>
+			);
 
 		switch (auctions.filters.status) {
 			case 'upcoming':
@@ -139,7 +155,7 @@ export const AuctionsTable = ({
 				</Pill>
 			);
 		return output;
-	}, [auctions, t]);
+	}, [auctions, auctions.filters.status, auctions.filters.type, showSelectedOnly, t]);
 
 	const handleChangePage = useCallback(
 		(newPage: number) => {
@@ -152,6 +168,11 @@ export const AuctionsTable = ({
 	//	Reset the page when the filter or per page changes
 	useEffect(() => auctions.setPage(1), [auctions.filters, auctions.perPage]);
 
+	//	If we are showing selected only and there are no selected auctions, disable the filter
+	useEffect(() => {
+		if (showSelectedOnly && selectedAuctions.length === 0) setShowSelectedOnly(false);
+	}, [showSelectedOnly, selectedAuctions.length]);
+
 	return (
 		<Stack className={`${classes.root} ${className}`}>
 			<Stack className={classes.header}>
@@ -160,7 +181,13 @@ export const AuctionsTable = ({
 						<Title order={2} className={classes.title}>
 							{t('components.auctionsTable.title')}
 						</Title>
-						<Text className={classes.subtitle}>{paginationText}</Text>
+						<Text className={classes.subtitle}>
+							{showSelectedOnly
+								? t('components.table.selected.paginationText', {
+										value: selectedAuctions.length,
+									})
+								: paginationText}
+						</Text>
 					</Group>
 					<Group className={classes.settings}>
 						<Text className={classes.label}>
@@ -173,10 +200,11 @@ export const AuctionsTable = ({
 							data={['10', '20', '50', '100']}
 							onChange={(value) => auctions.setPerPage(Number(value))}
 							allowDeselect={false}
+							disabled={showSelectedOnly}
 						/>
-						<Menu position="bottom-end">
+						<Menu position="bottom-end" disabled={showSelectedOnly}>
 							<Menu.Target>
-								<ActionIcon className={classes.button}>
+								<ActionIcon className={classes.button} disabled={showSelectedOnly}>
 									<IconAdjustments size={16} />
 								</ActionIcon>
 							</Menu.Target>
@@ -349,16 +377,58 @@ export const AuctionsTable = ({
 							) : undefined
 						}
 						rightSectionPointerEvents="auto"
+						disabled={showSelectedOnly}
 					/>
 					<Group className={classes.actions}>
-						<Text className={classes.count}>
+						<Pill
+							classNames={{
+								root: classes.count,
+								label: classes.label,
+								remove: classes.remove,
+							}}
+							variant="subtle"
+							onRemove={() => selectedAuctionsHandlers.setState([])}
+							withRemoveButton={selectedAuctions.length > 0}
+						>
 							{t('components.table.selected.count', {
 								value: selectedAuctions.length,
 							})}
-						</Text>
+						</Pill>
+						<Group className={classes.buttons}>
+							<Button
+								className={`${classes.secondary} ${classes.button}`}
+								variant="outline"
+								disabled={selectedAuctions.length === 0}
+								rightSection={<IconReportAnalytics size={16} />}
+							>
+								{t('components.table.selected.viewSummary')}
+							</Button>
+							<Button
+								className={`${classes.secondary} ${classes.button}`}
+								variant="outline"
+								disabled={selectedAuctions.length === 0}
+								rightSection={<IconFilterSearch size={16} />}
+								onClick={() => setShowSelectedOnly((prev) => !prev)}
+							>
+								{showSelectedOnly
+									? t('components.table.selected.resetFilter')
+									: t('components.table.selected.filterSelected')}
+							</Button>
+						</Group>
 					</Group>
 				</Group>
 			</Stack>
+			{showSelectedOnly && (
+				<Alert
+					color="blue"
+					icon={<IconInfoCircle size={16} />}
+					title={t('components.table.selected.info.title')}
+					onClose={() => setShowSelectedOnly(false)}
+					withCloseButton
+				>
+					{t('components.table.selected.info.message')}
+				</Alert>
+			)}
 			{/* @ts-expect-error - data table props from library are not exposed */}
 			<DataTable
 				className={classes.table}
@@ -609,11 +679,6 @@ export const AuctionsTable = ({
 							},
 						],
 					},
-					// {
-					// 	id: 'miscellaneous',
-					// 	//	Number of views, bidders, bids, bookmarks
-					// 	//	Creation date
-					// },
 					{
 						id: 'miscellaneous',
 						title: t('components.auctionsTable.groups.miscellaneous'),
@@ -711,7 +776,7 @@ export const AuctionsTable = ({
 						],
 					},
 				]}
-				records={auctions.data.results}
+				records={showSelectedOnly ? selectedAuctions : auctions.data.results}
 				striped
 				withRowBorders
 				withColumnBorders
@@ -729,7 +794,7 @@ export const AuctionsTable = ({
 				{...props}
 			/>
 			<Group className={classes.footer}>
-				{auctions.isSuccess && (
+				{auctions.isSuccess && !showSelectedOnly && (
 					<Pagination
 						className={classes.pagination}
 						value={auctions.page}
