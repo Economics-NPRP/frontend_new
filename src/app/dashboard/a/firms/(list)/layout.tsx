@@ -24,6 +24,7 @@ export default function FirmsList({ subbanners, table }: FirmsListProps) {
 		<Stack className={classes.root}>
 			<DashboardHero
 				title={t('constants.pages.dashboard.admin.firms.title')}
+				description={t('constants.pages.dashboard.admin.firms.description')}
 				returnButton={{ href: '/dashboard/a', label: t('constants.return.home.label') }}
 				breadcrumbs={[
 					{

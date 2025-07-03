@@ -67,12 +67,18 @@ export default function Hero() {
 			}
 			actions={
 				<>
-					<Tooltip label="View admins assigned to this cycle" position="top">
+					<Tooltip
+						label={t('dashboard.admin.cycles.details.actions.members.tooltip')}
+						position="top"
+					>
 						<ActionIcon className={classes.button} variant="outline">
 							<IconUsers size={14} />
 						</ActionIcon>
 					</Tooltip>
-					<Tooltip label="View latest changes made to this cycle" position="top">
+					<Tooltip
+						label={t('dashboard.admin.cycles.details.actions.updates.tooltip')}
+						position="top"
+					>
 						<ActionIcon className={classes.button} variant="outline">
 							<IconBell size={14} />
 						</ActionIcon>

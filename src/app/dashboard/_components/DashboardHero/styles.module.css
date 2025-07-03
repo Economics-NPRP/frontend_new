@@ -1,6 +1,4 @@
 .root {
-	@apply gap-8;
-
 	> .navigation {
 		@apply gap-4;
 
@@ -23,6 +21,7 @@
 			@apply gap-4;
 
 			> .label {
+				@apply mt-4;
 				@apply gap-0 items-start;
 
 				> .title {

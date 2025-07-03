@@ -109,28 +109,30 @@ export const DashboardHero = ({
 			</Group>
 			<Group className={classes.row}>
 				<Stack className={classes.content}>
-					<Stack className={classes.label}>
-						{meta &&
-							(typeof meta === 'string' ? (
-								<Text className={classes.meta}>{meta}</Text>
-							) : (
-								meta
-							))}
-						{title &&
-							(typeof title === 'string' ? (
-								<Title order={1} className={classes.title}>
-									{title}
-								</Title>
-							) : (
-								title
-							))}
-						{description &&
-							(typeof description === 'string' ? (
-								<Text className={classes.description}>{description}</Text>
-							) : (
-								description
-							))}
-					</Stack>
+					{(meta || title || description) && (
+						<Stack className={classes.label}>
+							{meta &&
+								(typeof meta === 'string' ? (
+									<Text className={classes.meta}>{meta}</Text>
+								) : (
+									meta
+								))}
+							{title &&
+								(typeof title === 'string' ? (
+									<Title order={1} className={classes.title}>
+										{title}
+									</Title>
+								) : (
+									title
+								))}
+							{description &&
+								(typeof description === 'string' ? (
+									<Text className={classes.description}>{description}</Text>
+								) : (
+									description
+								))}
+						</Stack>
+					)}
 					{badges && <Group className={classes.badges}>{badges}</Group>}
 				</Stack>
 				<Group className={classes.actions}>{actions}</Group>

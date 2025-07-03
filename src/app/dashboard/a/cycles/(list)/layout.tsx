@@ -24,6 +24,7 @@ export default function CyclesList({ subbanners, list }: CyclesListProps) {
 		<Stack className={classes.root}>
 			<DashboardHero
 				title={t('constants.pages.dashboard.admin.cycles.title')}
+				description={t('constants.pages.dashboard.admin.cycles.description')}
 				returnButton={{ href: '/dashboard/a', label: t('constants.return.home.label') }}
 				breadcrumbs={[
 					{

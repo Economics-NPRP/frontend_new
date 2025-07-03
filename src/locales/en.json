@@ -486,13 +486,15 @@
             "title": "Companies",
             "applications": {
               "title": "Company Applications"
-            }
+            },
+            "description": "View all verified firms participating in the platform. Browse key details, manage accounts, and access firm-specific statistics, auction history, and billing status."
           },
           "cycles": {
             "title": "Auction Cycles",
             "auctions": {
               "title": "All Auctions"
-            }
+            },
+            "description": "Manage and track scheduled auction cycles, set performance targets, and monitor overall cycle outcomes. Each cycle defines the timeframe and structure for related emissions auctions."
           }
         }
       }
@@ -1706,6 +1708,14 @@
             },
             "updates": {
               "tab": "Latest Updates"
+            }
+          },
+          "actions": {
+            "members": {
+              "tooltip": "View admins assigned to this cycle"
+            },
+            "updates": {
+              "tooltip": "View latest changes made to this cycle"
             }
           }
         }
