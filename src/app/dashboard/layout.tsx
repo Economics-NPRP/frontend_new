@@ -1,8 +1,13 @@
 import { Metadata } from 'next';
 
 import { AdminDashboardHeader } from '@/components/Header';
+import { withProviders } from '@/helpers';
+import {
+	DashboardAside,
+	DashboardAsideProvider,
+} from '@/pages/dashboard/_components/DashboardAside';
 import '@/styles/globals.css';
-import { AppShell, Container } from '@mantine/core';
+import { AppShell, Container, Group } from '@mantine/core';
 
 import classes from './styles.module.css';
 
@@ -18,12 +23,18 @@ export default async function DashboardLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	return (
+	return withProviders(
 		<AppShell className={classes.root}>
 			<AdminDashboardHeader />
-			<Container className={classes.content} component="main">
-				{children}
-			</Container>
-		</AppShell>
+			<Group className={classes.row}>
+				<Container className={classes.wrapper}>
+					<Container className={classes.content} component="main">
+						{children}
+					</Container>
+				</Container>
+				<DashboardAside />
+			</Group>
+		</AppShell>,
+		{ provider: DashboardAsideProvider },
 	);
 }
