@@ -12,7 +12,7 @@ import { useCycleStatus } from '@/hooks';
 import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
 import { IAuctionCycleData } from '@/schema/models';
 import { ActionIcon, Tooltip } from '@mantine/core';
-import { IconBell, IconUsers } from '@tabler/icons-react';
+import { IconBell, IconPencil, IconUsers } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -67,6 +67,14 @@ export default function Hero() {
 			}
 			actions={
 				<>
+					<Tooltip
+						label={t('dashboard.admin.cycles.details.actions.edit.tooltip')}
+						position="top"
+					>
+						<ActionIcon className={classes.button} variant="outline">
+							<IconPencil size={14} />
+						</ActionIcon>
+					</Tooltip>
 					<Tooltip
 						label={t('dashboard.admin.cycles.details.actions.members.tooltip')}
 						position="top"

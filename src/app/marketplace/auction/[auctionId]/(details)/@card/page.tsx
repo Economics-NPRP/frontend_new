@@ -20,6 +20,7 @@ import {
 	IconGavel,
 	IconGitCompare,
 	IconLeaf,
+	IconLicense,
 } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
@@ -109,7 +110,7 @@ export default function Card() {
 							</Text>
 							<Group className={classes.price}>
 								<Container className={classes.icon}>
-									<IconLeaf size={14} />
+									<IconLicense size={14} />
 								</Container>
 								<Text className={classes.value}>
 									{format.number(auction.data.permits)}
