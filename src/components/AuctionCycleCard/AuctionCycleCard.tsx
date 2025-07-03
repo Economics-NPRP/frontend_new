@@ -1,15 +1,15 @@
 'use client';
 
-import { DateTime, Interval } from 'luxon';
+import { DateTime } from 'luxon';
 import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useMemo } from 'react';
 
 import { AuctionCycleStatusBadge, BaseBadge } from '@/components/Badge';
 import { MediumCountdown } from '@/components/Countdown';
 import { Id } from '@/components/Id';
 import { Switch } from '@/components/SwitchCase';
 import { WithSkeleton } from '@/components/WithSkeleton';
+import { useCycleStatus } from '@/hooks';
 import { IAuctionCycleData } from '@/schema/models';
 import {
 	ActionIcon,
@@ -38,9 +38,8 @@ export const AuctionCycleCard = ({
 }: AuctionCycleCardProps) => {
 	const t = useTranslations();
 	const format = useFormatter();
-
 	const truncate = useMatches({ base: false, xs: true, sm: false, md: true, lg: false });
-	const intervalFormat = useMatches({ base: DateTime.DATE_SHORT, md: DateTime.DATE_FULL });
+	const { duration, interval } = useCycleStatus(auctionCycleData);
 
 	// const distrbiution = useMemo(() => {
 	// 	//	Generate array of 6 random values and normalize them to sum to 100
@@ -65,25 +64,6 @@ export const AuctionCycleCard = ({
 	// 			</Progress.Section>
 	// 		));
 	// }, [t]);
-
-	const duration = useMemo(() => {
-		const start = DateTime.fromISO(auctionCycleData.startDatetime);
-		const end = DateTime.fromISO(auctionCycleData.endDatetime);
-		const durationObject = end.diff(start).rescale().toObject();
-
-		//	Take the largest non-zero unit for display and round it up if there are multiple units
-		const unitValuePairs = Object.entries(durationObject);
-		const largestUnit = unitValuePairs[0][0] as keyof typeof durationObject;
-		let duration = durationObject[largestUnit] || 0;
-		if (unitValuePairs.length > 1) duration += 1;
-		return `${unitValuePairs.length > 1 ? '~' : ''}${duration} ${t(`components.countdown.label.long.${largestUnit}`)}`;
-	}, [auctionCycleData.startDatetime, auctionCycleData.endDatetime]);
-
-	const interval = useMemo(() => {
-		const start = DateTime.fromISO(auctionCycleData.startDatetime);
-		const end = DateTime.fromISO(auctionCycleData.endDatetime);
-		return Interval.fromDateTimes(start, end).toLocaleString(intervalFormat);
-	}, [auctionCycleData.startDatetime, auctionCycleData.endDatetime, intervalFormat]);
 
 	return (
 		<Group className={`${classes[auctionCycleData.status]} ${classes.root}`} {...props}>

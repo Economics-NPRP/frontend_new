@@ -58,3 +58,11 @@
 		}
 	}
 }
+
+* {
+	@mixin dark {
+		.root.members > .section > .card {
+			@apply bg-dark-600 border-dark-400;
+		}
+	}
+}

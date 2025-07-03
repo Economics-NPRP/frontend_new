@@ -1,5 +1,5 @@
 .root {
-	@apply w-[440px] min-h-0;
+	@apply w-[400px] min-h-0;
 	@apply flex-shrink-0;
 	/* TODO: remove top padding once dashboard header is done */
 	@apply pt-20;
@@ -20,5 +20,17 @@
 
 	&:hover {
 		@apply shadow-xs;
+	}
+}
+
+* {
+	@mixin dark {
+		.root {
+			@apply bg-dark-600 border-dark-400;
+
+			> .tabs .tab[data-active='true'] {
+				@apply border-dark-50;
+			}
+		}
 	}
 }

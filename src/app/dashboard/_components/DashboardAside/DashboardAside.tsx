@@ -17,7 +17,7 @@ export const DashboardAside = ({ className, ...props }: StackProps) => {
 	return tabs.length > 0 ? (
 		<Stack className={`${classes.root} ${className}`} {...props}>
 			<Tabs
-				classNames={{ root: classes.tabs, panel: classes.panel }}
+				classNames={{ root: classes.tabs, panel: classes.panel, tab: classes.tab }}
 				defaultValue={tabs[0].value}
 			>
 				<Tabs.List grow>
