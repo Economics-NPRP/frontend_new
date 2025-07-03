@@ -5,7 +5,7 @@
 	> .row {
 		@apply flex-auto min-h-0;
 		@apply items-stretch justify-center flex-nowrap;
-		@apply pt-20;
+		@apply gap-0;
 
 		> .wrapper {
 			@apply box-content;
@@ -13,7 +13,7 @@
 			@apply overflow-y-auto;
 			@apply flex-auto;
 			@apply flex flex-col items-center;
-			@apply px-2 pb-4;
+			@apply px-2 pb-4 pt-20;
 
 			> .content {
 				@apply max-w-[1400px];
@@ -26,15 +26,11 @@
 
 * {
 	@mixin larger-than $mantine-breakpoint-sm {
-		.root > .row {
-			@apply pt-24;
+		.root > .row > .wrapper {
+			@apply px-4 pb-8 pt-24;
 
-			> .wrapper {
-				@apply px-4 pb-8;
-
-				> .content:has(.noscroll) {
-					height: calc(100vh - 8rem);
-				}
+			> .content:has(.noscroll) {
+				height: calc(100vh - 8rem);
 			}
 		}
 	}

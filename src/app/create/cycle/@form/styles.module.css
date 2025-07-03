@@ -88,7 +88,7 @@
 							}
 
 							> .meta {
-								@apply paragraph-sm-g6;
+								@apply paragraph-sm-g6 leading-none;
 							}
 						}
 					}
@@ -307,6 +307,10 @@
 								@apply size-6;
 								@apply text-gray-600;
 								@apply rounded-sm;
+
+								&:hover {
+									@apply bg-gray-100;
+								}
 							}
 						}
 

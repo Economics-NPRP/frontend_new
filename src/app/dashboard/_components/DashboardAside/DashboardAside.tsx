@@ -16,8 +16,11 @@ export const DashboardAside = ({ className, ...props }: StackProps) => {
 
 	return tabs.length > 0 ? (
 		<Stack className={`${classes.root} ${className}`} {...props}>
-			<Tabs classNames={{ root: classes.tabs }} defaultValue={tabs[0].value}>
-				<Tabs.List>
+			<Tabs
+				classNames={{ root: classes.tabs, panel: classes.panel }}
+				defaultValue={tabs[0].value}
+			>
+				<Tabs.List grow>
 					{tabs.map(({ value, label, icon }) => (
 						<Tabs.Tab key={value} value={value} leftSection={icon}>
 							{label}

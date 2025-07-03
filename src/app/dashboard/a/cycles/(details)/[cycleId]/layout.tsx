@@ -36,6 +36,7 @@ export const metadata: Metadata = {
 
 export interface CycleDetailsProps {
 	params: { cycleId: string };
+	aside: ReactNode;
 	hero: ReactNode;
 	distribution: ReactNode;
 	kpis: ReactNode;
@@ -43,6 +44,7 @@ export interface CycleDetailsProps {
 }
 export default function CycleDetails({
 	params,
+	aside,
 	hero,
 	distribution,
 	kpis,
@@ -50,6 +52,7 @@ export default function CycleDetails({
 }: CycleDetailsProps) {
 	return withProviders(
 		<Stack className={classes.root}>
+			{aside}
 			{hero}
 			{distribution}
 			{kpis}

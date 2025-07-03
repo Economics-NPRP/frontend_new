@@ -320,6 +320,9 @@
         "label": "View Results As Of Now",
         "aria": "View auction results as of now",
         "tooltip": "View auction results as of now"
+      },
+      "profile": {
+        "label": "View Profile"
       }
     },
     "actions": {
@@ -529,7 +532,10 @@
       "unit": "days"
     },
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "lastOnline": {
+      "default": "Last online {value}"
+    }
   },
   "marketplace": {
     "home": {
@@ -1691,6 +1697,16 @@
           "totalCycles": {
             "title": "Total Auction Cycles",
             "tooltip": "Total number of auction cycles created this year"
+          }
+        },
+        "details": {
+          "aside": {
+            "members": {
+              "tab": "Team Members"
+            },
+            "updates": {
+              "tab": "Latest Updates"
+            }
           }
         }
       }
