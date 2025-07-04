@@ -1,0 +1,66 @@
+.root {
+	@apply px-8 py-6 gap-3;
+	@apply items-stretch justify-center;
+	@apply bg-dark-600 border border-solid border-dark-400;
+
+	> .header {
+		@apply gap-1 pb-2;
+		@apply items-center justify-between;
+		@apply flex-nowrap;
+
+		> .title {
+			@apply display-md-sb;
+			@apply !text-white;
+		}
+
+		> .badge {
+			@apply bg-white text-dark-600;
+		}
+	}
+
+	> .progress {
+		@apply bg-dark-400;
+
+		.section {
+			@apply bg-white;
+		}
+	}
+
+	> .footer {
+		@apply items-center justify-center;
+		@apply flex-nowrap;
+
+		> .value {
+			@apply flex-auto;
+			@apply gap-0 items-start;
+
+			> .label {
+				@apply paragraph-sm-w !text-dark-50;
+				@apply leading-none;
+			}
+
+			> .row {
+				@apply gap-1 flex-nowrap;
+				@apply items-baseline;
+
+				> .amount {
+					@apply numeric-md-w;
+					@apply !text-white;
+				}
+
+				> .unit {
+					@apply paragraph-sm-w !text-dark-50;
+				}
+			}
+
+			&:last-child {
+				@apply items-end;
+			}
+		}
+
+		> .icon {
+			@apply text-white;
+			@apply flex-shrink-0;
+		}
+	}
+}

@@ -106,6 +106,14 @@ export const ThirdStep = () => {
 					title={t('create.cycle.third.permitDistribution.title')}
 					rows={[
 						{
+							label: t('create.cycle.third.permitDistribution.totalAuctions.label'),
+							tooltip: t(
+								'create.cycle.third.permitDistribution.totalAuctions.tooltip',
+							),
+							summary: 'total',
+							unit: 'auctions',
+						},
+						{
 							label: t('create.cycle.third.permitDistribution.totalPermits.label'),
 							tooltip: t(
 								'create.cycle.third.permitDistribution.totalPermits.tooltip',
@@ -331,7 +339,10 @@ const TargetRow = ({ label, tooltip, summary, unit, key, ...props }: TargetRowPr
 				return (
 					<>
 						<Text className={classes.amount}>
-							{format.number(summaryValue, 'money')}
+							{format.number(
+								summaryValue,
+								summary === 'average' ? 'money' : undefined,
+							)}
 						</Text>
 						<Text className={classes.unit}>{t('constants.permits.unitShort')}</Text>
 					</>
@@ -340,7 +351,10 @@ const TargetRow = ({ label, tooltip, summary, unit, key, ...props }: TargetRowPr
 				return (
 					<>
 						<Text className={classes.amount}>
-							{format.number(summaryValue, 'money')}
+							{format.number(
+								summaryValue,
+								summary === 'average' ? 'money' : undefined,
+							)}
 						</Text>
 						<Text className={classes.unit}>{t('constants.bids.unit')}</Text>
 					</>
@@ -349,7 +363,10 @@ const TargetRow = ({ label, tooltip, summary, unit, key, ...props }: TargetRowPr
 				return (
 					<>
 						<Text className={classes.amount}>
-							{format.number(summaryValue, 'money')}
+							{format.number(
+								summaryValue,
+								summary === 'average' ? 'money' : undefined,
+							)}
 						</Text>
 						<Text className={classes.unit}>{t('constants.firms.unit')}</Text>
 					</>
@@ -358,7 +375,10 @@ const TargetRow = ({ label, tooltip, summary, unit, key, ...props }: TargetRowPr
 				return (
 					<>
 						<Text className={classes.amount}>
-							{format.number(summaryValue, 'money')}
+							{format.number(
+								summaryValue,
+								summary === 'average' ? 'money' : undefined,
+							)}
 						</Text>
 						<Text className={classes.unit}>{t('constants.auctions.unit')}</Text>
 					</>
@@ -367,13 +387,16 @@ const TargetRow = ({ label, tooltip, summary, unit, key, ...props }: TargetRowPr
 				return (
 					<>
 						<Text className={classes.amount}>
-							{format.number(summaryValue, 'money')}
+							{format.number(
+								summaryValue,
+								summary === 'average' ? 'money' : undefined,
+							)}
 						</Text>
 						<Text className={classes.unit}>{t('constants.days.unit')}</Text>
 					</>
 				);
 		}
-	}, [unit, summaryValue, format, t]);
+	}, [unit, summary, summaryValue, format, t]);
 
 	return (
 		<Group key={key} className={classes.row}>

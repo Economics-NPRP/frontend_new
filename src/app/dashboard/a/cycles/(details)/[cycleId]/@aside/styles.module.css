@@ -61,8 +61,15 @@
 
 * {
 	@mixin dark {
-		.root.members > .section > .card {
-			@apply bg-dark-600 border-dark-400;
+		.root.members > .section {
+			> .header > .info:hover,
+			> .card > .actions:hover {
+				@apply bg-dark-500;
+			}
+
+			> .card {
+				@apply bg-dark-600 border-dark-400;
+			}
 		}
 	}
 }

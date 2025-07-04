@@ -19,7 +19,6 @@ import {
 	IconCheckbox,
 	IconGavel,
 	IconGitCompare,
-	IconLeaf,
 	IconLicense,
 } from '@tabler/icons-react';
 

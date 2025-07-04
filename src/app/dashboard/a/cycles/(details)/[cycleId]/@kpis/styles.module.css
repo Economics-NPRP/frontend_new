@@ -1,0 +1,21 @@
+.root {
+	> .header {
+		@apply flex-nowrap items-center justify-between;
+
+		> .label {
+			@apply gap-0 items-start;
+
+			> .title {
+				@apply heading-3;
+			}
+
+			> .subtitle {
+				@apply paragraph-sm-g6;
+			}
+		}
+	}
+
+	> .content {
+		@apply grid grid-cols-2 gap-2;
+	}
+}
