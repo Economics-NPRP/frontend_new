@@ -1,0 +1,32 @@
+.root {
+	@apply col-span-full;
+	@apply grid grid-cols-1 gap-2;
+	@apply self-stretch;
+
+	> .banner {
+		@apply col-span-1;
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+			@apply grid-cols-6;
+			@apply gap-4;
+
+			> .banner {
+				@apply col-span-2;
+			}
+		}
+	}
+
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+			@apply grid-cols-12;
+
+			> .banner {
+				@apply col-span-4;
+			}
+		}
+	}
+}

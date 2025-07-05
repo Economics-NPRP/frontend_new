@@ -135,6 +135,7 @@
 		tr {
 			td {
 				@apply border-b-0;
+				@apply paragraph-sm;
 			}
 
 			&.gray,
@@ -152,6 +153,7 @@
 
 			.anchor {
 				@apply truncate;
+				@apply display-sm-sb-d3;
 			}
 
 			.copy {

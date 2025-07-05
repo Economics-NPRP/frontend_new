@@ -1,0 +1,35 @@
+.root {
+	@apply col-span-full;
+
+	> .header {
+		@apply flex-nowrap items-center justify-between;
+
+		> .label {
+			@apply gap-0 items-start;
+
+			> .title {
+				@apply heading-3;
+			}
+
+			> .subtitle {
+				@apply paragraph-sm-g6;
+			}
+		}
+
+		> .dropdown {
+			@apply flex-shrink-0;
+		}
+	}
+
+	> .content {
+		@apply grid grid-cols-1 gap-2;
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			@apply col-span-4;
+		}
+	}
+}

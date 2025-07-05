@@ -1,0 +1,75 @@
+.root {
+	@apply p-6 gap-6;
+	@apply items-stretch justify-start;
+
+	&.members {
+		> .section {
+			@apply gap-2;
+			@apply items-stretch justify-center;
+
+			> .header {
+				@apply items-center justify-between;
+
+				> .title {
+					@apply display-lg;
+				}
+
+				> .info {
+					@apply min-w-[unset] min-h-[unset];
+					@apply size-6;
+					@apply text-gray-600;
+					@apply rounded-sm;
+
+					&:hover {
+						@apply bg-gray-100;
+					}
+				}
+			}
+
+			> .card {
+				@apply px-4 py-3 gap-3;
+				@apply items-center justify-center;
+				@apply bg-white border border-solid border-gray-300;
+
+				> .label {
+					@apply flex-auto;
+					@apply gap-0 items-start;
+
+					> .name {
+						@apply display-sm-sb-d6;
+					}
+
+					> .meta {
+						@apply paragraph-sm-g6 leading-none;
+					}
+				}
+
+				> .actions {
+					@apply min-w-[unset] min-h-[unset];
+					@apply size-6;
+					@apply text-gray-600;
+					@apply rounded-sm;
+
+					&:hover {
+						@apply bg-gray-100;
+					}
+				}
+			}
+		}
+	}
+}
+
+* {
+	@mixin dark {
+		.root.members > .section {
+			> .header > .info:hover,
+			> .card > .actions:hover {
+				@apply bg-dark-500;
+			}
+
+			> .card {
+				@apply bg-dark-600 border-dark-400;
+			}
+		}
+	}
+}

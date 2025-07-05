@@ -13,12 +13,34 @@
 		}
 	}
 
-	> .title {
-		@apply heading-1;
-	}
+	> .row {
+		@apply items-start justify-between;
+		@apply flex-nowrap;
 
-	> .description {
-		@apply paragraph-md text-justify;
+		> .content {
+			@apply gap-4;
+
+			> .label {
+				@apply mt-4;
+				@apply gap-0 items-start;
+
+				> .title {
+					@apply heading-1;
+				}
+
+				> .description {
+					@apply paragraph-md text-justify;
+				}
+			}
+
+			> .badges {
+				@apply gap-1.5;
+			}
+		}
+
+		> .actions {
+			@apply gap-2 flex-nowrap;
+		}
 	}
 }
 

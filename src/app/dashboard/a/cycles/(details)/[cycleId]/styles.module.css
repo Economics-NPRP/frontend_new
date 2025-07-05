@@ -1,0 +1,13 @@
+.root {
+	@apply min-h-0 flex-auto;
+	@apply grid grid-cols-1 gap-4;
+	@apply items-start;
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			@apply grid-cols-7;
+		}
+	}
+}

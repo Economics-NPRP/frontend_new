@@ -99,6 +99,13 @@
       }
     },
     "auctionCategory": {
+      "all": {
+        "alt": "Image of a globe depicting all categories",
+        "title": "All Sectors",
+        "description": {
+          "register": "This category includes all sectors and is used when no specific sector is applicable."
+        }
+      },
       "energy": {
         "alt": "Image of a power plant depicting the energy category",
         "title": "Energy",
@@ -202,7 +209,8 @@
     },
     "auctions": {
       "key": "Auctions",
-      "unit": "auctions"
+      "unit": "auctions",
+      "unitShort": "axns"
     },
     "cycles": {
       "key": "Cycles",
@@ -320,6 +328,9 @@
         "label": "View Results As Of Now",
         "aria": "View auction results as of now",
         "tooltip": "View auction results as of now"
+      },
+      "profile": {
+        "label": "View Profile"
       }
     },
     "actions": {
@@ -412,7 +423,8 @@
         "default": "{value, number, ::.00} {value, plural, =0 {tCO2e} =1 {tCO2e} other {tCO2e}}"
       },
       "percent": {
-        "default": "{value, number, ::.00}%"
+        "default": "{value, number, ::.00}%",
+        "integer": "{value, number}%"
       },
       "permits": {
         "default": "{value, number} {value, plural, =0 {Permits} =1 {Permit} other {Permits}}",
@@ -483,13 +495,15 @@
             "title": "Companies",
             "applications": {
               "title": "Company Applications"
-            }
+            },
+            "description": "View all verified firms participating in the platform. Browse key details, manage accounts, and access firm-specific statistics, auction history, and billing status."
           },
           "cycles": {
             "title": "Auction Cycles",
             "auctions": {
               "title": "All Auctions"
-            }
+            },
+            "description": "Manage and track scheduled auction cycles, set performance targets, and monitor overall cycle outcomes. Each cycle defines the timeframe and structure for related emissions auctions."
           }
         }
       }
@@ -529,7 +543,10 @@
       "unit": "days"
     },
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "lastOnline": {
+      "default": "Last online {value}"
+    }
   },
   "marketplace": {
     "home": {
@@ -1566,6 +1583,11 @@
           "title": "Auction Age"
         }
       }
+    },
+    "kpiCard": {
+      "current": "Current",
+      "target": "Target",
+      "deviation": "Deviation"
     }
   },
   "dashboard": {
@@ -1691,6 +1713,54 @@
           "totalCycles": {
             "title": "Total Auction Cycles",
             "tooltip": "Total number of auction cycles created this year"
+          }
+        },
+        "details": {
+          "aside": {
+            "members": {
+              "tab": "Team Members"
+            },
+            "updates": {
+              "tab": "Latest Updates"
+            }
+          },
+          "actions": {
+            "members": {
+              "tooltip": "View admins assigned to this cycle"
+            },
+            "updates": {
+              "tooltip": "View latest changes made to this cycle"
+            },
+            "edit": {
+              "tooltip": "Edit details for this auction cycle"
+            },
+            "create": {
+              "heading": "Create New Auction",
+              "subheading": "Make a new auction to be released during this cycle"
+            },
+            "permits": {
+              "heading": "Allocate Permits",
+              "subheading": "Click here to plan the free permits to be allocated"
+            },
+            "kpis": {
+              "heading": "Edit Performance Targets",
+              "subheading": "Set or edit the performance targets for this cycle"
+            }
+          },
+          "title": "Cycle KPIs",
+          "subtitle": "Track the progress and measure the success of this cycle with key performance indicators.",
+          "distribution": {
+            "chart": {
+              "label": "Sector Diversity Index"
+            },
+            "title": "Sector Distribution",
+            "subtitle": "Chart showing the distribution of sectors in the cycle.",
+            "columns": {
+              "sector": "Sector",
+              "permits": "Permit Inflow (% Total)",
+              "emissions": "Equivalent Emissions (% Total)",
+              "auctions": "Auctions (% Total)"
+            }
           }
         }
       }
@@ -2053,6 +2123,10 @@
           "avgWon": {
             "label": "Average Permits Won Per Company",
             "tooltip": "How many permits on average should each company win during this cycle?"
+          },
+          "totalAuctions": {
+            "label": "Total Auctions",
+            "tooltip": "Decide the target number of auctions to create in each sector"
           }
         },
         "financial": {

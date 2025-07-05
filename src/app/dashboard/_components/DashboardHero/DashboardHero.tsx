@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 import { Switch } from '@/components/SwitchCase';
 import {
@@ -12,6 +12,7 @@ import {
 	Group,
 	Skeleton,
 	Stack,
+	StackProps,
 	Text,
 	Title,
 	useMatches,
@@ -20,9 +21,12 @@ import { IconArrowUpLeft, IconChevronRight } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
-export interface DashboardHeroProps {
-	title?: string;
-	description?: string;
+export interface DashboardHeroProps extends Omit<StackProps, 'title'> {
+	title?: ReactNode;
+	description?: ReactNode;
+	meta?: ReactNode;
+	badges?: ReactNode;
+	actions?: ReactNode;
 	returnButton?: {
 		href: string;
 		label: string;
@@ -36,9 +40,14 @@ export interface DashboardHeroProps {
 export const DashboardHero = ({
 	title,
 	description,
+	meta,
+	badges,
+	actions,
 	returnButton,
 	breadcrumbs,
 	loading = false,
+	className,
+	...props
 }: DashboardHeroProps) => {
 	const buttonSize = useMatches({
 		base: 'xs',
@@ -56,7 +65,7 @@ export const DashboardHero = ({
 	);
 
 	return (
-		<Stack className={classes.root}>
+		<Stack className={`${classes.root} ${className}`} {...props}>
 			<Group className={classes.navigation}>
 				{returnButton && (
 					<>
@@ -101,12 +110,36 @@ export const DashboardHero = ({
 					</Switch>
 				)}
 			</Group>
-			{title && (
-				<Title order={1} className={classes.title}>
-					{title}
-				</Title>
-			)}
-			{description && <Text className={classes.description}>{description}</Text>}
+			<Group className={classes.row}>
+				<Stack className={classes.content}>
+					{(meta || title || description) && (
+						<Stack className={classes.label}>
+							{meta &&
+								(typeof meta === 'string' ? (
+									<Text className={classes.meta}>{meta}</Text>
+								) : (
+									meta
+								))}
+							{title &&
+								(typeof title === 'string' ? (
+									<Title order={1} className={classes.title}>
+										{title}
+									</Title>
+								) : (
+									title
+								))}
+							{description &&
+								(typeof description === 'string' ? (
+									<Text className={classes.description}>{description}</Text>
+								) : (
+									description
+								))}
+						</Stack>
+					)}
+					{badges && <Group className={classes.badges}>{badges}</Group>}
+				</Stack>
+				<Group className={classes.actions}>{actions}</Group>
+			</Group>
 		</Stack>
 	);
 };

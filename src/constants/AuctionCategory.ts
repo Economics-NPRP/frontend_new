@@ -28,6 +28,7 @@ export const AuctionCategoryVariants: Partial<Record<AuctionCategory, AuctionCat
 		Icon: IconBolt,
 		color: {
 			token: 'yellow',
+			hex: '#fab005',
 		},
 	},
 	industry: {
@@ -42,6 +43,7 @@ export const AuctionCategoryVariants: Partial<Record<AuctionCategory, AuctionCat
 		Icon: IconBuildingFactory,
 		color: {
 			token: 'maroon',
+			hex: '#8a1538',
 		},
 	},
 	transport: {
@@ -58,6 +60,7 @@ export const AuctionCategoryVariants: Partial<Record<AuctionCategory, AuctionCat
 		Icon: IconTruck,
 		color: {
 			token: 'salmon',
+			hex: '#dd7877',
 		},
 	},
 	buildings: {
@@ -65,6 +68,7 @@ export const AuctionCategoryVariants: Partial<Record<AuctionCategory, AuctionCat
 		Icon: IconBuildingCommunity,
 		color: {
 			token: 'purple',
+			hex: '#8067a4',
 		},
 	},
 	agriculture: {
@@ -72,6 +76,7 @@ export const AuctionCategoryVariants: Partial<Record<AuctionCategory, AuctionCat
 		Icon: IconLeaf,
 		color: {
 			token: 'palm',
+			hex: '#129b82',
 		},
 	},
 	waste: {
@@ -81,6 +86,7 @@ export const AuctionCategoryVariants: Partial<Record<AuctionCategory, AuctionCat
 		Icon: IconRecycle,
 		color: {
 			token: 'skyline',
+			hex: '#0d4261',
 		},
 	},
 };

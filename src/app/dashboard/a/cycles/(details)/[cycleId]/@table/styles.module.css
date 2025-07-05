@@ -1,0 +1,4 @@
+.table {
+	@apply col-span-full;
+	@apply flex-auto min-h-0;
+}
