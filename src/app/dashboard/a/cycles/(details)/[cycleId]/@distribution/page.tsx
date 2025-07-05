@@ -1,69 +1,107 @@
 'use client';
 
+import { sortBy } from 'lodash-es';
+import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
-import { Cell, Label, Pie, PieChart, Sector, Tooltip } from 'recharts';
-import { PieSectorDataItem } from 'recharts/types/polar/Pie';
 
+import { BaseBadge } from '@/components/Badge';
 import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
-import { Container, Group, Select, Stack, Text, Title, useMantineColorScheme } from '@mantine/core';
+import { Chart } from '@/pages/dashboard/a/cycles/(details)/[cycleId]/@distribution/Chart';
+import { AuctionCategory } from '@/types';
+import { Container, Group, Select, Stack, Text, Title } from '@mantine/core';
 
 import classes from './styles.module.css';
+
+interface TableData {
+	id: string;
+	title: string;
+	permits: number;
+	emissions: number;
+	auctions: number;
+}
 
 export default function Distribution() {
 	const t = useTranslations();
 	const format = useFormatter();
-	const { colorScheme } = useMantineColorScheme();
-	const [type, setType] = useState<'permits' | 'emissions' | 'auctions'>('permits');
 
-	const chartData = useMemo(() => {
+	const [type, setType] = useState<'permits' | 'emissions' | 'auctions'>('permits');
+	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<TableData>>({
+		columnAccessor: 'permits',
+		direction: 'desc',
+	});
+
+	const rawData = useMemo<Array<TableData>>(() => {
 		return [
 			{
-				name: t('constants.auctionCategory.energy.title'),
-				value: Math.round(Math.random() * 1000),
-				color: AuctionCategoryVariants.energy!.color.hex!,
-				icon: AuctionCategoryVariants.energy!.Icon,
+				id: 'energy',
+				title: t('constants.auctionCategory.energy.title'),
+				permits: Math.round(Math.random() * 100000),
+				emissions: Math.round(Math.random() * 100000),
+				auctions: Math.round(Math.random() * 1000),
 			},
 			{
-				name: t('constants.auctionCategory.industry.title'),
-				value: Math.round(Math.random() * 1000),
-				color: AuctionCategoryVariants.industry!.color.hex!,
-				icon: AuctionCategoryVariants.industry!.Icon,
+				id: 'industry',
+				title: t('constants.auctionCategory.industry.title'),
+				permits: Math.round(Math.random() * 100000),
+				emissions: Math.round(Math.random() * 100000),
+				auctions: Math.round(Math.random() * 1000),
 			},
 			{
-				name: t('constants.auctionCategory.transport.title'),
-				value: Math.round(Math.random() * 1000),
-				color: AuctionCategoryVariants.transport!.color.hex!,
-				icon: AuctionCategoryVariants.transport!.Icon,
+				id: 'transport',
+				title: t('constants.auctionCategory.transport.title'),
+				permits: Math.round(Math.random() * 100000),
+				emissions: Math.round(Math.random() * 100000),
+				auctions: Math.round(Math.random() * 1000),
 			},
 			{
-				name: t('constants.auctionCategory.buildings.title'),
-				value: Math.round(Math.random() * 1000),
-				color: AuctionCategoryVariants.buildings!.color.hex!,
-				icon: AuctionCategoryVariants.buildings!.Icon,
+				id: 'buildings',
+				title: t('constants.auctionCategory.buildings.title'),
+				permits: Math.round(Math.random() * 100000),
+				emissions: Math.round(Math.random() * 100000),
+				auctions: Math.round(Math.random() * 1000),
 			},
 			{
-				name: t('constants.auctionCategory.waste.title'),
-				value: Math.round(Math.random() * 1000),
-				color: AuctionCategoryVariants.waste!.color.hex!,
-				icon: AuctionCategoryVariants.waste!.Icon,
+				id: 'waste',
+				title: t('constants.auctionCategory.waste.title'),
+				permits: Math.round(Math.random() * 100000),
+				emissions: Math.round(Math.random() * 100000),
+				auctions: Math.round(Math.random() * 1000),
 			},
 			{
-				name: t('constants.auctionCategory.agriculture.title'),
-				value: Math.round(Math.random() * 1000),
-				color: AuctionCategoryVariants.agriculture!.color.hex!,
-				icon: AuctionCategoryVariants.agriculture!.Icon,
+				id: 'agriculture',
+				title: t('constants.auctionCategory.agriculture.title'),
+				permits: Math.round(Math.random() * 100000),
+				emissions: Math.round(Math.random() * 100000),
+				auctions: Math.round(Math.random() * 1000),
 			},
-		];
+		] as Array<TableData>;
 	}, [t]);
 
-	const biggestIndex = useMemo(() => {
-		return (
-			chartData.findIndex(
-				(item) => item.value === Math.max(...chartData.map((d) => d.value)),
-			) || 0
-		);
-	}, [chartData]);
+	const tableData = useMemo<Array<TableData>>(() => {
+		const data = sortBy(rawData, sortStatus.columnAccessor);
+		return sortStatus.direction === 'desc' ? data.reverse() : data;
+	}, [rawData, sortStatus]);
+
+	const tableTotals = useMemo(
+		() => ({
+			permits: rawData.reduce((acc, item) => acc + item.permits, 0),
+			emissions: rawData.reduce((acc, item) => acc + item.emissions, 0),
+			auctions: rawData.reduce((acc, item) => acc + item.auctions, 0),
+		}),
+		[rawData],
+	);
+
+	const chartData = useMemo(
+		() =>
+			rawData.map((item) => ({
+				name: item.title,
+				value: item[type],
+				color: AuctionCategoryVariants[item.id as AuctionCategory]!.color.hex!,
+				icon: AuctionCategoryVariants[item.id as AuctionCategory]!.Icon,
+			})),
+		[rawData, type],
+	);
 
 	return (
 		<Stack className={classes.root}>
@@ -98,104 +136,99 @@ export default function Distribution() {
 					allowDeselect={false}
 				/>
 			</Group>
-			<Container className={classes.chart}>
-				<PieChart width={280} height={280}>
-					<Tooltip />
-					<Pie
-						data={chartData}
-						dataKey="value"
-						nameKey="name"
-						innerRadius={70}
-						outerRadius={120}
-						strokeWidth={5}
-						stroke={colorScheme === 'light' ? '#ffffff' : '#25262b'}
-						activeIndex={biggestIndex}
-						activeShape={({
-							outerRadius = 0,
-							className,
-							...props
-						}: PieSectorDataItem) => (
-							<g>
-								<Sector
-									{...props}
-									className={`${className} ${classes.active}`}
-									outerRadius={outerRadius + 10}
-								/>
-								<Sector
-									{...props}
-									className={`${className} ${classes.active}`}
-									outerRadius={outerRadius + 20}
-									innerRadius={outerRadius + 10}
-								/>
-							</g>
-						)}
-						labelLine={false}
-						label={({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-							console.log(percent);
-							if (percent < 0.05) return null;
-
-							const RADIAN = Math.PI / 180;
-							const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-							const x = cx + radius * Math.cos(-midAngle * RADIAN);
-							const y = cy + radius * Math.sin(-midAngle * RADIAN);
-							const Icon = chartData[index].icon;
+			<Chart chartData={chartData} />
+			<DataTable
+				className={classes.table}
+				columns={[
+					{
+						accessor: 'title',
+						sortable: false,
+						title: t('dashboard.admin.cycles.details.distribution.columns.sector'),
+						width: 160,
+						ellipsis: true,
+						render: (record) => {
+							const { Icon, color } =
+								AuctionCategoryVariants[record.id as AuctionCategory]!;
 
 							return (
-								<Icon
-									className={classes.icon}
-									size={16}
-									x={x}
-									y={y}
-									textAnchor={x > cx ? 'start' : 'end'}
-									dominantBaseline="central"
-								/>
+								<Group className={classes.cell}>
+									<Container
+										className={`${classes.icon} ${classes[color.token!]}`}
+									>
+										<Icon size={14} />
+									</Container>
+									<Text className={classes.name}>{record.title}</Text>
+								</Group>
 							);
-						}}
-					>
-						{chartData.map((entry, index) => (
-							<Cell
-								key={`cell-${index}`}
-								fill={entry.color}
-								className={classes.cell}
-							/>
-						))}
-						<Label
-							content={({ viewBox }) => {
-								if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
-									return (
-										<text
-											className={classes.label}
-											x={viewBox.cx}
-											y={viewBox.cy}
-											textAnchor="middle"
-											dominantBaseline="middle"
-										>
-											<Text
-												component="tspan"
-												className={`${classes.key} x`}
-												x={viewBox.cx}
-												y={(viewBox.cy || 0) - 8}
-											>
-												{t(
-													'dashboard.admin.cycles.details.distribution.chart.label',
-												)}
-											</Text>
-											<Text
-												component="tspan"
-												className={classes.value}
-												x={viewBox.cx}
-												y={(viewBox.cy || 0) + 16}
-											>
-												{format.number(Math.random(), 'index')}
-											</Text>
-										</text>
-									);
-								}
-							}}
-						/>
-					</Pie>
-				</PieChart>
-			</Container>
+						},
+					},
+					{
+						accessor: 'permits',
+						sortable: true,
+						title: t('dashboard.admin.cycles.details.distribution.columns.permits'),
+						render: (record) => (
+							<Group className={classes.cell}>
+								<Text className={classes.value}>
+									{format.number(record.permits)}
+								</Text>
+								<BaseBadge className={classes.badge} variant="light">
+									{t('constants.quantities.percent.integer', {
+										value: Math.round(
+											(record.permits / tableTotals.permits) * 100,
+										),
+									})}
+								</BaseBadge>
+							</Group>
+						),
+					},
+					{
+						accessor: 'emissions',
+						sortable: true,
+						title: t('dashboard.admin.cycles.details.distribution.columns.emissions'),
+						render: (record) => (
+							<Group className={classes.cell}>
+								<Text className={classes.value}>
+									{t('constants.quantities.emissions.default', {
+										value: record.emissions,
+									})}
+								</Text>
+								<BaseBadge className={classes.badge} variant="light">
+									{t('constants.quantities.percent.integer', {
+										value: Math.round(
+											(record.emissions / tableTotals.emissions) * 100,
+										),
+									})}
+								</BaseBadge>
+							</Group>
+						),
+					},
+					{
+						accessor: 'auctions',
+						sortable: true,
+						title: t('dashboard.admin.cycles.details.distribution.columns.auctions'),
+						render: (record) => (
+							<Group className={classes.cell}>
+								<Text className={classes.value}>
+									{format.number(record.auctions)}
+								</Text>
+								<BaseBadge className={classes.badge} variant="light">
+									{t('constants.quantities.percent.integer', {
+										value: Math.round(
+											(record.auctions / tableTotals.auctions) * 100,
+										),
+									})}
+								</BaseBadge>
+							</Group>
+						),
+					},
+				]}
+				records={tableData}
+				sortStatus={sortStatus}
+				onSortStatusChange={setSortStatus}
+				withRowBorders
+				highlightOnHover
+				idAccessor="id"
+			/>
 		</Stack>
 	);
 }

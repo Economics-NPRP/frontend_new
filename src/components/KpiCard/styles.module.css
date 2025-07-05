@@ -42,19 +42,19 @@
 			}
 
 			&.red {
-				@apply bg-red-600 opacity-20;
+				@apply bg-red-600 opacity-15;
 			}
 
 			&.orange {
-				@apply bg-orange-600 opacity-40;
+				@apply bg-orange-600 opacity-30;
 			}
 
 			&.yellow {
-				@apply bg-yellow-600 opacity-60;
+				@apply bg-yellow-600 opacity-45;
 			}
 
 			&.green {
-				@apply bg-green-600 opacity-80;
+				@apply bg-green-600 opacity-60;
 			}
 		}
 
@@ -113,5 +113,33 @@
 
 	&:hover {
 		@apply shadow-xs;
+	}
+}
+
+* {
+	@mixin dark {
+		.root {
+			> .progress .section {
+				&.red {
+					@apply bg-red-600 opacity-10;
+				}
+
+				&.orange {
+					@apply bg-orange-600 opacity-20;
+				}
+
+				&.yellow {
+					@apply bg-yellow-600 opacity-30;
+				}
+
+				&.green {
+					@apply bg-green-600 opacity-40;
+				}
+			}
+
+			> .footer > .value > .label {
+				@apply !text-dark-50;
+			}
+		}
 	}
 }

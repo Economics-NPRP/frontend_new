@@ -1754,7 +1754,13 @@
               "label": "Sector Diversity Index"
             },
             "title": "Sector Distribution",
-            "subtitle": "Chart showing the distribution of sectors in the cycle."
+            "subtitle": "Chart showing the distribution of sectors in the cycle.",
+            "columns": {
+              "sector": "Sector",
+              "permits": "Permit Inflow (% Total)",
+              "emissions": "Equivalent Emissions (% Total)",
+              "auctions": "Auctions (% Total)"
+            }
           }
         }
       }

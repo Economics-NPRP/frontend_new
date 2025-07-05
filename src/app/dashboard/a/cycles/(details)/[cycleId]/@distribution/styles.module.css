@@ -26,6 +26,17 @@
 		@apply py-4;
 		@apply flex flex-col items-center justify-center;
 
+		> .gradient {
+			@apply absolute top-0 left-0;
+			@apply w-full h-full;
+
+			background: radial-gradient(
+				at center,
+				rgba(255, 255, 255, 0) 25%,
+				rgba(255, 255, 255, 1) 100%
+			);
+		}
+
 		g {
 			@apply outline-none;
 		}
@@ -66,15 +77,84 @@
 		}
 	}
 
-	&:hover {
-		@apply shadow-xs;
+	> .table {
+		.cell {
+			@apply flex-nowrap items-center justify-start;
+			@apply gap-2;
+
+			> .icon {
+				@apply size-6;
+				@apply flex items-center justify-center;
+				@apply rounded-sm;
+
+				&.yellow {
+					@apply bg-yellow-600/10 text-yellow-600;
+				}
+
+				&.maroon {
+					@apply bg-maroon-600/10 text-maroon-600;
+				}
+
+				&.salmon {
+					@apply bg-salmon-600/10 text-salmon-600;
+				}
+
+				&.purple {
+					@apply bg-purple-600/10 text-purple-600;
+				}
+
+				&.palm {
+					@apply bg-palm-600/10 text-palm-600;
+				}
+
+				&.skyline {
+					@apply bg-skyline-600/10 text-skyline-600;
+				}
+			}
+
+			> .name {
+				@apply display-sm-sb-d3;
+			}
+
+			> .value {
+				@apply flex-auto;
+				@apply paragraph-sm;
+			}
+
+			> .badge {
+				@apply w-12;
+				@apply text-gray-600;
+			}
+		}
 	}
 }
 
 * {
 	@mixin dark {
 		.root {
-			@apply bg-dark-600 border-dark-400;
+			@apply bg-dark-700 border-dark-500;
+
+			> .chart {
+				> .gradient {
+					background: radial-gradient(
+						at center,
+						rgba(26, 27, 30, 0) 25%,
+						rgba(26, 27, 30, 1) 100%
+					);
+				}
+
+				.cell {
+					@apply opacity-60;
+
+					&.active {
+						@apply opacity-90;
+					}
+
+					&:hover {
+						@apply opacity-90;
+					}
+				}
+			}
 		}
 	}
 }

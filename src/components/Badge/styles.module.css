@@ -1,5 +1,6 @@
 .root {
 	@apply h-5;
+	@apply rounded-sm;
 
 	.removeButton {
 		@apply size-6 min-w-[unset] min-h-[unset];
