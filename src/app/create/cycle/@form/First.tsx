@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 
-import { Input, Stack, Text, TextInput, Title, useMatches } from '@mantine/core';
+import { Input, Stack, Text, TextInput, Textarea, Title, useMatches } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { IconLabel } from '@tabler/icons-react';
 
@@ -27,6 +27,14 @@ export const FirstStep = () => {
 					autoComplete="company"
 					leftSection={<IconLabel size={16} />}
 					required
+				/>
+				<Textarea
+					resize="vertical"
+					label={t('create.cycle.first.description.label')}
+					description={t('create.cycle.first.description.description')}
+					placeholder={t('create.cycle.first.description.placeholder')}
+					minRows={4}
+					autosize
 				/>
 				<Input.Wrapper
 					label={t('create.cycle.first.date.label')}

@@ -2050,6 +2050,11 @@
         "date": {
           "label": "Start and End Dates",
           "placeholder": "Select the start and end date for this auction cycle..."
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter description...",
+          "description": "Write a descriptive statement about this auction cycle"
         }
       },
       "second": {

@@ -225,7 +225,9 @@ export default function Distribution() {
 				records={tableData}
 				sortStatus={sortStatus}
 				onSortStatusChange={setSortStatus}
+				pinFirstColumn
 				withRowBorders
+				withColumnBorders
 				highlightOnHover
 				idAccessor="id"
 			/>

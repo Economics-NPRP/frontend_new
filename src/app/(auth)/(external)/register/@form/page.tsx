@@ -271,6 +271,8 @@ export default function Form() {
 							label={t('auth.register.form.fourth.message.label')}
 							description={t('auth.register.form.fourth.message.description')}
 							placeholder={t('auth.register.form.fourth.message.placeholder')}
+							minRows={4}
+							autosize
 							key={form.key('message')}
 							{...form.getInputProps('message')}
 						/>
