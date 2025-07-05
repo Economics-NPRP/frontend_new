@@ -1,5 +1,5 @@
 .root {
-	@apply col-span-5;
+	@apply col-span-4;
 
 	> .header {
 		@apply flex-nowrap items-center justify-between;
@@ -18,6 +18,6 @@
 	}
 
 	> .content {
-		@apply grid grid-cols-2 gap-2;
+		@apply grid grid-cols-1 gap-2;
 	}
 }

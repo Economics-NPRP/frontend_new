@@ -1,3 +1,80 @@
 .root {
-	@apply col-span-2;
+	@apply col-span-3;
+	@apply px-8 py-6 items-stretch;
+	@apply bg-white border border-solid border-gray-300;
+	@apply transition-shadow duration-300;
+
+	> .header {
+		@apply items-center justify-between flex-nowrap;
+		@apply gap-1;
+
+		> .label {
+			@apply gap-0 items-start;
+
+			> .title {
+				@apply heading-3;
+			}
+
+			> .subtitle {
+				@apply paragraph-sm;
+			}
+		}
+	}
+
+	> .chart {
+		@apply relative;
+		@apply py-4;
+		@apply flex flex-col items-center justify-center;
+
+		g {
+			@apply outline-none;
+		}
+
+		.cell {
+			@apply opacity-75;
+			@apply transition-opacity duration-300;
+			@apply outline-none;
+
+			&.active {
+				@apply opacity-100;
+			}
+
+			&:hover {
+				@apply opacity-100;
+			}
+		}
+
+		.icon {
+			@apply text-white;
+			@apply -translate-x-2 -translate-y-2;
+		}
+
+		.label {
+			@apply absolute;
+			@apply flex flex-col items-center justify-center;
+			@apply gap-0;
+
+			> .key {
+				@apply paragraph-sm;
+				@apply fill-current;
+			}
+
+			> .value {
+				@apply numeric-xl;
+				@apply fill-current;
+			}
+		}
+	}
+
+	&:hover {
+		@apply shadow-xs;
+	}
+}
+
+* {
+	@mixin dark {
+		.root {
+			@apply bg-dark-600 border-dark-400;
+		}
+	}
 }

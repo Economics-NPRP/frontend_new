@@ -1748,7 +1748,14 @@
             }
           },
           "title": "Cycle KPIs",
-          "subtitle": "Track the progress and measure the success of this cycle with key performance indicators."
+          "subtitle": "Track the progress and measure the success of this cycle with key performance indicators.",
+          "distribution": {
+            "chart": {
+              "label": "Sector Diversity Index"
+            },
+            "title": "Sector Distribution",
+            "subtitle": "Chart showing the distribution of sectors in the cycle."
+          }
         }
       }
     }
