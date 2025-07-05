@@ -9,9 +9,13 @@
 		@apply items-center justify-between;
 		@apply flex-nowrap;
 
-		> .title {
-			@apply display-md-sb;
-			@apply !text-white;
+		> .label {
+			@apply gap-2 flex-nowrap;
+
+			> .title {
+				@apply display-md-sb;
+				@apply !text-white;
+			}
 		}
 
 		> .badge {

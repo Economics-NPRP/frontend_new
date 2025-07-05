@@ -1,12 +1,17 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 
 import { KpiCard } from '@/components/KpiCard';
+import { AuctionCategory } from '@/types';
 import { Container, Group, Select, Stack, Text, Title } from '@mantine/core';
 
 import classes from './styles.module.css';
 
 export default function KPIs() {
 	const t = useTranslations();
+	const [sectorFilter, setSectorFilter] = useState<'all' | AuctionCategory>('all');
 
 	return (
 		<Stack className={classes.root}>
@@ -21,6 +26,8 @@ export default function KPIs() {
 				</Stack>
 				<Select
 					className={classes.dropdown}
+					value={sectorFilter}
+					onChange={(value) => setSectorFilter(value as 'all' | AuctionCategory)}
 					data={[
 						{
 							value: 'all',
@@ -61,6 +68,7 @@ export default function KPIs() {
 					target={Math.random() * 500}
 					targetType="meets"
 					valueType="integer"
+					sector={sectorFilter}
 					unit={t('constants.auctions.unitShort')}
 					gradeDeviations={{
 						a: 10,
@@ -75,6 +83,7 @@ export default function KPIs() {
 					target={Math.random() * 100000}
 					targetType="meets"
 					valueType="integer"
+					sector={sectorFilter}
 					unit={t('constants.permits.unitShort')}
 					gradeDeviations={{
 						a: 3000,
@@ -89,6 +98,7 @@ export default function KPIs() {
 					target={Math.random() * 1000}
 					targetType="meets"
 					valueType="double"
+					sector={sectorFilter}
 					unit={t('constants.permits.unitShort')}
 					gradeDeviations={{
 						a: 50,
@@ -103,6 +113,7 @@ export default function KPIs() {
 					target={Math.random() * 1000}
 					targetType="meets"
 					valueType="double"
+					sector={sectorFilter}
 					unit={t('constants.permits.unitShort')}
 					gradeDeviations={{
 						a: 50,

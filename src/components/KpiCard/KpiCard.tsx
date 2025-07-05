@@ -3,8 +3,9 @@
 import { useFormatter, useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
-import { BaseBadge, CurrencyBadge } from '@/components/Badge';
+import { BaseBadge, CategoryBadge, CurrencyBadge } from '@/components/Badge';
 import { Switch } from '@/components/SwitchCase';
+import { AuctionCategory } from '@/types';
 import { Group, Progress, Stack, StackProps, Text } from '@mantine/core';
 import { IconSlash, IconTriangleFilled } from '@tabler/icons-react';
 
@@ -16,6 +17,7 @@ export interface KpiCardProps extends StackProps {
 	target: number;
 	targetType: 'exceeds' | 'meets';
 	valueType: 'currency' | 'percentage' | 'integer' | 'double' | 'index';
+	sector?: 'all' | AuctionCategory;
 	unit?: string;
 	gradeDeviations?: {
 		a: number;
@@ -30,6 +32,7 @@ export const KpiCard = ({
 	target,
 	targetType,
 	valueType,
+	sector = 'all',
 	unit,
 	gradeDeviations = {
 		a: 10,
@@ -182,7 +185,10 @@ export const KpiCard = ({
 	return (
 		<Stack className={`${classes.root} ${className}`} {...props}>
 			<Group className={classes.header}>
-				<Text className={classes.title}>{title}</Text>
+				<Group className={classes.label}>
+					<Text className={classes.title}>{title}</Text>
+					{sector !== 'all' && <CategoryBadge category={sector} />}
+				</Group>
 				<Switch value={targetType}>
 					<Switch.Case when="exceeds">
 						<BaseBadge className={`${classes.badge} ${classes.white}`}>
