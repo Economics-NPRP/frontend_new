@@ -1,6 +1,6 @@
 .root {
-	@apply col-span-3;
-	@apply px-8 py-6 items-stretch;
+	@apply col-span-full;
+	@apply px-6 py-4 items-stretch;
 	@apply bg-white border border-solid border-gray-300;
 	@apply transition-shadow duration-300;
 
@@ -18,6 +18,10 @@
 			> .subtitle {
 				@apply paragraph-sm;
 			}
+		}
+
+		> .dropdown {
+			@apply flex-shrink-0;
 		}
 	}
 
@@ -130,6 +134,17 @@
 }
 
 * {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			@apply col-span-3;
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+			@apply px-8 py-6;
+		}
+	}
+
 	@mixin dark {
 		.root {
 			@apply bg-dark-700 border-dark-500;

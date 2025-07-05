@@ -1,5 +1,6 @@
 .root {
-	@apply w-[400px] min-h-0;
+	@apply hidden;
+	@apply min-h-0;
 	@apply flex-shrink-0;
 	/* TODO: remove top padding once dashboard header is done */
 	@apply pt-20;
@@ -24,6 +25,13 @@
 }
 
 * {
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+			@apply w-[400px];
+			@apply flex;
+		}
+	}
+
 	@mixin dark {
 		.root {
 			@apply bg-dark-700 border-dark-500;

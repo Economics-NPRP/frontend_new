@@ -26,6 +26,7 @@ export default function KPIs() {
 				</Stack>
 				<Select
 					className={classes.dropdown}
+					w={140}
 					value={sectorFilter}
 					onChange={(value) => setSectorFilter(value as 'all' | AuctionCategory)}
 					data={[
