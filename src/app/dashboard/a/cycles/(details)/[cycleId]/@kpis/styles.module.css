@@ -1,4 +1,6 @@
 .root {
+	@apply col-span-5;
+
 	> .header {
 		@apply flex-nowrap items-center justify-between;
 

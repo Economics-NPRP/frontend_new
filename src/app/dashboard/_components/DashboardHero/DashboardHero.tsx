@@ -12,6 +12,7 @@ import {
 	Group,
 	Skeleton,
 	Stack,
+	StackProps,
 	Text,
 	Title,
 	useMatches,
@@ -20,7 +21,7 @@ import { IconArrowUpLeft, IconChevronRight } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
-export interface DashboardHeroProps {
+export interface DashboardHeroProps extends Omit<StackProps, 'title'> {
 	title?: ReactNode;
 	description?: ReactNode;
 	meta?: ReactNode;
@@ -45,6 +46,8 @@ export const DashboardHero = ({
 	returnButton,
 	breadcrumbs,
 	loading = false,
+	className,
+	...props
 }: DashboardHeroProps) => {
 	const buttonSize = useMatches({
 		base: 'xs',
@@ -62,7 +65,7 @@ export const DashboardHero = ({
 	);
 
 	return (
-		<Stack className={classes.root}>
+		<Stack className={`${classes.root} ${className}`} {...props}>
 			<Group className={classes.navigation}>
 				{returnButton && (
 					<>

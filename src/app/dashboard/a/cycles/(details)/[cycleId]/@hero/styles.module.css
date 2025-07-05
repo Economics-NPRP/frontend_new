@@ -1,29 +1,35 @@
-.badge {
-	@apply h-6;
-	@apply rounded-sm;
+.root {
+	@apply col-span-full;
 
-	&.basic {
-		@apply bg-gray-100;
-		@apply display-xs-g6 normal-case;
+	.badge {
+		@apply h-6;
+		@apply rounded-sm;
+
+		&.basic {
+			@apply bg-gray-100;
+			@apply display-xs-g6 normal-case;
+		}
 	}
-}
 
-.button {
-	@apply size-7;
-	@apply border-gray-400 text-dark-300;
+	.button {
+		@apply size-7;
+		@apply border-gray-400 text-dark-300;
+	}
 }
 
 * {
 	@mixin dark {
-		.badge.basic {
-			@apply bg-dark-500;
-		}
+		.root {
+			.badge.basic {
+				@apply bg-dark-500;
+			}
 
-		.button {
-			@apply bg-dark-700 border-dark-400 text-white;
+			.button {
+				@apply bg-dark-700 border-dark-400 text-white;
 
-			&:hover {
-				@apply bg-dark-600;
+				&:hover {
+					@apply bg-dark-600;
+				}
 			}
 		}
 	}

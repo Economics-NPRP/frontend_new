@@ -1,4 +1,5 @@
 .root {
+	@apply col-span-full;
 	@apply grid grid-cols-1 gap-2;
 	@apply self-stretch;
 

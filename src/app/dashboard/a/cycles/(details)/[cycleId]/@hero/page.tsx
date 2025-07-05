@@ -37,6 +37,7 @@ export default function Hero() {
 
 	return (
 		<DashboardHero
+			className={classes.root}
 			title={cycle.data.title}
 			description={t('components.auctionCycleCard.header.subtitle', {
 				value: DateTime.fromISO(cycle.data.updatedAt).toRelative(),

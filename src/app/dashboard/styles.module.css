@@ -16,7 +16,6 @@
 			@apply px-2 pb-4 pt-20;
 
 			> .content {
-				@apply max-w-[1400px];
 				@apply flex-auto;
 				@apply flex flex-col items-stretch;
 			}
