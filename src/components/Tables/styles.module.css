@@ -110,10 +110,8 @@
 		}
 	}
 
-	> .table {
-		@apply relative;
-		@apply flex-1 gap-0 overflow-y-auto;
-
+	> .table,
+	> .list {
 		&:has(.placeholder) {
 			@apply bg-gray-50;
 		}
@@ -131,6 +129,11 @@
 				@apply paragraph-sm-g6;
 			}
 		}
+	}
+
+	> .table {
+		@apply relative;
+		@apply flex-1 gap-0 overflow-y-auto;
 
 		tr {
 			td {
@@ -432,7 +435,8 @@
 				}
 			}
 
-			> .table {
+			> .table,
+			> .list {
 				&:has(.placeholder) {
 					@apply bg-dark-600;
 				}
@@ -444,43 +448,43 @@
 						@apply bg-dark-500 text-dark-300;
 					}
 				}
+			}
 
-				tr {
-					.anchor {
-						@apply text-dark-50;
-					}
+			> .table tr {
+				.anchor {
+					@apply text-dark-50;
+				}
 
-					&.gray,
-					&[data-selected='true'] {
+				&.gray,
+				&[data-selected='true'] {
+					@apply bg-dark-600;
+
+					> td {
 						@apply bg-dark-600;
+					}
+				}
 
-						> td {
-							@apply bg-dark-600;
+				> .selection,
+				> .actions {
+					@apply bg-dark-700;
+				}
+
+				> .actions > .cell .button {
+					@apply border-dark-400;
+
+					&.secondary,
+					&.primary {
+						@apply bg-dark-600 text-white;
+
+						&:hover {
+							@apply bg-dark-400;
 						}
-					}
 
-					> .selection,
-					> .actions {
-						@apply bg-dark-700;
-					}
-
-					> .actions > .cell .button {
-						@apply border-dark-400;
-
-						&.secondary,
-						&.primary {
-							@apply bg-dark-600 text-white;
+						&:disabled {
+							@apply opacity-25;
 
 							&:hover {
-								@apply bg-dark-400;
-							}
-
-							&:disabled {
-								@apply opacity-25;
-
-								&:hover {
-									@apply bg-dark-600;
-								}
+								@apply bg-dark-600;
 							}
 						}
 					}

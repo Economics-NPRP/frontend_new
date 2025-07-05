@@ -185,7 +185,9 @@ export const AuctionCycleCard = ({
 									<Avatar className={classes.avatar} />
 									<Avatar className={classes.avatar} />
 									<Avatar className={classes.avatar} />
-									<Avatar className={classes.avatar}>+5</Avatar>
+									<Avatar className={classes.avatar}>
+										+{auctionCycleData.assignedAdminsCount}
+									</Avatar>
 								</Switch.False>
 							</Switch>
 						</Avatar.Group>

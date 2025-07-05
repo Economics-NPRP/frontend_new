@@ -1,15 +1,17 @@
 'use client';
 
-import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AuctionCycleCard } from '@/components/AuctionCycleCard';
+import { Switch } from '@/components/SwitchCase';
 import { AuctionCycleStatusFilter } from '@/components/Tables/AuctionCycles/types';
 import { IPaginatedAuctionCyclesContext } from '@/contexts';
 import { useOffsetPaginationText } from '@/hooks';
+import { DefaultAuctionCycleData } from '@/schema/models';
 import {
 	ActionIcon,
+	Container,
 	Group,
 	Input,
 	Menu,
@@ -24,7 +26,7 @@ import {
 	Title,
 	Tooltip,
 } from '@mantine/core';
-import { IconAdjustments, IconDownload, IconSearch } from '@tabler/icons-react';
+import { IconAdjustments, IconDatabaseOff, IconDownload, IconSearch } from '@tabler/icons-react';
 
 import classes from '../styles.module.css';
 
@@ -118,6 +120,12 @@ export const AuctionCyclesTable = ({
 
 	//	Reset the page when the filter or per page changes
 	useEffect(() => auctionCycles.setPage(1), [auctionCycles.status, auctionCycles.perPage]);
+
+	const currentState = useMemo(() => {
+		if (auctionCycles.isLoading) return 'loading';
+		if (auctionCycles.data.results.length === 0) return 'empty';
+		return 'ok';
+	}, [auctionCycles]);
 
 	return (
 		<Stack className={`${classes.root} ${className}`}>
@@ -246,67 +254,28 @@ export const AuctionCyclesTable = ({
 				</Group>
 			</Stack>
 			<Stack className={classes.list} ref={tableContainerRef}>
-				<AuctionCycleCard
-					auctionCycleData={{
-						id: 'b8b3441f-ca52-4c79-8ea1-7a8c4c56d19c',
-						title: 'Summer 2025',
-						status: 'draft',
-						auctionsCount: 367,
-						emissionsCount: 143559152,
-						startDatetime: DateTime.now().plus({ days: 3 }).toISO(),
-						endDatetime: DateTime.now().plus({ months: 3 }).toISO(),
-						updatedAt: DateTime.now().minus({ hours: 3 }).toISO(),
-					}}
-				/>
-				<AuctionCycleCard
-					auctionCycleData={{
-						id: 'b8b3441f-ca52-4c79-8ea1-7a8c4c56d19c',
-						title: 'Summer 2025',
-						status: 'approved',
-						auctionsCount: 367,
-						emissionsCount: 143559152,
-						startDatetime: DateTime.now().plus({ days: 3 }).toISO(),
-						endDatetime: DateTime.now().plus({ months: 3 }).toISO(),
-						updatedAt: DateTime.now().minus({ hours: 3 }).toISO(),
-					}}
-					loading
-				/>
-				<AuctionCycleCard
-					auctionCycleData={{
-						id: 'b8b3441f-ca52-4c79-8ea1-7a8c4c56d19c',
-						title: 'Summer 2025',
-						status: 'approved',
-						auctionsCount: 367,
-						emissionsCount: 143559152,
-						startDatetime: DateTime.now().plus({ days: 3 }).toISO(),
-						endDatetime: DateTime.now().plus({ months: 3 }).toISO(),
-						updatedAt: DateTime.now().minus({ hours: 3 }).toISO(),
-					}}
-				/>
-				<AuctionCycleCard
-					auctionCycleData={{
-						id: 'b8b3441f-ca52-4c79-8ea1-7a8c4c56d19c',
-						title: 'Summer 2025',
-						status: 'ongoing',
-						auctionsCount: 367,
-						emissionsCount: 143559152,
-						startDatetime: DateTime.now().plus({ days: 3 }).toISO(),
-						endDatetime: DateTime.now().plus({ months: 3 }).toISO(),
-						updatedAt: DateTime.now().minus({ hours: 3 }).toISO(),
-					}}
-				/>
-				<AuctionCycleCard
-					auctionCycleData={{
-						id: 'b8b3441f-ca52-4c79-8ea1-7a8c4c56d19c',
-						title: 'Summer 2025',
-						status: 'ended',
-						auctionsCount: 367,
-						emissionsCount: 143559152,
-						startDatetime: DateTime.now().plus({ days: 3 }).toISO(),
-						endDatetime: DateTime.now().plus({ months: 3 }).toISO(),
-						updatedAt: DateTime.now().minus({ hours: 3 }).toISO(),
-					}}
-				/>
+				<Switch value={currentState}>
+					<Switch.Loading>
+						<AuctionCycleCard auctionCycleData={DefaultAuctionCycleData} loading />
+						<AuctionCycleCard auctionCycleData={DefaultAuctionCycleData} loading />
+						<AuctionCycleCard auctionCycleData={DefaultAuctionCycleData} loading />
+					</Switch.Loading>
+					<Switch.Case when="empty">
+						<Stack className={classes.placeholder}>
+							<Container className={classes.icon}>
+								<IconDatabaseOff size={24} />
+							</Container>
+							<Text className={classes.text}>
+								{t('components.auctionResultsTable.empty')}
+							</Text>
+						</Stack>
+					</Switch.Case>
+					<Switch.Else>
+						{auctionCycles.data.results.map((cycle) => (
+							<AuctionCycleCard key={cycle.id} auctionCycleData={cycle} />
+						))}
+					</Switch.Else>
+				</Switch>
 			</Stack>
 			<Group className={classes.footer}>
 				{auctionCycles.isSuccess && (

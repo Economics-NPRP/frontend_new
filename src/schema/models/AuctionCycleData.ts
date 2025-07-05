@@ -9,13 +9,17 @@ export const BaseAuctionCycleDataSchema = object({
 	id: UuidSchema(),
 
 	title: pipe(string(), trim(), nonEmpty()),
+	description: pipe(string(), trim(), nonEmpty()),
+
 	status: AuctionCycleStatusSchema,
 	auctionsCount: PositiveNumberSchema(true),
+	assignedAdminsCount: PositiveNumberSchema(true),
 	emissionsCount: PositiveNumberSchema(true),
 
 	startDatetime: TimestampSchema(),
 	endDatetime: TimestampSchema(),
 
+	createdAt: TimestampSchema(),
 	updatedAt: TimestampSchema(),
 });
 
@@ -31,10 +35,13 @@ export interface IUpdateAuctionCycle extends InferInput<typeof UpdateAuctionCycl
 export const DefaultAuctionCycleData: IAuctionCycleData = {
 	id: '',
 	title: '',
+	description: '',
 	status: 'draft',
 	auctionsCount: 0,
+	assignedAdminsCount: 0,
 	emissionsCount: 0,
 	startDatetime: '1970-01-01T00:00:00.000Z',
 	endDatetime: '1970-01-01T00:00:00.000Z',
+	createdAt: '1970-01-01T00:00:00.000Z',
 	updatedAt: '1970-01-01T00:00:00.000Z',
 };
