@@ -99,6 +99,13 @@
       }
     },
     "auctionCategory": {
+      "all": {
+        "alt": "Image of a globe depicting all categories",
+        "title": "All Sectors",
+        "description": {
+          "register": "This category includes all sectors and is used when no specific sector is applicable."
+        }
+      },
       "energy": {
         "alt": "Image of a power plant depicting the energy category",
         "title": "Energy",
@@ -202,7 +209,8 @@
     },
     "auctions": {
       "key": "Auctions",
-      "unit": "auctions"
+      "unit": "auctions",
+      "unitShort": "axns"
     },
     "cycles": {
       "key": "Cycles",
@@ -415,7 +423,8 @@
         "default": "{value, number, ::.00} {value, plural, =0 {tCO2e} =1 {tCO2e} other {tCO2e}}"
       },
       "percent": {
-        "default": "{value, number, ::.00}%"
+        "default": "{value, number, ::.00}%",
+        "integer": "{value, number}%"
       },
       "permits": {
         "default": "{value, number} {value, plural, =0 {Permits} =1 {Permit} other {Permits}}",
@@ -1574,6 +1583,11 @@
           "title": "Auction Age"
         }
       }
+    },
+    "kpiCard": {
+      "current": "Current",
+      "target": "Target",
+      "deviation": "Deviation"
     }
   },
   "dashboard": {
@@ -1732,7 +1746,9 @@
               "heading": "Edit Performance Targets",
               "subheading": "Set or edit the performance targets for this cycle"
             }
-          }
+          },
+          "title": "Cycle KPIs",
+          "subtitle": "Track the progress and measure the success of this cycle with key performance indicators."
         }
       }
     }

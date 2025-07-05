@@ -2,6 +2,7 @@
 	@apply px-8 py-6 gap-3;
 	@apply items-stretch justify-center;
 	@apply bg-dark-600 border border-solid border-dark-400;
+	@apply transition-shadow duration-300;
 
 	> .header {
 		@apply gap-1 pb-2;
@@ -14,15 +15,49 @@
 		}
 
 		> .badge {
-			@apply bg-white text-dark-600;
+			@apply min-w-8;
+
+			&.white {
+				@apply bg-white text-dark-600;
+			}
 		}
 	}
 
 	> .progress {
-		@apply bg-dark-400;
+		@apply relative;
+		@apply bg-dark-600;
+		@apply overflow-visible;
+
+		&:has(.section.white) {
+			@apply bg-dark-400;
+		}
 
 		.section {
-			@apply bg-white;
+			&.white {
+				@apply bg-white;
+			}
+
+			&.red {
+				@apply bg-red-600 opacity-20;
+			}
+
+			&.orange {
+				@apply bg-orange-600 opacity-40;
+			}
+
+			&.yellow {
+				@apply bg-yellow-600 opacity-60;
+			}
+
+			&.green {
+				@apply bg-green-600 opacity-80;
+			}
+		}
+
+		.marker {
+			@apply absolute;
+			@apply -translate-x-1/2;
+			@apply text-white;
 		}
 	}
 
@@ -32,11 +67,11 @@
 
 		> .value {
 			@apply flex-auto;
-			@apply gap-0 items-start;
+			@apply gap-0 items-center;
 
 			> .label {
 				@apply paragraph-sm-w !text-dark-50;
-				@apply leading-none;
+				@apply leading-none text-center;
 			}
 
 			> .row {
@@ -44,12 +79,20 @@
 				@apply items-baseline;
 
 				> .amount {
-					@apply numeric-md-w;
+					@apply numeric-sm;
 					@apply !text-white;
 				}
 
 				> .unit {
-					@apply paragraph-sm-w !text-dark-50;
+					@apply paragraph-xs !text-dark-50;
+				}
+			}
+
+			&:first-child {
+				@apply items-start;
+
+				> .row > .amount {
+					@apply numeric-md-w;
 				}
 			}
 
@@ -59,8 +102,12 @@
 		}
 
 		> .icon {
-			@apply text-white;
+			@apply text-dark-50;
 			@apply flex-shrink-0;
 		}
+	}
+
+	&:hover {
+		@apply shadow-xs;
 	}
 }
