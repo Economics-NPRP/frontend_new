@@ -32,6 +32,14 @@
 		}
 	}
 
+	&.sector > .content {
+		@apply grid grid-cols-1 gap-4;
+
+		> div[role='group'] {
+			@apply contents;
+		}
+	}
+
 	&.second {
 		@apply self-stretch;
 
@@ -371,6 +379,17 @@
 }
 
 * {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root.sector > .content {
+			@apply grid-cols-2;
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-xl {
+		.root.sector > .content {
+			@apply grid-cols-3;
+		}
+	}
+
 	@mixin dark {
 		.root {
 			&.first .calendar {

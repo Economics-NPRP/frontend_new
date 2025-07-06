@@ -7,6 +7,7 @@ import { Switch } from '@/components/SwitchCase';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { FirstStep } from '@/pages/create/cycle/@form/First';
 import { SecondStep } from '@/pages/create/cycle/@form/Second';
+import { SectorStep } from '@/pages/create/cycle/@form/Sector';
 import { ThirdStep } from '@/pages/create/cycle/@form/Third';
 
 export default function CreateCycleLayout() {
@@ -23,6 +24,10 @@ export default function CreateCycleLayout() {
 			{
 				label: t('create.cycle.first.steps.label'),
 				description: t('create.cycle.first.steps.description'),
+			},
+			{
+				label: t('create.cycle.sector.steps.label'),
+				description: t('create.cycle.sector.steps.description'),
 			},
 			{
 				label: t('create.cycle.second.steps.label'),
@@ -45,9 +50,12 @@ export default function CreateCycleLayout() {
 				<FirstStep />
 			</Switch.Case>
 			<Switch.Case when={1}>
-				<SecondStep />
+				<SectorStep />
 			</Switch.Case>
 			<Switch.Case when={2}>
+				<SecondStep />
+			</Switch.Case>
+			<Switch.Case when={3}>
 				<ThirdStep />
 			</Switch.Case>
 		</Switch>

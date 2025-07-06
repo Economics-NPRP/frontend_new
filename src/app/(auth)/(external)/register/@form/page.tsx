@@ -7,9 +7,9 @@ import { useCallback, useContext, useEffect } from 'react';
 
 import { AvatarUpload } from '@/components/AvatarUpload';
 import { FirmApplicationSummary } from '@/components/FirmApplicationSummary';
+import { SectorFormCard } from '@/components/SectorFormCard';
 import { Switch } from '@/components/SwitchCase';
 import { createApplication } from '@/lib/users/firms/applications';
-import { SectorCard } from '@/pages/(auth)/(external)/register/@form/SectorCard';
 import { RegistrationPageContext } from '@/pages/(auth)/(external)/register/_components/Providers';
 import classes from '@/pages/(auth)/(external)/styles.module.css';
 import { IFirmApplication } from '@/schema/models';
@@ -178,12 +178,12 @@ export default function Form() {
 							key={form.key('sectors')}
 							{...form.getInputProps('sectors')}
 						>
-							<SectorCard sector="energy" />
-							<SectorCard sector="industry" />
-							<SectorCard sector="transport" />
-							<SectorCard sector="buildings" />
-							<SectorCard sector="agriculture" />
-							<SectorCard sector="waste" />
+							<SectorFormCard sector="energy" />
+							<SectorFormCard sector="industry" />
+							<SectorFormCard sector="transport" />
+							<SectorFormCard sector="buildings" />
+							<SectorFormCard sector="agriculture" />
+							<SectorFormCard sector="waste" />
 						</Checkbox.Group>
 					</Stack>
 				</Switch.Case>

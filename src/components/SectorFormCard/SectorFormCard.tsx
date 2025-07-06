@@ -8,10 +8,10 @@ import { Checkbox, CheckboxCardProps, Container, Group, Stack, Text } from '@man
 
 import classes from './styles.module.css';
 
-export interface SectorCardProps extends CheckboxCardProps {
+export interface SectorFormCardProps extends CheckboxCardProps {
 	sector: SectorType;
 }
-export const SectorCard = ({ sector, ...props }: SectorCardProps) => {
+export const SectorFormCard = ({ sector, ...props }: SectorFormCardProps) => {
 	const t = useTranslations();
 
 	const sectorData = useMemo(() => SectorVariants[sector]!, [sector]);
