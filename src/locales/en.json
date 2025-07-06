@@ -546,6 +546,24 @@
     "no": "No",
     "lastOnline": {
       "default": "Last online {value}"
+    },
+    "adminRoles": {
+      "manager": {
+        "title": "Cycle Manager",
+        "description": "Responsible for overseeing the auction cycle and managing planning and execution activities"
+      },
+      "operator": {
+        "title": "Auction Operator",
+        "description": "Responsible for setting up and configuring auctions, including setting dates, minimum bid, and other auction parameters."
+      },
+      "allocator": {
+        "title": "Permit Strategist",
+        "description": "Responsible for deciding how many free permits to distribute based on regulatory goals, sector performance, or national policy."
+      },
+      "finance": {
+        "title": "Finance Officer",
+        "description": "Has access to finances for auction cycle and handles payment-related activity"
+      }
     }
   },
   "marketplace": {
@@ -1723,7 +1741,8 @@
             },
             "updates": {
               "tab": "Latest Updates"
-            }
+            },
+            "title": "Collaboration Panel"
           },
           "actions": {
             "members": {
@@ -1798,6 +1817,7 @@
     "noData": "No data was returned.",
     "noCookies": "No cookies set in response",
     "validationError": "The data in the form does not match the expected format",
+    "dataFormatError": "The data returned from the server is not in the expected format",
     "auction": {
       "join": {
         "error": "There was a problem joining the auction"
@@ -2071,10 +2091,6 @@
           "heading": "Assign Responsible Teams",
           "subheading": "Choose which admins will be responsible for this auction cycle and related activities, such as creating and managing auctions, distributing permits, and analysing statistics"
         },
-        "manager": {
-          "heading": "Cycle Manager",
-          "subheading": "Responsible for overseeing the auction cycle and managing planning and execution activities"
-        },
         "viewResponsibilities": {
           "label": "View Responsibilities",
           "tooltip": "View what permissions and responsibilities this role has and what actions they can take"
@@ -2084,22 +2100,6 @@
         },
         "selectionAdd": {
           "label": "Add Admin"
-        },
-        "operator": {
-          "heading": "Auction Operator",
-          "subheading": "Responsible for setting up and configuring auctions, including setting dates, minimum bid, and other auction parameters."
-        },
-        "allocator": {
-          "heading": "Permit Strategist",
-          "subheading": "Responsible for deciding how many free permits to distribute based on regulatory goals, sector performance, or national policy."
-        },
-        "auditor": {
-          "heading": "Auditor",
-          "subheading": "View-only access for inspecting data, logs, and compliance during the cycle."
-        },
-        "finance": {
-          "heading": "Finance Officer",
-          "subheading": "Has access to finances for auction cycle and handles payment-related activity"
         }
       },
       "third": {

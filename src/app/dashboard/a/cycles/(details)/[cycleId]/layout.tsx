@@ -1,9 +1,14 @@
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
-import { PaginatedAuctionsInCycleProvider, SingleCycleProvider } from '@/contexts';
+import {
+	AllCycleAdminsProvider,
+	PaginatedAuctionsInCycleProvider,
+	SingleCycleProvider,
+} from '@/contexts';
 import { withProviders } from '@/helpers';
 import { getSingleCycle } from '@/lib/cycles';
+import { PageProvider } from '@/pages/dashboard/a/cycles/(details)/[cycleId]/_components/Providers';
 import { Stack } from '@mantine/core';
 
 import classes from './styles.module.css';
@@ -47,14 +52,18 @@ export default function CycleDetails({
 	table,
 }: CycleDetailsProps) {
 	return withProviders(
-		<Stack className={classes.root}>
+		<>
+			<Stack className={classes.root}>
+				{hero}
+				{actions}
+				{distribution}
+				{kpis}
+				{table}
+			</Stack>
 			{aside}
-			{hero}
-			{actions}
-			{distribution}
-			{kpis}
-			{table}
-		</Stack>,
+		</>,
+		{ provider: PageProvider },
+		{ provider: AllCycleAdminsProvider },
 		{ provider: SingleCycleProvider },
 		{
 			provider: PaginatedAuctionsInCycleProvider,

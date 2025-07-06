@@ -1,7 +1,12 @@
 import { PropsWithChildren } from 'react';
 
 import { SortDirection } from '@/types';
-import { KeysetPaginatedData, OffsetPaginatedData, ServerData } from '@/types/ServerData';
+import {
+	ArrayServerData,
+	KeysetPaginatedData,
+	OffsetPaginatedData,
+	ServerData,
+} from '@/types/ServerData';
 import { InfiniteData } from '@tanstack/react-query';
 
 export interface OffsetPaginatedProviderProps extends PropsWithChildren {
@@ -28,6 +33,8 @@ export interface ContextState<T> {
 	isError: boolean;
 	isSuccess: boolean;
 }
+
+export interface ArrayContextState<T> extends ContextState<ArrayServerData<T>> {}
 
 export interface InfiniteContextState<T>
 	extends Pick<ContextState<T>, 'error' | 'isLoading' | 'isError' | 'isSuccess'> {
@@ -87,6 +94,19 @@ export const getDefaultContextState = <T>(defaultData?: T): ServerContextState<T
 		errors: [],
 		...defaultData,
 	} as ServerData<T>,
+	error: null,
+	isLoading: true,
+	isError: false,
+	isSuccess: false,
+});
+
+export const getDefaultArrayContextState = <T>(defaultData?: Array<T>): ArrayContextState<T> => ({
+	data: {
+		ok: false,
+		errors: [],
+		results: defaultData || [],
+		resultCount: 0,
+	} as ArrayServerData<T>,
 	error: null,
 	isLoading: true,
 	isError: false,

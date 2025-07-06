@@ -34,28 +34,23 @@ export const SecondStep = () => {
 				</Text>
 			</Stack>
 			<MemberSelection
-				title={t('create.cycle.second.manager.heading')}
-				description={t('create.cycle.second.manager.subheading')}
+				title={t('constants.adminRoles.manager.title')}
+				description={t('constants.adminRoles.manager.description')}
 				maxMembers={1}
 			/>
 			<MemberSelection
-				title={t('create.cycle.second.operator.heading')}
-				description={t('create.cycle.second.operator.subheading')}
+				title={t('constants.adminRoles.operator.title')}
+				description={t('constants.adminRoles.operator.description')}
 				maxMembers={6}
 			/>
 			<MemberSelection
-				title={t('create.cycle.second.allocator.heading')}
-				description={t('create.cycle.second.allocator.subheading')}
+				title={t('constants.adminRoles.allocator.title')}
+				description={t('constants.adminRoles.allocator.description')}
 				maxMembers={3}
 			/>
 			<MemberSelection
-				title={t('create.cycle.second.auditor.heading')}
-				description={t('create.cycle.second.auditor.subheading')}
-				maxMembers={1}
-			/>
-			<MemberSelection
-				title={t('create.cycle.second.finance.heading')}
-				description={t('create.cycle.second.finance.subheading')}
+				title={t('constants.adminRoles.finance.title')}
+				description={t('constants.adminRoles.finance.description')}
 				maxMembers={1}
 			/>
 			<Divider className={classes.divider} />

@@ -1,6 +1,6 @@
 'use client';
 
-import { Context, PropsWithChildren, useMemo } from 'react';
+import { Context, PropsWithChildren, useEffect, useMemo } from 'react';
 
 import { ContextState } from '@/types';
 import { keepPreviousData, skipToken, useQuery } from '@tanstack/react-query';
@@ -30,6 +30,11 @@ export const QueryProvider = <T extends ContextState<unknown>>({
 		queryFn: disabled ? skipToken : memoizedQueryFn,
 		placeholderData: keepPreviousData,
 	});
+
+	useEffect(() => {
+		if (!queryKey.includes('allCycleAdmins')) return;
+		console.log(queryResults);
+	}, [queryKey, queryResults]);
 
 	return (
 		<context.Provider

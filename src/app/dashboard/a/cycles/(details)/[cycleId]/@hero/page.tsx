@@ -9,6 +9,7 @@ import { Id } from '@/components/Id';
 import { SingleCycleContext } from '@/contexts';
 import { useCycleStatus } from '@/hooks';
 import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
+import { CycleDetailsPageContext } from '@/pages/dashboard/a/cycles/(details)/[cycleId]/_components/Providers';
 import { ActionIcon, Tooltip } from '@mantine/core';
 import { IconBell, IconPencil, IconUsers } from '@tabler/icons-react';
 
@@ -17,6 +18,7 @@ import classes from './styles.module.css';
 export default function Hero() {
 	const t = useTranslations();
 	const cycle = useContext(SingleCycleContext);
+	const { openDrawer } = useContext(CycleDetailsPageContext);
 
 	const { duration, interval } = useCycleStatus(cycle.data);
 
@@ -80,7 +82,11 @@ export default function Hero() {
 						label={t('dashboard.admin.cycles.details.actions.members.tooltip')}
 						position="top"
 					>
-						<ActionIcon className={classes.button} variant="outline">
+						<ActionIcon
+							className={classes.button}
+							variant="outline"
+							onClick={() => openDrawer('members')}
+						>
 							<IconUsers size={14} />
 						</ActionIcon>
 					</Tooltip>
@@ -88,7 +94,11 @@ export default function Hero() {
 						label={t('dashboard.admin.cycles.details.actions.updates.tooltip')}
 						position="top"
 					>
-						<ActionIcon className={classes.button} variant="outline">
+						<ActionIcon
+							className={classes.button}
+							variant="outline"
+							onClick={() => openDrawer('updates')}
+						>
 							<IconBell size={14} />
 						</ActionIcon>
 					</Tooltip>
