@@ -2,19 +2,19 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useMemo } from 'react';
 
-import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
-import { AuctionCategory } from '@/types';
+import { SectorVariants } from '@/constants/SectorData';
+import { SectorType } from '@/schema/models';
 import { Checkbox, CheckboxCardProps, Container, Group, Stack, Text } from '@mantine/core';
 
 import classes from './styles.module.css';
 
 export interface SectorCardProps extends CheckboxCardProps {
-	sector: AuctionCategory;
+	sector: SectorType;
 }
 export const SectorCard = ({ sector, ...props }: SectorCardProps) => {
 	const t = useTranslations();
 
-	const sectorData = useMemo(() => AuctionCategoryVariants[sector]!, [sector]);
+	const sectorData = useMemo(() => SectorVariants[sector]!, [sector]);
 
 	return (
 		<Checkbox.Card value={sector} className={classes.root} {...props}>
@@ -29,10 +29,10 @@ export const SectorCard = ({ sector, ...props }: SectorCardProps) => {
 							<sectorData.Icon size={20} />
 						</Container>
 						<Text className={classes.title}>
-							{t(`constants.auctionCategory.${sector}.title`)}
+							{t(`constants.sector.${sector}.title`)}
 						</Text>
 						<Text className={classes.description}>
-							{t(`constants.auctionCategory.${sector}.description.register`)}
+							{t(`constants.sector.${sector}.description.register`)}
 						</Text>
 					</Stack>
 					<Checkbox.Indicator

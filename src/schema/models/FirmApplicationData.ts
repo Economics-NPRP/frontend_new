@@ -22,7 +22,7 @@ import {
 	url,
 } from 'valibot';
 
-import { AuctionCategoryList } from '@/constants/AuctionCategory';
+import { SectorList } from '@/constants/SectorData';
 import { TimestampSchema, UuidSchema } from '@/schema/utils';
 
 import { FirmApplicationStatusSchema } from './FirmApplicationStatus';
@@ -55,7 +55,7 @@ export const BaseFirmApplicationDataSchema = object({
 		url(),
 		transform((value) => [value] as string[]),
 	),
-	sectors: pipe(array(picklist(AuctionCategoryList)), minLength(1), maxLength(6)),
+	sectors: pipe(array(picklist(SectorList)), minLength(1), maxLength(6)),
 	message: optional(pipe(string(), trim())),
 
 	id: UuidSchema(),

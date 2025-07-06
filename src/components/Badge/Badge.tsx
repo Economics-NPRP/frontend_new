@@ -2,16 +2,16 @@ import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
-import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
+import { SectorVariants } from '@/constants/SectorData';
 import { useAuctionAvailability } from '@/hooks';
 import {
 	AuctionCycleStatus,
 	AuctionType,
 	FirmApplicationStatus,
 	IAuctionData,
+	SectorType,
 } from '@/schema/models';
 import { colors } from '@/styles/mantine';
-import { AuctionCategory } from '@/types';
 import { ActionIcon, Badge, BadgeProps, Skeleton, Tooltip } from '@mantine/core';
 import {
 	IconActivity,
@@ -112,26 +112,23 @@ export const CurrencyBadge = ({ className, ...props }: BaseBadgeProps) => {
 	);
 };
 
-export interface CategoryBadgeProps extends BaseBadgeProps {
-	category: AuctionCategory;
+export interface SectorBadgeProps extends BaseBadgeProps {
+	sector: SectorType;
 }
-export const CategoryBadge = ({ category, className, ...props }: CategoryBadgeProps) => {
+export const SectorBadge = ({ sector, className, ...props }: SectorBadgeProps) => {
 	const t = useTranslations();
 
-	const AuctionCategory = useMemo(
-		() => AuctionCategoryVariants[category.toLowerCase() as AuctionCategory],
-		[category],
-	);
+	const Sector = useMemo(() => SectorVariants[sector.toLowerCase() as SectorType], [sector]);
 
-	return AuctionCategory ? (
+	return Sector ? (
 		<BaseBadge
-			className={`${classes.root} ${classes.category} ${className}`}
-			leftSection={<AuctionCategory.Icon size={14} />}
-			style={{ backgroundColor: colors[AuctionCategory.color.token!][6] }}
+			className={`${classes.root} ${classes.sector} ${className}`}
+			leftSection={<Sector.Icon size={14} />}
+			style={{ backgroundColor: colors[Sector.color.token!][6] }}
 			autoContrast
 			{...props}
 		>
-			{t(`constants.auctionCategory.${category.toLowerCase() as AuctionCategory}.title`)}
+			{t(`constants.sector.${sector.toLowerCase() as SectorType}.title`)}
 		</BaseBadge>
 	) : null;
 };

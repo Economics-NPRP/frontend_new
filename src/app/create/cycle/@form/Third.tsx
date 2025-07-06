@@ -63,39 +63,27 @@ export const ThirdStep = () => {
 			<Container className={classes.table}>
 				<Group className={`${classes.energy} ${classes.cell}`}>
 					<IconBolt size={16} className={classes.icon} />
-					<Text className={classes.label}>
-						{t('constants.auctionCategory.energy.title')}
-					</Text>
+					<Text className={classes.label}>{t('constants.sector.energy.title')}</Text>
 				</Group>
 				<Group className={`${classes.industry} ${classes.cell}`}>
 					<IconBuildingFactory size={16} className={classes.icon} />
-					<Text className={classes.label}>
-						{t('constants.auctionCategory.industry.title')}
-					</Text>
+					<Text className={classes.label}>{t('constants.sector.industry.title')}</Text>
 				</Group>
 				<Group className={`${classes.transport} ${classes.cell}`}>
 					<IconTruck size={16} className={classes.icon} />
-					<Text className={classes.label}>
-						{t('constants.auctionCategory.transport.title')}
-					</Text>
+					<Text className={classes.label}>{t('constants.sector.transport.title')}</Text>
 				</Group>
 				<Group className={`${classes.buildings} ${classes.cell}`}>
 					<IconBuildingCommunity size={16} className={classes.icon} />
-					<Text className={classes.label}>
-						{t('constants.auctionCategory.buildings.title')}
-					</Text>
+					<Text className={classes.label}>{t('constants.sector.buildings.title')}</Text>
 				</Group>
 				<Group className={`${classes.agriculture} ${classes.cell}`}>
 					<IconLeaf size={16} className={classes.icon} />
-					<Text className={classes.label}>
-						{t('constants.auctionCategory.agriculture.title')}
-					</Text>
+					<Text className={classes.label}>{t('constants.sector.agriculture.title')}</Text>
 				</Group>
 				<Group className={`${classes.waste} ${classes.cell}`}>
 					<IconRecycle size={16} className={classes.icon} />
-					<Text className={classes.label}>
-						{t('constants.auctionCategory.waste.title')}
-					</Text>
+					<Text className={classes.label}>{t('constants.sector.waste.title')}</Text>
 				</Group>
 				<Group className={`${classes.summary} ${classes.cell}`}>
 					<Text className={classes.label}>

@@ -1,6 +1,6 @@
-import { AuctionCategory } from '@/types';
+import { SectorType } from '@/schema/models';
 
-export type IdVariantType = 'company' | 'auctionCycle' | AuctionCategory;
+export type IdVariantType = 'company' | 'auctionCycle' | SectorType;
 
 export const IdPrefixes: Partial<Record<IdVariantType, string>> = {
 	company: 'CO',

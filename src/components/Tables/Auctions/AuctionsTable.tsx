@@ -9,8 +9,8 @@ import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'r
 import {
 	AuctionStatusBadge,
 	AuctionTypeBadge,
-	CategoryBadge,
 	CurrencyBadge,
+	SectorBadge,
 } from '@/components/Badge';
 import { SummaryTableGroup } from '@/components/SummaryTable';
 import {
@@ -21,8 +21,7 @@ import { IPaginatedAuctionsContext } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { ENDING_SOON_THRESHOLD, useOffsetPaginationText } from '@/hooks';
 import { IAuctionStatus } from '@/pages/marketplace/(home)/@catalogue/constants';
-import { IAuctionData } from '@/schema/models';
-import { AuctionCategory } from '@/types';
+import { IAuctionData, SectorType } from '@/schema/models';
 import {
 	ActionIcon,
 	Alert,
@@ -234,43 +233,45 @@ const _AuctionsTable = ({
 				],
 			},
 			{
-				//	TODO: add sector data here
 				title: t('components.auctionsTable.summary.sector.title'),
 				rows: [
 					{
 						label: t('components.auctionsTable.summary.sector.energy'),
 						value: t('constants.quantities.auctions.default', {
-							value: selected.filter(() => false).length,
+							value: selected.filter((record) => record.sector === 'energy').length,
 						}),
 					},
 					{
 						label: t('components.auctionsTable.summary.sector.industry'),
 						value: t('constants.quantities.auctions.default', {
-							value: selected.filter(() => false).length,
+							value: selected.filter((record) => record.sector === 'industry').length,
 						}),
 					},
 					{
 						label: t('components.auctionsTable.summary.sector.transport'),
 						value: t('constants.quantities.auctions.default', {
-							value: selected.filter(() => false).length,
+							value: selected.filter((record) => record.sector === 'transport')
+								.length,
 						}),
 					},
 					{
 						label: t('components.auctionsTable.summary.sector.buildings'),
 						value: t('constants.quantities.auctions.default', {
-							value: selected.filter(() => false).length,
+							value: selected.filter((record) => record.sector === 'buildings')
+								.length,
 						}),
 					},
 					{
 						label: t('components.auctionsTable.summary.sector.agriculture'),
 						value: t('constants.quantities.auctions.default', {
-							value: selected.filter(() => false).length,
+							value: selected.filter((record) => record.sector === 'agriculture')
+								.length,
 						}),
 					},
 					{
 						label: t('components.auctionsTable.summary.sector.waste'),
 						value: t('constants.quantities.auctions.default', {
-							value: selected.filter(() => false).length,
+							value: selected.filter((record) => record.sector === 'waste').length,
 						}),
 					},
 				],
@@ -754,7 +755,7 @@ const _AuctionsTable = ({
 									onChange={(values) =>
 										auctions.setArrayFilter(
 											'sector',
-											values as Array<AuctionCategory>,
+											values as Array<SectorType>,
 										)
 									}
 								>
@@ -762,32 +763,32 @@ const _AuctionsTable = ({
 										<Checkbox
 											className={classes.checkbox}
 											value="energy"
-											label={t('constants.auctionCategory.energy.title')}
+											label={t('constants.sector.energy.title')}
 										/>
 										<Checkbox
 											className={classes.checkbox}
 											value="industry"
-											label={t('constants.auctionCategory.industry.title')}
+											label={t('constants.sector.industry.title')}
 										/>
 										<Checkbox
 											className={classes.checkbox}
 											value="transport"
-											label={t('constants.auctionCategory.transport.title')}
+											label={t('constants.sector.transport.title')}
 										/>
 										<Checkbox
 											className={classes.checkbox}
 											value="buildings"
-											label={t('constants.auctionCategory.buildings.title')}
+											label={t('constants.sector.buildings.title')}
 										/>
 										<Checkbox
 											className={classes.checkbox}
 											value="agriculture"
-											label={t('constants.auctionCategory.agriculture.title')}
+											label={t('constants.sector.agriculture.title')}
 										/>
 										<Checkbox
 											className={classes.checkbox}
 											value="waste"
-											label={t('constants.auctionCategory.waste.title')}
+											label={t('constants.sector.waste.title')}
 										/>
 									</Stack>
 								</Checkbox.Group>
@@ -994,9 +995,8 @@ const _AuctionsTable = ({
 								sortable: true,
 								title: t('components.auctionsTable.columns.sector'),
 								width: 160,
-								//	TODO: add sector once available
 								cellsClassName: classes.status,
-								render: () => <CategoryBadge category={'industry'} />,
+								render: (record) => <SectorBadge sector={record.sector} />,
 							},
 							{
 								accessor: 'status',
@@ -1005,6 +1005,23 @@ const _AuctionsTable = ({
 								width: 120,
 								cellsClassName: classes.status,
 								render: (record) => <AuctionStatusBadge auctionData={record} />,
+							},
+							{
+								accessor: 'cycleId',
+								sortable: false,
+								title: t('components.auctionsTable.columns.cycle'),
+								width: 240,
+								ellipsis: true,
+								render: (record) => (
+									<Anchor
+										component={Link}
+										className={classes.anchor}
+										href={`/dashboard/a/cycles/${record.cycleId}`}
+									>
+										{/* TODO: change once auction also has cycle data included */}
+										{record.cycleId}
+									</Anchor>
+								),
 							},
 							{
 								accessor: 'startDatetime',

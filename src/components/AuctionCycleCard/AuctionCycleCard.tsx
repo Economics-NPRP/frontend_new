@@ -53,8 +53,8 @@ export const AuctionCycleCard = ({
 	// 			<Progress.Section
 	// 				key={index}
 	// 				value={value}
-	// 				color={AuctionCategoryVariants[AuctionCategoryList[index]]?.color.token}
-	// 				className={`${classes[AuctionCategoryVariants[AuctionCategoryList[index]]!.color.token!]} ${classes.section}`}
+	// 				color={SectorVariants[SectorList[index]]?.color.token}
+	// 				className={`${classes[SectorVariants[SectorList[index]]!.color.token!]} ${classes.section}`}
 	// 			>
 	// 				{value > 10 && (
 	// 					<Progress.Label className={classes.label}>

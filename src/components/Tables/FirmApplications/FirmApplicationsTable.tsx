@@ -5,20 +5,19 @@ import { DataTable } from 'mantine-datatable';
 import { useTranslations } from 'next-intl';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
-import { CategoryBadge, FirmStatusBadge } from '@/components/Badge';
+import { FirmStatusBadge, SectorBadge } from '@/components/Badge';
 import { SummaryTableGroup } from '@/components/SummaryTable';
 import { FirmApplicationsFilter } from '@/components/Tables/FirmApplications/types';
 import {
 	SelectionSummaryContext,
 	SelectionSummaryProvider,
 } from '@/components/Tables/_components/SelectionSummary';
-import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
+import { SectorVariants } from '@/constants/SectorData';
 import { IPaginatedFirmApplicationsContext } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { useKeysetPaginationText } from '@/hooks';
 import { InvitationModalContext } from '@/pages/dashboard/a/firms/_components/InvitationModal';
-import { IFirmApplication } from '@/schema/models';
-import { AuctionCategory } from '@/types';
+import { IFirmApplication, SectorType } from '@/schema/models';
 import {
 	ActionIcon,
 	Alert,
@@ -79,7 +78,7 @@ const _FirmApplicationsTable = ({
 
 	const [showSelectedOnly, setShowSelectedOnly] = useState(false);
 	const [searchFilter, setSearchFilter] = useState('');
-	const [sectorFilter, sectorFilterHandlers] = useListState<AuctionCategory>([]);
+	const [sectorFilter, sectorFilterHandlers] = useListState<SectorType>([]);
 	const [selectedApplications, selectedApplicationsHandlers] = useListState<IFirmApplication>([]);
 
 	//	Generate the filter badges
@@ -139,9 +138,9 @@ const _FirmApplicationsTable = ({
 
 		output.push(
 			...sectorFilter.map((sector, index) => (
-				<CategoryBadge
+				<SectorBadge
 					key={sector}
-					category={sector}
+					sector={sector}
 					onRemove={() => sectorFilterHandlers.remove(index)}
 					withRemoveButton
 				/>
@@ -419,41 +418,39 @@ const _FirmApplicationsTable = ({
 								<Checkbox.Group
 									value={sectorFilter}
 									onChange={(values) =>
-										sectorFilterHandlers.setState(
-											values as Array<AuctionCategory>,
-										)
+										sectorFilterHandlers.setState(values as Array<SectorType>)
 									}
 								>
 									<Stack className={classes.options}>
 										<Checkbox
 											className={classes.checkbox}
 											value="energy"
-											label={t('constants.auctionCategory.energy.title')}
+											label={t('constants.sector.energy.title')}
 										/>
 										<Checkbox
 											className={classes.checkbox}
 											value="industry"
-											label={t('constants.auctionCategory.industry.title')}
+											label={t('constants.sector.industry.title')}
 										/>
 										<Checkbox
 											className={classes.checkbox}
 											value="transport"
-											label={t('constants.auctionCategory.transport.title')}
+											label={t('constants.sector.transport.title')}
 										/>
 										<Checkbox
 											className={classes.checkbox}
 											value="buildings"
-											label={t('constants.auctionCategory.buildings.title')}
+											label={t('constants.sector.buildings.title')}
 										/>
 										<Checkbox
 											className={classes.checkbox}
 											value="agriculture"
-											label={t('constants.auctionCategory.agriculture.title')}
+											label={t('constants.sector.agriculture.title')}
 										/>
 										<Checkbox
 											className={classes.checkbox}
 											value="waste"
-											label={t('constants.auctionCategory.waste.title')}
+											label={t('constants.sector.waste.title')}
 										/>
 									</Stack>
 								</Checkbox.Group>
@@ -603,16 +600,12 @@ const _FirmApplicationsTable = ({
 											record.sectors
 												.filter(
 													(sector) =>
-														AuctionCategoryVariants[
-															sector.toLowerCase() as AuctionCategory
+														SectorVariants[
+															sector.toLowerCase() as SectorType
 														],
 												)
 												.map((sector) => (
-													<CategoryBadge
-														key={sector}
-														category={sector}
-														className={classes.categoryBadge}
-													/>
+													<SectorBadge key={sector} sector={sector} />
 												)),
 										[record.sectors],
 									);

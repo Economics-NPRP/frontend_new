@@ -3,9 +3,9 @@
 import { useFormatter, useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
-import { BaseBadge, CategoryBadge, CurrencyBadge } from '@/components/Badge';
+import { BaseBadge, CurrencyBadge, SectorBadge } from '@/components/Badge';
 import { Switch } from '@/components/SwitchCase';
-import { AuctionCategory } from '@/types';
+import { SectorType } from '@/schema/models';
 import { Group, Progress, Stack, StackProps, Text } from '@mantine/core';
 import { IconSlash, IconTriangleFilled } from '@tabler/icons-react';
 
@@ -17,7 +17,7 @@ export interface KpiCardProps extends StackProps {
 	target: number;
 	targetType: 'exceeds' | 'meets';
 	valueType: 'currency' | 'percentage' | 'integer' | 'double' | 'index';
-	sector?: 'all' | AuctionCategory;
+	sector?: 'all' | SectorType;
 	unit?: string;
 	gradeDeviations?: {
 		a: number;
@@ -187,7 +187,7 @@ export const KpiCard = ({
 			<Group className={classes.header}>
 				<Group className={classes.label}>
 					<Text className={classes.title}>{title}</Text>
-					{sector !== 'all' && <CategoryBadge category={sector} />}
+					{sector !== 'all' && <SectorBadge sector={sector} />}
 				</Group>
 				<Switch value={targetType}>
 					<Switch.Case when="exceeds">

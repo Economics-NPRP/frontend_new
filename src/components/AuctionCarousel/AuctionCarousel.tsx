@@ -219,12 +219,12 @@ export const AuctionCarousel = ({ infinitePaginatedAuctions }: AuctionCarouselPr
 							className={classes.dropdown}
 							placeholder={t('marketplace.home.ending.filter.prompt')}
 							data={[
-								t('constants.auctionCategory.energy.title'),
-								t('constants.auctionCategory.industry.title'),
-								t('constants.auctionCategory.transport.title'),
-								t('constants.auctionCategory.buildings.title'),
-								t('constants.auctionCategory.agriculture.title'),
-								t('constants.auctionCategory.waste.title'),
+								t('constants.sector.energy.title'),
+								t('constants.sector.industry.title'),
+								t('constants.sector.transport.title'),
+								t('constants.sector.buildings.title'),
+								t('constants.sector.agriculture.title'),
+								t('constants.sector.waste.title'),
 							]}
 						/>
 						<ActionIcon

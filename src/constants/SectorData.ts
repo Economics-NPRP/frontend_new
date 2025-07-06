@@ -1,6 +1,7 @@
 import { ForwardRefExoticComponent, RefAttributes } from 'react';
 
-import { AuctionCategory, ThemeColors } from '@/types';
+import { SectorType } from '@/schema/models';
+import { ThemeColors } from '@/types';
 import {
 	Icon,
 	IconBolt,
@@ -12,7 +13,7 @@ import {
 	IconTruck,
 } from '@tabler/icons-react';
 
-export interface AuctionCategoryData {
+export interface SectorData {
 	Icon: ForwardRefExoticComponent<IconProps & RefAttributes<Icon>>;
 	image: string;
 	color: {
@@ -21,7 +22,7 @@ export interface AuctionCategoryData {
 	};
 }
 
-export const AuctionCategoryVariants: Partial<Record<AuctionCategory, AuctionCategoryData>> = {
+export const SectorVariants: Partial<Record<SectorType, SectorData>> = {
 	energy: {
 		// image: 'https://images.unsplash.com/photo-1473876637954-4b493d59fd97?q=80&w=1692&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 		image: '/imgs/energy/category.jpg',
@@ -91,7 +92,7 @@ export const AuctionCategoryVariants: Partial<Record<AuctionCategory, AuctionCat
 	},
 };
 
-export const AuctionCategoryList: AuctionCategory[] = [
+export const SectorList: SectorType[] = [
 	'energy',
 	'industry',
 	'transport',

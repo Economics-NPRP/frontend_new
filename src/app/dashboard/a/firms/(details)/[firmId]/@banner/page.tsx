@@ -4,9 +4,9 @@ import Image from 'next/image';
 import { useContext, useMemo } from 'react';
 
 import { Switch } from '@/components/SwitchCase';
-import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
+import { SectorVariants } from '@/constants/SectorData';
 import { SingleFirmContext } from '@/contexts';
-import { AuctionCategory } from '@/types';
+import { SectorType } from '@/schema/models';
 import { Avatar, Container } from '@mantine/core';
 import { IconPhotoHexagon } from '@tabler/icons-react';
 
@@ -19,9 +19,7 @@ export default function Banner() {
 		if (!firm.isSuccess) return null;
 
 		const allImageUrls = firm.data.sectors
-			.map(
-				(sector) => AuctionCategoryVariants[sector.toLowerCase() as AuctionCategory]?.image,
-			)
+			.map((sector) => SectorVariants[sector.toLowerCase() as SectorType]?.image)
 			.filter(Boolean);
 		if (allImageUrls.length === 0) return null;
 

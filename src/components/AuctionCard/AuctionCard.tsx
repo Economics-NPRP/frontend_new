@@ -5,18 +5,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ComponentPropsWithRef, useMemo } from 'react';
 
-import {
-	AuctionTypeBadge,
-	CategoryBadge,
-	CurrencyBadge,
-	EndingSoonBadge,
-} from '@/components/Badge';
+import { AuctionTypeBadge, CurrencyBadge, EndingSoonBadge, SectorBadge } from '@/components/Badge';
 import { SmallCountdown } from '@/components/Countdown';
 import { Id } from '@/components/Id';
 import { Switch } from '@/components/SwitchCase';
+import { SectorList } from '@/constants/SectorData';
 import { useAuctionAvailability, useJoinAuction } from '@/hooks';
 import { IAuctionData } from '@/schema/models';
-import { AuctionCategory } from '@/types';
 import {
 	ActionIcon,
 	Anchor,
@@ -59,16 +54,8 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 		// '/imgs/transport/airplane.webp',
 		'/imgs/transport/airplane.jpg',
 	];
-	const categories: Array<AuctionCategory> = [
-		'energy',
-		'industry',
-		'transport',
-		'buildings',
-		'agriculture',
-		'waste',
-	];
 	const src = useMemo(() => imgs[Math.floor(Math.random() * imgs.length)], []);
-	const category = useMemo(() => categories[Math.floor(Math.random() * categories.length)], []);
+	const sector = useMemo(() => SectorList[Math.floor(Math.random() * SectorList.length)], []);
 
 	const joinAuction = useJoinAuction(auction.id, () => router.push(url));
 
@@ -106,7 +93,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 						emissions: 1800,
 					})}
 				</Badge>
-				<CategoryBadge className={classes.category} category={category} />
+				<SectorBadge className={classes.sector} sector={sector} />
 			</Group>
 			<Stack className={classes.body}>
 				<Stack className={classes.header}>
@@ -137,7 +124,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 						<AuctionTypeBadge type={auction.type} showOpen />
 						<EndingSoonBadge auction={auction} />
 					</Group>
-					<Id value={auction.id} variant={category} />
+					<Id value={auction.id} variant={sector} />
 				</Stack>
 				<Divider className={classes.divider} />
 				<Group className={classes.properties}>

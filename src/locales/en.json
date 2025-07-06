@@ -98,51 +98,51 @@
         "short": "ETS"
       }
     },
-    "auctionCategory": {
+    "sector": {
       "all": {
         "alt": "Image of a globe depicting all categories",
         "title": "All Sectors",
         "description": {
-          "register": "This category includes all sectors and is used when no specific sector is applicable."
+          "register": "This sector encompasses all entities that produce or supply emissions, regardless of their specific industry or activity. It is designed to accommodate a wide range of participants in the emissions trading system."
         }
       },
       "energy": {
-        "alt": "Image of a power plant depicting the energy category",
+        "alt": "Image of a power plant depicting the energy sector",
         "title": "Energy",
         "description": {
           "register": "This sector includes all entities producing or supplying energy. Permits apply to emissions from sources like power plants, renewables, or electricity grids."
         }
       },
       "industry": {
-        "alt": "Image of a crusher machine depicting the industry category",
+        "alt": "Image of a crusher machine depicting the industry sector",
         "title": "Industry",
         "description": {
-          "register": "This category is relevant to companies in manufacturing and processing sectors, such as steel, cement, and chemical producers."
+          "register": "This sector is relevant to companies in manufacturing and processing sectors, such as steel, cement, and chemical producers."
         }
       },
       "transport": {
-        "alt": "Image of traffic causing pollution depicting the transport category",
+        "alt": "Image of traffic causing pollution depicting the transport sector",
         "title": "Transport",
         "description": {
           "register": "Designed for logistics, freight, aviation, and public transport operators, this sector manages permits tied to fuel-based emissions across all transport modes."
         }
       },
       "buildings": {
-        "alt": "Image of a HVAC system depicting the buildings category",
+        "alt": "Image of a HVAC system depicting the buildings sector",
         "title": "Buildings",
         "description": {
-          "register": "For real estate developers, property managers, and facility operators, this category covers emissions permits for building energy use, HVAC systems, and lighting."
+          "register": "For real estate developers, property managers, and facility operators, this sector covers emissions permits for building energy use, HVAC systems, and lighting."
         }
       },
       "agriculture": {
-        "alt": "Image of a farm with cows depicting the agriculture category",
+        "alt": "Image of a farm with cows depicting the agriculture sector",
         "title": "Agriculture",
         "description": {
           "register": "Agricultural producers, agribusinesses, and food processors fall under this sector, with permits covering emissions from livestock, fertilizers, and land use."
         }
       },
       "waste": {
-        "alt": "Image of waste glass and plastic depicting the waste category",
+        "alt": "Image of waste glass and plastic depicting the waste sector",
         "title": "Waste",
         "description": {
           "register": "Waste management firms—including landfill operators and recyclers—can acquire permits here for emissions from waste decomposition and treatment."
@@ -586,7 +586,7 @@
         "heading": "Ending Soon",
         "subheading": "These auctions are ending soon, bid now before they're gone!",
         "filter": {
-          "prompt": "Filter by category"
+          "prompt": "Filter by sector"
         }
       },
       "catalogue": {
@@ -1526,7 +1526,8 @@
         "views": "Views",
         "bidders": "Bidders",
         "bids": "Bids",
-        "bookmarks": "Bookmarks"
+        "bookmarks": "Bookmarks",
+        "cycle": "Auction Cycle"
       },
       "summary": {
         "distribution": {

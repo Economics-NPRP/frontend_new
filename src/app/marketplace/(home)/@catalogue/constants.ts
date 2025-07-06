@@ -1,7 +1,6 @@
 import { createContext } from 'react';
 
-import { AuctionType } from '@/schema/models';
-import { AuctionCategory } from '@/types';
+import { AuctionType, SectorType } from '@/schema/models';
 import { RangeSliderValue } from '@mantine/core';
 import { DatesRangeValue } from '@mantine/dates';
 
@@ -16,7 +15,7 @@ export type IAuctionStatus = 'ongoing' | 'upcoming' | 'ended' | 'all';
 export interface IAuctionFilters {
 	type?: Array<AuctionType>;
 	status?: IAuctionStatus;
-	sector?: Array<AuctionCategory>;
+	sector?: Array<SectorType>;
 	owner?: Array<string>;
 	date?: DatesRangeValue;
 	permits?: RangeSliderValue;

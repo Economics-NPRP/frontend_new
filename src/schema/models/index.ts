@@ -9,5 +9,6 @@ export * from './FirmApplicationStatus';
 export * from './FirmData';
 export * from './GeneralUserData';
 export * from './LoginData';
+export * from './SectorData';
 export * from './UserData';
 export * from './UserType';

@@ -3,13 +3,13 @@
 import { useTranslations } from 'next-intl';
 import { useContext, useMemo } from 'react';
 
-import { CategoryBadge, FirmStatusBadge } from '@/components/Badge';
+import { FirmStatusBadge, SectorBadge } from '@/components/Badge';
 import { Id } from '@/components/Id';
 import { WithSkeleton } from '@/components/WithSkeleton';
-import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
+import { SectorVariants } from '@/constants/SectorData';
 import { SingleFirmContext } from '@/contexts';
 import { InvitationModalContext } from '@/pages/dashboard/a/firms/_components/InvitationModal';
-import { AuctionCategory } from '@/types';
+import { SectorType } from '@/schema/models';
 import {
 	ActionIcon,
 	Anchor,
@@ -46,29 +46,18 @@ export default function Details() {
 		() =>
 			firm.isLoading
 				? [
-						<FirmStatusBadge key={1} status="unverified" loading />,
-						<FirmStatusBadge key={2} status="unverified" loading />,
-						<FirmStatusBadge key={3} status="unverified" loading />,
+						<FirmStatusBadge key={1} status="pending" loading />,
+						<FirmStatusBadge key={2} status="pending" loading />,
+						<FirmStatusBadge key={3} status="pending" loading />,
 					]
 				: [
 						<FirmStatusBadge
 							key={'status'}
-							status={firm.data.emailVerified ? 'verified' : 'unverified'}
+							status={firm.data.emailVerified ? 'approved' : 'pending'}
 						/>,
 						...firm.data.sectors
-							.filter(
-								(sector) =>
-									AuctionCategoryVariants[
-										sector.toLowerCase() as AuctionCategory
-									],
-							)
-							.map((sector) => (
-								<CategoryBadge
-									key={sector}
-									category={sector}
-									className={classes.categoryBadge}
-								/>
-							)),
+							.filter((sector) => SectorVariants[sector.toLowerCase() as SectorType])
+							.map((sector) => <SectorBadge key={sector} sector={sector} />),
 					],
 		[firm.data.sectors],
 	);

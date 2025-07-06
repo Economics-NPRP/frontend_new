@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
-import { CategoryBadge } from '@/components/Badge';
+import { SectorBadge } from '@/components/Badge';
 import { IFirmApplication } from '@/schema/models';
 import { Avatar, Group, Stack, Table, TableProps } from '@mantine/core';
 
@@ -18,7 +18,7 @@ export const FirmApplicationSummary = ({
 	const t = useTranslations();
 
 	const sectors = useMemo(
-		() => firmData.sectors.map((sector) => <CategoryBadge key={sector} category={sector} />),
+		() => firmData.sectors.map((sector) => <SectorBadge key={sector} sector={sector} />),
 		[firmData.sectors],
 	);
 
