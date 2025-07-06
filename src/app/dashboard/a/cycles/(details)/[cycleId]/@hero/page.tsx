@@ -2,15 +2,13 @@
 
 import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
+import { useContext } from 'react';
 
 import { AuctionCycleStatusBadge, BaseBadge } from '@/components/Badge';
 import { Id } from '@/components/Id';
+import { SingleCycleContext } from '@/contexts';
 import { useCycleStatus } from '@/hooks';
-// import { useContext } from 'react';
-
-// import { SingleCycleContext } from '@/contexts';
 import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
-import { IAuctionCycleData } from '@/schema/models';
 import { ActionIcon, Tooltip } from '@mantine/core';
 import { IconBell, IconPencil, IconUsers } from '@tabler/icons-react';
 
@@ -18,20 +16,7 @@ import classes from './styles.module.css';
 
 export default function Hero() {
 	const t = useTranslations();
-	// const cycle = useContext(SingleCycleContext);
-	const cycle = {
-		data: {
-			id: 'b8b3441f-ca52-4c79-8ea1-7a8c4c56d19c',
-			title: 'Summer 2025',
-			status: 'draft',
-			auctionsCount: 367,
-			emissionsCount: 143559152,
-			startDatetime: DateTime.now().plus({ days: 3 }).toISO(),
-			endDatetime: DateTime.now().plus({ months: 3 }).toISO(),
-			updatedAt: DateTime.now().minus({ hours: 3 }).toISO(),
-		} as IAuctionCycleData,
-		isLoading: false,
-	};
+	const cycle = useContext(SingleCycleContext);
 
 	const { duration, interval } = useCycleStatus(cycle.data);
 
@@ -39,9 +24,7 @@ export default function Hero() {
 		<DashboardHero
 			className={classes.root}
 			title={cycle.data.title}
-			description={t('components.auctionCycleCard.header.subtitle', {
-				value: DateTime.fromISO(cycle.data.updatedAt).toRelative(),
-			})}
+			description={cycle.data.description}
 			meta={<Id value={cycle.data.id} variant="auctionCycle" />}
 			badges={
 				<>
@@ -63,6 +46,15 @@ export default function Hero() {
 						loading={cycle.isLoading}
 					>
 						{interval}
+					</BaseBadge>
+					<BaseBadge
+						variant="light"
+						className={`${classes.basic} ${classes.badge}`}
+						loading={cycle.isLoading}
+					>
+						{t('components.auctionCycleCard.header.subtitle', {
+							value: DateTime.fromISO(cycle.data.updatedAt).toRelative(),
+						})}
 					</BaseBadge>
 				</>
 			}
