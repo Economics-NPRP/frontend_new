@@ -8,6 +8,7 @@ export * from './MyPaginatedWinningBids';
 export * from './MyUserProfile';
 export * from './PaginatedAuctionCycles';
 export * from './PaginatedAuctions';
+export * from './PaginatedAuctionsInCycle';
 export * from './PaginatedBids';
 export * from './PaginatedFirmApplications';
 export * from './PaginatedFirms';

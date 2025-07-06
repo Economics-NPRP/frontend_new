@@ -1,4 +1,4 @@
-import { PaginatedAuctionsProvider } from 'contexts/PaginatedAuctions';
+import { PaginatedAuctionsInCycleProvider } from 'contexts/PaginatedAuctionsInCycle';
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
@@ -35,7 +35,6 @@ export const metadata: Metadata = {
 };
 
 export interface CycleDetailsProps {
-	params: { cycleId: string };
 	actions: ReactNode;
 	aside: ReactNode;
 	hero: ReactNode;
@@ -44,7 +43,6 @@ export interface CycleDetailsProps {
 	table: ReactNode;
 }
 export default function CycleDetails({
-	params,
 	actions,
 	aside,
 	hero,
@@ -63,19 +61,11 @@ export default function CycleDetails({
 		</Stack>,
 		// { provider: SingleAuctionCycleProvider },
 		{
-			provider: PaginatedAuctionsProvider,
+			provider: PaginatedAuctionsInCycleProvider,
 			props: {
 				defaultPerPage: 20,
 				defaultSortBy: 'created_at',
 				defaultSortDirection: 'desc',
-				//	TODO: add cycle id to default filters
-				// defaultFilters: {
-				// 	type: [],
-				// 	status: 'all',
-				// 	sector: [],
-				// 	owner: [],
-				// 	cycle: [params.cycleId],
-				// },
 			},
 		},
 	);
