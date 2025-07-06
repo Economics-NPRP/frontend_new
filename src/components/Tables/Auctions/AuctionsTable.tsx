@@ -1251,7 +1251,12 @@ const _AuctionsTable = ({
 											)}
 											position="top"
 										>
-											<ActionIcon className={`${classes.button}`}>
+											<ActionIcon
+												component={Link}
+												href={`/marketplace/auction/${record.id}`}
+												target="_blank"
+												className={`${classes.button}`}
+											>
 												<IconBuildingStore size={16} />
 											</ActionIcon>
 										</Tooltip>

@@ -25,6 +25,7 @@
 			> .breadcrumbs {
 				> a {
 					@apply paragraph-sm;
+					@apply underline underline-offset-4 decoration-1 decoration-dashed decoration-gray-600;
 				}
 
 				> .separator {
@@ -52,6 +53,7 @@
 
 					> .link {
 						@apply text-blue-600 font-semibold;
+						@apply underline underline-offset-4 decoration-1 decoration-dashed decoration-blue-600;
 					}
 				}
 			}
@@ -226,6 +228,10 @@
 
 				> .content {
 					@apply bg-dark-600 border-dark-400;
+
+					> .breadcrumbs > a {
+						@apply decoration-dark-50;
+					}
 				}
 			}
 

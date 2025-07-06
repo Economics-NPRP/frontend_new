@@ -161,6 +161,7 @@
 			.anchor {
 				@apply truncate;
 				@apply display-sm-sb-d3;
+				@apply underline underline-offset-4 decoration-1 decoration-dashed decoration-gray-600;
 			}
 
 			.copy {
@@ -457,6 +458,7 @@
 			> .table tr {
 				.anchor {
 					@apply text-dark-50;
+					@apply decoration-dark-50;
 				}
 
 				&.gray,

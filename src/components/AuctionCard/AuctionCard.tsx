@@ -9,12 +9,14 @@ import { AuctionTypeBadge, CurrencyBadge, EndingSoonBadge, SectorBadge } from '@
 import { SmallCountdown } from '@/components/Countdown';
 import { Id } from '@/components/Id';
 import { Switch } from '@/components/SwitchCase';
+import { WithSkeleton } from '@/components/WithSkeleton';
 import { SectorList } from '@/constants/SectorData';
 import { useAuctionAvailability, useJoinAuction } from '@/hooks';
 import { IAuctionData } from '@/schema/models';
 import {
 	ActionIcon,
 	Anchor,
+	Avatar,
 	Badge,
 	Button,
 	Divider,
@@ -37,8 +39,14 @@ import classes from './styles.module.css';
 
 export interface AuctionCardProps extends ComponentPropsWithRef<'div'> {
 	auction: IAuctionData;
+	loading?: boolean;
 }
-export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) => {
+export const AuctionCard = ({
+	auction,
+	loading = false,
+	className,
+	...props
+}: AuctionCardProps) => {
 	const t = useTranslations();
 	const format = useFormatter();
 	const router = useRouter();
@@ -97,16 +105,9 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 			</Group>
 			<Stack className={classes.body}>
 				<Stack className={classes.header}>
+					<Id value={auction.id} variant={sector} />
 					<Group className={classes.label}>
 						<Stack className={classes.left}>
-							<Anchor
-								className={classes.company}
-								component={Link}
-								target="_blank"
-								href={`/marketplace/company/${auction.ownerId}`}
-							>
-								{auction.owner.name}
-							</Anchor>
 							<Anchor component={Link} className={classes.heading} href={url}>
 								Flare Gas Burning
 							</Anchor>
@@ -124,7 +125,25 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 						<AuctionTypeBadge type={auction.type} showOpen />
 						<EndingSoonBadge auction={auction} />
 					</Group>
-					<Id value={auction.id} variant={sector} />
+					<Group className={classes.owner}>
+						<WithSkeleton loading={loading} width={40} height={40} circle>
+							<Avatar
+								className={classes.avatar}
+								size={'sm'}
+								name={auction.owner && auction.owner.name}
+							/>
+						</WithSkeleton>
+						<WithSkeleton loading={loading} width={160} height={24}>
+							<Anchor
+								className={classes.link}
+								component={Link}
+								target="_blank"
+								href={`/marketplace/company/${auction.ownerId}`}
+							>
+								{auction.owner.name}
+							</Anchor>
+						</WithSkeleton>
+					</Group>
 				</Stack>
 				<Divider className={classes.divider} />
 				<Group className={classes.properties}>

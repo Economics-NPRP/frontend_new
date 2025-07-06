@@ -74,11 +74,6 @@
 					> .heading {
 						@apply heading-3-b leading-snug;
 					}
-
-					> .company {
-						@apply text-sm leading-tight;
-						@apply text-blue-600;
-					}
 				}
 
 				> .right {
@@ -94,6 +89,20 @@
 			> .badges {
 				@apply min-h-7;
 				@apply gap-1 pb-2;
+			}
+
+			> .owner {
+				@apply gap-1.5 mb-1;
+
+				> .avatar {
+					@apply size-7;
+				}
+
+				> .link {
+					@apply text-sm leading-tight;
+					@apply text-blue-600;
+					@apply underline underline-offset-4 decoration-1 decoration-dashed decoration-blue-600;
+				}
 			}
 		}
 

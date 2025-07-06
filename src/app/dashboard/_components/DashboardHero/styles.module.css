@@ -5,6 +5,7 @@
 		> .breadcrumbs {
 			> a {
 				@apply paragraph-sm;
+				@apply underline underline-offset-4 decoration-1 decoration-dashed decoration-gray-600;
 			}
 
 			> .separator {
@@ -52,18 +53,24 @@
 	}
 
 	@mixin dark {
-		.root > .navigation > .button {
-			@apply bg-dark-400 text-white;
-
-			&:hover {
-				@apply bg-dark-300;
+		.root > .navigation {
+			> .breadcrumbs > a {
+				@apply decoration-dark-50;
 			}
 
-			&:disabled {
-				@apply opacity-25;
+			> .button {
+				@apply bg-dark-400 text-white;
 
 				&:hover {
-					@apply bg-dark-400;
+					@apply bg-dark-300;
+				}
+
+				&:disabled {
+					@apply opacity-25;
+
+					&:hover {
+						@apply bg-dark-400;
+					}
 				}
 			}
 		}
