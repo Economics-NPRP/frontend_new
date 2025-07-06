@@ -8,17 +8,19 @@ import { Container } from '@mantine/core';
 export const Background = () => {
 	const images = useMemo(
 		() =>
-			SectorList.sort(() => Math.random() - 0.5).map((sector, imgIndex) => (
-				<Image
-					key={sector}
-					src={SectorVariants[sector]!.image}
-					alt={
-						'Background image showing one of the different emission sectors available in ETS'
-					}
-					style={{ animationDelay: `${66 - (imgIndex + 1) * 11}s` }}
-					fill
-				/>
-			)),
+			[...SectorList]
+				.sort(() => Math.random() - 0.5)
+				.map((sector, imgIndex) => (
+					<Image
+						key={sector}
+						src={SectorVariants[sector]!.image}
+						alt={
+							'Background image showing one of the different emission sectors available in ETS'
+						}
+						style={{ animationDelay: `${66 - (imgIndex + 1) * 11}s` }}
+						fill
+					/>
+				)),
 		[],
 	);
 

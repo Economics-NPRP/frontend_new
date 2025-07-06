@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
 import { useContext } from 'react';
 
-import { AuctionCycleStatusBadge, BaseBadge } from '@/components/Badge';
+import { AuctionCycleStatusBadge, BaseBadge, SectorBadge } from '@/components/Badge';
 import { Id } from '@/components/Id';
 import { SingleCycleContext } from '@/contexts';
 import { useCycleStatus } from '@/hooks';
@@ -33,6 +33,14 @@ export default function Hero() {
 						className={classes.badge}
 						loading={cycle.isLoading}
 					/>
+					{cycle.data.sectors.map((sector) => (
+						<SectorBadge
+							key={sector}
+							sector={sector}
+							className={classes.badge}
+							loading={cycle.isLoading}
+						/>
+					))}
 					<BaseBadge
 						variant="light"
 						className={`${classes.basic} ${classes.badge}`}

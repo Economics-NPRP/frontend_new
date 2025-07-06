@@ -92,11 +92,11 @@ export const SectorVariants: Partial<Record<SectorType, SectorData>> = {
 	},
 };
 
-export const SectorList: SectorType[] = [
+export const SectorList = [
 	'energy',
 	'industry',
 	'transport',
 	'buildings',
 	'agriculture',
 	'waste',
-];
+] as const;

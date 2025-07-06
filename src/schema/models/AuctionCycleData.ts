@@ -3,6 +3,7 @@ import { InferInput, InferOutput, nonEmpty, object, pipe, string, trim } from 'v
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
 
 import { AuctionCycleStatusSchema } from './AuctionCycleStatus';
+import { SectorListSchema } from './SectorData';
 
 //	TODO: Check why path alias is not working
 export const BaseAuctionCycleDataSchema = object({
@@ -10,6 +11,7 @@ export const BaseAuctionCycleDataSchema = object({
 
 	title: pipe(string(), trim(), nonEmpty()),
 	description: pipe(string(), trim(), nonEmpty()),
+	sectors: SectorListSchema,
 
 	status: AuctionCycleStatusSchema,
 	auctionsCount: PositiveNumberSchema(true),
@@ -36,6 +38,7 @@ export const DefaultAuctionCycleData: IAuctionCycleData = {
 	id: '',
 	title: '',
 	description: '',
+	sectors: [],
 	status: 'draft',
 	auctionsCount: 0,
 	assignedAdminsCount: 0,

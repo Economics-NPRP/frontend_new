@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-import { AuctionCycleStatusBadge, BaseBadge } from '@/components/Badge';
+import { AuctionCycleStatusBadge, BaseBadge, SectorBadge } from '@/components/Badge';
 import { MediumCountdown } from '@/components/Countdown';
 import { Id } from '@/components/Id';
 import { Switch } from '@/components/SwitchCase';
@@ -106,11 +106,7 @@ export const AuctionCycleCard = ({
 									className="my-0.5"
 								>
 									<Text className={classes.subtitle}>
-										{t('components.auctionCycleCard.header.subtitle', {
-											value: DateTime.fromISO(
-												auctionCycleData.updatedAt,
-											).toRelative(),
-										})}
+										{auctionCycleData.description}
 									</Text>
 								</WithSkeleton>
 							</Stack>
@@ -120,6 +116,14 @@ export const AuctionCycleCard = ({
 									className={classes.badge}
 									loading={loading}
 								/>
+								{auctionCycleData.sectors.map((sector) => (
+									<SectorBadge
+										key={sector}
+										sector={sector}
+										className={classes.badge}
+										loading={loading}
+									/>
+								))}
 								<BaseBadge
 									variant="light"
 									className={`${classes.basic} ${classes.badge}`}
@@ -133,6 +137,17 @@ export const AuctionCycleCard = ({
 									loading={loading}
 								>
 									{interval}
+								</BaseBadge>
+								<BaseBadge
+									variant="light"
+									className={`${classes.basic} ${classes.badge}`}
+									loading={loading}
+								>
+									{t('components.auctionCycleCard.header.subtitle', {
+										value: DateTime.fromISO(
+											auctionCycleData.updatedAt,
+										).toRelative(),
+									})}
 								</BaseBadge>
 							</Group>
 						</Stack>

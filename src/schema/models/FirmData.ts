@@ -1,14 +1,13 @@
-import { InferInput, InferOutput, array, object, omit, picklist, pipe, string } from 'valibot';
-
-import { SectorList } from '@/constants/SectorData';
+import { InferInput, InferOutput, array, object, omit, string } from 'valibot';
 
 import { DefaultUserData } from './GeneralUserData';
+import { SectorListSchema } from './SectorData';
 import { BaseUserDataSchema, DefaultCreateUser } from './UserData';
 
 export const BaseFirmDataSchema = object({
 	...BaseUserDataSchema.entries,
 
-	sectors: pipe(array(picklist(SectorList))),
+	sectors: SectorListSchema,
 	permits: array(string()),
 });
 
