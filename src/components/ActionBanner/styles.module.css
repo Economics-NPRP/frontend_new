@@ -1,5 +1,6 @@
 .root {
 	@apply relative;
+	@apply h-[140px];
 	@apply flex flex-col justify-center items-center self-stretch;
 	@apply overflow-hidden;
 	@apply px-8 py-6;
@@ -36,13 +37,27 @@
 			@apply transition-all duration-500;
 		}
 
-		> .graphic {
+		> .graphic,
+		> .corner {
 			@apply absolute;
 		}
 	}
 
 	> *:not(.bg) {
 		@apply z-10;
+	}
+
+	&.disabled[disabled] {
+		@apply cursor-not-allowed;
+		@apply opacity-25;
+
+		> .bg > .gradient {
+			background: radial-gradient(
+				at center top,
+				rgba(26, 27, 30, 0.1) 0%,
+				rgba(255, 255, 255, 0) 75%
+			);
+		}
 	}
 
 	&:hover {
@@ -117,6 +132,57 @@
 			}
 		}
 	}
+
+	&.id4 > .bg {
+		> .gradient {
+			background: radial-gradient(
+				at center top,
+				rgba(138, 21, 56, 0.1) 0%,
+				hsla(342, 74%, 80%, 0) 75%
+			);
+		}
+
+		> .graphic {
+			@apply size-[200px] -bottom-[100px];
+
+			background: linear-gradient(
+					45deg,
+					transparent 49%,
+					#e9ecef 49%,
+					#e9ecef 52%,
+					transparent 52%
+				),
+				linear-gradient(135deg, transparent 49%, #e9ecef 49%, #e9ecef 52%, transparent 52%);
+			background-size: 48px 48px;
+			opacity: 1;
+
+			&.left {
+				@apply left-0;
+			}
+
+			&.right {
+				@apply right-0;
+			}
+		}
+
+		> .corner {
+			@apply size-[400px] -bottom-[300px];
+
+			background: radial-gradient(
+				circle at center,
+				rgba(255, 255, 255, 0) 0%,
+				rgba(255, 255, 255, 1) 100%
+			);
+
+			&.left {
+				@apply -left-[200px];
+			}
+
+			&.right {
+				@apply -right-[200px];
+			}
+		}
+	}
 }
 
 * {
@@ -138,6 +204,14 @@
 
 			.graphic {
 				@apply !border-dark-500 !stroke-dark-500;
+			}
+
+			&.disabled[disabled] > .bg > .gradient {
+				background: radial-gradient(
+					at center top,
+					rgba(255, 255, 255, 0.1) 0%,
+					rgba(26, 27, 30, 0) 75%
+				);
 			}
 
 			&.id1 > .bg > .gradient {
@@ -162,6 +236,43 @@
 					rgba(65, 148, 179, 0.25) 0%,
 					hsla(196, 47%, 80%, 0) 75%
 				);
+			}
+
+			&.id4 > .bg {
+				> .gradient {
+					background: radial-gradient(
+						at center top,
+						rgba(138, 21, 56, 0.2) 0%,
+						hsla(342, 74%, 80%, 0) 75%
+					);
+				}
+
+				> .graphic {
+					background: linear-gradient(
+							45deg,
+							transparent 49%,
+							#2c2e33 49%,
+							#2c2e33 52%,
+							transparent 52%
+						),
+						linear-gradient(
+							135deg,
+							transparent 49%,
+							#2c2e33 49%,
+							#2c2e33 52%,
+							transparent 52%
+						);
+					background-size: 48px 48px;
+					opacity: 1;
+				}
+
+				> .corner {
+					background: radial-gradient(
+						circle,
+						rgba(26, 27, 30, 0) 0%,
+						rgba(26, 27, 30, 1) 100%
+					);
+				}
 			}
 		}
 	}

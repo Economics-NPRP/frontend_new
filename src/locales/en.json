@@ -1745,6 +1745,10 @@
             "kpis": {
               "heading": "Edit Performance Targets",
               "subheading": "Set or edit the performance targets for this cycle"
+            },
+            "approve": {
+              "heading": "Approve Cycle",
+              "subheading": "Once the cycle is ready, click here to approve it and release it to the public"
             }
           },
           "title": "Cycle KPIs",

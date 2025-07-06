@@ -1,6 +1,6 @@
 'use client';
 
-import { ElementType, ReactNode } from 'react';
+import { ElementType, ReactNode, useCallback } from 'react';
 
 import { Switch } from '@/components/SwitchCase';
 import {
@@ -18,18 +18,32 @@ export type ActionBannerProps<C> = PolymorphicComponentProps<C, UnstyledButtonPr
 	heading: ReactNode;
 	subheading: ReactNode;
 	index: number;
+	disabled?: boolean;
 };
 export const ActionBanner = <C extends ElementType = 'button'>({
 	icon,
 	heading,
 	subheading,
 	index,
+	disabled = false,
+	onClick,
 	className,
 	...props
 }: ActionBannerProps<C>) => {
+	const handleOnClick = useCallback(
+		(e: React.MouseEvent<HTMLButtonElement>) => {
+			if (disabled) e.preventDefault();
+			onClick?.(e);
+		},
+		[disabled, onClick],
+	);
+
 	return (
 		<UnstyledButton
-			className={`${classes.root} ${classes[`id${index}`]} ${className}`}
+			className={`${classes.root} ${classes[`id${index}`]} ${disabled ? classes.disabled : ''} ${className}`}
+			disabled={disabled}
+			data-disabled={disabled}
+			onClick={handleOnClick}
 			{...(props as UnstyledButtonProps)}
 		>
 			<Container className={classes.bg}>
@@ -63,6 +77,13 @@ export const ActionBanner = <C extends ElementType = 'button'>({
 								/>
 							</svg>
 						</Container>
+						<Container className={classes.gradient} />
+					</Switch.Case>
+					<Switch.Case when={4}>
+						<Container className={`${classes.left} ${classes.graphic}`} />
+						<Container className={`${classes.right} ${classes.graphic}`} />
+						<Container className={`${classes.left} ${classes.corner}`} />
+						<Container className={`${classes.right} ${classes.corner}`} />
 						<Container className={classes.gradient} />
 					</Switch.Case>
 				</Switch>

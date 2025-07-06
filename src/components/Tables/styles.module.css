@@ -139,6 +139,10 @@
 			td {
 				@apply border-b-0;
 				@apply paragraph-sm;
+
+				p {
+					@apply paragraph-sm;
+				}
 			}
 
 			&.gray,
