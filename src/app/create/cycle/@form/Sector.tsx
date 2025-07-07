@@ -1,12 +1,17 @@
 import { useTranslations } from 'next-intl';
+import { useContextSelector } from 'use-context-selector';
 
 import { SectorFormCard } from '@/components/SectorFormCard';
-import { Checkbox, Stack, Text, Title } from '@mantine/core';
+import { CreateLayoutContext } from '@/pages/create/_components/Providers';
+import { ICreateCycleStepProps } from '@/pages/create/cycle/@form/page';
+import { Alert, Checkbox, List, Stack, Text, Title } from '@mantine/core';
+import { IconExclamationCircle } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
-export const SectorStep = () => {
+export const SectorStep = ({ form }: ICreateCycleStepProps) => {
 	const t = useTranslations();
+	const formError = useContextSelector(CreateLayoutContext, (context) => context.formError);
 
 	return (
 		<Stack className={`${classes.sector} ${classes.root}`}>
@@ -18,12 +23,25 @@ export const SectorStep = () => {
 					{t('create.cycle.sector.header.subheading')}
 				</Text>
 			</Stack>
+			{formError.length > 0 && (
+				<Alert
+					variant="light"
+					color="red"
+					title={t('create.cycle.error.title')}
+					icon={<IconExclamationCircle />}
+					className={classes.alert}
+				>
+					<List>{formError}</List>
+				</Alert>
+			)}
 			<Checkbox.Group
 				classNames={{
 					root: classes.content,
 					error: 'hidden',
 				}}
 				required
+				key={form.key('sectors')}
+				{...form.getInputProps('sectors')}
 			>
 				<SectorFormCard sector="energy" />
 				<SectorFormCard sector="industry" />

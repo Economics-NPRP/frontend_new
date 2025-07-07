@@ -19,6 +19,10 @@
 		}
 	}
 
+	> .alert {
+		@apply self-stretch;
+	}
+
 	&.first {
 		@apply items-stretch;
 
@@ -394,6 +398,15 @@
 		.root {
 			&.first .calendar {
 				@apply bg-dark-600 border-dark-400;
+
+				button[data-in-range='true'] {
+					@apply bg-dark-400;
+				}
+
+				button[data-first-in-range='true'],
+				button[data-last-in-range='true'] {
+					@apply bg-white text-dark-600;
+				}
 			}
 
 			&.second > .section {

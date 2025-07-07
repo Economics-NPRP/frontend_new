@@ -41,30 +41,6 @@ export const AuctionCycleCard = ({
 	const truncate = useMatches({ base: false, xs: true, sm: false, md: true, lg: false });
 	const { duration, interval } = useCycleStatus(auctionCycleData);
 
-	// const distrbiution = useMemo(() => {
-	// 	//	Generate array of 6 random values and normalize them to sum to 100
-	// 	const values = new Array(6).fill(0).map(() => Math.floor(Math.random() * 100));
-	// 	const sum = values.reduce((acc, val) => acc + val, 0);
-	// 	const normalizedValues = values.map((val) => (val / sum) * 100);
-
-	// 	return normalizedValues
-	// 		.sort((a, b) => b - a)
-	// 		.map((value, index) => (
-	// 			<Progress.Section
-	// 				key={index}
-	// 				value={value}
-	// 				color={SectorVariants[SectorList[index]]?.color.token}
-	// 				className={`${classes[SectorVariants[SectorList[index]]!.color.token!]} ${classes.section}`}
-	// 			>
-	// 				{value > 10 && (
-	// 					<Progress.Label className={classes.label}>
-	// 						{t('constants.quantities.percent.default', { value })}
-	// 					</Progress.Label>
-	// 				)}
-	// 			</Progress.Section>
-	// 		));
-	// }, [t]);
-
 	return (
 		<Group className={`${classes[auctionCycleData.status]} ${classes.root}`} {...props}>
 			<Stack className={classes.left}>
@@ -208,33 +184,6 @@ export const AuctionCycleCard = ({
 						</Avatar.Group>
 					</Stack>
 				</Group>
-				{/* <Divider className={classes.divider} />
-				<Stack className={classes.statistics}>
-					<Group className={classes.header}>
-						<Stack className={classes.label}>
-							<Text className={classes.title}>
-								{t('components.auctionCycleCard.statistics.title')}
-							</Text>
-							<Text className={classes.subtitle}>
-								{t('components.auctionCycleCard.statistics.subtitle')}
-							</Text>
-						</Stack>
-						<Group className={classes.wrapper}>
-							<Container className={classes.icon}>
-								<IconLeaf size={16} />
-							</Container>
-							<Group className={classes.value}>
-								<Text className={classes.amount}>
-									{format.number(auctionCycleData.emissionsCount, 'money')}
-								</Text>
-								<Text className={classes.unit}>
-									{t('constants.emissions.unit')}
-								</Text>
-							</Group>
-						</Group>
-					</Group>
-					<Progress.Root className={classes.progress}>{distrbiution}</Progress.Root>
-				</Stack> */}
 			</Stack>
 			<Group className={classes.right}>
 				<Group className={classes.properties}>

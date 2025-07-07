@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useContext } from 'react';
+import { useContextSelector } from 'use-context-selector';
 
 import { Switch } from '@/components/SwitchCase';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
@@ -13,8 +13,25 @@ import classes from './styles.module.css';
 
 export const CreateLayoutFooter = () => {
 	const t = useTranslations();
-	const { returnHref, completeLabel, steps, activeStep, handleNextStep, handlePrevStep } =
-		useContext(CreateLayoutContext);
+	const returnHref = useContextSelector(CreateLayoutContext, (context) => context.returnHref);
+	const completeLabel = useContextSelector(
+		CreateLayoutContext,
+		(context) => context.completeLabel,
+	);
+	const handleFormSubmit = useContextSelector(
+		CreateLayoutContext,
+		(context) => context.handleFormSubmit,
+	);
+	const steps = useContextSelector(CreateLayoutContext, (context) => context.steps);
+	const activeStep = useContextSelector(CreateLayoutContext, (context) => context.activeStep);
+	const handleNextStep = useContextSelector(
+		CreateLayoutContext,
+		(context) => context.handleNextStep,
+	);
+	const handlePrevStep = useContextSelector(
+		CreateLayoutContext,
+		(context) => context.handlePrevStep,
+	);
 
 	return (
 		<Group className={classes.root}>
@@ -59,9 +76,10 @@ export const CreateLayoutFooter = () => {
 				<Switch value={activeStep}>
 					<Switch.Case when={steps.length - 1}>
 						<Button
-							className={`${classes.primary} ${classes.button}`}
+							className={`${classes.green} ${classes.primary} ${classes.button}`}
+							type="submit"
 							color="green"
-							onClick={handleNextStep}
+							onClick={handleFormSubmit}
 							rightSection={<IconCheck size={16} />}
 						>
 							{completeLabel}

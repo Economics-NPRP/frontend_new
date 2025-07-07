@@ -57,6 +57,8 @@ export default function Form() {
 						if (process.env.NODE_ENV === 'development') router.push('/marketplace');
 						else router.push('/otp');
 					} else {
+						const errorMessage = (res.errors || ['Unknown error']).join(', ');
+						console.error('Error logging in:', errorMessage);
 						setFormError(
 							(res.errors || []).map((error, index) => (
 								<List.Item key={index}>{error}</List.Item>

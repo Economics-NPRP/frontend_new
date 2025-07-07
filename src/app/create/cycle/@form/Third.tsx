@@ -1,13 +1,17 @@
 import { useFormatter, useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
+import { useContextSelector } from 'use-context-selector';
 
 import { CurrencyBadge } from '@/components/Badge';
+import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import {
 	ActionIcon,
+	Alert,
 	Button,
 	Container,
 	Divider,
 	Group,
+	List,
 	NumberInput,
 	NumberInputProps,
 	Stack,
@@ -21,6 +25,7 @@ import {
 	IconBuildingCommunity,
 	IconBuildingFactory,
 	IconDownload,
+	IconExclamationCircle,
 	IconFileImport,
 	IconInfoCircle,
 	IconLeaf,
@@ -32,6 +37,7 @@ import classes from './styles.module.css';
 
 export const ThirdStep = () => {
 	const t = useTranslations();
+	const formError = useContextSelector(CreateLayoutContext, (context) => context.formError);
 
 	return (
 		<Stack className={`${classes.third} ${classes.root}`}>
@@ -60,6 +66,17 @@ export const ThirdStep = () => {
 					</Button>
 				</Group>
 			</Stack>
+			{formError.length > 0 && (
+				<Alert
+					variant="light"
+					color="red"
+					title={t('create.cycle.error.title')}
+					icon={<IconExclamationCircle />}
+					className={classes.alert}
+				>
+					<List>{formError}</List>
+				</Alert>
+			)}
 			<Container className={classes.table}>
 				<Group className={`${classes.energy} ${classes.cell}`}>
 					<IconBolt size={16} className={classes.icon} />

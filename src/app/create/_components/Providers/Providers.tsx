@@ -1,6 +1,6 @@
 'use client';
 
-import { PropsWithChildren, useCallback, useState } from 'react';
+import { PropsWithChildren, ReactElement, useCallback, useEffect, useState } from 'react';
 
 import {
 	CreateLayoutContext,
@@ -13,6 +13,13 @@ export const CreateLayoutProvider = ({ children }: PropsWithChildren) => {
 	const [returnLabel, setReturnLabel] = useState(DefaultCreateLayoutContextData.returnLabel);
 	const [completeLabel, setCompleteLabel] = useState(
 		DefaultCreateLayoutContextData.completeLabel,
+	);
+
+	const [handleFormSubmit, setHandleFormSubmit] = useState(
+		() => DefaultCreateLayoutContextData.handleFormSubmit,
+	);
+	const [formError, setFormError] = useState<Array<ReactElement>>(
+		DefaultCreateLayoutContextData.formError,
 	);
 
 	const [steps, setSteps] = useState(DefaultCreateLayoutContextData.steps);
@@ -30,7 +37,7 @@ export const CreateLayoutProvider = ({ children }: PropsWithChildren) => {
 	const handleStepChange = useCallback(
 		(step: number) => {
 			if (step === activeStep) return;
-			if (!shouldAllowNextStep(activeStep)) return;
+			if (step > activeStep && !shouldAllowNextStep(step)) return;
 
 			setActiveStep(step);
 			setHighestStepVisited((prev) => Math.max(prev, step));
@@ -46,6 +53,10 @@ export const CreateLayoutProvider = ({ children }: PropsWithChildren) => {
 		() => handleStepChange(activeStep - 1),
 		[activeStep, handleStepChange],
 	);
+	const handleFinalStep = useCallback(() => {
+		setActiveStep(steps.length);
+		setHighestStepVisited((prev) => Math.max(prev, steps.length));
+	}, [steps]);
 
 	return (
 		<CreateLayoutContext.Provider
@@ -62,6 +73,12 @@ export const CreateLayoutProvider = ({ children }: PropsWithChildren) => {
 				completeLabel,
 				setCompleteLabel,
 
+				handleFormSubmit,
+				setHandleFormSubmit,
+
+				formError,
+				setFormError,
+
 				steps,
 				setSteps,
 
@@ -69,6 +86,7 @@ export const CreateLayoutProvider = ({ children }: PropsWithChildren) => {
 				handleStepChange,
 				handleNextStep,
 				handlePrevStep,
+				handleFinalStep,
 
 				highestStepVisited,
 				setHighestStepVisited,

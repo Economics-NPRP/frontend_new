@@ -1,6 +1,7 @@
 'use client';
 
-import { Dispatch, SetStateAction, createContext } from 'react';
+import { Dispatch, ReactElement, SetStateAction } from 'react';
+import { createContext } from 'use-context-selector';
 
 export const DefaultCreateLayoutContextData: ICreateLayoutContext = {
 	title: '',
@@ -15,6 +16,12 @@ export const DefaultCreateLayoutContextData: ICreateLayoutContext = {
 	completeLabel: 'Complete',
 	setCompleteLabel: () => {},
 
+	handleFormSubmit: () => {},
+	setHandleFormSubmit: () => () => {},
+
+	formError: [],
+	setFormError: () => [],
+
 	steps: [],
 	setSteps: () => [],
 
@@ -22,6 +29,7 @@ export const DefaultCreateLayoutContextData: ICreateLayoutContext = {
 	handleStepChange: () => {},
 	handleNextStep: () => {},
 	handlePrevStep: () => {},
+	handleFinalStep: () => {},
 
 	highestStepVisited: 0,
 	setHighestStepVisited: () => () => 0,
@@ -46,6 +54,12 @@ export interface ICreateLayoutContext {
 	completeLabel: string;
 	setCompleteLabel: (label: string) => void;
 
+	handleFormSubmit: (values: any) => void;
+	setHandleFormSubmit: (handler: (values: any) => void) => void;
+
+	formError: Array<ReactElement>;
+	setFormError: (errors: Array<ReactElement>) => void;
+
 	steps: Array<{ label: string; description: string }>;
 	setSteps: (steps: Array<{ label: string; description: string }>) => void;
 
@@ -53,6 +67,7 @@ export interface ICreateLayoutContext {
 	handleStepChange: (step: number) => void;
 	handleNextStep: () => void;
 	handlePrevStep: () => void;
+	handleFinalStep: () => void;
 
 	highestStepVisited: number;
 	setHighestStepVisited: Dispatch<SetStateAction<number>>;

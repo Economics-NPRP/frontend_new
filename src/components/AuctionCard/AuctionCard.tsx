@@ -10,7 +10,6 @@ import { SmallCountdown } from '@/components/Countdown';
 import { Id } from '@/components/Id';
 import { Switch } from '@/components/SwitchCase';
 import { WithSkeleton } from '@/components/WithSkeleton';
-import { SectorList } from '@/constants/SectorData';
 import { useAuctionAvailability, useJoinAuction } from '@/hooks';
 import { IAuctionData } from '@/schema/models';
 import {
@@ -63,7 +62,6 @@ export const AuctionCard = ({
 		'/imgs/transport/airplane.jpg',
 	];
 	const src = useMemo(() => imgs[Math.floor(Math.random() * imgs.length)], []);
-	const sector = useMemo(() => SectorList[Math.floor(Math.random() * SectorList.length)], []);
 
 	const joinAuction = useJoinAuction(auction.id, () => router.push(url));
 
@@ -101,11 +99,11 @@ export const AuctionCard = ({
 						emissions: 1800,
 					})}
 				</Badge>
-				<SectorBadge className={classes.sector} sector={sector} />
+				<SectorBadge className={classes.sector} sector={auction.sector} />
 			</Group>
 			<Stack className={classes.body}>
 				<Stack className={classes.header}>
-					<Id value={auction.id} variant={sector} />
+					<Id value={auction.id} variant={auction.sector} />
 					<Group className={classes.label}>
 						<Stack className={classes.left}>
 							<Anchor component={Link} className={classes.heading} href={url}>
@@ -140,7 +138,7 @@ export const AuctionCard = ({
 								target="_blank"
 								href={`/marketplace/company/${auction.ownerId}`}
 							>
-								{auction.owner.name}
+								{auction.owner && auction.owner.name}
 							</Anchor>
 						</WithSkeleton>
 					</Group>

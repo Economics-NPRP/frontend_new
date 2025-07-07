@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useContext } from 'react';
+import { useContextSelector } from 'use-context-selector';
 
 import { HeaderButton } from '@/components/Header/HeaderButton';
 import { UserProfile } from '@/components/Header/UserProfile';
@@ -14,7 +14,9 @@ import classes from './styles.module.css';
 
 export const CreateLayoutHeader = () => {
 	const shortReturn = useMatches({ base: true, md: false });
-	const { title, returnHref, returnLabel } = useContext(CreateLayoutContext);
+	const title = useContextSelector(CreateLayoutContext, (context) => context.title);
+	const returnHref = useContextSelector(CreateLayoutContext, (context) => context.returnHref);
+	const returnLabel = useContextSelector(CreateLayoutContext, (context) => context.returnLabel);
 
 	return (
 		<Group className={classes.root} component="header">

@@ -71,11 +71,12 @@ export const UserProfile = ({ variant, className, ...props }: UserProfileProps) 
 					});
 					router.push('/login');
 				} else {
-					const errors = (res.errors || []).join(' ');
+					const errorMessage = (res.errors || []).join(' ');
+					console.error('Error logging out:', errorMessage);
 					notifications.show({
 						color: 'red',
 						title: t('components.header.user.logout.error.title'),
-						message: errors,
+						message: errorMessage,
 						position: 'bottom-center',
 					});
 				}
