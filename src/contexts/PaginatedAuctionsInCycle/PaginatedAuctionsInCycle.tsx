@@ -105,8 +105,8 @@ export const PaginatedAuctionsInCycleProvider = ({
 		() => [
 			'dashboard',
 			'admin',
-			'paginatedAuctionsInCycle',
 			cycleId as string,
+			'paginatedAuctionsInCycle',
 			(filters.type || [])[0],
 			filters.status,
 		],

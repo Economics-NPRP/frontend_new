@@ -3,8 +3,10 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { useContext } from 'react';
 
 import { ActionBanner } from '@/components/ActionBanner';
+import { ApprovalModalContext } from '@/pages/dashboard/a/cycles/(details)/[cycleId]/_components/ApprovalModal';
 import { Container } from '@mantine/core';
 import {
 	IconCirclePlus,
@@ -18,6 +20,7 @@ import classes from './styles.module.css';
 export default function SubBanners() {
 	const t = useTranslations();
 	const { cycleId } = useParams();
+	const { open } = useContext(ApprovalModalContext);
 
 	return (
 		<Container className={classes.root}>
@@ -55,6 +58,7 @@ export default function SubBanners() {
 				heading={t('dashboard.admin.cycles.details.actions.approve.heading')}
 				subheading={t('dashboard.admin.cycles.details.actions.approve.subheading')}
 				index={1}
+				onClick={open}
 			/>
 		</Container>
 	);

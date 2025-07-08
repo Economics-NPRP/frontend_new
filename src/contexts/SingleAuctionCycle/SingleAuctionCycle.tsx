@@ -20,7 +20,7 @@ export const SingleCycleProvider = ({ children }: PropsWithChildren) => {
 		<QueryProvider
 			context={Context}
 			defaultData={DefaultData}
-			queryKey={['dashboard', 'admin', 'singleCycle', cycleId as string]}
+			queryKey={['dashboard', 'admin', cycleId as string, 'singleCycle']}
 			queryFn={() => () =>
 				throwError(getSingleCycle(cycleId as string), `getSingleCycle:${cycleId}`)
 			}

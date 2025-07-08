@@ -1791,6 +1791,40 @@
               "emissions": "Equivalent Emissions (% Total)",
               "auctions": "Auctions (% Total)"
             }
+          },
+          "approvalModal": {
+            "title": "Review Draft Auction Cycle",
+            "description": "Please ensure that all details are correct before approving the draft cycle.",
+            "actions": {
+              "approve": {
+                "label": "Approve Auction Cycle"
+              }
+            }
+          },
+          "confirmationModal": {
+            "actions": {
+              "approve": {
+                "label": "Approve and Release Auctions"
+              }
+            },
+            "title": "Approve Draft Auction Cycle",
+            "description": "Are you sure you want to approve this auction cycle? This will release all auctions in the cycle to the public.",
+            "kpi": {
+              "label": "KPIs Targets",
+              "description": "I have reviewed the KPI targets, their current progress, and their alignment with policy objectives and have approved them."
+            },
+            "auctions": {
+              "label": "Auctions Setup",
+              "description": "I have verified all auctions under this cycle, including their schedules, permit quantities, and minimum bid requirements."
+            },
+            "permits": {
+              "label": "Permit Distribution",
+              "description": "I have reviewed the total permits to be distributed, including free allocations, and approve the distribution logic."
+            },
+            "final": {
+              "label": "Final Confirmation",
+              "description": "I acknowledge that I am responsible for approving this cycle and that I have completed all necessary reviews."
+            }
           }
         }
       }
@@ -1862,8 +1896,17 @@
     },
     "unknownError": "An unknown error occurred.",
     "cycles": {
-      "exists": "An auction cycle with the same title already exists"
-    }
+      "exists": "An auction cycle with the same title already exists",
+      "approve": {
+        "invalidStatus": "Approval can only be done for draft cycles",
+        "error": "There was an error approving the cycle",
+        "success": {
+          "title": "Auction Cycle Approved",
+          "message": "This auction cycle has been approved and its auctions have been released for the public"
+        }
+      }
+    },
+    "notFound": "Entity with specified ID not found"
   },
   "auth": {
     "onboarding": {

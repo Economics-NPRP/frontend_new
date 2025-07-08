@@ -8,6 +8,7 @@ import {
 } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { getSingleCycle } from '@/lib/cycles';
+import { ApprovalModalProvider } from '@/pages/dashboard/a/cycles/(details)/[cycleId]/_components/ApprovalModal';
 import { PageProvider } from '@/pages/dashboard/a/cycles/(details)/[cycleId]/_components/Providers';
 import { Stack } from '@mantine/core';
 
@@ -73,5 +74,6 @@ export default function CycleDetails({
 				defaultSortDirection: 'desc',
 			},
 		},
+		{ provider: ApprovalModalProvider },
 	);
 }
