@@ -23,24 +23,25 @@
 		@apply self-stretch;
 	}
 
-	&.first {
-		@apply items-stretch;
-
-		.calendar {
-			@apply px-6 py-4 mt-4;
-			@apply bg-white border border-solid border-gray-300;
-
-			&:hover {
-				@apply shadow-xs;
-			}
-		}
-	}
-
 	&.sector > .content {
 		@apply grid grid-cols-1 gap-4;
 
 		> div[role='group'] {
 			@apply contents;
+		}
+	}
+
+	&.details {
+		@apply items-stretch;
+
+		.calendar {
+			@apply px-6 py-4 mt-4;
+			@apply bg-white border border-solid border-gray-300;
+			@apply transition-shadow duration-300;
+
+			&:hover {
+				@apply shadow-xs;
+			}
 		}
 	}
 
@@ -81,7 +82,7 @@
 
 	@mixin dark {
 		.root {
-			&.first .calendar {
+			&.details .calendar {
 				@apply bg-dark-600 border-dark-400;
 
 				button[data-in-range='true'] {

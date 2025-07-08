@@ -2306,16 +2306,70 @@
       "sector": {
         "header": {
           "heading": "Select Auction Sector",
-          "subheading": "Choose which sector this auction will cover by selecting one of the following options."
+          "subheading": "Select the main economic or operational sector under which your auction should be categorized. This helps classify the auction and define its emissions scope."
         },
         "steps": {
           "label": "Sector Selection",
-          "description": "Pick a sector to cover during this auction"
+          "description": "Choose the sector most relevant to your auction"
         }
       },
       "title": "Create New Auction",
       "complete": {
         "label": "Create Auction"
+      },
+      "subsector": {
+        "steps": {
+          "label": "Choose Subsector",
+          "description": "Specify the exact activity within the sector"
+        },
+        "header": {
+          "heading": "Specify Permit Subsector",
+          "subheading": "Choose the respective subsector of permits that will be auctioned off. This will define the image, title, and description used for the auction."
+        }
+      },
+      "details": {
+        "steps": {
+          "label": "Define Auction Details",
+          "description": "Enter core auction parameters and timeline"
+        },
+        "header": {
+          "heading": "Auction Configuration",
+          "subheading": "Provide key information about the auction. These parameters will control how the auction is conducted"
+        },
+        "startDatetime": {
+          "label": "Start Date and Time",
+          "description": "At what date and time should this auction start?"
+        },
+        "endDatetime": {
+          "label": "End Date and Time",
+          "description": "At what time should bids no longer be accepted and the auction end?"
+        },
+        "permits": {
+          "label": "Permits Offered",
+          "description": "Set the total number of permits to be auctioned off"
+        },
+        "emissions": {
+          "label": "Emissions Per Permit",
+          "description": "How many tons of CO2 equivalent is one permit worth?"
+        },
+        "minBid": {
+          "label": "Minimum Bid",
+          "description": "Set the minimum starting bid. Also note that if an auction has no losers, the final bill will be calculated based on this value"
+        },
+        "minIncrement": {
+          "label": "Minimum Increment",
+          "description": "What is the minimum increase a bid needs to have compared to the minimum winning bid to be considered valid?"
+        },
+        "type": {
+          "label": "Auction Type",
+          "description": "Should this be an open or sealed auction?"
+        }
+      },
+      "review": {
+        "steps": {
+          "label": "Review Auction Information",
+          "description": "Ensure all details are entered correctly before finalizing auction creation"
+        }
       }
     }
   }

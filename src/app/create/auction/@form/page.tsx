@@ -9,9 +9,16 @@ import { safeParse } from 'valibot';
 
 import { Switch } from '@/components/SwitchCase';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
+import { DetailsStep } from '@/pages/create/auction/@form/Details';
 import { FinalStep } from '@/pages/create/auction/@form/Final';
 import { SectorStep } from '@/pages/create/auction/@form/Sector';
-import { CreateAuctionDataSchema, DefaultCreateAuctionData, ICreateAuction } from '@/schema/models';
+import { SubsectorStep } from '@/pages/create/auction/@form/Subsector';
+import {
+	CreateAuctionDataSchema,
+	DefaultCreateAuctionData,
+	DetailsAuctionDataSchema,
+	ICreateAuction,
+} from '@/schema/models';
 import { List } from '@mantine/core';
 import { UseFormReturnType, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
@@ -61,12 +68,7 @@ export default function CreateAuctionLayout() {
 		mode: 'uncontrolled',
 		initialValues: DefaultCreateAuctionData,
 		validate: (values) => {
-			// if (activeStep === 0) return valibotResolver(FirstAuctionCycleDataSchema)(values);
-			// if (activeStep === 1) return valibotResolver(SectorAuctionCycleDataSchema)(values);
-			//	TODO: uncomment when done with team assignment ui and logic
-			// if (activeStep === 2) return valibotResolver(SecondAuctionCycleDataSchema)(values);
-			//	TODO: Uncomment when kpis are implemented in backend
-			// if (activeStep === 3) return valibotResolver(ThirdAuctionCycleDataSchema)(values);
+			if (activeStep === 2) return valibotResolver(DetailsAuctionDataSchema)(values);
 			return {};
 		},
 		onValuesChange: () => setFormError([]),
@@ -78,6 +80,8 @@ export default function CreateAuctionLayout() {
 		(formData: ICreateAuction) => {
 			setIsFormSubmitting(true);
 			setFormError([]);
+			console.log(formData);
+			setIsFormSubmitting(false);
 		},
 		[handleFinalStep],
 	);
@@ -96,6 +100,18 @@ export default function CreateAuctionLayout() {
 				label: t('create.auction.sector.steps.label'),
 				description: t('create.auction.sector.steps.description'),
 			},
+			{
+				label: t('create.auction.subsector.steps.label'),
+				description: t('create.auction.subsector.steps.description'),
+			},
+			{
+				label: t('create.auction.details.steps.label'),
+				description: t('create.auction.details.steps.description'),
+			},
+			{
+				label: t('create.auction.review.steps.label'),
+				description: t('create.auction.review.steps.description'),
+			},
 		]);
 	}, [t, cycleId]);
 
@@ -108,9 +124,9 @@ export default function CreateAuctionLayout() {
 
 	useEffect(() => {
 		setShouldAllowStepSelect(() => (step: number, isStepper?: boolean) => {
-			if (step > 5) return false;
+			if (step > 4) return false;
 			if (isStepper && highestStepVisited < step) return false;
-			if (activeStep === 5) return false;
+			if (activeStep === 4) return false;
 			//	Cant go to next step if current step has errors
 			if (!isStepper && step > activeStep && form.validate().hasErrors) return false;
 			return true;
@@ -122,7 +138,13 @@ export default function CreateAuctionLayout() {
 			<Switch.Case when={0}>
 				<SectorStep form={form} />
 			</Switch.Case>
-			<Switch.Case when={5}>
+			<Switch.Case when={1}>
+				<SubsectorStep form={form} />
+			</Switch.Case>
+			<Switch.Case when={2}>
+				<DetailsStep form={form} />
+			</Switch.Case>
+			<Switch.Case when={4}>
 				<FinalStep />
 			</Switch.Case>
 		</Switch>

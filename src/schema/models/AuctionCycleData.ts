@@ -9,7 +9,6 @@ import {
 	length,
 	minValue,
 	nonEmpty,
-	nullish,
 	object,
 	omit,
 	pick,
@@ -119,7 +118,7 @@ export const DefaultAuctionCycleData: IAuctionCycleData = {
 
 export const DefaultCreateAuctionCycleData: ICreateAuctionCycle = {
 	title: '',
-	description: null,
+	description: '',
 	sectors: [],
 	admins: [],
 	dates: [new Date(), new Date()],

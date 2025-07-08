@@ -1,13 +1,20 @@
+import { DateTime } from 'luxon';
 import {
 	InferInput,
 	InferOutput,
 	boolean,
+	date,
+	forward,
+	minValue,
 	nonEmpty,
 	nullish,
 	object,
 	omit,
+	partialCheck,
+	pick,
 	pipe,
 	string,
+	transform,
 	trim,
 	url,
 } from 'valibot';
@@ -48,26 +55,54 @@ export const BaseAuctionDataSchema = object({
 	owner: BaseUserDataSchema,
 });
 
-export const CreateAuctionDataSchema = omit(BaseAuctionDataSchema, [
-	'id',
+const CreateAuctionDataSchemaObject = object({
+	...omit(BaseAuctionDataSchema, [
+		'id',
 
-	'bidsCount',
-	'biddersCount',
-	'views',
-	'bookmarks',
+		'bidsCount',
+		'biddersCount',
+		'views',
+		'bookmarks',
 
-	'isVisible',
-	'createdAt',
-	'hasJoined',
+		'isVisible',
+		'createdAt',
+		'hasJoined',
+		'startDatetime',
+		'endDatetime',
 
-	'owner',
-]);
+		'owner',
+	]).entries,
+
+	startDatetime: pipe(date(), minValue(new Date())),
+	endDatetime: pipe(date(), minValue(new Date())),
+});
+export const CreateAuctionDataSchema = pipe(
+	CreateAuctionDataSchemaObject,
+	transform((input) => ({
+		...input,
+		startDatetime: DateTime.fromJSDate(input.startDatetime).toISO(),
+		endDatetime: DateTime.fromJSDate(input.endDatetime).toISO(),
+	})),
+);
 
 export const ReadAuctionDataSchema = BaseAuctionDataSchema;
-export const UpdateAuctionDataSchema = CreateAuctionDataSchema;
+export const UpdateAuctionDataSchema = CreateAuctionDataSchemaObject;
+
+export const DetailsAuctionDataSchema = pipe(
+	pick(CreateAuctionDataSchemaObject, ['startDatetime', 'endDatetime']),
+	forward(
+		partialCheck(
+			[['startDatetime'], ['endDatetime']],
+			(input) => input.startDatetime <= input.endDatetime,
+			'The start date must be before the end date.',
+		),
+		['startDatetime'],
+	),
+);
 
 export interface IAuctionData extends InferOutput<typeof BaseAuctionDataSchema> {}
-export interface ICreateAuction extends InferInput<typeof CreateAuctionDataSchema> {}
+export interface ICreateAuction extends InferInput<typeof CreateAuctionDataSchemaObject> {}
+export interface ICreateAuctionOutput extends InferOutput<typeof CreateAuctionDataSchemaObject> {}
 export interface IReadAuction extends InferInput<typeof ReadAuctionDataSchema> {}
 export interface IUpdateAuction extends InferInput<typeof UpdateAuctionDataSchema> {}
 
@@ -106,6 +141,6 @@ export const DefaultCreateAuctionData: ICreateAuction = {
 	description: null,
 	permits: 0,
 	minBid: 0,
-	startDatetime: '1970-01-01T00:00:00.000Z',
-	endDatetime: '1970-01-01T00:00:00.000Z',
+	startDatetime: new Date(),
+	endDatetime: new Date(),
 };

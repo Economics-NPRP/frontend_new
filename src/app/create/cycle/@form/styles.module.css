@@ -29,6 +29,7 @@
 		.calendar {
 			@apply px-6 py-4 mt-4;
 			@apply bg-white border border-solid border-gray-300;
+			@apply transition-shadow duration-300;
 
 			&:hover {
 				@apply shadow-xs;
