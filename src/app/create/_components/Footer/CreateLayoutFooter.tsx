@@ -18,9 +18,9 @@ export const CreateLayoutFooter = () => {
 		CreateLayoutContext,
 		(context) => context.completeLabel,
 	);
-	const handleFormSubmit = useContextSelector(
+	const isFormSubmitting = useContextSelector(
 		CreateLayoutContext,
-		(context) => context.handleFormSubmit,
+		(context) => context.isFormSubmitting,
 	);
 	const steps = useContextSelector(CreateLayoutContext, (context) => context.steps);
 	const activeStep = useContextSelector(CreateLayoutContext, (context) => context.activeStep);
@@ -79,8 +79,8 @@ export const CreateLayoutFooter = () => {
 							className={`${classes.green} ${classes.primary} ${classes.button}`}
 							type="submit"
 							color="green"
-							onClick={handleFormSubmit}
 							rightSection={<IconCheck size={16} />}
+							loading={isFormSubmitting}
 						>
 							{completeLabel}
 						</Button>

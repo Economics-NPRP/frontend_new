@@ -30,7 +30,7 @@ export const CreateLayoutSidebar = () => {
 					key={index}
 					label={step.label}
 					description={step.description}
-					allowStepSelect={shouldAllowStepSelect(index)}
+					allowStepSelect={shouldAllowStepSelect(index, true)}
 				/>
 			)),
 		[steps, shouldAllowStepSelect],

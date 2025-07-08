@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { withProviders } from '@/helpers';
 import { CreateLayoutFooter } from '@/pages/create/_components/Footer';
 import { CreateLayoutHeader } from '@/pages/create/_components/Header';
-import { CreateLayoutProvider } from '@/pages/create/_components/Providers';
+import { CreateLayoutProvider, FromWrapper } from '@/pages/create/_components/Providers';
 import { CreateLayoutSidebar } from '@/pages/create/_components/Sidebar';
 import '@/styles/globals.css';
 import { AppShell, Container, Group, Stack } from '@mantine/core';
@@ -27,14 +27,16 @@ export default async function CreateLayout({
 			<CreateLayoutHeader />
 			<Group className={classes.row}>
 				<CreateLayoutSidebar />
-				<Stack className={classes.column}>
-					<Container className={classes.content} component="main">
-						<Container className={`${classes.bg} bg-stagger-md`} />
-						<Container className={classes.gradient} />
-						{children}
-					</Container>
-					<CreateLayoutFooter />
-				</Stack>
+				<FromWrapper>
+					<Stack className={classes.column}>
+						<Container className={classes.content} component="main">
+							<Container className={`${classes.bg} bg-stagger-md`} />
+							<Container className={classes.gradient} />
+							{children}
+						</Container>
+						<CreateLayoutFooter />
+					</Stack>
+				</FromWrapper>
 			</Group>
 		</AppShell>,
 		{ provider: CreateLayoutProvider },

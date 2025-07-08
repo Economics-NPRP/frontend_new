@@ -22,6 +22,9 @@ export const DefaultCreateLayoutContextData: ICreateLayoutContext = {
 	formError: [],
 	setFormError: () => [],
 
+	isFormSubmitting: false,
+	setIsFormSubmitting: () => () => false,
+
 	steps: [],
 	setSteps: () => [],
 
@@ -33,9 +36,6 @@ export const DefaultCreateLayoutContextData: ICreateLayoutContext = {
 
 	highestStepVisited: 0,
 	setHighestStepVisited: () => () => 0,
-
-	shouldAllowNextStep: () => true,
-	setShouldAllowNextStep: () => () => true,
 
 	shouldAllowStepSelect: () => true,
 	setShouldAllowStepSelect: () => () => true,
@@ -60,6 +60,9 @@ export interface ICreateLayoutContext {
 	formError: Array<ReactElement>;
 	setFormError: (errors: Array<ReactElement>) => void;
 
+	isFormSubmitting: boolean;
+	setIsFormSubmitting: Dispatch<SetStateAction<boolean>>;
+
 	steps: Array<{ label: string; description: string }>;
 	setSteps: (steps: Array<{ label: string; description: string }>) => void;
 
@@ -72,13 +75,11 @@ export interface ICreateLayoutContext {
 	highestStepVisited: number;
 	setHighestStepVisited: Dispatch<SetStateAction<number>>;
 
-	/** If true, the user can go to the next step */
-	shouldAllowNextStep: (currentStep: number) => boolean;
-	setShouldAllowNextStep: Dispatch<SetStateAction<(currentStep: number) => boolean>>;
-
-	/** Used for the stepper component to determine if a step can be selected */
-	shouldAllowStepSelect: (step: number) => boolean;
-	setShouldAllowStepSelect: Dispatch<SetStateAction<(step: number) => boolean>>;
+	/** If true, the user can select the specified step or navigate to it  */
+	shouldAllowStepSelect: (step: number, isStepper?: boolean) => boolean;
+	setShouldAllowStepSelect: Dispatch<
+		SetStateAction<(step: number, isStepper?: boolean) => boolean>
+	>;
 }
 
 export const CreateLayoutContext = createContext<ICreateLayoutContext>(

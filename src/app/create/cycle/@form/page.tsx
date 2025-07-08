@@ -2,7 +2,7 @@
 
 import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { useTranslations } from 'next-intl';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useContextSelector } from 'use-context-selector';
 import { safeParse } from 'valibot';
 
@@ -28,7 +28,6 @@ import { notifications } from '@mantine/notifications';
 
 export default function CreateCycleLayout() {
 	const t = useTranslations();
-	const submitRef = useRef<HTMLButtonElement | null>(null);
 
 	const setTitle = useContextSelector(CreateLayoutContext, (context) => context.setTitle);
 	const setReturnHref = useContextSelector(
@@ -48,11 +47,11 @@ export default function CreateCycleLayout() {
 		(context) => context.setHandleFormSubmit,
 	);
 	const setFormError = useContextSelector(CreateLayoutContext, (context) => context.setFormError);
-	const setSteps = useContextSelector(CreateLayoutContext, (context) => context.setSteps);
-	const setShouldAllowNextStep = useContextSelector(
+	const setIsFormSubmitting = useContextSelector(
 		CreateLayoutContext,
-		(context) => context.setShouldAllowNextStep,
+		(context) => context.setIsFormSubmitting,
 	);
+	const setSteps = useContextSelector(CreateLayoutContext, (context) => context.setSteps);
 	const setShouldAllowStepSelect = useContextSelector(
 		CreateLayoutContext,
 		(context) => context.setShouldAllowStepSelect,
@@ -89,7 +88,7 @@ export default function CreateCycleLayout() {
 
 	const handleFormSubmit = useCallback(
 		(formData: ICreateAuctionCycleOutput) => {
-			form.setSubmitting(true);
+			setIsFormSubmitting(true);
 			setFormError([]);
 
 			createAuctionCycle(formData)
@@ -110,17 +109,17 @@ export default function CreateCycleLayout() {
 							position: 'bottom-center',
 						});
 					}
-					form.setSubmitting(false);
+					setIsFormSubmitting(false);
 				})
 				.catch((err) => {
 					console.error('Error creating a new auction cycle:', err);
 					setFormError([
 						<List.Item key={0}>{t('create.cycle.error.message')}</List.Item>,
 					]);
-					form.setSubmitting(false);
+					setIsFormSubmitting(false);
 				});
 		},
-		[form, handleFinalStep],
+		[handleFinalStep],
 	);
 
 	useEffect(() => {
@@ -152,49 +151,39 @@ export default function CreateCycleLayout() {
 		]);
 	}, [t]);
 
-	useEffect(() => setHandleFormSubmit(() => () => submitRef.current?.click()), [submitRef]);
+	useEffect(() => setHandleFormSubmit(() => form.onSubmit(handleFormSubmit)), [handleFormSubmit]);
 
 	useEffect(() => {
-		setShouldAllowNextStep(() => (step: number) => {
-			if (step > 5) return false;
-
-			if (form.validate().hasErrors) {
-				if (form.errors.sectors)
-					setFormError([<List.Item key={0}>{form.errors.sectors.toString()}</List.Item>]);
-				return false;
-			}
-
-			return true;
-		});
-	}, [form]);
+		if (form.errors.sectors)
+			setFormError([<List.Item key={0}>{form.errors.sectors.toString()}</List.Item>]);
+	}, [form.errors.sectors]);
 
 	useEffect(() => {
-		setShouldAllowStepSelect(() => (step: number) => {
+		setShouldAllowStepSelect(() => (step: number, isStepper?: boolean) => {
 			if (step > 5) return false;
-			if (highestStepVisited < step) return false;
-			if (activeStep === 6) return false;
+			if (isStepper && highestStepVisited < step) return false;
+			if (activeStep === 5) return false;
+			//	Cant go to next step if current step has errors
+			if (!isStepper && step > activeStep && form.validate().hasErrors) return false;
 			return true;
 		});
-	}, [activeStep, highestStepVisited, setShouldAllowStepSelect]);
+	}, [activeStep, highestStepVisited]);
 
 	return (
-		<form className="contents" onSubmit={form.onSubmit(handleFormSubmit)}>
-			<button className="hidden" type="submit" ref={submitRef} />
-			<Switch value={activeStep}>
-				<Switch.Case when={0}>
-					<FirstStep form={form} />
-				</Switch.Case>
-				<Switch.Case when={1}>
-					<SectorStep form={form} />
-				</Switch.Case>
-				<Switch.Case when={2}>
-					<SecondStep form={form} />
-				</Switch.Case>
-				<Switch.Case when={3}>
-					<ThirdStep form={form} />
-				</Switch.Case>
-			</Switch>
-		</form>
+		<Switch value={activeStep}>
+			<Switch.Case when={0}>
+				<FirstStep form={form} />
+			</Switch.Case>
+			<Switch.Case when={1}>
+				<SectorStep form={form} />
+			</Switch.Case>
+			<Switch.Case when={2}>
+				<SecondStep form={form} />
+			</Switch.Case>
+			<Switch.Case when={3}>
+				<ThirdStep form={form} />
+			</Switch.Case>
+		</Switch>
 	);
 }
 
