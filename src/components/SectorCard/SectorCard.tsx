@@ -2,34 +2,29 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { ComponentPropsWithRef, useMemo } from 'react';
 
-import { AuctionCategoryData, AuctionCategoryVariants } from '@/constants/AuctionCategory';
-import { AuctionCategory } from '@/types';
+import { SectorData, SectorVariants } from '@/constants/SectorData';
+import { SectorType } from '@/schema/models';
 import { Container, Stack, Text, Title, UnstyledButton } from '@mantine/core';
 import { IconCircleArrowRight } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
-export interface CategoryCardProps extends ComponentPropsWithRef<'button'> {
-	category: AuctionCategory;
+export interface SectorCardProps extends ComponentPropsWithRef<'button'> {
+	sector: SectorType;
 }
-export const CategoryCard = ({ category, className, ...props }: CategoryCardProps) => {
+export const SectorCard = ({ sector, className, ...props }: SectorCardProps) => {
 	const t = useTranslations();
 
-	const { image } = useMemo<AuctionCategoryData>(
-		() => AuctionCategoryVariants[category]!,
-		[category],
-	);
+	const { image } = useMemo<SectorData>(() => SectorVariants[sector]!, [sector]);
 
 	return (
 		<UnstyledButton className={`${classes.root} ${className}`} {...props}>
 			<Container className={classes.image}>
-				<Image src={image} alt={t(`constants.auctionCategory.${category}.alt`)} fill />
+				<Image src={image} alt={t(`constants.sector.${sector}.alt`)} fill />
 				<Container className={classes.overlay} />
 			</Container>
 			<Stack className={classes.label}>
-				<Title className={classes.heading}>
-					{t(`constants.auctionCategory.${category}.title`)}
-				</Title>
+				<Title className={classes.heading}>{t(`constants.sector.${sector}.title`)}</Title>
 				<Text className={classes.value}>
 					{t('constants.quantities.auctions.default', {
 						value: Math.round(Math.random() * 1000),

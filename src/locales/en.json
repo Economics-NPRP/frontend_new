@@ -98,51 +98,51 @@
         "short": "ETS"
       }
     },
-    "auctionCategory": {
+    "sector": {
       "all": {
         "alt": "Image of a globe depicting all categories",
         "title": "All Sectors",
         "description": {
-          "register": "This category includes all sectors and is used when no specific sector is applicable."
+          "register": "This sector encompasses all entities that produce or supply emissions, regardless of their specific industry or activity. It is designed to accommodate a wide range of participants in the emissions trading system."
         }
       },
       "energy": {
-        "alt": "Image of a power plant depicting the energy category",
+        "alt": "Image of a power plant depicting the energy sector",
         "title": "Energy",
         "description": {
           "register": "This sector includes all entities producing or supplying energy. Permits apply to emissions from sources like power plants, renewables, or electricity grids."
         }
       },
       "industry": {
-        "alt": "Image of a crusher machine depicting the industry category",
+        "alt": "Image of a crusher machine depicting the industry sector",
         "title": "Industry",
         "description": {
-          "register": "This category is relevant to companies in manufacturing and processing sectors, such as steel, cement, and chemical producers."
+          "register": "This sector is relevant to companies in manufacturing and processing sectors, such as steel, cement, and chemical producers."
         }
       },
       "transport": {
-        "alt": "Image of traffic causing pollution depicting the transport category",
+        "alt": "Image of traffic causing pollution depicting the transport sector",
         "title": "Transport",
         "description": {
           "register": "Designed for logistics, freight, aviation, and public transport operators, this sector manages permits tied to fuel-based emissions across all transport modes."
         }
       },
       "buildings": {
-        "alt": "Image of a HVAC system depicting the buildings category",
+        "alt": "Image of a HVAC system depicting the buildings sector",
         "title": "Buildings",
         "description": {
-          "register": "For real estate developers, property managers, and facility operators, this category covers emissions permits for building energy use, HVAC systems, and lighting."
+          "register": "For real estate developers, property managers, and facility operators, this sector covers emissions permits for building energy use, HVAC systems, and lighting."
         }
       },
       "agriculture": {
-        "alt": "Image of a farm with cows depicting the agriculture category",
+        "alt": "Image of a farm with cows depicting the agriculture sector",
         "title": "Agriculture",
         "description": {
           "register": "Agricultural producers, agribusinesses, and food processors fall under this sector, with permits covering emissions from livestock, fertilizers, and land use."
         }
       },
       "waste": {
-        "alt": "Image of waste glass and plastic depicting the waste category",
+        "alt": "Image of waste glass and plastic depicting the waste sector",
         "title": "Waste",
         "description": {
           "register": "Waste management firms—including landfill operators and recyclers—can acquire permits here for emissions from waste decomposition and treatment."
@@ -546,6 +546,24 @@
     "no": "No",
     "lastOnline": {
       "default": "Last online {value}"
+    },
+    "adminRoles": {
+      "manager": {
+        "title": "Cycle Manager",
+        "description": "Responsible for overseeing the auction cycle and managing planning and execution activities"
+      },
+      "operator": {
+        "title": "Auction Operator",
+        "description": "Responsible for setting up and configuring auctions, including setting dates, minimum bid, and other auction parameters."
+      },
+      "allocator": {
+        "title": "Permit Strategist",
+        "description": "Responsible for deciding how many free permits to distribute based on regulatory goals, sector performance, or national policy."
+      },
+      "finance": {
+        "title": "Finance Officer",
+        "description": "Has access to finances for auction cycle and handles payment-related activity"
+      }
     }
   },
   "marketplace": {
@@ -586,7 +604,7 @@
         "heading": "Ending Soon",
         "subheading": "These auctions are ending soon, bid now before they're gone!",
         "filter": {
-          "prompt": "Filter by category"
+          "prompt": "Filter by sector"
         }
       },
       "catalogue": {
@@ -1526,7 +1544,8 @@
         "views": "Views",
         "bidders": "Bidders",
         "bids": "Bids",
-        "bookmarks": "Bookmarks"
+        "bookmarks": "Bookmarks",
+        "cycle": "Auction Cycle"
       },
       "summary": {
         "distribution": {
@@ -1722,6 +1741,10 @@
             },
             "updates": {
               "tab": "Latest Updates"
+            },
+            "title": "Collaboration Panel",
+            "comments": {
+              "tab": "Comments"
             }
           },
           "actions": {
@@ -1745,6 +1768,13 @@
             "kpis": {
               "heading": "Edit Performance Targets",
               "subheading": "Set or edit the performance targets for this cycle"
+            },
+            "approve": {
+              "heading": "Approve Cycle",
+              "subheading": "Once the cycle is ready, click here to approve it and release it to the public"
+            },
+            "comments": {
+              "tooltip": "View or place comments on this auction cycle"
             }
           },
           "title": "Cycle KPIs",
@@ -1760,6 +1790,40 @@
               "permits": "Permit Inflow (% Total)",
               "emissions": "Equivalent Emissions (% Total)",
               "auctions": "Auctions (% Total)"
+            }
+          },
+          "approvalModal": {
+            "title": "Review Draft Auction Cycle",
+            "description": "Please ensure that all details are correct before approving the draft cycle.",
+            "actions": {
+              "approve": {
+                "label": "Approve Auction Cycle"
+              }
+            }
+          },
+          "confirmationModal": {
+            "actions": {
+              "approve": {
+                "label": "Approve and Release Auctions"
+              }
+            },
+            "title": "Approve Draft Auction Cycle",
+            "description": "Are you sure you want to approve this auction cycle? This will release all auctions in the cycle to the public.",
+            "kpi": {
+              "label": "KPIs Targets",
+              "description": "I have reviewed the KPI targets, their current progress, and their alignment with policy objectives and have approved them."
+            },
+            "auctions": {
+              "label": "Auctions Setup",
+              "description": "I have verified all auctions under this cycle, including their schedules, permit quantities, and minimum bid requirements."
+            },
+            "permits": {
+              "label": "Permit Distribution",
+              "description": "I have reviewed the total permits to be distributed, including free allocations, and approve the distribution logic."
+            },
+            "final": {
+              "label": "Final Confirmation",
+              "description": "I acknowledge that I am responsible for approving this cycle and that I have completed all necessary reviews."
             }
           }
         }
@@ -1787,12 +1851,14 @@
       "otp": {
         "expired": "OTP code may have expired, please try logging in again.",
         "invalid": "OTP code is invalid, please make sure the code is 6 numbers long"
-      }
+      },
+      "adminError": "You must be logged in as an admin to perform this action."
     },
     "notLoggedIn": "You must be logged in to access this resource.",
     "noData": "No data was returned.",
     "noCookies": "No cookies set in response",
     "validationError": "The data in the form does not match the expected format",
+    "dataFormatError": "The data returned from the server is not in the expected format",
     "auction": {
       "join": {
         "error": "There was a problem joining the auction"
@@ -1828,7 +1894,19 @@
         }
       }
     },
-    "unknownError": "An unknown error occurred."
+    "unknownError": "An unknown error occurred.",
+    "cycles": {
+      "exists": "An auction cycle with the same title already exists",
+      "approve": {
+        "invalidStatus": "Approval can only be done for draft cycles",
+        "error": "There was an error approving the cycle",
+        "success": {
+          "title": "Auction Cycle Approved",
+          "message": "This auction cycle has been approved and its auctions have been released for the public"
+        }
+      }
+    },
+    "notFound": "Entity with specified ID not found"
   },
   "auth": {
     "onboarding": {
@@ -2050,6 +2128,11 @@
         "date": {
           "label": "Start and End Dates",
           "placeholder": "Select the start and end date for this auction cycle..."
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter description...",
+          "description": "Write a descriptive statement about this auction cycle"
         }
       },
       "second": {
@@ -2061,10 +2144,6 @@
           "heading": "Assign Responsible Teams",
           "subheading": "Choose which admins will be responsible for this auction cycle and related activities, such as creating and managing auctions, distributing permits, and analysing statistics"
         },
-        "manager": {
-          "heading": "Cycle Manager",
-          "subheading": "Responsible for overseeing the auction cycle and managing planning and execution activities"
-        },
         "viewResponsibilities": {
           "label": "View Responsibilities",
           "tooltip": "View what permissions and responsibilities this role has and what actions they can take"
@@ -2074,22 +2153,6 @@
         },
         "selectionAdd": {
           "label": "Add Admin"
-        },
-        "operator": {
-          "heading": "Auction Operator",
-          "subheading": "Responsible for setting up and configuring auctions, including setting dates, minimum bid, and other auction parameters."
-        },
-        "allocator": {
-          "heading": "Permit Strategist",
-          "subheading": "Responsible for deciding how many free permits to distribute based on regulatory goals, sector performance, or national policy."
-        },
-        "auditor": {
-          "heading": "Auditor",
-          "subheading": "View-only access for inspecting data, logs, and compliance during the cycle."
-        },
-        "finance": {
-          "heading": "Finance Officer",
-          "subheading": "Has access to finances for auction cycle and handles payment-related activity"
         }
       },
       "third": {
@@ -2195,6 +2258,26 @@
         "steps": {
           "label": "Review & Create",
           "description": "Review all settings and create the auction cycle"
+        }
+      },
+      "sector": {
+        "header": {
+          "heading": "Pick Sectors For Auction Cycle",
+          "subheading": "Select the sectors that this auction cycle will cover. Each sector will have its own set of auctions and permits."
+        },
+        "steps": {
+          "label": "Sector Selection",
+          "description": "Pick sectors to cover during this auction cycle"
+        }
+      },
+      "error": {
+        "title": "There was an error creating the auction cycle",
+        "message": "There was an error whilst creating a new auction cycle, please view the console for more details."
+      },
+      "final": {
+        "header": {
+          "heading": "Auction Cycle Created!",
+          "subheading": "Click the button below to return to the dashboard where you can find the newly made auction cycle."
         }
       }
     },

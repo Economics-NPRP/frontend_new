@@ -1,11 +1,25 @@
 'use client';
 
-import { PropsWithChildren, useCallback, useState } from 'react';
+import { PropsWithChildren, ReactElement, useCallback, useState } from 'react';
+import { useContextSelector } from 'use-context-selector';
 
 import {
 	CreateLayoutContext,
 	DefaultCreateLayoutContextData,
 } from '@/pages/create/_components/Providers';
+
+export const FromWrapper = ({ children }: PropsWithChildren) => {
+	const handleFormSubmit = useContextSelector(
+		CreateLayoutContext,
+		(context) => context.handleFormSubmit,
+	);
+
+	return (
+		<form className="contents" onSubmit={handleFormSubmit}>
+			{children}
+		</form>
+	);
+};
 
 export const CreateLayoutProvider = ({ children }: PropsWithChildren) => {
 	const [title, setTitle] = useState(DefaultCreateLayoutContextData.title);
@@ -15,13 +29,20 @@ export const CreateLayoutProvider = ({ children }: PropsWithChildren) => {
 		DefaultCreateLayoutContextData.completeLabel,
 	);
 
+	const [handleFormSubmit, setHandleFormSubmit] = useState(
+		() => DefaultCreateLayoutContextData.handleFormSubmit,
+	);
+	const [formError, setFormError] = useState<Array<ReactElement>>(
+		DefaultCreateLayoutContextData.formError,
+	);
+	const [isFormSubmitting, setIsFormSubmitting] = useState<boolean>(
+		DefaultCreateLayoutContextData.isFormSubmitting,
+	);
+
 	const [steps, setSteps] = useState(DefaultCreateLayoutContextData.steps);
 	const [activeStep, setActiveStep] = useState(DefaultCreateLayoutContextData.activeStep);
 	const [highestStepVisited, setHighestStepVisited] = useState(
 		DefaultCreateLayoutContextData.highestStepVisited,
-	);
-	const [shouldAllowNextStep, setShouldAllowNextStep] = useState(
-		() => DefaultCreateLayoutContextData.shouldAllowNextStep,
 	);
 	const [shouldAllowStepSelect, setShouldAllowStepSelect] = useState(
 		() => DefaultCreateLayoutContextData.shouldAllowStepSelect,
@@ -30,12 +51,12 @@ export const CreateLayoutProvider = ({ children }: PropsWithChildren) => {
 	const handleStepChange = useCallback(
 		(step: number) => {
 			if (step === activeStep) return;
-			if (!shouldAllowNextStep(activeStep)) return;
+			if (!shouldAllowStepSelect(step)) return;
 
 			setActiveStep(step);
 			setHighestStepVisited((prev) => Math.max(prev, step));
 		},
-		[activeStep, shouldAllowNextStep],
+		[activeStep, shouldAllowStepSelect],
 	);
 
 	const handleNextStep = useCallback(
@@ -46,6 +67,10 @@ export const CreateLayoutProvider = ({ children }: PropsWithChildren) => {
 		() => handleStepChange(activeStep - 1),
 		[activeStep, handleStepChange],
 	);
+	const handleFinalStep = useCallback(() => {
+		setActiveStep(steps.length);
+		setHighestStepVisited((prev) => Math.max(prev, steps.length));
+	}, [steps]);
 
 	return (
 		<CreateLayoutContext.Provider
@@ -62,6 +87,15 @@ export const CreateLayoutProvider = ({ children }: PropsWithChildren) => {
 				completeLabel,
 				setCompleteLabel,
 
+				handleFormSubmit,
+				setHandleFormSubmit,
+
+				formError,
+				setFormError,
+
+				isFormSubmitting,
+				setIsFormSubmitting,
+
 				steps,
 				setSteps,
 
@@ -69,12 +103,10 @@ export const CreateLayoutProvider = ({ children }: PropsWithChildren) => {
 				handleStepChange,
 				handleNextStep,
 				handlePrevStep,
+				handleFinalStep,
 
 				highestStepVisited,
 				setHighestStepVisited,
-
-				shouldAllowNextStep,
-				setShouldAllowNextStep,
 
 				shouldAllowStepSelect,
 				setShouldAllowStepSelect,

@@ -8,7 +8,7 @@ import {
 	SortedOffsetPaginatedQueryProviderProps,
 } from '@/contexts';
 import { throwError } from '@/helpers';
-import { getPaginatedFirms } from '@/lib/users/firms';
+import { getPaginatedCycles } from '@/lib/cycles';
 import { IAuctionCycleData } from '@/schema/models';
 import {
 	SortedOffsetPaginatedContextState,
@@ -51,12 +51,12 @@ export const PaginatedAuctionCyclesProvider = ({
 	>(
 		() => (page, perPage, sortBy, sortDirection) => () =>
 			throwError(
-				//	TODO: Implement the actual API call to fetch paginated auction cycles once backend is ready
-				getPaginatedFirms({
+				getPaginatedCycles({
 					page,
 					perPage,
 					sortBy,
 					sortDirection,
+					status: status === 'all' ? undefined : status,
 				}),
 				'getPaginatedAuctionCycles',
 			),
@@ -73,8 +73,6 @@ export const PaginatedAuctionCyclesProvider = ({
 			defaultData={DefaultData}
 			queryKey={queryKey}
 			queryFn={queryFn}
-			//	TODO: Temporarily disabling the query function until the API is ready
-			disabled
 			children={children}
 			status={status}
 			setStatus={setStatus}

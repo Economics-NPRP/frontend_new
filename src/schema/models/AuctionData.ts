@@ -16,6 +16,7 @@ import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/util
 
 import { AuctionTypeSchema } from './AuctionType';
 import { DefaultUserData } from './GeneralUserData';
+import { SectorTypeSchema } from './SectorData';
 import { BaseUserDataSchema } from './UserData';
 
 //	TODO: Check why path alias is not working
@@ -23,8 +24,8 @@ import { BaseUserDataSchema } from './UserData';
 export const BaseAuctionDataSchema = object({
 	id: UuidSchema(),
 	ownerId: UuidSchema(),
-	//	TODO: Uncomment when sectors are added
-	// sectorId: UuidSchema('sectorId'),
+	cycleId: UuidSchema(),
+	sector: SectorTypeSchema,
 	type: AuctionTypeSchema,
 	isPrimaryMarket: boolean(),
 
@@ -73,6 +74,8 @@ export interface IUpdateAuction extends InferInput<typeof UpdateAuctionDataSchem
 export const DefaultAuctionData: IAuctionData = {
 	id: '',
 	ownerId: '',
+	cycleId: '',
+	sector: 'energy',
 	type: 'open',
 	isPrimaryMarket: false,
 	title: '',

@@ -84,7 +84,7 @@
 
 					> .badges {
 						@apply gap-1.5;
-						@apply justify-end;
+						@apply justify-center;
 
 						> .badge {
 							@apply h-6;
@@ -170,7 +170,7 @@
 	}
 
 	> .right {
-		@apply flex-col items-stretch flex-nowrap;
+		@apply flex-col items-stretch flex-nowrap flex-shrink-0;
 		@apply gap-0;
 		@apply bg-dark-600 border border-t-0 border-solid border-dark-400;
 
@@ -179,7 +179,7 @@
 		}
 
 		> .properties {
-			@apply flex-col flex-nowrap;
+			@apply flex-col flex-nowrap flex-shrink-0;
 			@apply items-stretch;
 			@apply gap-0;
 
@@ -232,7 +232,7 @@
 		}
 
 		> .button {
-			@apply w-[unset] h-12;
+			@apply w-[unset] h-12 flex-shrink-0;
 			@apply flex items-center justify-center;
 			@apply border-0 border-t border-solid border-dark-400;
 		}
@@ -244,6 +244,10 @@
 		.root {
 			> .left > .header {
 				@apply flex-row items-center justify-between;
+
+				> .wrapper > .content > .badges {
+					@apply justify-start;
+				}
 
 				> .team {
 					@apply items-end;
@@ -277,10 +281,6 @@
 					> .wrapper > .content {
 						> .label > .id {
 							@apply w-[unset];
-						}
-
-						> .badges {
-							@apply justify-start;
 						}
 					}
 

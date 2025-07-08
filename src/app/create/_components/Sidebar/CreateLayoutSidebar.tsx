@@ -1,7 +1,8 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useContext, useMemo } from 'react';
+import { useMemo } from 'react';
+import { useContextSelector } from 'use-context-selector';
 
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { Button, Divider, Stack, Stepper, Text } from '@mantine/core';
@@ -11,8 +12,16 @@ import classes from './styles.module.css';
 
 export const CreateLayoutSidebar = () => {
 	const t = useTranslations();
-	const { steps, activeStep, handleStepChange, shouldAllowStepSelect } =
-		useContext(CreateLayoutContext);
+	const steps = useContextSelector(CreateLayoutContext, (context) => context.steps);
+	const activeStep = useContextSelector(CreateLayoutContext, (context) => context.activeStep);
+	const handleStepChange = useContextSelector(
+		CreateLayoutContext,
+		(context) => context.handleStepChange,
+	);
+	const shouldAllowStepSelect = useContextSelector(
+		CreateLayoutContext,
+		(context) => context.shouldAllowStepSelect,
+	);
 
 	const stepComponents = useMemo(
 		() =>
@@ -21,7 +30,7 @@ export const CreateLayoutSidebar = () => {
 					key={index}
 					label={step.label}
 					description={step.description}
-					allowStepSelect={shouldAllowStepSelect(index)}
+					allowStepSelect={shouldAllowStepSelect(index, true)}
 				/>
 			)),
 		[steps, shouldAllowStepSelect],

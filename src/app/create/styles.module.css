@@ -9,7 +9,7 @@
 		@apply flex-auto flex-nowrap items-stretch;
 		@apply gap-0;
 
-		> .column {
+		.column {
 			@apply min-w-0;
 			@apply flex-auto flex-nowrap items-stretch;
 			@apply gap-0;
@@ -43,7 +43,7 @@
 
 * {
 	@mixin dark {
-		.root > .row > .column > .content {
+		.root > .row .column > .content {
 			> .bg {
 				@apply bg-dark-700;
 			}

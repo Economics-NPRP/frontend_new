@@ -13,6 +13,7 @@ export const useCycleStatus = (cycle: IAuctionCycleData) => {
 		const start = DateTime.fromISO(cycle.startDatetime);
 		const end = DateTime.fromISO(cycle.endDatetime);
 		const durationObject = end.diff(start).rescale().toObject();
+		if (Object.keys(durationObject).length === 0) return t('constants.na');
 
 		//	Take the largest non-zero unit for display and round it up if there are multiple units
 		const unitValuePairs = Object.entries(durationObject);

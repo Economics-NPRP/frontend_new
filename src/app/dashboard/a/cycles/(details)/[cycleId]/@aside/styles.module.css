@@ -1,57 +1,95 @@
 .root {
-	@apply p-6 gap-6;
-	@apply items-stretch justify-start;
+	@apply min-w-[100vw];
+	@apply p-0;
 
-	&.members {
-		> .section {
-			@apply gap-2;
-			@apply items-stretch justify-center;
+	> .header {
+		@apply px-6 py-4;
 
-			> .header {
-				@apply items-center justify-between;
+		> .title {
+			@apply heading-2;
+		}
 
-				> .title {
-					@apply display-lg;
-				}
+		> .close {
+			@apply size-8;
+			@apply bg-dark-600 border border-solid border-dark-400 text-white;
 
-				> .info {
-					@apply min-w-[unset] min-h-[unset];
-					@apply size-6;
-					@apply text-gray-600;
-					@apply rounded-sm;
-
-					&:hover {
-						@apply bg-gray-100;
-					}
-				}
+			&:hover {
+				@apply bg-dark-500;
 			}
+		}
+	}
 
-			> .card {
-				@apply px-4 py-3 gap-3;
-				@apply items-center justify-center;
-				@apply bg-white border border-solid border-gray-300;
+	> .body {
+		@apply p-0;
 
-				> .label {
-					@apply flex-auto;
-					@apply gap-0 items-start;
+		.tabs {
+			@apply min-h-0;
+			@apply flex-auto;
+			@apply flex flex-col gap-0;
 
-					> .name {
-						@apply display-sm-sb-d6;
+			> .panel {
+				@apply min-h-0;
+				@apply flex-auto;
+				@apply overflow-y-auto;
+			}
+		}
+
+		.content {
+			@apply p-6 gap-6;
+			@apply items-stretch justify-start;
+
+			&.members {
+				> .section {
+					@apply gap-2;
+					@apply items-stretch justify-center;
+
+					> .header {
+						@apply items-center justify-between flex-nowrap;
+
+						> .title {
+							@apply display-lg truncate;
+						}
+
+						> .info {
+							@apply min-w-[unset] min-h-[unset];
+							@apply size-6;
+							@apply text-gray-600;
+							@apply rounded-sm;
+
+							&:hover {
+								@apply bg-gray-100;
+							}
+						}
 					}
 
-					> .meta {
-						@apply paragraph-sm-g6 leading-none;
-					}
-				}
+					> .card {
+						@apply px-4 py-3 gap-3;
+						@apply items-center justify-center;
+						@apply bg-white border border-solid border-gray-300;
 
-				> .actions {
-					@apply min-w-[unset] min-h-[unset];
-					@apply size-6;
-					@apply text-gray-600;
-					@apply rounded-sm;
+						> .label {
+							@apply flex-auto;
+							@apply gap-0 items-start;
 
-					&:hover {
-						@apply bg-gray-100;
+							> .name {
+								@apply display-sm-sb-d6;
+							}
+
+							> .meta {
+								@apply paragraph-sm-g6 leading-none;
+							}
+						}
+
+						> .actions {
+							@apply min-w-[unset] min-h-[unset];
+							@apply size-6;
+							@apply text-gray-600;
+							@apply rounded-sm;
+
+							&:hover {
+								@apply bg-gray-100;
+							}
+						}
 					}
 				}
 			}
@@ -60,15 +98,32 @@
 }
 
 * {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			@apply min-w-[50vw];
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+			@apply min-w-[520px];
+		}
+	}
+
 	@mixin dark {
-		.root.members > .section {
-			> .header > .info:hover,
-			> .card > .actions:hover {
-				@apply bg-dark-500;
+		.root > .body {
+			.tabs .tab[data-active='true'] {
+				@apply border-dark-50;
 			}
 
-			> .card {
-				@apply bg-dark-600 border-dark-400;
+			.content.members > .section {
+				> .header > .info:hover,
+				> .card > .actions:hover {
+					@apply bg-dark-500;
+				}
+
+				> .card {
+					@apply bg-dark-600 border-dark-400;
+				}
 			}
 		}
 	}

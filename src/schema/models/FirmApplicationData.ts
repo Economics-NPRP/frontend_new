@@ -1,11 +1,8 @@
 import {
 	InferInput,
 	InferOutput,
-	array,
 	email,
 	integer,
-	maxLength,
-	minLength,
 	minValue,
 	nonEmpty,
 	nullish,
@@ -14,7 +11,6 @@ import {
 	omit,
 	optional,
 	pick,
-	picklist,
 	pipe,
 	string,
 	transform,
@@ -22,10 +18,10 @@ import {
 	url,
 } from 'valibot';
 
-import { AuctionCategoryList } from '@/constants/AuctionCategory';
 import { TimestampSchema, UuidSchema } from '@/schema/utils';
 
 import { FirmApplicationStatusSchema } from './FirmApplicationStatus';
+import { SectorListSchema } from './SectorData';
 
 export const BaseFirmApplicationDataSchema = object({
 	companyName: pipe(string(), trim(), nonEmpty()),
@@ -55,7 +51,7 @@ export const BaseFirmApplicationDataSchema = object({
 		url(),
 		transform((value) => [value] as string[]),
 	),
-	sectors: pipe(array(picklist(AuctionCategoryList)), minLength(1), maxLength(6)),
+	sectors: SectorListSchema,
 	message: optional(pipe(string(), trim())),
 
 	id: UuidSchema(),

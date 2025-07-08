@@ -1,7 +1,7 @@
 import { useFormatter, useTranslations } from 'next-intl';
 import { useContext, useMemo } from 'react';
 
-import { CategoryBadge, CurrencyBadge } from '@/components/Badge';
+import { CurrencyBadge, SectorBadge } from '@/components/Badge';
 import {
 	MyOpenAuctionResultsContext,
 	MyUserProfileContext,
@@ -70,7 +70,7 @@ export const Winner = () => {
 						<Text className={classes.key}>
 							{t('marketplace.auction.results.ticket.winner.properties.sector.key')}
 						</Text>
-						<CategoryBadge category={'industry'} />
+						<SectorBadge sector={auction.data.sector} />
 					</Group>
 					<Group className={classes.row}>
 						<Text className={classes.key}>

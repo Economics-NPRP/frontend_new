@@ -4,6 +4,11 @@ export type ServerData<T> = {
 	detail?: string;
 } & T;
 
+export type ArrayServerData<T> = ServerData<{
+	results: Array<T>;
+	resultCount: number;
+}>;
+
 export type OffsetPaginatedData<T> = ServerData<{
 	results: Array<T>;
 	perPage: number;

@@ -57,11 +57,19 @@ export default function Form() {
 						});
 						router.push('/marketplace');
 					} else {
+						const errorMessage = (res.errors || ['Unknown error']).join(', ');
+						console.error('Error registering your account:', errorMessage);
 						setFormError(
 							(res.errors || []).map((error, index) => (
 								<List.Item key={index}>{error}</List.Item>
 							)),
 						);
+						notifications.show({
+							color: 'red',
+							title: t('auth.onboarding.error.title'),
+							message: errorMessage,
+							position: 'bottom-center',
+						});
 					}
 					form.setSubmitting(false);
 				})

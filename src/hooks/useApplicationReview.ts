@@ -27,6 +27,7 @@ export const useApplicationReview: ApplicationReviewProps = (
 	const approve = useMutation({
 		mutationFn: () => throwError(approveApplication(id), `approveApplication:${id}`),
 		onSuccess: () => {
+			//	TODO: invalidate paginated applications after approval or rejection
 			notifications.show({
 				color: 'green',
 				title: t('lib.users.firms.applications.approve.success.title'),

@@ -1,3 +1,4 @@
+export * from './ArrayQuery';
 export * from './KeysetPaginatedQuery';
 export * from './OffsetPaginatedInfiniteQuery';
 export * from './OffsetPaginatedQuery';

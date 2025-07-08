@@ -1,8 +1,9 @@
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useContext } from 'react';
 
-import { AuctionTypeBadge, CategoryBadge } from '@/components/Badge';
+import { AuctionTypeBadge, SectorBadge } from '@/components/Badge';
 import { Id } from '@/components/Id';
 import { Switch } from '@/components/SwitchCase';
 import { WithSkeleton } from '@/components/WithSkeleton';
@@ -22,6 +23,7 @@ import { IconChevronRight } from '@tabler/icons-react';
 import classes from './styles.module.css';
 
 export const Details = () => {
+	const t = useTranslations();
 	const auction = useContext(SingleAuctionContext);
 
 	return (
@@ -61,7 +63,7 @@ export const Details = () => {
 							</Anchor>
 							{/* TODO: change links once sectors are implemented in marketplace */}
 							<Anchor component={Link} href="/marketplace">
-								Industry
+								{t(`constants.sector.${auction.data.sector}.title`)}
 							</Anchor>
 							<Anchor component={Link} href="/marketplace">
 								Flare Gas Burning
@@ -73,7 +75,7 @@ export const Details = () => {
 					<Title className={classes.title}>Flare Gas Burning</Title>
 				</WithSkeleton>
 				<Group className={classes.badges}>
-					<CategoryBadge category={'industry'} loading={auction.isLoading} />
+					<SectorBadge sector={auction.data.sector} loading={auction.isLoading} />
 					<AuctionTypeBadge type={auction.data.type} loading={auction.isLoading} />
 				</Group>
 				<Group className={classes.row}>
@@ -95,7 +97,11 @@ export const Details = () => {
 						</WithSkeleton>
 					</Group>
 					<WithSkeleton loading={auction.isLoading} width={260} height={14}>
-						<Id className={classes.id} value={auction.data.id} variant="industry" />
+						<Id
+							className={classes.id}
+							value={auction.data.id}
+							variant={auction.data.sector}
+						/>
 					</WithSkeleton>
 				</Group>
 			</Stack>

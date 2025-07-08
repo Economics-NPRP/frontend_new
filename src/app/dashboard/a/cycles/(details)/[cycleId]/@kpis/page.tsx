@@ -4,14 +4,14 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { KpiCard } from '@/components/KpiCard';
-import { AuctionCategory } from '@/types';
+import { SectorType } from '@/schema/models';
 import { Container, Group, Select, Stack, Text, Title } from '@mantine/core';
 
 import classes from './styles.module.css';
 
 export default function KPIs() {
 	const t = useTranslations();
-	const [sectorFilter, setSectorFilter] = useState<'all' | AuctionCategory>('all');
+	const [sectorFilter, setSectorFilter] = useState<'all' | SectorType>('all');
 
 	return (
 		<Stack className={classes.root}>
@@ -28,35 +28,35 @@ export default function KPIs() {
 					className={classes.dropdown}
 					w={140}
 					value={sectorFilter}
-					onChange={(value) => setSectorFilter(value as 'all' | AuctionCategory)}
+					onChange={(value) => setSectorFilter(value as 'all' | SectorType)}
 					data={[
 						{
 							value: 'all',
-							label: t('constants.auctionCategory.all.title'),
+							label: t('constants.sector.all.title'),
 						},
 						{
 							value: 'energy',
-							label: t('constants.auctionCategory.energy.title'),
+							label: t('constants.sector.energy.title'),
 						},
 						{
 							value: 'industry',
-							label: t('constants.auctionCategory.industry.title'),
+							label: t('constants.sector.industry.title'),
 						},
 						{
 							value: 'transport',
-							label: t('constants.auctionCategory.transport.title'),
+							label: t('constants.sector.transport.title'),
 						},
 						{
 							value: 'buildings',
-							label: t('constants.auctionCategory.buildings.title'),
+							label: t('constants.sector.buildings.title'),
 						},
 						{
 							value: 'agriculture',
-							label: t('constants.auctionCategory.agriculture.title'),
+							label: t('constants.sector.agriculture.title'),
 						},
 						{
 							value: 'waste',
-							label: t('constants.auctionCategory.waste.title'),
+							label: t('constants.sector.waste.title'),
 						},
 					]}
 					allowDeselect={false}

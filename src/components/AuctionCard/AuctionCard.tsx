@@ -5,21 +5,17 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ComponentPropsWithRef, useMemo } from 'react';
 
-import {
-	AuctionTypeBadge,
-	CategoryBadge,
-	CurrencyBadge,
-	EndingSoonBadge,
-} from '@/components/Badge';
+import { AuctionTypeBadge, CurrencyBadge, EndingSoonBadge, SectorBadge } from '@/components/Badge';
 import { SmallCountdown } from '@/components/Countdown';
 import { Id } from '@/components/Id';
 import { Switch } from '@/components/SwitchCase';
+import { WithSkeleton } from '@/components/WithSkeleton';
 import { useAuctionAvailability, useJoinAuction } from '@/hooks';
 import { IAuctionData } from '@/schema/models';
-import { AuctionCategory } from '@/types';
 import {
 	ActionIcon,
 	Anchor,
+	Avatar,
 	Badge,
 	Button,
 	Divider,
@@ -42,8 +38,14 @@ import classes from './styles.module.css';
 
 export interface AuctionCardProps extends ComponentPropsWithRef<'div'> {
 	auction: IAuctionData;
+	loading?: boolean;
 }
-export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) => {
+export const AuctionCard = ({
+	auction,
+	loading = false,
+	className,
+	...props
+}: AuctionCardProps) => {
 	const t = useTranslations();
 	const format = useFormatter();
 	const router = useRouter();
@@ -59,16 +61,7 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 		// '/imgs/transport/airplane.webp',
 		'/imgs/transport/airplane.jpg',
 	];
-	const categories: Array<AuctionCategory> = [
-		'energy',
-		'industry',
-		'transport',
-		'buildings',
-		'agriculture',
-		'waste',
-	];
 	const src = useMemo(() => imgs[Math.floor(Math.random() * imgs.length)], []);
-	const category = useMemo(() => categories[Math.floor(Math.random() * categories.length)], []);
 
 	const joinAuction = useJoinAuction(auction.id, () => router.push(url));
 
@@ -106,20 +99,13 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 						emissions: 1800,
 					})}
 				</Badge>
-				<CategoryBadge className={classes.category} category={category} />
+				<SectorBadge className={classes.sector} sector={auction.sector} />
 			</Group>
 			<Stack className={classes.body}>
 				<Stack className={classes.header}>
+					<Id value={auction.id} variant={auction.sector} />
 					<Group className={classes.label}>
 						<Stack className={classes.left}>
-							<Anchor
-								className={classes.company}
-								component={Link}
-								target="_blank"
-								href={`/marketplace/company/${auction.ownerId}`}
-							>
-								{auction.owner.name}
-							</Anchor>
 							<Anchor component={Link} className={classes.heading} href={url}>
 								Flare Gas Burning
 							</Anchor>
@@ -137,7 +123,25 @@ export const AuctionCard = ({ auction, className, ...props }: AuctionCardProps) 
 						<AuctionTypeBadge type={auction.type} showOpen />
 						<EndingSoonBadge auction={auction} />
 					</Group>
-					<Id value={auction.id} variant={category} />
+					<Group className={classes.owner}>
+						<WithSkeleton loading={loading} width={40} height={40} circle>
+							<Avatar
+								className={classes.avatar}
+								size={'sm'}
+								name={auction.owner && auction.owner.name}
+							/>
+						</WithSkeleton>
+						<WithSkeleton loading={loading} width={160} height={24}>
+							<Anchor
+								className={classes.link}
+								component={Link}
+								target="_blank"
+								href={`/marketplace/company/${auction.ownerId}`}
+							>
+								{auction.owner && auction.owner.name}
+							</Anchor>
+						</WithSkeleton>
+					</Group>
 				</Stack>
 				<Divider className={classes.divider} />
 				<Group className={classes.properties}>

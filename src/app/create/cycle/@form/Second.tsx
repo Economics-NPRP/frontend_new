@@ -1,14 +1,18 @@
 import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
+import { useContextSelector } from 'use-context-selector';
 
 import { BaseBadge } from '@/components/Badge';
+import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { IAdminData } from '@/schema/models';
 import {
+	Alert,
 	Avatar,
 	Button,
 	Container,
 	Divider,
 	Group,
+	List,
 	Stack,
 	Text,
 	Title,
@@ -16,12 +20,13 @@ import {
 	UnstyledButton,
 } from '@mantine/core';
 import { useListState } from '@mantine/hooks';
-import { IconMail, IconPhone, IconPlus } from '@tabler/icons-react';
+import { IconExclamationCircle, IconMail, IconPhone, IconPlus } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
 export const SecondStep = () => {
 	const t = useTranslations();
+	const formError = useContextSelector(CreateLayoutContext, (context) => context.formError);
 
 	return (
 		<Stack className={`${classes.second} ${classes.root}`}>
@@ -33,29 +38,35 @@ export const SecondStep = () => {
 					{t('create.cycle.second.header.subheading')}
 				</Text>
 			</Stack>
+			{formError.length > 0 && (
+				<Alert
+					variant="light"
+					color="red"
+					title={t('create.cycle.error.title')}
+					icon={<IconExclamationCircle />}
+					className={classes.alert}
+				>
+					<List>{formError}</List>
+				</Alert>
+			)}
 			<MemberSelection
-				title={t('create.cycle.second.manager.heading')}
-				description={t('create.cycle.second.manager.subheading')}
+				title={t('constants.adminRoles.manager.title')}
+				description={t('constants.adminRoles.manager.description')}
 				maxMembers={1}
 			/>
 			<MemberSelection
-				title={t('create.cycle.second.operator.heading')}
-				description={t('create.cycle.second.operator.subheading')}
+				title={t('constants.adminRoles.operator.title')}
+				description={t('constants.adminRoles.operator.description')}
 				maxMembers={6}
 			/>
 			<MemberSelection
-				title={t('create.cycle.second.allocator.heading')}
-				description={t('create.cycle.second.allocator.subheading')}
+				title={t('constants.adminRoles.allocator.title')}
+				description={t('constants.adminRoles.allocator.description')}
 				maxMembers={3}
 			/>
 			<MemberSelection
-				title={t('create.cycle.second.auditor.heading')}
-				description={t('create.cycle.second.auditor.subheading')}
-				maxMembers={1}
-			/>
-			<MemberSelection
-				title={t('create.cycle.second.finance.heading')}
-				description={t('create.cycle.second.finance.subheading')}
+				title={t('constants.adminRoles.finance.title')}
+				description={t('constants.adminRoles.finance.description')}
 				maxMembers={1}
 			/>
 			<Divider className={classes.divider} />

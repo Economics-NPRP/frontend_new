@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-import { AuctionCycleStatusBadge, BaseBadge } from '@/components/Badge';
+import { AuctionCycleStatusBadge, BaseBadge, SectorBadge } from '@/components/Badge';
 import { MediumCountdown } from '@/components/Countdown';
 import { Id } from '@/components/Id';
 import { Switch } from '@/components/SwitchCase';
@@ -40,30 +40,6 @@ export const AuctionCycleCard = ({
 	const format = useFormatter();
 	const truncate = useMatches({ base: false, xs: true, sm: false, md: true, lg: false });
 	const { duration, interval } = useCycleStatus(auctionCycleData);
-
-	// const distrbiution = useMemo(() => {
-	// 	//	Generate array of 6 random values and normalize them to sum to 100
-	// 	const values = new Array(6).fill(0).map(() => Math.floor(Math.random() * 100));
-	// 	const sum = values.reduce((acc, val) => acc + val, 0);
-	// 	const normalizedValues = values.map((val) => (val / sum) * 100);
-
-	// 	return normalizedValues
-	// 		.sort((a, b) => b - a)
-	// 		.map((value, index) => (
-	// 			<Progress.Section
-	// 				key={index}
-	// 				value={value}
-	// 				color={AuctionCategoryVariants[AuctionCategoryList[index]]?.color.token}
-	// 				className={`${classes[AuctionCategoryVariants[AuctionCategoryList[index]]!.color.token!]} ${classes.section}`}
-	// 			>
-	// 				{value > 10 && (
-	// 					<Progress.Label className={classes.label}>
-	// 						{t('constants.quantities.percent.default', { value })}
-	// 					</Progress.Label>
-	// 				)}
-	// 			</Progress.Section>
-	// 		));
-	// }, [t]);
 
 	return (
 		<Group className={`${classes[auctionCycleData.status]} ${classes.root}`} {...props}>
@@ -106,11 +82,7 @@ export const AuctionCycleCard = ({
 									className="my-0.5"
 								>
 									<Text className={classes.subtitle}>
-										{t('components.auctionCycleCard.header.subtitle', {
-											value: DateTime.fromISO(
-												auctionCycleData.updatedAt,
-											).toRelative(),
-										})}
+										{auctionCycleData.description}
 									</Text>
 								</WithSkeleton>
 							</Stack>
@@ -120,6 +92,14 @@ export const AuctionCycleCard = ({
 									className={classes.badge}
 									loading={loading}
 								/>
+								{auctionCycleData.sectors.map((sector) => (
+									<SectorBadge
+										key={sector}
+										sector={sector}
+										className={classes.badge}
+										loading={loading}
+									/>
+								))}
 								<BaseBadge
 									variant="light"
 									className={`${classes.basic} ${classes.badge}`}
@@ -133,6 +113,17 @@ export const AuctionCycleCard = ({
 									loading={loading}
 								>
 									{interval}
+								</BaseBadge>
+								<BaseBadge
+									variant="light"
+									className={`${classes.basic} ${classes.badge}`}
+									loading={loading}
+								>
+									{t('components.auctionCycleCard.header.subtitle', {
+										value: DateTime.fromISO(
+											auctionCycleData.updatedAt,
+										).toRelative(),
+									})}
 								</BaseBadge>
 							</Group>
 						</Stack>
@@ -185,39 +176,14 @@ export const AuctionCycleCard = ({
 									<Avatar className={classes.avatar} />
 									<Avatar className={classes.avatar} />
 									<Avatar className={classes.avatar} />
-									<Avatar className={classes.avatar}>+5</Avatar>
+									<Avatar className={classes.avatar}>
+										+{auctionCycleData.assignedAdminsCount}
+									</Avatar>
 								</Switch.False>
 							</Switch>
 						</Avatar.Group>
 					</Stack>
 				</Group>
-				{/* <Divider className={classes.divider} />
-				<Stack className={classes.statistics}>
-					<Group className={classes.header}>
-						<Stack className={classes.label}>
-							<Text className={classes.title}>
-								{t('components.auctionCycleCard.statistics.title')}
-							</Text>
-							<Text className={classes.subtitle}>
-								{t('components.auctionCycleCard.statistics.subtitle')}
-							</Text>
-						</Stack>
-						<Group className={classes.wrapper}>
-							<Container className={classes.icon}>
-								<IconLeaf size={16} />
-							</Container>
-							<Group className={classes.value}>
-								<Text className={classes.amount}>
-									{format.number(auctionCycleData.emissionsCount, 'money')}
-								</Text>
-								<Text className={classes.unit}>
-									{t('constants.emissions.unit')}
-								</Text>
-							</Group>
-						</Group>
-					</Group>
-					<Progress.Root className={classes.progress}>{distrbiution}</Progress.Root>
-				</Stack> */}
 			</Stack>
 			<Group className={classes.right}>
 				<Group className={classes.properties}>

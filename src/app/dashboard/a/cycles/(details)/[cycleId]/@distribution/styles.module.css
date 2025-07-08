@@ -60,6 +60,7 @@
 		}
 
 		.icon {
+			@apply pointer-events-none;
 			@apply text-white;
 			@apply -translate-x-2 -translate-y-2;
 		}
@@ -82,6 +83,11 @@
 	}
 
 	> .table {
+		td:first-child,
+		th:first-child {
+			@apply bg-white;
+		}
+
 		.cell {
 			@apply flex-nowrap items-center justify-start;
 			@apply gap-2;
@@ -169,6 +175,11 @@
 						@apply opacity-90;
 					}
 				}
+			}
+
+			> .table td:first-child,
+			> .table th:first-child {
+				@apply bg-dark-700 border-dark-400;
 			}
 		}
 	}

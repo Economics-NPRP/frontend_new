@@ -7,6 +7,7 @@ import { breakpoints, colors, shadows } from './theme';
 export const theme = mergeMantineTheme(
 	DEFAULT_THEME,
 	createTheme({
+		cursorType: 'pointer',
 		fontFamily: SourceSansPro.style.fontFamily,
 		headings: { fontFamily: SourceSerifPro.style.fontFamily },
 		defaultRadius: 0,

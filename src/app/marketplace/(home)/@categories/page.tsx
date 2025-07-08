@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 
-import { CategoryCard } from '@/components/CategoryCard';
+import { SectorCard } from '@/components/SectorCard';
 import { Button, Container, Group, Stack, Text, Title } from '@mantine/core';
 import { IconArrowUpRight } from '@tabler/icons-react';
 
@@ -26,12 +26,12 @@ export default function Categories() {
 			</Group>
 
 			<Container className={classes.cards}>
-				<CategoryCard category="energy" />
-				<CategoryCard category="industry" />
-				<CategoryCard category="transport" />
-				<CategoryCard category="buildings" />
-				<CategoryCard category="agriculture" />
-				<CategoryCard category="waste" />
+				<SectorCard sector="energy" />
+				<SectorCard sector="industry" />
+				<SectorCard sector="transport" />
+				<SectorCard sector="buildings" />
+				<SectorCard sector="agriculture" />
+				<SectorCard sector="waste" />
 			</Container>
 		</Stack>
 	);

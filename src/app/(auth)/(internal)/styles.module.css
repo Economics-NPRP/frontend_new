@@ -32,6 +32,7 @@
 			.link {
 				@apply text-sm leading-tight;
 				@apply text-blue-600;
+				@apply underline underline-offset-4 decoration-1 decoration-dashed decoration-blue-600;
 			}
 
 			&.header {
@@ -98,6 +99,7 @@
 
 				> .link {
 					@apply p-0 h-[unset] bg-transparent text-blue-600;
+					@apply underline underline-offset-4 decoration-1 decoration-dashed decoration-blue-600;
 
 					&[data-disabled='true'] {
 						@apply text-gray-300;

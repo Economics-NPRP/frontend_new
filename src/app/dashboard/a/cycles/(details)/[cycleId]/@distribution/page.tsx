@@ -6,9 +6,9 @@ import { useFormatter, useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 
 import { BaseBadge } from '@/components/Badge';
-import { AuctionCategoryVariants } from '@/constants/AuctionCategory';
+import { SectorVariants } from '@/constants/SectorData';
 import { Chart } from '@/pages/dashboard/a/cycles/(details)/[cycleId]/@distribution/Chart';
-import { AuctionCategory } from '@/types';
+import { SectorType } from '@/schema/models';
 import { Container, Group, Select, Stack, Text, Title } from '@mantine/core';
 
 import classes from './styles.module.css';
@@ -35,42 +35,42 @@ export default function Distribution() {
 		return [
 			{
 				id: 'energy',
-				title: t('constants.auctionCategory.energy.title'),
+				title: t('constants.sector.energy.title'),
 				permits: Math.round(Math.random() * 100000),
 				emissions: Math.round(Math.random() * 100000),
 				auctions: Math.round(Math.random() * 1000),
 			},
 			{
 				id: 'industry',
-				title: t('constants.auctionCategory.industry.title'),
+				title: t('constants.sector.industry.title'),
 				permits: Math.round(Math.random() * 100000),
 				emissions: Math.round(Math.random() * 100000),
 				auctions: Math.round(Math.random() * 1000),
 			},
 			{
 				id: 'transport',
-				title: t('constants.auctionCategory.transport.title'),
+				title: t('constants.sector.transport.title'),
 				permits: Math.round(Math.random() * 100000),
 				emissions: Math.round(Math.random() * 100000),
 				auctions: Math.round(Math.random() * 1000),
 			},
 			{
 				id: 'buildings',
-				title: t('constants.auctionCategory.buildings.title'),
+				title: t('constants.sector.buildings.title'),
 				permits: Math.round(Math.random() * 100000),
 				emissions: Math.round(Math.random() * 100000),
 				auctions: Math.round(Math.random() * 1000),
 			},
 			{
 				id: 'waste',
-				title: t('constants.auctionCategory.waste.title'),
+				title: t('constants.sector.waste.title'),
 				permits: Math.round(Math.random() * 100000),
 				emissions: Math.round(Math.random() * 100000),
 				auctions: Math.round(Math.random() * 1000),
 			},
 			{
 				id: 'agriculture',
-				title: t('constants.auctionCategory.agriculture.title'),
+				title: t('constants.sector.agriculture.title'),
 				permits: Math.round(Math.random() * 100000),
 				emissions: Math.round(Math.random() * 100000),
 				auctions: Math.round(Math.random() * 1000),
@@ -97,8 +97,8 @@ export default function Distribution() {
 			rawData.map((item) => ({
 				name: item.title,
 				value: item[type],
-				color: AuctionCategoryVariants[item.id as AuctionCategory]!.color.hex!,
-				icon: AuctionCategoryVariants[item.id as AuctionCategory]!.Icon,
+				color: SectorVariants[item.id as SectorType]!.color.hex!,
+				icon: SectorVariants[item.id as SectorType]!.Icon,
 			})),
 		[rawData, type],
 	);
@@ -147,8 +147,7 @@ export default function Distribution() {
 						width: 160,
 						ellipsis: true,
 						render: (record) => {
-							const { Icon, color } =
-								AuctionCategoryVariants[record.id as AuctionCategory]!;
+							const { Icon, color } = SectorVariants[record.id as SectorType]!;
 
 							return (
 								<Group className={classes.cell}>
@@ -225,7 +224,9 @@ export default function Distribution() {
 				records={tableData}
 				sortStatus={sortStatus}
 				onSortStatusChange={setSortStatus}
+				pinFirstColumn
 				withRowBorders
+				withColumnBorders
 				highlightOnHover
 				idAccessor="id"
 			/>
