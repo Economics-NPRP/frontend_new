@@ -1742,7 +1742,10 @@
             "updates": {
               "tab": "Latest Updates"
             },
-            "title": "Collaboration Panel"
+            "title": "Collaboration Panel",
+            "comments": {
+              "tab": "Comments"
+            }
           },
           "actions": {
             "members": {
@@ -1769,6 +1772,9 @@
             "approve": {
               "heading": "Approve Cycle",
               "subheading": "Once the cycle is ready, click here to approve it and release it to the public"
+            },
+            "comments": {
+              "tooltip": "View or place comments on this auction cycle"
             }
           },
           "title": "Cycle KPIs",

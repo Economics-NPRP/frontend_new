@@ -105,7 +105,7 @@
 	}
 	@mixin larger-than $mantine-breakpoint-md {
 		.root {
-			@apply min-w-[480px];
+			@apply min-w-[520px];
 		}
 	}
 

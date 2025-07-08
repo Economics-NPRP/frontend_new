@@ -12,11 +12,11 @@ export const DefaultCycleDetailsPageContextData: ICycleDetailsPageContext = {
 };
 
 export interface ICycleDetailsPageContext {
-	tab: 'members' | 'updates';
-	setTab: (tab: 'members' | 'updates') => void;
+	tab: 'members' | 'comments' | 'updates';
+	setTab: (tab: 'members' | 'comments' | 'updates') => void;
 
 	isDrawerOpen: boolean;
-	openDrawer: (tab?: 'members' | 'updates') => void;
+	openDrawer: (tab?: 'members' | 'comments' | 'updates') => void;
 	closeDrawer: () => void;
 }
 

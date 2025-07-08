@@ -12,7 +12,7 @@
 	}
 
 	.button {
-		@apply size-7;
+		@apply size-8;
 		@apply border-gray-400 text-dark-300;
 	}
 }

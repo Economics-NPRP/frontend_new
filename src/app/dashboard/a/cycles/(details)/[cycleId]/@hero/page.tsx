@@ -11,7 +11,7 @@ import { useCycleStatus } from '@/hooks';
 import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
 import { CycleDetailsPageContext } from '@/pages/dashboard/a/cycles/(details)/[cycleId]/_components/Providers';
 import { ActionIcon, Tooltip } from '@mantine/core';
-import { IconBell, IconPencil, IconUsers } from '@tabler/icons-react';
+import { IconBell, IconMessage, IconPencil, IconUsers } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -75,7 +75,7 @@ export default function Hero() {
 						position="top"
 					>
 						<ActionIcon className={classes.button} variant="outline">
-							<IconPencil size={14} />
+							<IconPencil size={16} />
 						</ActionIcon>
 					</Tooltip>
 					<Tooltip
@@ -87,7 +87,19 @@ export default function Hero() {
 							variant="outline"
 							onClick={() => openDrawer('members')}
 						>
-							<IconUsers size={14} />
+							<IconUsers size={16} />
+						</ActionIcon>
+					</Tooltip>
+					<Tooltip
+						label={t('dashboard.admin.cycles.details.actions.comments.tooltip')}
+						position="top"
+					>
+						<ActionIcon
+							className={classes.button}
+							variant="outline"
+							onClick={() => openDrawer('comments')}
+						>
+							<IconMessage size={16} />
 						</ActionIcon>
 					</Tooltip>
 					<Tooltip
@@ -99,7 +111,7 @@ export default function Hero() {
 							variant="outline"
 							onClick={() => openDrawer('updates')}
 						>
-							<IconBell size={14} />
+							<IconBell size={16} />
 						</ActionIcon>
 					</Tooltip>
 				</>
