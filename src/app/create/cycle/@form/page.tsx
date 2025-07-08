@@ -9,6 +9,7 @@ import { safeParse } from 'valibot';
 import { Switch } from '@/components/SwitchCase';
 import { createAuctionCycle } from '@/lib/cycles';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
+import { FinalStep } from '@/pages/create/cycle/@form/Final';
 import { FirstStep } from '@/pages/create/cycle/@form/First';
 import { SecondStep } from '@/pages/create/cycle/@form/Second';
 import { SectorStep } from '@/pages/create/cycle/@form/Sector';
@@ -182,6 +183,9 @@ export default function CreateCycleLayout() {
 			</Switch.Case>
 			<Switch.Case when={3}>
 				<ThirdStep form={form} />
+			</Switch.Case>
+			<Switch.Case when={5}>
+				<FinalStep />
 			</Switch.Case>
 		</Switch>
 	);

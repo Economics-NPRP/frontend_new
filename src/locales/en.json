@@ -2224,6 +2224,12 @@
       "error": {
         "title": "There was an error creating the auction cycle",
         "message": "There was an error whilst creating a new auction cycle, please view the console for more details."
+      },
+      "final": {
+        "header": {
+          "heading": "Auction Cycle Created!",
+          "subheading": "Click the button below to return to the dashboard where you can find the newly made auction cycle."
+        }
       }
     },
     "layout": {

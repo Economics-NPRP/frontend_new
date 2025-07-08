@@ -380,6 +380,28 @@
 			}
 		}
 	}
+
+	&.final {
+		@apply gap-1 justify-center;
+		@apply my-auto;
+
+		> .icon {
+			@apply self-center mb-4;
+			@apply text-green-600;
+		}
+
+		> .heading {
+			@apply text-center heading-2;
+		}
+
+		> .subheading {
+			@apply text-center paragraph-sm;
+		}
+
+		> .button {
+			@apply w-[320px] mt-6 self-center;
+		}
+	}
 }
 
 * {
