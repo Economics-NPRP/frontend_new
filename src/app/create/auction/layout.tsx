@@ -2,12 +2,12 @@ import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
 export const metadata: Metadata = {
-	title: 'Create New Cycle',
+	title: 'Create New Auction',
 };
 
-export interface CreateCycleProps {
+export interface CreateAuctionProps {
 	form: ReactNode;
 }
-export default function CreateCycle({ form }: CreateCycleProps) {
+export default function CreateAuction({ form }: CreateAuctionProps) {
 	return form;
 }

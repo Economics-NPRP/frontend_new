@@ -1,0 +1,98 @@
+.root {
+	@apply gap-8 items-center;
+
+	> .header {
+		@apply gap-1;
+		@apply items-stretch;
+
+		> .heading {
+			@apply text-center heading-2;
+		}
+
+		> .subheading {
+			@apply text-center paragraph-sm;
+		}
+
+		> .actions {
+			@apply mt-2;
+			@apply gap-2 justify-center items-center;
+		}
+	}
+
+	> .alert {
+		@apply self-stretch;
+	}
+
+	&.first {
+		@apply items-stretch;
+
+		.calendar {
+			@apply px-6 py-4 mt-4;
+			@apply bg-white border border-solid border-gray-300;
+
+			&:hover {
+				@apply shadow-xs;
+			}
+		}
+	}
+
+	&.sector > .content {
+		@apply grid grid-cols-1 gap-4;
+
+		> div[role='group'] {
+			@apply contents;
+		}
+	}
+
+	&.final {
+		@apply gap-1 justify-center;
+		@apply my-auto;
+
+		> .icon {
+			@apply self-center mb-4;
+			@apply text-green-600;
+		}
+
+		> .heading {
+			@apply text-center heading-2;
+		}
+
+		> .subheading {
+			@apply text-center paragraph-sm;
+		}
+
+		> .button {
+			@apply w-[320px] mt-6 self-center;
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root.sector > .content {
+			@apply grid-cols-2;
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-xl {
+		.root.sector > .content {
+			@apply grid-cols-3;
+		}
+	}
+
+	@mixin dark {
+		.root {
+			&.first .calendar {
+				@apply bg-dark-600 border-dark-400;
+
+				button[data-in-range='true'] {
+					@apply bg-dark-400;
+				}
+
+				button[data-first-in-range='true'],
+				button[data-last-in-range='true'] {
+					@apply bg-white text-dark-600;
+				}
+			}
+		}
+	}
+}

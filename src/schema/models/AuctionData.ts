@@ -94,3 +94,18 @@ export const DefaultAuctionData: IAuctionData = {
 	hasJoined: null,
 	owner: DefaultUserData,
 };
+
+export const DefaultCreateAuctionData: ICreateAuction = {
+	ownerId: '',
+	cycleId: '',
+	sector: 'energy',
+	type: 'open',
+	isPrimaryMarket: false,
+	title: '',
+	image: null,
+	description: null,
+	permits: 0,
+	minBid: 0,
+	startDatetime: '1970-01-01T00:00:00.000Z',
+	endDatetime: '1970-01-01T00:00:00.000Z',
+};

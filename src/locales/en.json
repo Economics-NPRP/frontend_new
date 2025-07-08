@@ -268,7 +268,8 @@
       },
       "marketplace": {
         "aria": "Home button",
-        "tooltip": "Return to Marketplace Home"
+        "tooltip": "Return to Marketplace Home",
+        "label": "Return to Marketplace"
       },
       "dashboard": {
         "label": "Return to Dashboard",
@@ -284,6 +285,9 @@
       },
       "cyclesList": {
         "label": "Return to List of Auction Cycles"
+      },
+      "cyclePage": {
+        "label": "Return to Auction Cycle Page"
       },
       "login": {
         "label": "Return to Login"
@@ -2287,6 +2291,31 @@
           "title": "Having trouble with the form?",
           "description": "Feel free to reach out to us for assistance. We are here to help you with any issues you may face during this process."
         }
+      }
+    },
+    "auction": {
+      "final": {
+        "header": {
+          "heading": "Auction Created!",
+          "subheading": "You can find your new auction on the marketplace once the start date has passed."
+        }
+      },
+      "error": {
+        "title": "There was an error creating the auction"
+      },
+      "sector": {
+        "header": {
+          "heading": "Select Auction Sector",
+          "subheading": "Choose which sector this auction will cover by selecting one of the following options."
+        },
+        "steps": {
+          "label": "Sector Selection",
+          "description": "Pick a sector to cover during this auction"
+        }
+      },
+      "title": "Create New Auction",
+      "complete": {
+        "label": "Create Auction"
       }
     }
   }
