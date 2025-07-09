@@ -29,6 +29,7 @@ import classes from './styles.module.css';
 export const SecondStep = () => {
 	const t = useTranslations();
 	const formError = useContextSelector(CreateLayoutContext, (context) => context.formError);
+	const setFormError = useContextSelector(CreateLayoutContext, (context) => context.setFormError);
 
 	return (
 		<Stack className={`${classes.second} ${classes.root}`}>
@@ -47,6 +48,8 @@ export const SecondStep = () => {
 					title={t('create.cycle.error.title')}
 					icon={<IconExclamationCircle />}
 					className={classes.alert}
+					onClose={() => setFormError([])}
+					withCloseButton
 				>
 					<List>{formError}</List>
 				</Alert>

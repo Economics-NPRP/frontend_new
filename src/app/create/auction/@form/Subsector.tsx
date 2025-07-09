@@ -18,6 +18,7 @@ import classes from './styles.module.css';
 export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 	const t = useTranslations();
 	const formError = useContextSelector(CreateLayoutContext, (context) => context.formError);
+	const setFormError = useContextSelector(CreateLayoutContext, (context) => context.setFormError);
 	const { open } = useContext(SectorChangeModalContext);
 
 	const [searchFilter, setSearchFilter] = useState('');
@@ -81,6 +82,8 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 					title={t('create.auction.error.title')}
 					icon={<IconExclamationCircle />}
 					className={classes.alert}
+					withCloseButton
+					onClose={() => setFormError([])}
 				>
 					<List>{formError}</List>
 				</Alert>

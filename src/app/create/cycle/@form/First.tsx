@@ -26,6 +26,7 @@ export const FirstStep = ({ form }: ICreateCycleStepProps) => {
 	const t = useTranslations();
 	const numCalendarColumns = useMatches({ base: 1, md: 2, lg: 3 });
 	const formError = useContextSelector(CreateLayoutContext, (context) => context.formError);
+	const setFormError = useContextSelector(CreateLayoutContext, (context) => context.setFormError);
 
 	return (
 		<Stack className={`${classes.first} ${classes.root}`}>
@@ -44,6 +45,8 @@ export const FirstStep = ({ form }: ICreateCycleStepProps) => {
 					title={t('create.cycle.error.title')}
 					icon={<IconExclamationCircle />}
 					className={classes.alert}
+					onClose={() => setFormError([])}
+					withCloseButton
 				>
 					<List>{formError}</List>
 				</Alert>

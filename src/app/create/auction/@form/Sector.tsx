@@ -14,6 +14,7 @@ import classes from './styles.module.css';
 export const SectorStep = ({ form }: ICreateAuctionStepProps) => {
 	const t = useTranslations();
 	const formError = useContextSelector(CreateLayoutContext, (context) => context.formError);
+	const setFormError = useContextSelector(CreateLayoutContext, (context) => context.setFormError);
 
 	return (
 		<Stack className={`${classes.sector} ${classes.root}`}>
@@ -32,6 +33,8 @@ export const SectorStep = ({ form }: ICreateAuctionStepProps) => {
 					title={t('create.auction.error.title')}
 					icon={<IconExclamationCircle />}
 					className={classes.alert}
+					withCloseButton
+					onClose={() => setFormError([])}
 				>
 					<List>{formError}</List>
 				</Alert>
