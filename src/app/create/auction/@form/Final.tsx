@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 import { Switch } from '@/components/SwitchCase';
 import { Button, Stack, Text, Title } from '@mantine/core';
@@ -10,7 +10,7 @@ import classes from './styles.module.css';
 
 export const FinalStep = () => {
 	const t = useTranslations();
-	const { cycleId } = useParams();
+	const searchParams = useSearchParams();
 
 	return (
 		<Stack className={`${classes.final} ${classes.root}`}>
@@ -19,7 +19,7 @@ export const FinalStep = () => {
 			<Text className={classes.subheading}>
 				{t('create.auction.final.header.subheading')}
 			</Text>
-			<Switch value={cycleId as string | undefined}>
+			<Switch value={searchParams.get('cycleId')}>
 				<Switch.Case when={undefined}>
 					<Button component={Link} href="/marketplace" className={classes.button}>
 						{t('constants.return.marketplace.label')}
@@ -28,7 +28,7 @@ export const FinalStep = () => {
 				<Switch.Else>
 					<Button
 						component={Link}
-						href={`/dashboard/a/cycles/${cycleId}`}
+						href={`/dashboard/a/cycles/${searchParams.get('cycleId')}`}
 						className={classes.button}
 					>
 						{t('constants.return.cyclePage.label')}

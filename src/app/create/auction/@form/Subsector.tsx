@@ -1,19 +1,22 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { SectorFormCard } from '@/components/SectorFormCard';
+import { SubsectorFormCard } from '@/components/SubsectorFormCard';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { ICreateAuctionStepProps } from '@/pages/create/auction/@form/page';
-import { Alert, Checkbox, List, Stack, Text, Title } from '@mantine/core';
-import { IconExclamationCircle } from '@tabler/icons-react';
+import { Alert, Divider, Input, List, Radio, Stack, Text, TextInput, Title } from '@mantine/core';
+import { IconExclamationCircle, IconSearch } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
 export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 	const t = useTranslations();
 	const formError = useContextSelector(CreateLayoutContext, (context) => context.formError);
+
+	const [searchFilter, setSearchFilter] = useState('');
 
 	return (
 		<Stack className={`${classes.subsector} ${classes.root}`}>
@@ -35,6 +38,71 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 				>
 					<List>{formError}</List>
 				</Alert>
+			)}
+			<TextInput
+				classNames={{
+					root: classes.search,
+					wrapper: classes.wrapper,
+					input: classes.input,
+				}}
+				placeholder={t('create.auction.subsector.search.placeholder')}
+				value={searchFilter}
+				onChange={(event) => setSearchFilter(event.currentTarget.value)}
+				leftSection={<IconSearch size={16} />}
+				rightSection={
+					searchFilter !== '' ? (
+						<Input.ClearButton onClick={() => setSearchFilter('')} />
+					) : undefined
+				}
+				rightSectionPointerEvents="auto"
+			/>
+			<Radio.Group
+				classNames={{
+					root: classes.content,
+					error: 'hidden',
+				}}
+				required
+				key={form.key('subsector')}
+				{...form.getInputProps('subsector')}
+				value={`${form.getValues().sector}:${form.getValues().subsector}`}
+				onChange={(value) => {
+					const [sector, subsector] = value.split(':');
+					form.getInputProps('sector').onChange(sector);
+					form.getInputProps('subsector').onChange(subsector);
+				}}
+			>
+				<SubsectorFormCard type="radio" sector="energy" subsector="gasTurbine" />
+				<SubsectorFormCard
+					type="radio"
+					sector="industry"
+					subsector="flareGasRecoveryBurning"
+				/>
+				<SubsectorFormCard
+					type="radio"
+					sector="industry"
+					subsector="oilAndGasWellheadOperations"
+				/>
+				<SubsectorFormCard
+					type="radio"
+					sector="industry"
+					subsector="oilAndGasTankStorage"
+				/>
+			</Radio.Group>
+			<Divider
+				classNames={{
+					root: classes.divider,
+					label: classes.label,
+				}}
+				label={t('create.auction.subsector.divider')}
+			/>
+			{form.getValues().subsector && (
+				<SubsectorFormCard
+					type="readonly"
+					sector={form.getValues().sector}
+					subsector={form.getValues().subsector}
+					//	@ts-expect-error - undefined is not assignable to type 'SubsectorType'
+					onClear={() => form.setFieldValue('subsector', undefined)}
+				/>
 			)}
 		</Stack>
 	);

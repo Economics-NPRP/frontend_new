@@ -1,0 +1,84 @@
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import { useMemo } from 'react';
+
+import { SectorBadge } from '@/components/Badge';
+import { SubsectorVariants } from '@/constants/SubsectorData';
+import { SectorType, SubsectorType } from '@/schema/models';
+import {
+	ActionIcon,
+	BoxProps,
+	Checkbox,
+	Container,
+	Group,
+	Radio,
+	Stack,
+	Text,
+} from '@mantine/core';
+import { IconX } from '@tabler/icons-react';
+
+import classes from './styles.module.css';
+
+export interface SubsectorFormCardProps extends Omit<BoxProps, 'type'> {
+	sector: SectorType;
+	subsector: SubsectorType;
+	type?: 'radio' | 'checkbox' | 'readonly';
+	onClear?: () => void;
+}
+export const SubsectorFormCard = ({
+	sector,
+	subsector,
+	type = 'checkbox',
+	onClear,
+	className,
+	...props
+}: SubsectorFormCardProps) => {
+	const t = useTranslations();
+
+	const subsectorData = useMemo(() => SubsectorVariants[subsector]!, [subsector]);
+
+	const RootElement = useMemo(
+		() => (type === 'readonly' ? Stack : type === 'radio' ? Radio.Card : Checkbox.Card),
+		[type],
+	);
+	const IndicatorElement = useMemo(
+		() => (type === 'radio' ? Radio.Indicator : Checkbox.Indicator),
+		[type],
+	);
+
+	return (
+		<RootElement
+			value={`${sector}:${subsector}`}
+			className={`${classes.root} ${type === 'readonly' ? classes.horizontal : ''} ${className}`}
+			{...props}
+		>
+			<Stack className={classes.content}>
+				<Container className={classes.image}>
+					<Image
+						src={subsectorData.image}
+						alt={t(`constants.subsector.${subsector}.alt`)}
+						fill
+					/>
+					<Stack className={classes.overlay} />
+				</Container>
+				<Group className={classes.details}>
+					<Stack className={classes.label}>
+						<SectorBadge sector={sector} />
+						<Text className={classes.title}>
+							{t(`constants.subsector.${subsector}.title`)}
+						</Text>
+						<Text className={classes.description}>
+							{t(`constants.subsector.${subsector}.description`)}
+						</Text>
+					</Stack>
+					{type !== 'readonly' && <IndicatorElement className={classes.checkbox} />}
+					{type === 'readonly' && (
+						<ActionIcon className={classes.button} onClick={onClear}>
+							<IconX size={16} />
+						</ActionIcon>
+					)}
+				</Group>
+			</Stack>
+		</RootElement>
+	);
+};

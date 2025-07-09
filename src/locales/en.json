@@ -149,6 +149,28 @@
         }
       }
     },
+    "subsector": {
+      "gasTurbine": {
+        "alt": "Image of a gas turbine",
+        "title": "Gas Turbine Combustion",
+        "description": "Covers emissions such as CO₂ and NOₓ from the direct combustion of natural gas in turbines for energy or desalination."
+      },
+      "flareGasRecoveryBurning": {
+        "alt": "Image of a flare used in the oil and gas industry",
+        "title": "Flare Gas Recovery & Burning",
+        "description": "Permits apply to emissions from flaring and gas handling at donwstream oil and gas installations, including CO₂, CH₄, and VOCs."
+      },
+      "oilAndGasWellheadOperations": {
+        "alt": "Image of an oil rig platform",
+        "title": "Oil & Gas Extraction and Wellhead Operations",
+        "description": "Covers emissions from venting, combustion, and leaks at oil wells and separation units."
+      },
+      "oilAndGasTankStorage": {
+        "alt": "Image of a tank storage facility",
+        "title": "Oil & Gas Tank Storage",
+        "description": "Includes emissions from storage of products in the oil and gas industry, which can release emissions of VOCs, polycyclic aromatic hydrocarbons (PAHs), and other pollutants."
+      }
+    },
     "auctionType": {
       "open": "Open",
       "sealed": "Sealed"
@@ -2325,7 +2347,11 @@
         "header": {
           "heading": "Specify Permit Subsector",
           "subheading": "Choose the respective subsector of permits that will be auctioned off. This will define the image, title, and description used for the auction."
-        }
+        },
+        "search": {
+          "placeholder": "Search for a specific subsector..."
+        },
+        "divider": "Selected Subsector"
       },
       "details": {
         "steps": {

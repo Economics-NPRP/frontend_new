@@ -11,7 +11,6 @@ import {
 	object,
 	omit,
 	partialCheck,
-	pick,
 	pipe,
 	string,
 	transform,
@@ -19,6 +18,8 @@ import {
 	url,
 } from 'valibot';
 
+import { SubsectorVariants } from '@/constants/SubsectorData';
+import { SubsectorTypeSchema } from '@/schema/models/SubsectorData';
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
 
 import { AuctionTypeSchema } from './AuctionType';
@@ -55,9 +56,13 @@ export const BaseAuctionDataSchema = object({
 	owner: BaseUserDataSchema,
 });
 
-const CreateAuctionDataSchemaObject = object({
+export const CreateAuctionDataSchema = object({
 	...omit(BaseAuctionDataSchema, [
 		'id',
+
+		'title',
+		'image',
+		'description',
 
 		'bidsCount',
 		'biddersCount',
@@ -66,30 +71,34 @@ const CreateAuctionDataSchemaObject = object({
 
 		'isVisible',
 		'createdAt',
-		'hasJoined',
 		'startDatetime',
 		'endDatetime',
+		'hasJoined',
 
 		'owner',
 	]).entries,
 
+	subsector: SubsectorTypeSchema,
 	startDatetime: pipe(date(), minValue(new Date())),
 	endDatetime: pipe(date(), minValue(new Date())),
 });
-export const CreateAuctionDataSchema = pipe(
-	CreateAuctionDataSchemaObject,
+export const CreateAuctionDataSchemaTransformer = pipe(
+	CreateAuctionDataSchema,
 	transform((input) => ({
 		...input,
 		startDatetime: DateTime.fromJSDate(input.startDatetime).toISO(),
 		endDatetime: DateTime.fromJSDate(input.endDatetime).toISO(),
+		image: SubsectorVariants[input.subsector]?.image,
+		title: SubsectorVariants[input.subsector]?.title,
+		description: SubsectorVariants[input.subsector]?.description,
 	})),
 );
 
 export const ReadAuctionDataSchema = BaseAuctionDataSchema;
-export const UpdateAuctionDataSchema = CreateAuctionDataSchemaObject;
+export const UpdateAuctionDataSchema = CreateAuctionDataSchema;
 
 export const DetailsAuctionDataSchema = pipe(
-	pick(CreateAuctionDataSchemaObject, ['startDatetime', 'endDatetime']),
+	omit(CreateAuctionDataSchema, ['cycleId', 'isPrimaryMarket', 'ownerId', 'sector', 'subsector']),
 	forward(
 		partialCheck(
 			[['startDatetime'], ['endDatetime']],
@@ -101,8 +110,9 @@ export const DetailsAuctionDataSchema = pipe(
 );
 
 export interface IAuctionData extends InferOutput<typeof BaseAuctionDataSchema> {}
-export interface ICreateAuction extends InferInput<typeof CreateAuctionDataSchemaObject> {}
-export interface ICreateAuctionOutput extends InferOutput<typeof CreateAuctionDataSchemaObject> {}
+export interface ICreateAuction extends InferInput<typeof CreateAuctionDataSchema> {}
+export interface ICreateAuctionOutput
+	extends InferOutput<typeof CreateAuctionDataSchemaTransformer> {}
 export interface IReadAuction extends InferInput<typeof ReadAuctionDataSchema> {}
 export interface IUpdateAuction extends InferInput<typeof UpdateAuctionDataSchema> {}
 
@@ -134,11 +144,9 @@ export const DefaultCreateAuctionData: ICreateAuction = {
 	ownerId: '',
 	cycleId: '',
 	sector: 'energy',
+	subsector: 'gasTurbine',
 	type: 'open',
 	isPrimaryMarket: false,
-	title: '',
-	image: null,
-	description: null,
 	permits: 0,
 	minBid: 0,
 	startDatetime: new Date(),

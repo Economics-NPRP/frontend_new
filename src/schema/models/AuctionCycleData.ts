@@ -42,7 +42,7 @@ export const BaseAuctionCycleDataSchema = object({
 	updatedAt: TimestampSchema(),
 });
 
-const CreateAuctionCycleDataSchemaObject = object({
+export const CreateAuctionCycleDataSchema = object({
 	...omit(BaseAuctionCycleDataSchema, [
 		'id',
 		'status',
@@ -62,8 +62,8 @@ const CreateAuctionCycleDataSchemaObject = object({
 		}),
 	),
 });
-export const CreateAuctionCycleDataSchema = pipe(
-	CreateAuctionCycleDataSchemaObject,
+export const CreateAuctionCycleDataSchemaTransformer = pipe(
+	CreateAuctionCycleDataSchema,
 	transform((input) => {
 		const [start, end] = input.dates as [Date, Date];
 		return {
@@ -80,23 +80,22 @@ export const ReadAuctionCycleDataSchema = object({
 	assignedAdminsCount: PositiveNumberSchema(true),
 	emissionsCount: PositiveNumberSchema(true),
 });
-export const UpdateAuctionCycleDataSchema = CreateAuctionCycleDataSchemaObject;
+export const UpdateAuctionCycleDataSchema = CreateAuctionCycleDataSchema;
 
-export const FirstAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchemaObject, [
+export const FirstAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchema, [
 	'title',
 	'description',
 	'dates',
 ]);
-export const SectorAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchemaObject, ['sectors']);
-export const SecondAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchemaObject, ['admins']);
+export const SectorAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchema, ['sectors']);
+export const SecondAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchema, ['admins']);
 //	TODO: uncomment when backend has kpis
 // export const ThirdAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchema, []);
 
 export interface IBaseAuctionCycleData extends InferOutput<typeof BaseAuctionCycleDataSchema> {}
-export interface ICreateAuctionCycle
-	extends InferInput<typeof CreateAuctionCycleDataSchemaObject> {}
+export interface ICreateAuctionCycle extends InferInput<typeof CreateAuctionCycleDataSchema> {}
 export interface ICreateAuctionCycleOutput
-	extends InferOutput<typeof CreateAuctionCycleDataSchemaObject> {}
+	extends InferOutput<typeof CreateAuctionCycleDataSchemaTransformer> {}
 export interface IAuctionCycleData extends InferOutput<typeof ReadAuctionCycleDataSchema> {}
 export interface IUpdateAuctionCycle extends InferInput<typeof UpdateAuctionCycleDataSchema> {}
 

@@ -1,5 +1,4 @@
 .root {
-	@apply min-h-[68px];
 	@apply flex-col gap-2 flex-nowrap;
 	@apply px-8 py-4;
 	@apply bg-white border-0 border-t border-solid border-gray-300;

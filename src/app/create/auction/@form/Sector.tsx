@@ -6,7 +6,7 @@ import { useContextSelector } from 'use-context-selector';
 import { SectorFormCard } from '@/components/SectorFormCard';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { ICreateAuctionStepProps } from '@/pages/create/auction/@form/page';
-import { Alert, Checkbox, List, Stack, Text, Title } from '@mantine/core';
+import { Alert, List, Radio, Stack, Text, Title } from '@mantine/core';
 import { IconExclamationCircle } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
@@ -36,22 +36,22 @@ export const SectorStep = ({ form }: ICreateAuctionStepProps) => {
 					<List>{formError}</List>
 				</Alert>
 			)}
-			<Checkbox.Group
+			<Radio.Group
 				classNames={{
 					root: classes.content,
 					error: 'hidden',
 				}}
 				required
-				key={form.key('sectors')}
-				{...form.getInputProps('sectors')}
+				key={form.key('sector')}
+				{...form.getInputProps('sector')}
 			>
-				<SectorFormCard sector="energy" />
-				<SectorFormCard sector="industry" />
-				<SectorFormCard sector="transport" />
-				<SectorFormCard sector="buildings" />
-				<SectorFormCard sector="agriculture" />
-				<SectorFormCard sector="waste" />
-			</Checkbox.Group>
+				<SectorFormCard type="radio" sector="energy" />
+				<SectorFormCard type="radio" sector="industry" />
+				<SectorFormCard type="radio" sector="transport" />
+				<SectorFormCard type="radio" sector="buildings" />
+				<SectorFormCard type="radio" sector="agriculture" />
+				<SectorFormCard type="radio" sector="waste" />
+			</Radio.Group>
 		</Stack>
 	);
 };

@@ -2,12 +2,13 @@
 
 import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { useTranslations } from 'next-intl';
-import { useParams } from 'next/navigation';
-import { useCallback, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useCallback, useContext, useEffect } from 'react';
 import { useContextSelector } from 'use-context-selector';
 import { safeParse } from 'valibot';
 
 import { Switch } from '@/components/SwitchCase';
+import { MyUserProfileContext } from '@/contexts';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { DetailsStep } from '@/pages/create/auction/@form/Details';
 import { FinalStep } from '@/pages/create/auction/@form/Final';
@@ -15,9 +16,10 @@ import { SectorStep } from '@/pages/create/auction/@form/Sector';
 import { SubsectorStep } from '@/pages/create/auction/@form/Subsector';
 import {
 	CreateAuctionDataSchema,
-	DefaultCreateAuctionData,
+	CreateAuctionDataSchemaTransformer,
 	DetailsAuctionDataSchema,
 	ICreateAuction,
+	ICreateAuctionOutput,
 } from '@/schema/models';
 import { List } from '@mantine/core';
 import { UseFormReturnType, useForm } from '@mantine/form';
@@ -25,7 +27,8 @@ import { notifications } from '@mantine/notifications';
 
 export default function CreateAuctionLayout() {
 	const t = useTranslations();
-	const { cycleId } = useParams();
+	const searchParams = useSearchParams();
+	const currentUser = useContext(MyUserProfileContext);
 
 	const setTitle = useContextSelector(CreateLayoutContext, (context) => context.setTitle);
 	const setReturnHref = useContextSelector(
@@ -64,20 +67,29 @@ export default function CreateAuctionLayout() {
 		(context) => context.highestStepVisited,
 	);
 
-	const form = useForm<ICreateAuction, (values: ICreateAuction) => ICreateAuction>({
+	const form = useForm<ICreateAuction, (values: ICreateAuction) => ICreateAuctionOutput>({
 		mode: 'uncontrolled',
-		initialValues: DefaultCreateAuctionData,
 		validate: (values) => {
 			if (activeStep === 2) return valibotResolver(DetailsAuctionDataSchema)(values);
+			if (activeStep === 3) return valibotResolver(CreateAuctionDataSchema)(values);
 			return {};
 		},
 		onValuesChange: () => setFormError([]),
-		transformValues: (values) =>
-			safeParse(CreateAuctionDataSchema, values).output as ICreateAuction,
+		transformValues: (values) => {
+			const parsedData = safeParse(CreateAuctionDataSchemaTransformer, values);
+			if (!parsedData.success)
+				notifications.show({
+					color: 'red',
+					title: t('create.auction.error.title'),
+					message: parsedData.issues.map((issue) => issue.message).join(', '),
+					position: 'bottom-center',
+				});
+			return parsedData.output as ICreateAuctionOutput;
+		},
 	});
 
 	const handleFormSubmit = useCallback(
-		(formData: ICreateAuction) => {
+		(formData: ICreateAuctionOutput) => {
 			setIsFormSubmitting(true);
 			setFormError([]);
 			console.log(formData);
@@ -88,9 +100,13 @@ export default function CreateAuctionLayout() {
 
 	useEffect(() => {
 		setTitle(t('create.auction.title'));
-		setReturnHref(cycleId ? `/dashboard/a/cycles/${cycleId}` : '/marketplace');
+		setReturnHref(
+			searchParams.get('cycleId')
+				? `/dashboard/a/cycles/${searchParams.get('cycleId')}`
+				: '/marketplace',
+		);
 		setReturnLabel(
-			cycleId
+			searchParams.get('cycleId')
 				? t('constants.return.cyclePage.label')
 				: t('constants.return.marketplace.label'),
 		);
@@ -113,7 +129,7 @@ export default function CreateAuctionLayout() {
 				description: t('create.auction.review.steps.description'),
 			},
 		]);
-	}, [t, cycleId]);
+	}, [t, searchParams]);
 
 	useEffect(() => setHandleFormSubmit(() => form.onSubmit(handleFormSubmit)), [handleFormSubmit]);
 
@@ -133,24 +149,43 @@ export default function CreateAuctionLayout() {
 		});
 	}, [activeStep, highestStepVisited]);
 
+	useEffect(
+		() => form.setFieldValue('cycleId', searchParams.get('cycleId') as string),
+		[searchParams],
+	);
+	useEffect(() => form.setFieldValue('ownerId', currentUser.data.id), [currentUser.data.id]);
+	useEffect(
+		() => form.setFieldValue('isPrimaryMarket', currentUser.data.type === 'admin'),
+		[currentUser.data.type],
+	);
+
 	return (
-		<Switch value={activeStep}>
-			<Switch.Case when={0}>
-				<SectorStep form={form} />
-			</Switch.Case>
-			<Switch.Case when={1}>
-				<SubsectorStep form={form} />
-			</Switch.Case>
-			<Switch.Case when={2}>
-				<DetailsStep form={form} />
-			</Switch.Case>
-			<Switch.Case when={4}>
-				<FinalStep />
-			</Switch.Case>
-		</Switch>
+		<>
+			<input type="hidden" key={form.key('cycleId')} {...form.getInputProps('cycleId')} />
+			<input type="hidden" key={form.key('ownerId')} {...form.getInputProps('ownerId')} />
+			<input
+				type="hidden"
+				key={form.key('isPrimaryMarket')}
+				{...form.getInputProps('isPrimaryMarket')}
+			/>
+			<Switch value={activeStep}>
+				<Switch.Case when={0}>
+					<SectorStep form={form} />
+				</Switch.Case>
+				<Switch.Case when={1}>
+					<SubsectorStep form={form} />
+				</Switch.Case>
+				<Switch.Case when={2}>
+					<DetailsStep form={form} />
+				</Switch.Case>
+				<Switch.Case when={4}>
+					<FinalStep />
+				</Switch.Case>
+			</Switch>
+		</>
 	);
 }
 
 export interface ICreateAuctionStepProps {
-	form: UseFormReturnType<ICreateAuction, (values: ICreateAuction) => ICreateAuction>;
+	form: UseFormReturnType<ICreateAuction, (values: ICreateAuction) => ICreateAuctionOutput>;
 }

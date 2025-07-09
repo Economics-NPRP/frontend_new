@@ -16,11 +16,10 @@ import { SectorStep } from '@/pages/create/cycle/@form/Sector';
 import { ThirdStep } from '@/pages/create/cycle/@form/Third';
 import {
 	CreateAuctionCycleDataSchema,
-	DefaultCreateAuctionCycleData,
+	CreateAuctionCycleDataSchemaTransformer,
 	FirstAuctionCycleDataSchema,
 	ICreateAuctionCycle,
 	ICreateAuctionCycleOutput,
-	SecondAuctionCycleDataSchema,
 	SectorAuctionCycleDataSchema,
 } from '@/schema/models';
 import { List } from '@mantine/core';
@@ -72,7 +71,6 @@ export default function CreateCycleLayout() {
 		(values: ICreateAuctionCycle) => ICreateAuctionCycleOutput
 	>({
 		mode: 'uncontrolled',
-		initialValues: DefaultCreateAuctionCycleData,
 		validate: (values) => {
 			if (activeStep === 0) return valibotResolver(FirstAuctionCycleDataSchema)(values);
 			if (activeStep === 1) return valibotResolver(SectorAuctionCycleDataSchema)(values);
@@ -80,11 +78,21 @@ export default function CreateCycleLayout() {
 			// if (activeStep === 2) return valibotResolver(SecondAuctionCycleDataSchema)(values);
 			//	TODO: Uncomment when kpis are implemented in backend
 			// if (activeStep === 3) return valibotResolver(ThirdAuctionCycleDataSchema)(values);
+			if (activeStep === 4) return valibotResolver(CreateAuctionCycleDataSchema)(values);
 			return {};
 		},
 		onValuesChange: () => setFormError([]),
-		transformValues: (values) =>
-			safeParse(CreateAuctionCycleDataSchema, values).output as ICreateAuctionCycleOutput,
+		transformValues: (values) => {
+			const parsedData = safeParse(CreateAuctionCycleDataSchemaTransformer, values);
+			if (!parsedData.success)
+				notifications.show({
+					color: 'red',
+					title: t('create.cycle.error.title'),
+					message: parsedData.issues.map((issue) => issue.message).join(', '),
+					position: 'bottom-center',
+				});
+			return parsedData.output as ICreateAuctionCycleOutput;
+		},
 	});
 
 	const handleFormSubmit = useCallback(

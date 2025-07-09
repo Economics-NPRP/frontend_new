@@ -26,8 +26,33 @@
 	&.sector > .content {
 		@apply grid grid-cols-1 gap-4;
 
-		> div[role='group'] {
+		> div[role='radiogroup'] {
 			@apply contents;
+		}
+	}
+
+	&.subsector {
+		@apply items-stretch;
+
+		> .search {
+			@apply h-10;
+
+			.wrapper,
+			.input {
+				@apply h-full;
+			}
+		}
+
+		> .content {
+			@apply grid grid-cols-1 gap-4;
+
+			> div[role='radiogroup'] {
+				@apply contents;
+			}
+		}
+
+		> .divider .label {
+			@apply display-xs-13-g6 uppercase;
 		}
 	}
 
@@ -69,14 +94,41 @@
 }
 
 * {
-	@mixin larger-than $mantine-breakpoint-sm {
-		.root.sector > .content {
+	@mixin larger-than $mantine-breakpoint-xs {
+		.root.subsector > .content {
 			@apply grid-cols-2;
 		}
 	}
-	@mixin larger-than $mantine-breakpoint-xl {
-		.root.sector > .content {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			&.sector > .content {
+				@apply grid-cols-2;
+			}
+
+			&.subsector > .content {
+				@apply grid-cols-3;
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root.subsector > .content {
+			@apply grid-cols-2;
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root.subsector > .content {
 			@apply grid-cols-3;
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-xl {
+		.root {
+			&.sector > .content {
+				@apply grid-cols-3;
+			}
+
+			&.subsector > .content {
+				@apply grid-cols-4;
+			}
 		}
 	}
 
