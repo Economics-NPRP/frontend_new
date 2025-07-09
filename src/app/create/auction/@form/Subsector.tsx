@@ -5,7 +5,7 @@ import { ReactNode, useContext, useMemo, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { SubsectorFormCard } from '@/components/SubsectorFormCard';
-import { SubsectorVariants } from '@/constants/SubsectorData';
+import { SubsectorData, SubsectorSearch, SubsectorVariants } from '@/constants/SubsectorData';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { ICreateAuctionStepProps } from '@/pages/create/auction/@form/page';
 import { SectorChangeModalContext } from '@/pages/create/auction/_components/SectorChangeModal';
@@ -30,16 +30,36 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 
 		return keys.reduce((acc, sector) => {
 			const subsectors = Object.keys(SubsectorVariants[sector]) as Array<SubsectorType>;
-			acc.push(
-				...subsectors.map((subsector) => (
-					<SubsectorFormCard
-						type="radio"
-						sector={sector}
-						subsector={subsector}
-						currentSector={form.getValues().sector}
-					/>
-				)),
-			);
+			const subsectorData = Object.values(SubsectorVariants[sector]) as Array<SubsectorData>;
+
+			SubsectorSearch.removeAll();
+			SubsectorSearch.addAll(subsectorData);
+			const searchResults = SubsectorSearch.search(searchFilter);
+
+			if (searchFilter === '')
+				acc.push(
+					...subsectors.map((subsector) => (
+						<SubsectorFormCard
+							key={`${sector}:${subsector}`}
+							type="radio"
+							sector={sector}
+							subsector={subsector}
+							currentSector={form.getValues().sector}
+						/>
+					)),
+				);
+			else
+				acc.push(
+					...searchResults.map(({ id }) => (
+						<SubsectorFormCard
+							key={`${sector}:${id}`}
+							type="radio"
+							sector={sector}
+							subsector={id}
+							currentSector={form.getValues().sector}
+						/>
+					)),
+				);
 			return acc;
 		}, [] as Array<ReactNode>);
 	}, [searchFilter, form.getValues().sector]);

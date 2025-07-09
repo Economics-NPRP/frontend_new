@@ -86,6 +86,9 @@ importers:
       mantine-form-valibot-resolver:
         specifier: ^3.0.1
         version: 3.0.1(@mantine/form@7.17.1(react@18.3.1))(valibot@1.0.0-beta.9(typescript@5.7.3))
+      minisearch:
+        specifier: ^7.1.2
+        version: 7.1.2
       next:
         specifier: ^15.0.1
         version: 15.1.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1911,6 +1914,9 @@ packages:
   minipass@7.1.2:
     resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
     engines: {node: '>=16 || 14 >=14.17'}
+
+  minisearch@7.1.2:
+    resolution: {integrity: sha512-R1Pd9eF+MD5JYDDSPAp/q1ougKglm14uEkPMvQ/05RGmx6G9wvmLTrTI/Q5iPNJLYqNdsDQ7qTGIcNWR+FrHmA==}
 
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
@@ -4678,6 +4684,8 @@ snapshots:
   minimist@1.2.8: {}
 
   minipass@7.1.2: {}
+
+  minisearch@7.1.2: {}
 
   ms@2.1.3: {}
 
