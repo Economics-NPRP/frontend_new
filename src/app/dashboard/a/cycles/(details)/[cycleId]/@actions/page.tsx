@@ -1,5 +1,6 @@
 'use client';
 
+import { SingleCycleContext } from 'contexts/SingleAuctionCycle';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
@@ -21,6 +22,7 @@ export default function SubBanners() {
 	const t = useTranslations();
 	const { cycleId } = useParams();
 	const { open } = useContext(ApprovalModalContext);
+	const singleAuctionCycle = useContext(SingleCycleContext);
 
 	return (
 		<Container className={classes.root}>
@@ -59,6 +61,7 @@ export default function SubBanners() {
 				subheading={t('dashboard.admin.cycles.details.actions.approve.subheading')}
 				index={1}
 				onClick={open}
+				disabled={singleAuctionCycle.data.status !== 'draft'}
 			/>
 		</Container>
 	);

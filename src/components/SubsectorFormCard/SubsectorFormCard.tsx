@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useMemo } from 'react';
 
 import { SectorBadge } from '@/components/Badge';
-import { SubsectorVariants } from '@/constants/SubsectorData';
+import { AllSubsectorVariants } from '@/constants/SubsectorData';
 import { SectorType, SubsectorType } from '@/schema/models';
 import {
 	ActionIcon,
@@ -23,19 +23,21 @@ export interface SubsectorFormCardProps extends Omit<BoxProps, 'type'> {
 	sector: SectorType;
 	subsector: SubsectorType;
 	type?: 'radio' | 'checkbox' | 'readonly';
+	currentSector?: SectorType;
 	onClear?: () => void;
 }
 export const SubsectorFormCard = ({
 	sector,
 	subsector,
 	type = 'checkbox',
+	currentSector = sector,
 	onClear,
 	className,
 	...props
 }: SubsectorFormCardProps) => {
 	const t = useTranslations();
 
-	const subsectorData = useMemo(() => SubsectorVariants[subsector]!, [subsector]);
+	const subsectorData = useMemo(() => AllSubsectorVariants[subsector]!, [subsector]);
 
 	const RootElement = useMemo(
 		() => (type === 'readonly' ? Stack : type === 'radio' ? Radio.Card : Checkbox.Card),
@@ -49,7 +51,7 @@ export const SubsectorFormCard = ({
 	return (
 		<RootElement
 			value={`${sector}:${subsector}`}
-			className={`${classes.root} ${type === 'readonly' ? classes.horizontal : ''} ${className}`}
+			className={`${classes.root} ${type === 'readonly' ? classes.horizontal : ''} ${currentSector !== sector ? classes.fade : ''} ${className}`}
 			{...props}
 		>
 			<Stack className={classes.content}>

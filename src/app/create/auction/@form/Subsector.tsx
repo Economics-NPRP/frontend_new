@@ -1,10 +1,11 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useContext, useState } from 'react';
+import { ReactNode, useContext, useMemo, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { SubsectorFormCard } from '@/components/SubsectorFormCard';
+import { SubsectorVariants } from '@/constants/SubsectorData';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { ICreateAuctionStepProps } from '@/pages/create/auction/@form/page';
 import { SectorChangeModalContext } from '@/pages/create/auction/_components/SectorChangeModal';
@@ -20,6 +21,28 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 	const { open } = useContext(SectorChangeModalContext);
 
 	const [searchFilter, setSearchFilter] = useState('');
+
+	const cardElements = useMemo(() => {
+		//	Make sure the current selected sector is first
+		const keys = Object.keys(SubsectorVariants).sort((a) =>
+			a === form.getValues().sector ? -1 : 1,
+		) as Array<SectorType>;
+
+		return keys.reduce((acc, sector) => {
+			const subsectors = Object.keys(SubsectorVariants[sector]) as Array<SubsectorType>;
+			acc.push(
+				...subsectors.map((subsector) => (
+					<SubsectorFormCard
+						type="radio"
+						sector={sector}
+						subsector={subsector}
+						currentSector={form.getValues().sector}
+					/>
+				)),
+			);
+			return acc;
+		}, [] as Array<ReactNode>);
+	}, [searchFilter, form.getValues().sector]);
 
 	return (
 		<Stack className={`${classes.subsector} ${classes.root}`}>
@@ -70,33 +93,20 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 				value={`${form.getValues().sector}:${form.getValues().subsector}`}
 				onChange={(value) => {
 					const [sector, subsector] = value.split(':') as [SectorType, SubsectorType];
+					if (subsector === form.getValues().subsector) return;
+
 					if (sector === form.getValues().sector || !form.getValues().sector) {
 						form.getInputProps('sector').onChange(sector);
 						form.getInputProps('subsector').onChange(subsector);
 					} else {
 						open(form.getValues().sector, sector, () => {
-							form.setFieldValue('sector', sector);
-							form.setFieldValue('subsector', subsector);
+							form.getInputProps('sector').onChange(sector);
+							form.getInputProps('subsector').onChange(subsector);
 						});
 					}
 				}}
 			>
-				<SubsectorFormCard type="radio" sector="energy" subsector="gasTurbine" />
-				<SubsectorFormCard
-					type="radio"
-					sector="industry"
-					subsector="flareGasRecoveryBurning"
-				/>
-				<SubsectorFormCard
-					type="radio"
-					sector="industry"
-					subsector="oilAndGasWellheadOperations"
-				/>
-				<SubsectorFormCard
-					type="radio"
-					sector="industry"
-					subsector="oilAndGasTankStorage"
-				/>
+				{cardElements}
 			</Radio.Group>
 			<Divider
 				classNames={{

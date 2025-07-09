@@ -34,9 +34,18 @@ export const IndustrySubsectorVariants: Record<IndustrySubsectorType, SubsectorD
 	},
 };
 
-export const SubsectorVariants = {
+export const AllSubsectorVariants = {
 	...EnergySubsectorVariants,
 	...IndustrySubsectorVariants,
+};
+
+export const SubsectorVariants = {
+	energy: EnergySubsectorVariants,
+	industry: IndustrySubsectorVariants,
+	transport: {},
+	buildings: {},
+	agriculture: {},
+	waste: {},
 };
 
 export const EnergySubsectorList = ['gasTurbine'] as const;

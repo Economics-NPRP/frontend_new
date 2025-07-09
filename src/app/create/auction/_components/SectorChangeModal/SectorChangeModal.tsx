@@ -90,7 +90,7 @@ export const SectorChangeModalProvider = ({ children }: PropsWithChildren) => {
 	}, [onConfirm]);
 
 	const handleOpen = useCallback(
-		(newSector: SectorType, oldSector: SectorType, onConfirm: () => void) => {
+		(oldSector: SectorType, newSector: SectorType, onConfirm: () => void) => {
 			open();
 			setNewSector(newSector);
 			setOldSector(oldSector);

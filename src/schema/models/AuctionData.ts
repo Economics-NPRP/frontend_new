@@ -18,7 +18,7 @@ import {
 	url,
 } from 'valibot';
 
-import { SubsectorVariants } from '@/constants/SubsectorData';
+import { AllSubsectorVariants } from '@/constants/SubsectorData';
 import { SubsectorTypeSchema } from '@/schema/models/SubsectorData';
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
 
@@ -88,9 +88,9 @@ export const CreateAuctionDataSchemaTransformer = pipe(
 		...input,
 		startDatetime: DateTime.fromJSDate(input.startDatetime).toISO(),
 		endDatetime: DateTime.fromJSDate(input.endDatetime).toISO(),
-		image: SubsectorVariants[input.subsector]?.image,
-		title: SubsectorVariants[input.subsector]?.title,
-		description: SubsectorVariants[input.subsector]?.description,
+		image: AllSubsectorVariants[input.subsector]?.image,
+		title: AllSubsectorVariants[input.subsector]?.title,
+		description: AllSubsectorVariants[input.subsector]?.description,
 	})),
 );
 

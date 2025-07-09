@@ -1,5 +1,5 @@
 .root {
-	@apply transition-shadow duration-300;
+	@apply transition-all duration-300;
 	@apply border-0;
 
 	&:hover {
@@ -39,6 +39,14 @@
 
 		> .details {
 			@apply flex-auto;
+		}
+	}
+
+	&.fade {
+		@apply opacity-40;
+
+		&:hover {
+			@apply opacity-60;
 		}
 	}
 

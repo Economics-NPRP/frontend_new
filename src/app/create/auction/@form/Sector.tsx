@@ -44,6 +44,11 @@ export const SectorStep = ({ form }: ICreateAuctionStepProps) => {
 				required
 				key={form.key('sector')}
 				{...form.getInputProps('sector')}
+				onChange={(value) => {
+					if (value === form.getValues().sector) return;
+					form.getInputProps('subsector').onChange(null);
+					form.getInputProps('sector').onChange(value);
+				}}
 			>
 				<SectorFormCard type="radio" sector="energy" />
 				<SectorFormCard type="radio" sector="industry" />
