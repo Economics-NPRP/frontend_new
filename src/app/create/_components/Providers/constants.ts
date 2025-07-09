@@ -28,13 +28,13 @@ export const DefaultCreateLayoutContextData: ICreateLayoutContext = {
 	steps: [],
 	setSteps: () => [],
 
-	activeStep: 1,
+	activeStep: 0,
 	handleStepChange: () => {},
 	handleNextStep: () => {},
 	handlePrevStep: () => {},
 	handleFinalStep: () => {},
 
-	highestStepVisited: 1,
+	highestStepVisited: 0,
 	setHighestStepVisited: () => () => 0,
 
 	shouldAllowStepSelect: () => true,

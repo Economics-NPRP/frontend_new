@@ -9,6 +9,7 @@ import { safeParse } from 'valibot';
 
 import { Switch } from '@/components/SwitchCase';
 import { MyUserProfileContext } from '@/contexts';
+import { createAuction } from '@/lib/auctions';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { DetailsStep } from '@/pages/create/auction/@form/Details';
 import { FinalStep } from '@/pages/create/auction/@form/Final';
@@ -93,7 +94,33 @@ export default function CreateAuctionLayout() {
 			setIsFormSubmitting(true);
 			setFormError([]);
 			console.log(formData);
-			setIsFormSubmitting(false);
+			createAuction(formData)
+				.then((res) => {
+					if (res.ok) handleFinalStep();
+					else {
+						const errorMessage = (res.errors || ['Unknown error']).join(', ');
+						console.error('Error creating a new auction:', errorMessage);
+						setFormError(
+							(res.errors || []).map((error, index) => (
+								<List.Item key={index}>{error}</List.Item>
+							)),
+						);
+						notifications.show({
+							color: 'red',
+							title: t('create.auction.error.title'),
+							message: errorMessage,
+							position: 'bottom-center',
+						});
+					}
+					setIsFormSubmitting(false);
+				})
+				.catch((err) => {
+					console.error('Error creating a new auction:', err);
+					setFormError([
+						<List.Item key={0}>{t('create.auction.error.message')}</List.Item>,
+					]);
+					setIsFormSubmitting(false);
+				});
 		},
 		[handleFinalStep],
 	);

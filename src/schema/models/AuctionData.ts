@@ -86,6 +86,8 @@ export const CreateAuctionDataSchemaTransformer = pipe(
 	CreateAuctionDataSchema,
 	transform((input) => ({
 		...input,
+		subsector: undefined,
+
 		startDatetime: DateTime.fromJSDate(input.startDatetime).toISO(),
 		endDatetime: DateTime.fromJSDate(input.endDatetime).toISO(),
 		image: AllSubsectorVariants[input.subsector]?.image,
