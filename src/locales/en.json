@@ -2396,6 +2396,21 @@
           "label": "Review Auction Information",
           "description": "Ensure all details are entered correctly before finalizing auction creation"
         }
+      },
+      "sectorChangeModal": {
+        "title": "Confirm Selecting Subsector",
+        "description": "Are you sure you want to choose this subsector? Doing so will change the auction sector.",
+        "actions": {
+          "approve": {
+            "label": "Confirm Sector Change"
+          }
+        },
+        "oldSector": {
+          "label": "Old Sector"
+        },
+        "newSector": {
+          "label": "New Sector"
+        }
       }
     }
   }

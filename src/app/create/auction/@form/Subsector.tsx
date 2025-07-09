@@ -1,12 +1,14 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { SubsectorFormCard } from '@/components/SubsectorFormCard';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { ICreateAuctionStepProps } from '@/pages/create/auction/@form/page';
+import { SectorChangeModalContext } from '@/pages/create/auction/_components/SectorChangeModal';
+import { SectorType, SubsectorType } from '@/schema/models';
 import { Alert, Divider, Input, List, Radio, Stack, Text, TextInput, Title } from '@mantine/core';
 import { IconExclamationCircle, IconSearch } from '@tabler/icons-react';
 
@@ -15,6 +17,7 @@ import classes from './styles.module.css';
 export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 	const t = useTranslations();
 	const formError = useContextSelector(CreateLayoutContext, (context) => context.formError);
+	const { open } = useContext(SectorChangeModalContext);
 
 	const [searchFilter, setSearchFilter] = useState('');
 
@@ -66,9 +69,16 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 				{...form.getInputProps('subsector')}
 				value={`${form.getValues().sector}:${form.getValues().subsector}`}
 				onChange={(value) => {
-					const [sector, subsector] = value.split(':');
-					form.getInputProps('sector').onChange(sector);
-					form.getInputProps('subsector').onChange(subsector);
+					const [sector, subsector] = value.split(':') as [SectorType, SubsectorType];
+					if (sector === form.getValues().sector || !form.getValues().sector) {
+						form.getInputProps('sector').onChange(sector);
+						form.getInputProps('subsector').onChange(subsector);
+					} else {
+						open(form.getValues().sector, sector, () => {
+							form.setFieldValue('sector', sector);
+							form.setFieldValue('subsector', subsector);
+						});
+					}
 				}}
 			>
 				<SubsectorFormCard type="radio" sector="energy" subsector="gasTurbine" />
