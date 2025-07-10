@@ -17,7 +17,14 @@ export const AgricultureSubsectorTypeSchema = pipe(picklist(AgricultureSubsector
 export const WasteSubsectorTypeSchema = pipe(picklist(WasteSubsectorList), nonEmpty());
 
 export const SubsectorTypeSchema = pipe(
-	picklist([...EnergySubsectorList, ...IndustrySubsectorList]),
+	picklist([
+		...EnergySubsectorList,
+		...IndustrySubsectorList,
+		...TransportSubsectorList,
+		...BuildingsSubsectorList,
+		...AgricultureSubsectorList,
+		...WasteSubsectorList,
+	]),
 	nonEmpty(),
 );
 
