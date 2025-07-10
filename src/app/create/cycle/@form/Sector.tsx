@@ -1,3 +1,5 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
 import { useContextSelector } from 'use-context-selector';
 
@@ -12,6 +14,7 @@ import classes from './styles.module.css';
 export const SectorStep = ({ form }: ICreateCycleStepProps) => {
 	const t = useTranslations();
 	const formError = useContextSelector(CreateLayoutContext, (context) => context.formError);
+	const setFormError = useContextSelector(CreateLayoutContext, (context) => context.setFormError);
 
 	return (
 		<Stack className={`${classes.sector} ${classes.root}`}>
@@ -30,6 +33,8 @@ export const SectorStep = ({ form }: ICreateCycleStepProps) => {
 					title={t('create.cycle.error.title')}
 					icon={<IconExclamationCircle />}
 					className={classes.alert}
+					withCloseButton
+					onClose={() => setFormError([])}
 				>
 					<List>{formError}</List>
 				</Alert>

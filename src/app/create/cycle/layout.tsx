@@ -5,9 +5,9 @@ export const metadata: Metadata = {
 	title: 'Create New Cycle',
 };
 
-export interface FirmsListProps {
+export interface CreateCycleProps {
 	form: ReactNode;
 }
-export default function CreateCycle({ form }: FirmsListProps) {
+export default function CreateCycle({ form }: CreateCycleProps) {
 	return form;
 }

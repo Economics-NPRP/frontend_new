@@ -93,6 +93,8 @@ export default function Form() {
 						color="red"
 						title={t('auth.onboarding.error.title')}
 						icon={<IconExclamationCircle />}
+						withCloseButton
+						onClose={() => setFormError([])}
 					>
 						<List>{formError}</List>
 					</Alert>

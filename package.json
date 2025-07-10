@@ -37,6 +37,7 @@
 		"luxon": "^3.5.0",
 		"mantine-datatable": "^7.17.1",
 		"mantine-form-valibot-resolver": "^3.0.1",
+		"minisearch": "^7.1.2",
 		"next": "^15.0.1",
 		"next-intl": "^3.26.3",
 		"react": "^18.3.1",

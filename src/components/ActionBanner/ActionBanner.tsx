@@ -88,6 +88,7 @@ export const ActionBanner = <C extends ElementType = 'button'>({
 					</Switch.Case>
 				</Switch>
 			</Container>
+			<Container className={classes.overlay} />
 
 			{icon}
 			<Text className={classes.heading}>{heading}</Text>

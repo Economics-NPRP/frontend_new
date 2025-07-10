@@ -47,6 +47,15 @@
 		@apply z-10;
 	}
 
+	> .overlay {
+		@apply absolute top-0 left-0;
+		@apply w-full h-full;
+		@apply opacity-0;
+		@apply pointer-events-none;
+
+		background: linear-gradient(to top, rgba(26, 27, 30, 0.3) 0%, rgba(26, 27, 30, 0.2) 100%);
+	}
+
 	&.disabled[disabled] {
 		@apply cursor-not-allowed;
 		@apply opacity-25;
@@ -57,6 +66,16 @@
 				rgba(26, 27, 30, 0.1) 0%,
 				rgba(255, 255, 255, 0) 75%
 			);
+		}
+
+		> .heading,
+		> .text,
+		svg {
+			@apply opacity-50;
+		}
+
+		> .overlay {
+			@apply opacity-100;
 		}
 	}
 
@@ -204,6 +223,14 @@
 
 			.graphic {
 				@apply !border-dark-500 !stroke-dark-500;
+			}
+
+			> .overlay {
+				background: linear-gradient(
+					to top,
+					rgba(255, 255, 255, 0.2) 0%,
+					rgba(255, 255, 255, 0.1) 100%
+				);
 			}
 
 			&.disabled[disabled] > .bg > .gradient {
