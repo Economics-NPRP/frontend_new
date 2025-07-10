@@ -11,6 +11,7 @@ import {
 	object,
 	omit,
 	partialCheck,
+	pick,
 	pipe,
 	string,
 	transform,
@@ -99,6 +100,8 @@ export const CreateAuctionDataSchemaTransformer = pipe(
 export const ReadAuctionDataSchema = BaseAuctionDataSchema;
 export const UpdateAuctionDataSchema = CreateAuctionDataSchema;
 
+export const SectorAuctionDataSchema = pick(CreateAuctionDataSchema, ['sector']);
+export const SubsectorAuctionDataSchema = pick(CreateAuctionDataSchema, ['subsector']);
 export const DetailsAuctionDataSchema = pipe(
 	omit(CreateAuctionDataSchema, ['cycleId', 'isPrimaryMarket', 'ownerId', 'sector', 'subsector']),
 	forward(

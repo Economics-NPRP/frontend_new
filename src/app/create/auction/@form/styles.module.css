@@ -1,5 +1,5 @@
 .root {
-	@apply gap-8 items-center;
+	@apply gap-8 items-center self-stretch;
 
 	> .header {
 		@apply gap-1;
@@ -34,12 +34,24 @@
 	&.subsector {
 		@apply items-stretch;
 
-		> .search {
-			@apply h-10;
+		> .row {
+			@apply gap-2 items-center justify-center;
 
-			.wrapper,
-			.input {
-				@apply h-full;
+			> .label {
+				@apply paragraph-md;
+			}
+
+			> .badge {
+				@apply w-32 h-7;
+			}
+
+			> .search {
+				@apply h-10 flex-auto ml-8;
+
+				.wrapper,
+				.input {
+					@apply h-full;
+				}
 			}
 		}
 

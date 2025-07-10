@@ -4,13 +4,25 @@ import { useTranslations } from 'next-intl';
 import { ReactNode, useContext, useMemo, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
+import { BaseBadge, SectorBadge } from '@/components/Badge';
 import { SubsectorFormCard } from '@/components/SubsectorFormCard';
 import { SubsectorData, SubsectorSearch, SubsectorVariants } from '@/constants/SubsectorData';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { ICreateAuctionStepProps } from '@/pages/create/auction/@form/page';
 import { SectorChangeModalContext } from '@/pages/create/auction/_components/SectorChangeModal';
 import { SectorType, SubsectorType } from '@/schema/models';
-import { Alert, Divider, Input, List, Radio, Stack, Text, TextInput, Title } from '@mantine/core';
+import {
+	Alert,
+	Divider,
+	Group,
+	Input,
+	List,
+	Radio,
+	Stack,
+	Text,
+	TextInput,
+	Title,
+} from '@mantine/core';
 import { IconExclamationCircle, IconSearch } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
@@ -88,23 +100,31 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 					<List>{formError}</List>
 				</Alert>
 			)}
-			<TextInput
-				classNames={{
-					root: classes.search,
-					wrapper: classes.wrapper,
-					input: classes.input,
-				}}
-				placeholder={t('create.auction.subsector.search.placeholder')}
-				value={searchFilter}
-				onChange={(event) => setSearchFilter(event.currentTarget.value)}
-				leftSection={<IconSearch size={16} />}
-				rightSection={
-					searchFilter !== '' ? (
-						<Input.ClearButton onClick={() => setSearchFilter('')} />
-					) : undefined
-				}
-				rightSectionPointerEvents="auto"
-			/>
+			<Group className={classes.row}>
+				<Text className={classes.label}>{t('create.auction.subsector.sector.label')}</Text>
+				{form.getValues().sector ? (
+					<SectorBadge sector={form.getValues().sector} className={classes.badge} />
+				) : (
+					<BaseBadge className={classes.badge}>{t('constants.na')}</BaseBadge>
+				)}
+				<TextInput
+					classNames={{
+						root: classes.search,
+						wrapper: classes.wrapper,
+						input: classes.input,
+					}}
+					placeholder={t('create.auction.subsector.search.placeholder')}
+					value={searchFilter}
+					onChange={(event) => setSearchFilter(event.currentTarget.value)}
+					leftSection={<IconSearch size={16} />}
+					rightSection={
+						searchFilter !== '' ? (
+							<Input.ClearButton onClick={() => setSearchFilter('')} />
+						) : undefined
+					}
+					rightSectionPointerEvents="auto"
+				/>
+			</Group>
 			<Radio.Group
 				classNames={{
 					root: classes.content,

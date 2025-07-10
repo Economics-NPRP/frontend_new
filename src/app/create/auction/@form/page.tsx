@@ -21,6 +21,8 @@ import {
 	DetailsAuctionDataSchema,
 	ICreateAuction,
 	ICreateAuctionOutput,
+	SectorAuctionDataSchema,
+	SubsectorAuctionDataSchema,
 } from '@/schema/models';
 import { List } from '@mantine/core';
 import { UseFormReturnType, useForm } from '@mantine/form';
@@ -71,6 +73,8 @@ export default function CreateAuctionLayout() {
 	const form = useForm<ICreateAuction, (values: ICreateAuction) => ICreateAuctionOutput>({
 		mode: 'uncontrolled',
 		validate: (values) => {
+			if (activeStep === 0) return valibotResolver(SectorAuctionDataSchema)(values);
+			if (activeStep === 1) return valibotResolver(SubsectorAuctionDataSchema)(values);
 			if (activeStep === 2) return valibotResolver(DetailsAuctionDataSchema)(values);
 			if (activeStep === 3) return valibotResolver(CreateAuctionDataSchema)(values);
 			return {};
@@ -93,7 +97,6 @@ export default function CreateAuctionLayout() {
 		(formData: ICreateAuctionOutput) => {
 			setIsFormSubmitting(true);
 			setFormError([]);
-			console.log(formData);
 			createAuction(formData)
 				.then((res) => {
 					if (res.ok) handleFinalStep();
@@ -161,9 +164,11 @@ export default function CreateAuctionLayout() {
 	useEffect(() => setHandleFormSubmit(() => form.onSubmit(handleFormSubmit)), [handleFormSubmit]);
 
 	useEffect(() => {
-		if (form.errors.sectors)
-			setFormError([<List.Item key={0}>{form.errors.sectors.toString()}</List.Item>]);
-	}, [form.errors.sectors]);
+		if (form.errors.sector)
+			setFormError([<List.Item key={0}>{form.errors.sector.toString()}</List.Item>]);
+		if (form.errors.subsector)
+			setFormError([<List.Item key={1}>{form.errors.subsector.toString()}</List.Item>]);
+	}, [form.errors.sector, form.errors.subsector]);
 
 	useEffect(() => {
 		setShouldAllowStepSelect(() => (step: number, isStepper?: boolean) => {
