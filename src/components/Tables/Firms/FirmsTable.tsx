@@ -718,6 +718,7 @@ const _FirmsTable = ({
 								accessor: 'createdAt',
 								sortable: true,
 								title: t('components.firmsTable.columns.createdAt'),
+								width: 200,
 								render: (record) =>
 									DateTime.fromISO(record.createdAt).toLocaleString(
 										DateTime.DATETIME_SHORT,

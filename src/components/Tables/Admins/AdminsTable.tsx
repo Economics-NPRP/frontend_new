@@ -467,6 +467,7 @@ const _AdminsTable = ({
 						accessor: 'phone',
 						sortable: true,
 						title: t('components.adminsTable.columns.phone'),
+						width: 200,
 						render: (record) => (
 							<Anchor href={`tel:${record.phone}`} className={classes.anchor}>
 								{record.phone}
@@ -477,6 +478,7 @@ const _AdminsTable = ({
 						accessor: 'createdAt',
 						sortable: true,
 						title: t('components.adminsTable.columns.createdAt'),
+						width: 200,
 						render: (record) =>
 							DateTime.fromISO(record.createdAt).toLocaleString(
 								DateTime.DATETIME_SHORT,

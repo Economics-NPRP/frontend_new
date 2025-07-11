@@ -13,10 +13,12 @@ import { useCycleStatus } from '@/hooks';
 import { IAuctionCycleData } from '@/schema/models';
 import {
 	ActionIcon,
+	Anchor,
 	Avatar,
 	Button,
 	Container,
 	Group,
+	HoverCard,
 	Skeleton,
 	Stack,
 	Text,
@@ -132,56 +134,88 @@ export const AuctionCycleCard = ({
 						<Text className={classes.label}>
 							{t('components.auctionCycleCard.header.team.label')}
 						</Text>
-						<Avatar.Group>
-							<Switch value={loading}>
-								<Switch.True>
-									<Skeleton
-										visible
-										width={38}
-										height={38}
-										circle
-										className="-ml-3"
-									/>
-									<Skeleton
-										visible
-										width={38}
-										height={38}
-										circle
-										className="-ml-3"
-									/>
-									<Skeleton
-										visible
-										width={38}
-										height={38}
-										circle
-										className="-ml-3"
-									/>
-									<Skeleton
-										visible
-										width={38}
-										height={38}
-										circle
-										className="-ml-3"
-									/>
-									<Skeleton
-										visible
-										width={38}
-										height={38}
-										circle
-										className="-ml-3"
-									/>
-								</Switch.True>
-								<Switch.False>
-									<Avatar className={classes.avatar} />
-									<Avatar className={classes.avatar} />
-									<Avatar className={classes.avatar} />
-									<Avatar className={classes.avatar} />
-									<Avatar className={classes.avatar}>
-										+{auctionCycleData.assignedAdminsCount}
-									</Avatar>
-								</Switch.False>
-							</Switch>
-						</Avatar.Group>
+						<HoverCard position="top" withinPortal={false}>
+							<HoverCard.Target>
+								<Avatar.Group>
+									<Switch value={loading}>
+										<Switch.True>
+											<Skeleton
+												visible
+												width={38}
+												height={38}
+												circle
+												className="-ml-3"
+											/>
+											<Skeleton
+												visible
+												width={38}
+												height={38}
+												circle
+												className="-ml-3"
+											/>
+											<Skeleton
+												visible
+												width={38}
+												height={38}
+												circle
+												className="-ml-3"
+											/>
+											<Skeleton
+												visible
+												width={38}
+												height={38}
+												circle
+												className="-ml-3"
+											/>
+											<Skeleton
+												visible
+												width={38}
+												height={38}
+												circle
+												className="-ml-3"
+											/>
+										</Switch.True>
+										<Switch.False>
+											{auctionCycleData.assignedAdmins
+												.slice(0, 3)
+												.map((admin) => (
+													<Avatar
+														key={admin.id}
+														className={classes.avatar}
+														color="initials"
+														name={admin.name}
+													/>
+												))}
+											{auctionCycleData.assignedAdmins.length > 3 && (
+												<Avatar className={classes.avatar}>
+													+
+													{auctionCycleData.assignedAdminsCount -
+														auctionCycleData.assignedAdmins.length}
+												</Avatar>
+											)}
+										</Switch.False>
+									</Switch>
+								</Avatar.Group>
+							</HoverCard.Target>
+							<HoverCard.Dropdown className={classes.dropdown}>
+								{auctionCycleData.assignedAdmins.map((admin) => (
+									<Group key={admin.id} className={classes.row}>
+										<Avatar
+											className={classes.avatar}
+											color="initials"
+											name={admin.name}
+											size="sm"
+										/>
+										<Anchor
+											className={classes.name}
+											href={`/dashboard/a/admins/${admin.id}`}
+										>
+											{admin.name}
+										</Anchor>
+									</Group>
+								))}
+							</HoverCard.Dropdown>
+						</HoverCard>
 					</Stack>
 				</Group>
 			</Stack>
