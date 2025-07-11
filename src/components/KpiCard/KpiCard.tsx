@@ -6,7 +6,7 @@ import { useMemo } from 'react';
 import { BaseBadge, CurrencyBadge, SectorBadge } from '@/components/Badge';
 import { Switch } from '@/components/SwitchCase';
 import { SectorType } from '@/schema/models';
-import { Group, Progress, Stack, StackProps, Text } from '@mantine/core';
+import { Group, Progress, Stack, StackProps, Text, Tooltip } from '@mantine/core';
 import { IconSlash, IconTriangleFilled } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
@@ -49,95 +49,53 @@ export const KpiCard = ({
 	const percent = useMemo(() => Math.round((current / target) * 100), [current, target]);
 
 	const amount = useMemo(() => {
+		let formatter: (a: number) => string = (a) => a.toString();
+
 		switch (valueType) {
 			case 'currency':
-				return {
-					current: (
-						<>
-							<CurrencyBadge />
-							<Text className={classes.amount}>
-								{format.number(current, 'money')}
-							</Text>
-						</>
-					),
-					target: (
-						<>
-							<CurrencyBadge />
-							<Text className={classes.amount}>{format.number(target, 'money')}</Text>
-						</>
-					),
-					deviation: (
-						<>
-							<CurrencyBadge />
-							<Text className={classes.amount}>
-								{format.number(current - target, 'money')}
-							</Text>
-						</>
-					),
-				};
+				formatter = (a) => format.number(a, 'money');
+				break;
 			case 'percentage':
-				return {
-					current: (
-						<Text className={classes.amount}>
-							{t('constants.quantities.percent.default', { value: current })}
-						</Text>
-					),
-					target: (
-						<Text className={classes.amount}>
-							{t('constants.quantities.percent.default', { value: target })}
-						</Text>
-					),
-					deviation: (
-						<Text className={classes.amount}>
-							{t('constants.quantities.percent.default', {
-								value: Math.abs(current - target),
-							})}
-						</Text>
-					),
-				};
+				formatter = (a) => t('constants.quantities.percent.default', { value: a });
+				break;
 			case 'integer':
-				return {
-					current: (
-						<Text className={classes.amount}>{format.number(Math.round(current))}</Text>
-					),
-					target: (
-						<Text className={classes.amount}>{format.number(Math.round(target))}</Text>
-					),
-					deviation: (
-						<Text className={classes.amount}>
-							{format.number(Math.round(current - target))}
-						</Text>
-					),
-				};
+				formatter = (a) => format.number(Math.round(a));
+				break;
 			case 'double':
-				return {
-					current: (
-						<Text className={classes.amount}>{format.number(current, 'money')}</Text>
-					),
-					target: (
-						<Text className={classes.amount}>{format.number(target, 'money')}</Text>
-					),
-					deviation: (
-						<Text className={classes.amount}>
-							{format.number(current - target, 'money')}
-						</Text>
-					),
-				};
+				formatter = (a) => format.number(a, 'money');
+				break;
 			case 'index':
-				return {
-					current: (
-						<Text className={classes.amount}>{format.number(current, 'index')}</Text>
-					),
-					target: (
-						<Text className={classes.amount}>{format.number(target, 'index')}</Text>
-					),
-					deviation: (
-						<Text className={classes.amount}>
-							{format.number(current - target, 'index')}
-						</Text>
-					),
-				};
+				formatter = (a) => format.number(a, 'index');
+				break;
 		}
+
+		return {
+			current: (
+				<>
+					{valueType === 'currency' && <CurrencyBadge />}
+					<Text className={classes.amount}>{formatter(current)}</Text>
+				</>
+			),
+			target: (
+				<>
+					{valueType === 'currency' && <CurrencyBadge />}
+					<Text className={classes.amount}>{formatter(target)}</Text>
+				</>
+			),
+			deviation: (
+				<>
+					{valueType === 'currency' && <CurrencyBadge />}
+					<Text className={classes.amount}>{formatter(current - target)}</Text>
+				</>
+			),
+			ltD: `(!!!) <= ${formatter(target - gradeDeviations.c)} ${unit}`,
+			ltC: `(C) <= ${formatter(target - gradeDeviations.b)} ${unit}`,
+			ltB: `(B) <= ${formatter(target - gradeDeviations.a)} ${unit}`,
+			A: `${formatter(target - gradeDeviations.a)} ${unit} > (A) > ${formatter(target + gradeDeviations.a)} ${unit}`,
+			gtB: `(B) >= ${formatter(target + gradeDeviations.a)} ${unit}`,
+			gtC: `(C) >= ${formatter(target + gradeDeviations.b)} ${unit}`,
+			gtD: `(!!!) >= ${formatter(target + gradeDeviations.c)} ${unit}`,
+		};
 	}, [valueType, current, target, format, t]);
 
 	const gradeBadge = useMemo(() => {
@@ -213,46 +171,66 @@ export const KpiCard = ({
 				</Switch.Case>
 				<Switch.Case when="meets">
 					<Progress.Root size={'md'} className={classes.progress}>
-						<Progress.Section
-							value={
-								((gradeDeviations.d - gradeDeviations.c) / gradeDeviations.d) * 50
-							}
-							className={`${classes.section} ${classes.red}`}
-						/>
-						<Progress.Section
-							value={
-								((gradeDeviations.c - gradeDeviations.b) / gradeDeviations.d) * 50
-							}
-							className={`${classes.section} ${classes.orange}`}
-						/>
-						<Progress.Section
-							value={
-								((gradeDeviations.b - gradeDeviations.a) / gradeDeviations.d) * 50
-							}
-							className={`${classes.section} ${classes.yellow}`}
-						/>
-						<Progress.Section
-							value={(gradeDeviations.a / gradeDeviations.d) * 100}
-							className={`${classes.section} ${classes.green}`}
-						/>
-						<Progress.Section
-							value={
-								((gradeDeviations.b - gradeDeviations.a) / gradeDeviations.d) * 50
-							}
-							className={`${classes.section} ${classes.yellow}`}
-						/>
-						<Progress.Section
-							value={
-								((gradeDeviations.c - gradeDeviations.b) / gradeDeviations.d) * 50
-							}
-							className={`${classes.section} ${classes.orange}`}
-						/>
-						<Progress.Section
-							value={
-								((gradeDeviations.d - gradeDeviations.c) / gradeDeviations.d) * 50
-							}
-							className={`${classes.section} ${classes.red}`}
-						/>
+						<Tooltip label={amount.ltD}>
+							<Progress.Section
+								value={
+									((gradeDeviations.d - gradeDeviations.c) / gradeDeviations.d) *
+									50
+								}
+								className={`${classes.section} ${classes.red}`}
+							/>
+						</Tooltip>
+						<Tooltip label={amount.ltC}>
+							<Progress.Section
+								value={
+									((gradeDeviations.c - gradeDeviations.b) / gradeDeviations.d) *
+									50
+								}
+								className={`${classes.section} ${classes.orange}`}
+							/>
+						</Tooltip>
+						<Tooltip label={amount.ltB}>
+							<Progress.Section
+								value={
+									((gradeDeviations.b - gradeDeviations.a) / gradeDeviations.d) *
+									50
+								}
+								className={`${classes.section} ${classes.yellow}`}
+							/>
+						</Tooltip>
+						<Tooltip label={amount.A}>
+							<Progress.Section
+								value={(gradeDeviations.a / gradeDeviations.d) * 100}
+								className={`${classes.section} ${classes.green}`}
+							/>
+						</Tooltip>
+						<Tooltip label={amount.gtB}>
+							<Progress.Section
+								value={
+									((gradeDeviations.b - gradeDeviations.a) / gradeDeviations.d) *
+									50
+								}
+								className={`${classes.section} ${classes.yellow}`}
+							/>
+						</Tooltip>
+						<Tooltip label={amount.gtC}>
+							<Progress.Section
+								value={
+									((gradeDeviations.c - gradeDeviations.b) / gradeDeviations.d) *
+									50
+								}
+								className={`${classes.section} ${classes.orange}`}
+							/>
+						</Tooltip>
+						<Tooltip label={amount.gtD}>
+							<Progress.Section
+								value={
+									((gradeDeviations.d - gradeDeviations.c) / gradeDeviations.d) *
+									50
+								}
+								className={`${classes.section} ${classes.red}`}
+							/>
+						</Tooltip>
 						<IconTriangleFilled
 							size={12}
 							className={classes.marker}
