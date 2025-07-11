@@ -20,15 +20,14 @@ import {
 } from 'valibot';
 
 import { AllSubsectorVariants } from '@/constants/SubsectorData';
-import { SubsectorTypeSchema } from '@/schema/models/SubsectorData';
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
 
+import { BaseAuctionCycleDataSchema, DefaultBaseAuctionCycleData } from './AuctionCycleData';
 import { AuctionTypeSchema } from './AuctionType';
 import { DefaultUserData } from './GeneralUserData';
 import { SectorTypeSchema } from './SectorData';
+import { SubsectorTypeSchema } from './SubsectorData';
 import { BaseUserDataSchema } from './UserData';
-
-//	TODO: Check why path alias is not working
 
 export const BaseAuctionDataSchema = object({
 	id: UuidSchema(),
@@ -53,8 +52,6 @@ export const BaseAuctionDataSchema = object({
 	startDatetime: TimestampSchema(),
 	endDatetime: TimestampSchema(),
 	hasJoined: nullish(boolean()),
-
-	owner: BaseUserDataSchema,
 });
 
 export const CreateAuctionDataSchema = object({
@@ -75,8 +72,6 @@ export const CreateAuctionDataSchema = object({
 		'startDatetime',
 		'endDatetime',
 		'hasJoined',
-
-		'owner',
 	]).entries,
 
 	subsector: SubsectorTypeSchema,
@@ -97,7 +92,12 @@ export const CreateAuctionDataSchemaTransformer = pipe(
 	})),
 );
 
-export const ReadAuctionDataSchema = BaseAuctionDataSchema;
+export const ReadAuctionDataSchema = object({
+	...BaseAuctionDataSchema.entries,
+
+	owner: BaseUserDataSchema,
+	cycle: BaseAuctionCycleDataSchema,
+});
 export const UpdateAuctionDataSchema = CreateAuctionDataSchema;
 
 export const SectorAuctionDataSchema = pick(CreateAuctionDataSchema, ['sector']);
@@ -114,11 +114,11 @@ export const DetailsAuctionDataSchema = pipe(
 	),
 );
 
-export interface IAuctionData extends InferOutput<typeof BaseAuctionDataSchema> {}
+export interface IBaseAuctionData extends InferOutput<typeof BaseAuctionDataSchema> {}
 export interface ICreateAuction extends InferInput<typeof CreateAuctionDataSchema> {}
 export interface ICreateAuctionOutput
 	extends InferOutput<typeof CreateAuctionDataSchemaTransformer> {}
-export interface IReadAuction extends InferInput<typeof ReadAuctionDataSchema> {}
+export interface IAuctionData extends InferOutput<typeof ReadAuctionDataSchema> {}
 export interface IUpdateAuction extends InferInput<typeof UpdateAuctionDataSchema> {}
 
 export const DefaultAuctionData: IAuctionData = {
@@ -143,6 +143,7 @@ export const DefaultAuctionData: IAuctionData = {
 	endDatetime: '1970-01-01T00:00:00.000Z',
 	hasJoined: null,
 	owner: DefaultUserData,
+	cycle: DefaultBaseAuctionCycleData,
 };
 
 export const DefaultCreateAuctionData: ICreateAuction = {

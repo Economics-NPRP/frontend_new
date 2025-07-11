@@ -20,6 +20,7 @@ import {
 
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
 
+import { ReadAdminDataSchema } from './AdminData';
 import { AuctionCycleStatusSchema } from './AuctionCycleStatus';
 import { BaseCycleAdminListDataSchema } from './CycleAdminListData';
 import { SectorListSchema } from './SectorData';
@@ -79,6 +80,9 @@ export const ReadAuctionCycleDataSchema = object({
 	auctionsCount: PositiveNumberSchema(true),
 	assignedAdminsCount: PositiveNumberSchema(true),
 	emissionsCount: PositiveNumberSchema(true),
+
+	assignedAdmins: array(ReadAdminDataSchema),
+	// auctions: array(BaseAuctionDataSchema),
 });
 export const UpdateAuctionCycleDataSchema = CreateAuctionCycleDataSchema;
 
@@ -99,6 +103,19 @@ export interface ICreateAuctionCycleOutput
 export interface IAuctionCycleData extends InferOutput<typeof ReadAuctionCycleDataSchema> {}
 export interface IUpdateAuctionCycle extends InferInput<typeof UpdateAuctionCycleDataSchema> {}
 
+export const DefaultBaseAuctionCycleData: IBaseAuctionCycleData = {
+	id: '',
+	title: '',
+	description: '',
+	sectors: [],
+	status: 'draft',
+	admins: [],
+	startDatetime: '1970-01-01T00:00:00.000Z',
+	endDatetime: '1970-01-01T00:00:00.000Z',
+	createdAt: '1970-01-01T00:00:00.000Z',
+	updatedAt: '1970-01-01T00:00:00.000Z',
+};
+
 export const DefaultAuctionCycleData: IAuctionCycleData = {
 	id: '',
 	title: '',
@@ -113,6 +130,7 @@ export const DefaultAuctionCycleData: IAuctionCycleData = {
 	endDatetime: '1970-01-01T00:00:00.000Z',
 	createdAt: '1970-01-01T00:00:00.000Z',
 	updatedAt: '1970-01-01T00:00:00.000Z',
+	assignedAdmins: [],
 };
 
 export const DefaultCreateAuctionCycleData: ICreateAuctionCycle = {

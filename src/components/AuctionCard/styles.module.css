@@ -1,10 +1,50 @@
 .root {
+	@apply relative;
 	@apply w-full;
 	@apply items-stretch justify-center;
 	@apply col-span-3 gap-0;
 	@apply bg-white;
 	@apply border border-solid border-gray-300;
 	@apply transition-shadow duration-500;
+
+	> .ribbon {
+		--f: 8px;
+
+		@apply absolute;
+		@apply w-32 h-9;
+		@apply top-0 right-0;
+		@apply flex items-center justify-center;
+		@apply border-0 border-b-[15px] border-solid border-maroon-800;
+		@apply transition-all duration-700;
+		@apply z-20;
+
+		border-bottom-width: var(--f);
+		clip-path: polygon(
+			100% calc(100% - var(--f)),
+			100% 100%,
+			calc(100% - var(--f)) calc(100% - var(--f)),
+			var(--f) calc(100% - var(--f)),
+			0 100%,
+			0 calc(100% - var(--f)),
+			999px calc(100% - var(--f) - 999px),
+			calc(100% - 999px) calc(100% - var(--f) - 999px)
+		);
+		background: linear-gradient(to right, #8a1538, #f03e3e);
+		background-position-x: 0px;
+		background-size: 150% 100%;
+		background-repeat: no-repeat;
+
+		transform: translate(calc((1 - cos(45deg)) * 100%), -100%) rotate(45deg);
+		transform-origin: 0% 100%;
+
+		> .icon {
+			@apply text-white -rotate-45;
+		}
+
+		&:hover {
+			background-position-x: -64px;
+		}
+	}
 
 	> .image {
 		@apply relative;

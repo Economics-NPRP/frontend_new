@@ -18,6 +18,7 @@ import {
 	Avatar,
 	Badge,
 	Button,
+	Container,
 	Divider,
 	Group,
 	Stack,
@@ -29,6 +30,7 @@ import {
 	IconArrowUpRight,
 	IconAwardFilled,
 	IconBookmark,
+	IconCalendar,
 	IconCheckbox,
 	IconLicense,
 	IconShare,
@@ -73,6 +75,13 @@ export const AuctionCard = ({
 
 	return (
 		<Stack className={`${classes.root} ${className}`} {...props}>
+			{auction.cycle && (
+				<Tooltip label={t('components.auctionCard.cycle')} position="top" withArrow>
+					<Container className={classes.ribbon}>
+						<IconCalendar size={16} className={classes.icon} />
+					</Container>
+				</Tooltip>
+			)}
 			<UnstyledButton className={classes.image} component={Link} href={url}>
 				<Image src={src} alt={'Image of a power plant'} fill />
 				<Stack

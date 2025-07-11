@@ -6,20 +6,20 @@ import { cache } from 'react';
 import 'server-only';
 
 import { getSession } from '@/lib/auth';
-import { IFirmData } from '@/schema/models';
+import { IAdminData } from '@/schema/models';
 import { IOffsetPagination, OffsetPaginatedData, SortDirection } from '@/types';
 
-export interface IGetPaginatedFirmsOptions extends IOffsetPagination {
+export interface IGetPaginatedAdminsOptions extends IOffsetPagination {
 	sortBy?: string | null;
 	sortDirection?: SortDirection | null;
 }
 
-const getDefaultData: (...errors: Array<string>) => OffsetPaginatedData<IFirmData> = (
+const getDefaultData: (...errors: Array<string>) => OffsetPaginatedData<IAdminData> = (
 	...errors
 ) => ({
 	ok: false,
 	errors: errors,
-	results: [] as Array<IFirmData>,
+	results: [] as Array<IAdminData>,
 	page: 1,
 	pageCount: 1,
 	totalCount: 0,
@@ -28,9 +28,9 @@ const getDefaultData: (...errors: Array<string>) => OffsetPaginatedData<IFirmDat
 });
 
 type IFunctionSignature = (
-	options: IGetPaginatedFirmsOptions,
-) => Promise<OffsetPaginatedData<IFirmData>>;
-export const getPaginatedFirms: IFunctionSignature = cache(
+	options: IGetPaginatedAdminsOptions,
+) => Promise<OffsetPaginatedData<IAdminData>>;
+export const getPaginatedAdmins: IFunctionSignature = cache(
 	async ({ page, perPage, sortBy, sortDirection }) => {
 		const t = await getTranslations();
 
@@ -44,7 +44,7 @@ export const getPaginatedFirms: IFunctionSignature = cache(
 			},
 		};
 
-		const queryUrl = new URL('/v1/users/firms', process.env.NEXT_PUBLIC_BACKEND_URL);
+		const queryUrl = new URL('/v1/users/admins', process.env.NEXT_PUBLIC_BACKEND_URL);
 		if (page) queryUrl.searchParams.append('page', page.toString());
 		if (perPage) queryUrl.searchParams.append('per_page', perPage.toString());
 		if (sortBy) queryUrl.searchParams.append('order_by', sortBy);
@@ -60,8 +60,8 @@ export const getPaginatedFirms: IFunctionSignature = cache(
 
 		//	Parse results using schema and collect issues
 		const errors: Array<string> = [];
-		const results = rawData.results.reduce<Array<IFirmData>>((acc, result) => {
-			acc.push(result as IFirmData);
+		const results = rawData.results.reduce<Array<IAdminData>>((acc, result) => {
+			acc.push(result as IAdminData);
 			return acc;
 		}, []);
 
@@ -75,6 +75,6 @@ export const getPaginatedFirms: IFunctionSignature = cache(
 );
 
 //	@ts-expect-error - Preload doesn't return anything but signature requires a return
-export const preloadPaginatedFirms: IFunctionSignature = async (options) => {
-	void getPaginatedFirms(options);
+export const preloadPaginatedAdmins: IFunctionSignature = async (options) => {
+	void getPaginatedAdmins(options);
 };

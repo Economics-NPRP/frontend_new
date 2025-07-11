@@ -1,11 +1,16 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useContext } from 'react';
 
 import { ActionBanner } from '@/components/ActionBanner';
 import { StatCard } from '@/components/StatCard';
+import { PaginatedAuctionCyclesContext } from '@/contexts';
 import { Container } from '@mantine/core';
 import {
 	IconCalendar,
+	IconChartPie,
 	IconCirclePlus,
 	IconGavel,
 	IconLeaf,
@@ -18,6 +23,7 @@ import classes from './styles.module.css';
 
 export default function SubBanners() {
 	const t = useTranslations();
+	const paginatedAuctionCycles = useContext(PaginatedAuctionCyclesContext);
 
 	return (
 		<Container className={classes.root}>
@@ -28,9 +34,11 @@ export default function SubBanners() {
 				tooltip={t('dashboard.admin.cycles.stats.totalCycles.tooltip')}
 				type="integer"
 				unit={t('constants.cycles.key')}
-				value={Math.random() * 1000}
+				//	TODO: filter for only cycles this year
+				value={paginatedAuctionCycles.data.totalCount}
 				diff={Math.random() * 20 - 10}
 				comparison="year"
+				loading={paginatedAuctionCycles.isLoading}
 			/>
 			<StatCard
 				className={classes.stat}
@@ -72,6 +80,15 @@ export default function SubBanners() {
 				component={Link}
 				href="/create/cycle"
 				index={1}
+			/>
+			<ActionBanner
+				className={classes.banner}
+				icon={<IconChartPie size={32} />}
+				heading={t('dashboard.admin.cycles.actions.sectors.heading')}
+				subheading={t('dashboard.admin.cycles.actions.sectors.subheading')}
+				component={Link}
+				href="/dashboard/a/cycles/sectors"
+				index={4}
 			/>
 			<ActionBanner
 				className={classes.banner}

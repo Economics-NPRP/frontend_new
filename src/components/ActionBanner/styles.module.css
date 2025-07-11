@@ -7,6 +7,10 @@
 	@apply bg-white border border-solid border-gray-300 text-dark-600;
 	@apply transition-all duration-500;
 
+	svg {
+		@apply flex-shrink-0;
+	}
+
 	> .heading {
 		@apply mt-2;
 		@apply display-md-15 text-center;

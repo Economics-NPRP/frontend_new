@@ -1,7 +1,10 @@
 .root {
-	@apply col-span-full;
 	@apply grid grid-cols-1 gap-2;
 	@apply self-stretch;
+
+	> .stat {
+		@apply col-span-1;
+	}
 
 	> .banner {
 		@apply col-span-1;
@@ -11,18 +14,16 @@
 * {
 	@mixin larger-than $mantine-breakpoint-md {
 		.root {
-			@apply grid-cols-2;
+			@apply grid-cols-6;
 			@apply gap-4;
 
-			> .banner {
-				@apply col-span-1;
+			> .stat {
+				@apply col-span-3;
 			}
-		}
-	}
 
-	@mixin larger-than $mantine-breakpoint-xl {
-		.root {
-			@apply grid-cols-4;
+			> .banner {
+				@apply col-span-2;
+			}
 		}
 	}
 }

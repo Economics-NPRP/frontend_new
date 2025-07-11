@@ -16,7 +16,8 @@ export const components: MantineThemeComponents = {
 	Tooltip: Tooltip.extend({
 		defaultProps: {
 			openDelay: 500,
-			position: 'bottom',
+			position: 'top',
+			withArrow: true,
 		},
 	}),
 };

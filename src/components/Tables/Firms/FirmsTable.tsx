@@ -526,25 +526,21 @@ const _FirmsTable = ({
 									);
 
 									return (
-										<>
-											<Group className={classes.group}>
-												{badges[0]}
-												{badges.length > 1 && (
-													<HoverCard position="top">
-														<HoverCard.Target>
-															<Badge variant="light">
-																+{badges.length - 1}
-															</Badge>
-														</HoverCard.Target>
-														<HoverCard.Dropdown
-															className={classes.HoverCard}
-														>
-															{badges.slice(1).map((badge) => badge)}
-														</HoverCard.Dropdown>
-													</HoverCard>
-												)}
-											</Group>
-										</>
+										<HoverCard position="top" disabled={badges.length <= 1}>
+											<HoverCard.Target>
+												<Group className={classes.group}>
+													{badges[0]}
+													{badges.length > 1 && (
+														<Badge variant="light">
+															+{badges.length - 1}
+														</Badge>
+													)}
+												</Group>
+											</HoverCard.Target>
+											<HoverCard.Dropdown className="flex flex-row gap-1">
+												{badges.slice(1).map((badge) => badge)}
+											</HoverCard.Dropdown>
+										</HoverCard>
 									);
 								},
 							},
@@ -633,7 +629,7 @@ const _FirmsTable = ({
 								ellipsis: true,
 								//	TODO: change when firm is joined with application table
 								// render: (record) => record.repName,
-								render: () => t('constants.na'),
+								render: () => null,
 							},
 							{
 								accessor: 'repPosition',
@@ -642,8 +638,8 @@ const _FirmsTable = ({
 								width: 160,
 								ellipsis: true,
 								//	TODO: change when firm is joined with application table
-								// render: (record) => record.repPosition || t('constants.na'),
-								render: () => t('constants.na'),
+								// render: (record) => record.repPosition,
+								render: () => null,
 							},
 							{
 								accessor: 'repEmail',
@@ -660,8 +656,8 @@ const _FirmsTable = ({
 								// 		{record.repEmail}
 								// 	</Anchor>
 								// ),
-								// render: (record) => record.repPosition || t('constants.na'),
-								render: () => t('constants.na'),
+								// render: (record) => record.repPosition,
+								render: () => null,
 							},
 							{
 								accessor: 'repPhone',
@@ -676,7 +672,7 @@ const _FirmsTable = ({
 								// 		{record.repPhone}
 								// 	</Anchor>
 								// ),
-								render: () => t('constants.na'),
+								render: () => null,
 							},
 							{
 								accessor: 'websites',
@@ -694,9 +690,9 @@ const _FirmsTable = ({
 								// 			{record.websites[0]}
 								// 		</Anchor>
 								// 	) : (
-								// 		t('constants.na')
+								// 		null
 								// 	),
-								render: () => t('constants.na'),
+								render: () => null,
 							},
 							{
 								accessor: 'address',
@@ -705,8 +701,8 @@ const _FirmsTable = ({
 								width: 320,
 								ellipsis: true,
 								//	TODO: change when firm is joined with application table
-								// render: (record) => record.address || t('constants.na'),
-								render: () => t('constants.na'),
+								// render: (record) => record.address,
+								render: () => null,
 							},
 						],
 					},
@@ -718,6 +714,7 @@ const _FirmsTable = ({
 								accessor: 'createdAt',
 								sortable: true,
 								title: t('components.firmsTable.columns.createdAt'),
+								width: 200,
 								render: (record) =>
 									DateTime.fromISO(record.createdAt).toLocaleString(
 										DateTime.DATETIME_SHORT,

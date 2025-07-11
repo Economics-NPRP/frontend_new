@@ -1012,16 +1012,16 @@ const _AuctionsTable = ({
 								title: t('components.auctionsTable.columns.cycle'),
 								width: 240,
 								ellipsis: true,
-								render: (record) => (
-									<Anchor
-										component={Link}
-										className={classes.anchor}
-										href={`/dashboard/a/cycles/${record.cycleId}`}
-									>
-										{/* TODO: change once auction also has cycle data included */}
-										{record.cycleId}
-									</Anchor>
-								),
+								render: (record) =>
+									record.cycle ? (
+										<Anchor
+											component={Link}
+											className={classes.anchor}
+											href={`/dashboard/a/cycles/${record.cycleId}`}
+										>
+											{record.cycle.title}
+										</Anchor>
+									) : null,
 							},
 							{
 								accessor: 'startDatetime',

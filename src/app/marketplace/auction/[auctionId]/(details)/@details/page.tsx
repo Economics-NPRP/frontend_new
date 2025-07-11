@@ -22,8 +22,9 @@ import {
 	Stack,
 	Text,
 	Title,
+	UnstyledButton,
 } from '@mantine/core';
-import { IconBookmark, IconChevronRight, IconShare } from '@tabler/icons-react';
+import { IconBookmark, IconChevronRight, IconShare, IconSlash } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -133,6 +134,57 @@ export default function Details() {
 						/>
 					</WithSkeleton>
 				</Group>
+				<Switch value={auction.isLoading}>
+					<Switch.True>
+						<UnstyledButton className={classes.cycle}>
+							<Stack className={classes.left}>
+								<Skeleton visible width={200} height={24} className="my-0.5" />
+								<Skeleton visible width={240} height={14} className="my-0.5" />
+							</Stack>
+							<IconSlash size={28} className={classes.icon} />
+							<Group className={classes.right}>
+								<SectorBadge loading sector="energy" />
+							</Group>
+						</UnstyledButton>
+					</Switch.True>
+					<Switch.False>
+						{auction.data.cycle && (
+							<UnstyledButton
+								className={classes.cycle}
+								component={Link}
+								href={`/marketplace/cycles/${auction.data.cycleId}`}
+							>
+								<Stack className={classes.left}>
+									<Text className={classes.title}>
+										{auction.data.cycle.title}
+									</Text>
+									<Text className={classes.description}>
+										{auction.data.cycle.description}
+									</Text>
+								</Stack>
+								<IconSlash size={28} className={classes.icon} />
+								<Group className={classes.right}>
+									{auction.data.cycle.sectors
+										.sort((sector) => (auction.data.sector === sector ? 1 : -1))
+										.map((sector) => (
+											<SectorBadge
+												key={sector}
+												sector={sector}
+												hideText={
+													auction.data.sector === sector ? false : true
+												}
+												text={
+													auction.data.sector === sector &&
+													//	TODO: add actual number of auctions
+													`+${t('constants.quantities.auctions.default', { value: Math.round(Math.random() * 100) })}`
+												}
+											/>
+										))}
+								</Group>
+							</UnstyledButton>
+						)}
+					</Switch.False>
+				</Switch>
 			</Stack>
 
 			<Properties />
