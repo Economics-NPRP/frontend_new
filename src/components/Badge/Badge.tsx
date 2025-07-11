@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 import { SectorVariants } from '@/constants/SectorData';
 import { useAuctionAvailability } from '@/hooks';
@@ -114,21 +114,27 @@ export const CurrencyBadge = ({ className, ...props }: BaseBadgeProps) => {
 
 export interface SectorBadgeProps extends BaseBadgeProps {
 	sector: SectorType;
+	text?: ReactNode;
+	hideText?: boolean;
 }
-export const SectorBadge = ({ sector, className, ...props }: SectorBadgeProps) => {
+export const SectorBadge = ({ sector, text, hideText, className, ...props }: SectorBadgeProps) => {
 	const t = useTranslations();
 
 	const Sector = useMemo(() => SectorVariants[sector.toLowerCase() as SectorType], [sector]);
 
 	return Sector ? (
 		<BaseBadge
-			className={`${classes.root} ${classes.sector} ${className}`}
+			classNames={{
+				root: `${classes.root} ${classes.sector} ${className}`,
+				section: hideText ? 'm-0' : '',
+			}}
 			leftSection={<Sector.Icon size={14} />}
 			style={{ backgroundColor: colors[Sector.color.token!][6] }}
 			autoContrast
 			{...props}
 		>
-			{t(`constants.sector.${sector.toLowerCase() as SectorType}.title`)}
+			{!hideText &&
+				(text ? text : t(`constants.sector.${sector.toLowerCase() as SectorType}.title`))}
 		</BaseBadge>
 	) : null;
 };

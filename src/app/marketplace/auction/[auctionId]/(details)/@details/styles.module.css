@@ -54,7 +54,7 @@
 				}
 
 				&:has(.id) {
-					@apply mt-2;
+					@apply my-2;
 				}
 
 				> .owner {
@@ -89,6 +89,84 @@
 
 			> .description {
 				@apply paragraph-md text-justify;
+			}
+
+			> .cycle {
+				@apply px-6 py-4 gap-4;
+				@apply flex flex-row items-center justify-between flex-nowrap;
+				@apply transition-colors duration-300;
+
+				background-image: repeating-linear-gradient(
+						0deg,
+						#dee2e6,
+						#dee2e6 16px,
+						transparent 16px,
+						transparent 32px,
+						#dee2e6 32px
+					),
+					repeating-linear-gradient(
+						90deg,
+						#dee2e6,
+						#dee2e6 16px,
+						transparent 16px,
+						transparent 32px,
+						#dee2e6 32px
+					),
+					repeating-linear-gradient(
+						180deg,
+						#dee2e6,
+						#dee2e6 16px,
+						transparent 16px,
+						transparent 32px,
+						#dee2e6 32px
+					),
+					repeating-linear-gradient(
+						270deg,
+						#dee2e6,
+						#dee2e6 16px,
+						transparent 16px,
+						transparent 32px,
+						#dee2e6 32px
+					);
+				background-size:
+					1px 100%,
+					100% 1px,
+					1px 100%,
+					100% 1px;
+				background-position:
+					0 0,
+					0 0,
+					100% 0,
+					0 100%;
+				background-repeat: no-repeat;
+				animation: borderAnimation 1.5s linear infinite;
+				animation-play-state: paused;
+
+				> .left {
+					@apply gap-0 items-start;
+
+					> .title {
+						@apply display-md-sb;
+					}
+
+					> .description {
+						@apply paragraph-sm;
+					}
+				}
+
+				> .icon {
+					@apply text-gray-200;
+				}
+
+				> .right {
+					@apply pointer-events-none;
+					@apply gap-1 justify-end;
+				}
+
+				&:hover {
+					@apply bg-gray-50;
+					animation-play-state: running;
+				}
 			}
 		}
 
@@ -398,13 +476,58 @@
 
 	@mixin dark {
 		.root {
-			> .details > .row {
-				> .breadcrumbs > a {
-					@apply decoration-dark-50;
+			> .details {
+				> .row {
+					> .breadcrumbs > a {
+						@apply decoration-dark-50;
+					}
+
+					.action {
+						@apply bg-dark-700 border-dark-400 text-white;
+
+						&:hover {
+							@apply bg-dark-600;
+						}
+					}
 				}
 
-				.action {
-					@apply bg-dark-700 border-dark-400 text-white;
+				> .cycle {
+					background-image: repeating-linear-gradient(
+							0deg,
+							#373a40,
+							#373a40 16px,
+							transparent 16px,
+							transparent 32px,
+							#373a40 32px
+						),
+						repeating-linear-gradient(
+							90deg,
+							#373a40,
+							#373a40 16px,
+							transparent 16px,
+							transparent 32px,
+							#373a40 32px
+						),
+						repeating-linear-gradient(
+							180deg,
+							#373a40,
+							#373a40 16px,
+							transparent 16px,
+							transparent 32px,
+							#373a40 32px
+						),
+						repeating-linear-gradient(
+							270deg,
+							#373a40,
+							#373a40 16px,
+							transparent 16px,
+							transparent 32px,
+							#373a40 32px
+						);
+
+					> .icon {
+						@apply text-dark-400;
+					}
 
 					&:hover {
 						@apply bg-dark-600;
@@ -482,5 +605,22 @@
 				}
 			}
 		}
+	}
+}
+
+@keyframes borderAnimation {
+	from {
+		background-position:
+			0 0,
+			-32px 0,
+			100% -32px,
+			0 100%;
+	}
+	to {
+		background-position:
+			0 -32px,
+			0 0,
+			100% 0,
+			-32px 100%;
 	}
 }

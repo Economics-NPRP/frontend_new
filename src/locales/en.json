@@ -1184,7 +1184,8 @@
       },
       "numBidders": {
         "label": "Number of Bidders"
-      }
+      },
+      "cycle": "This is part of a government-owned auction cycle"
     },
     "bidsTable": {
       "filters": {

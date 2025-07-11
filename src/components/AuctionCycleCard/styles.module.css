@@ -100,11 +100,12 @@
 			}
 
 			> .team {
+				@apply flex-shrink-0;
 				@apply items-center gap-2;
 				@apply p-2;
 
 				> .label {
-					@apply display-md-15-sb;
+					@apply display-md-15-sb text-center;
 				}
 
 				.dropdown {
