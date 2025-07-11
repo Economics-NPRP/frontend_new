@@ -90,6 +90,12 @@ export const FirmApplicationSummary = ({
 						</Table.Th>
 						<Table.Td>{firmData.address}</Table.Td>
 					</Table.Tr>
+					<Table.Tr>
+						<Table.Th>
+							{t('components.firmApplicationSummary.columns.message')}
+						</Table.Th>
+						<Table.Td>{firmData.message}</Table.Td>
+					</Table.Tr>
 				</Table.Tbody>
 			</Table>
 		</Stack>

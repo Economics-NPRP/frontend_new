@@ -8,7 +8,7 @@
 	@apply transition-shadow duration-500;
 
 	> .ribbon {
-		--f: 12px;
+		--f: 8px;
 
 		@apply absolute;
 		@apply w-32 h-9;

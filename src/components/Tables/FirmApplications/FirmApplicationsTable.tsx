@@ -611,25 +611,21 @@ const _FirmApplicationsTable = ({
 									);
 
 									return (
-										<>
-											<Group className={classes.group}>
-												{badges[0]}
-												{badges.length > 1 && (
-													<HoverCard position="top">
-														<HoverCard.Target>
-															<Badge variant="light">
-																+{badges.length - 1}
-															</Badge>
-														</HoverCard.Target>
-														<HoverCard.Dropdown
-															className={classes.HoverCard}
-														>
-															{badges.slice(1).map((badge) => badge)}
-														</HoverCard.Dropdown>
-													</HoverCard>
-												)}
-											</Group>
-										</>
+										<HoverCard position="top" disabled={badges.length <= 1}>
+											<HoverCard.Target>
+												<Group className={classes.group}>
+													{badges[0]}
+													{badges.length > 1 && (
+														<Badge variant="light">
+															+{badges.length - 1}
+														</Badge>
+													)}
+												</Group>
+											</HoverCard.Target>
+											<HoverCard.Dropdown className="flex flex-row gap-1">
+												{badges.slice(1).map((badge) => badge)}
+											</HoverCard.Dropdown>
+										</HoverCard>
 									);
 								},
 							},
@@ -725,6 +721,23 @@ const _FirmApplicationsTable = ({
 									DateTime.fromISO(record.createdAt).toLocaleString(
 										DateTime.DATETIME_SHORT,
 									),
+							},
+							{
+								accessor: 'message',
+								sortable: false,
+								title: t('components.firmApplicationsTable.columns.message'),
+								width: 480,
+								ellipsis: true,
+								render: (record) => (
+									<HoverCard>
+										<HoverCard.Target>
+											<Text>{record.message}</Text>
+										</HoverCard.Target>
+										<HoverCard.Dropdown className="max-w-[80vw] max-h-[80vh] overflow-y-auto">
+											<Text>{record.message}</Text>
+										</HoverCard.Dropdown>
+									</HoverCard>
+								),
 							},
 						],
 					},

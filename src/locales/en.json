@@ -1395,7 +1395,8 @@
         "repName": "Name",
         "repPosition": "Position",
         "websites": "Company Website",
-        "address": "Company HQ Address"
+        "address": "Company HQ Address",
+        "message": "Application Message"
       },
       "empty": "No applications found",
       "legend": {
@@ -1475,7 +1476,8 @@
         "email": "Email Address",
         "phone": "Phone Number",
         "website": "Company Website",
-        "address": "Headquarter Address"
+        "address": "Headquarter Address",
+        "message": "Application Message"
       }
     },
     "passwordInput": {

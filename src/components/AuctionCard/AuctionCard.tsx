@@ -78,7 +78,7 @@ export const AuctionCard = ({
 			{auction.cycle && (
 				<Tooltip label={t('components.auctionCard.cycle')} position="top" withArrow>
 					<Container className={classes.ribbon}>
-						<IconCalendar size={14} className={classes.icon} />
+						<IconCalendar size={16} className={classes.icon} />
 					</Container>
 				</Tooltip>
 			)}
