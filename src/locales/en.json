@@ -1876,7 +1876,8 @@
         "details": {
           "aside": {
             "members": {
-              "tab": "Team Members"
+              "tab": "Team Members",
+              "edit": "Edit Team Members"
             },
             "updates": {
               "tab": "Latest Updates"

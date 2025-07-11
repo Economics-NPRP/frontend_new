@@ -1,6 +1,5 @@
 'use client';
 
-import { AllCycleAdminsContext } from 'contexts/AllCycleAdmins';
 import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -8,15 +7,17 @@ import { useContext, useMemo } from 'react';
 
 import { Switch } from '@/components/SwitchCase';
 import { WithSkeleton } from '@/components/WithSkeleton';
+import { AllCycleAdminsContext, SingleCycleContext } from '@/contexts';
 import { DefaultAdminData, IAdminData } from '@/schema/models';
 import { AdminRole } from '@/schema/models/AdminRole';
-import { ActionIcon, Avatar, Group, Menu, Stack, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Avatar, Button, Group, Menu, Stack, Text, Tooltip } from '@mantine/core';
 import { IconDots, IconInfoCircle, IconMail, IconPhone, IconUserCircle } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
 export const MembersContent = () => {
 	const t = useTranslations();
+	const cycle = useContext(SingleCycleContext);
 	const allCycleAdmins = useContext(AllCycleAdminsContext);
 
 	const groupedAdmins = useMemo(
@@ -63,6 +64,13 @@ export const MembersContent = () => {
 				members={groupedAdmins.financeOfficer}
 				loading={allCycleAdmins.isLoading}
 			/>
+			<Button
+				component={Link}
+				href={`/create/cycle?cycleId=${cycle.data.id}`}
+				loading={cycle.isLoading}
+			>
+				{t('dashboard.admin.cycles.details.aside.members.edit')}
+			</Button>
 		</Stack>
 	);
 };

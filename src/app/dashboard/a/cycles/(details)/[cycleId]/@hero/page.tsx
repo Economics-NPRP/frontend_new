@@ -2,6 +2,7 @@
 
 import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useContext } from 'react';
 
 import { AuctionCycleStatusBadge, BaseBadge, SectorBadge } from '@/components/Badge';
@@ -74,7 +75,12 @@ export default function Hero() {
 						label={t('dashboard.admin.cycles.details.actions.edit.tooltip')}
 						position="top"
 					>
-						<ActionIcon className={classes.button} variant="outline">
+						<ActionIcon
+							className={classes.button}
+							variant="outline"
+							component={Link}
+							href={`/create/cycle?cycleId=${cycle.data.id}`}
+						>
 							<IconPencil size={16} />
 						</ActionIcon>
 					</Tooltip>
