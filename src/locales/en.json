@@ -524,6 +524,10 @@
         "default": "{value, number} {value, plural, =0 {Companies} =1 {Company} other {Companies}}",
         "decimals": "{value, number, ::.00} {value, plural, =0 {Companies} =1 {Company} other {Companies}}"
       },
+      "admins": {
+        "default": "{value, number} {value, plural, =0 {Admins} =1 {Admin} other {Admins}}",
+        "decimals": "{value, number, ::.00} {value, plural, =0 {Admins} =1 {Admin} other {Admins}}"
+      },
       "sectors": {
         "default": "{value, number} {value, plural, =0 {Sectors} =1 {Sector} other {Sectors}}",
         "decimals": "{value, number, ::.00} {value, plural, =0 {Sectors} =1 {Sector} other {Sectors}}"
@@ -537,6 +541,7 @@
       "offset": {
         "results": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {results} =1 {result} other {results}}",
         "firms": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {companies} =1 {company} other {companies}}",
+        "admins": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {admins} =1 {admin} other {admins}}",
         "auctionCycles": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {auction cycles} =1 {auction cycle} other {auction cycles}}",
         "auctions": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {auctions} =1 {auction} other {auctions}}"
       },
@@ -1344,7 +1349,7 @@
           "waste": "Waste Companies"
         },
         "createdDate": {
-          "title": "Company"
+          "title": "Company Account Age"
         }
       }
     },
@@ -1686,6 +1691,54 @@
       "current": "Current",
       "target": "Target",
       "deviation": "Deviation"
+    },
+    "adminsTable": {
+      "filters": {
+        "badges": {
+          "all": "Showing All Admins",
+          "manager": "Cycle Managers Only",
+          "auctionOperator": "Auction Operator Only",
+          "permitStrategist": "Permit Strategist Only",
+          "financeOfficer": "Finance Officer Only"
+        },
+        "menu": {
+          "role": {
+            "label": "Admin Role"
+          }
+        },
+        "label": "Filters:"
+      },
+      "title": "List of Admins",
+      "search": {
+        "placeholder": "Search for a specific admin..."
+      },
+      "actions": {
+        "audit": {
+          "default": "Audit {value, plural, =0 {Companies} =1 {Company} other {Companies}}",
+          "short": "Audit"
+        }
+      },
+      "empty": "No admins found",
+      "columns": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone Number",
+        "createdAt": "Created At",
+        "actions": {
+          "audit": {
+            "tooltip": "Audit this admin and view their activity"
+          }
+        }
+      },
+      "summary": {
+        "createdDate": {
+          "title": "Admin Account Age"
+        },
+        "distribution": {
+          "title": "Admins Distribution",
+          "total": "Total Admins"
+        }
+      }
     }
   },
   "dashboard": {

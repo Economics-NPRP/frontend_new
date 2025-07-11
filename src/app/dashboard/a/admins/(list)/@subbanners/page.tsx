@@ -1,8 +1,12 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useContext } from 'react';
 
 import { ActionBanner } from '@/components/ActionBanner';
 import { StatCard } from '@/components/StatCard';
+import { PaginatedAdminsContext } from '@/contexts';
 import { Group } from '@mantine/core';
 import {
 	IconAlertHexagon,
@@ -16,6 +20,7 @@ import classes from './styles.module.css';
 
 export default function SubBanners() {
 	const t = useTranslations();
+	const paginatedAdmins = useContext(PaginatedAdminsContext);
 
 	return (
 		<Group className={classes.root}>
@@ -26,9 +31,10 @@ export default function SubBanners() {
 				tooltip={t('dashboard.admin.admins.stats.total.tooltip')}
 				type="integer"
 				unit={t('constants.admins.key')}
-				value={Math.random() * 100}
+				value={paginatedAdmins.data.totalCount}
 				diff={Math.random() * 20 - 10}
 				comparison="year"
+				loading={paginatedAdmins.isLoading}
 			/>
 			<StatCard
 				className={classes.stat}
