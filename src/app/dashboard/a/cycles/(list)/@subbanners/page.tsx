@@ -6,6 +6,7 @@ import { StatCard } from '@/components/StatCard';
 import { Container } from '@mantine/core';
 import {
 	IconCalendar,
+	IconChartPie,
 	IconCirclePlus,
 	IconGavel,
 	IconLeaf,
@@ -72,6 +73,15 @@ export default function SubBanners() {
 				component={Link}
 				href="/create/cycle"
 				index={1}
+			/>
+			<ActionBanner
+				className={classes.banner}
+				icon={<IconChartPie size={32} />}
+				heading={t('dashboard.admin.cycles.actions.sectors.heading')}
+				subheading={t('dashboard.admin.cycles.actions.sectors.subheading')}
+				component={Link}
+				href="/dashboard/a/cycles/sectors"
+				index={4}
 			/>
 			<ActionBanner
 				className={classes.banner}
