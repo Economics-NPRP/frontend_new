@@ -23,6 +23,13 @@ import { TimestampSchema, UuidSchema } from '@/schema/utils';
 import { FirmApplicationStatusSchema } from './FirmApplicationStatus';
 import { SectorListSchema } from './SectorData';
 
+export const BaseApplicationSchema = object({
+	repName: pipe(string(), trim(), nonEmpty()),
+	repEmail: pipe(string(), trim(), nonEmpty(), email()),
+	repPhone: pipe(string(), trim(), nonEmpty()),
+	repPosition: optional(pipe(string(), trim())),
+});
+
 export const BaseFirmApplicationDataSchema = object({
 	companyName: pipe(string(), trim(), nonEmpty()),
 	crn: pipe(
@@ -34,13 +41,9 @@ export const BaseFirmApplicationDataSchema = object({
 		minValue(1),
 		integer(),
 	),
-	repEmail: pipe(string(), trim(), nonEmpty(), email()),
-	repPhone: pipe(string(), trim(), nonEmpty()),
 	iban: pipe(string(), trim(), nonEmpty()),
 	crnCertUrl: nullish(pipe(string(), trim(), url())),
 	ibanCertUrl: nullish(pipe(string(), trim(), url())),
-	repName: pipe(string(), trim(), nonEmpty()),
-	repPosition: optional(pipe(string(), trim())),
 	address: optional(pipe(string(), trim())),
 	//	TODO: change to list when list input is implemented
 	// websites: pipe(array(pipe(string(), trim(), nonEmpty(), url())), minLength(1)),
@@ -57,6 +60,8 @@ export const BaseFirmApplicationDataSchema = object({
 	id: UuidSchema(),
 	status: FirmApplicationStatusSchema,
 	createdAt: TimestampSchema(),
+
+	...BaseApplicationSchema.entries,
 });
 
 export const CreateFirmApplicationDataSchema = omit(BaseFirmApplicationDataSchema, [
@@ -85,12 +90,20 @@ export const ThirdFirmApplicationDataSchema = pick(CreateFirmApplicationDataSche
 ]);
 export const FourthFirmApplicationDataSchema = pick(CreateFirmApplicationDataSchema, ['message']);
 
+export interface IApplication extends InferOutput<typeof BaseApplicationSchema> {}
 export interface IFirmApplication extends InferOutput<typeof BaseFirmApplicationDataSchema> {}
 export interface ICreateFirmApplication
 	extends InferInput<typeof CreateFirmApplicationDataSchema> {}
 export interface IReadFirmApplication extends InferInput<typeof ReadFirmApplicationDataSchema> {}
 export interface IUpdateFirmApplication
 	extends InferInput<typeof UpdateFirmApplicationDataSchema> {}
+
+export const DefaultApplication: IApplication = {
+	repName: '',
+	repEmail: '',
+	repPhone: '',
+	repPosition: '',
+};
 
 export const DefaultFirmApplication: IFirmApplication = {
 	companyName: '',

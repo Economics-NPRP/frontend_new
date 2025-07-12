@@ -627,9 +627,8 @@ const _FirmsTable = ({
 								title: t('components.firmsTable.columns.repName'),
 								width: 280,
 								ellipsis: true,
-								//	TODO: change when firm is joined with application table
-								// render: (record) => record.repName,
-								render: () => null,
+								render: (record) =>
+									record.application ? record.application.repName : null,
 							},
 							{
 								accessor: 'repPosition',
@@ -637,9 +636,8 @@ const _FirmsTable = ({
 								title: t('components.firmsTable.columns.repPosition'),
 								width: 160,
 								ellipsis: true,
-								//	TODO: change when firm is joined with application table
-								// render: (record) => record.repPosition,
-								render: () => null,
+								render: (record) =>
+									record.application ? record.application.repPosition : null,
 							},
 							{
 								accessor: 'repEmail',
@@ -647,32 +645,29 @@ const _FirmsTable = ({
 								title: t('components.firmsTable.columns.email'),
 								width: 200,
 								ellipsis: true,
-								//	TODO: change when firm is joined with application table
-								// render: (record) => (
-								// 	<Anchor
-								// 		href={`mailto:${record.repEmail}`}
-								// 		className={classes.anchor}
-								// 	>
-								// 		{record.repEmail}
-								// 	</Anchor>
-								// ),
-								// render: (record) => record.repPosition,
-								render: () => null,
+								render: (record) =>
+									record.application ? (
+										<Anchor
+											href={`mailto:${record.application.repEmail}`}
+											className={classes.anchor}
+										>
+											{record.application.repEmail}
+										</Anchor>
+									) : null,
 							},
 							{
 								accessor: 'repPhone',
 								sortable: true,
 								title: t('components.firmsTable.columns.phone'),
-								//	TODO: change when firm is joined with application table
-								// render: (record) => (
-								// 	<Anchor
-								// 		href={`tel:${record.repPhone}`}
-								// 		className={classes.anchor}
-								// 	>
-								// 		{record.repPhone}
-								// 	</Anchor>
-								// ),
-								render: () => null,
+								render: (record) =>
+									record.application ? (
+										<Anchor
+											href={`tel:${record.application.repPhone}`}
+											className={classes.anchor}
+										>
+											{record.application.repPhone}
+										</Anchor>
+									) : null,
 							},
 							{
 								accessor: 'websites',
