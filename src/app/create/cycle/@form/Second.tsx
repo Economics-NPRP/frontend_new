@@ -163,6 +163,7 @@ const MemberSelection = ({ title, description, maxMembers, disabled }: MemberSel
 								middlewares={{ size: true }}
 								withArrow
 								onOptionSubmit={(adminId) =>
+									selected.filter((admin) => admin.id === adminId).length === 0 &&
 									selectedHandlers.append(
 										paginatedAdmins.data.results.find(
 											(admin) => admin.id === adminId,
