@@ -1,7 +1,9 @@
 'use client';
 
-import { Dispatch, ReactElement, SetStateAction } from 'react';
+import { Dispatch, MutableRefObject, ReactElement, SetStateAction } from 'react';
 import { createContext } from 'use-context-selector';
+
+import { UseFormReturnType } from '@mantine/form';
 
 export const DefaultCreateLayoutContextData: ICreateLayoutContext = {
 	title: '',
@@ -15,6 +17,8 @@ export const DefaultCreateLayoutContextData: ICreateLayoutContext = {
 
 	completeLabel: 'Complete',
 	setCompleteLabel: () => {},
+
+	formRef: { current: null },
 
 	handleFormSubmit: () => {},
 	setHandleFormSubmit: () => () => {},
@@ -33,12 +37,15 @@ export const DefaultCreateLayoutContextData: ICreateLayoutContext = {
 	handleNextStep: () => {},
 	handlePrevStep: () => {},
 	handleFinalStep: () => {},
+	handleSearchParamStep: () => {},
 
 	highestStepVisited: 0,
 	setHighestStepVisited: () => () => 0,
 
-	shouldAllowStepSelect: () => true,
-	setShouldAllowStepSelect: () => () => true,
+	shouldAllowStepSelect: () => false,
+
+	isStepValid: () => false,
+	setIsStepValid: () => () => false,
 };
 
 export interface ICreateLayoutContext {
@@ -53,6 +60,8 @@ export interface ICreateLayoutContext {
 
 	completeLabel: string;
 	setCompleteLabel: (label: string) => void;
+
+	formRef: MutableRefObject<UseFormReturnType<any, (values: any) => any> | null>;
 
 	handleFormSubmit: (values: any) => void;
 	setHandleFormSubmit: (handler: (values: any) => void) => void;
@@ -71,15 +80,17 @@ export interface ICreateLayoutContext {
 	handleNextStep: () => void;
 	handlePrevStep: () => void;
 	handleFinalStep: () => void;
+	handleSearchParamStep: () => void;
 
 	highestStepVisited: number;
 	setHighestStepVisited: Dispatch<SetStateAction<number>>;
 
-	/** If true, the user can select the specified step or navigate to it  */
-	shouldAllowStepSelect: (step: number, isStepper?: boolean) => boolean;
-	setShouldAllowStepSelect: Dispatch<
-		SetStateAction<(step: number, isStepper?: boolean) => boolean>
-	>;
+	//	If true, the user can select the specified step or navigate to it
+	shouldAllowStepSelect: (step: number, type?: 'stepper' | 'searchParams') => boolean;
+
+	//	Function to check if the current form is valid for the specified step
+	isStepValid: (step: number) => boolean;
+	setIsStepValid: Dispatch<SetStateAction<(step: number) => boolean>>;
 }
 
 export const CreateLayoutContext = createContext<ICreateLayoutContext>(

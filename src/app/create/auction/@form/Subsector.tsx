@@ -136,6 +136,14 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 				value={`${form.getValues().sector}:${form.getValues().subsector}`}
 				onChange={(value) => {
 					const [sector, subsector] = value.split(':') as [SectorType, SubsectorType];
+					console.log(
+						'sector',
+						sector,
+						'subsector',
+						subsector,
+						'form subsector',
+						form.getValues().subsector,
+					);
 					if (subsector === form.getValues().subsector) return;
 
 					if (sector === form.getValues().sector || !form.getValues().sector) {

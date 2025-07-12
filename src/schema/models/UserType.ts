@@ -1,5 +1,5 @@
-import { InferOutput, nonEmpty, picklist, pipe } from 'valibot';
+import { InferOutput, nullish, picklist } from 'valibot';
 
-export const UserTypeSchema = pipe(picklist(['firm', 'admin']), nonEmpty());
+export const UserTypeSchema = nullish(picklist(['firm', 'admin']));
 
 export type UserType = InferOutput<typeof UserTypeSchema>;

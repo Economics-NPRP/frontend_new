@@ -35,4 +35,10 @@ export type BuildingsSubsectorType = InferOutput<typeof BuildingsSubsectorTypeSc
 export type AgricultureSubsectorType = InferOutput<typeof AgricultureSubsectorTypeSchema>;
 export type WasteSubsectorType = InferOutput<typeof WasteSubsectorTypeSchema>;
 
-export type SubsectorType = EnergySubsectorType | IndustrySubsectorType;
+export type SubsectorType =
+	| EnergySubsectorType
+	| IndustrySubsectorType
+	| TransportSubsectorType
+	| BuildingsSubsectorType
+	| AgricultureSubsectorType
+	| WasteSubsectorType;

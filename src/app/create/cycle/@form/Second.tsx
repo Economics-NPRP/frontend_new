@@ -5,7 +5,9 @@ import { useTranslations } from 'next-intl';
 import { useContextSelector } from 'use-context-selector';
 
 import { BaseBadge } from '@/components/Badge';
+import { Switch } from '@/components/SwitchCase';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
+import { ICreateCycleStepProps } from '@/pages/create/cycle/@form/page';
 import { IAdminData } from '@/schema/models';
 import {
 	Alert,
@@ -26,7 +28,7 @@ import { IconExclamationCircle, IconMail, IconPhone, IconPlus } from '@tabler/ic
 
 import classes from './styles.module.css';
 
-export const SecondStep = () => {
+export const SecondStep = ({ disabled }: ICreateCycleStepProps) => {
 	const t = useTranslations();
 	const formError = useContextSelector(CreateLayoutContext, (context) => context.formError);
 	const setFormError = useContextSelector(CreateLayoutContext, (context) => context.setFormError);
@@ -58,21 +60,25 @@ export const SecondStep = () => {
 				title={t('constants.adminRoles.manager.title')}
 				description={t('constants.adminRoles.manager.description')}
 				maxMembers={1}
+				disabled={disabled}
 			/>
 			<MemberSelection
 				title={t('constants.adminRoles.operator.title')}
 				description={t('constants.adminRoles.operator.description')}
 				maxMembers={6}
+				disabled={disabled}
 			/>
 			<MemberSelection
 				title={t('constants.adminRoles.allocator.title')}
 				description={t('constants.adminRoles.allocator.description')}
 				maxMembers={3}
+				disabled={disabled}
 			/>
 			<MemberSelection
 				title={t('constants.adminRoles.finance.title')}
 				description={t('constants.adminRoles.finance.description')}
 				maxMembers={1}
+				disabled={disabled}
 			/>
 			<Divider className={classes.divider} />
 		</Stack>
@@ -83,8 +89,9 @@ interface MemberSelectionProps {
 	title: string;
 	description: string;
 	maxMembers: number;
+	disabled?: boolean;
 }
-const MemberSelection = ({ title, description, maxMembers }: MemberSelectionProps) => {
+const MemberSelection = ({ title, description, maxMembers, disabled }: MemberSelectionProps) => {
 	const t = useTranslations();
 
 	const [selected, selectedHandlers] = useListState<IAdminData>([
@@ -161,19 +168,24 @@ const MemberSelection = ({ title, description, maxMembers }: MemberSelectionProp
 				</Tooltip>
 			</Group>
 			<Group className={classes.content}>
-				{selected.map((member) => (
-					<MemberCard key={member.id} data={member} />
-				))}
-				{selected.length < maxMembers && (
-					<UnstyledButton className={classes.add}>
-						<Container className={classes.icon}>
-							<IconPlus size={24} />
-						</Container>
-						<Text className={classes.text}>
-							{t('create.cycle.second.selectionAdd.label')}
-						</Text>
-					</UnstyledButton>
-				)}
+				<Switch value={disabled}>
+					<Switch.True></Switch.True>
+					<Switch.False>
+						{selected.map((member) => (
+							<MemberCard key={member.id} data={member} />
+						))}
+						{selected.length < maxMembers && (
+							<UnstyledButton className={classes.add}>
+								<Container className={classes.icon}>
+									<IconPlus size={24} />
+								</Container>
+								<Text className={classes.text}>
+									{t('create.cycle.second.selectionAdd.label')}
+								</Text>
+							</UnstyledButton>
+						)}
+					</Switch.False>
+				</Switch>
 			</Group>
 		</Stack>
 	);

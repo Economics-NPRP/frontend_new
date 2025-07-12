@@ -50,36 +50,40 @@ export default function CreateAuctionLayout() {
 		CreateLayoutContext,
 		(context) => context.setHandleFormSubmit,
 	);
+	const formRef = useContextSelector(CreateLayoutContext, (context) => context.formRef);
 	const setFormError = useContextSelector(CreateLayoutContext, (context) => context.setFormError);
 	const setIsFormSubmitting = useContextSelector(
 		CreateLayoutContext,
 		(context) => context.setIsFormSubmitting,
 	);
 	const setSteps = useContextSelector(CreateLayoutContext, (context) => context.setSteps);
-	const setShouldAllowStepSelect = useContextSelector(
-		CreateLayoutContext,
-		(context) => context.setShouldAllowStepSelect,
-	);
 	const handleFinalStep = useContextSelector(
 		CreateLayoutContext,
 		(context) => context.handleFinalStep,
 	);
 	const activeStep = useContextSelector(CreateLayoutContext, (context) => context.activeStep);
-	const highestStepVisited = useContextSelector(
+	const setIsStepValid = useContextSelector(
 		CreateLayoutContext,
-		(context) => context.highestStepVisited,
+		(context) => context.setIsStepValid,
 	);
 
+	const handleIsStepValid = useCallback((step: number, values: ICreateAuction) => {
+		const step1 = valibotResolver(SectorAuctionDataSchema)(values);
+		const step2 = valibotResolver(SubsectorAuctionDataSchema)(values);
+		const step3 = valibotResolver(DetailsAuctionDataSchema)(values);
+		const step4 = valibotResolver(CreateAuctionDataSchema)(values);
+
+		if (step >= 0 && Object.keys(step1).length > 0) return step1;
+		if (step >= 1 && Object.keys(step2).length > 0) return step2;
+		if (step >= 2 && Object.keys(step3).length > 0) return step3;
+		if (step >= 3 && Object.keys(step4).length > 0) return step4;
+		return {};
+	}, []);
 	const form = useForm<ICreateAuction, (values: ICreateAuction) => ICreateAuctionOutput>({
 		mode: 'uncontrolled',
-		validate: (values) => {
-			if (activeStep === 0) return valibotResolver(SectorAuctionDataSchema)(values);
-			if (activeStep === 1) return valibotResolver(SubsectorAuctionDataSchema)(values);
-			if (activeStep === 2) return valibotResolver(DetailsAuctionDataSchema)(values);
-			if (activeStep === 3) return valibotResolver(CreateAuctionDataSchema)(values);
-			return {};
-		},
-		onValuesChange: () => setFormError([]),
+		validateInputOnBlur: true,
+		clearInputErrorOnChange: true,
+		validate: (values) => handleIsStepValid(activeStep, values),
 		transformValues: (values) => {
 			const parsedData = safeParse(CreateAuctionDataSchemaTransformer, values);
 			if (!parsedData.success)
@@ -162,7 +166,21 @@ export default function CreateAuctionLayout() {
 	}, [t, searchParams]);
 
 	useEffect(() => setHandleFormSubmit(() => form.onSubmit(handleFormSubmit)), [handleFormSubmit]);
+	useEffect(
+		() =>
+			setIsStepValid(
+				() => (step: number) =>
+					Object.keys(handleIsStepValid(step, form.getValues())).length === 0,
+			),
+		[handleIsStepValid],
+	);
 
+	//	Pass form object to layout context
+	useEffect(() => {
+		formRef.current = form;
+	}, [form]);
+
+	//	Manually handle case where sector or subsector errors are present, as they dont use mantine inputs
 	useEffect(() => {
 		if (form.errors.sector)
 			setFormError([<List.Item key={0}>{form.errors.sector.toString()}</List.Item>]);
@@ -170,17 +188,7 @@ export default function CreateAuctionLayout() {
 			setFormError([<List.Item key={1}>{form.errors.subsector.toString()}</List.Item>]);
 	}, [form.errors.sector, form.errors.subsector]);
 
-	useEffect(() => {
-		setShouldAllowStepSelect(() => (step: number, isStepper?: boolean) => {
-			if (step > 4) return false;
-			if (isStepper && highestStepVisited < step) return false;
-			if (activeStep === 4) return false;
-			//	Cant go to next step if current step has errors
-			if (!isStepper && step > activeStep && form.validate().hasErrors) return false;
-			return true;
-		});
-	}, [activeStep, highestStepVisited]);
-
+	//	Pass hidden data to form
 	useEffect(
 		() => form.setFieldValue('cycleId', searchParams.get('cycleId') as string),
 		[searchParams],

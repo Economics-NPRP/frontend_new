@@ -22,7 +22,7 @@ import { IconExclamationCircle, IconLabel } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
-export const FirstStep = ({ form }: ICreateCycleStepProps) => {
+export const FirstStep = ({ form, disabled }: ICreateCycleStepProps) => {
 	const t = useTranslations();
 	const numCalendarColumns = useMatches({ base: 1, md: 2, lg: 3 });
 	const formError = useContextSelector(CreateLayoutContext, (context) => context.formError);
@@ -58,6 +58,7 @@ export const FirstStep = ({ form }: ICreateCycleStepProps) => {
 					autoComplete="company"
 					leftSection={<IconLabel size={16} />}
 					required
+					disabled={disabled}
 					key={form.key('title')}
 					{...form.getInputProps('title')}
 				/>
@@ -69,6 +70,7 @@ export const FirstStep = ({ form }: ICreateCycleStepProps) => {
 					minRows={4}
 					autosize
 					required
+					disabled={disabled}
 					key={form.key('description')}
 					{...form.getInputProps('description')}
 				/>
@@ -83,7 +85,7 @@ export const FirstStep = ({ form }: ICreateCycleStepProps) => {
 					required
 				>
 					<DatePicker
-						className={classes.calendar}
+						className={`${classes.calendar} ${disabled ? 'pointer-events-none' : ''}`}
 						classNames={{ day: classes.day }}
 						type="range"
 						numberOfColumns={numCalendarColumns}

@@ -47,6 +47,7 @@ export const DetailsStep = ({ form }: ICreateAuctionStepProps) => {
 						{ label: t('constants.auctionType.open'), value: 'open' },
 						{ label: t('constants.auctionType.sealed'), value: 'sealed' },
 					]}
+					required
 					key={form.key('type')}
 					{...form.getInputProps('type')}
 				/>
@@ -57,8 +58,10 @@ export const DetailsStep = ({ form }: ICreateAuctionStepProps) => {
 					suffix={` ${t('constants.permits.unit')}`}
 					thousandSeparator=" "
 					thousandsGroupStyle="thousand"
-					stepHoldDelay={500}
-					stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
+					stepHoldDelay={300}
+					stepHoldInterval={(t) => Math.max(1000 / t ** 2, 100)}
+					min={0}
+					required
 					key={form.key('permits')}
 					{...form.getInputProps('permits')}
 				/>
@@ -69,8 +72,10 @@ export const DetailsStep = ({ form }: ICreateAuctionStepProps) => {
 					suffix={` ${t('constants.emissions.unit')}`}
 					thousandSeparator=" "
 					thousandsGroupStyle="thousand"
-					stepHoldDelay={500}
-					stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
+					stepHoldDelay={300}
+					stepHoldInterval={(t) => Math.max(1000 / t ** 2, 100)}
+					min={0}
+					required
 					//	TODO: uncomment when backend has emissions
 					// key={form.key('emissions')}
 					// {...form.getInputProps('emissions')}
@@ -83,8 +88,10 @@ export const DetailsStep = ({ form }: ICreateAuctionStepProps) => {
 					thousandSeparator=" "
 					thousandsGroupStyle="thousand"
 					decimalScale={2}
-					stepHoldDelay={500}
-					stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
+					stepHoldDelay={300}
+					stepHoldInterval={(t) => Math.max(1000 / t ** 2, 100)}
+					min={0}
+					required
 					key={form.key('minBid')}
 					{...form.getInputProps('minBid')}
 				/>
@@ -96,8 +103,10 @@ export const DetailsStep = ({ form }: ICreateAuctionStepProps) => {
 					thousandSeparator=" "
 					thousandsGroupStyle="thousand"
 					decimalScale={2}
-					stepHoldDelay={500}
-					stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
+					stepHoldDelay={300}
+					stepHoldInterval={(t) => Math.max(1000 / t ** 2, 100)}
+					min={0}
+					required
 					//	TODO: uncomment when backend has min increment
 					// key={form.key('minIncrement')}
 					// {...form.getInputProps('minIncrement')}

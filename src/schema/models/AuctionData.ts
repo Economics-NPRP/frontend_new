@@ -5,6 +5,7 @@ import {
 	boolean,
 	date,
 	forward,
+	lazy,
 	minValue,
 	nonEmpty,
 	nullish,
@@ -22,7 +23,7 @@ import {
 import { AllSubsectorVariants } from '@/constants/SubsectorData';
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
 
-import { BaseAuctionCycleDataSchema, DefaultBaseAuctionCycleData } from './AuctionCycleData';
+import { ReadAuctionCycleDataSchema } from './AuctionCycleData';
 import { AuctionTypeSchema } from './AuctionType';
 import { DefaultUserData } from './GeneralUserData';
 import { SectorTypeSchema } from './SectorData';
@@ -96,7 +97,7 @@ export const ReadAuctionDataSchema = object({
 	...BaseAuctionDataSchema.entries,
 
 	owner: BaseUserDataSchema,
-	cycle: BaseAuctionCycleDataSchema,
+	cycle: lazy(() => nullish(ReadAuctionCycleDataSchema)),
 });
 export const UpdateAuctionDataSchema = CreateAuctionDataSchema;
 
@@ -143,7 +144,7 @@ export const DefaultAuctionData: IAuctionData = {
 	endDatetime: '1970-01-01T00:00:00.000Z',
 	hasJoined: null,
 	owner: DefaultUserData,
-	cycle: DefaultBaseAuctionCycleData,
+	cycle: null,
 };
 
 export const DefaultCreateAuctionData: ICreateAuction = {
