@@ -21,9 +21,9 @@ import {
 
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
 
+import { ReadAdminDataSchema } from './AdminData';
 import { AuctionCycleStatusSchema } from './AuctionCycleStatus';
 import { BaseAuctionDataSchema } from './AuctionData';
-import { BaseCycleAdminListDataSchema } from './CycleAdminListData';
 import { SectorListSchema } from './SectorData';
 
 export const BaseAuctionCycleDataSchema = object({
@@ -34,7 +34,7 @@ export const BaseAuctionCycleDataSchema = object({
 	sectors: SectorListSchema,
 	status: AuctionCycleStatusSchema,
 
-	assignedAdmins: BaseCycleAdminListDataSchema,
+	assignedAdmins: array(ReadAdminDataSchema),
 
 	startDatetime: TimestampSchema(),
 	endDatetime: TimestampSchema(),

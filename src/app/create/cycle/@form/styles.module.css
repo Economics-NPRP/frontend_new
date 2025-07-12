@@ -78,7 +78,7 @@
 			> .content {
 				@apply h-[240px];
 				@apply items-stretch justify-center flex-nowrap;
-				@apply p-2 gap-4;
+				@apply p-2 gap-2;
 				@apply overflow-x-auto;
 				@apply bg-gray-50 border border-solid border-gray-300;
 
@@ -140,7 +140,7 @@
 				}
 
 				> .add {
-					@apply w-32;
+					@apply w-40;
 					@apply p-4 gap-3;
 					@apply flex flex-col items-center justify-center;
 					@apply transition-colors duration-300;
@@ -209,6 +209,42 @@
 
 						> .icon {
 							@apply bg-gray-50;
+						}
+					}
+				}
+
+				.dropdown {
+					@apply max-h-80;
+					@apply flex flex-col items-stretch;
+
+					> .search input {
+						@apply h-12 px-4;
+					}
+
+					> .options {
+						@apply min-h-0 flex-auto;
+						@apply overflow-y-auto;
+
+						> .row {
+							@apply flex flex-row items-center justify-start;
+							@apply px-3 py-2.5;
+							@apply gap-2 flex-nowrap;
+							@apply border-0 border-b border-solid border-gray-100;
+
+							&:last-child {
+								@apply border-0;
+							}
+
+							> .avatar {
+								@apply size-7;
+								@apply rounded-full;
+								@apply flex items-center justify-center;
+								@apply bg-gray-50 text-gray-600;
+							}
+
+							> .name {
+								@apply paragraph-sm-15;
+							}
 						}
 					}
 				}

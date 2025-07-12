@@ -2,10 +2,12 @@
 
 import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
+import { useContext, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { BaseBadge } from '@/components/Badge';
 import { Switch } from '@/components/SwitchCase';
+import { PaginatedAdminsContext } from '@/contexts';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { ICreateCycleStepProps } from '@/pages/create/cycle/@form/page';
 import { IAdminData } from '@/schema/models';
@@ -13,15 +15,19 @@ import {
 	Alert,
 	Avatar,
 	Button,
+	Combobox,
 	Container,
 	Divider,
 	Group,
+	Input,
 	List,
+	Loader,
 	Stack,
 	Text,
 	Title,
 	Tooltip,
 	UnstyledButton,
+	useCombobox,
 } from '@mantine/core';
 import { useListState } from '@mantine/hooks';
 import { IconExclamationCircle, IconMail, IconPhone, IconPlus } from '@tabler/icons-react';
@@ -93,45 +99,20 @@ interface MemberSelectionProps {
 }
 const MemberSelection = ({ title, description, maxMembers, disabled }: MemberSelectionProps) => {
 	const t = useTranslations();
+	const paginatedAdmins = useContext(PaginatedAdminsContext);
 
-	const [selected, selectedHandlers] = useListState<IAdminData>([
-		{
-			id: 'a523474c-af06-45af-ae30-04092a61d94c',
-			name: 'Person A',
-			email: 'test@gmail.com',
-			phone: '12345678',
-			type: 'admin',
-			createdAt: DateTime.now().toISO(),
-			emailVerified: true,
-			phoneVerified: true,
-			isActive: true,
-			isSuperadmin: true,
+	const [selected, selectedHandlers] = useListState<IAdminData>([]);
+	const [search, setSearch] = useState('');
+	const combobox = useCombobox({
+		onDropdownClose: () => {
+			combobox.resetSelectedOption();
+			combobox.focusTarget();
+			setSearch('');
 		},
-		{
-			id: 'a523474c-af06-45af-ae30-04092a61d94d',
-			name: 'Person B',
-			email: 'test@gmail.com',
-			phone: '12345678',
-			type: 'admin',
-			createdAt: DateTime.now().toISO(),
-			emailVerified: true,
-			phoneVerified: true,
-			isActive: true,
-			isSuperadmin: true,
+		onDropdownOpen: () => {
+			combobox.focusSearchInput();
 		},
-		{
-			id: 'a523474c-af06-45af-ae30-04092a61d94e',
-			name: 'Person C',
-			email: 'test@gmail.com',
-			phone: '12345678',
-			type: 'admin',
-			createdAt: DateTime.now().toISO(),
-			emailVerified: true,
-			phoneVerified: true,
-			isActive: true,
-			isSuperadmin: true,
-		},
-	]);
+	});
 
 	return (
 		<Stack className={classes.section}>
@@ -175,14 +156,82 @@ const MemberSelection = ({ title, description, maxMembers, disabled }: MemberSel
 							<MemberCard key={member.id} data={member} />
 						))}
 						{selected.length < maxMembers && (
-							<UnstyledButton className={classes.add}>
-								<Container className={classes.icon}>
-									<IconPlus size={24} />
-								</Container>
-								<Text className={classes.text}>
-									{t('create.cycle.second.selectionAdd.label')}
-								</Text>
-							</UnstyledButton>
+							<Combobox
+								store={combobox}
+								withinPortal={false}
+								width={320}
+								middlewares={{ size: true }}
+								withArrow
+								onOptionSubmit={(adminId) =>
+									selectedHandlers.append(
+										paginatedAdmins.data.results.find(
+											(admin) => admin.id === adminId,
+										)!,
+									)
+								}
+							>
+								<Combobox.Target>
+									<UnstyledButton
+										className={classes.add}
+										onClick={() => combobox.openDropdown()}
+									>
+										<Container className={classes.icon}>
+											<IconPlus size={24} />
+										</Container>
+										<Text className={classes.text}>
+											{t('create.cycle.second.selectionAdd.label')}
+										</Text>
+									</UnstyledButton>
+								</Combobox.Target>
+								<Combobox.Dropdown className={classes.dropdown}>
+									<Combobox.Search
+										className={classes.search}
+										value={search}
+										onChange={(event) => setSearch(event.currentTarget.value)}
+										placeholder={t('create.cycle.second.search')}
+										rightSection={
+											search !== '' ? (
+												<Input.ClearButton onClick={() => setSearch('')} />
+											) : undefined
+										}
+										rightSectionPointerEvents="auto"
+									/>
+									<Combobox.Options className={classes.options}>
+										<Switch value={paginatedAdmins.isLoading}>
+											<Switch.True>
+												<Combobox.Empty>
+													<Loader />
+												</Combobox.Empty>
+											</Switch.True>
+											<Switch.False>
+												{paginatedAdmins.data.resultCount > 0 ? (
+													paginatedAdmins.data.results.map((admin) => (
+														<Combobox.Option
+															key={admin.id}
+															value={admin.id}
+															className={classes.row}
+														>
+															<Avatar
+																className={classes.avatar}
+																color="initials"
+																name={admin.name}
+																size="sm"
+															/>
+															<Text className={classes.name}>
+																{admin.name}
+															</Text>
+														</Combobox.Option>
+													))
+												) : (
+													<Combobox.Empty>
+														{t('create.cycle.second.empty')}
+													</Combobox.Empty>
+												)}
+											</Switch.False>
+										</Switch>
+									</Combobox.Options>
+								</Combobox.Dropdown>
+							</Combobox>
 						)}
 					</Switch.False>
 				</Switch>

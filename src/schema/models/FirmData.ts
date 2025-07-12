@@ -1,4 +1,4 @@
-import { InferInput, InferOutput, array, object, omit, string } from 'valibot';
+import { InferInput, InferOutput, array, nullish, object, omit, string } from 'valibot';
 
 import { UuidSchema } from '@/schema/utils';
 
@@ -14,7 +14,7 @@ export const BaseFirmDataSchema = object({
 	permits: array(string()),
 
 	applicationId: UuidSchema(),
-	application: BaseApplicationSchema,
+	application: nullish(BaseApplicationSchema),
 });
 
 export const CreateFirmDataSchema = omit(BaseFirmDataSchema, [
