@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { ReactNode, useContext, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useContext, useMemo, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { BaseBadge, SectorBadge } from '@/components/Badge';
@@ -33,6 +33,7 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 	const setFormError = useContextSelector(CreateLayoutContext, (context) => context.setFormError);
 	const { open } = useContext(SectorChangeModalContext);
 
+	const [value, setValue] = useState('');
 	const [searchFilter, setSearchFilter] = useState('');
 
 	const cardElements = useMemo(() => {
@@ -76,6 +77,31 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 			return acc;
 		}, [] as Array<ReactNode>);
 	}, [searchFilter, form.getValues().sector]);
+
+	const handleSubsectorChange = useCallback(
+		(value: string) => {
+			const [sector, subsector] = value.split(':') as [SectorType, SubsectorType];
+			if (subsector === form.getValues().subsector) return;
+
+			if (sector === form.getValues().sector || !form.getValues().sector) {
+				form.getInputProps('sector').onChange(sector);
+				form.getInputProps('subsector').onChange(subsector);
+				setValue(`${sector}:${subsector}`);
+			} else {
+				open(form.getValues().sector, sector, () => {
+					form.getInputProps('sector').onChange(sector);
+					form.getInputProps('subsector').onChange(subsector);
+					setValue(`${sector}:${subsector}`);
+				});
+			}
+		},
+		[form.getValues().sector, form.getValues().subsector],
+	);
+
+	const handleSubsectorClear = useCallback(() => {
+		form.getInputProps('subsector').onChange(undefined);
+		setValue('');
+	}, []);
 
 	return (
 		<Stack className={`${classes.subsector} ${classes.root}`}>
@@ -133,29 +159,8 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 				required
 				key={form.key('subsector')}
 				{...form.getInputProps('subsector')}
-				value={`${form.getValues().sector}:${form.getValues().subsector}`}
-				onChange={(value) => {
-					const [sector, subsector] = value.split(':') as [SectorType, SubsectorType];
-					console.log(
-						'sector',
-						sector,
-						'subsector',
-						subsector,
-						'form subsector',
-						form.getValues().subsector,
-					);
-					if (subsector === form.getValues().subsector) return;
-
-					if (sector === form.getValues().sector || !form.getValues().sector) {
-						form.getInputProps('sector').onChange(sector);
-						form.getInputProps('subsector').onChange(subsector);
-					} else {
-						open(form.getValues().sector, sector, () => {
-							form.getInputProps('sector').onChange(sector);
-							form.getInputProps('subsector').onChange(subsector);
-						});
-					}
-				}}
+				value={value}
+				onChange={handleSubsectorChange}
 			>
 				{cardElements}
 			</Radio.Group>
@@ -166,13 +171,12 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 				}}
 				label={t('create.auction.subsector.divider')}
 			/>
-			{form.getValues().subsector && (
+			{value && (
 				<SubsectorFormCard
 					type="readonly"
 					sector={form.getValues().sector}
 					subsector={form.getValues().subsector}
-					//	@ts-expect-error - undefined is not assignable to type 'SubsectorType'
-					onClear={() => form.setFieldValue('subsector', undefined)}
+					onClear={handleSubsectorClear}
 				/>
 			)}
 		</Stack>
