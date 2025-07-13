@@ -1,6 +1,7 @@
 export * from './useApplicationReview';
 export * from './useAuctionAvailability';
 export * from './useCountdown';
+export * from './useCreateAuction';
 export * from './useCreateCycle';
 export * from './useCycleApproval';
 export * from './useCycleStatus';

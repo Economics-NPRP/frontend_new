@@ -2098,7 +2098,16 @@
         "error": "There was an error updating the auction cycle"
       }
     },
-    "notFound": "Entity with specified ID not found"
+    "notFound": "Entity with specified ID not found",
+    "auctions": {
+      "create": {
+        "success": {
+          "title": "Successfully created a new auction",
+          "message": "You can take a look at the auction in the marketplace once the start date has passed."
+        },
+        "error": "There was an error whilst creating a new auction, please view the console for more details."
+      }
+    }
   },
   "auth": {
     "onboarding": {

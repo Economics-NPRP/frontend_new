@@ -35,11 +35,7 @@ export default function CreateCycleLayout() {
 	const singleCycle = useContext(SingleCycleContext);
 
 	const [disabled, setDisabled] = useState(false);
-
-	const createCycle = useCreateCycle({
-		onSettled: () => setIsFormSubmitting(false),
-		onSuccess: () => handleFinalStep(),
-	});
+	const createCycle = useCreateCycle();
 
 	const setTitle = useContextSelector(CreateLayoutContext, (context) => context.setTitle);
 	const setReturnHref = useContextSelector(
@@ -119,7 +115,10 @@ export default function CreateCycleLayout() {
 		(formData: ICreateAuctionCycleOutput) => {
 			setIsFormSubmitting(true);
 			setFormError([]);
-			createCycle.mutate(formData);
+			createCycle.mutate(formData, {
+				onSettled: () => setIsFormSubmitting(false),
+				onSuccess: () => handleFinalStep(),
+			});
 		},
 		[handleFinalStep, searchParams],
 	);

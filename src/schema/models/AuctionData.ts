@@ -9,6 +9,7 @@ import {
 	minValue,
 	nonEmpty,
 	nullish,
+	number,
 	object,
 	omit,
 	partialCheck,
@@ -34,6 +35,7 @@ export const BaseAuctionDataSchema = object({
 	id: UuidSchema(),
 	ownerId: UuidSchema(),
 	cycleId: UuidSchema(),
+	emissionId: number(),
 	sector: SectorTypeSchema,
 	type: AuctionTypeSchema,
 	isPrimaryMarket: boolean(),
@@ -104,7 +106,14 @@ export const UpdateAuctionDataSchema = CreateAuctionDataSchema;
 export const SectorAuctionDataSchema = pick(CreateAuctionDataSchema, ['sector']);
 export const SubsectorAuctionDataSchema = pick(CreateAuctionDataSchema, ['subsector']);
 export const DetailsAuctionDataSchema = pipe(
-	omit(CreateAuctionDataSchema, ['cycleId', 'isPrimaryMarket', 'ownerId', 'sector', 'subsector']),
+	omit(CreateAuctionDataSchema, [
+		'cycleId',
+		'isPrimaryMarket',
+		'ownerId',
+		'emissionId',
+		'sector',
+		'subsector',
+	]),
 	forward(
 		partialCheck(
 			[['startDatetime'], ['endDatetime']],
@@ -126,6 +135,7 @@ export const DefaultAuctionData: IAuctionData = {
 	id: '',
 	ownerId: '',
 	cycleId: '',
+	emissionId: 1,
 	sector: 'energy',
 	type: 'open',
 	isPrimaryMarket: false,
@@ -150,6 +160,7 @@ export const DefaultAuctionData: IAuctionData = {
 export const DefaultCreateAuctionData: ICreateAuction = {
 	ownerId: '',
 	cycleId: '',
+	emissionId: 1,
 	sector: 'energy',
 	subsector: 'gasTurbine',
 	type: 'open',

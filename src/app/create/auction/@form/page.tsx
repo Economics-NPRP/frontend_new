@@ -9,7 +9,7 @@ import { safeParse } from 'valibot';
 
 import { Switch } from '@/components/SwitchCase';
 import { MyUserProfileContext } from '@/contexts';
-import { createAuction } from '@/lib/auctions';
+import { useCreateAuction } from '@/hooks';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { DetailsStep } from '@/pages/create/auction/@form/Details';
 import { FinalStep } from '@/pages/create/auction/@form/Final';
@@ -32,6 +32,8 @@ export default function CreateAuctionLayout() {
 	const t = useTranslations();
 	const searchParams = useSearchParams();
 	const currentUser = useContext(MyUserProfileContext);
+
+	const createAuction = useCreateAuction();
 
 	const setTitle = useContextSelector(CreateLayoutContext, (context) => context.setTitle);
 	const setReturnHref = useContextSelector(
@@ -79,6 +81,7 @@ export default function CreateAuctionLayout() {
 		if (step >= 3 && Object.keys(step4).length > 0) return step4;
 		return {};
 	}, []);
+
 	const form = useForm<ICreateAuction, (values: ICreateAuction) => ICreateAuctionOutput>({
 		mode: 'uncontrolled',
 		validateInputOnBlur: true,
@@ -101,33 +104,10 @@ export default function CreateAuctionLayout() {
 		(formData: ICreateAuctionOutput) => {
 			setIsFormSubmitting(true);
 			setFormError([]);
-			createAuction(formData)
-				.then((res) => {
-					if (res.ok) handleFinalStep();
-					else {
-						const errorMessage = (res.errors || ['Unknown error']).join(', ');
-						console.error('Error creating a new auction:', errorMessage);
-						setFormError(
-							(res.errors || []).map((error, index) => (
-								<List.Item key={index}>{error}</List.Item>
-							)),
-						);
-						notifications.show({
-							color: 'red',
-							title: t('create.auction.error.title'),
-							message: errorMessage,
-							position: 'bottom-center',
-						});
-					}
-					setIsFormSubmitting(false);
-				})
-				.catch((err) => {
-					console.error('Error creating a new auction:', err);
-					setFormError([
-						<List.Item key={0}>{t('create.auction.error.message')}</List.Item>,
-					]);
-					setIsFormSubmitting(false);
-				});
+			createAuction.mutate(formData, {
+				onSettled: () => setIsFormSubmitting(false),
+				onSuccess: () => handleFinalStep(),
+			});
 		},
 		[handleFinalStep],
 	);
@@ -191,6 +171,7 @@ export default function CreateAuctionLayout() {
 		[searchParams],
 	);
 	useEffect(() => form.setFieldValue('ownerId', currentUser.data.id), [currentUser.data.id]);
+	useEffect(() => form.setFieldValue('emissionId', 1), []);
 	useEffect(
 		() => form.setFieldValue('isPrimaryMarket', currentUser.data.type === 'admin'),
 		[currentUser.data.type],
@@ -200,6 +181,11 @@ export default function CreateAuctionLayout() {
 		<>
 			<input type="hidden" key={form.key('cycleId')} {...form.getInputProps('cycleId')} />
 			<input type="hidden" key={form.key('ownerId')} {...form.getInputProps('ownerId')} />
+			<input
+				type="hidden"
+				key={form.key('emissionId')}
+				{...form.getInputProps('emissionId')}
+			/>
 			<input
 				type="hidden"
 				key={form.key('isPrimaryMarket')}

@@ -1,5 +1,6 @@
 'use client';
 
+import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
 import { useContextSelector } from 'use-context-selector';
 
@@ -115,6 +116,7 @@ export const DetailsStep = ({ form }: ICreateAuctionStepProps) => {
 					label={t('create.auction.details.startDatetime.label')}
 					description={t('create.auction.details.startDatetime.description')}
 					valueFormat="DD MMM YYYY hh:mm A"
+					minDate={DateTime.now().toJSDate()}
 					//	TODO: uncomment after migrating to mantine v8
 					// timePickerProps={{
 					// 	withDropdown: true,
@@ -130,6 +132,7 @@ export const DetailsStep = ({ form }: ICreateAuctionStepProps) => {
 					label={t('create.auction.details.endDatetime.label')}
 					description={t('create.auction.details.endDatetime.description')}
 					valueFormat="DD MMM YYYY hh:mm A"
+					minDate={DateTime.now().toJSDate()}
 					//	TODO: uncomment after migrating to mantine v8
 					// timePickerProps={{
 					// 	withDropdown: true,
