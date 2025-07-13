@@ -358,6 +358,9 @@
       },
       "login": {
         "label": "Return to Login"
+      },
+      "cycleDetails": {
+        "label": "Return to Auction Cycle Page"
       }
     },
     "view": {
@@ -2079,6 +2082,20 @@
           "title": "Auction Cycle Approved",
           "message": "This auction cycle has been approved and its auctions have been released for the public"
         }
+      },
+      "create": {
+        "success": {
+          "title": "Successfully created auction cycle",
+          "message": "Your new auction cycle is now available for editing and planning, please return to the dashboard to view it."
+        },
+        "error": "There was an error creating the auction cycle"
+      },
+      "edit": {
+        "success": {
+          "message": "Your auction cycle has been updated successfully",
+          "title": "Successfully updated auction cycle"
+        },
+        "error": "There was an error updating the auction cycle"
       }
     },
     "notFound": "Entity with specified ID not found"

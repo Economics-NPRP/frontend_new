@@ -26,8 +26,9 @@ const getDefaultData: (...errors: Array<string>) => ServerData<IAuctionCycleData
 
 type IFunctionSignature = (
 	data: ICreateAuctionCycleOutput,
+	cycleId?: string | null,
 ) => Promise<ServerData<IAuctionCycleData>>;
-export const createAuctionCycle: IFunctionSignature = cache(async (data) => {
+export const createAuctionCycle: IFunctionSignature = cache(async (data, cycleId) => {
 	const t = await getTranslations();
 
 	const cookieHeaders = await getSession();
@@ -40,9 +41,8 @@ export const createAuctionCycle: IFunctionSignature = cache(async (data) => {
 	});
 
 	const payload = snakeCase(data, 5);
-	console.log(payload);
 	const querySettings: RequestInit = {
-		method: 'POST',
+		method: cycleId ? 'PUT' : 'POST',
 		body: JSON.stringify(payload),
 		headers: {
 			'Content-Type': 'application/json',
@@ -50,7 +50,10 @@ export const createAuctionCycle: IFunctionSignature = cache(async (data) => {
 		},
 	};
 
-	const queryUrl = new URL('/v1/cycles/', process.env.NEXT_PUBLIC_BACKEND_URL);
+	const queryUrl = new URL(
+		cycleId ? `/v1/cycles/${cycleId}` : '/v1/cycles/',
+		process.env.NEXT_PUBLIC_BACKEND_URL,
+	);
 
 	const response = await fetch(queryUrl, querySettings);
 	const rawData = camelCase(await response.json(), 5) as ServerData<IAuctionCycleData>;

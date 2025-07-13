@@ -142,7 +142,7 @@ export const ReadToCreateAuctionCycleDataTransformer = pipe(
 
 		adminAssignments: input.assignedAdmins.reduce(
 			(acc, admin) => {
-				const list = acc['manager'] || [];
+				const list = [...(acc['manager'] || [])];
 				list.push(admin);
 				acc['manager'] = [...list];
 				return acc;

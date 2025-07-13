@@ -2,7 +2,7 @@
 
 import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { BaseBadge } from '@/components/Badge';
@@ -48,19 +48,6 @@ export const SecondStep = ({ form, disabled }: ICreateCycleStepProps) => {
 
 	return (
 		<Stack className={`${classes.second} ${classes.root}`}>
-			<input
-				type="hidden"
-				// name="adminAssignments"
-				// key={form.key('adminAssignments')}
-				// {...form.getInputProps('adminAssignments')}
-				// ref={valueRef}
-				// defaultValue={undefined}
-				// value={JSON.stringify(form.getValues().adminAssignments)}
-				// onChange={(event) => {
-				// 	const value = JSON.parse(event.currentTarget.value);
-				// 	form.getInputProps('adminAssignments').onChange(value);
-				// }}
-			/>
 			<Stack className={classes.header}>
 				<Title order={2} className={classes.heading}>
 					{t('create.cycle.second.header.heading')}
@@ -157,6 +144,64 @@ const MemberSelection = ({
 		selectedHandlers.setState(currentValue[role] || []);
 	}, [form.getValues().adminAssignments]);
 
+	const memberCards = useMemo(
+		() =>
+			selected.map((member) => (
+				<MemberCard
+					key={member.id}
+					data={member}
+					onRemove={() => {
+						const newList = selected.filter((m) => m.id !== member.id);
+						selectedHandlers.setState(newList);
+						form.getInputProps('adminAssignments').onChange({
+							...form.getValues().adminAssignments,
+							[role]: newList,
+						});
+					}}
+				/>
+			)),
+		[selected],
+	);
+
+	const adminItems = useMemo(
+		() =>
+			paginatedAdmins.data.results.map((admin) => (
+				<Combobox.Option key={admin.id} value={admin.id} className={classes.row}>
+					<Avatar
+						className={classes.avatar}
+						color="initials"
+						name={admin.name}
+						size="sm"
+					/>
+					<Text className={classes.name}>{admin.name}</Text>
+				</Combobox.Option>
+			)),
+		[paginatedAdmins.data.results],
+	);
+
+	const handleAddMember = useCallback(
+		(adminId: string) => {
+			if (selected.find((admin) => admin.id === adminId)) return;
+
+			const newList = [
+				...selected,
+				paginatedAdmins.data.results.find((admin) => admin.id === adminId)!,
+			];
+			selectedHandlers.setState(newList);
+			form.getInputProps('adminAssignments').onChange({
+				...(form.getValues().adminAssignments ||
+					DefaultCreateAuctionCycleData.adminAssignments),
+				[role]: newList,
+			});
+		},
+		[selected, paginatedAdmins.data.results, role],
+	);
+
+	useEffect(
+		() => console.log('selected', selected, form.getValues().adminAssignments),
+		[selected, form.getValues().adminAssignments],
+	);
+
 	return (
 		<Stack className={classes.section}>
 			<Group className={classes.header}>
@@ -195,17 +240,7 @@ const MemberSelection = ({
 				<Switch value={disabled}>
 					<Switch.True></Switch.True>
 					<Switch.False>
-						{selected.map((member) => (
-							<MemberCard
-								key={member.id}
-								data={member}
-								onRemove={() => {
-									selectedHandlers.remove(
-										selected.findIndex((m) => m.id === member.id),
-									);
-								}}
-							/>
-						))}
+						{memberCards}
 						{selected.length < maxMembers && (
 							<Combobox
 								store={combobox}
@@ -213,22 +248,7 @@ const MemberSelection = ({
 								width={320}
 								middlewares={{ size: true }}
 								withArrow
-								onOptionSubmit={(adminId) => {
-									if (selected.find((admin) => admin.id === adminId)) return;
-
-									const newList = [
-										...selected,
-										paginatedAdmins.data.results.find(
-											(admin) => admin.id === adminId,
-										)!,
-									];
-									selectedHandlers.setState(newList);
-									form.getInputProps('adminAssignments').onChange({
-										...(form.getValues().adminAssignments ||
-											DefaultCreateAuctionCycleData.adminAssignments),
-										[role]: newList,
-									});
-								}}
+								onOptionSubmit={handleAddMember}
 							>
 								<Combobox.Target>
 									<UnstyledButton
@@ -265,23 +285,7 @@ const MemberSelection = ({
 											</Switch.True>
 											<Switch.False>
 												{paginatedAdmins.data.resultCount > 0 ? (
-													paginatedAdmins.data.results.map((admin) => (
-														<Combobox.Option
-															key={admin.id}
-															value={admin.id}
-															className={classes.row}
-														>
-															<Avatar
-																className={classes.avatar}
-																color="initials"
-																name={admin.name}
-																size="sm"
-															/>
-															<Text className={classes.name}>
-																{admin.name}
-															</Text>
-														</Combobox.Option>
-													))
+													adminItems
 												) : (
 													<Combobox.Empty>
 														{t('create.cycle.second.empty')}

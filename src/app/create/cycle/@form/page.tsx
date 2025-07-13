@@ -9,7 +9,7 @@ import { safeParse } from 'valibot';
 
 import { Switch } from '@/components/SwitchCase';
 import { SingleCycleContext } from '@/contexts';
-import { createAuctionCycle } from '@/lib/cycles';
+import { useCreateCycle } from '@/hooks';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { FinalStep } from '@/pages/create/cycle/@form/Final';
 import { FirstStep } from '@/pages/create/cycle/@form/First';
@@ -35,6 +35,11 @@ export default function CreateCycleLayout() {
 	const singleCycle = useContext(SingleCycleContext);
 
 	const [disabled, setDisabled] = useState(false);
+
+	const createCycle = useCreateCycle({
+		onSettled: () => setIsFormSubmitting(false),
+		onSuccess: () => handleFinalStep(),
+	});
 
 	const setTitle = useContextSelector(CreateLayoutContext, (context) => context.setTitle);
 	const setReturnHref = useContextSelector(
@@ -114,36 +119,9 @@ export default function CreateCycleLayout() {
 		(formData: ICreateAuctionCycleOutput) => {
 			setIsFormSubmitting(true);
 			setFormError([]);
-
-			createAuctionCycle(formData)
-				.then((res) => {
-					if (res.ok) handleFinalStep();
-					else {
-						const errorMessage = (res.errors || ['Unknown error']).join(', ');
-						console.error('Error creating a new auction cycle:', errorMessage);
-						setFormError(
-							(res.errors || []).map((error, index) => (
-								<List.Item key={index}>{error}</List.Item>
-							)),
-						);
-						notifications.show({
-							color: 'red',
-							title: t('create.cycle.error.title'),
-							message: errorMessage,
-							position: 'bottom-center',
-						});
-					}
-					setIsFormSubmitting(false);
-				})
-				.catch((err) => {
-					console.error('Error creating a new auction cycle:', err);
-					setFormError([
-						<List.Item key={0}>{t('create.cycle.error.message')}</List.Item>,
-					]);
-					setIsFormSubmitting(false);
-				});
+			createCycle.mutate(formData);
 		},
-		[handleFinalStep],
+		[handleFinalStep, searchParams],
 	);
 
 	useLayoutEffect(() => {
@@ -151,7 +129,11 @@ export default function CreateCycleLayout() {
 		if (cycleId) document.title = document.title.replace(/^Create New/, 'Edit');
 		setTitle(t('create.cycle.title'));
 		setReturnHref(cycleId ? `/dashboard/a/cycles/${cycleId}` : '/dashboard/a/cycles');
-		setReturnLabel(t('constants.return.dashboard.label'));
+		setReturnLabel(
+			cycleId
+				? t('constants.return.cycleDetails.label')
+				: t('constants.return.cyclesList.label'),
+		);
 		setCompleteLabel(
 			cycleId ? t('constants.actions.saveChanges.label') : t('create.cycle.complete.label'),
 		);
