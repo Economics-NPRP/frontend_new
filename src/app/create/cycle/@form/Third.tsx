@@ -6,6 +6,7 @@ import { useContextSelector } from 'use-context-selector';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
+import { ICreateCycleStepProps } from '@/pages/create/cycle/@form/page';
 import {
 	ActionIcon,
 	Alert,
@@ -37,7 +38,7 @@ import {
 
 import classes from './styles.module.css';
 
-export const ThirdStep = () => {
+export const ThirdStep = ({ disabled }: ICreateCycleStepProps) => {
 	const t = useTranslations();
 	const formError = useContextSelector(CreateLayoutContext, (context) => context.formError);
 	const setFormError = useContextSelector(CreateLayoutContext, (context) => context.setFormError);
@@ -152,6 +153,7 @@ export const ThirdStep = () => {
 							unit: 'permits',
 						},
 					]}
+					disabled={disabled}
 				/>
 				<TargetSection
 					title={t('create.cycle.third.financial.title')}
@@ -175,6 +177,7 @@ export const ThirdStep = () => {
 							unit: 'currency',
 						},
 					]}
+					disabled={disabled}
 				/>
 				<TargetSection
 					title={t('create.cycle.third.participation.title')}
@@ -218,6 +221,7 @@ export const ThirdStep = () => {
 							unit: 'bids',
 						},
 					]}
+					disabled={disabled}
 				/>
 				<TargetSection
 					title={t('create.cycle.third.longTerm.title')}
@@ -247,6 +251,7 @@ export const ThirdStep = () => {
 							unit: 'percentage',
 						},
 					]}
+					disabled={disabled}
 				/>
 			</Container>
 		</Stack>
@@ -256,13 +261,14 @@ export const ThirdStep = () => {
 interface TargetSectionProps {
 	title: string;
 	rows: Array<TargetRowProps>;
+	disabled?: boolean;
 }
-const TargetSection = ({ title, rows }: TargetSectionProps) => {
+const TargetSection = ({ title, rows, disabled }: TargetSectionProps) => {
 	const rowElements = useMemo(
 		() =>
 			rows.map((props, index) => (
 				<>
-					<TargetRow key={index} {...props} />
+					<TargetRow key={index} disabled={disabled} {...props} />
 					{index < rows.length - 1 && (
 						<Divider key={`divider_${index}`} className={classes.divider} />
 					)}

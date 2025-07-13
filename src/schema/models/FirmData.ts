@@ -1,5 +1,8 @@
-import { InferInput, InferOutput, array, object, omit, string } from 'valibot';
+import { InferInput, InferOutput, array, nullish, object, omit, string } from 'valibot';
 
+import { UuidSchema } from '@/schema/utils';
+
+import { BaseApplicationSchema, DefaultApplication } from './FirmApplicationData';
 import { DefaultUserData } from './GeneralUserData';
 import { SectorListSchema } from './SectorData';
 import { BaseUserDataSchema, DefaultCreateUser } from './UserData';
@@ -9,6 +12,9 @@ export const BaseFirmDataSchema = object({
 
 	sectors: SectorListSchema,
 	permits: array(string()),
+
+	applicationId: UuidSchema(),
+	application: nullish(BaseApplicationSchema),
 });
 
 export const CreateFirmDataSchema = omit(BaseFirmDataSchema, [
@@ -18,6 +24,9 @@ export const CreateFirmDataSchema = omit(BaseFirmDataSchema, [
 	'isActive',
 	'createdAt',
 	'permits',
+
+	'applicationId',
+	'application',
 ]);
 
 export const ReadFirmDataSchema = BaseFirmDataSchema;
@@ -33,6 +42,9 @@ export const DefaultFirmData: IFirmData = {
 
 	sectors: [],
 	permits: [],
+
+	applicationId: '',
+	application: DefaultApplication,
 };
 
 export const DefaultCreateFirm: ICreateFirm = {

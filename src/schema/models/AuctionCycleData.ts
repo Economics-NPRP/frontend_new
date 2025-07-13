@@ -1,3 +1,4 @@
+import { omit as _omit } from 'lodash-es';
 import { DateTime } from 'luxon';
 import {
 	InferInput,
@@ -20,12 +21,13 @@ import {
 
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
 
-import { ReadAdminDataSchema } from './AdminData';
+import { IAdminData, ReadAdminDataSchema } from './AdminData';
+import { AdminRole } from './AdminRole';
 import { AuctionCycleStatusSchema } from './AuctionCycleStatus';
-import { BaseCycleAdminListDataSchema } from './CycleAdminListData';
+import { BaseAuctionDataSchema } from './AuctionData';
+import { ICreateCycleAdmin } from './CycleAdminData';
 import { SectorListSchema } from './SectorData';
 
-//	TODO: Check why path alias is not working
 export const BaseAuctionCycleDataSchema = object({
 	id: UuidSchema(),
 
@@ -33,8 +35,6 @@ export const BaseAuctionCycleDataSchema = object({
 	description: pipe(string(), trim(), nonEmpty()),
 	sectors: SectorListSchema,
 	status: AuctionCycleStatusSchema,
-
-	admins: lazy(() => BaseCycleAdminListDataSchema),
 
 	startDatetime: TimestampSchema(),
 	endDatetime: TimestampSchema(),
@@ -52,6 +52,14 @@ export const CreateAuctionCycleDataSchema = object({
 		'startDatetime',
 		'endDatetime',
 	]).entries,
+
+	adminAssignments: object({
+		manager: array(ReadAdminDataSchema),
+		auctionOperator: array(ReadAdminDataSchema),
+		permitStrategist: array(ReadAdminDataSchema),
+		financeOfficer: array(ReadAdminDataSchema),
+	}),
+
 	dates: pipe(
 		array(pipe(date(), minValue(new Date()))),
 		length(2),
@@ -68,7 +76,23 @@ export const CreateAuctionCycleDataSchemaTransformer = pipe(
 	transform((input) => {
 		const [start, end] = input.dates as [Date, Date];
 		return {
-			...input,
+			..._omit(input, ['dates']),
+
+			adminAssignments: Object.entries(input.adminAssignments).reduce(
+				(acc, [role, admins]) => {
+					const list = admins.map(
+						(admin) =>
+							({
+								adminId: admin.id,
+								role: role as AdminRole,
+							}) as ICreateCycleAdmin,
+					);
+					acc.push(...list);
+					return acc;
+				},
+				[] as Array<ICreateCycleAdmin>,
+			),
+
 			startDatetime: DateTime.fromJSDate(start).toISO(),
 			endDatetime: DateTime.fromJSDate(end).toISO(),
 		};
@@ -77,12 +101,13 @@ export const CreateAuctionCycleDataSchemaTransformer = pipe(
 export const ReadAuctionCycleDataSchema = object({
 	...BaseAuctionCycleDataSchema.entries,
 
+	assignedAdmins: array(ReadAdminDataSchema),
+
 	auctionsCount: PositiveNumberSchema(true),
 	assignedAdminsCount: PositiveNumberSchema(true),
 	emissionsCount: PositiveNumberSchema(true),
 
-	assignedAdmins: array(ReadAdminDataSchema),
-	// auctions: array(BaseAuctionDataSchema),
+	auctions: array(lazy(() => BaseAuctionDataSchema)),
 });
 export const UpdateAuctionCycleDataSchema = CreateAuctionCycleDataSchema;
 
@@ -92,9 +117,45 @@ export const FirstAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchema, [
 	'dates',
 ]);
 export const SectorAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchema, ['sectors']);
-export const SecondAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchema, ['admins']);
+export const SecondAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchema, [
+	'adminAssignments',
+]);
 //	TODO: uncomment when backend has kpis
 // export const ThirdAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchema, []);
+
+export const ReadToCreateAuctionCycleDataTransformer = pipe(
+	ReadAuctionCycleDataSchema,
+	transform((input) => ({
+		..._omit(input, [
+			'auctionsCount',
+			'assignedAdmins',
+			'assignedAdminsCount',
+			'emissionsCount',
+			'auctions',
+			'startDatetime',
+			'endDatetime',
+			'id',
+			'status',
+			'createdAt',
+			'updatedAt',
+		]),
+
+		adminAssignments: input.assignedAdmins.reduce(
+			(acc, admin) => {
+				const list = [...(acc['manager'] || [])];
+				list.push(admin);
+				acc['manager'] = [...list];
+				return acc;
+			},
+			DefaultCreateAuctionCycleData.adminAssignments as Record<AdminRole, Array<IAdminData>>,
+		),
+
+		dates: [
+			DateTime.fromISO(input.startDatetime).toJSDate(),
+			DateTime.fromISO(input.endDatetime).toJSDate(),
+		],
+	})),
+);
 
 export interface IBaseAuctionCycleData extends InferOutput<typeof BaseAuctionCycleDataSchema> {}
 export interface ICreateAuctionCycle extends InferInput<typeof CreateAuctionCycleDataSchema> {}
@@ -109,7 +170,6 @@ export const DefaultBaseAuctionCycleData: IBaseAuctionCycleData = {
 	description: '',
 	sectors: [],
 	status: 'draft',
-	admins: [],
 	startDatetime: '1970-01-01T00:00:00.000Z',
 	endDatetime: '1970-01-01T00:00:00.000Z',
 	createdAt: '1970-01-01T00:00:00.000Z',
@@ -122,7 +182,6 @@ export const DefaultAuctionCycleData: IAuctionCycleData = {
 	description: '',
 	sectors: [],
 	status: 'draft',
-	admins: [],
 	auctionsCount: 0,
 	assignedAdminsCount: 0,
 	emissionsCount: 0,
@@ -131,12 +190,18 @@ export const DefaultAuctionCycleData: IAuctionCycleData = {
 	createdAt: '1970-01-01T00:00:00.000Z',
 	updatedAt: '1970-01-01T00:00:00.000Z',
 	assignedAdmins: [],
+	auctions: [],
 };
 
 export const DefaultCreateAuctionCycleData: ICreateAuctionCycle = {
 	title: '',
 	description: '',
 	sectors: [],
-	admins: [],
+	adminAssignments: {
+		manager: [],
+		auctionOperator: [],
+		permitStrategist: [],
+		financeOfficer: [],
+	},
 	dates: [new Date(), new Date()],
 };

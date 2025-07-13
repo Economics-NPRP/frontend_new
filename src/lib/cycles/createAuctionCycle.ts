@@ -7,9 +7,12 @@ import 'server-only';
 
 import { getSession } from '@/lib/auth';
 import {
+	AdminRole,
 	DefaultAuctionCycleData,
+	F2BRoleMap,
 	IAuctionCycleData,
 	ICreateAuctionCycleOutput,
+	ICreateCycleAdmin,
 } from '@/schema/models';
 import { ServerData } from '@/types';
 
@@ -23,22 +26,34 @@ const getDefaultData: (...errors: Array<string>) => ServerData<IAuctionCycleData
 
 type IFunctionSignature = (
 	data: ICreateAuctionCycleOutput,
+	cycleId?: string | null,
 ) => Promise<ServerData<IAuctionCycleData>>;
-export const createAuctionCycle: IFunctionSignature = cache(async (data) => {
+export const createAuctionCycle: IFunctionSignature = cache(async (data, cycleId) => {
 	const t = await getTranslations();
 
 	const cookieHeaders = await getSession();
 	if (!cookieHeaders) return getDefaultData(t('lib.notLoggedIn'));
+
+	data.adminAssignments = data.adminAssignments.map((admin) => {
+		const snakeCaseData = snakeCase(admin, 5) as ICreateCycleAdmin;
+		snakeCaseData.role = F2BRoleMap[admin.role] as AdminRole;
+		return snakeCaseData;
+	});
+
+	const payload = snakeCase(data, 5);
 	const querySettings: RequestInit = {
-		method: 'POST',
-		body: JSON.stringify(snakeCase(data)),
+		method: cycleId ? 'PUT' : 'POST',
+		body: JSON.stringify(payload),
 		headers: {
 			'Content-Type': 'application/json',
 			Cookie: cookieHeaders,
 		},
 	};
 
-	const queryUrl = new URL('/v1/cycles/', process.env.NEXT_PUBLIC_BACKEND_URL);
+	const queryUrl = new URL(
+		cycleId ? `/v1/cycles/${cycleId}` : '/v1/cycles/',
+		process.env.NEXT_PUBLIC_BACKEND_URL,
+	);
 
 	const response = await fetch(queryUrl, querySettings);
 	const rawData = camelCase(await response.json(), 5) as ServerData<IAuctionCycleData>;

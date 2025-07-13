@@ -5,9 +5,11 @@ import {
 	boolean,
 	date,
 	forward,
+	lazy,
 	minValue,
 	nonEmpty,
 	nullish,
+	number,
 	object,
 	omit,
 	partialCheck,
@@ -22,7 +24,7 @@ import {
 import { AllSubsectorVariants } from '@/constants/SubsectorData';
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
 
-import { BaseAuctionCycleDataSchema, DefaultBaseAuctionCycleData } from './AuctionCycleData';
+import { ReadAuctionCycleDataSchema } from './AuctionCycleData';
 import { AuctionTypeSchema } from './AuctionType';
 import { DefaultUserData } from './GeneralUserData';
 import { SectorTypeSchema } from './SectorData';
@@ -33,6 +35,7 @@ export const BaseAuctionDataSchema = object({
 	id: UuidSchema(),
 	ownerId: UuidSchema(),
 	cycleId: UuidSchema(),
+	emissionId: number(),
 	sector: SectorTypeSchema,
 	type: AuctionTypeSchema,
 	isPrimaryMarket: boolean(),
@@ -96,14 +99,21 @@ export const ReadAuctionDataSchema = object({
 	...BaseAuctionDataSchema.entries,
 
 	owner: BaseUserDataSchema,
-	cycle: BaseAuctionCycleDataSchema,
+	cycle: lazy(() => nullish(ReadAuctionCycleDataSchema)),
 });
 export const UpdateAuctionDataSchema = CreateAuctionDataSchema;
 
 export const SectorAuctionDataSchema = pick(CreateAuctionDataSchema, ['sector']);
 export const SubsectorAuctionDataSchema = pick(CreateAuctionDataSchema, ['subsector']);
 export const DetailsAuctionDataSchema = pipe(
-	omit(CreateAuctionDataSchema, ['cycleId', 'isPrimaryMarket', 'ownerId', 'sector', 'subsector']),
+	omit(CreateAuctionDataSchema, [
+		'cycleId',
+		'isPrimaryMarket',
+		'ownerId',
+		'emissionId',
+		'sector',
+		'subsector',
+	]),
 	forward(
 		partialCheck(
 			[['startDatetime'], ['endDatetime']],
@@ -125,6 +135,7 @@ export const DefaultAuctionData: IAuctionData = {
 	id: '',
 	ownerId: '',
 	cycleId: '',
+	emissionId: 1,
 	sector: 'energy',
 	type: 'open',
 	isPrimaryMarket: false,
@@ -143,12 +154,13 @@ export const DefaultAuctionData: IAuctionData = {
 	endDatetime: '1970-01-01T00:00:00.000Z',
 	hasJoined: null,
 	owner: DefaultUserData,
-	cycle: DefaultBaseAuctionCycleData,
+	cycle: null,
 };
 
 export const DefaultCreateAuctionData: ICreateAuction = {
 	ownerId: '',
 	cycleId: '',
+	emissionId: 1,
 	sector: 'energy',
 	subsector: 'gasTurbine',
 	type: 'open',

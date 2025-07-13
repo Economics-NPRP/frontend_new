@@ -2,7 +2,6 @@ import {
 	InferInput,
 	boolean,
 	email,
-	length,
 	nonEmpty,
 	nullish,
 	object,
@@ -23,7 +22,7 @@ export const BaseUserDataSchema = object({
 
 	name: pipe(string(), trim(), nonEmpty()),
 	email: pipe(string(), trim(), nonEmpty(), email()),
-	phone: pipe(string(), trim(), nonEmpty(), length(8)),
+	phone: pipe(string(), trim(), nonEmpty()),
 	image: nullish(pipe(string(), trim(), url())),
 
 	emailVerified: boolean(),

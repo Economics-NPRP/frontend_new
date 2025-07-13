@@ -22,7 +22,6 @@ import {
 	Skeleton,
 	Stack,
 	Text,
-	Title,
 	useMatches,
 } from '@mantine/core';
 import { IconArrowUpRight, IconGavel } from '@tabler/icons-react';
@@ -73,9 +72,13 @@ export const AuctionCycleCard = ({
 									height={36}
 									className="my-0.5"
 								>
-									<Title order={2} className={classes.title}>
+									<Anchor
+										component={Link}
+										href={`/dashboard/a/cycles/${auctionCycleData.id}`}
+										className={classes.title}
+									>
 										{auctionCycleData.title}
-									</Title>
+									</Anchor>
 								</WithSkeleton>
 								<WithSkeleton
 									loading={loading}
@@ -188,9 +191,7 @@ export const AuctionCycleCard = ({
 												))}
 											{auctionCycleData.assignedAdmins.length > 3 && (
 												<Avatar className={classes.avatar}>
-													+
-													{auctionCycleData.assignedAdminsCount -
-														auctionCycleData.assignedAdmins.length}
+													+{auctionCycleData.assignedAdminsCount - 3}
 												</Avatar>
 											)}
 										</Switch.False>

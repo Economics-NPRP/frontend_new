@@ -1,25 +1,39 @@
-import { InferInput, InferOutput, array, lazy, nonEmpty, object, omit, pipe } from 'valibot';
+import { InferInput, InferOutput, array, lazy, nonEmpty, object, pipe } from 'valibot';
 
 import { TimestampSchema, UuidSchema } from '@/schema/utils';
 
 import { BaseAdminDataSchema, DefaultAdminData } from './AdminData';
-import { AdminRoleSchema } from './AdminRole';
+import { AdminRole, AdminRoleSchema } from './AdminRole';
 import { ReadAuctionCycleDataSchema } from './AuctionCycleData';
 
-//	TODO: Check why path alias is not working
+export const B2FRoleMap: Record<string, AdminRole> = {
+	planner: 'manager',
+	coordinator: 'auctionOperator',
+	permits_allocator: 'permitStrategist',
+	permit_distributor: 'permitStrategist',
+	payment_collector: 'financeOfficer',
+};
+
+export const F2BRoleMap: Record<AdminRole, string> = {
+	manager: 'planner',
+	auctionOperator: 'coordinator',
+	permitStrategist: 'permits_allocator',
+	financeOfficer: 'payment_collector',
+};
+
 export const BaseCycleAdminDataSchema = object({
 	adminId: UuidSchema(),
-	cycleId: UuidSchema(),
+	admin: BaseAdminDataSchema,
 	role: AdminRoleSchema,
-
-	assignedAt: TimestampSchema(),
 });
 
-export const CreateCycleAdminDataSchema = omit(BaseCycleAdminDataSchema, ['assignedAt']);
+export const CreateCycleAdminDataSchema = BaseCycleAdminDataSchema;
 export const ReadCycleAdminDataSchema = object({
 	...BaseCycleAdminDataSchema.entries,
 
-	admin: BaseAdminDataSchema,
+	cycleId: UuidSchema(),
+	assignedAt: TimestampSchema(),
+
 	cycle: lazy(() => ReadAuctionCycleDataSchema),
 });
 export const UpdateCycleAdminDataSchema = CreateCycleAdminDataSchema;

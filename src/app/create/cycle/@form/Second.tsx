@@ -2,32 +2,47 @@
 
 import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { BaseBadge } from '@/components/Badge';
+import { Switch } from '@/components/SwitchCase';
+import { PaginatedAdminsContext } from '@/contexts';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
-import { IAdminData } from '@/schema/models';
+import { ICreateCycleStepProps } from '@/pages/create/cycle/@form/page';
 import {
+	AdminRole,
+	DefaultCreateAuctionCycleData,
+	ICreateAdmin,
+	IReadAdmin,
+} from '@/schema/models';
+import {
+	ActionIcon,
 	Alert,
 	Avatar,
 	Button,
+	Combobox,
 	Container,
 	Divider,
 	Group,
+	Input,
 	List,
+	Loader,
 	Stack,
 	Text,
 	Title,
 	Tooltip,
 	UnstyledButton,
+	useCombobox,
 } from '@mantine/core';
 import { useListState } from '@mantine/hooks';
-import { IconExclamationCircle, IconMail, IconPhone, IconPlus } from '@tabler/icons-react';
+import { IconExclamationCircle, IconMail, IconPhone, IconPlus, IconX } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
-export const SecondStep = () => {
+export const SecondStep = ({ form, disabled }: ICreateCycleStepProps) => {
 	const t = useTranslations();
+
 	const formError = useContextSelector(CreateLayoutContext, (context) => context.formError);
 	const setFormError = useContextSelector(CreateLayoutContext, (context) => context.setFormError);
 
@@ -57,22 +72,34 @@ export const SecondStep = () => {
 			<MemberSelection
 				title={t('constants.adminRoles.manager.title')}
 				description={t('constants.adminRoles.manager.description')}
+				role="manager"
 				maxMembers={1}
+				form={form}
+				disabled={disabled}
 			/>
 			<MemberSelection
 				title={t('constants.adminRoles.operator.title')}
 				description={t('constants.adminRoles.operator.description')}
+				role="auctionOperator"
 				maxMembers={6}
+				form={form}
+				disabled={disabled}
 			/>
 			<MemberSelection
 				title={t('constants.adminRoles.allocator.title')}
 				description={t('constants.adminRoles.allocator.description')}
+				role="permitStrategist"
 				maxMembers={3}
+				form={form}
+				disabled={disabled}
 			/>
 			<MemberSelection
 				title={t('constants.adminRoles.finance.title')}
 				description={t('constants.adminRoles.finance.description')}
+				role="financeOfficer"
 				maxMembers={1}
+				form={form}
+				disabled={disabled}
 			/>
 			<Divider className={classes.divider} />
 		</Stack>
@@ -82,49 +109,98 @@ export const SecondStep = () => {
 interface MemberSelectionProps {
 	title: string;
 	description: string;
+	role: AdminRole;
 	maxMembers: number;
+	form: ICreateCycleStepProps['form'];
+	disabled?: boolean;
 }
-const MemberSelection = ({ title, description, maxMembers }: MemberSelectionProps) => {
+const MemberSelection = ({
+	title,
+	description,
+	role,
+	maxMembers,
+	form,
+	disabled,
+}: MemberSelectionProps) => {
 	const t = useTranslations();
+	const paginatedAdmins = useContext(PaginatedAdminsContext);
 
-	const [selected, selectedHandlers] = useListState<IAdminData>([
-		{
-			id: 'a523474c-af06-45af-ae30-04092a61d94c',
-			name: 'Person A',
-			email: 'test@gmail.com',
-			phone: '12345678',
-			type: 'admin',
-			createdAt: DateTime.now().toISO(),
-			emailVerified: true,
-			phoneVerified: true,
-			isActive: true,
-			isSuperadmin: true,
+	const [selected, selectedHandlers] = useListState<IReadAdmin>([]);
+	const [search, setSearch] = useState('');
+	const combobox = useCombobox({
+		onDropdownClose: () => {
+			combobox.resetSelectedOption();
+			combobox.focusTarget();
+			setSearch('');
 		},
-		{
-			id: 'a523474c-af06-45af-ae30-04092a61d94d',
-			name: 'Person B',
-			email: 'test@gmail.com',
-			phone: '12345678',
-			type: 'admin',
-			createdAt: DateTime.now().toISO(),
-			emailVerified: true,
-			phoneVerified: true,
-			isActive: true,
-			isSuperadmin: true,
+		onDropdownOpen: () => {
+			combobox.focusSearchInput();
 		},
-		{
-			id: 'a523474c-af06-45af-ae30-04092a61d94e',
-			name: 'Person C',
-			email: 'test@gmail.com',
-			phone: '12345678',
-			type: 'admin',
-			createdAt: DateTime.now().toISO(),
-			emailVerified: true,
-			phoneVerified: true,
-			isActive: true,
-			isSuperadmin: true,
+	});
+
+	useEffect(() => {
+		const currentValue =
+			form.getValues().adminAssignments || DefaultCreateAuctionCycleData.adminAssignments;
+		selectedHandlers.setState(currentValue[role] || []);
+	}, [form.getValues().adminAssignments]);
+
+	const memberCards = useMemo(
+		() =>
+			selected.map((member) => (
+				<MemberCard
+					key={member.id}
+					data={member}
+					onRemove={() => {
+						const newList = selected.filter((m) => m.id !== member.id);
+						selectedHandlers.setState(newList);
+						form.getInputProps('adminAssignments').onChange({
+							...form.getValues().adminAssignments,
+							[role]: newList,
+						});
+					}}
+				/>
+			)),
+		[selected],
+	);
+
+	const adminItems = useMemo(
+		() =>
+			paginatedAdmins.data.results.map((admin) => (
+				<Combobox.Option key={admin.id} value={admin.id} className={classes.row}>
+					<Avatar
+						className={classes.avatar}
+						color="initials"
+						name={admin.name}
+						size="sm"
+					/>
+					<Text className={classes.name}>{admin.name}</Text>
+				</Combobox.Option>
+			)),
+		[paginatedAdmins.data.results],
+	);
+
+	const handleAddMember = useCallback(
+		(adminId: string) => {
+			if (selected.find((admin) => admin.id === adminId)) return;
+
+			const newList = [
+				...selected,
+				paginatedAdmins.data.results.find((admin) => admin.id === adminId)!,
+			];
+			selectedHandlers.setState(newList);
+			form.getInputProps('adminAssignments').onChange({
+				...(form.getValues().adminAssignments ||
+					DefaultCreateAuctionCycleData.adminAssignments),
+				[role]: newList,
+			});
 		},
-	]);
+		[selected, paginatedAdmins.data.results, role],
+	);
+
+	useEffect(
+		() => console.log('selected', selected, form.getValues().adminAssignments),
+		[selected, form.getValues().adminAssignments],
+	);
 
 	return (
 		<Stack className={classes.section}>
@@ -161,28 +237,78 @@ const MemberSelection = ({ title, description, maxMembers }: MemberSelectionProp
 				</Tooltip>
 			</Group>
 			<Group className={classes.content}>
-				{selected.map((member) => (
-					<MemberCard key={member.id} data={member} />
-				))}
-				{selected.length < maxMembers && (
-					<UnstyledButton className={classes.add}>
-						<Container className={classes.icon}>
-							<IconPlus size={24} />
-						</Container>
-						<Text className={classes.text}>
-							{t('create.cycle.second.selectionAdd.label')}
-						</Text>
-					</UnstyledButton>
-				)}
+				<Switch value={disabled}>
+					<Switch.True></Switch.True>
+					<Switch.False>
+						{memberCards}
+						{selected.length < maxMembers && (
+							<Combobox
+								store={combobox}
+								withinPortal={false}
+								width={320}
+								middlewares={{ size: true }}
+								withArrow
+								onOptionSubmit={handleAddMember}
+							>
+								<Combobox.Target>
+									<UnstyledButton
+										className={classes.add}
+										onClick={() => combobox.openDropdown()}
+									>
+										<Container className={classes.icon}>
+											<IconPlus size={24} />
+										</Container>
+										<Text className={classes.text}>
+											{t('create.cycle.second.selectionAdd.label')}
+										</Text>
+									</UnstyledButton>
+								</Combobox.Target>
+								<Combobox.Dropdown className={classes.dropdown}>
+									<Combobox.Search
+										className={classes.search}
+										value={search}
+										onChange={(event) => setSearch(event.currentTarget.value)}
+										placeholder={t('create.cycle.second.search')}
+										rightSection={
+											search !== '' ? (
+												<Input.ClearButton onClick={() => setSearch('')} />
+											) : undefined
+										}
+										rightSectionPointerEvents="auto"
+									/>
+									<Combobox.Options className={classes.options}>
+										<Switch value={paginatedAdmins.isLoading}>
+											<Switch.True>
+												<Combobox.Empty>
+													<Loader />
+												</Combobox.Empty>
+											</Switch.True>
+											<Switch.False>
+												{paginatedAdmins.data.resultCount > 0 ? (
+													adminItems
+												) : (
+													<Combobox.Empty>
+														{t('create.cycle.second.empty')}
+													</Combobox.Empty>
+												)}
+											</Switch.False>
+										</Switch>
+									</Combobox.Options>
+								</Combobox.Dropdown>
+							</Combobox>
+						)}
+					</Switch.False>
+				</Switch>
 			</Group>
 		</Stack>
 	);
 };
 
 interface MemberCardProps {
-	data: IAdminData;
+	data: ICreateAdmin;
+	onRemove: () => void;
 }
-const MemberCard = ({ data }: MemberCardProps) => {
+const MemberCard = ({ data, onRemove }: MemberCardProps) => {
 	const t = useTranslations();
 
 	return (
@@ -197,6 +323,9 @@ const MemberCard = ({ data }: MemberCardProps) => {
 							.toRelative()}
 					</Text>
 				</Stack>
+				<ActionIcon className={classes.button} variant="subtle" onClick={onRemove}>
+					<IconX size={16} />
+				</ActionIcon>
 			</Group>
 			<Stack className={classes.details}>
 				<Group className={classes.row}>

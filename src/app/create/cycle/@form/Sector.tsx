@@ -11,7 +11,7 @@ import { IconExclamationCircle } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
-export const SectorStep = ({ form }: ICreateCycleStepProps) => {
+export const SectorStep = ({ form, disabled }: ICreateCycleStepProps) => {
 	const t = useTranslations();
 	const formError = useContextSelector(CreateLayoutContext, (context) => context.formError);
 	const setFormError = useContextSelector(CreateLayoutContext, (context) => context.setFormError);
@@ -48,12 +48,12 @@ export const SectorStep = ({ form }: ICreateCycleStepProps) => {
 				key={form.key('sectors')}
 				{...form.getInputProps('sectors')}
 			>
-				<SectorFormCard sector="energy" />
-				<SectorFormCard sector="industry" />
-				<SectorFormCard sector="transport" />
-				<SectorFormCard sector="buildings" />
-				<SectorFormCard sector="agriculture" />
-				<SectorFormCard sector="waste" />
+				<SectorFormCard sector="energy" disabled={disabled} />
+				<SectorFormCard sector="industry" disabled={disabled} />
+				<SectorFormCard sector="transport" disabled={disabled} />
+				<SectorFormCard sector="buildings" disabled={disabled} />
+				<SectorFormCard sector="agriculture" disabled={disabled} />
+				<SectorFormCard sector="waste" disabled={disabled} />
 			</Checkbox.Group>
 		</Stack>
 	);

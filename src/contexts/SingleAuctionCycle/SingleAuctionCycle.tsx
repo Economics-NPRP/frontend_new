@@ -1,7 +1,7 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-import { PropsWithChildren, createContext } from 'react';
+import { useParams, useSearchParams } from 'next/navigation';
+import { PropsWithChildren, createContext, useMemo } from 'react';
 
 import { QueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
@@ -13,8 +13,18 @@ export interface ISingleCycleContext extends ServerContextState<IAuctionCycleDat
 const DefaultData = getDefaultContextState(DefaultAuctionCycleData);
 const Context = createContext<ISingleCycleContext>(DefaultData);
 
-export const SingleCycleProvider = ({ children }: PropsWithChildren) => {
-	const { cycleId } = useParams();
+export interface SingleCycleProviderProps extends PropsWithChildren {
+	idSource?: 'route' | 'searchParams';
+}
+export const SingleCycleProvider = ({ idSource = 'route', children }: SingleCycleProviderProps) => {
+	const params = useParams();
+	const searchParams = useSearchParams();
+
+	const cycleId = useMemo(() => {
+		if (idSource === 'route') return params.cycleId;
+		if (idSource === 'searchParams') return searchParams.get('cycleId');
+		return null;
+	}, [idSource, params, searchParams]);
 
 	return (
 		<QueryProvider
@@ -25,6 +35,7 @@ export const SingleCycleProvider = ({ children }: PropsWithChildren) => {
 				throwError(getSingleCycle(cycleId as string), `getSingleCycle:${cycleId}`)
 			}
 			children={children}
+			disabled={!cycleId}
 		/>
 	);
 };

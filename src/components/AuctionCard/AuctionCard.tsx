@@ -76,8 +76,15 @@ export const AuctionCard = ({
 	return (
 		<Stack className={`${classes.root} ${className}`} {...props}>
 			{auction.cycle && (
-				<Tooltip label={t('components.auctionCard.cycle')} position="top" withArrow>
-					<Container className={classes.ribbon}>
+				<Tooltip
+					label={t(`components.auctionCard.cycle.${auction.cycle.status}`)}
+					position="top"
+					offset={-16}
+					withArrow
+				>
+					<Container
+						className={`${classes.ribbon} ${auction.cycle.status === 'approved' ? classes.ongoing : ''}`}
+					>
 						<IconCalendar size={16} className={classes.icon} />
 					</Container>
 				</Tooltip>

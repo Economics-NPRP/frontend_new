@@ -77,16 +77,25 @@
 
 			> .content {
 				@apply h-[240px];
-				@apply items-stretch justify-center flex-nowrap;
-				@apply p-2 gap-4;
+				@apply items-stretch justify-start flex-nowrap;
+				@apply p-2 gap-2;
 				@apply overflow-x-auto;
 				@apply bg-gray-50 border border-solid border-gray-300;
 
 				> .card {
 					@apply w-60;
 					@apply gap-0 items-stretch;
+					@apply flex-shrink-0;
 					@apply bg-white border border-solid border-gray-300;
 					@apply transition-shadow duration-300;
+
+					&:first-child {
+						@apply ml-auto;
+					}
+
+					&:last-child {
+						@apply mr-auto;
+					}
 
 					> .header {
 						@apply px-4 py-3 gap-2;
@@ -103,6 +112,10 @@
 							> .meta {
 								@apply paragraph-sm-g6 leading-none;
 							}
+						}
+
+						> .button {
+							@apply text-dark-300;
 						}
 					}
 
@@ -140,10 +153,15 @@
 				}
 
 				> .add {
-					@apply w-32;
-					@apply p-4 gap-3;
+					@apply w-40;
+					@apply p-4 mr-auto gap-3;
+					@apply flex-shrink-0;
 					@apply flex flex-col items-center justify-center;
 					@apply transition-colors duration-300;
+
+					&:first-child {
+						@apply ml-auto;
+					}
 
 					background-image: repeating-linear-gradient(
 							0deg,
@@ -209,6 +227,41 @@
 
 						> .icon {
 							@apply bg-gray-50;
+						}
+					}
+				}
+
+				.dropdown {
+					@apply max-h-80;
+					@apply flex flex-col items-stretch;
+
+					> .search input {
+						@apply h-12 px-4;
+					}
+
+					> .options {
+						@apply min-h-0 flex-auto;
+						@apply overflow-y-auto;
+
+						> .row {
+							@apply flex flex-row items-center justify-start;
+							@apply px-3 py-2.5;
+							@apply gap-2 flex-nowrap;
+							@apply border-0 border-b border-solid border-gray-100;
+
+							&:last-child {
+								@apply border-0;
+							}
+
+							> .avatar {
+								@apply size-7;
+								@apply rounded-full;
+								@apply flex items-center justify-center;
+							}
+
+							> .name {
+								@apply paragraph-sm-15;
+							}
 						}
 					}
 				}
@@ -439,6 +492,14 @@
 					> .card {
 						@apply bg-dark-600 border-dark-400;
 
+						> .header > .button {
+							@apply text-dark-50;
+
+							&:hover {
+								@apply bg-dark-400;
+							}
+						}
+
 						> .details {
 							@apply border-dark-400;
 						}
@@ -497,6 +558,10 @@
 								@apply bg-dark-400;
 							}
 						}
+					}
+
+					.dropdown > .options > .row {
+						@apply border-dark-400;
 					}
 				}
 

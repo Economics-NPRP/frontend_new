@@ -6,8 +6,7 @@ import { cache } from 'react';
 import 'server-only';
 
 import { getSession } from '@/lib/auth';
-import { AdminRole } from '@/schema/models/AdminRole';
-import { ICycleAdminData } from '@/schema/models/CycleAdminData';
+import { B2FRoleMap, ICycleAdminData } from '@/schema/models';
 import { ArrayServerData } from '@/types';
 
 const getDefaultData: (...errors: Array<string>) => ArrayServerData<ICycleAdminData> = (
@@ -18,14 +17,6 @@ const getDefaultData: (...errors: Array<string>) => ArrayServerData<ICycleAdminD
 	results: [],
 	resultCount: 0,
 });
-
-const RoleMap: Record<string, AdminRole> = {
-	planner: 'manager',
-	coordinator: 'auctionOperator',
-	permits_allocator: 'permitStrategist',
-	permit_distributor: 'permitStrategist',
-	payment_collector: 'financeOfficer',
-};
 
 type IFunctionSignature = (uuid: string) => Promise<ArrayServerData<ICycleAdminData>>;
 export const getAllCycleAdmins: IFunctionSignature = cache(async (uuid) => {
@@ -58,7 +49,7 @@ export const getAllCycleAdmins: IFunctionSignature = cache(async (uuid) => {
 		//	Map roles from backend names to frontend names
 		const mappedResult = {
 			...result,
-			role: RoleMap[result.role] || result.role,
+			role: B2FRoleMap[result.role] || result.role,
 		};
 
 		acc.push(mappedResult);

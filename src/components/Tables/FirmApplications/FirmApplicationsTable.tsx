@@ -831,7 +831,7 @@ const _FirmApplicationsTable = ({
 									<Group className={classes.cell}>
 										<Tooltip
 											label={t(
-												'components.firmApplicationsTable.columns.actions.review.tooltip',
+												`components.firmApplicationsTable.columns.actions.${record.status === 'pending' ? 'review' : 'resend'}.tooltip`,
 											)}
 											position="top"
 										>
@@ -839,12 +839,11 @@ const _FirmApplicationsTable = ({
 												className={`${classes.primary} ${classes.button}`}
 												onClick={() => invitationModal.open(record)}
 												rightSection={<IconFileSearch size={16} />}
-												disabled={record.status !== 'pending'}
 											>
 												{t(
 													isMobile
-														? 'constants.actions.review.label'
-														: 'components.firmApplicationsTable.actions.review.default',
+														? `constants.actions.${record.status === 'pending' ? 'review' : 'resend'}.label`
+														: `components.firmApplicationsTable.actions.${record.status === 'pending' ? 'review' : 'resend'}.default`,
 												)}
 											</Button>
 										</Tooltip>

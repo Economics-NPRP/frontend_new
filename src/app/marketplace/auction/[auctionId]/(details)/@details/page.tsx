@@ -175,8 +175,7 @@ export default function Details() {
 												}
 												text={
 													auction.data.sector === sector &&
-													//	TODO: add actual number of auctions
-													`+${t('constants.quantities.auctions.default', { value: Math.round(Math.random() * 100) })}`
+													`+${t('constants.quantities.auctions.default', { value: auction.data.cycle!.auctions.filter((auction) => auction.sector === sector).length - 1 })}`
 												}
 											/>
 										))}
