@@ -20,7 +20,7 @@ export const createApplication: IFunctionSignature = cache(async (data) => {
 
 	const querySettings: RequestInit = {
 		method: 'POST',
-		body: JSON.stringify(snakeCase(data)),
+		body: JSON.stringify(snakeCase(data, 5)),
 		headers: {
 			'Content-Type': 'application/json',
 		},

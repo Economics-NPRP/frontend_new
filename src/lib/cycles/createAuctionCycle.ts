@@ -34,7 +34,7 @@ export const createAuctionCycle: IFunctionSignature = cache(async (data) => {
 	if (!cookieHeaders) return getDefaultData(t('lib.notLoggedIn'));
 
 	data.adminAssignments = data.adminAssignments.map((admin) => {
-		const snakeCaseData = snakeCase(admin) as ICreateCycleAdmin;
+		const snakeCaseData = snakeCase(admin, 5) as ICreateCycleAdmin;
 		snakeCaseData.role = F2BRoleMap[admin.role] as AdminRole;
 		return snakeCaseData;
 	});

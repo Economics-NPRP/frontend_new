@@ -144,7 +144,7 @@ export const ReadToCreateAuctionCycleDataTransformer = pipe(
 			(acc, admin) => {
 				const list = acc['manager'] || [];
 				list.push(admin);
-				acc['manager'] = list;
+				acc['manager'] = [...list];
 				return acc;
 			},
 			DefaultCreateAuctionCycleData.adminAssignments as Record<AdminRole, Array<IAdminData>>,

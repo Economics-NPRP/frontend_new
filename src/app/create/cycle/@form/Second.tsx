@@ -17,6 +17,7 @@ import {
 	IReadAdmin,
 } from '@/schema/models';
 import {
+	ActionIcon,
 	Alert,
 	Avatar,
 	Button,
@@ -35,7 +36,7 @@ import {
 	useCombobox,
 } from '@mantine/core';
 import { useListState } from '@mantine/hooks';
-import { IconExclamationCircle, IconMail, IconPhone, IconPlus } from '@tabler/icons-react';
+import { IconExclamationCircle, IconMail, IconPhone, IconPlus, IconX } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -195,7 +196,15 @@ const MemberSelection = ({
 					<Switch.True></Switch.True>
 					<Switch.False>
 						{selected.map((member) => (
-							<MemberCard key={member.id} data={member} />
+							<MemberCard
+								key={member.id}
+								data={member}
+								onRemove={() => {
+									selectedHandlers.remove(
+										selected.findIndex((m) => m.id === member.id),
+									);
+								}}
+							/>
 						))}
 						{selected.length < maxMembers && (
 							<Combobox
@@ -293,8 +302,9 @@ const MemberSelection = ({
 
 interface MemberCardProps {
 	data: ICreateAdmin;
+	onRemove: () => void;
 }
-const MemberCard = ({ data }: MemberCardProps) => {
+const MemberCard = ({ data, onRemove }: MemberCardProps) => {
 	const t = useTranslations();
 
 	return (
@@ -309,6 +319,9 @@ const MemberCard = ({ data }: MemberCardProps) => {
 							.toRelative()}
 					</Text>
 				</Stack>
+				<ActionIcon className={classes.button} variant="subtle" onClick={onRemove}>
+					<IconX size={16} />
+				</ActionIcon>
 			</Group>
 			<Stack className={classes.details}>
 				<Group className={classes.row}>

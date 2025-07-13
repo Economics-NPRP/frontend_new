@@ -23,7 +23,7 @@ export const createAuction: IFunctionSignature = cache(async (data) => {
 	if (!cookieHeaders) return getDefaultData(t('lib.notLoggedIn'));
 	const querySettings: RequestInit = {
 		method: 'POST',
-		body: JSON.stringify(snakeCase(data)),
+		body: JSON.stringify(snakeCase(data, 5)),
 		headers: {
 			'Content-Type': 'application/json',
 			Cookie: cookieHeaders,

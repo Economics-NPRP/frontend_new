@@ -3,7 +3,7 @@
 import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
-import { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect, useLayoutEffect } from 'react';
 import { useContextSelector } from 'use-context-selector';
 import { safeParse } from 'valibot';
 
@@ -132,15 +132,12 @@ export default function CreateAuctionLayout() {
 		[handleFinalStep],
 	);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
+		const cycleId = searchParams.get('cycleId');
 		setTitle(t('create.auction.title'));
-		setReturnHref(
-			searchParams.get('cycleId')
-				? `/dashboard/a/cycles/${searchParams.get('cycleId')}`
-				: '/marketplace',
-		);
+		setReturnHref(cycleId ? `/dashboard/a/cycles/${cycleId}` : '/marketplace');
 		setReturnLabel(
-			searchParams.get('cycleId')
+			cycleId
 				? t('constants.return.cyclePage.label')
 				: t('constants.return.marketplace.label'),
 		);

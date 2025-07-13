@@ -113,6 +113,10 @@
 								@apply paragraph-sm-g6 leading-none;
 							}
 						}
+
+						> .button {
+							@apply text-dark-300;
+						}
 					}
 
 					> .details {
@@ -487,6 +491,14 @@
 
 					> .card {
 						@apply bg-dark-600 border-dark-400;
+
+						> .header > .button {
+							@apply text-dark-50;
+
+							&:hover {
+								@apply bg-dark-400;
+							}
+						}
 
 						> .details {
 							@apply border-dark-400;

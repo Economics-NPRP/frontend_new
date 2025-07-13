@@ -3,7 +3,7 @@
 import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 import { safeParse } from 'valibot';
 
@@ -146,11 +146,15 @@ export default function CreateCycleLayout() {
 		[handleFinalStep],
 	);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
+		const cycleId = searchParams.get('cycleId');
+		if (cycleId) document.title = document.title.replace(/^Create New/, 'Edit');
 		setTitle(t('create.cycle.title'));
-		setReturnHref('/dashboard/a/cycles');
+		setReturnHref(cycleId ? `/dashboard/a/cycles/${cycleId}` : '/dashboard/a/cycles');
 		setReturnLabel(t('constants.return.dashboard.label'));
-		setCompleteLabel(t('create.cycle.complete.label'));
+		setCompleteLabel(
+			cycleId ? t('constants.actions.saveChanges.label') : t('create.cycle.complete.label'),
+		);
 		setSteps([
 			{
 				label: t('create.cycle.first.steps.label'),
@@ -173,7 +177,7 @@ export default function CreateCycleLayout() {
 				description: t('create.cycle.fourth.steps.description'),
 			},
 		]);
-	}, [t]);
+	}, [t, searchParams]);
 
 	//	Load initial values
 	useEffect(() => {
