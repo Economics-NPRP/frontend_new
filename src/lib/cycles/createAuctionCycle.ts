@@ -7,9 +7,12 @@ import 'server-only';
 
 import { getSession } from '@/lib/auth';
 import {
+	AdminRole,
 	DefaultAuctionCycleData,
+	F2BRoleMap,
 	IAuctionCycleData,
 	ICreateAuctionCycleOutput,
+	ICreateCycleAdmin,
 } from '@/schema/models';
 import { ServerData } from '@/types';
 
@@ -29,9 +32,18 @@ export const createAuctionCycle: IFunctionSignature = cache(async (data) => {
 
 	const cookieHeaders = await getSession();
 	if (!cookieHeaders) return getDefaultData(t('lib.notLoggedIn'));
+
+	data.adminAssignments = data.adminAssignments.map((admin) => {
+		const snakeCaseData = snakeCase(admin) as ICreateCycleAdmin;
+		snakeCaseData.role = F2BRoleMap[admin.role] as AdminRole;
+		return snakeCaseData;
+	});
+
+	const payload = snakeCase(data, 5);
+	console.log(payload);
 	const querySettings: RequestInit = {
 		method: 'POST',
-		body: JSON.stringify(snakeCase(data)),
+		body: JSON.stringify(payload),
 		headers: {
 			'Content-Type': 'application/json',
 			Cookie: cookieHeaders,

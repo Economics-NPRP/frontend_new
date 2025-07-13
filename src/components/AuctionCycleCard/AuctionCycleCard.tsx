@@ -188,9 +188,7 @@ export const AuctionCycleCard = ({
 												))}
 											{auctionCycleData.assignedAdmins.length > 3 && (
 												<Avatar className={classes.avatar}>
-													+
-													{auctionCycleData.assignedAdminsCount -
-														auctionCycleData.assignedAdmins.length}
+													+{auctionCycleData.assignedAdminsCount - 3}
 												</Avatar>
 											)}
 										</Switch.False>

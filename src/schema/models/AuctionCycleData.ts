@@ -21,9 +21,11 @@ import {
 
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
 
-import { ReadAdminDataSchema } from './AdminData';
+import { IAdminData, ReadAdminDataSchema } from './AdminData';
+import { AdminRole } from './AdminRole';
 import { AuctionCycleStatusSchema } from './AuctionCycleStatus';
 import { BaseAuctionDataSchema } from './AuctionData';
+import { ICreateCycleAdmin } from './CycleAdminData';
 import { SectorListSchema } from './SectorData';
 
 export const BaseAuctionCycleDataSchema = object({
@@ -33,8 +35,6 @@ export const BaseAuctionCycleDataSchema = object({
 	description: pipe(string(), trim(), nonEmpty()),
 	sectors: SectorListSchema,
 	status: AuctionCycleStatusSchema,
-
-	assignedAdmins: array(ReadAdminDataSchema),
 
 	startDatetime: TimestampSchema(),
 	endDatetime: TimestampSchema(),
@@ -52,6 +52,14 @@ export const CreateAuctionCycleDataSchema = object({
 		'startDatetime',
 		'endDatetime',
 	]).entries,
+
+	adminAssignments: object({
+		manager: array(ReadAdminDataSchema),
+		auctionOperator: array(ReadAdminDataSchema),
+		permitStrategist: array(ReadAdminDataSchema),
+		financeOfficer: array(ReadAdminDataSchema),
+	}),
+
 	dates: pipe(
 		array(pipe(date(), minValue(new Date()))),
 		length(2),
@@ -68,7 +76,23 @@ export const CreateAuctionCycleDataSchemaTransformer = pipe(
 	transform((input) => {
 		const [start, end] = input.dates as [Date, Date];
 		return {
-			...input,
+			..._omit(input, ['dates']),
+
+			adminAssignments: Object.entries(input.adminAssignments).reduce(
+				(acc, [role, admins]) => {
+					const list = admins.map(
+						(admin) =>
+							({
+								adminId: admin.id,
+								role: role as AdminRole,
+							}) as ICreateCycleAdmin,
+					);
+					acc.push(...list);
+					return acc;
+				},
+				[] as Array<ICreateCycleAdmin>,
+			),
+
 			startDatetime: DateTime.fromJSDate(start).toISO(),
 			endDatetime: DateTime.fromJSDate(end).toISO(),
 		};
@@ -76,6 +100,8 @@ export const CreateAuctionCycleDataSchemaTransformer = pipe(
 );
 export const ReadAuctionCycleDataSchema = object({
 	...BaseAuctionCycleDataSchema.entries,
+
+	assignedAdmins: array(ReadAdminDataSchema),
 
 	auctionsCount: PositiveNumberSchema(true),
 	assignedAdminsCount: PositiveNumberSchema(true),
@@ -91,16 +117,18 @@ export const FirstAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchema, [
 	'dates',
 ]);
 export const SectorAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchema, ['sectors']);
-export const SecondAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchema, ['assignedAdmins']);
+export const SecondAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchema, [
+	'adminAssignments',
+]);
 //	TODO: uncomment when backend has kpis
 // export const ThirdAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchema, []);
 
 export const ReadToCreateAuctionCycleDataTransformer = pipe(
-	//	Undo assigned admins omission once backend has roles assigned to admins
-	omit(ReadAuctionCycleDataSchema, ['assignedAdmins']),
+	ReadAuctionCycleDataSchema,
 	transform((input) => ({
 		..._omit(input, [
 			'auctionsCount',
+			'assignedAdmins',
 			'assignedAdminsCount',
 			'emissionsCount',
 			'auctions',
@@ -111,6 +139,16 @@ export const ReadToCreateAuctionCycleDataTransformer = pipe(
 			'createdAt',
 			'updatedAt',
 		]),
+
+		adminAssignments: input.assignedAdmins.reduce(
+			(acc, admin) => {
+				const list = acc['manager'] || [];
+				list.push(admin);
+				acc['manager'] = list;
+				return acc;
+			},
+			DefaultCreateAuctionCycleData.adminAssignments as Record<AdminRole, Array<IAdminData>>,
+		),
 
 		dates: [
 			DateTime.fromISO(input.startDatetime).toJSDate(),
@@ -132,7 +170,6 @@ export const DefaultBaseAuctionCycleData: IBaseAuctionCycleData = {
 	description: '',
 	sectors: [],
 	status: 'draft',
-	assignedAdmins: [],
 	startDatetime: '1970-01-01T00:00:00.000Z',
 	endDatetime: '1970-01-01T00:00:00.000Z',
 	createdAt: '1970-01-01T00:00:00.000Z',
@@ -160,6 +197,11 @@ export const DefaultCreateAuctionCycleData: ICreateAuctionCycle = {
 	title: '',
 	description: '',
 	sectors: [],
-	assignedAdmins: [],
+	adminAssignments: {
+		manager: [],
+		auctionOperator: [],
+		permitStrategist: [],
+		financeOfficer: [],
+	},
 	dates: [new Date(), new Date()],
 };

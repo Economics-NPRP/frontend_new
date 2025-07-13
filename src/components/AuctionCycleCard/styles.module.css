@@ -127,7 +127,6 @@
 							@apply size-7;
 							@apply rounded-full;
 							@apply flex items-center justify-center;
-							@apply bg-gray-50 text-gray-600;
 						}
 
 						> .name {
@@ -389,8 +388,14 @@
 						@apply bg-dark-500;
 					}
 
-					> .team .avatar {
-						@apply border-dark-600;
+					> .team {
+						.avatar {
+							@apply border-dark-600;
+						}
+
+						.dropdown > .row {
+							@apply border-dark-400;
+						}
 					}
 				}
 			}

@@ -2,7 +2,7 @@
 
 import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { BaseBadge } from '@/components/Badge';
@@ -10,7 +10,12 @@ import { Switch } from '@/components/SwitchCase';
 import { PaginatedAdminsContext } from '@/contexts';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { ICreateCycleStepProps } from '@/pages/create/cycle/@form/page';
-import { IAdminData } from '@/schema/models';
+import {
+	AdminRole,
+	DefaultCreateAuctionCycleData,
+	ICreateAdmin,
+	IReadAdmin,
+} from '@/schema/models';
 import {
 	Alert,
 	Avatar,
@@ -34,13 +39,27 @@ import { IconExclamationCircle, IconMail, IconPhone, IconPlus } from '@tabler/ic
 
 import classes from './styles.module.css';
 
-export const SecondStep = ({ disabled }: ICreateCycleStepProps) => {
+export const SecondStep = ({ form, disabled }: ICreateCycleStepProps) => {
 	const t = useTranslations();
+
 	const formError = useContextSelector(CreateLayoutContext, (context) => context.formError);
 	const setFormError = useContextSelector(CreateLayoutContext, (context) => context.setFormError);
 
 	return (
 		<Stack className={`${classes.second} ${classes.root}`}>
+			<input
+				type="hidden"
+				// name="adminAssignments"
+				// key={form.key('adminAssignments')}
+				// {...form.getInputProps('adminAssignments')}
+				// ref={valueRef}
+				// defaultValue={undefined}
+				// value={JSON.stringify(form.getValues().adminAssignments)}
+				// onChange={(event) => {
+				// 	const value = JSON.parse(event.currentTarget.value);
+				// 	form.getInputProps('adminAssignments').onChange(value);
+				// }}
+			/>
 			<Stack className={classes.header}>
 				<Title order={2} className={classes.heading}>
 					{t('create.cycle.second.header.heading')}
@@ -65,25 +84,33 @@ export const SecondStep = ({ disabled }: ICreateCycleStepProps) => {
 			<MemberSelection
 				title={t('constants.adminRoles.manager.title')}
 				description={t('constants.adminRoles.manager.description')}
+				role="manager"
 				maxMembers={1}
+				form={form}
 				disabled={disabled}
 			/>
 			<MemberSelection
 				title={t('constants.adminRoles.operator.title')}
 				description={t('constants.adminRoles.operator.description')}
+				role="auctionOperator"
 				maxMembers={6}
+				form={form}
 				disabled={disabled}
 			/>
 			<MemberSelection
 				title={t('constants.adminRoles.allocator.title')}
 				description={t('constants.adminRoles.allocator.description')}
+				role="permitStrategist"
 				maxMembers={3}
+				form={form}
 				disabled={disabled}
 			/>
 			<MemberSelection
 				title={t('constants.adminRoles.finance.title')}
 				description={t('constants.adminRoles.finance.description')}
+				role="financeOfficer"
 				maxMembers={1}
+				form={form}
 				disabled={disabled}
 			/>
 			<Divider className={classes.divider} />
@@ -94,14 +121,23 @@ export const SecondStep = ({ disabled }: ICreateCycleStepProps) => {
 interface MemberSelectionProps {
 	title: string;
 	description: string;
+	role: AdminRole;
 	maxMembers: number;
+	form: ICreateCycleStepProps['form'];
 	disabled?: boolean;
 }
-const MemberSelection = ({ title, description, maxMembers, disabled }: MemberSelectionProps) => {
+const MemberSelection = ({
+	title,
+	description,
+	role,
+	maxMembers,
+	form,
+	disabled,
+}: MemberSelectionProps) => {
 	const t = useTranslations();
 	const paginatedAdmins = useContext(PaginatedAdminsContext);
 
-	const [selected, selectedHandlers] = useListState<IAdminData>([]);
+	const [selected, selectedHandlers] = useListState<IReadAdmin>([]);
 	const [search, setSearch] = useState('');
 	const combobox = useCombobox({
 		onDropdownClose: () => {
@@ -113,6 +149,12 @@ const MemberSelection = ({ title, description, maxMembers, disabled }: MemberSel
 			combobox.focusSearchInput();
 		},
 	});
+
+	useEffect(() => {
+		const currentValue =
+			form.getValues().adminAssignments || DefaultCreateAuctionCycleData.adminAssignments;
+		selectedHandlers.setState(currentValue[role] || []);
+	}, [form.getValues().adminAssignments]);
 
 	return (
 		<Stack className={classes.section}>
@@ -162,14 +204,22 @@ const MemberSelection = ({ title, description, maxMembers, disabled }: MemberSel
 								width={320}
 								middlewares={{ size: true }}
 								withArrow
-								onOptionSubmit={(adminId) =>
-									selected.filter((admin) => admin.id === adminId).length === 0 &&
-									selectedHandlers.append(
+								onOptionSubmit={(adminId) => {
+									if (selected.find((admin) => admin.id === adminId)) return;
+
+									const newList = [
+										...selected,
 										paginatedAdmins.data.results.find(
 											(admin) => admin.id === adminId,
 										)!,
-									)
-								}
+									];
+									selectedHandlers.setState(newList);
+									form.getInputProps('adminAssignments').onChange({
+										...(form.getValues().adminAssignments ||
+											DefaultCreateAuctionCycleData.adminAssignments),
+										[role]: newList,
+									});
+								}}
 							>
 								<Combobox.Target>
 									<UnstyledButton
@@ -242,7 +292,7 @@ const MemberSelection = ({ title, description, maxMembers, disabled }: MemberSel
 };
 
 interface MemberCardProps {
-	data: IAdminData;
+	data: ICreateAdmin;
 }
 const MemberCard = ({ data }: MemberCardProps) => {
 	const t = useTranslations();

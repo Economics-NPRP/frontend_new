@@ -77,7 +77,7 @@
 
 			> .content {
 				@apply h-[240px];
-				@apply items-stretch justify-center flex-nowrap;
+				@apply items-stretch justify-start flex-nowrap;
 				@apply p-2 gap-2;
 				@apply overflow-x-auto;
 				@apply bg-gray-50 border border-solid border-gray-300;
@@ -85,8 +85,17 @@
 				> .card {
 					@apply w-60;
 					@apply gap-0 items-stretch;
+					@apply flex-shrink-0;
 					@apply bg-white border border-solid border-gray-300;
 					@apply transition-shadow duration-300;
+
+					&:first-child {
+						@apply ml-auto;
+					}
+
+					&:last-child {
+						@apply mr-auto;
+					}
 
 					> .header {
 						@apply px-4 py-3 gap-2;
@@ -141,9 +150,14 @@
 
 				> .add {
 					@apply w-40;
-					@apply p-4 gap-3;
+					@apply p-4 mr-auto gap-3;
+					@apply flex-shrink-0;
 					@apply flex flex-col items-center justify-center;
 					@apply transition-colors duration-300;
+
+					&:first-child {
+						@apply ml-auto;
+					}
 
 					background-image: repeating-linear-gradient(
 							0deg,
@@ -239,7 +253,6 @@
 								@apply size-7;
 								@apply rounded-full;
 								@apply flex items-center justify-center;
-								@apply bg-gray-50 text-gray-600;
 							}
 
 							> .name {
@@ -533,6 +546,10 @@
 								@apply bg-dark-400;
 							}
 						}
+					}
+
+					.dropdown > .options > .row {
+						@apply border-dark-400;
 					}
 				}
 
