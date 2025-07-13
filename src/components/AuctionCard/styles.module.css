@@ -8,13 +8,14 @@
 	@apply transition-shadow duration-500;
 
 	> .ribbon {
-		--f: 8px;
+		--f: 4px;
 
 		@apply absolute;
-		@apply w-32 h-9;
+		@apply w-24 h-9;
 		@apply top-0 right-0;
 		@apply flex items-center justify-center;
-		@apply border-0 border-b-[15px] border-solid border-maroon-800;
+		@apply border-0 border-b-[15px] border-solid;
+		@apply bg-gray-200 border-gray-600;
 		@apply transition-all duration-700;
 		@apply z-20;
 
@@ -29,20 +30,29 @@
 			999px calc(100% - var(--f) - 999px),
 			calc(100% - 999px) calc(100% - var(--f) - 999px)
 		);
-		background: linear-gradient(to right, #8a1538, #f03e3e);
-		background-position-x: 0px;
-		background-size: 150% 100%;
-		background-repeat: no-repeat;
 
 		transform: translate(calc((1 - cos(45deg)) * 100%), -100%) rotate(45deg);
 		transform-origin: 0% 100%;
 
 		> .icon {
-			@apply text-white -rotate-45;
+			@apply text-gray-600 -rotate-45;
+		}
+
+		&.ongoing {
+			@apply border-maroon-800;
+
+			background: linear-gradient(to right, #8a1538, #f03e3e);
+			background-position-x: 0px;
+			background-size: 150% 100%;
+			background-repeat: no-repeat;
+
+			> .icon {
+				@apply text-white;
+			}
 		}
 
 		&:hover {
-			background-position-x: -64px;
+			background-position-x: -48px;
 		}
 	}
 
@@ -228,6 +238,10 @@
 	@mixin dark {
 		.root {
 			@apply border border-solid border-dark-400;
+
+			> .ribbon {
+				@apply bg-dark-400 border-dark-800;
+			}
 
 			> .image > .overlay {
 				@apply opacity-50;

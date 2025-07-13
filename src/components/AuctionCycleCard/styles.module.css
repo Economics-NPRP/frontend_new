@@ -75,6 +75,7 @@
 
 						> .title {
 							@apply heading-2;
+							@apply decoration-transparent;
 						}
 
 						> .subtitle {
