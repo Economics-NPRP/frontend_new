@@ -126,6 +126,17 @@ const MemberSelection = ({
 	const t = useTranslations();
 	const paginatedAdmins = useContext(PaginatedAdminsContext);
 
+	const allSelectedAdmins = useMemo(
+		() =>
+			Object.entries(
+				form.getValues().adminAssignments || DefaultCreateAuctionCycleData.adminAssignments,
+			).reduce((acc, [, admins]) => {
+				acc.push(...admins);
+				return acc;
+			}, [] as Array<IAdminData>),
+		[form.getValues().adminAssignments],
+	);
+
 	const [selected, selectedHandlers] = useListState<IReadAdmin>([]);
 	const [search, setSearch] = useState('');
 	const combobox = useCombobox({
@@ -135,6 +146,7 @@ const MemberSelection = ({
 			setSearch('');
 		},
 		onDropdownOpen: () => {
+			paginatedAdmins.setAllExcludeIds(allSelectedAdmins.map((admin) => admin.id));
 			combobox.focusSearchInput();
 		},
 	});
@@ -158,6 +170,7 @@ const MemberSelection = ({
 							...form.getValues().adminAssignments,
 							[role]: newList,
 						});
+						paginatedAdmins.removeFromExcludeIds(member.id);
 					}}
 				/>
 			)),
@@ -185,13 +198,7 @@ const MemberSelection = ({
 			if (selected.find((admin) => admin.id === adminId)) return;
 
 			//	Make sure the admin isnt already assigned to another role
-			const currentValue = Object.entries(
-				form.getValues().adminAssignments || DefaultCreateAuctionCycleData.adminAssignments,
-			).reduce((acc, [, admins]) => {
-				acc.push(...admins);
-				return acc;
-			}, [] as Array<IAdminData>);
-			if (currentValue.find((admin) => admin.id === adminId)) return;
+			if (allSelectedAdmins.find((admin) => admin.id === adminId)) return;
 
 			const newList = [
 				...selected,
@@ -203,8 +210,15 @@ const MemberSelection = ({
 					DefaultCreateAuctionCycleData.adminAssignments),
 				[role]: newList,
 			});
+			paginatedAdmins.addToExcludeIds(adminId);
 		},
-		[selected, paginatedAdmins.data.results, role, form.getValues().adminAssignments],
+		[
+			selected,
+			paginatedAdmins.data.results,
+			role,
+			form.getValues().adminAssignments,
+			allSelectedAdmins,
+		],
 	);
 
 	return (

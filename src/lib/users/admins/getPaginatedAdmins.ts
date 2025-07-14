@@ -12,6 +12,8 @@ import { IOffsetPagination, OffsetPaginatedData, SortDirection } from '@/types';
 export interface IGetPaginatedAdminsOptions extends IOffsetPagination {
 	sortBy?: string | null;
 	sortDirection?: SortDirection | null;
+
+	excludeIds?: Array<string>;
 }
 
 const getDefaultData: (...errors: Array<string>) => OffsetPaginatedData<IAdminData> = (
@@ -31,7 +33,7 @@ type IFunctionSignature = (
 	options: IGetPaginatedAdminsOptions,
 ) => Promise<OffsetPaginatedData<IAdminData>>;
 export const getPaginatedAdmins: IFunctionSignature = cache(
-	async ({ page, perPage, sortBy, sortDirection }) => {
+	async ({ excludeIds, page, perPage, sortBy, sortDirection }) => {
 		const t = await getTranslations();
 
 		const cookieHeaders = await getSession();
@@ -49,6 +51,7 @@ export const getPaginatedAdmins: IFunctionSignature = cache(
 		if (perPage) queryUrl.searchParams.append('per_page', perPage.toString());
 		if (sortBy) queryUrl.searchParams.append('order_by', sortBy);
 		if (sortDirection) queryUrl.searchParams.append('order_dir', sortDirection);
+		if (excludeIds) excludeIds.map((id) => queryUrl.searchParams.append('exclude_ids', id));
 
 		const response = await fetch(queryUrl, querySettings);
 		const rawData = camelCase(await response.json(), 5) as OffsetPaginatedData<unknown>;
