@@ -8,6 +8,7 @@ import { useContext, useMemo } from 'react';
 import { Switch } from '@/components/SwitchCase';
 import { WithSkeleton } from '@/components/WithSkeleton';
 import { SingleCycleContext } from '@/contexts';
+import { useCycleStatus } from '@/hooks';
 import { DefaultAdminData, IAdminData } from '@/schema/models';
 import { AdminRole } from '@/schema/models/AdminRole';
 import { ActionIcon, Avatar, Button, Group, Menu, Stack, Text, Tooltip } from '@mantine/core';
@@ -25,6 +26,8 @@ import classes from './styles.module.css';
 export const MembersContent = () => {
 	const t = useTranslations();
 	const cycle = useContext(SingleCycleContext);
+
+	const { isUpcoming } = useCycleStatus(cycle.data);
 
 	const groupedAdmins = useMemo(
 		() =>
@@ -69,15 +72,17 @@ export const MembersContent = () => {
 				members={groupedAdmins.financeOfficer}
 				loading={cycle.isLoading}
 			/>
-			<Button
-				variant="outline"
-				component={Link}
-				href={`/create/cycle?cycleId=${cycle.data.id}&step=2`}
-				loading={cycle.isLoading}
-				rightSection={<IconPencil size={16} />}
-			>
-				{t('dashboard.admin.cycles.details.aside.members.edit')}
-			</Button>
+			{isUpcoming && cycle.data.status === 'draft' && (
+				<Button
+					variant="outline"
+					component={Link}
+					href={`/create/cycle?cycleId=${cycle.data.id}&step=2`}
+					loading={cycle.isLoading}
+					rightSection={<IconPencil size={16} />}
+				>
+					{t('dashboard.admin.cycles.details.aside.members.edit')}
+				</Button>
+			)}
 		</Stack>
 	);
 };

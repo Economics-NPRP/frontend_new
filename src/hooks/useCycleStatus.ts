@@ -9,6 +9,21 @@ export const useCycleStatus = (cycle: IAuctionCycleData) => {
 	const t = useTranslations();
 	const intervalFormat = useMatches({ base: DateTime.DATE_SHORT, md: DateTime.DATE_FULL });
 
+	//	TODO: refresh when cycle ends
+	const isUpcoming = useMemo(
+		() => new Date(cycle.startDatetime).getTime() > Date.now(),
+		[cycle.startDatetime],
+	);
+
+	//	TODO: refresh when cycle ends
+	const hasEnded = useMemo(
+		() => new Date(cycle.endDatetime).getTime() < Date.now(),
+		[cycle.endDatetime],
+	);
+
+	//	TODO: refresh when cycle ends
+	const isLive = useMemo(() => !isUpcoming && !hasEnded, [isUpcoming, hasEnded]);
+
 	const duration = useMemo(() => {
 		const start = DateTime.fromISO(cycle.startDatetime);
 		const end = DateTime.fromISO(cycle.endDatetime);
@@ -30,6 +45,9 @@ export const useCycleStatus = (cycle: IAuctionCycleData) => {
 	}, [cycle.startDatetime, cycle.endDatetime, intervalFormat]);
 
 	return {
+		isUpcoming,
+		hasEnded,
+		isLive,
 		duration,
 		interval,
 	};
