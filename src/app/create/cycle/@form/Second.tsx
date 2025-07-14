@@ -13,6 +13,7 @@ import { ICreateCycleStepProps } from '@/pages/create/cycle/@form/page';
 import {
 	AdminRole,
 	DefaultCreateAuctionCycleData,
+	IAdminData,
 	ICreateAdmin,
 	IReadAdmin,
 } from '@/schema/models';
@@ -141,12 +142,12 @@ const MemberSelection = ({
 	useEffect(() => {
 		const currentValue =
 			form.getValues().adminAssignments || DefaultCreateAuctionCycleData.adminAssignments;
-		selectedHandlers.setState(currentValue[role] || []);
+		selectedHandlers.setState([...new Set(currentValue[role] || [])]);
 	}, [form.getValues().adminAssignments]);
 
 	const memberCards = useMemo(
 		() =>
-			selected.map((member) => (
+			[...new Set(selected)].map((member) => (
 				<MemberCard
 					key={member.id}
 					data={member}
@@ -183,6 +184,15 @@ const MemberSelection = ({
 		(adminId: string) => {
 			if (selected.find((admin) => admin.id === adminId)) return;
 
+			//	Make sure the admin isnt already assigned to another role
+			const currentValue = Object.entries(
+				form.getValues().adminAssignments || DefaultCreateAuctionCycleData.adminAssignments,
+			).reduce((acc, [, admins]) => {
+				acc.push(...admins);
+				return acc;
+			}, [] as Array<IAdminData>);
+			if (currentValue.find((admin) => admin.id === adminId)) return;
+
 			const newList = [
 				...selected,
 				paginatedAdmins.data.results.find((admin) => admin.id === adminId)!,
@@ -194,12 +204,7 @@ const MemberSelection = ({
 				[role]: newList,
 			});
 		},
-		[selected, paginatedAdmins.data.results, role],
-	);
-
-	useEffect(
-		() => console.log('selected', selected, form.getValues().adminAssignments),
-		[selected, form.getValues().adminAssignments],
+		[selected, paginatedAdmins.data.results, role, form.getValues().adminAssignments],
 	);
 
 	return (

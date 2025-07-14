@@ -25,7 +25,7 @@ import { IAdminData, ReadAdminDataSchema } from './AdminData';
 import { AdminRole } from './AdminRole';
 import { AuctionCycleStatusSchema } from './AuctionCycleStatus';
 import { BaseAuctionDataSchema } from './AuctionData';
-import { ICreateCycleAdmin } from './CycleAdminData';
+import { ICreateCycleAdmin, ReadCycleAdminDataSchema } from './CycleAdminData';
 import { SectorListSchema } from './SectorData';
 
 export const BaseAuctionCycleDataSchema = object({
@@ -101,7 +101,7 @@ export const CreateAuctionCycleDataSchemaTransformer = pipe(
 export const ReadAuctionCycleDataSchema = object({
 	...BaseAuctionCycleDataSchema.entries,
 
-	assignedAdmins: array(ReadAdminDataSchema),
+	adminAssignments: array(ReadCycleAdminDataSchema),
 
 	auctionsCount: PositiveNumberSchema(true),
 	assignedAdminsCount: PositiveNumberSchema(true),
@@ -128,7 +128,7 @@ export const ReadToCreateAuctionCycleDataTransformer = pipe(
 	transform((input) => ({
 		..._omit(input, [
 			'auctionsCount',
-			'assignedAdmins',
+			'adminAssignments',
 			'assignedAdminsCount',
 			'emissionsCount',
 			'auctions',
@@ -140,14 +140,17 @@ export const ReadToCreateAuctionCycleDataTransformer = pipe(
 			'updatedAt',
 		]),
 
-		adminAssignments: input.assignedAdmins.reduce(
+		adminAssignments: input.adminAssignments.reduce(
 			(acc, admin) => {
-				const list = [...(acc['manager'] || [])];
-				list.push(admin);
-				acc['manager'] = [...list];
+				const list = [...(acc[admin.role] || [])];
+				list.push(admin.admin);
+				acc[admin.role] = [...list];
 				return acc;
 			},
-			DefaultCreateAuctionCycleData.adminAssignments as Record<AdminRole, Array<IAdminData>>,
+			{ ...DefaultCreateAuctionCycleData.adminAssignments } as Record<
+				AdminRole,
+				Array<IAdminData>
+			>,
 		),
 
 		dates: [
@@ -189,7 +192,7 @@ export const DefaultAuctionCycleData: IAuctionCycleData = {
 	endDatetime: '1970-01-01T00:00:00.000Z',
 	createdAt: '1970-01-01T00:00:00.000Z',
 	updatedAt: '1970-01-01T00:00:00.000Z',
-	assignedAdmins: [],
+	adminAssignments: [],
 	auctions: [],
 };
 

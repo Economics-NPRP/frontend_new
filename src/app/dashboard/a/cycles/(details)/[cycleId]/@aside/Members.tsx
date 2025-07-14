@@ -7,7 +7,7 @@ import { useContext, useMemo } from 'react';
 
 import { Switch } from '@/components/SwitchCase';
 import { WithSkeleton } from '@/components/WithSkeleton';
-import { AllCycleAdminsContext, SingleCycleContext } from '@/contexts';
+import { SingleCycleContext } from '@/contexts';
 import { DefaultAdminData, IAdminData } from '@/schema/models';
 import { AdminRole } from '@/schema/models/AdminRole';
 import { ActionIcon, Avatar, Button, Group, Menu, Stack, Text, Tooltip } from '@mantine/core';
@@ -25,14 +25,12 @@ import classes from './styles.module.css';
 export const MembersContent = () => {
 	const t = useTranslations();
 	const cycle = useContext(SingleCycleContext);
-	const allCycleAdmins = useContext(AllCycleAdminsContext);
 
-	//	TODO: just use assignedAdmins from cycle data when available, and remove provider for all cycle admins
 	const groupedAdmins = useMemo(
 		() =>
-			allCycleAdmins.data.results.reduce(
-				(acc, cycleAdmin) => {
-					acc[cycleAdmin.role].push(cycleAdmin.admin);
+			cycle.data.adminAssignments.reduce(
+				(acc, admin) => {
+					acc[admin.role].push(admin.admin);
 					return acc;
 				},
 				{
@@ -42,35 +40,34 @@ export const MembersContent = () => {
 					financeOfficer: [],
 				} as Record<AdminRole, Array<IAdminData>>,
 			),
-		[allCycleAdmins],
+		[cycle.data.adminAssignments],
 	);
 
 	return (
 		<Stack className={`${classes.members} ${classes.content}`}>
 			<MemberSection
-				//	TODO: move role names to different key in en.json (constants.adminRoles)
 				title={t('constants.adminRoles.manager.title')}
 				description={t('constants.adminRoles.manager.description')}
 				members={groupedAdmins.manager}
-				loading={allCycleAdmins.isLoading}
+				loading={cycle.isLoading}
 			/>
 			<MemberSection
 				title={t('constants.adminRoles.operator.title')}
 				description={t('constants.adminRoles.operator.description')}
 				members={groupedAdmins.auctionOperator}
-				loading={allCycleAdmins.isLoading}
+				loading={cycle.isLoading}
 			/>
 			<MemberSection
 				title={t('constants.adminRoles.allocator.title')}
 				description={t('constants.adminRoles.allocator.description')}
 				members={groupedAdmins.permitStrategist}
-				loading={allCycleAdmins.isLoading}
+				loading={cycle.isLoading}
 			/>
 			<MemberSection
 				title={t('constants.adminRoles.finance.title')}
 				description={t('constants.adminRoles.finance.description')}
 				members={groupedAdmins.financeOfficer}
-				loading={allCycleAdmins.isLoading}
+				loading={cycle.isLoading}
 			/>
 			<Button
 				variant="outline"

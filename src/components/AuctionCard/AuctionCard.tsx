@@ -83,7 +83,7 @@ export const AuctionCard = ({
 					withArrow
 				>
 					<Container
-						className={`${classes.ribbon} ${auction.cycle.status === 'approved' ? classes.ongoing : ''}`}
+						className={`${classes.ribbon} ${auction.cycle.status === 'ongoing' ? classes.ongoing : ''}`}
 					>
 						<IconCalendar size={16} className={classes.icon} />
 					</Container>

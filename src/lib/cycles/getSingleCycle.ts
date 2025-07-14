@@ -6,7 +6,7 @@ import { cache } from 'react';
 import 'server-only';
 
 import { getSession } from '@/lib/auth';
-import { DefaultAuctionCycleData, IAuctionCycleData } from '@/schema/models';
+import { B2FRoleMap, DefaultAuctionCycleData, IAuctionCycleData } from '@/schema/models';
 import { ServerData } from '@/types';
 
 const getDefaultData: (...errors: Array<string>) => ServerData<IAuctionCycleData> = (
@@ -34,16 +34,27 @@ export const getSingleCycle: IFunctionSignature = cache(async (uuid) => {
 	const queryUrl = new URL(`/v1/cycles/${uuid}`, process.env.NEXT_PUBLIC_BACKEND_URL);
 
 	const response = await fetch(queryUrl, querySettings);
-	const rawData = camelCase(await response.json(), 5) as ServerData<unknown>;
+	const rawData = camelCase(await response.json(), 5) as ServerData<IAuctionCycleData>;
 
 	//	If theres an issue, return the default data with errors
 	if (!rawData) return getDefaultData(t('lib.noData'));
 	if (rawData.detail) return getDefaultData(rawData.detail ?? '');
 	if (rawData.errors) return getDefaultData(...rawData.errors);
 
+	//	Map roles from backend names to frontend names
+	const mappedResult = {
+		...rawData,
+		adminAssignments: rawData.adminAssignments.map((admin) => {
+			return {
+				...admin,
+				role: B2FRoleMap[admin.role] || admin.role,
+			};
+		}),
+	};
+
 	//	TODO: Validate the data using schema
 	return {
-		...rawData,
+		...mappedResult,
 		ok: true,
 	} as ServerData<IAuctionCycleData>;
 });
