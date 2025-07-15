@@ -39,7 +39,6 @@ import {
 import { useListState, useMediaQuery } from '@mantine/hooks';
 import {
 	IconAdjustments,
-	IconArrowUpRight,
 	IconDownload,
 	IconFileSearch,
 	IconFilterSearch,
@@ -439,7 +438,7 @@ const _AdminsTable = ({
 						accessor: 'name',
 						sortable: true,
 						title: t('components.adminsTable.columns.name'),
-						width: 240,
+						width: 320,
 						ellipsis: true,
 						render: (record) => (
 							<Anchor
@@ -483,38 +482,6 @@ const _AdminsTable = ({
 							DateTime.fromISO(record.createdAt).toLocaleString(
 								DateTime.DATETIME_SHORT,
 							),
-					},
-					{
-						accessor: 'actions',
-						title: t('constants.actions.actions.column'),
-						titleClassName: classes.actions,
-						cellsClassName: classes.actions,
-						render: (record) => (
-							<Group className={classes.cell}>
-								<Tooltip
-									label={t(
-										'components.adminsTable.columns.actions.audit.tooltip',
-									)}
-									position="top"
-								>
-									<ActionIcon className={`${classes.button}`}>
-										<IconFileSearch size={16} />
-									</ActionIcon>
-								</Tooltip>
-								<Button
-									className={`${classes.primary} ${classes.button}`}
-									component={Link}
-									href={`/dashboard/a/admins/${record.id}`}
-									rightSection={<IconArrowUpRight size={16} />}
-								>
-									{t(
-										isMobile
-											? 'constants.view.label'
-											: 'constants.view.details.label',
-									)}
-								</Button>
-							</Group>
-						),
 					},
 				]}
 				records={showSelectedOnly ? selectedAdmins : admins.data.results}

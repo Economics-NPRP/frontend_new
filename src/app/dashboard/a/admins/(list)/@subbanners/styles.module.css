@@ -15,7 +15,6 @@
 	@mixin larger-than $mantine-breakpoint-md {
 		.root {
 			@apply grid-cols-6;
-			@apply gap-4;
 
 			> .stat {
 				@apply col-span-3;

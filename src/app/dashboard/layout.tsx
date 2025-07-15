@@ -6,6 +6,7 @@ import {
 	DashboardAsideProvider,
 } from '@/pages/dashboard/_components/DashboardAside';
 import { DashboardHeader } from '@/pages/dashboard/_components/DashboardHeader';
+import { DashboardSidebar } from '@/pages/dashboard/_components/DashboardSidebar';
 import '@/styles/globals.css';
 import { AppShell, Container, Group } from '@mantine/core';
 
@@ -27,6 +28,7 @@ export default async function DashboardLayout({
 		<AppShell className={classes.root}>
 			<DashboardHeader />
 			<Group className={classes.row}>
+				<DashboardSidebar />
 				<Container className={classes.wrapper}>
 					<Container className={classes.content} component="main">
 						{children}

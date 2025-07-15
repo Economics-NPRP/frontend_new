@@ -3,7 +3,7 @@
 	@apply px-6 py-1;
 	@apply flex-shrink-0 flex-nowrap;
 	@apply items-center;
-	@apply bg-dark-600;
+	@apply bg-dark-600 border-0 border-b border-solid border-dark-400;
 
 	> .logo {
 		@apply mr-auto flex-nowrap;
@@ -52,7 +52,7 @@
 	> .user {
 		@apply h-9;
 		@apply flex flex-row items-center justify-center flex-nowrap;
-		@apply px-3 gap-2 ml-auto;
+		@apply px-2 gap-2 ml-auto;
 		@apply bg-dark-600 text-white;
 		@apply rounded-sm;
 		@apply transition-colors duration-300;
@@ -90,13 +90,17 @@
 	}
 
 	@mixin dark {
-		.root > .search {
-			> .button {
-				@apply text-dark-50;
-			}
+		.root {
+			@apply border-dark-400;
 
-			> .shortcut {
-				@apply text-dark-50;
+			> .search {
+				> .button {
+					@apply text-dark-50;
+				}
+
+				> .shortcut {
+					@apply text-dark-50;
+				}
 			}
 		}
 	}

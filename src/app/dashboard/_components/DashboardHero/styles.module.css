@@ -22,7 +22,7 @@
 			@apply gap-4;
 
 			> .label {
-				@apply mt-4;
+				@apply mt-2;
 				@apply gap-0 items-start;
 
 				> .title {
