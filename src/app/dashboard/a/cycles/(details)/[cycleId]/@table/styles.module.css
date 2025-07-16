@@ -1,4 +1,4 @@
 .table {
 	@apply col-span-full;
-	@apply flex-auto;
+	@apply flex-auto min-h-[80vh];
 }

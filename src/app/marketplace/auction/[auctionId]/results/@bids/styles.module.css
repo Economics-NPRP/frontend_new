@@ -34,7 +34,7 @@
 		@apply self-stretch;
 
 		> .table {
-			@apply h-[80vh];
+			@apply min-h-[80vh];
 		}
 	}
 }

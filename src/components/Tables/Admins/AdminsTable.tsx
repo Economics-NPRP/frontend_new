@@ -489,7 +489,6 @@ const _AdminsTable = ({
 				withRowBorders
 				withColumnBorders
 				highlightOnHover
-				pinLastColumn
 				// sortStatus={sortStatus}
 				// onSortStatusChange={setSortStatus}
 				selectedRecords={selectedAdmins}
