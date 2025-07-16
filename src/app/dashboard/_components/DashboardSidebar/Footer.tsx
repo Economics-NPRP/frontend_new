@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useContext } from 'react';
 
+import { DashboardSidebarContext } from '@/pages/dashboard/_components/DashboardSidebar';
 import { Button, Container, Stack, Text, Tooltip } from '@mantine/core';
 import {
 	IconArrowUpRight,
@@ -19,10 +20,17 @@ import classes from './styles.module.css';
 export const Footer = () => {
 	const t = useTranslations();
 	const myUser = useContext(MyUserProfileContext);
+	const { expanded } = useContext(DashboardSidebarContext);
 
 	return (
 		<Stack className={classes.footer}>
-			<Tooltip label={t('constants.pages.feedback.tooltip')}>
+			<Tooltip
+				label={
+					expanded
+						? t('constants.pages.feedback.tooltip')
+						: t('constants.pages.feedback.title')
+				}
+			>
 				<Button
 					classNames={{
 						root: classes.link,
@@ -38,7 +46,11 @@ export const Footer = () => {
 					{t('constants.pages.feedback.title')}
 				</Button>
 			</Tooltip>
-			<Tooltip label={t('constants.pages.help.tooltip')}>
+			<Tooltip
+				label={
+					expanded ? t('constants.pages.help.tooltip') : t('constants.pages.help.title')
+				}
+			>
 				<Button
 					classNames={{
 						root: classes.link,
@@ -54,7 +66,13 @@ export const Footer = () => {
 					{t('constants.pages.help.title')}
 				</Button>
 			</Tooltip>
-			<Tooltip label={t('constants.pages.settings.tooltip')}>
+			<Tooltip
+				label={
+					expanded
+						? t('constants.pages.settings.tooltip')
+						: t('constants.pages.settings.title')
+				}
+			>
 				<Button
 					classNames={{
 						root: classes.link,
@@ -70,7 +88,13 @@ export const Footer = () => {
 					{t('constants.pages.settings.title')}
 				</Button>
 			</Tooltip>
-			<Tooltip label={t('constants.pages.marketplace.tooltip')}>
+			<Tooltip
+				label={
+					expanded
+						? t('constants.pages.marketplace.tooltip')
+						: t('constants.pages.marketplace.title')
+				}
+			>
 				<Button
 					classNames={{
 						root: `${classes.marketplace} ${classes.link}`,

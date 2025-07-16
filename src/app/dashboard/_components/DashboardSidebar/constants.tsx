@@ -43,20 +43,24 @@ export interface SidebarLinkData {
 }
 export const SidebarLinks: Record<
 	'admin' | 'firm',
-	(t: ReturnType<typeof useTranslations<never>>) => Array<SidebarLinkData>
+	(t: ReturnType<typeof useTranslations<never>>, expanded: boolean) => Array<SidebarLinkData>
 > = {
-	admin: (t) => [
+	admin: (t, expanded) => [
 		{
 			id: 'home',
 			label: t('constants.pages.dashboard.admin.home.title'),
-			tooltip: t('constants.pages.dashboard.admin.home.tooltip'),
+			tooltip: expanded
+				? t('constants.pages.dashboard.admin.home.tooltip')
+				: t('constants.pages.dashboard.admin.home.title'),
 			icon: <IconLayoutGrid size={16} />,
 			href: '/dashboard/a',
 		},
 		{
 			id: 'statistics',
 			label: t('constants.pages.dashboard.admin.statistics.title'),
-			tooltip: t('constants.pages.dashboard.admin.statistics.tooltip'),
+			tooltip: expanded
+				? t('constants.pages.dashboard.admin.statistics.tooltip')
+				: t('constants.pages.dashboard.admin.statistics.title'),
 			icon: <IconChartBar size={16} />,
 			href: '/dashboard/a/statistics',
 		},
@@ -67,28 +71,36 @@ export const SidebarLinks: Record<
 				{
 					id: 'home',
 					label: t('constants.pages.dashboard.admin.cycles.home.title'),
-					tooltip: t('constants.pages.dashboard.admin.cycles.home.tooltip'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.admin.cycles.home.tooltip')
+						: t('constants.pages.dashboard.admin.cycles.home.title'),
 					icon: <IconListDetails size={16} />,
 					href: '/dashboard/a/cycles',
 				},
 				{
 					id: 'auctions',
 					label: t('constants.pages.dashboard.admin.cycles.auctions.title'),
-					tooltip: t('constants.pages.dashboard.admin.cycles.auctions.tooltip'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.admin.cycles.auctions.tooltip')
+						: t('constants.pages.dashboard.admin.cycles.auctions.title'),
 					icon: <IconGavel size={16} />,
 					href: '/dashboard/a/cycles/auctions',
 				},
 				{
 					id: 'sectors',
 					label: t('constants.pages.dashboard.admin.cycles.sectors.title'),
-					tooltip: t('constants.pages.dashboard.admin.cycles.sectors.tooltip'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.admin.cycles.sectors.tooltip')
+						: t('constants.pages.dashboard.admin.cycles.sectors.title'),
 					icon: <IconChartPie size={16} />,
 					href: '/dashboard/a/cycles/sectors',
 				},
 				{
 					id: 'presets',
 					label: t('constants.pages.dashboard.admin.cycles.presets.title'),
-					tooltip: t('constants.pages.dashboard.admin.cycles.presets.tooltip'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.admin.cycles.presets.tooltip')
+						: t('constants.pages.dashboard.admin.cycles.presets.title'),
 					icon: <IconStack3 size={16} />,
 					href: '/dashboard/a/cycles/presets',
 				},
@@ -101,21 +113,27 @@ export const SidebarLinks: Record<
 				{
 					id: 'home',
 					label: t('constants.pages.dashboard.admin.admins.home.title'),
-					tooltip: t('constants.pages.dashboard.admin.admins.home.tooltip'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.admin.admins.home.tooltip')
+						: t('constants.pages.dashboard.admin.admins.home.title'),
 					icon: <IconUsers size={16} />,
 					href: '/dashboard/a/admins',
 				},
 				{
 					id: 'audit',
 					label: t('constants.pages.dashboard.admin.admins.audit.title'),
-					tooltip: t('constants.pages.dashboard.admin.admins.audit.tooltip'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.admin.admins.audit.tooltip')
+						: t('constants.pages.dashboard.admin.admins.audit.title'),
 					icon: <IconUserShield size={16} />,
 					href: '/dashboard/a/admins/audit',
 				},
 				{
 					id: 'roles',
 					label: t('constants.pages.dashboard.admin.admins.roles.title'),
-					tooltip: t('constants.pages.dashboard.admin.admins.roles.tooltip'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.admin.admins.roles.tooltip')
+						: t('constants.pages.dashboard.admin.admins.roles.title'),
 					icon: <IconUserCircle size={16} />,
 					href: '/dashboard/a/admins/roles',
 				},
@@ -128,21 +146,27 @@ export const SidebarLinks: Record<
 				{
 					id: 'home',
 					label: t('constants.pages.dashboard.admin.firms.home.title'),
-					tooltip: t('constants.pages.dashboard.admin.firms.home.tooltip'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.admin.firms.home.tooltip')
+						: t('constants.pages.dashboard.admin.firms.home.title'),
 					icon: <IconBuildingSkyscraper size={16} />,
 					href: '/dashboard/a/firms',
 				},
 				{
 					id: 'applications',
 					label: t('constants.pages.dashboard.admin.firms.applications.title'),
-					tooltip: t('constants.pages.dashboard.admin.firms.applications.tooltip'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.admin.firms.applications.tooltip')
+						: t('constants.pages.dashboard.admin.firms.applications.title'),
 					icon: <IconFileSearch size={16} />,
 					href: '/dashboard/a/firms/applications',
 				},
 				{
 					id: 'audit',
 					label: t('constants.pages.dashboard.admin.firms.audit.title'),
-					tooltip: t('constants.pages.dashboard.admin.firms.audit.tooltip'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.admin.firms.audit.tooltip')
+						: t('constants.pages.dashboard.admin.firms.audit.title'),
 					icon: <IconUserSearch size={16} />,
 					href: '/dashboard/a/firms/audit',
 				},
@@ -150,7 +174,9 @@ export const SidebarLinks: Record<
 					id: 'payments',
 					label: t('constants.pages.dashboard.admin.firms.payments.title'),
 					icon: <IconCreditCard size={16} />,
-					tooltip: t('constants.pages.dashboard.admin.firms.payments.tooltip'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.admin.firms.payments.tooltip')
+						: t('constants.pages.dashboard.admin.firms.payments.title'),
 					href: '/dashboard/a/firms/payments',
 				},
 			],
