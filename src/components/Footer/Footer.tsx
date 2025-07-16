@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useMemo } from 'react';
 
 import { ActionIcon, Anchor, BoxProps, Divider, Group, Stack, Text } from '@mantine/core';
-import { IconBox, IconBrandLinkedin, IconBrandX } from '@tabler/icons-react';
+import { IconBox, IconBrandLinkedinFilled, IconBrandX } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -108,7 +108,7 @@ export const Footer = ({ className, ...props }: FooterProps) => {
 						component={Link}
 						href="linkedin.com"
 					>
-						<IconBrandLinkedin size={16} />
+						<IconBrandLinkedinFilled size={16} />
 					</ActionIcon>
 					<ActionIcon
 						className={classes.button}
