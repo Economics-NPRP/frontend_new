@@ -629,6 +629,10 @@
               "tooltip": "View and manage admin roles"
             },
             "description": "View and manage all administrators who help operate the carbon trading platform. This includes their roles, permissions, and activity."
+          },
+          "statistics": {
+            "title": "Statistics",
+            "tooltip": "View all statistics in one page"
           }
         }
       },
@@ -643,6 +647,10 @@
       "marketplace": {
         "tooltip": "Click here to go to the carbon trading marketplace",
         "title": "Marketplace"
+      },
+      "settings": {
+        "title": "Settings",
+        "tooltip": "Manage your settings on this platform"
       }
     },
     "firmStatus": {

@@ -5,6 +5,7 @@ import { ReactNode, createContext } from 'react';
 
 import {
 	IconBuildingSkyscraper,
+	IconChartBar,
 	IconChartPie,
 	IconCreditCard,
 	IconFileSearch,
@@ -51,6 +52,13 @@ export const SidebarLinks: Record<
 			tooltip: t('constants.pages.dashboard.admin.home.tooltip'),
 			icon: <IconLayoutGrid size={16} />,
 			href: '/dashboard/a',
+		},
+		{
+			id: 'statistics',
+			label: t('constants.pages.dashboard.admin.statistics.title'),
+			tooltip: t('constants.pages.dashboard.admin.statistics.tooltip'),
+			icon: <IconChartBar size={16} />,
+			href: '/dashboard/a/statistics',
 		},
 		{
 			id: 'cycles',

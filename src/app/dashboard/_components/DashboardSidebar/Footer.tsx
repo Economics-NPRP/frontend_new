@@ -1,15 +1,24 @@
 'use client';
 
+import { MyUserProfileContext } from 'contexts/MyUserProfile';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useContext } from 'react';
 
 import { Button, Container, Stack, Text, Tooltip } from '@mantine/core';
-import { IconArrowUpRight, IconBuildingStore, IconHelp, IconMessage } from '@tabler/icons-react';
+import {
+	IconArrowUpRight,
+	IconBuildingStore,
+	IconHelp,
+	IconMessage,
+	IconSettings,
+} from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
 export const Footer = () => {
 	const t = useTranslations();
+	const myUser = useContext(MyUserProfileContext);
 
 	return (
 		<Stack className={classes.footer}>
@@ -43,6 +52,22 @@ export const Footer = () => {
 					leftSection={<IconHelp size={16} />}
 				>
 					{t('constants.pages.help.title')}
+				</Button>
+			</Tooltip>
+			<Tooltip label={t('constants.pages.settings.tooltip')}>
+				<Button
+					classNames={{
+						root: classes.link,
+						inner: classes.inner,
+						section: classes.section,
+						label: classes.label,
+					}}
+					component={Link}
+					href={`/dashboard/${myUser.data.type === 'admin' ? 'a' : 'f'}/settings`}
+					variant="subtle"
+					leftSection={<IconSettings size={16} />}
+				>
+					{t('constants.pages.settings.title')}
 				</Button>
 			</Tooltip>
 			<Tooltip label={t('constants.pages.marketplace.tooltip')}>

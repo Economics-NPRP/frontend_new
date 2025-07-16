@@ -39,6 +39,7 @@ import {
 	IconLayoutGrid,
 	IconLeaf,
 	IconLogout,
+	IconMessage,
 	IconSettings,
 } from '@tabler/icons-react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -245,16 +246,29 @@ export const UserProfile = ({ variant, className, ...props }: UserProfileProps) 
 				</MenuItem>
 
 				<MenuDivider />
-				<MenuItem component={Link} href="" leftSection={<IconHelp size={16} />} disabled>
-					{t('components.header.user.helpCenter')}
+				<MenuItem
+					component={Link}
+					href="/feedback"
+					leftSection={<IconMessage size={16} />}
+					disabled
+				>
+					{t('constants.pages.feedback.title')}
 				</MenuItem>
 				<MenuItem
 					component={Link}
-					href=""
+					href="/help"
+					leftSection={<IconHelp size={16} />}
+					disabled
+				>
+					{t('constants.pages.help.title')}
+				</MenuItem>
+				<MenuItem
+					component={Link}
+					href={`/dashboard/${myUser.data.type === 'admin' ? 'a' : 'f'}/settings`}
 					leftSection={<IconSettings size={16} />}
 					disabled
 				>
-					{t('components.header.user.settings')}
+					{t('constants.pages.settings.title')}
 				</MenuItem>
 				<MenuItem onClick={handleLogout} leftSection={<IconLogout size={16} />}>
 					{t('components.header.user.logout.label')}
