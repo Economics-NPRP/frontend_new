@@ -13,7 +13,7 @@
 			@apply overflow-y-auto;
 			@apply flex-auto;
 			@apply flex flex-col items-center;
-			@apply px-2 py-4;
+			@apply px-2 py-4 gap-16;
 
 			> .content {
 				@apply flex-auto;

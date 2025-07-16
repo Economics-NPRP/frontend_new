@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 
+import { Footer } from '@/components/Footer';
 import { withProviders } from '@/helpers';
 import {
 	DashboardAside,
@@ -33,6 +34,7 @@ export default async function DashboardLayout({
 					<Container className={classes.content} component="main">
 						{children}
 					</Container>
+					<Footer />
 				</Container>
 				<DashboardAside />
 			</Group>

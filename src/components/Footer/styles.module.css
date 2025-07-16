@@ -1,18 +1,18 @@
 .root {
 	@apply w-full;
-	@apply px-16 py-6 gap-6;
+	@apply px-8 py-4 gap-6;
 	@apply items-stretch justify-center;
 	@apply bg-dark-600 border border-solid border-dark-400;
 	@apply rounded-sm;
 
 	> .content {
-		@apply py-8 gap-16;
-		@apply items-start justify-center;
+		@apply py-4 gap-8;
+		@apply flex-col items-center justify-center flex-nowrap;
 
 		> .main {
 			@apply flex-auto;
 			@apply gap-2;
-			@apply items-start justify-start;
+			@apply items-center justify-start;
 
 			> .logo {
 				@apply flex items-center justify-center;
@@ -34,13 +34,8 @@
 		}
 
 		> .column {
-			@apply w-[120px];
 			@apply gap-2;
-			@apply items-start justify-start;
-
-			&.wide {
-				@apply w-[240px];
-			}
+			@apply items-center justify-start;
 
 			> .title {
 				@apply display-sm-sb-w;
@@ -48,11 +43,11 @@
 			}
 
 			.text {
-				@apply paragraph-sm-w text-left;
+				@apply paragraph-sm-w text-center;
 			}
 
 			.link {
-				@apply paragraph-sm-w text-left;
+				@apply paragraph-sm-w text-center;
 				@apply underline underline-offset-4 decoration-1 decoration-dashed decoration-gray-600;
 			}
 
@@ -72,8 +67,8 @@
 	}
 
 	> .footer {
-		@apply items-center justify-between;
-		@apply gap-8;
+		@apply flex-col items-center justify-start flex-nowrap;
+		@apply gap-2;
 
 		> .copyright {
 			@apply paragraph-sm-w;
@@ -95,6 +90,54 @@
 }
 
 * {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			@apply px-12 py-6 gap-6;
+
+			> .footer {
+				@apply flex-row justify-between gap-8;
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+			@apply px-16;
+
+			> .content {
+				@apply grid grid-cols-2;
+				@apply py-8 gap-12;
+				@apply items-start;
+
+				> .main,
+				> .column {
+					@apply items-start justify-start;
+				}
+
+				> .main {
+					@apply flex-auto;
+				}
+
+				> .column > .text,
+				> .column > .link {
+					@apply text-left;
+				}
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root > .content {
+			@apply flex flex-row gap-16;
+
+			> .column {
+				@apply w-[120px];
+
+				&.wide {
+					@apply w-[240px];
+				}
+			}
+		}
+	}
+
 	@mixin dark {
 		.root {
 			> .content {

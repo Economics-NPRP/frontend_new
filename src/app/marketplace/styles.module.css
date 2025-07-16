@@ -1,7 +1,7 @@
 .root {
 	@apply w-screen;
 	@apply flex flex-col items-center;
-	@apply px-2 pb-8 pt-20 gap-8;
+	@apply px-2 pb-8 pt-20 gap-16;
 
 	> .content,
 	> .footer {

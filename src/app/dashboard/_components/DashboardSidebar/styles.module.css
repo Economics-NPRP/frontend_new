@@ -1,6 +1,6 @@
 .root {
 	@apply min-h-0;
-	@apply p-4 gap-2;
+	@apply p-2 gap-2;
 	@apply flex-shrink-0;
 	@apply overflow-y-auto;
 	@apply bg-white border-0 border-r border-solid border-gray-300;
@@ -214,6 +214,12 @@
 }
 
 * {
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+			@apply p-4;
+		}
+	}
+
 	@mixin dark {
 		.root {
 			@apply bg-dark-600 border-dark-400;
