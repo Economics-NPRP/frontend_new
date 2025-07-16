@@ -537,6 +537,9 @@
 			"sectors": {
 				"default": "{value, number} {value, plural, =0 {Sectors} =1 {Sector} other {Sectors}}",
 				"decimals": "{value, number, ::.00} {value, plural, =0 {Sectors} =1 {Sector} other {Sectors}}"
+			},
+			"subsectors": {
+				"default": "{value, number} {value, plural, =0 {Subsectors} =1 {Subsector} other {Subsectors}}"
 			}
 		},
 		"pagination": {
