@@ -169,7 +169,7 @@ export const AuctionCyclesTable = ({
 							className={classes.dropdown}
 							w={80}
 							value={auctionCycles.perPage.toString()}
-							data={['10', '20', '50', '100']}
+							data={['5', '10', '20', '50']}
 							onChange={(value) => auctionCycles.setPerPage(Number(value))}
 							allowDeselect={false}
 						/>

@@ -1,7 +1,7 @@
 .root {
 	@apply w-full;
 	@apply px-8 py-4 gap-6;
-	@apply items-stretch justify-center;
+	@apply items-stretch justify-center flex-shrink-0;
 	@apply bg-dark-600 border border-solid border-dark-400;
 	@apply rounded-sm;
 

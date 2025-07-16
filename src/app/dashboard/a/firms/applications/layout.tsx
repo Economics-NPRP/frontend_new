@@ -6,7 +6,6 @@ import { PaginatedFirmApplicationsProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
 import { InvitationModalProvider } from '@/pages/dashboard/a/firms/_components/InvitationModal';
-import layoutClasses from '@/pages/dashboard/styles.module.css';
 import { Stack } from '@mantine/core';
 
 import classes from './styles.module.css';
@@ -22,7 +21,7 @@ export default function FirmApplicationsList({ table }: FirmApplicationsListProp
 	const t = useTranslations();
 
 	return withProviders(
-		<Stack className={`${classes.root} ${layoutClasses.noscroll}`}>
+		<Stack className={classes.root}>
 			<DashboardHero
 				returnButton={{
 					href: '/dashboard/a/firms',

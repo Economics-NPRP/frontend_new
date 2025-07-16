@@ -5,7 +5,6 @@ import { ReactNode } from 'react';
 import { PaginatedAuctionsProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
-import layoutClasses from '@/pages/dashboard/styles.module.css';
 import { Stack } from '@mantine/core';
 
 import classes from './styles.module.css';
@@ -21,7 +20,7 @@ export default function AllAuctionsList({ table }: AllAuctionsListProps) {
 	const t = useTranslations();
 
 	return withProviders(
-		<Stack className={`${classes.root} ${layoutClasses.noscroll}`}>
+		<Stack className={classes.root}>
 			<DashboardHero
 				returnButton={{
 					href: '/dashboard/a/cycles',
