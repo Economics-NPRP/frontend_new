@@ -9,10 +9,9 @@
 }
 
 * {
-	@mixin larger-than $mantine-breakpoint-md {
+	@mixin larger-than $mantine-breakpoint-lg {
 		.root {
 			@apply grid-cols-2;
-			@apply gap-4;
 
 			> .banner {
 				@apply col-span-1;
@@ -20,7 +19,7 @@
 		}
 	}
 
-	@mixin larger-than $mantine-breakpoint-xl {
+	@mixin larger-than $mantine-breakpoint-3xl {
 		.root {
 			@apply grid-cols-4;
 		}

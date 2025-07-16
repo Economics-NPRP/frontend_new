@@ -13,7 +13,7 @@
 			@apply overflow-y-auto;
 			@apply flex-auto;
 			@apply flex flex-col items-center;
-			@apply px-2 pb-4 pt-20;
+			@apply px-2 py-4 gap-16;
 
 			> .content {
 				@apply flex-auto;
@@ -26,7 +26,7 @@
 * {
 	@mixin larger-than $mantine-breakpoint-sm {
 		.root > .row > .wrapper {
-			@apply px-4 pb-8 pt-24;
+			@apply p-4;
 
 			> .content:has(.noscroll) {
 				height: calc(100vh - 8rem);

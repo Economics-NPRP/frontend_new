@@ -21,7 +21,7 @@ export default function Hero() {
 	const cycle = useContext(SingleCycleContext);
 	const { openDrawer } = useContext(CycleDetailsPageContext);
 
-	const { duration, interval } = useCycleStatus(cycle.data);
+	const { isUpcoming, duration, interval } = useCycleStatus(cycle.data);
 
 	return (
 		<DashboardHero
@@ -71,19 +71,21 @@ export default function Hero() {
 			}
 			actions={
 				<>
-					<Tooltip
-						label={t('dashboard.admin.cycles.details.actions.edit.tooltip')}
-						position="top"
-					>
-						<ActionIcon
-							className={classes.button}
-							variant="outline"
-							component={Link}
-							href={`/create/cycle?cycleId=${cycle.data.id}`}
+					{isUpcoming && cycle.data.status === 'draft' && (
+						<Tooltip
+							label={t('dashboard.admin.cycles.details.actions.edit.tooltip')}
+							position="top"
 						>
-							<IconPencil size={16} />
-						</ActionIcon>
-					</Tooltip>
+							<ActionIcon
+								className={classes.button}
+								variant="outline"
+								component={Link}
+								href={`/create/cycle?cycleId=${cycle.data.id}`}
+							>
+								<IconPencil size={16} />
+							</ActionIcon>
+						</Tooltip>
+					)}
 					<Tooltip
 						label={t('dashboard.admin.cycles.details.actions.members.tooltip')}
 						position="top"

@@ -1,4 +1,3 @@
 .table {
-	@apply flex-auto min-h-0;
-	@apply h-[80vh];
+	@apply flex-auto min-h-[80vh];
 }

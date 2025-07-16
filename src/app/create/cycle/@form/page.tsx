@@ -162,6 +162,7 @@ export default function CreateCycleLayout() {
 
 	//	Load initial values
 	useEffect(() => {
+		if (activeStep >= 5) return;
 		if (!searchParams.get('cycleId')) return;
 
 		setIsFormSubmitting(true);

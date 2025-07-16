@@ -4,9 +4,10 @@ import { SingleCycleContext } from 'contexts/SingleAuctionCycle';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 
 import { ActionBanner } from '@/components/ActionBanner';
+import { useCycleStatus } from '@/hooks';
 import { ApprovalModalContext } from '@/pages/dashboard/a/cycles/(details)/[cycleId]/_components/ApprovalModal';
 import { Container } from '@mantine/core';
 import {
@@ -24,6 +25,15 @@ export default function SubBanners() {
 	const { open } = useContext(ApprovalModalContext);
 	const singleAuctionCycle = useContext(SingleCycleContext);
 
+	const { isUpcoming } = useCycleStatus(singleAuctionCycle.data);
+
+	const disabled = useMemo(
+		() =>
+			!isUpcoming ||
+			(singleAuctionCycle.isSuccess && singleAuctionCycle.data.status !== 'draft'),
+		[isUpcoming, singleAuctionCycle.isSuccess, singleAuctionCycle.data.status],
+	);
+
 	return (
 		<Container className={classes.root}>
 			{/* TODO: disable actions based on current role once implemented */}
@@ -35,6 +45,7 @@ export default function SubBanners() {
 				component={Link}
 				href={`/create/auction?cycleId=${cycleId}`}
 				index={3}
+				disabled={disabled}
 			/>
 			<ActionBanner
 				className={classes.banner}
@@ -44,6 +55,7 @@ export default function SubBanners() {
 				component={Link}
 				href={`/dashboard/a/cycles/permits/${cycleId}`}
 				index={4}
+				disabled={disabled}
 			/>
 			<ActionBanner
 				className={classes.banner}
@@ -53,6 +65,7 @@ export default function SubBanners() {
 				component={Link}
 				href={`/create/cycle?id=${cycleId}`}
 				index={2}
+				disabled={disabled}
 			/>
 			<ActionBanner
 				className={classes.banner}
@@ -61,7 +74,7 @@ export default function SubBanners() {
 				subheading={t('dashboard.admin.cycles.details.actions.approve.subheading')}
 				index={1}
 				onClick={open}
-				disabled={singleAuctionCycle.data.status !== 'draft'}
+				disabled={disabled}
 			/>
 		</Container>
 	);

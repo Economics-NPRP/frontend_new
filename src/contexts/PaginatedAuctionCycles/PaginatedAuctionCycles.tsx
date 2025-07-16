@@ -24,7 +24,7 @@ export interface IPaginatedAuctionCyclesContext
 const DefaultData = {
 	...getDefaultSortedOffsetPaginatedContextState<IAuctionCycleData>(
 		1,
-		20,
+		10,
 		'start_datetime',
 		'desc',
 	),

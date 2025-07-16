@@ -1,12 +1,8 @@
 .root {
 	@apply min-w-[100vw] flex-[0_0_50%] p-2;
 
-	> .body {
-		@apply h-full;
-
-		> .table {
-			@apply h-full;
-		}
+	> .body > .table {
+		@apply h-full min-h-[90vh];
 	}
 }
 

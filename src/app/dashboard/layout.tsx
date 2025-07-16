@@ -1,11 +1,13 @@
 import { Metadata } from 'next';
 
-import { AdminDashboardHeader } from '@/components/Header';
+import { Footer } from '@/components/Footer';
 import { withProviders } from '@/helpers';
 import {
 	DashboardAside,
 	DashboardAsideProvider,
 } from '@/pages/dashboard/_components/DashboardAside';
+import { DashboardHeader } from '@/pages/dashboard/_components/DashboardHeader';
+import { DashboardSidebar } from '@/pages/dashboard/_components/DashboardSidebar';
 import '@/styles/globals.css';
 import { AppShell, Container, Group } from '@mantine/core';
 
@@ -25,12 +27,14 @@ export default async function DashboardLayout({
 }>) {
 	return withProviders(
 		<AppShell className={classes.root}>
-			<AdminDashboardHeader />
+			<DashboardHeader />
 			<Group className={classes.row}>
+				<DashboardSidebar />
 				<Container className={classes.wrapper}>
 					<Container className={classes.content} component="main">
 						{children}
 					</Container>
+					<Footer />
 				</Container>
 				<DashboardAside />
 			</Group>

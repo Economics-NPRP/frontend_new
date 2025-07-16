@@ -232,7 +232,6 @@
 				}
 
 				.dropdown {
-					@apply max-h-80;
 					@apply flex flex-col items-stretch;
 
 					> .search input {
@@ -240,8 +239,8 @@
 					}
 
 					> .options {
-						@apply min-h-0 flex-auto;
-						@apply overflow-y-auto;
+						@apply min-h-0 max-h-80;
+						@apply flex-auto overflow-y-auto;
 
 						> .row {
 							@apply flex flex-row items-center justify-start;

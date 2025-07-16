@@ -4,10 +4,11 @@ import { DateTime } from 'luxon';
 import { DataTable } from 'mantine-datatable';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { SummaryTableGroup } from '@/components/SummaryTable';
 import { AdminsFilter } from '@/components/Tables/Admins/types';
+import { TablePagination } from '@/components/Tables/_components/Pagination';
 import {
 	SelectionSummaryContext,
 	SelectionSummaryProvider,
@@ -25,7 +26,6 @@ import {
 	Group,
 	Input,
 	Menu,
-	Pagination,
 	Pill,
 	Radio,
 	Select,
@@ -39,7 +39,6 @@ import {
 import { useListState, useMediaQuery } from '@mantine/hooks';
 import {
 	IconAdjustments,
-	IconArrowUpRight,
 	IconDownload,
 	IconFileSearch,
 	IconFilterSearch,
@@ -250,15 +249,6 @@ const _AdminsTable = ({
 		[t],
 	);
 
-	const handleChangePage = useCallback(
-		(page: number) => {
-			if (!admins || !tableContainerRef.current) return;
-			admins.setPage(page);
-			tableContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
-		},
-		[admins, tableContainerRef],
-	);
-
 	//	Reset the page when the bids filter or per page changes
 	useEffect(() => admins.setPage(1), [roleFilter, admins.perPage]);
 
@@ -431,6 +421,11 @@ const _AdminsTable = ({
 					{t('components.table.selected.info.message')}
 				</Alert>
 			)}
+			<Group className={classes.footer}>
+				{admins.isSuccess && !showSelectedOnly && (
+					<TablePagination context={admins} tableContainerRef={tableContainerRef} />
+				)}
+			</Group>
 			{/* @ts-expect-error - data table props from library are not exposed */}
 			<DataTable
 				className={classes.table}
@@ -439,7 +434,7 @@ const _AdminsTable = ({
 						accessor: 'name',
 						sortable: true,
 						title: t('components.adminsTable.columns.name'),
-						width: 240,
+						width: 320,
 						ellipsis: true,
 						render: (record) => (
 							<Anchor
@@ -484,45 +479,12 @@ const _AdminsTable = ({
 								DateTime.DATETIME_SHORT,
 							),
 					},
-					{
-						accessor: 'actions',
-						title: t('constants.actions.actions.column'),
-						titleClassName: classes.actions,
-						cellsClassName: classes.actions,
-						render: (record) => (
-							<Group className={classes.cell}>
-								<Tooltip
-									label={t(
-										'components.adminsTable.columns.actions.audit.tooltip',
-									)}
-									position="top"
-								>
-									<ActionIcon className={`${classes.button}`}>
-										<IconFileSearch size={16} />
-									</ActionIcon>
-								</Tooltip>
-								<Button
-									className={`${classes.primary} ${classes.button}`}
-									component={Link}
-									href={`/dashboard/a/admins/${record.id}`}
-									rightSection={<IconArrowUpRight size={16} />}
-								>
-									{t(
-										isMobile
-											? 'constants.view.label'
-											: 'constants.view.details.label',
-									)}
-								</Button>
-							</Group>
-						),
-					},
 				]}
 				records={showSelectedOnly ? selectedAdmins : admins.data.results}
 				striped
 				withRowBorders
 				withColumnBorders
 				highlightOnHover
-				pinLastColumn
 				// sortStatus={sortStatus}
 				// onSortStatusChange={setSortStatus}
 				selectedRecords={selectedAdmins}
@@ -537,14 +499,7 @@ const _AdminsTable = ({
 			/>
 			<Group className={classes.footer}>
 				{admins.isSuccess && !showSelectedOnly && (
-					<Pagination
-						className={classes.pagination}
-						value={admins.page}
-						total={admins.data.pageCount}
-						siblings={2}
-						boundaries={3}
-						onChange={handleChangePage}
-					/>
+					<TablePagination context={admins} tableContainerRef={tableContainerRef} />
 				)}
 			</Group>
 		</Stack>

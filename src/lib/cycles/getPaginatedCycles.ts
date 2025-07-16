@@ -6,7 +6,7 @@ import { cache } from 'react';
 import 'server-only';
 
 import { getSession } from '@/lib/auth';
-import { AuctionCycleStatus, IAuctionCycleData } from '@/schema/models';
+import { AuctionCycleStatus, B2FRoleMap, IAuctionCycleData } from '@/schema/models';
 import { IOffsetPagination, OffsetPaginatedData, SortDirection } from '@/types';
 
 export interface IGetPaginatedCyclesOptions extends IOffsetPagination {
@@ -54,7 +54,10 @@ export const getPaginatedCycles: IFunctionSignature = cache(
 		if (status) queryUrl.searchParams.append('status', status);
 
 		const response = await fetch(queryUrl, querySettings);
-		const rawData = camelCase(await response.json(), 5) as OffsetPaginatedData<unknown>;
+		const rawData = camelCase(
+			await response.json(),
+			5,
+		) as OffsetPaginatedData<IAuctionCycleData>;
 
 		//	If theres an issue, return the default data with errors
 		if (!rawData) return getDefaultData(t('lib.noData'));
@@ -64,7 +67,18 @@ export const getPaginatedCycles: IFunctionSignature = cache(
 		//	Parse results using schema and collect issues
 		const errors: Array<string> = [];
 		const results = rawData.results.reduce<Array<IAuctionCycleData>>((acc, result) => {
-			acc.push(result as IAuctionCycleData);
+			//	Map roles from backend names to frontend names
+			const mappedResult = {
+				...result,
+				adminAssignments: result.adminAssignments.map((admin) => {
+					return {
+						...admin,
+						role: B2FRoleMap[admin.role] || admin.role,
+					};
+				}),
+			};
+
+			acc.push(mappedResult);
 			return acc;
 		}, []);
 

@@ -1,11 +1,7 @@
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
-import {
-	AllCycleAdminsProvider,
-	PaginatedAuctionsInCycleProvider,
-	SingleCycleProvider,
-} from '@/contexts';
+import { PaginatedAuctionsInCycleProvider, SingleCycleProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { getSingleCycle } from '@/lib/cycles';
 import { ApprovalModalProvider } from '@/pages/dashboard/a/cycles/(details)/[cycleId]/_components/ApprovalModal';
@@ -64,7 +60,6 @@ export default function CycleDetails({
 			{aside}
 		</>,
 		{ provider: PageProvider },
-		{ provider: AllCycleAdminsProvider },
 		{ provider: SingleCycleProvider },
 		{
 			provider: PaginatedAuctionsInCycleProvider,

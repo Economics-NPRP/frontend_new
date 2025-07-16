@@ -179,17 +179,17 @@ export const AuctionCycleCard = ({
 											/>
 										</Switch.True>
 										<Switch.False>
-											{auctionCycleData.assignedAdmins
+											{auctionCycleData.adminAssignments
 												.slice(0, 3)
 												.map((admin) => (
 													<Avatar
-														key={admin.id}
+														key={admin.adminId}
 														className={classes.avatar}
 														color="initials"
-														name={admin.name}
+														name={admin.admin.name}
 													/>
 												))}
-											{auctionCycleData.assignedAdmins.length > 3 && (
+											{auctionCycleData.adminAssignments.length > 3 && (
 												<Avatar className={classes.avatar}>
 													+{auctionCycleData.assignedAdminsCount - 3}
 												</Avatar>
@@ -199,19 +199,19 @@ export const AuctionCycleCard = ({
 								</Avatar.Group>
 							</HoverCard.Target>
 							<HoverCard.Dropdown className={classes.dropdown}>
-								{auctionCycleData.assignedAdmins.map((admin) => (
-									<Group key={admin.id} className={classes.row}>
+								{auctionCycleData.adminAssignments.map((admin) => (
+									<Group key={admin.adminId} className={classes.row}>
 										<Avatar
 											className={classes.avatar}
 											color="initials"
-											name={admin.name}
+											name={admin.admin.name}
 											size="sm"
 										/>
 										<Anchor
 											className={classes.name}
-											href={`/dashboard/a/admins/${admin.id}`}
+											href={`/dashboard/a/admins/${admin.adminId}`}
 										>
-											{admin.name}
+											{admin.admin.name}
 										</Anchor>
 									</Group>
 								))}

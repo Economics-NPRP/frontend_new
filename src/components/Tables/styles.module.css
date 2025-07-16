@@ -117,7 +117,7 @@
 		}
 
 		.placeholder {
-			@apply h-[90%];
+			@apply flex-auto;
 			@apply items-center justify-center;
 
 			> .icon {
@@ -133,7 +133,7 @@
 
 	> .table {
 		@apply relative;
-		@apply flex-1 gap-0 overflow-y-auto;
+		@apply flex flex-col flex-1 gap-0;
 
 		tr {
 			td {
@@ -235,7 +235,7 @@
 
 	> .list {
 		@apply relative;
-		@apply flex-1 overflow-y-auto;
+		@apply flex-1;
 	}
 
 	> .footer {
@@ -259,7 +259,7 @@
 	}
 
 	.legend {
-		@apply gap-4;
+		@apply gap-4 items-center justify-center;
 
 		> .cell {
 			@apply gap-2;

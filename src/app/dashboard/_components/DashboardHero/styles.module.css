@@ -1,6 +1,11 @@
 .root {
 	> .navigation {
-		@apply gap-4;
+		@apply gap-4 flex-nowrap;
+
+		> .button {
+			@apply size-8;
+			@apply border-gray-400;
+		}
 
 		> .breadcrumbs {
 			> a {
@@ -22,7 +27,6 @@
 			@apply gap-4;
 
 			> .label {
-				@apply mt-4;
 				@apply gap-0 items-start;
 
 				> .title {
@@ -59,17 +63,17 @@
 			}
 
 			> .button {
-				@apply bg-dark-400 text-white;
+				@apply bg-dark-700 text-white border-dark-400;
 
 				&:hover {
-					@apply bg-dark-300;
+					@apply bg-dark-600;
 				}
 
 				&:disabled {
 					@apply opacity-25;
 
 					&:hover {
-						@apply bg-dark-400;
+						@apply bg-dark-700;
 					}
 				}
 			}

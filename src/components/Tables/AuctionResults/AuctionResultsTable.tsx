@@ -2,10 +2,11 @@
 
 import { createFormatter, useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
+import { useContext, useEffect, useMemo, useRef } from 'react';
 
 import { CurrencyBadge } from '@/components/Badge';
 import { Switch } from '@/components/SwitchCase';
+import { TablePagination } from '@/components/Tables/_components/Pagination';
 import { IPaginatedOpenAuctionResultsContext, ISingleAuctionContext } from '@/contexts';
 import { MyUserProfileContext } from '@/contexts';
 import { useOffsetPaginationText } from '@/hooks';
@@ -18,7 +19,6 @@ import {
 	Divider,
 	Group,
 	Loader,
-	Pagination,
 	Select,
 	Stack,
 	Table,
@@ -67,14 +67,6 @@ export const ResultsTable = ({
 
 	//	Reset page when perPage changes
 	useEffect(() => paginatedOpenAuctionResults.setPage(1), [paginatedOpenAuctionResults.perPage]);
-
-	const handleChangePage = useCallback(
-		(newPage: number) => {
-			tableContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
-			paginatedOpenAuctionResults.setPage(newPage);
-		},
-		[paginatedOpenAuctionResults],
-	);
 
 	const currentState = useMemo(() => {
 		if (!tableData && (paginatedOpenAuctionResults.isLoading || auction.isLoading))
@@ -132,6 +124,14 @@ export const ResultsTable = ({
 					</Group>
 				</Group>
 			</Stack>
+			<Group className={classes.footer}>
+				{paginatedOpenAuctionResults.isSuccess && (
+					<TablePagination
+						context={paginatedOpenAuctionResults}
+						tableContainerRef={tableContainerRef}
+					/>
+				)}
+			</Group>
 			<Container className={classes.table} ref={tableContainerRef}>
 				<Table highlightOnHover withColumnBorders stickyHeader {...props}>
 					<Table.Thead>
@@ -179,13 +179,9 @@ export const ResultsTable = ({
 			</Container>
 			<Group className={classes.footer}>
 				{paginatedOpenAuctionResults.isSuccess && (
-					<Pagination
-						className={classes.pagination}
-						value={paginatedOpenAuctionResults.page}
-						total={paginatedOpenAuctionResults.data.pageCount}
-						siblings={2}
-						boundaries={3}
-						onChange={handleChangePage}
+					<TablePagination
+						context={paginatedOpenAuctionResults}
+						tableContainerRef={tableContainerRef}
 					/>
 				)}
 			</Group>

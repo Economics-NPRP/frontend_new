@@ -1,0 +1,163 @@
+.root {
+	@apply w-full;
+	@apply px-8 py-4 gap-6;
+	@apply items-stretch justify-center flex-shrink-0;
+	@apply bg-dark-600 border border-solid border-dark-400;
+	@apply rounded-sm;
+
+	> .content {
+		@apply py-4 gap-8;
+		@apply flex-col items-center justify-center flex-nowrap;
+
+		> .main {
+			@apply flex-auto;
+			@apply gap-2;
+			@apply items-center justify-start;
+
+			> .logo {
+				@apply flex items-center justify-center;
+				@apply gap-2;
+
+				> .icon {
+					@apply text-white;
+				}
+
+				> .title {
+					@apply heading-3-w leading-none;
+					@apply !text-white;
+				}
+			}
+
+			> .slogan {
+				@apply paragraph-sm-w;
+			}
+		}
+
+		> .column {
+			@apply gap-2;
+			@apply items-center justify-start;
+
+			> .title {
+				@apply display-sm-sb-w;
+				@apply !text-white;
+			}
+
+			.text {
+				@apply paragraph-sm-w text-center;
+			}
+
+			.link {
+				@apply paragraph-sm-w text-center;
+				@apply underline underline-offset-4 decoration-1 decoration-dashed decoration-gray-600;
+			}
+
+			> .row {
+				@apply items-baseline justify-start;
+				@apply gap-1;
+
+				> .link {
+					@apply text-blue-600 decoration-blue-600;
+				}
+			}
+		}
+	}
+
+	> .divider {
+		@apply border-dark-400;
+	}
+
+	> .footer {
+		@apply flex-col items-center justify-start flex-nowrap;
+		@apply gap-2;
+
+		> .copyright {
+			@apply paragraph-sm-w text-center;
+		}
+
+		> .socials {
+			@apply gap-1;
+
+			> .button {
+				@apply size-7;
+				@apply text-white;
+
+				&:hover {
+					@apply bg-dark-500;
+				}
+			}
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			@apply px-12 py-6 gap-6;
+
+			> .footer {
+				@apply flex-row justify-between gap-8;
+
+				> .copyright {
+					@apply text-left;
+				}
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+			@apply px-16;
+
+			> .content {
+				@apply grid grid-cols-2;
+				@apply py-8 gap-12;
+				@apply items-start;
+
+				> .main,
+				> .column {
+					@apply items-start justify-start;
+				}
+
+				> .main {
+					@apply flex-auto;
+				}
+
+				> .column > .text,
+				> .column > .link {
+					@apply text-left;
+				}
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root > .content {
+			@apply flex flex-row gap-16;
+
+			> .column {
+				@apply w-[120px];
+
+				&.wide {
+					@apply w-[240px];
+				}
+			}
+		}
+	}
+
+	@mixin dark {
+		.root {
+			> .content {
+				> .main > .slogan {
+					@apply !text-dark-50;
+				}
+
+				> .column .text,
+				> .column .link {
+					@apply !text-dark-50;
+				}
+			}
+
+			> .footer > .copyright {
+				@apply !text-dark-50;
+			}
+		}
+	}
+}

@@ -2,7 +2,8 @@ import { PaginatedAuctionsContext } from 'contexts/PaginatedAuctions';
 import { useContext, useMemo } from 'react';
 
 import { AuctionCard } from '@/components/AuctionCard';
-import { Container, Pagination } from '@mantine/core';
+import { TablePagination } from '@/components/Tables/_components/Pagination';
+import { Container } from '@mantine/core';
 
 import classes from './styles.module.css';
 
@@ -20,14 +21,7 @@ export const List = () => {
 	const pagination = useMemo(
 		() =>
 			paginatedAuctions.data.pageCount > 1 && (
-				<Pagination
-					className={classes.pagination}
-					value={paginatedAuctions.data.page}
-					total={paginatedAuctions.data.pageCount}
-					siblings={2}
-					boundaries={3}
-					onChange={paginatedAuctions.setPage}
-				/>
+				<TablePagination className={classes.pagination} context={paginatedAuctions} />
 			),
 		[paginatedAuctions.data.page, paginatedAuctions.data.pageCount, paginatedAuctions.setPage],
 	);

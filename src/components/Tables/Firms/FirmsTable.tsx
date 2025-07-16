@@ -4,11 +4,12 @@ import { DateTime } from 'luxon';
 import { DataTable } from 'mantine-datatable';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { SectorBadge } from '@/components/Badge';
 import { SummaryTableGroup } from '@/components/SummaryTable';
 import { FirmsFilter } from '@/components/Tables/Firms/types';
+import { TablePagination } from '@/components/Tables/_components/Pagination';
 import {
 	SelectionSummaryContext,
 	SelectionSummaryProvider,
@@ -31,7 +32,6 @@ import {
 	HoverCard,
 	Input,
 	Menu,
-	Pagination,
 	Pill,
 	Select,
 	Stack,
@@ -283,15 +283,6 @@ const _FirmsTable = ({
 		[t],
 	);
 
-	const handleChangePage = useCallback(
-		(page: number) => {
-			if (!firms || !tableContainerRef.current) return;
-			firms.setPage(page);
-			tableContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
-		},
-		[firms, tableContainerRef],
-	);
-
 	//	Reset the page when the bids filter or per page changes
 	useEffect(() => firms.setPage(1), [statusFilter, sectorFilter, firms.perPage]);
 
@@ -480,6 +471,11 @@ const _FirmsTable = ({
 					{t('components.table.selected.info.message')}
 				</Alert>
 			)}
+			<Group className={classes.footer}>
+				{firms.isSuccess && !showSelectedOnly && (
+					<TablePagination context={firms} tableContainerRef={tableContainerRef} />
+				)}
+			</Group>
 			{/* @ts-expect-error - data table props from library are not exposed */}
 			<DataTable
 				className={classes.table}
@@ -793,14 +789,7 @@ const _FirmsTable = ({
 			/>
 			<Group className={classes.footer}>
 				{firms.isSuccess && !showSelectedOnly && (
-					<Pagination
-						className={classes.pagination}
-						value={firms.page}
-						total={firms.data.pageCount}
-						siblings={2}
-						boundaries={3}
-						onChange={handleChangePage}
-					/>
+					<TablePagination context={firms} tableContainerRef={tableContainerRef} />
 				)}
 			</Group>
 		</Stack>

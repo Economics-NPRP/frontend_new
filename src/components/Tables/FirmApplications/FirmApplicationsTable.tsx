@@ -554,6 +554,28 @@ const _FirmApplicationsTable = ({
 					{t('components.table.selected.info.message')}
 				</Alert>
 			)}
+			<Group className={classes.footer}>
+				{firmApplications.isSuccess && !showSelectedOnly && (
+					<Group className={classes.pagination}>
+						<ActionIcon
+							className={classes.button}
+							variant="outline"
+							disabled={!firmApplications.data.hasPrev}
+							onClick={handlePrevPage}
+						>
+							<IconChevronLeft size={16} />
+						</ActionIcon>
+						<ActionIcon
+							className={classes.button}
+							variant="outline"
+							disabled={!firmApplications.data.hasNext}
+							onClick={handleNextPage}
+						>
+							<IconChevronRight size={16} />
+						</ActionIcon>
+					</Group>
+				)}
+			</Group>
 			{/* @ts-expect-error - data table props from library are not exposed */}
 			<DataTable
 				className={classes.table}
