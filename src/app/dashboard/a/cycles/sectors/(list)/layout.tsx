@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 
 import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
 import { Stack } from '@mantine/core';
+import { IconChartPie } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -20,6 +21,7 @@ export default function SectorsList({ grid }: SectorsListProps) {
 	return (
 		<Stack className={classes.root}>
 			<DashboardHero
+				icon={<IconChartPie size={24} />}
 				title={t('constants.pages.dashboard.admin.cycles.sectors.title')}
 				description={t('constants.pages.dashboard.admin.cycles.sectors.description')}
 				returnButton={{

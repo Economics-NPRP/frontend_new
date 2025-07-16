@@ -26,15 +26,27 @@
 		> .content {
 			@apply gap-4;
 
-			> .label {
-				@apply gap-0 items-start;
+			> .wrapper {
+				@apply flex-col flex-nowrap items-start;
+				@apply gap-2;
 
-				> .title {
-					@apply heading-1;
+				> .icon {
+					@apply size-14;
+					@apply flex items-center justify-center flex-shrink-0;
+					@apply bg-gray-50 border border-solid border-gray-300 text-dark-300;
+					@apply rounded-sm;
 				}
 
-				> .description {
-					@apply paragraph-md text-justify;
+				> .label {
+					@apply gap-0.5 items-start;
+
+					> .title {
+						@apply heading-1 leading-none;
+					}
+
+					> .description {
+						@apply paragraph-md text-justify;
+					}
 				}
 			}
 
@@ -51,8 +63,15 @@
 
 * {
 	@mixin larger-than $mantine-breakpoint-sm {
-		.root > .navigation {
-			@apply gap-6;
+		.root {
+			> .navigation {
+				@apply gap-6;
+			}
+
+			> .row > .content > .wrapper {
+				@apply flex-row;
+				@apply gap-4;
+			}
 		}
 	}
 

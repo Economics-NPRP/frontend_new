@@ -5,10 +5,10 @@ import { ReactNode, createContext } from 'react';
 
 import {
 	IconBuildingSkyscraper,
+	IconCalendar,
 	IconChartBar,
 	IconChartPie,
 	IconCreditCard,
-	IconFileSearch,
 	IconGavel,
 	IconLayoutGrid,
 	IconListDetails,
@@ -74,7 +74,7 @@ export const SidebarLinks: Record<
 					tooltip: expanded
 						? t('constants.pages.dashboard.admin.cycles.home.tooltip')
 						: t('constants.pages.dashboard.admin.cycles.home.title'),
-					icon: <IconListDetails size={16} />,
+					icon: <IconCalendar size={16} />,
 					href: '/dashboard/a/cycles',
 				},
 				{
@@ -158,7 +158,7 @@ export const SidebarLinks: Record<
 					tooltip: expanded
 						? t('constants.pages.dashboard.admin.firms.applications.tooltip')
 						: t('constants.pages.dashboard.admin.firms.applications.title'),
-					icon: <IconFileSearch size={16} />,
+					icon: <IconListDetails size={16} />,
 					href: '/dashboard/a/firms/applications',
 				},
 				{
