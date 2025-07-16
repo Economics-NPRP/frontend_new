@@ -259,7 +259,7 @@
 	}
 
 	.legend {
-		@apply gap-4;
+		@apply gap-4 items-center justify-center;
 
 		> .cell {
 			@apply gap-2;

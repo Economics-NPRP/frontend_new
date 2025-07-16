@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 import { DataTable } from 'mantine-datatable';
 import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import {
 	AuctionStatusBadge,
@@ -13,6 +13,7 @@ import {
 	SectorBadge,
 } from '@/components/Badge';
 import { SummaryTableGroup } from '@/components/SummaryTable';
+import { TablePagination } from '@/components/Tables/_components/Pagination';
 import {
 	SelectionSummaryContext,
 	SelectionSummaryProvider,
@@ -32,7 +33,6 @@ import {
 	Group,
 	Input,
 	Menu,
-	Pagination,
 	Pill,
 	Radio,
 	Select,
@@ -632,14 +632,6 @@ const _AuctionsTable = ({
 		[t, format],
 	);
 
-	const handleChangePage = useCallback(
-		(newPage: number) => {
-			tableContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
-			auctions.setPage(newPage);
-		},
-		[auctions],
-	);
-
 	//	Reset the page when the filter or per page changes
 	useEffect(() => auctions.setPage(1), [auctions.filters, auctions.perPage]);
 
@@ -910,6 +902,11 @@ const _AuctionsTable = ({
 					{t('components.table.selected.info.message')}
 				</Alert>
 			)}
+			<Group className={classes.footer}>
+				{auctions.isSuccess && !showSelectedOnly && (
+					<TablePagination context={auctions} tableContainerRef={tableContainerRef} />
+				)}
+			</Group>
 			{/* @ts-expect-error - data table props from library are not exposed */}
 			<DataTable
 				className={classes.table}
@@ -1297,14 +1294,7 @@ const _AuctionsTable = ({
 			/>
 			<Group className={classes.footer}>
 				{auctions.isSuccess && !showSelectedOnly && (
-					<Pagination
-						className={classes.pagination}
-						value={auctions.page}
-						total={auctions.data.pageCount}
-						siblings={2}
-						boundaries={3}
-						onChange={handleChangePage}
-					/>
+					<TablePagination context={auctions} tableContainerRef={tableContainerRef} />
 				)}
 			</Group>
 		</Stack>

@@ -88,6 +88,7 @@
 		@apply flex flex-row items-center justify-center;
 		@apply flex-shrink-0;
 		@apply text-dark-300;
+		@apply transition-colors duration-300;
 
 		&:hover {
 			@apply bg-gray-100;

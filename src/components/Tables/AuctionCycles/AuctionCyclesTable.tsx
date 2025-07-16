@@ -1,11 +1,12 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { AuctionCycleCard } from '@/components/AuctionCycleCard';
 import { Switch } from '@/components/SwitchCase';
 import { AuctionCycleStatusFilter } from '@/components/Tables/AuctionCycles/types';
+import { TablePagination } from '@/components/Tables/_components/Pagination';
 import { IPaginatedAuctionCyclesContext } from '@/contexts';
 import { useOffsetPaginationText } from '@/hooks';
 import { DefaultAuctionCycleData } from '@/schema/models';
@@ -15,7 +16,6 @@ import {
 	Group,
 	Input,
 	Menu,
-	Pagination,
 	Pill,
 	Radio,
 	Select,
@@ -108,15 +108,6 @@ export const AuctionCyclesTable = ({
 			);
 		return output;
 	}, [auctionCycles, t]);
-
-	const handleChangePage = useCallback(
-		(page: number) => {
-			if (!auctionCycles || !tableContainerRef.current) return;
-			auctionCycles.setPage(page);
-			tableContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
-		},
-		[auctionCycles, tableContainerRef],
-	);
 
 	//	Reset the page when the filter or per page changes
 	useEffect(() => auctionCycles.setPage(1), [auctionCycles.status, auctionCycles.perPage]);
@@ -253,6 +244,14 @@ export const AuctionCyclesTable = ({
 					/>
 				</Group>
 			</Stack>
+			<Group className={classes.footer}>
+				{auctionCycles.isSuccess && (
+					<TablePagination
+						context={auctionCycles}
+						tableContainerRef={tableContainerRef}
+					/>
+				)}
+			</Group>
 			<Stack className={classes.list} ref={tableContainerRef}>
 				<Switch value={currentState}>
 					<Switch.Loading>
@@ -279,13 +278,9 @@ export const AuctionCyclesTable = ({
 			</Stack>
 			<Group className={classes.footer}>
 				{auctionCycles.isSuccess && (
-					<Pagination
-						className={classes.pagination}
-						value={auctionCycles.page}
-						total={auctionCycles.data.pageCount}
-						siblings={2}
-						boundaries={3}
-						onChange={handleChangePage}
+					<TablePagination
+						context={auctionCycles}
+						tableContainerRef={tableContainerRef}
 					/>
 				)}
 			</Group>

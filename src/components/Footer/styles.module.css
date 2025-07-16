@@ -71,7 +71,7 @@
 		@apply gap-2;
 
 		> .copyright {
-			@apply paragraph-sm-w;
+			@apply paragraph-sm-w text-center;
 		}
 
 		> .socials {
@@ -96,6 +96,10 @@
 
 			> .footer {
 				@apply flex-row justify-between gap-8;
+
+				> .copyright {
+					@apply text-left;
+				}
 			}
 		}
 	}
