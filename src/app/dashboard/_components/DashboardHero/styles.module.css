@@ -22,7 +22,6 @@
 			@apply gap-4;
 
 			> .label {
-				@apply mt-2;
 				@apply gap-0 items-start;
 
 				> .title {
@@ -49,6 +48,16 @@
 	@mixin larger-than $mantine-breakpoint-sm {
 		.root > .navigation {
 			@apply gap-6;
+		}
+	}
+
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+			@apply gap-4;
+
+			> .row > .content > .label {
+				@apply mt-2;
+			}
 		}
 	}
 

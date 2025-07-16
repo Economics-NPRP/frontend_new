@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 
+import { Footer } from '@/components/Footer';
 import { MarketplaceHeader } from '@/components/Header';
 import '@/styles/globals.css';
 import { AppShell, Container } from '@mantine/core';
@@ -24,6 +25,7 @@ export default async function MarketplaceLayout({
 			<Container className={classes.content} component="main">
 				{children}
 			</Container>
+			<Footer className={classes.footer} />
 		</AppShell>
 	);
 }
