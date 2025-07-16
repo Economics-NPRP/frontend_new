@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 
 import { SidebarLinks } from '@/pages/dashboard/_components/DashboardSidebar';
-import { Accordion, Button } from '@mantine/core';
+import { Button, Divider, Stack } from '@mantine/core';
 
 import classes from './styles.module.css';
 
@@ -35,49 +35,37 @@ export const Links = () => {
 					{label}
 				</Button>
 			) : (
-				<Accordion.Item value={id} key={id} className={classes.item}>
-					<Accordion.Control
+				<>
+					<Divider
+						key={`${id}-divider`}
+						label={label}
 						classNames={{
-							// control: `${classes.link} ${subHrefs?.map(({ href }) => href).includes(pathname) ? classes.active : ''}`,
-							control: classes.link,
-							chevron: classes.chevron,
-							icon: classes.icon,
+							root: classes.divider,
 							label: classes.label,
 						}}
-						variant="subtle"
-						icon={icon}
-					>
-						{label}
-					</Accordion.Control>
-					<Accordion.Panel
-						classNames={{ panel: classes.panel, content: classes.content }}
-					>
-						{subHrefs &&
-							subHrefs.map(({ id, label, href }) => (
-								<Button
-									classNames={{
-										root: `${classes.sublink} ${pathname === href ? classes.active : ''}`,
-										inner: classes.inner,
-										section: classes.section,
-										label: classes.label,
-									}}
-									component={Link}
-									href={href}
-									variant="subtle"
-									key={id}
-								>
-									{label}
-								</Button>
-							))}
-					</Accordion.Panel>
-				</Accordion.Item>
+					/>
+					{subHrefs &&
+						subHrefs.map(({ id: subId, label, href, icon }) => (
+							<Button
+								classNames={{
+									root: `${classes.link} ${pathname === href ? classes.active : ''}`,
+									inner: classes.inner,
+									section: classes.section,
+									label: classes.label,
+								}}
+								key={`${id}.${subId}`}
+								component={Link}
+								href={href}
+								variant="subtle"
+								leftSection={icon}
+							>
+								{label}
+							</Button>
+						))}
+				</>
 			),
 		);
 	}, [pathname, t]);
 
-	return (
-		<Accordion className={classes.links} variant="filled" multiple>
-			{links}
-		</Accordion>
-	);
+	return <Stack className={classes.links}>{links}</Stack>;
 };

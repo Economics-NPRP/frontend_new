@@ -29,6 +29,7 @@ export const DashboardSidebar = () => {
 				<Header />
 				<Divider className={classes.divider} />
 				<Links />
+				<Divider className={classes.divider} />
 				<Footer />
 			</Stack>
 		</DashboardSidebarContext.Provider>

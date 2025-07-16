@@ -1,10 +1,16 @@
 .root {
+	@apply min-h-0;
 	@apply p-4 gap-2;
 	@apply flex-shrink-0;
+	@apply overflow-y-auto;
 	@apply bg-white border-0 border-r border-solid border-gray-300;
 
 	&.expanded {
-		@apply w-[360px];
+		@apply w-[340px];
+
+		.divider {
+			@apply border-gray-200;
+		}
 
 		> .header {
 			@apply flex-row items-center;
@@ -21,26 +27,40 @@
 
 		.link {
 			@apply size-[unset];
-			@apply px-4 py-2 gap-3;
+			@apply px-3 py-2 gap-2;
 			@apply justify-start;
 
-			.label,
-			.chevron {
+			.label {
 				@apply flex;
 			}
 		}
 
 		> .links {
-			@apply pt-4;
+			@apply pt-2 pb-6;
 
-			.item .panel {
+			> .divider {
+				@apply py-2;
+				@apply border-0;
+
+				.label {
+					@apply flex;
+				}
+			}
+		}
+
+		> .footer {
+			> .link.marketplace {
+				@apply flex;
+			}
+
+			> .card {
 				@apply flex;
 			}
 		}
 	}
 
 	.divider {
-		@apply border-gray-200;
+		@apply border-gray-300;
 	}
 
 	> .header {
@@ -66,14 +86,11 @@
 	.link {
 		@apply size-8 p-0;
 		@apply flex flex-row items-center justify-center;
+		@apply flex-shrink-0;
 		@apply text-dark-300;
 
 		&:hover {
 			@apply bg-gray-100;
-		}
-
-		&:has(.chevron) {
-			@apply flex-row-reverse;
 		}
 
 		&.active {
@@ -96,10 +113,6 @@
 			@apply display-sm-sb-d3;
 		}
 
-		.chevron {
-			@apply hidden;
-		}
-
 		.icon,
 		.section {
 			@apply m-0 flex-shrink-0;
@@ -107,63 +120,96 @@
 	}
 
 	> .links {
+		@apply min-h-0;
 		@apply flex-auto flex-shrink-0;
 		@apply gap-1;
 		@apply flex flex-col items-stretch justify-start;
 
-		.item {
-			@apply flex flex-col items-stretch justify-start;
+		> .link.marketplace {
+			@apply hidden;
+		}
 
-			&[data-active='true'] {
-				@apply bg-transparent;
-			}
+		> .divider {
+			@apply py-1;
+			@apply border-t border-solid border-gray-200;
 
-			.panel {
+			.label {
 				@apply hidden;
-				@apply items-stretch;
+				@apply display-xs-13-g6 uppercase;
 
-				> .content {
-					@apply w-full;
-					@apply flex flex-col items-stretch justify-start;
-					@apply p-0 pt-1 gap-1;
+				&::before,
+				&::after {
+					@apply border-gray-200;
+				}
 
-					.sublink {
-						@apply px-4 pl-6 py-1;
-
-						&:hover {
-							@apply bg-gray-100;
-						}
-
-						&.active {
-							@apply bg-dark-600 text-white;
-
-							.label {
-								@apply !text-white;
-							}
-						}
-
-						.inner {
-							@apply flex flex-row items-center justify-start;
-						}
-
-						.label {
-							@apply flex-auto;
-							@apply p-0;
-							@apply paragraph-sm-g6;
-						}
-
-						.section {
-							@apply m-0 flex-shrink-0;
-						}
-					}
+				&::before {
+					@apply flex-[unset] w-4;
 				}
 			}
 		}
 	}
 
 	> .footer {
+		@apply min-h-0;
 		@apply gap-1;
-		@apply items-stretch justify-end;
+		@apply items-stretch justify-end flex-shrink-0;
+
+		> .card {
+			@apply hidden;
+			@apply relative;
+			@apply gap-0 mt-1;
+			@apply items-stretch justify-center;
+			@apply flex-shrink-0;
+			@apply transition-shadow duration-300;
+
+			> .gradient {
+				@apply w-full h-20;
+
+				background: conic-gradient(
+					from 0deg at 50% 125.83%,
+					hsl(340, 80%, 60%) 0deg,
+					hsl(345, 85%, 70%) 20deg,
+					hsl(355, 90%, 80%) 40deg,
+					hsl(10, 100%, 85%) 60deg,
+					hsl(0, 0%, 100%) 100deg,
+					hsl(325, 70%, 80%) 180deg,
+					hsl(340, 80%, 40%) 240deg,
+					hsl(325, 70%, 65%) 300deg,
+					hsl(340, 80%, 60%) 360deg
+				);
+			}
+
+			> .content {
+				@apply bg-white;
+				@apply p-4 pt-8 gap-1;
+				@apply border border-t-0 border-solid border-gray-300;
+
+				> .icon {
+					@apply absolute top-14 left-[50%] -translate-x-1/2;
+					@apply size-10;
+					@apply flex items-center justify-center;
+					@apply bg-dark-600 text-white;
+					@apply rounded-sm;
+				}
+
+				> .title {
+					@apply display-md text-center;
+				}
+
+				> .description {
+					@apply mx-4;
+					@apply paragraph-sm text-center;
+				}
+
+				> .button {
+					@apply mt-5;
+				}
+			}
+
+			&:hover {
+				@apply shadow-xs;
+			}
+		}
 	}
 }
 
@@ -173,7 +219,7 @@
 			@apply bg-dark-600 border-dark-400;
 
 			.divider {
-				@apply border-dark-500;
+				@apply border-dark-400;
 			}
 
 			> .header > .button {
@@ -181,6 +227,47 @@
 
 				&:hover {
 					@apply bg-dark-500 text-white;
+				}
+			}
+
+			.link {
+				@apply text-dark-50;
+
+				&:hover {
+					@apply bg-dark-500;
+				}
+
+				&.active {
+					@apply bg-white text-dark-600;
+
+					.label {
+						@apply !text-dark-600;
+					}
+				}
+			}
+
+			> .links > .divider {
+				@apply border-dark-400;
+
+				.label::before,
+				.label::after {
+					@apply border-dark-400;
+				}
+			}
+
+			> .footer > .card > .content {
+				@apply bg-dark-600 border-dark-400;
+
+				> .icon {
+					@apply bg-white text-dark-600;
+				}
+
+				> .button {
+					@apply bg-white text-dark-600;
+
+					&:hover {
+						@apply bg-gray-100;
+					}
 				}
 			}
 		}
