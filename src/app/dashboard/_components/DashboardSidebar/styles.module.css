@@ -50,7 +50,7 @@
 
 		> .footer {
 			> .link.marketplace {
-				@apply flex;
+				@apply hidden;
 			}
 
 			> .card {
@@ -125,10 +125,6 @@
 		@apply gap-1;
 		@apply flex flex-col items-stretch justify-start;
 
-		> .link.marketplace {
-			@apply hidden;
-		}
-
 		> .divider {
 			@apply py-1;
 			@apply border-t border-solid border-gray-200;
@@ -153,6 +149,10 @@
 		@apply min-h-0;
 		@apply gap-1;
 		@apply items-stretch justify-end flex-shrink-0;
+
+		> .link.marketplace {
+			@apply flex;
+		}
 
 		> .card {
 			@apply hidden;
