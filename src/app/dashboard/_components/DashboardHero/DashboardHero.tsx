@@ -84,7 +84,7 @@ export const DashboardHero = ({
 						<Divider className={classes.divider} orientation="vertical" />
 					</>
 				)}
-				{breadcrumbItems.length > 1 && (
+				{breadcrumbs.length > 1 && (
 					<Switch value={loading}>
 						<Switch.True>
 							<Breadcrumbs
@@ -94,7 +94,7 @@ export const DashboardHero = ({
 									separator: classes.separator,
 								}}
 							>
-								{breadcrumbItems.map((_, index) => (
+								{breadcrumbs.map((_, index) => (
 									<Skeleton key={index} width={80} height={14} visible />
 								))}
 							</Breadcrumbs>

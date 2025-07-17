@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
+import English from '@/locales/en.json';
+import { SectorType } from '@/schema/models';
 import { Stack } from '@mantine/core';
 
 import classes from './styles.module.css';
@@ -10,10 +12,11 @@ type Props = {
 };
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
 	const { sector } = await params;
+	const sectorName = English.constants.sector[sector as SectorType].title;
 	return {
 		title: {
-			default: sector,
-			template: `%s - ${sector}`,
+			default: sectorName,
+			template: `%s - ${sectorName}`,
 		},
 	};
 };

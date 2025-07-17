@@ -1,16 +1,28 @@
 .root {
-	> .navigation {
-		@apply gap-4 flex-nowrap;
+	@apply gap-8;
 
+	> .navigation {
 		> .button {
 			@apply size-8;
+			@apply flex-shrink-0;
 			@apply border-gray-400;
 		}
 
+		> .divider {
+			@apply hidden;
+		}
+
 		> .breadcrumbs {
+			@apply gap-y-2;
+
 			> a {
 				@apply paragraph-sm;
 				@apply underline underline-offset-4 decoration-1 decoration-dashed decoration-gray-600;
+			}
+
+			> .elipsis {
+				@apply flex-shrink-0;
+				@apply paragraph-sm;
 			}
 
 			> .separator {
@@ -64,8 +76,10 @@
 * {
 	@mixin larger-than $mantine-breakpoint-sm {
 		.root {
-			> .navigation {
-				@apply gap-6;
+			@apply gap-6;
+
+			> .navigation > .divider {
+				@apply block;
 			}
 
 			> .row > .content > .wrapper {
@@ -74,13 +88,18 @@
 			}
 		}
 	}
+	@mixin larger-than $mantine-breakpoint-xl {
+		.root {
+			@apply gap-8;
+
+			> .navigation {
+				@apply gap-6;
+			}
+		}
+	}
 
 	@mixin dark {
 		.root > .navigation {
-			> .breadcrumbs > a {
-				@apply decoration-dark-50;
-			}
-
 			> .button {
 				@apply bg-dark-700 text-white border-dark-400;
 
@@ -95,6 +114,10 @@
 						@apply bg-dark-700;
 					}
 				}
+			}
+
+			> .breadcrumbs > a {
+				@apply decoration-dark-50;
 			}
 		}
 	}
