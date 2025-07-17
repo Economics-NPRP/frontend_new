@@ -167,17 +167,7 @@ export default function Details() {
 									{auction.data.cycle.sectors
 										.sort((sector) => (auction.data.sector === sector ? 1 : -1))
 										.map((sector) => (
-											<SectorBadge
-												key={sector}
-												sector={sector}
-												hideText={
-													auction.data.sector === sector ? false : true
-												}
-												text={
-													auction.data.sector === sector &&
-													`+${t('constants.quantities.auctions.default', { value: auction.data.cycle!.auctions.filter((auction) => auction.sector === sector).length - 1 })}`
-												}
-											/>
+											<SectorBadge key={sector} sector={sector} hideText />
 										))}
 								</Group>
 							</UnstyledButton>

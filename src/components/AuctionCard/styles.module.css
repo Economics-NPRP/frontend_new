@@ -11,7 +11,7 @@
 		--f: 4px;
 
 		@apply absolute;
-		@apply w-24 h-9;
+		@apply w-32 h-9;
 		@apply top-0 right-0;
 		@apply flex items-center justify-center;
 		@apply border-0 border-b-[15px] border-solid;

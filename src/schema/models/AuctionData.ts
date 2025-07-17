@@ -24,7 +24,7 @@ import {
 import { AllSubsectorVariants } from '@/constants/SubsectorData';
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
 
-import { ReadAuctionCycleDataSchema } from './AuctionCycleData';
+import { BaseAuctionCycleDataSchema } from './AuctionCycleData';
 import { AuctionTypeSchema } from './AuctionType';
 import { DefaultUserData } from './GeneralUserData';
 import { SectorTypeSchema } from './SectorData';
@@ -99,7 +99,7 @@ export const ReadAuctionDataSchema = object({
 	...BaseAuctionDataSchema.entries,
 
 	owner: BaseUserDataSchema,
-	cycle: lazy(() => nullish(ReadAuctionCycleDataSchema)),
+	cycle: lazy(() => nullish(BaseAuctionCycleDataSchema)),
 });
 export const UpdateAuctionDataSchema = CreateAuctionDataSchema;
 
