@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
+import { PaginatedAuctionsProvider } from '@/contexts';
+import { withProviders } from '@/helpers';
 import English from '@/locales/en.json';
 import { SectorType } from '@/schema/models';
 import { Stack } from '@mantine/core';
@@ -24,14 +26,29 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
 export interface SectorDetailsProps {
 	hero: ReactNode;
 	distribution: ReactNode;
+	heatmap: ReactNode;
+	timeSeries: ReactNode;
 	list: ReactNode;
+	table: ReactNode;
 }
-export default function SectorDetails({ hero, distribution, list }: SectorDetailsProps) {
-	return (
+export default function SectorDetails({
+	hero,
+	distribution,
+	heatmap,
+	timeSeries,
+	list,
+	table,
+}: SectorDetailsProps) {
+	return withProviders(
 		<Stack className={classes.root}>
 			{hero}
 			{distribution}
+			{heatmap}
+			{timeSeries}
 			{list}
-		</Stack>
+			{table}
+		</Stack>,
+		//	TODO: add sector filter once available
+		{ provider: PaginatedAuctionsProvider, props: { defaultPerPage: 20 } },
 	);
 }

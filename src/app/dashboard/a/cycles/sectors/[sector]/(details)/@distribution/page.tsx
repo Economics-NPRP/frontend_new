@@ -10,17 +10,7 @@ import { BaseBadge } from '@/components/Badge';
 import { PieChart } from '@/components/Charts/Pie';
 import { SectorVariants } from '@/constants/SectorData';
 import { SectorType } from '@/schema/models';
-import {
-	Anchor,
-	Container,
-	FloatingIndicator,
-	Group,
-	Select,
-	Stack,
-	Tabs,
-	Text,
-	Title,
-} from '@mantine/core';
+import { Anchor, FloatingIndicator, Group, Select, Stack, Tabs, Text, Title } from '@mantine/core';
 
 import classes from './styles.module.css';
 
