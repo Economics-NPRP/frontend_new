@@ -2075,6 +2075,16 @@
               "description": "I acknowledge that I am responsible for approving this cycle and that I have completed all necessary reviews."
             }
           }
+        },
+        "sectors": {
+          "details": {
+            "actions": {
+              "create": {
+                "heading": "Create New Subsector",
+                "subheading": "Click here to add a new subsector under this one"
+              }
+            }
+          }
         }
       },
       "admins": {

@@ -99,25 +99,31 @@
 	}
 
 	@mixin dark {
-		.root > .navigation {
-			> .button {
-				@apply bg-dark-700 text-white border-dark-400;
-
-				&:hover {
-					@apply bg-dark-600;
-				}
-
-				&:disabled {
-					@apply opacity-25;
+		.root {
+			> .navigation {
+				> .button {
+					@apply bg-dark-700 text-white border-dark-400;
 
 					&:hover {
-						@apply bg-dark-700;
+						@apply bg-dark-600;
 					}
+
+					&:disabled {
+						@apply opacity-25;
+
+						&:hover {
+							@apply bg-dark-700;
+						}
+					}
+				}
+
+				> .breadcrumbs > a {
+					@apply decoration-dark-50;
 				}
 			}
 
-			> .breadcrumbs > a {
-				@apply decoration-dark-50;
+			> .row > .content > .wrapper > .icon {
+				@apply bg-dark-600 border-dark-400 text-dark-50;
 			}
 		}
 	}

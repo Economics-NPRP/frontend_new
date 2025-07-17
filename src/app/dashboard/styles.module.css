@@ -33,4 +33,9 @@
 			}
 		}
 	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root > .row > .wrapper {
+			@apply p-8;
+		}
+	}
 }
