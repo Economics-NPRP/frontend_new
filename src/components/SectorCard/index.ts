@@ -1,1 +1,2 @@
-export * from './SectorCard';
+export * from './Small';
+export * from './Large';

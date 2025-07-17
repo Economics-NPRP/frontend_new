@@ -9,16 +9,16 @@ import { IconCircleArrowRight } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
-export interface SectorCardProps extends ComponentPropsWithRef<'button'> {
+export interface SmallSectorCardProps extends ComponentPropsWithRef<'button'> {
 	sector: SectorType;
 }
-export const SectorCard = ({ sector, className, ...props }: SectorCardProps) => {
+export const SmallSectorCard = ({ sector, className, ...props }: SmallSectorCardProps) => {
 	const t = useTranslations();
 
 	const { image } = useMemo<SectorData>(() => SectorVariants[sector]!, [sector]);
 
 	return (
-		<UnstyledButton className={`${classes.root} ${className}`} {...props}>
+		<UnstyledButton className={`${classes.root} ${classes.small} ${className}`} {...props}>
 			<Container className={classes.image}>
 				<Image src={image} alt={t(`constants.sector.${sector}.alt`)} fill />
 				<Container className={classes.overlay} />
