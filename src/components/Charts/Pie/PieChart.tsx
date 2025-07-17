@@ -2,21 +2,21 @@
 
 import { useFormatter, useTranslations } from 'next-intl';
 import { ForwardRefExoticComponent, RefAttributes, useMemo } from 'react';
-import { Cell, Label, Pie, PieChart, Sector, Tooltip } from 'recharts';
+import { Cell, Label, Pie, PieChart as PieChartComponent, Sector, Tooltip } from 'recharts';
 import { PieSectorDataItem } from 'recharts/types/polar/Pie';
 
 import { PieChartCell } from '@mantine/charts';
-import { Container, Text, useMantineColorScheme } from '@mantine/core';
+import { BoxProps, Container, Text, useMantineColorScheme } from '@mantine/core';
 import { Icon, IconProps } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
-interface ChartProps {
+interface PieChartProps extends BoxProps {
 	chartData: Array<
 		PieChartCell & { icon: ForwardRefExoticComponent<IconProps & RefAttributes<Icon>> }
 	>;
 }
-export const Chart = ({ chartData }: ChartProps) => {
+export const PieChart = ({ chartData, className, ...props }: PieChartProps) => {
 	const t = useTranslations();
 	const format = useFormatter();
 	const { colorScheme } = useMantineColorScheme();
@@ -30,9 +30,9 @@ export const Chart = ({ chartData }: ChartProps) => {
 	}, [chartData]);
 
 	return (
-		<Container className={`${classes.chart} bg-grid-md`}>
+		<Container className={`${classes.root} ${className} bg-grid-md`} {...props}>
 			<Container className={classes.gradient} />
-			<PieChart width={280} height={280}>
+			<PieChartComponent width={280} height={280}>
 				<Tooltip />
 				<Pie
 					data={chartData}
@@ -118,7 +118,7 @@ export const Chart = ({ chartData }: ChartProps) => {
 						}}
 					/>
 				</Pie>
-			</PieChart>
+			</PieChartComponent>
 		</Container>
 	);
 };

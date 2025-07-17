@@ -2083,6 +2083,22 @@
                 "heading": "Create New Subsector",
                 "subheading": "Click here to add a new subsector under this one"
               }
+            },
+            "distribution": {
+              "title": "Subsector Distribution",
+              "subtitle": "Distribution of different statistics based on subsector",
+              "columns": {
+                "subsector": "Subsector",
+                "permits": "Permit Inflow (% Total)",
+                "emissions": "Equivalent Emissions (% Total)",
+                "auctions": "Auctions (% Total)"
+              },
+              "period": {
+                "month": "Past Month",
+                "quarter": "Past Quarter",
+                "year": "Past Year",
+                "all": "All Time"
+              }
             }
           }
         }

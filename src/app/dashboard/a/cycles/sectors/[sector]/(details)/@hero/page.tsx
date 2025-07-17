@@ -22,7 +22,7 @@ export default function Hero() {
 	const sectorData = useMemo(() => SectorVariants[sector as SectorType], [sector]);
 
 	return (
-		<Container className={classes.root}>
+		<>
 			<Container className={classes.image}>
 				<Image
 					src={sectorData ? sectorData.image : ''}
@@ -68,6 +68,6 @@ export default function Hero() {
 				href={`/create/subsector?sector=${sector}`}
 				index={1}
 			/>
-		</Container>
+		</>
 	);
 }

@@ -1,33 +1,28 @@
-.root {
-	@apply grid grid-cols-6;
-	@apply gap-y-4 gap-x-8 items-start justify-start;
+.image {
+	@apply relative;
+	@apply w-full h-40;
+	@apply col-span-full;
+	@apply overflow-hidden;
 
-	> .image {
-		@apply relative;
-		@apply w-full h-40;
-		@apply col-span-full;
-		@apply overflow-hidden;
-
-		> img {
-			@apply object-cover;
-			@apply transition-transform duration-700;
-		}
-
-		> .overlay {
-			@apply absolute top-0 left-0 w-full h-full;
-			@apply justify-center items-center;
-			@apply opacity-50;
-
-			background-image: linear-gradient(to top, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 0) 100%);
-		}
+	> img {
+		@apply object-cover;
+		@apply transition-transform duration-700;
 	}
 
-	> .hero {
-		@apply col-span-4;
-	}
+	> .overlay {
+		@apply absolute top-0 left-0 w-full h-full;
+		@apply justify-center items-center;
+		@apply opacity-50;
 
-	> .banner {
-		@apply col-span-2;
-		@apply h-[200px];
+		background-image: linear-gradient(to top, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 0) 100%);
 	}
+}
+
+.hero {
+	@apply col-span-8;
+}
+
+.banner {
+	@apply col-span-4;
+	@apply min-h-[160px] h-full;
 }

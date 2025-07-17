@@ -3,13 +3,24 @@
 import { sortBy } from 'lodash-es';
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import { useFormatter, useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useMemo, useState } from 'react';
 
 import { BaseBadge } from '@/components/Badge';
 import { PieChart } from '@/components/Charts/Pie';
 import { SectorVariants } from '@/constants/SectorData';
 import { SectorType } from '@/schema/models';
-import { Container, Group, Select, Stack, Text, Title } from '@mantine/core';
+import {
+	Anchor,
+	Container,
+	FloatingIndicator,
+	Group,
+	Select,
+	Stack,
+	Tabs,
+	Text,
+	Title,
+} from '@mantine/core';
 
 import classes from './styles.module.css';
 
@@ -26,10 +37,18 @@ export default function Distribution() {
 	const format = useFormatter();
 
 	const [type, setType] = useState<'permits' | 'emissions' | 'auctions'>('permits');
+	const [period, setPeriod] = useState<'month' | 'quarter' | 'year' | 'all'>('year');
 	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<TableData>>({
 		columnAccessor: 'permits',
 		direction: 'desc',
 	});
+
+	const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
+	const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
+	const setControlRef = (val: string) => (node: HTMLButtonElement) => {
+		controlsRefs[val] = node;
+		setControlsRefs(controlsRefs);
+	};
 
 	const rawData = useMemo<Array<TableData>>(() => {
 		return [
@@ -108,34 +127,70 @@ export default function Distribution() {
 			<Group className={classes.header}>
 				<Stack className={classes.label}>
 					<Title order={2} className={classes.title}>
-						{t('dashboard.admin.cycles.details.distribution.title')}
+						{t('dashboard.admin.cycles.sectors.details.distribution.title')}
 					</Title>
 					<Text className={classes.subtitle}>
-						{t('dashboard.admin.cycles.details.distribution.subtitle')}
+						{t('dashboard.admin.cycles.sectors.details.distribution.subtitle')}
 					</Text>
 				</Stack>
 				<Select
 					className={classes.dropdown}
 					w={120}
-					value={type}
-					onChange={(value) => setType(value as 'permits' | 'emissions' | 'auctions')}
+					value={period}
+					onChange={(value) => setPeriod(value as 'month' | 'quarter' | 'year' | 'all')}
 					data={[
 						{
-							value: 'permits',
-							label: t('constants.permits.key'),
+							value: 'month',
+							label: t(
+								'dashboard.admin.cycles.sectors.details.distribution.period.month',
+							),
 						},
 						{
-							value: 'emissions',
-							label: t('constants.emissions.key'),
+							value: 'quarter',
+							label: t(
+								'dashboard.admin.cycles.sectors.details.distribution.period.quarter',
+							),
 						},
 						{
-							value: 'auctions',
-							label: t('constants.auctions.key'),
+							value: 'year',
+							label: t(
+								'dashboard.admin.cycles.sectors.details.distribution.period.year',
+							),
+						},
+						{
+							value: 'all',
+							label: t(
+								'dashboard.admin.cycles.sectors.details.distribution.period.all',
+							),
 						},
 					]}
 					allowDeselect={false}
 				/>
 			</Group>
+			<Tabs
+				classNames={{ root: classes.tabs, list: classes.list, tab: classes.tab }}
+				variant="none"
+				value={type}
+				onChange={(value) => setType(value as 'permits' | 'emissions' | 'auctions')}
+			>
+				<Tabs.List ref={setRootRef} grow>
+					<Tabs.Tab ref={setControlRef('permits')} value="permits">
+						{t('constants.permits.key')}
+					</Tabs.Tab>
+					<Tabs.Tab ref={setControlRef('emissions')} value="emissions">
+						{t('constants.emissions.key')}
+					</Tabs.Tab>
+					<Tabs.Tab ref={setControlRef('auctions')} value="auctions">
+						{t('constants.auctions.key')}
+					</Tabs.Tab>
+
+					<FloatingIndicator
+						className={classes.indicator}
+						target={type ? controlsRefs[type] : null}
+						parent={rootRef}
+					/>
+				</Tabs.List>
+			</Tabs>
 			<PieChart className={classes.chart} chartData={chartData} />
 			<DataTable
 				className={classes.table}
@@ -143,20 +198,21 @@ export default function Distribution() {
 					{
 						accessor: 'title',
 						sortable: false,
-						title: t('dashboard.admin.cycles.details.distribution.columns.sector'),
+						title: t(
+							'dashboard.admin.cycles.sectors.details.distribution.columns.subsector',
+						),
 						width: 160,
 						ellipsis: true,
 						render: (record) => {
-							const { Icon, color } = SectorVariants[record.id as SectorType]!;
-
 							return (
 								<Group className={classes.cell}>
-									<Container
-										className={`${classes.icon} ${classes[color.token!]}`}
+									<Anchor
+										component={Link}
+										className={classes.name}
+										href={`/dashboard/a/cycles/sectors/${record.id}`}
 									>
-										<Icon size={14} />
-									</Container>
-									<Text className={classes.name}>{record.title}</Text>
+										{record.title}
+									</Anchor>
 								</Group>
 							);
 						},
@@ -164,7 +220,9 @@ export default function Distribution() {
 					{
 						accessor: 'permits',
 						sortable: true,
-						title: t('dashboard.admin.cycles.details.distribution.columns.permits'),
+						title: t(
+							'dashboard.admin.cycles.sectors.details.distribution.columns.permits',
+						),
 						render: (record) => (
 							<Group className={classes.cell}>
 								<Text className={classes.value}>
@@ -183,7 +241,9 @@ export default function Distribution() {
 					{
 						accessor: 'emissions',
 						sortable: true,
-						title: t('dashboard.admin.cycles.details.distribution.columns.emissions'),
+						title: t(
+							'dashboard.admin.cycles.sectors.details.distribution.columns.emissions',
+						),
 						render: (record) => (
 							<Group className={classes.cell}>
 								<Text className={classes.value}>
@@ -204,7 +264,9 @@ export default function Distribution() {
 					{
 						accessor: 'auctions',
 						sortable: true,
-						title: t('dashboard.admin.cycles.details.distribution.columns.auctions'),
+						title: t(
+							'dashboard.admin.cycles.sectors.details.distribution.columns.auctions',
+						),
 						render: (record) => (
 							<Group className={classes.cell}>
 								<Text className={classes.value}>

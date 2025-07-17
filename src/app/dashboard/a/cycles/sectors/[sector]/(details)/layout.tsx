@@ -23,12 +23,14 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
 
 export interface SectorDetailsProps {
 	hero: ReactNode;
+	distribution: ReactNode;
 	list: ReactNode;
 }
-export default function SectorDetails({ hero, list }: SectorDetailsProps) {
+export default function SectorDetails({ hero, distribution, list }: SectorDetailsProps) {
 	return (
 		<Stack className={classes.root}>
 			{hero}
+			{distribution}
 			{list}
 		</Stack>
 	);
