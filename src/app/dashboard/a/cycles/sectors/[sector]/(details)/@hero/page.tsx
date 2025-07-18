@@ -2,16 +2,13 @@
 
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useMemo } from 'react';
 
-import { ActionBanner } from '@/components/ActionBanner';
 import { SectorVariants } from '@/constants/SectorData';
 import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
 import { SectorType } from '@/schema/models';
 import { Container } from '@mantine/core';
-import { IconCirclePlus } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -58,15 +55,6 @@ export default function Hero() {
 						href: `/dashboard/a/cycles/sectors/${sector}`,
 					},
 				]}
-			/>
-			<ActionBanner
-				className={classes.banner}
-				icon={<IconCirclePlus size={32} />}
-				heading={t('dashboard.admin.cycles.sectors.details.actions.create.heading')}
-				subheading={t('dashboard.admin.cycles.sectors.details.actions.create.subheading')}
-				component={Link}
-				href={`/create/subsector?sector=${sector}`}
-				index={1}
 			/>
 		</>
 	);

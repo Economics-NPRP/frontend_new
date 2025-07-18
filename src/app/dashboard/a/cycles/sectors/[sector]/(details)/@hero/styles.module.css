@@ -19,10 +19,5 @@
 }
 
 .hero {
-	@apply col-span-8;
-}
-
-.banner {
-	@apply col-span-4;
-	@apply min-h-[160px] h-full;
+	@apply col-span-full;
 }

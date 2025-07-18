@@ -93,13 +93,9 @@
 }
 
 * {
-	@mixin larger-than $mantine-breakpoint-sm {
-		.root {
-			@apply col-span-5;
-		}
-	}
 	@mixin larger-than $mantine-breakpoint-md {
 		.root {
+			@apply col-span-5;
 			@apply px-8 py-6;
 		}
 	}

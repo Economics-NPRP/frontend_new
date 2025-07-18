@@ -25,18 +25,18 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
 
 export interface SectorDetailsProps {
 	hero: ReactNode;
+	list: ReactNode;
 	distribution: ReactNode;
 	heatmap: ReactNode;
 	timeSeries: ReactNode;
-	list: ReactNode;
 	table: ReactNode;
 }
 export default function SectorDetails({
 	hero,
+	list,
 	distribution,
 	heatmap,
 	timeSeries,
-	list,
 	table,
 }: SectorDetailsProps) {
 	return withProviders(

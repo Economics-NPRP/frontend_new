@@ -1,4 +1,12 @@
 .root {
-	@apply grid grid-cols-12;
-	@apply gap-y-4 gap-x-8 items-start justify-start;
+	@apply grid grid-cols-1;
+	@apply gap-6 items-start justify-start;
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+			@apply grid-cols-12;
+		}
+	}
 }

@@ -57,7 +57,7 @@
 					}
 
 					> .description {
-						@apply paragraph-md text-justify;
+						@apply paragraph-md text-pretty;
 					}
 				}
 			}

@@ -14,7 +14,7 @@
 			}
 
 			> .subheading {
-				@apply paragraph-sm-g6;
+				@apply paragraph-sm;
 			}
 		}
 
