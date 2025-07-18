@@ -29,6 +29,7 @@ export const BaseSubsectorDataSchema = object({
 	title: pipe(string(), trim(), nonEmpty()),
 	description: pipe(string(), trim(), nonEmpty()),
 	image: pipe(string(), trim(), url()),
+	alt: pipe(string(), trim(), nonEmpty()),
 });
 
 export const CreateSubsectorDataSchema = BaseSubsectorDataSchema;
@@ -87,6 +88,7 @@ export const DefaultSubsectorData: ISubsectorData = {
 	title: '',
 	description: '',
 	image: '',
+	alt: '',
 	createdAt: '1970-01-01T00:00:00.000Z',
 	updatedAt: '1970-01-01T00:00:00.000Z',
 };

@@ -60,7 +60,7 @@
 		> .label {
 			@apply absolute -bottom-12 left-0;
 			@apply w-full h-28;
-			@apply pt-3;
+			@apply pt-3 justify-start;
 			@apply bg-white;
 			@apply transition-all duration-500;
 

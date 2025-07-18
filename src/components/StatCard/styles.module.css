@@ -70,7 +70,7 @@
 * {
 	@mixin dark {
 		.root {
-			@apply bg-dark-700 border-dark-400 text-dark-50;
+			@apply bg-dark-700 border-dark-500 text-dark-50;
 
 			> .icon {
 				@apply text-gray-400;

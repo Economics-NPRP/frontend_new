@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
-import { PaginatedAuctionsProvider } from '@/contexts';
+import { AllSubsectorsBySectorProvider, PaginatedAuctionsProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import English from '@/locales/en.json';
 import { SectorType } from '@/schema/models';
@@ -42,13 +42,14 @@ export default function SectorDetails({
 	return withProviders(
 		<Stack className={classes.root}>
 			{hero}
+			{list}
 			{distribution}
 			{heatmap}
 			{timeSeries}
-			{list}
 			{table}
 		</Stack>,
 		//	TODO: add sector filter once available
 		{ provider: PaginatedAuctionsProvider, props: { defaultPerPage: 20 } },
+		{ provider: AllSubsectorsBySectorProvider },
 	);
 }

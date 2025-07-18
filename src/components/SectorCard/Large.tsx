@@ -1,6 +1,5 @@
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useMemo } from 'react';
 
 import { SectorData, SectorVariants } from '@/constants/SectorData';
@@ -12,6 +11,8 @@ import classes from './styles.module.css';
 export interface LargeSectorCardProps extends UnstyledButtonProps {
 	sector: SectorType;
 	unit: 'auctions' | 'subsectors';
+	component?: any;
+	href?: string;
 }
 export const LargeSectorCard = ({ sector, unit, className, ...props }: LargeSectorCardProps) => {
 	const t = useTranslations();
@@ -19,12 +20,7 @@ export const LargeSectorCard = ({ sector, unit, className, ...props }: LargeSect
 	const { image, Icon } = useMemo<SectorData>(() => SectorVariants[sector]!, [sector]);
 
 	return (
-		<UnstyledButton
-			className={`${classes.root} ${classes.large} ${className}`}
-			component={Link}
-			href={`/dashboard/a/cycles/sectors/${sector}`}
-			{...props}
-		>
+		<UnstyledButton className={`${classes.root} ${classes.large} ${className}`} {...props}>
 			<Container className={classes.image}>
 				<Image src={image} alt={t(`constants.sector.${sector}.alt`)} fill />
 				<Container className={classes.overlay} />

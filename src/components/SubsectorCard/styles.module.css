@@ -1,0 +1,216 @@
+.root {
+	@apply relative;
+	@apply w-full h-[360px];
+	@apply flex flex-col items-stretch justify-center;
+	@apply overflow-hidden;
+	@apply gap-0;
+	@apply flex-shrink-0;
+	@apply transition-shadow duration-300;
+
+	.image {
+		@apply absolute top-0 left-0;
+		@apply size-full;
+		@apply overflow-hidden;
+
+		> img {
+			@apply object-cover;
+			@apply transition-all duration-1000;
+		}
+
+		> .overlay {
+			@apply absolute -bottom-8 left-0 w-full h-full;
+			@apply opacity-80;
+			@apply transition-all duration-1000;
+
+			background-image: linear-gradient(to top, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 0) 100%);
+		}
+	}
+
+	&:hover {
+		@apply shadow-xs;
+
+		.image {
+			img {
+				@apply blur-[1px];
+			}
+
+			> .overlay {
+				@apply bottom-0;
+			}
+		}
+	}
+
+	&.large {
+		> .content {
+			@apply p-6;
+			@apply flex-auto;
+			@apply flex flex-col items-center justify-end;
+			@apply flex-shrink-0;
+
+			> .row {
+				@apply items-center justify-center self-stretch;
+				@apply flex-nowrap;
+				@apply gap-3;
+
+				> .label {
+					@apply flex-auto;
+					@apply items-start justify-center;
+					@apply gap-1;
+					@apply z-10;
+					@apply transition-transform duration-700;
+
+					> .heading {
+						@apply heading-3-w text-left;
+					}
+
+					> .value {
+						@apply paragraph-sm-w text-left;
+					}
+				}
+
+				> .icon {
+					@apply size-8;
+					@apply flex-shrink-0;
+					@apply flex items-center justify-center;
+					@apply bg-white/25 text-white;
+					@apply z-10;
+				}
+			}
+		}
+
+		> .footer {
+			@apply h-7;
+			@apply px-8 py-1.5;
+			@apply flex-shrink-0;
+			@apply gap-1.5 flex-nowrap;
+			@apply items-center justify-center;
+			@apply text-white;
+
+			> .label {
+				@apply display-xs-w uppercase leading-none;
+				@apply !text-white;
+			}
+
+			&.energy {
+				@apply bg-yellow-600;
+			}
+
+			&.industry {
+				@apply bg-maroon-600;
+			}
+
+			&.transport {
+				@apply bg-salmon-600;
+			}
+
+			&.buildings {
+				@apply bg-purple-600;
+			}
+
+			&.agriculture {
+				@apply bg-palm-600;
+			}
+
+			&.waste {
+				@apply bg-skyline-600;
+			}
+		}
+
+		&:hover > .label {
+			@apply -translate-y-2;
+		}
+	}
+
+	&.small {
+		@apply h-[240px];
+		@apply border border-solid border-gray-300;
+
+		> .label {
+			@apply absolute -bottom-10 left-0;
+			@apply w-full h-32;
+			@apply items-center justify-start;
+			@apply pt-4 gap-0;
+			@apply bg-white;
+			@apply transition-all duration-500;
+			@apply z-10;
+
+			> .heading {
+				@apply display-md text-center truncate;
+			}
+
+			> .value {
+				@apply paragraph-sm-g6 leading-none text-center truncate;
+			}
+
+			> .icon {
+				@apply mt-4;
+			}
+		}
+
+		&:hover {
+			> .image > .overlay {
+				@apply bottom-4;
+			}
+
+			> .label {
+				@apply bottom-0;
+			}
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-xs {
+		.root {
+			@apply h-[320px];
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-3xl {
+		.root {
+			@apply h-[360px];
+		}
+	}
+
+	@mixin dark {
+		.root {
+			.image {
+				> img {
+					@apply brightness-90;
+				}
+
+				> .overlay {
+					@apply opacity-85;
+				}
+			}
+
+			.label {
+				> .heading {
+					@apply !text-white;
+				}
+
+				> .value {
+					@apply !text-dark-50;
+				}
+			}
+
+			&.small {
+				@apply border border-solid border-dark-400;
+
+				> .image > .overlay {
+					@apply opacity-90;
+					@apply -bottom-4;
+				}
+
+				> .label {
+					@apply bg-dark-600;
+				}
+
+				&:hover {
+					> .image > .overlay {
+						@apply bottom-4;
+					}
+				}
+			}
+		}
+	}
+}

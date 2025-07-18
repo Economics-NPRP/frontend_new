@@ -1,0 +1,8 @@
+.root {
+	@apply col-span-full;
+	@apply gap-3;
+
+	> .card {
+		@apply w-[280px];
+	}
+}
