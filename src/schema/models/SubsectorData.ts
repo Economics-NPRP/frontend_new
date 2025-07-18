@@ -1,4 +1,15 @@
-import { InferOutput, nonEmpty, picklist, pipe } from 'valibot';
+import {
+	InferInput,
+	InferOutput,
+	lazy,
+	nonEmpty,
+	object,
+	picklist,
+	pipe,
+	string,
+	trim,
+	url,
+} from 'valibot';
 
 import {
 	AgricultureSubsectorList,
@@ -8,6 +19,27 @@ import {
 	TransportSubsectorList,
 	WasteSubsectorList,
 } from '@/constants/SubsectorData';
+import { TimestampSchema, UuidSchema } from '@/schema/utils';
+
+import { SectorTypeSchema } from './SectorData';
+
+export const BaseSubsectorDataSchema = object({
+	sector: lazy(() => SectorTypeSchema),
+	name: pipe(string(), trim(), nonEmpty()),
+	title: pipe(string(), trim(), nonEmpty()),
+	description: pipe(string(), trim(), nonEmpty()),
+	image: pipe(string(), trim(), url()),
+});
+
+export const CreateSubsectorDataSchema = BaseSubsectorDataSchema;
+export const ReadSubsectorDataSchema = object({
+	...BaseSubsectorDataSchema.entries,
+
+	id: UuidSchema(),
+	createdAt: TimestampSchema(),
+	updatedAt: TimestampSchema(),
+});
+export const UpdateSubsectorDataSchema = CreateSubsectorDataSchema;
 
 export const EnergySubsectorTypeSchema = pipe(picklist(EnergySubsectorList), nonEmpty());
 export const IndustrySubsectorTypeSchema = pipe(picklist(IndustrySubsectorList), nonEmpty());
@@ -28,6 +60,11 @@ export const SubsectorTypeSchema = pipe(
 	nonEmpty(),
 );
 
+export interface IBaseSubsectorData extends InferOutput<typeof BaseSubsectorDataSchema> {}
+export interface ICreateSubsector extends InferInput<typeof CreateSubsectorDataSchema> {}
+export interface ISubsectorData extends InferOutput<typeof ReadSubsectorDataSchema> {}
+export interface IUpdateSubsector extends InferInput<typeof UpdateSubsectorDataSchema> {}
+
 export type EnergySubsectorType = InferOutput<typeof EnergySubsectorTypeSchema>;
 export type IndustrySubsectorType = InferOutput<typeof IndustrySubsectorTypeSchema>;
 export type TransportSubsectorType = InferOutput<typeof TransportSubsectorTypeSchema>;
@@ -42,3 +79,14 @@ export type SubsectorType =
 	| BuildingsSubsectorType
 	| AgricultureSubsectorType
 	| WasteSubsectorType;
+
+export const DefaultSubsectorData: ISubsectorData = {
+	id: '',
+	sector: 'energy',
+	name: '',
+	title: '',
+	description: '',
+	image: '',
+	createdAt: '1970-01-01T00:00:00.000Z',
+	updatedAt: '1970-01-01T00:00:00.000Z',
+};
