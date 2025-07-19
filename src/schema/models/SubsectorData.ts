@@ -6,6 +6,7 @@ import {
 	object,
 	picklist,
 	pipe,
+	regex,
 	string,
 	trim,
 	url,
@@ -25,10 +26,16 @@ import { SectorTypeSchema } from './SectorData';
 
 export const BaseSubsectorDataSchema = object({
 	sector: lazy(() => SectorTypeSchema),
-	name: pipe(string(), trim(), nonEmpty()),
 	title: pipe(string(), trim(), nonEmpty()),
 	description: pipe(string(), trim(), nonEmpty()),
-	image: pipe(string(), trim(), url()),
+	image: pipe(
+		string(),
+		trim(),
+		url(),
+		regex(
+			/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/,
+		),
+	),
 	alt: pipe(string(), trim(), nonEmpty()),
 });
 
@@ -84,7 +91,6 @@ export type SubsectorType =
 export const DefaultSubsectorData: ISubsectorData = {
 	id: '',
 	sector: 'energy',
-	name: '',
 	title: '',
 	description: '',
 	image: '',
@@ -95,7 +101,6 @@ export const DefaultSubsectorData: ISubsectorData = {
 
 export const DefaultCreateSubsector: ICreateSubsector = {
 	sector: 'energy',
-	name: '',
 	title: '',
 	description: '',
 	image: '',

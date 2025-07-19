@@ -56,6 +56,11 @@ export const DetailsStep = ({ form, disabled }: ICreateSubsectorStepProps) => {
 
 		//	Check if the image url is valid
 		try {
+			const urlRegex = new RegExp(
+				/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/,
+			);
+			if (!urlRegex.test(form.getValues().image))
+				throw new Error('Not a valid URL, should start with http:// or https://');
 			const url = new URL(form.getValues().image);
 			return (
 				<Image
@@ -135,6 +140,7 @@ export const DetailsStep = ({ form, disabled }: ICreateSubsectorStepProps) => {
 						{ label: t('constants.sector.waste.title'), value: 'waste' },
 					]}
 					leftSection={<IconChartPie size={16} />}
+					allowDeselect={false}
 					required
 					key={form.key('sector')}
 					{...form.getInputProps('sector')}

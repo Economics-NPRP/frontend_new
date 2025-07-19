@@ -8,6 +8,7 @@ import { useContextSelector } from 'use-context-selector';
 import { safeParse } from 'valibot';
 
 import { Switch } from '@/components/SwitchCase';
+import { useCreateSubsector } from '@/hooks';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { DetailsStep } from '@/pages/create/subsector/@form/Details';
 import { FinalStep } from '@/pages/create/subsector/@form/Final';
@@ -27,7 +28,7 @@ export default function CreateSubsectorLayout() {
 	// const singleSubsector = useContext(SingleSubsectorContext);
 
 	const [disabled, setDisabled] = useState(false);
-	// const createSubsector = useCreateSubsector();
+	const createSubsector = useCreateSubsector();
 
 	const setTitle = useContextSelector(CreateLayoutContext, (context) => context.setTitle);
 	const setReturnHref = useContextSelector(
@@ -71,6 +72,8 @@ export default function CreateSubsectorLayout() {
 		const step1 = valibotResolver(CreateSubsectorDataSchema)(values);
 		const step3 = valibotResolver(CreateSubsectorDataSchema)(values);
 
+		console.log(step1, step3);
+
 		if (step >= 0 && Object.keys(step1).length > 0) return step1;
 		if (step >= 2 && Object.keys(step3).length > 0) return step3;
 		return {};
@@ -100,12 +103,12 @@ export default function CreateSubsectorLayout() {
 
 	const handleFormSubmit = useCallback(
 		(formData: ICreateSubsector) => {
-			// setIsFormSubmitting(true);
-			// setFormError([]);
-			// createSubsector.mutate(formData, {
-			// 	onSettled: () => setIsFormSubmitting(false),
-			// 	onSuccess: () => handleFinalStep(),
-			// });
+			setIsFormSubmitting(true);
+			setFormError([]);
+			createSubsector.mutate(formData, {
+				onSettled: () => setIsFormSubmitting(false),
+				onSuccess: () => handleFinalStep(),
+			});
 		},
 		[handleFinalStep, searchParams],
 	);
