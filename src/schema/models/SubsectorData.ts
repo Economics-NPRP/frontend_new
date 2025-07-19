@@ -1,7 +1,9 @@
 import {
 	InferInput,
 	InferOutput,
+	array,
 	lazy,
+	minLength,
 	nonEmpty,
 	object,
 	picklist,
@@ -27,7 +29,7 @@ import { SectorTypeSchema } from './SectorData';
 export const BaseSubsectorDataSchema = object({
 	sector: lazy(() => SectorTypeSchema),
 	title: pipe(string(), trim(), nonEmpty()),
-	description: pipe(string(), trim(), nonEmpty()),
+	description: pipe(string(), trim(), nonEmpty(), minLength(20)),
 	image: pipe(
 		string(),
 		trim(),
@@ -37,6 +39,7 @@ export const BaseSubsectorDataSchema = object({
 		),
 	),
 	alt: pipe(string(), trim(), nonEmpty()),
+	keywords: array(pipe(string(), trim(), nonEmpty())),
 });
 
 export const CreateSubsectorDataSchema = BaseSubsectorDataSchema;
@@ -95,6 +98,7 @@ export const DefaultSubsectorData: ISubsectorData = {
 	description: '',
 	image: '',
 	alt: '',
+	keywords: [],
 	createdAt: '1970-01-01T00:00:00.000Z',
 	updatedAt: '1970-01-01T00:00:00.000Z',
 };
@@ -105,4 +109,5 @@ export const DefaultCreateSubsector: ICreateSubsector = {
 	description: '',
 	image: '',
 	alt: '',
+	keywords: [],
 };

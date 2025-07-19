@@ -5,11 +5,11 @@ import { PropsWithChildren, createContext } from 'react';
 import { ArrayQueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
 import { getAllSubsectors } from '@/lib/sector';
-import { ISubsectorData } from '@/schema/models';
+import { ISectorData } from '@/schema/models';
 import { ArrayContextState, getDefaultArrayContextState } from '@/types';
 
-export interface IAllSubsectorsContext extends ArrayContextState<ISubsectorData> {}
-const DefaultData = getDefaultArrayContextState<ISubsectorData>();
+export interface IAllSubsectorsContext extends ArrayContextState<ISectorData> {}
+const DefaultData = getDefaultArrayContextState<ISectorData>();
 const Context = createContext<IAllSubsectorsContext>(DefaultData);
 
 export const AllSubsectorsProvider = ({ children }: PropsWithChildren) => {

@@ -14,6 +14,7 @@ import {
 	List,
 	Select,
 	Stack,
+	TagsInput,
 	Text,
 	TextInput,
 	Textarea,
@@ -165,6 +166,15 @@ export const DetailsStep = ({ form, disabled }: ICreateSubsectorStepProps) => {
 					disabled={disabled}
 					key={form.key('description')}
 					{...form.getInputProps('description')}
+				/>
+				<TagsInput
+					label={t('create.subsector.details.keywords.label')}
+					description={t('create.subsector.details.keywords.description')}
+					placeholder={t('create.subsector.details.keywords.placeholder')}
+					clearable
+					disabled={disabled}
+					key={form.key('keywords')}
+					{...form.getInputProps('keywords')}
 				/>
 			</Stack>
 		</Stack>
