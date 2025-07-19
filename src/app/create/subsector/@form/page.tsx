@@ -72,8 +72,6 @@ export default function CreateSubsectorLayout() {
 		const step1 = valibotResolver(CreateSubsectorDataSchema)(values);
 		const step3 = valibotResolver(CreateSubsectorDataSchema)(values);
 
-		console.log(step1, step3);
-
 		if (step >= 0 && Object.keys(step1).length > 0) return step1;
 		if (step >= 2 && Object.keys(step3).length > 0) return step3;
 		return {};

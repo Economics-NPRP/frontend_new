@@ -1,10 +1,10 @@
-import { useTranslations } from 'next-intl';
+'use client';
+
 import Image from 'next/image';
 import { useMemo } from 'react';
 
 import { SectorBadge } from '@/components/Badge';
-import { AllSubsectorVariants } from '@/constants/SubsectorData';
-import { SectorType, SubsectorType } from '@/schema/models';
+import { ISubsectorData, SectorType } from '@/schema/models';
 import {
 	ActionIcon,
 	BoxProps,
@@ -21,7 +21,7 @@ import classes from './styles.module.css';
 
 export interface SubsectorFormCardProps extends Omit<BoxProps, 'type'> {
 	sector: SectorType;
-	subsector: SubsectorType;
+	subsector: Pick<ISubsectorData, 'id' | 'title' | 'description' | 'image' | 'alt'>;
 	type?: 'radio' | 'checkbox' | 'readonly';
 	currentSector?: SectorType;
 	onClear?: () => void;
@@ -35,10 +35,6 @@ export const SubsectorFormCard = ({
 	className,
 	...props
 }: SubsectorFormCardProps) => {
-	const t = useTranslations();
-
-	const subsectorData = useMemo(() => AllSubsectorVariants[subsector]!, [subsector]);
-
 	const RootElement = useMemo(
 		() => (type === 'readonly' ? Stack : type === 'radio' ? Radio.Card : Checkbox.Card),
 		[type],
@@ -50,28 +46,20 @@ export const SubsectorFormCard = ({
 
 	return (
 		<RootElement
-			value={`${sector}:${subsector}`}
+			value={`${sector}:${subsector.id}`}
 			className={`${classes.root} ${type === 'readonly' ? classes.horizontal : ''} ${currentSector !== sector ? classes.fade : ''} ${className}`}
 			{...props}
 		>
 			<Stack className={classes.content}>
 				<Container className={classes.image}>
-					<Image
-						src={subsectorData.image}
-						alt={t(`constants.subsector.${subsector}.alt`)}
-						fill
-					/>
+					<Image src={subsector.image} alt={subsector.alt} fill />
 					<Stack className={classes.overlay} />
 				</Container>
 				<Group className={classes.details}>
 					<Stack className={classes.label}>
 						<SectorBadge sector={sector} />
-						<Text className={classes.title}>
-							{t(`constants.subsector.${subsector}.title`)}
-						</Text>
-						<Text className={classes.description}>
-							{t(`constants.subsector.${subsector}.description`)}
-						</Text>
+						<Text className={classes.title}>{subsector.title}</Text>
+						<Text className={classes.description}>{subsector.description}</Text>
 					</Stack>
 					{type !== 'readonly' && <IndicatorElement className={classes.checkbox} />}
 					{type === 'readonly' && (

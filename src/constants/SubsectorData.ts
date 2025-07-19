@@ -400,8 +400,8 @@ const stopWords = new Set([
 	'by',
 ]);
 export const SubsectorSearch = new MiniSearch<SubsectorData>({
-	fields: ['id', 'title', 'description', 'alt', 'keywords'],
-	storeFields: ['id'],
+	fields: ['id', 'image', 'title', 'description', 'alt', 'keywords'],
+	storeFields: ['id', 'image', 'title', 'description', 'alt', 'keywords'],
 	searchOptions: {
 		boost: { id: 2, title: 4, description: 2, keywords: 2 },
 		fuzzy: 0.2,

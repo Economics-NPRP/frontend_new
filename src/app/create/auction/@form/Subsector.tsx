@@ -6,11 +6,12 @@ import { useContextSelector } from 'use-context-selector';
 
 import { BaseBadge, SectorBadge } from '@/components/Badge';
 import { SubsectorFormCard } from '@/components/SubsectorFormCard';
-import { SubsectorData, SubsectorSearch, SubsectorVariants } from '@/constants/SubsectorData';
+import { SubsectorSearch } from '@/constants/SubsectorData';
+import { AllSubsectorsContext } from '@/contexts';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { ICreateAuctionStepProps } from '@/pages/create/auction/@form/page';
 import { SectorChangeModalContext } from '@/pages/create/auction/_components/SectorChangeModal';
-import { SectorType, SubsectorType } from '@/schema/models';
+import { ISubsectorData, SectorType } from '@/schema/models';
 import {
 	Alert,
 	Divider,
@@ -31,67 +32,73 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 	const t = useTranslations();
 	const formError = useContextSelector(CreateLayoutContext, (context) => context.formError);
 	const setFormError = useContextSelector(CreateLayoutContext, (context) => context.setFormError);
+	const allSubsectors = useContext(AllSubsectorsContext);
 	const { open } = useContext(SectorChangeModalContext);
 
 	const [value, setValue] = useState('');
+	const [selectedSubsectorData, setSelectedSubsectorData] = useState<ISubsectorData | null>(null);
 	const [searchFilter, setSearchFilter] = useState('');
 
-	const cardElements = useMemo(() => {
-		//	Make sure the current selected sector is first
-		const keys = Object.keys(SubsectorVariants).sort((a) =>
-			a === form.getValues().sector ? -1 : 1,
-		) as Array<SectorType>;
+	const cardElements = useMemo(
+		() =>
+			allSubsectors.data.results
+				//	Make sure the current selected sector is first
+				.sort((a) => (a.sector === form.getValues().sector ? -1 : 1))
+				.reduce((acc, { sector, subsectors }) => {
+					SubsectorSearch.removeAll();
+					SubsectorSearch.addAll(subsectors);
+					const searchResults = SubsectorSearch.search(searchFilter);
 
-		return keys.reduce((acc, sector) => {
-			const subsectors = Object.keys(SubsectorVariants[sector]) as Array<SubsectorType>;
-			const subsectorData = Object.values(SubsectorVariants[sector]) as Array<SubsectorData>;
-
-			SubsectorSearch.removeAll();
-			SubsectorSearch.addAll(subsectorData);
-			const searchResults = SubsectorSearch.search(searchFilter);
-
-			if (searchFilter === '')
-				acc.push(
-					...subsectors.map((subsector) => (
-						<SubsectorFormCard
-							key={`${sector}:${subsector}`}
-							type="radio"
-							sector={sector}
-							subsector={subsector}
-							currentSector={form.getValues().sector}
-						/>
-					)),
-				);
-			else
-				acc.push(
-					...searchResults.map(({ id }) => (
-						<SubsectorFormCard
-							key={`${sector}:${id}`}
-							type="radio"
-							sector={sector}
-							subsector={id}
-							currentSector={form.getValues().sector}
-						/>
-					)),
-				);
-			return acc;
-		}, [] as Array<ReactNode>);
-	}, [searchFilter, form.getValues().sector]);
+					if (searchFilter === '')
+						acc.push(
+							...subsectors.map((subsector) => (
+								<SubsectorFormCard
+									key={`${sector}:${subsector.id}`}
+									type="radio"
+									sector={sector}
+									subsector={subsector}
+									currentSector={form.getValues().sector}
+								/>
+							)),
+						);
+					else
+						acc.push(
+							...searchResults.map((subsector) => (
+								<SubsectorFormCard
+									key={`${sector}:${subsector.id}`}
+									type="radio"
+									sector={sector}
+									subsector={subsector as any}
+									currentSector={form.getValues().sector}
+								/>
+							)),
+						);
+					return acc;
+				}, [] as Array<ReactNode>),
+		[allSubsectors.data.results, searchFilter, form.getValues().sector],
+	);
 
 	const handleSubsectorChange = useCallback(
 		(value: string) => {
-			const [sector, subsector] = value.split(':') as [SectorType, SubsectorType];
-			if (subsector === form.getValues().subsector) return;
+			const [sectorId, subsectorId] = value.split(':') as [SectorType, string];
+			if (subsectorId === form.getValues().subsector) return;
 
-			if (sector === form.getValues().sector || !form.getValues().sector) {
-				form.getInputProps('sector').onChange(sector);
-				form.getInputProps('subsector').onChange(subsector);
-				setValue(`${sector}:${subsector}`);
+			const subsectorData = allSubsectors.data.results
+				.find(({ sector }) => sector === sectorId)
+				?.subsectors.find(({ id }) => id === subsectorId);
+			if (!subsectorData) return;
+
+			if (sectorId === form.getValues().sector || !form.getValues().sector) {
+				form.getInputProps('sector').onChange(sectorId);
+				form.getInputProps('subsector').onChange(subsectorId);
+				setValue(`${sectorId}:${subsectorId}`);
+				setSelectedSubsectorData(subsectorData);
 			} else {
-				open(form.getValues().sector, sector, () => {
-					form.getInputProps('sector').onChange(sector);
-					form.getInputProps('subsector').onChange(subsector);
-					setValue(`${sector}:${subsector}`);
+				open(form.getValues().sector, sectorId, () => {
+					form.getInputProps('sector').onChange(sectorId);
+					form.getInputProps('subsector').onChange(subsectorId);
+					setValue(`${sectorId}:${subsectorId}`);
+					setSelectedSubsectorData(subsectorData);
 				});
 			}
 		},
@@ -101,6 +108,7 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 	const handleSubsectorClear = useCallback(() => {
 		form.getInputProps('subsector').onChange(undefined);
 		setValue('');
+		setSelectedSubsectorData(null);
 	}, []);
 
 	return (
@@ -126,6 +134,28 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 					<List>{formError}</List>
 				</Alert>
 			)}
+			<Divider
+				classNames={{
+					root: classes.divider,
+					label: classes.label,
+				}}
+				label={t('create.auction.subsector.divider.selected')}
+			/>
+			{selectedSubsectorData && (
+				<SubsectorFormCard
+					type="readonly"
+					sector={form.getValues().sector}
+					subsector={selectedSubsectorData}
+					onClear={handleSubsectorClear}
+				/>
+			)}
+			<Divider
+				classNames={{
+					root: classes.divider,
+					label: classes.label,
+				}}
+				label={t('create.auction.subsector.divider.list')}
+			/>
 			<Group className={classes.row}>
 				<Text className={classes.label}>{t('create.auction.subsector.sector.label')}</Text>
 				{form.getValues().sector ? (
@@ -164,21 +194,6 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 			>
 				{cardElements}
 			</Radio.Group>
-			<Divider
-				classNames={{
-					root: classes.divider,
-					label: classes.label,
-				}}
-				label={t('create.auction.subsector.divider')}
-			/>
-			{value && (
-				<SubsectorFormCard
-					type="readonly"
-					sector={form.getValues().sector}
-					subsector={form.getValues().subsector}
-					onClear={handleSubsectorClear}
-				/>
-			)}
 		</Stack>
 	);
 };

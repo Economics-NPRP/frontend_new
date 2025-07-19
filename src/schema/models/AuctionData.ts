@@ -21,14 +21,13 @@ import {
 	url,
 } from 'valibot';
 
-import { AllSubsectorVariants } from '@/constants/SubsectorData';
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
 
 import { BaseAuctionCycleDataSchema } from './AuctionCycleData';
 import { AuctionTypeSchema } from './AuctionType';
 import { DefaultUserData } from './GeneralUserData';
 import { SectorTypeSchema } from './SectorData';
-import { SubsectorTypeSchema } from './SubsectorData';
+import { ReadSubsectorDataSchema } from './SubsectorData';
 import { BaseUserDataSchema } from './UserData';
 
 export const BaseAuctionDataSchema = object({
@@ -77,7 +76,7 @@ export const CreateAuctionDataSchema = object({
 		'hasJoined',
 	]).entries,
 
-	subsector: SubsectorTypeSchema,
+	subsector: UuidSchema(),
 	startDatetime: pipe(date(), minValue(new Date())),
 	endDatetime: pipe(date(), minValue(new Date())),
 });
@@ -85,13 +84,9 @@ export const CreateAuctionDataSchemaTransformer = pipe(
 	CreateAuctionDataSchema,
 	transform((input) => ({
 		...input,
-		subsector: undefined,
 
 		startDatetime: DateTime.fromJSDate(input.startDatetime).toISO(),
 		endDatetime: DateTime.fromJSDate(input.endDatetime).toISO(),
-		image: AllSubsectorVariants[input.subsector]?.image,
-		title: AllSubsectorVariants[input.subsector]?.title,
-		description: AllSubsectorVariants[input.subsector]?.description,
 	})),
 );
 
@@ -100,6 +95,8 @@ export const ReadAuctionDataSchema = object({
 
 	owner: BaseUserDataSchema,
 	cycle: lazy(() => nullish(BaseAuctionCycleDataSchema)),
+	//	TODO: uncomment when backend has subsector data
+	// subsector: lazy(() => ReadSubsectorDataSchema),
 });
 export const UpdateAuctionDataSchema = CreateAuctionDataSchema;
 
