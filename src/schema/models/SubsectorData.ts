@@ -92,3 +92,12 @@ export const DefaultSubsectorData: ISubsectorData = {
 	createdAt: '1970-01-01T00:00:00.000Z',
 	updatedAt: '1970-01-01T00:00:00.000Z',
 };
+
+export const DefaultCreateSubsector: ICreateSubsector = {
+	sector: 'energy',
+	name: '',
+	title: '',
+	description: '',
+	image: '',
+	alt: '',
+};

@@ -32,9 +32,9 @@ export const AllSubsectorsBySectorProvider = ({ children }: PropsWithChildren) =
 		<ArrayQueryProvider
 			context={Context}
 			defaultData={DefaultData}
-			queryKey={['allSubsectorsBySector']}
+			queryKey={['allSubsectorsBySector', sector]}
 			queryFn={() => () =>
-				throwError(getAllSubsectorsBySector(sector), 'getAllSubsectorsBySector')
+				throwError(getAllSubsectorsBySector(sector), `getAllSubsectorsBySector:${sector}`)
 			}
 			children={children}
 			sector={sector}
