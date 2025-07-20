@@ -2,10 +2,13 @@
 
 import { DateTime, Interval } from 'luxon';
 import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 import { useContext, useMemo, useState } from 'react';
 
 import { StatCard } from '@/components/StatCard';
+import { SectorVariants } from '@/constants/SectorData';
 import { AllSubsectorsBySectorContext } from '@/contexts';
+import { SectorType } from '@/schema/models';
 import { BarChart } from '@mantine/charts';
 import { Container, Group, Select, Stack, Text, Title, useMantineColorScheme } from '@mantine/core';
 import { MonthPickerInput } from '@mantine/dates';
@@ -17,6 +20,7 @@ const MAX_SUBSECTORS = 5;
 
 export default function TimeSeries() {
 	const t = useTranslations();
+	const { sector } = useParams();
 	const { colorScheme } = useMantineColorScheme();
 	const allSubsectors = useContext(AllSubsectorsBySectorContext);
 
@@ -52,7 +56,7 @@ export default function TimeSeries() {
 				allSubsectors.data.resultCount > MAX_SUBSECTORS + 1 && index === MAX_SUBSECTORS
 					? t('constants.others')
 					: sector.title,
-			color: colorScheme === 'light' ? `dark.${5 - index}` : `dark.${index}`,
+			color: colorScheme === 'light' ? `url(#dark-${5 - index})` : `url(#dark-${index})`,
 		}));
 	}, [t, colorScheme, allSubsectors.data.results]);
 
@@ -154,7 +158,7 @@ export default function TimeSeries() {
 					type="stacked"
 					dataKey="month"
 					gridAxis="xy"
-					barProps={{ maxBarSize: 56 }}
+					barProps={{ maxBarSize: 48 }}
 					valueFormatter={(value) =>
 						t('constants.quantities.emissions.default', { value })
 					}
@@ -172,7 +176,142 @@ export default function TimeSeries() {
 					series={chartSeries}
 					legendProps={{ verticalAlign: 'bottom', align: 'center' }}
 					withLegend
-				/>
+				>
+					<defs>
+						<pattern
+							id="dark-0"
+							patternUnits="userSpaceOnUse"
+							width={16}
+							height={16}
+							patternTransform="rotate(45)"
+						>
+							<rect
+								width="5"
+								height="16"
+								transform="translate(0,0)"
+								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
+								opacity={0.15}
+							/>
+							<rect
+								width="11"
+								height="16"
+								transform="translate(5,0)"
+								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
+								opacity={0.05}
+							/>
+						</pattern>
+						<pattern
+							id="dark-1"
+							patternUnits="userSpaceOnUse"
+							width={16}
+							height={16}
+							patternTransform="rotate(-45)"
+						>
+							<rect
+								width="6"
+								height="16"
+								transform="translate(0,0)"
+								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
+								opacity={0.3}
+							/>
+							<rect
+								width="10"
+								height="16"
+								transform="translate(6,0)"
+								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
+								opacity={0.2}
+							/>
+						</pattern>
+						<pattern
+							id="dark-2"
+							patternUnits="userSpaceOnUse"
+							width={16}
+							height={16}
+							patternTransform="rotate(45)"
+						>
+							<rect
+								width="7"
+								height="16"
+								transform="translate(0,0)"
+								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
+								opacity={0.45}
+							/>
+							<rect
+								width="9"
+								height="16"
+								transform="translate(7,0)"
+								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
+								opacity={0.35}
+							/>
+						</pattern>
+						<pattern
+							id="dark-3"
+							patternUnits="userSpaceOnUse"
+							width={16}
+							height={16}
+							patternTransform="rotate(-45)"
+						>
+							<rect
+								width="8"
+								height="16"
+								transform="translate(0,0)"
+								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
+								opacity={0.6}
+							/>
+							<rect
+								width="8"
+								height="16"
+								transform="translate(8,0)"
+								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
+								opacity={0.5}
+							/>
+						</pattern>
+						<pattern
+							id="dark-4"
+							patternUnits="userSpaceOnUse"
+							width={16}
+							height={16}
+							patternTransform="rotate(45)"
+						>
+							<rect
+								width="9"
+								height="16"
+								transform="translate(0,0)"
+								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
+								opacity={0.75}
+							/>
+							<rect
+								width="7"
+								height="16"
+								transform="translate(9,0)"
+								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
+								opacity={0.65}
+							/>
+						</pattern>
+						<pattern
+							id="dark-5"
+							patternUnits="userSpaceOnUse"
+							width={16}
+							height={16}
+							patternTransform="rotate(-45)"
+						>
+							<rect
+								width="10"
+								height="16"
+								transform="translate(0,0)"
+								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
+								opacity={0.9}
+							/>
+							<rect
+								width="6"
+								height="16"
+								transform="translate(10,0)"
+								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
+								opacity={0.8}
+							/>
+						</pattern>
+					</defs>
+				</BarChart>
 			</Container>
 		</Stack>
 	);
