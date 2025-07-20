@@ -18,7 +18,6 @@
 	}
 
 	.cell {
-		@apply opacity-75;
 		@apply transition-opacity duration-300;
 		@apply outline-none;
 
@@ -70,8 +69,6 @@
 			}
 
 			.cell {
-				@apply opacity-60;
-
 				&.active {
 					@apply opacity-90;
 

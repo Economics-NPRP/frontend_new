@@ -4,15 +4,19 @@ import { sortBy } from 'lodash-es';
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { useContext, useMemo, useState } from 'react';
 
 import { BaseBadge } from '@/components/Badge';
 import { PieChart } from '@/components/Charts/Pie';
 import { SectorVariants } from '@/constants/SectorData';
+import { AllSubsectorsBySectorContext } from '@/contexts';
 import { SectorType } from '@/schema/models';
 import { Anchor, FloatingIndicator, Group, Select, Stack, Tabs, Text, Title } from '@mantine/core';
 
 import classes from './styles.module.css';
+
+const MAX_SUBSECTORS = 5;
 
 interface TableData {
 	id: string;
@@ -25,6 +29,8 @@ interface TableData {
 export default function Distribution() {
 	const t = useTranslations();
 	const format = useFormatter();
+	const allSubsectors = useContext(AllSubsectorsBySectorContext);
+	const { sector } = useParams();
 
 	const [type, setType] = useState<'permits' | 'emissions' | 'auctions'>('permits');
 	const [period, setPeriod] = useState<'month' | 'quarter' | 'year' | 'all'>('year');
@@ -40,52 +46,20 @@ export default function Distribution() {
 		setControlsRefs(controlsRefs);
 	};
 
-	const rawData = useMemo<Array<TableData>>(() => {
-		return [
-			{
-				id: 'energy',
-				title: t('constants.sector.energy.title'),
+	const rawData = useMemo<Array<TableData>>(
+		() =>
+			allSubsectors.data.results.slice(0, MAX_SUBSECTORS + 1).map((sector, index) => ({
+				id: sector.id,
+				title:
+					allSubsectors.data.resultCount > MAX_SUBSECTORS + 1 && index === MAX_SUBSECTORS
+						? t('constants.others')
+						: sector.title,
 				permits: Math.round(Math.random() * 100000),
 				emissions: Math.round(Math.random() * 100000),
 				auctions: Math.round(Math.random() * 1000),
-			},
-			{
-				id: 'industry',
-				title: t('constants.sector.industry.title'),
-				permits: Math.round(Math.random() * 100000),
-				emissions: Math.round(Math.random() * 100000),
-				auctions: Math.round(Math.random() * 1000),
-			},
-			{
-				id: 'transport',
-				title: t('constants.sector.transport.title'),
-				permits: Math.round(Math.random() * 100000),
-				emissions: Math.round(Math.random() * 100000),
-				auctions: Math.round(Math.random() * 1000),
-			},
-			{
-				id: 'buildings',
-				title: t('constants.sector.buildings.title'),
-				permits: Math.round(Math.random() * 100000),
-				emissions: Math.round(Math.random() * 100000),
-				auctions: Math.round(Math.random() * 1000),
-			},
-			{
-				id: 'waste',
-				title: t('constants.sector.waste.title'),
-				permits: Math.round(Math.random() * 100000),
-				emissions: Math.round(Math.random() * 100000),
-				auctions: Math.round(Math.random() * 1000),
-			},
-			{
-				id: 'agriculture',
-				title: t('constants.sector.agriculture.title'),
-				permits: Math.round(Math.random() * 100000),
-				emissions: Math.round(Math.random() * 100000),
-				auctions: Math.round(Math.random() * 1000),
-			},
-		] as Array<TableData>;
-	}, [t]);
+			})),
+		[t, allSubsectors.data.results],
+	);
 
 	const tableData = useMemo<Array<TableData>>(() => {
 		const data = sortBy(rawData, sortStatus.columnAccessor);
@@ -103,13 +77,13 @@ export default function Distribution() {
 
 	const chartData = useMemo(
 		() =>
-			rawData.map((item) => ({
+			rawData.map((item, index) => ({
 				name: item.title,
 				value: item[type],
-				color: SectorVariants[item.id as SectorType]!.color.hex!,
-				icon: SectorVariants[item.id as SectorType]!.Icon,
+				color: `var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`,
+				opacity: (rawData.length - index) / (rawData.length + 1),
 			})),
-		[rawData, type],
+		[rawData, type, sector],
 	);
 
 	return (

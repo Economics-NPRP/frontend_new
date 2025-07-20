@@ -99,6 +99,7 @@ export default function Distribution() {
 				value: item[type],
 				color: SectorVariants[item.id as SectorType]!.color.hex!,
 				icon: SectorVariants[item.id as SectorType]!.Icon,
+				opacity: 0.6,
 			})),
 		[rawData, type],
 	);

@@ -13,7 +13,10 @@ import classes from './styles.module.css';
 
 interface PieChartProps extends BoxProps {
 	chartData: Array<
-		PieChartCell & { icon: ForwardRefExoticComponent<IconProps & RefAttributes<Icon>> }
+		PieChartCell & {
+			icon?: ForwardRefExoticComponent<IconProps & RefAttributes<Icon>>;
+			opacity?: number;
+		}
 	>;
 }
 export const PieChart = ({ chartData, className, ...props }: PieChartProps) => {
@@ -68,6 +71,8 @@ export const PieChart = ({ chartData, className, ...props }: PieChartProps) => {
 						const y = cy + radius * Math.sin(-midAngle * RADIAN);
 						const Icon = chartData[index].icon;
 
+						if (!Icon) return null;
+
 						return (
 							<Icon
 								className={classes.icon}
@@ -81,7 +86,12 @@ export const PieChart = ({ chartData, className, ...props }: PieChartProps) => {
 					}}
 				>
 					{chartData.map((entry, index) => (
-						<Cell key={`cell-${index}`} fill={entry.color} className={classes.cell} />
+						<Cell
+							key={`cell-${index}`}
+							fill={entry.color}
+							opacity={entry.opacity || 1}
+							className={classes.cell}
+						/>
 					))}
 					<Label
 						content={({ viewBox }) => {
