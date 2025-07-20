@@ -12,6 +12,17 @@
 		@apply size-full;
 		@apply overflow-hidden;
 
+		> .placeholder {
+			@apply absolute top-0 left-0;
+			@apply w-full h-full;
+			@apply flex items-center justify-center;
+			@apply bg-gray-100 text-gray-500;
+
+			> .icon {
+				@apply mb-[88px];
+			}
+		}
+
 		> img {
 			@apply object-cover;
 			@apply transition-all duration-1000;
@@ -38,6 +49,10 @@
 				@apply bottom-0;
 			}
 		}
+	}
+
+	&.loading {
+		@apply pointer-events-none;
 	}
 
 	&.large {
@@ -130,7 +145,7 @@
 			@apply w-full h-32;
 			@apply items-center justify-start;
 			@apply pt-4 gap-0;
-			@apply bg-white;
+			@apply bg-white border-0 border-t border-solid border-gray-200;
 			@apply transition-all duration-500;
 			@apply z-10;
 
@@ -174,6 +189,10 @@
 	@mixin dark {
 		.root {
 			.image {
+				> .placeholder {
+					@apply bg-dark-700 text-dark-300;
+				}
+
 				> img {
 					@apply brightness-90;
 				}
@@ -202,7 +221,7 @@
 				}
 
 				> .label {
-					@apply bg-dark-600;
+					@apply bg-dark-600 border-dark-500;
 				}
 
 				&:hover {

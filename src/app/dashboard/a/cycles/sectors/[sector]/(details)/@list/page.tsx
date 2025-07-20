@@ -7,6 +7,8 @@ import { useParams } from 'next/navigation';
 import { useContext, useEffect, useState } from 'react';
 
 import { SmallSubsectorCard } from '@/components/SubsectorCard';
+import { Switch } from '@/components/SwitchCase';
+import { DefaultSubsectorData, SectorType } from '@/schema/models';
 import {
 	Button,
 	Container,
@@ -64,15 +66,45 @@ export default function List() {
 
 			<Group className={classes.row}>
 				<Group className={`${classes.list} ${expanded ? classes.expanded : ''}`}>
-					{allSubsectors.data.results.map((subsector) => (
-						<SmallSubsectorCard
-							className={classes.card}
-							key={subsector.id}
-							subsector={subsector}
-							component={Link}
-							href={`/dashboard/a/cycles/sectors/${subsector.sector}/${subsector.id}`}
-						/>
-					))}
+					<Switch value={allSubsectors.isLoading}>
+						<Switch.True>
+							<SmallSubsectorCard
+								className={classes.card}
+								subsector={{
+									...DefaultSubsectorData,
+									sector: sector as SectorType,
+								}}
+								loading
+							/>
+							<SmallSubsectorCard
+								className={classes.card}
+								subsector={{
+									...DefaultSubsectorData,
+									sector: sector as SectorType,
+								}}
+								loading
+							/>
+							<SmallSubsectorCard
+								className={classes.card}
+								subsector={{
+									...DefaultSubsectorData,
+									sector: sector as SectorType,
+								}}
+								loading
+							/>
+						</Switch.True>
+						<Switch.False>
+							{allSubsectors.data.results.map((subsector) => (
+								<SmallSubsectorCard
+									className={classes.card}
+									key={subsector.id}
+									subsector={subsector}
+									component={Link}
+									href={`/dashboard/a/cycles/sectors/${subsector.sector}/${subsector.id}`}
+								/>
+							))}
+						</Switch.False>
+					</Switch>
 				</Group>
 				<UnstyledButton
 					className={classes.add}

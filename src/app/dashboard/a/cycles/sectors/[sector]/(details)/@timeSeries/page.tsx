@@ -145,7 +145,7 @@ export default function TimeSeries() {
 					diff={Math.random() * 20 - 10}
 				/>
 			</Container>
-			<Container className={`${classes.chart} bg-stagger-sm`}>
+			<Container className={`${classes.chart} bg-dot-sm`}>
 				<Container className={classes.gradient} />
 				<BarChart
 					classNames={{ legend: classes.legend, referenceLine: classes.forecast }}
@@ -158,17 +158,17 @@ export default function TimeSeries() {
 					valueFormatter={(value) =>
 						t('constants.quantities.emissions.default', { value })
 					}
-					referenceLines={[
-						{
-							y: Math.random() * 1000,
-							strokeWidth: 3,
-							color: 'blue.6',
-							label: t(
-								'dashboard.admin.cycles.sectors.details.timeSeries.forecasted.line',
-							),
-							labelPosition: 'insideBottomRight',
-						},
-					]}
+					// referenceLines={[
+					// 	{
+					// 		y: Math.random() * 1000,
+					// 		strokeWidth: 3,
+					// 		color: 'blue.6',
+					// 		label: t(
+					// 			'dashboard.admin.cycles.sectors.details.timeSeries.forecasted.line',
+					// 		),
+					// 		labelPosition: 'insideBottomRight',
+					// 	},
+					// ]}
 					series={chartSeries}
 					legendProps={{ verticalAlign: 'bottom', align: 'center' }}
 					withLegend
