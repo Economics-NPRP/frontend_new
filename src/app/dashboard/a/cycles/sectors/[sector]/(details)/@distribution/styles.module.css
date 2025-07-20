@@ -1,6 +1,6 @@
 .root {
 	@apply col-span-full;
-	@apply px-6 py-4 items-stretch;
+	@apply p-6 items-stretch;
 	@apply bg-white border border-solid border-gray-300;
 	@apply transition-shadow duration-300;
 
