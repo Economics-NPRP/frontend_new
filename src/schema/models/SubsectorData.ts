@@ -1,3 +1,4 @@
+import { snakeCase } from 'change-case';
 import {
 	InferInput,
 	InferOutput,
@@ -6,10 +7,12 @@ import {
 	minLength,
 	nonEmpty,
 	object,
+	omit,
 	picklist,
 	pipe,
 	regex,
 	string,
+	transform,
 	trim,
 	url,
 } from 'valibot';
@@ -28,6 +31,7 @@ import { SectorTypeSchema } from './SectorData';
 
 export const BaseSubsectorDataSchema = object({
 	sector: lazy(() => SectorTypeSchema),
+	name: pipe(string(), trim(), nonEmpty()),
 	title: pipe(string(), trim(), nonEmpty()),
 	description: pipe(string(), trim(), nonEmpty(), minLength(20)),
 	image: pipe(
@@ -42,7 +46,15 @@ export const BaseSubsectorDataSchema = object({
 	keywords: array(pipe(string(), trim(), nonEmpty())),
 });
 
-export const CreateSubsectorDataSchema = BaseSubsectorDataSchema;
+export const CreateSubsectorDataSchema = omit(BaseSubsectorDataSchema, ['name']);
+export const CreateSubsectorDataSchemaTransformer = pipe(
+	CreateSubsectorDataSchema,
+	transform((input) => ({
+		...input,
+
+		name: snakeCase(input.title),
+	})),
+);
 export const ReadSubsectorDataSchema = object({
 	...BaseSubsectorDataSchema.entries,
 
@@ -73,6 +85,8 @@ export const SubsectorTypeSchema = pipe(
 
 export interface IBaseSubsectorData extends InferOutput<typeof BaseSubsectorDataSchema> {}
 export interface ICreateSubsector extends InferInput<typeof CreateSubsectorDataSchema> {}
+export interface ICreateSubsectorOutput
+	extends InferOutput<typeof CreateSubsectorDataSchemaTransformer> {}
 export interface ISubsectorData extends InferOutput<typeof ReadSubsectorDataSchema> {}
 export interface IUpdateSubsector extends InferInput<typeof UpdateSubsectorDataSchema> {}
 
@@ -93,6 +107,7 @@ export type SubsectorType =
 
 export const DefaultSubsectorData: ISubsectorData = {
 	id: '',
+	name: '',
 	sector: 'energy',
 	title: '',
 	description: '',

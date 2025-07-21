@@ -14,8 +14,10 @@ import { DetailsStep } from '@/pages/create/subsector/@form/Details';
 import { FinalStep } from '@/pages/create/subsector/@form/Final';
 import {
 	CreateSubsectorDataSchema,
+	CreateSubsectorDataSchemaTransformer,
 	DefaultCreateSubsector,
 	ICreateSubsector,
+	ICreateSubsectorOutput,
 	SectorType,
 } from '@/schema/models';
 import { List } from '@mantine/core';
@@ -77,7 +79,7 @@ export default function CreateSubsectorLayout() {
 		return {};
 	}, []);
 
-	const form = useForm<ICreateSubsector, (values: ICreateSubsector) => ICreateSubsector>({
+	const form = useForm<ICreateSubsector, (values: ICreateSubsector) => ICreateSubsectorOutput>({
 		mode: 'uncontrolled',
 		validateInputOnBlur: true,
 		clearInputErrorOnChange: true,
@@ -87,7 +89,7 @@ export default function CreateSubsectorLayout() {
 		},
 		validate: (values) => handleIsStepValid(activeStep, values),
 		transformValues: (values) => {
-			const parsedData = safeParse(CreateSubsectorDataSchema, values);
+			const parsedData = safeParse(CreateSubsectorDataSchemaTransformer, values);
 			if (!parsedData.success)
 				notifications.show({
 					color: 'red',
@@ -95,12 +97,12 @@ export default function CreateSubsectorLayout() {
 					message: parsedData.issues.map((issue) => issue.message).join(', '),
 					position: 'bottom-center',
 				});
-			return parsedData.output as ICreateSubsector;
+			return parsedData.output as ICreateSubsectorOutput;
 		},
 	});
 
 	const handleFormSubmit = useCallback(
-		(formData: ICreateSubsector) => {
+		(formData: ICreateSubsectorOutput) => {
 			setIsFormSubmitting(true);
 			setFormError([]);
 			createSubsector.mutate(formData, {
