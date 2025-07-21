@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
-import { PaginatedAuctionCyclesProvider } from '@/contexts';
+import { AllAuctionCyclesProvider, PaginatedAuctionCyclesProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
 import { Stack } from '@mantine/core';
@@ -43,5 +43,6 @@ export default function CyclesList({ subbanners, list }: CyclesListProps) {
 			{list}
 		</Stack>,
 		{ provider: PaginatedAuctionCyclesProvider },
+		{ provider: AllAuctionCyclesProvider },
 	);
 }

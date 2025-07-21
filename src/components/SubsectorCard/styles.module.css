@@ -144,16 +144,18 @@
 			@apply absolute -bottom-10 left-0;
 			@apply w-full h-32;
 			@apply items-center justify-start;
-			@apply pt-4 gap-0;
+			@apply pt-4 px-6 gap-0;
 			@apply bg-white border-0 border-t border-solid border-gray-200;
 			@apply transition-all duration-500;
 			@apply z-10;
 
 			> .heading {
+				@apply w-full;
 				@apply display-md text-center truncate;
 			}
 
 			> .value {
+				@apply w-full;
 				@apply paragraph-sm-g6 leading-none text-center truncate;
 			}
 

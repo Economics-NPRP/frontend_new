@@ -27,6 +27,7 @@ export const SmallSubsectorCard = ({
 	return (
 		<UnstyledButton
 			className={`${classes.root} ${classes.small} ${className} ${loading ? classes.loading : ''}`}
+			title={subsector.title}
 			{...props}
 		>
 			<Container className={classes.image}>

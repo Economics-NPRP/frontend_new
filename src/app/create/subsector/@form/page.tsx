@@ -8,6 +8,7 @@ import { useContextSelector } from 'use-context-selector';
 import { safeParse } from 'valibot';
 
 import { Switch } from '@/components/SwitchCase';
+import { SingleSubsectorContext } from '@/contexts';
 import { useCreateSubsector } from '@/hooks';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { DetailsStep } from '@/pages/create/subsector/@form/Details';
@@ -18,6 +19,7 @@ import {
 	DefaultCreateSubsector,
 	ICreateSubsector,
 	ICreateSubsectorOutput,
+	ReadToCreateSubsectorDataTransformer,
 	SectorType,
 } from '@/schema/models';
 import { List } from '@mantine/core';
@@ -27,7 +29,7 @@ import { notifications } from '@mantine/notifications';
 export default function CreateSubsectorLayout() {
 	const t = useTranslations();
 	const searchParams = useSearchParams();
-	// const singleSubsector = useContext(SingleSubsectorContext);
+	const singleSubsector = useContext(SingleSubsectorContext);
 
 	const [disabled, setDisabled] = useState(false);
 	const createSubsector = useCreateSubsector();
@@ -115,21 +117,21 @@ export default function CreateSubsectorLayout() {
 
 	useLayoutEffect(() => {
 		const sector = searchParams.get('sector');
-		const subsectorId = searchParams.get('subsectorId');
-		if (subsectorId) document.title = document.title.replace(/^Create New/, 'Edit');
+		const subsector = searchParams.get('subsector');
+		if (subsector) document.title = document.title.replace(/^Create New/, 'Edit');
 		setTitle(t('create.subsector.title'));
 		setReturnHref(
-			subsectorId
-				? `/dashboard/a/cycles/sectors/${sector}/${subsectorId}`
+			subsector
+				? `/dashboard/a/cycles/sectors/${sector}/${subsector}`
 				: `/dashboard/a/cycles/sectors/${sector}`,
 		);
 		setReturnLabel(
-			subsectorId
+			subsector
 				? t('constants.return.subsectorDetails.label')
 				: t('constants.return.sectorDetails.label'),
 		);
 		setCompleteLabel(
-			subsectorId
+			subsector
 				? t('constants.actions.saveChanges.label')
 				: t('create.subsector.complete.label'),
 		);
@@ -148,32 +150,54 @@ export default function CreateSubsectorLayout() {
 	//	Load initial values
 	useEffect(() => {
 		if (activeStep >= 2) return;
-		if (!searchParams.get('subsectorId')) return;
+		if (!searchParams.get('subsector')) return;
 
 		setIsFormSubmitting(true);
 		setDisabled(true);
 
-		// if (!singleSubsector.isSuccess) return;
+		if (!singleSubsector.isSuccess) {
+			if (singleSubsector.isError) {
+				console.error(
+					'There was an error loading the existing subsector data for editing:',
+					singleSubsector,
+				);
+				notifications.show({
+					color: 'red',
+					title: t('create.subsector.error.title'),
+					message: t('create.subsector.error.message'),
+					position: 'bottom-center',
+				});
+			}
+			return;
+		}
+
+		const transformedData = safeParse(
+			ReadToCreateSubsectorDataTransformer,
+			singleSubsector.data,
+		);
+		if (!transformedData.success) {
+			console.error(
+				'There was an error loading the existing subsector data for editing:',
+				transformedData.issues,
+			);
+			notifications.show({
+				color: 'red',
+				title: t('create.subsector.error.title'),
+				message: t('create.subsector.error.message'),
+				position: 'bottom-center',
+			});
+			return;
+		}
 
 		setIsFormSubmitting(false);
 		setDisabled(false);
 
-		// const transformedData = safeParse(
-		// 	CreateSubsectorDataSchema,
-		// 	singleSubsector.data,
-		// );
-		// if (!transformedData.success) return;
-
-		// form.setValues(transformedData.output);
-		// form.resetDirty(transformedData.output);
-		// form.validate();
+		form.setValues(transformedData.output);
+		form.resetDirty(transformedData.output);
+		form.validate();
 
 		handleSearchParamStep();
-	}, [
-		searchParams,
-		// singleSubsector.data,
-		handleSearchParamStep,
-	]);
+	}, [searchParams, singleSubsector.data, handleSearchParamStep]);
 
 	useEffect(() => setHandleFormSubmit(() => form.onSubmit(handleFormSubmit)), [handleFormSubmit]);
 	useEffect(

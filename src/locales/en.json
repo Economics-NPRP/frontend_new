@@ -2695,7 +2695,7 @@
       },
       "error": {
         "title": "There was an error creating the auction cycle",
-        "message": "There was an error whilst creating a new auction cycle, please view the console for more details."
+        "message": "Please check the console for further details"
       },
       "final": {
         "header": {
@@ -2868,7 +2868,8 @@
         }
       },
       "error": {
-        "title": "There was an error creating the subsector"
+        "title": "There was an error creating the subsector",
+        "message": "Please check the console for further details"
       },
       "title": "Create New Subsector",
       "complete": {

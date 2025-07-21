@@ -1,4 +1,5 @@
 export * from './_BaseProviders';
+export * from './AllAuctionCycles';
 export * from './AllCycleAdmins';
 export * from './AllOpenAuctionResults';
 export * from './AllSubsectors';
@@ -22,3 +23,4 @@ export * from './RealtimeBids';
 export * from './SingleAuction';
 export * from './SingleAuctionCycle';
 export * from './SingleFirm';
+export * from './SingleSubsector';

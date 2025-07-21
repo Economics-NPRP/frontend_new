@@ -27,7 +27,7 @@ export default function List() {
 	const t = useTranslations();
 	const { sector } = useParams();
 	const allSubsectors = useContext(AllSubsectorsBySectorContext);
-	const dropdownThreshold = useMatches({ base: 2, lg: 5, xl: 6 });
+	const dropdownThreshold = useMatches({ base: 2, md: 3, lg: 4, xl: 5 });
 
 	const [allowDropdown, setAllowDropdown] = useState(false);
 	const [expanded, setExpanded] = useState(false);
@@ -68,30 +68,17 @@ export default function List() {
 				<Group className={`${classes.list} ${expanded ? classes.expanded : ''}`}>
 					<Switch value={allSubsectors.isLoading}>
 						<Switch.True>
-							<SmallSubsectorCard
-								className={classes.card}
-								subsector={{
-									...DefaultSubsectorData,
-									sector: sector as SectorType,
-								}}
-								loading
-							/>
-							<SmallSubsectorCard
-								className={classes.card}
-								subsector={{
-									...DefaultSubsectorData,
-									sector: sector as SectorType,
-								}}
-								loading
-							/>
-							<SmallSubsectorCard
-								className={classes.card}
-								subsector={{
-									...DefaultSubsectorData,
-									sector: sector as SectorType,
-								}}
-								loading
-							/>
+							{new Array(dropdownThreshold).fill(0).map((_, index) => (
+								<SmallSubsectorCard
+									key={index}
+									className={classes.card}
+									subsector={{
+										...DefaultSubsectorData,
+										sector: sector as SectorType,
+									}}
+									loading
+								/>
+							))}
 						</Switch.True>
 						<Switch.False>
 							{allSubsectors.data.results.map((subsector) => (

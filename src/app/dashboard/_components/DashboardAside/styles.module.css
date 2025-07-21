@@ -2,8 +2,6 @@
 	@apply hidden;
 	@apply min-h-0;
 	@apply flex-shrink-0;
-	/* TODO: remove top padding once dashboard header is done */
-	@apply pt-20;
 	@apply bg-white border border-solid border-gray-300;
 	@apply transition-shadow duration-300;
 

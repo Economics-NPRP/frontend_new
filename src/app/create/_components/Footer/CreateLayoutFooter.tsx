@@ -92,6 +92,7 @@ export const CreateLayoutFooter = () => {
 									className={`${classes.primary} ${classes.button}`}
 									onClick={handleNextStep}
 									rightSection={<IconArrowNarrowRight size={16} />}
+									loading={isFormSubmitting}
 								>
 									{t('constants.actions.continue.label')}
 								</Button>

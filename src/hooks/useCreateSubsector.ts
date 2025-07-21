@@ -25,16 +25,16 @@ export const useCreateSubsector: CreateSubsectorProps = ({
 	const searchParams = useSearchParams();
 	const queryClient = useQueryClient();
 
-	const subsectorId = useMemo(() => searchParams.get('subsectorId'), [searchParams]);
+	const subsector = useMemo(() => searchParams.get('subsector'), [searchParams]);
 
 	return useMutation({
 		mutationFn: (formData) =>
-			throwError(createSubsector(formData, subsectorId), `createSubsector:${subsectorId}`),
+			throwError(createSubsector(formData, subsector), `createSubsector:${subsector}`),
 		onSettled,
 		onSuccess: (formData) => {
-			if (subsectorId)
+			if (subsector)
 				queryClient.invalidateQueries({
-					queryKey: [subsectorId, 'singleSubsector'],
+					queryKey: [subsector, 'singleSubsector'],
 				});
 			queryClient.invalidateQueries({
 				queryKey: ['allSubsectors'],
@@ -44,10 +44,10 @@ export const useCreateSubsector: CreateSubsectorProps = ({
 			});
 			notifications.show({
 				color: 'green',
-				title: subsectorId
+				title: subsector
 					? t('lib.subsectors.edit.success.title')
 					: t('lib.subsectors.create.success.title'),
-				message: subsectorId
+				message: subsector
 					? t('lib.subsectors.edit.success.message')
 					: t('lib.subsectors.create.success.message'),
 				position: 'bottom-center',
@@ -58,7 +58,7 @@ export const useCreateSubsector: CreateSubsectorProps = ({
 			console.error('Error creating a new auction subsector:', error.message);
 			notifications.show({
 				color: 'red',
-				title: subsectorId
+				title: subsector
 					? t('lib.subsectors.edit.error')
 					: t('lib.subsectors.create.error'),
 				message: error.message,

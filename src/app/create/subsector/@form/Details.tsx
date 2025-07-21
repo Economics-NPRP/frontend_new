@@ -8,6 +8,7 @@ import { useContextSelector } from 'use-context-selector';
 
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { ICreateSubsectorStepProps } from '@/pages/create/subsector/@form/page';
+import { imageRegex } from '@/schema/models';
 import {
 	Alert,
 	Container,
@@ -57,10 +58,7 @@ export const DetailsStep = ({ form, disabled }: ICreateSubsectorStepProps) => {
 
 		//	Check if the image url is valid
 		try {
-			const urlRegex = new RegExp(
-				/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/,
-			);
-			if (!urlRegex.test(form.getValues().image))
+			if (!imageRegex.test(form.getValues().image))
 				throw new Error('Not a valid URL, should start with http:// or https://');
 			const url = new URL(form.getValues().image);
 			return (
