@@ -2544,6 +2544,9 @@
           "label": "Description",
           "placeholder": "Enter description...",
           "description": "Write a descriptive statement about this auction cycle"
+        },
+        "startDatetime": {
+          "label": "Start Date and Time"
         }
       },
       "second": {
@@ -2864,6 +2867,17 @@
           "label": "Review & Create",
           "description": "Review all parameters and create the subsector"
         }
+      }
+    },
+    "dateTimePicker": {
+      "presets": {
+        "nextWeekStart": "Start of Next Week",
+        "nextWeek": "Next Week",
+        "nextMonthStart": "Start of Next Month",
+        "nextMonth": "Next Month",
+        "nextQuarterStart": "Start of Next Quarter",
+        "nextQuarter": "Next Quarter",
+        "tomorrow": "Tomorrow"
       }
     }
   }

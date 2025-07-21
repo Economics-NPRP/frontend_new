@@ -3,10 +3,8 @@ import {
 	InferInput,
 	InferOutput,
 	boolean,
-	date,
 	forward,
 	lazy,
-	minValue,
 	nonEmpty,
 	nullish,
 	number,
@@ -77,16 +75,16 @@ export const CreateAuctionDataSchema = object({
 	]).entries,
 
 	subsector: UuidSchema(),
-	startDatetime: pipe(date(), minValue(new Date())),
-	endDatetime: pipe(date(), minValue(new Date())),
+	startDatetime: string(),
+	endDatetime: string(),
 });
 export const CreateAuctionDataSchemaTransformer = pipe(
 	CreateAuctionDataSchema,
 	transform((input) => ({
 		...input,
 
-		startDatetime: DateTime.fromJSDate(input.startDatetime).toISO(),
-		endDatetime: DateTime.fromJSDate(input.endDatetime).toISO(),
+		startDatetime: DateTime.fromISO(input.startDatetime).toISO(),
+		endDatetime: DateTime.fromISO(input.endDatetime).toISO(),
 	})),
 );
 
@@ -114,7 +112,7 @@ export const DetailsAuctionDataSchema = pipe(
 	forward(
 		partialCheck(
 			[['startDatetime'], ['endDatetime']],
-			(input) => input.startDatetime <= input.endDatetime,
+			(input) => input.startDatetime < input.endDatetime,
 			'The start date must be before the end date.',
 		),
 		['startDatetime'],
@@ -164,6 +162,6 @@ export const DefaultCreateAuctionData: ICreateAuction = {
 	isPrimaryMarket: false,
 	permits: 0,
 	minBid: 0,
-	startDatetime: new Date(),
-	endDatetime: new Date(),
+	startDatetime: new Date().toISOString(),
+	endDatetime: new Date().toISOString(),
 };

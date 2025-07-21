@@ -10,7 +10,16 @@ import { SectorVariants } from '@/constants/SectorData';
 import { AllSubsectorsBySectorContext } from '@/contexts';
 import { SectorType } from '@/schema/models';
 import { BarChart, BarChartSeries } from '@mantine/charts';
-import { Container, Group, Select, Stack, Text, Title, useMantineColorScheme } from '@mantine/core';
+import {
+	Container,
+	Group,
+	Select,
+	Stack,
+	Text,
+	Title,
+	useMantineColorScheme,
+	useMatches,
+} from '@mantine/core';
 import { MonthPickerInput } from '@mantine/dates';
 import { IconCalendar, IconChartPie } from '@tabler/icons-react';
 
@@ -20,13 +29,14 @@ const MAX_SUBSECTORS = 4;
 
 export default function TimeSeries() {
 	const t = useTranslations();
+	const numCalendarColumns = useMatches({ base: 1, md: 2, lg: 3 });
 	const { sector } = useParams();
 	const { colorScheme } = useMantineColorScheme();
 	const allSubsectors = useContext(AllSubsectorsBySectorContext);
 
-	const [selectedPeriod, setSelectedPeriod] = useState<[Date | null, Date | null]>([
-		DateTime.now().startOf('year').toJSDate(),
-		DateTime.now().endOf('year').toJSDate(),
+	const [selectedPeriod, setSelectedPeriod] = useState<[DateTime | null, DateTime | null]>([
+		DateTime.now().startOf('year'),
+		DateTime.now().endOf('year'),
 	]);
 	const [selectedSubsector, setSelectedSubsector] = useState<string | null>(null);
 
@@ -79,13 +89,24 @@ export default function TimeSeries() {
 					<MonthPickerInput
 						className={classes.calendar}
 						w={200}
+						numberOfColumns={numCalendarColumns}
 						type="range"
 						valueFormat="YYYY MMM"
 						placeholder={t(
 							'dashboard.admin.cycles.sectors.details.timeSeries.filters.date.placeholder',
 						)}
-						value={selectedPeriod}
-						onChange={(value) => setSelectedPeriod(value)}
+						value={
+							selectedPeriod.map((date) => (date ? date.toISO() : null)) as [
+								string,
+								string,
+							]
+						}
+						onChange={(value) =>
+							setSelectedPeriod([
+								value[0] ? DateTime.fromISO(value[0]).startOf('month') : null,
+								value[1] ? DateTime.fromISO(value[1]).endOf('month') : null,
+							])
+						}
 						leftSection={<IconCalendar size={16} />}
 					/>
 					<Text className={classes.label}>
@@ -159,7 +180,6 @@ export default function TimeSeries() {
 					type="stacked"
 					dataKey="month"
 					gridAxis="xy"
-					minBarSize={8}
 					barProps={(series) => ({
 						maxBarSize: 48,
 						legendType: 'square',

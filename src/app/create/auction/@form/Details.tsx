@@ -4,10 +4,10 @@ import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
 import { useContextSelector } from 'use-context-selector';
 
+import { DateTimePicker } from '@/pages/create/_components/DateTimePicker';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { ICreateAuctionStepProps } from '@/pages/create/auction/@form/page';
 import { Alert, List, NumberInput, Select, Stack, Text, Title } from '@mantine/core';
-import { DateTimePicker } from '@mantine/dates';
 import { IconExclamationCircle } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
@@ -115,32 +115,16 @@ export const DetailsStep = ({ form }: ICreateAuctionStepProps) => {
 				<DateTimePicker
 					label={t('create.auction.details.startDatetime.label')}
 					description={t('create.auction.details.startDatetime.description')}
-					valueFormat="DD MMM YYYY hh:mm A"
 					minDate={DateTime.now().toJSDate()}
-					//	TODO: uncomment after migrating to mantine v8
-					// timePickerProps={{
-					// 	withDropdown: true,
-					// 	popoverProps: { withinPortal: false },
-					// 	format: '12h',
-					// }}
 					required
-					clearable
 					key={form.key('startDatetime')}
 					{...form.getInputProps('startDatetime')}
 				/>
 				<DateTimePicker
 					label={t('create.auction.details.endDatetime.label')}
 					description={t('create.auction.details.endDatetime.description')}
-					valueFormat="DD MMM YYYY hh:mm A"
 					minDate={DateTime.now().toJSDate()}
-					//	TODO: uncomment after migrating to mantine v8
-					// timePickerProps={{
-					// 	withDropdown: true,
-					// 	popoverProps: { withinPortal: false },
-					// 	format: '12h',
-					// }}
 					required
-					clearable
 					key={form.key('endDatetime')}
 					{...form.getInputProps('endDatetime')}
 				/>
