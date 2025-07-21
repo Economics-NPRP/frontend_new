@@ -17,9 +17,6 @@ export const DateTimePicker = ({ className, ...props }: IDateTimePickerProps) =>
 		<MantineDateTimePicker
 			classNames={{
 				root: `${classes.root} ${className}`,
-				day: classes.button,
-				monthsListControl: classes.button,
-				yearsListControl: classes.button,
 			}}
 			valueFormat="DD MMM YYYY hh:mm A"
 			numberOfColumns={numCalendarColumns}
@@ -27,7 +24,6 @@ export const DateTimePicker = ({ className, ...props }: IDateTimePickerProps) =>
 				withDropdown: true,
 				popoverProps: { withinPortal: false },
 				format: '12h',
-				classNames: { control: classes.button },
 			}}
 			presets={[
 				{
