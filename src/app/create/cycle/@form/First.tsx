@@ -4,27 +4,16 @@ import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
 import { useContextSelector } from 'use-context-selector';
 
+import { DateTimePicker } from '@/pages/create/_components/DateTimePicker';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { ICreateCycleStepProps } from '@/pages/create/cycle/@form/page';
-import {
-	Alert,
-	Input,
-	List,
-	Stack,
-	Text,
-	TextInput,
-	Textarea,
-	Title,
-	useMatches,
-} from '@mantine/core';
-import { DatePicker } from '@mantine/dates';
+import { Alert, List, Stack, Text, TextInput, Textarea, Title } from '@mantine/core';
 import { IconExclamationCircle, IconLabel } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
 export const FirstStep = ({ form, disabled }: ICreateCycleStepProps) => {
 	const t = useTranslations();
-	const numCalendarColumns = useMatches({ base: 1, md: 2, lg: 3 });
 	const formError = useContextSelector(CreateLayoutContext, (context) => context.formError);
 	const setFormError = useContextSelector(CreateLayoutContext, (context) => context.setFormError);
 
@@ -74,26 +63,26 @@ export const FirstStep = ({ form, disabled }: ICreateCycleStepProps) => {
 					key={form.key('description')}
 					{...form.getInputProps('description')}
 				/>
-				<Input.Wrapper
-					label={t('create.cycle.first.date.label')}
-					description={t('create.cycle.first.date.placeholder')}
-					error={
-						form.getInputProps('dates').error ||
-						form.getInputProps('dates.0').error ||
-						form.getInputProps('dates.1').error
-					}
+				<DateTimePicker
+					label={t('create.cycle.first.startDatetime.label')}
+					description={t('create.cycle.first.startDatetime.description')}
+					placeholder={t('create.cycle.first.startDatetime.placeholder')}
+					minDate={DateTime.now().plus({ days: 1 }).toJSDate()}
 					required
-				>
-					<DatePicker
-						className={`${classes.calendar} ${disabled ? 'pointer-events-none' : ''}`}
-						classNames={{ day: classes.day }}
-						type="range"
-						numberOfColumns={numCalendarColumns}
-						minDate={DateTime.now().plus({ days: 1 }).toJSDate()}
-						key={form.key('dates')}
-						{...form.getInputProps('dates')}
-					/>
-				</Input.Wrapper>
+					disabled={disabled}
+					key={form.key('startDatetime')}
+					{...form.getInputProps('startDatetime')}
+				/>
+				<DateTimePicker
+					label={t('create.cycle.first.endDatetime.label')}
+					description={t('create.cycle.first.endDatetime.description')}
+					placeholder={t('create.cycle.first.endDatetime.placeholder')}
+					minDate={DateTime.now().plus({ days: 1 }).toJSDate()}
+					required
+					disabled={disabled}
+					key={form.key('endDatetime')}
+					{...form.getInputProps('endDatetime')}
+				/>
 			</Stack>
 		</Stack>
 	);

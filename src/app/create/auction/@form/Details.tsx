@@ -115,6 +115,7 @@ export const DetailsStep = ({ form }: ICreateAuctionStepProps) => {
 				<DateTimePicker
 					label={t('create.auction.details.startDatetime.label')}
 					description={t('create.auction.details.startDatetime.description')}
+					placeholder={t('create.auction.details.startDatetime.placeholder')}
 					minDate={DateTime.now().toJSDate()}
 					required
 					key={form.key('startDatetime')}
@@ -123,6 +124,7 @@ export const DetailsStep = ({ form }: ICreateAuctionStepProps) => {
 				<DateTimePicker
 					label={t('create.auction.details.endDatetime.label')}
 					description={t('create.auction.details.endDatetime.description')}
+					placeholder={t('create.auction.details.endDatetime.placeholder')}
 					minDate={DateTime.now().toJSDate()}
 					required
 					key={form.key('endDatetime')}

@@ -1,0 +1,16 @@
+* {
+	@mixin dark {
+		.button {
+			&[data-in-range='true'] {
+				@apply bg-dark-400;
+			}
+
+			&[data-first-in-range='true'],
+			&[data-last-in-range='true'],
+			&[data-selected='true'],
+			&[data-active='true'] {
+				@apply bg-white text-dark-600;
+			}
+		}
+	}
+}
