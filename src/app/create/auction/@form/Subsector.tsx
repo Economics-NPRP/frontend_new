@@ -6,12 +6,13 @@ import { useContextSelector } from 'use-context-selector';
 
 import { BaseBadge, SectorBadge } from '@/components/Badge';
 import { SubsectorFormCard } from '@/components/SubsectorFormCard';
+import { Switch } from '@/components/SwitchCase';
 import { SubsectorSearch } from '@/constants/SubsectorData';
 import { AllSubsectorsContext } from '@/contexts';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { ICreateAuctionStepProps } from '@/pages/create/auction/@form/page';
 import { SectorChangeModalContext } from '@/pages/create/auction/_components/SectorChangeModal';
-import { ISubsectorData, SectorType } from '@/schema/models';
+import { DefaultSubsectorData, ISubsectorData, SectorType } from '@/schema/models';
 import {
 	Alert,
 	Divider,
@@ -24,7 +25,7 @@ import {
 	TextInput,
 	Title,
 } from '@mantine/core';
-import { IconExclamationCircle, IconSearch } from '@tabler/icons-react';
+import { IconAlertTriangle, IconExclamationCircle, IconSearch } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -39,8 +40,40 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 	const [selectedSubsectorData, setSelectedSubsectorData] = useState<ISubsectorData | null>(null);
 	const [searchFilter, setSearchFilter] = useState('');
 
-	const cardElements = useMemo(
-		() =>
+	const cardElements = useMemo(() => {
+		if (allSubsectors.isLoading)
+			return [
+				<SubsectorFormCard
+					key={0}
+					type="radio"
+					sector={'energy'}
+					subsector={DefaultSubsectorData}
+					loading
+				/>,
+				<SubsectorFormCard
+					key={1}
+					type="radio"
+					sector={'energy'}
+					subsector={DefaultSubsectorData}
+					loading
+				/>,
+				<SubsectorFormCard
+					key={2}
+					type="radio"
+					sector={'energy'}
+					subsector={DefaultSubsectorData}
+					loading
+				/>,
+				<SubsectorFormCard
+					key={3}
+					type="radio"
+					sector={'energy'}
+					subsector={DefaultSubsectorData}
+					loading
+				/>,
+			];
+
+		return (
 			allSubsectors.data.results
 				//	Make sure the current selected sector is first
 				.sort((a) => (a.sector === form.getValues().sector ? -1 : 1))
@@ -74,9 +107,14 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 							)),
 						);
 					return acc;
-				}, [] as Array<ReactNode>),
-		[allSubsectors.data.results, searchFilter, form.getValues().sector],
-	);
+				}, [] as Array<ReactNode>)
+		);
+	}, [
+		allSubsectors.isLoading,
+		allSubsectors.data.results,
+		searchFilter,
+		form.getValues().sector,
+	]);
 
 	const handleSubsectorChange = useCallback(
 		(value: string) => {
@@ -141,14 +179,24 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 				}}
 				label={t('create.auction.subsector.divider.selected')}
 			/>
-			{selectedSubsectorData && (
-				<SubsectorFormCard
-					type="readonly"
-					sector={form.getValues().sector}
-					subsector={selectedSubsectorData}
-					onClear={handleSubsectorClear}
-				/>
-			)}
+			<Switch value={selectedSubsectorData === null}>
+				<Switch.True>
+					<Stack className={classes.placeholder}>
+						<IconAlertTriangle size={24} className={classes.icon} />
+						<Text className={classes.text}>
+							{t('create.auction.subsector.placeholder.text')}
+						</Text>
+					</Stack>
+				</Switch.True>
+				<Switch.False>
+					<SubsectorFormCard
+						type="readonly"
+						sector={form.getValues().sector}
+						subsector={selectedSubsectorData!}
+						onClear={handleSubsectorClear}
+					/>
+				</Switch.False>
+			</Switch>
 			<Divider
 				classNames={{
 					root: classes.divider,

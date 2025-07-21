@@ -34,6 +34,22 @@
 	&.subsector {
 		@apply items-stretch;
 
+		> .placeholder {
+			@apply h-40;
+			@apply items-center justify-center;
+			@apply gap-4 px-16 py-8;
+			@apply bg-gray-50 border border-solid border-gray-300;
+
+			> .icon {
+				@apply text-gray-600;
+			}
+
+			> .text {
+				@apply text-center;
+				@apply paragraph-sm;
+			}
+		}
+
 		> .row {
 			@apply gap-2 items-center justify-center;
 
