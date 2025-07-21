@@ -1688,6 +1688,10 @@
         "ongoingCycle": {
           "label": "From Ongoing Cycle",
           "tooltip": "This auction is part of an ongoing auction cycle"
+        },
+        "secondaryMarket": {
+          "label": "Company-Owned Auction",
+          "tooltip": "This auction is owned by a company, not by the government"
         }
       },
       "search": {
