@@ -16,7 +16,7 @@
 		}
 
 		> .icon {
-			@apply text-gray-500;
+			@apply text-gray-500 flex-shrink-0;
 		}
 
 		> .value {

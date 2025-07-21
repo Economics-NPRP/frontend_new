@@ -35,8 +35,11 @@
 	@mixin dark {
 		.mantine-TimePicker-control,
 		.mantine-DateTimePicker-day,
+		.mantine-DateTimePicker-monthsListControl,
+		.mantine-DateTimePicker-yearsListControl,
 		.mantine-MonthPickerInput-monthsListControl,
-		.mantine-MonthPickerInput-yearsListControl {
+		.mantine-MonthPickerInput-yearsListControl,
+		.mantine-YearPickerInput-yearsListControl {
 			&[data-in-range='true'] {
 				@apply bg-dark-400;
 			}
