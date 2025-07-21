@@ -9,14 +9,14 @@ import { StatCard } from '@/components/StatCard';
 import { SectorVariants } from '@/constants/SectorData';
 import { AllSubsectorsBySectorContext } from '@/contexts';
 import { SectorType } from '@/schema/models';
-import { BarChart } from '@mantine/charts';
+import { BarChart, BarChartSeries } from '@mantine/charts';
 import { Container, Group, Select, Stack, Text, Title, useMantineColorScheme } from '@mantine/core';
 import { MonthPickerInput } from '@mantine/dates';
 import { IconCalendar, IconChartPie } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
-const MAX_SUBSECTORS = 5;
+const MAX_SUBSECTORS = 4;
 
 export default function TimeSeries() {
 	const t = useTranslations();
@@ -48,17 +48,18 @@ export default function TimeSeries() {
 		}));
 	}, [t, selectedPeriod, allSubsectors.data.results]);
 
-	const chartSeries = useMemo(() => {
+	const chartSeries = useMemo<Array<BarChartSeries>>(() => {
 		if (!allSubsectors.isSuccess) return [];
 
-		return allSubsectors.data.results.slice(0, MAX_SUBSECTORS + 1).map((sector, index) => ({
+		return allSubsectors.data.results.slice(0, MAX_SUBSECTORS + 1).map((subsector, index) => ({
 			name:
 				allSubsectors.data.resultCount > MAX_SUBSECTORS + 1 && index === MAX_SUBSECTORS
 					? t('constants.others')
-					: sector.title,
-			color: colorScheme === 'light' ? `url(#dark-${5 - index})` : `url(#dark-${index})`,
+					: subsector.title,
+			color: colorScheme === 'light' ? `url(#dark-${5 - index})` : `url(#dark-${index + 1})`,
+			index,
 		}));
-	}, [t, colorScheme, allSubsectors.data.results]);
+	}, [t, colorScheme, sector, allSubsectors.data.results]);
 
 	return (
 		<Stack className={classes.root}>
@@ -158,7 +159,16 @@ export default function TimeSeries() {
 					type="stacked"
 					dataKey="month"
 					gridAxis="xy"
-					barProps={{ maxBarSize: 48 }}
+					minBarSize={8}
+					barProps={(series) => ({
+						maxBarSize: 48,
+						legendType: 'square',
+						stroke: `var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`,
+						strokeWidth: 1,
+						strokeDasharray: '4 4',
+						//	@ts-expect-error - index is a custom property
+						strokeOpacity: (chartSeries.length - series.index + 1) / chartSeries.length,
+					})}
 					valueFormatter={(value) =>
 						t('constants.quantities.emissions.default', { value })
 					}
@@ -178,7 +188,7 @@ export default function TimeSeries() {
 					withLegend
 				>
 					<defs>
-						<pattern
+						{/* <pattern
 							id="dark-0"
 							patternUnits="userSpaceOnUse"
 							width={16}
@@ -199,7 +209,7 @@ export default function TimeSeries() {
 								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
 								opacity={0.05}
 							/>
-						</pattern>
+						</pattern> */}
 						<pattern
 							id="dark-1"
 							patternUnits="userSpaceOnUse"
@@ -212,14 +222,14 @@ export default function TimeSeries() {
 								height="16"
 								transform="translate(0,0)"
 								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
-								opacity={0.3}
+								opacity={0.2}
 							/>
 							<rect
 								width="10"
 								height="16"
 								transform="translate(6,0)"
 								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
-								opacity={0.2}
+								opacity={0.1}
 							/>
 						</pattern>
 						<pattern
@@ -234,14 +244,14 @@ export default function TimeSeries() {
 								height="16"
 								transform="translate(0,0)"
 								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
-								opacity={0.45}
+								opacity={0.4}
 							/>
 							<rect
 								width="9"
 								height="16"
 								transform="translate(7,0)"
 								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
-								opacity={0.35}
+								opacity={0.3}
 							/>
 						</pattern>
 						<pattern
@@ -278,14 +288,14 @@ export default function TimeSeries() {
 								height="16"
 								transform="translate(0,0)"
 								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
-								opacity={0.75}
+								opacity={0.8}
 							/>
 							<rect
 								width="7"
 								height="16"
 								transform="translate(9,0)"
 								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
-								opacity={0.65}
+								opacity={0.7}
 							/>
 						</pattern>
 						<pattern
@@ -300,14 +310,14 @@ export default function TimeSeries() {
 								height="16"
 								transform="translate(0,0)"
 								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
-								opacity={0.9}
+								opacity={1}
 							/>
 							<rect
 								width="6"
 								height="16"
 								transform="translate(10,0)"
 								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
-								opacity={0.8}
+								opacity={0.9}
 							/>
 						</pattern>
 					</defs>
