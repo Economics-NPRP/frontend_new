@@ -289,13 +289,15 @@ export const AuctionCarousel = ({ infinitePaginatedAuctions }: AuctionCarouselPr
 								viewport: classes.viewport,
 								indicators: classes.indicator,
 							}}
-							slidesToScroll={cardsPerScreen}
 							slideSize={`${100 / cardsPerScreen}%`}
 							slideGap={'md'}
-							align={'end'}
 							withControls={false}
 							getEmblaApi={setEmbla}
 							ref={containerRef}
+							emblaOptions={{
+								slidesToScroll: cardsPerScreen,
+								align: 'end',
+							}}
 						>
 							{auctions}
 							{infinitePaginatedAuctions.hasNextPage && (
