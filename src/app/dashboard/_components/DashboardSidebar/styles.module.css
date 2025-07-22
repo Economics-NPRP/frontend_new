@@ -2,7 +2,7 @@
 	@apply min-h-0;
 	@apply p-2 gap-2;
 	@apply flex-shrink-0;
-	@apply overflow-y-auto;
+	@apply overflow-y-auto overflow-x-hidden;
 	@apply bg-white border-0 border-r border-solid border-gray-300;
 
 	&.expanded {
@@ -245,10 +245,10 @@
 				}
 
 				&.active {
-					@apply bg-white text-dark-600;
+					@apply bg-dark-400 text-white;
 
 					.label {
-						@apply !text-dark-600;
+						@apply !text-white;
 					}
 				}
 			}
@@ -270,10 +270,10 @@
 				}
 
 				> .button {
-					@apply bg-white text-dark-600;
+					@apply bg-dark-400 text-white;
 
 					&:hover {
-						@apply bg-gray-100;
+						@apply bg-dark-300;
 					}
 				}
 			}

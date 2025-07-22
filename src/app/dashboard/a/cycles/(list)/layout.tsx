@@ -2,10 +2,11 @@ import { Metadata } from 'next';
 import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
-import { PaginatedAuctionCyclesProvider } from '@/contexts';
+import { AllAuctionCyclesProvider, PaginatedAuctionCyclesProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
 import { Stack } from '@mantine/core';
+import { IconCalendar } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -23,6 +24,7 @@ export default function CyclesList({ subbanners, list }: CyclesListProps) {
 	return withProviders(
 		<Stack className={classes.root}>
 			<DashboardHero
+				icon={<IconCalendar size={24} />}
 				title={t('constants.pages.dashboard.admin.cycles.title')}
 				description={t('constants.pages.dashboard.admin.cycles.description')}
 				returnButton={{ href: '/dashboard/a', label: t('constants.return.home.label') }}
@@ -41,5 +43,6 @@ export default function CyclesList({ subbanners, list }: CyclesListProps) {
 			{list}
 		</Stack>,
 		{ provider: PaginatedAuctionCyclesProvider },
+		{ provider: AllAuctionCyclesProvider },
 	);
 }

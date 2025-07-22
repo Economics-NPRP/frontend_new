@@ -3,9 +3,12 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Fragment, useMemo } from 'react';
+import { Fragment, useContext, useMemo } from 'react';
 
-import { SidebarLinks } from '@/pages/dashboard/_components/DashboardSidebar';
+import {
+	DashboardSidebarContext,
+	SidebarLinks,
+} from '@/pages/dashboard/_components/DashboardSidebar';
 import { Button, Divider, Stack, Tooltip } from '@mantine/core';
 
 import classes from './styles.module.css';
@@ -13,10 +16,11 @@ import classes from './styles.module.css';
 export const Links = () => {
 	const t = useTranslations();
 	const pathname = usePathname();
+	const { expanded } = useContext(DashboardSidebarContext);
 
 	const links = useMemo(() => {
 		const dashboardType = pathname.includes('/dashboard/a') ? 'admin' : 'firm';
-		const linkData = SidebarLinks[dashboardType](t);
+		const linkData = SidebarLinks[dashboardType](t, expanded);
 		return linkData.map(({ id, label, tooltip, icon, href, subHrefs }) =>
 			href ? (
 				<Tooltip label={tooltip}>
@@ -68,7 +72,7 @@ export const Links = () => {
 				</Fragment>
 			),
 		);
-	}, [pathname, t]);
+	}, [pathname, t, expanded]);
 
 	return <Stack className={classes.links}>{links}</Stack>;
 };

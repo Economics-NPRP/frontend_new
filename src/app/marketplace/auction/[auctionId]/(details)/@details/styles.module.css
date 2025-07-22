@@ -365,6 +365,10 @@
 
 			> .table {
 				@apply h-[480px];
+
+				.inner {
+					@apply overflow-y-auto min-h-0;
+				}
 			}
 		}
 	}

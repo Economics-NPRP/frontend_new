@@ -2,21 +2,25 @@
 
 import { useFormatter, useTranslations } from 'next-intl';
 import { ForwardRefExoticComponent, RefAttributes, useMemo } from 'react';
-import { Cell, Label, Pie, PieChart, Sector, Tooltip } from 'recharts';
+import { Cell, Label, Pie, PieChart as PieChartComponent, Sector, Tooltip } from 'recharts';
 import { PieSectorDataItem } from 'recharts/types/polar/Pie';
 
 import { PieChartCell } from '@mantine/charts';
-import { Container, Text, useMantineColorScheme } from '@mantine/core';
+import { BoxProps, Container, Text, useMantineColorScheme } from '@mantine/core';
 import { Icon, IconProps } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
-interface ChartProps {
+interface PieChartProps extends BoxProps {
 	chartData: Array<
-		PieChartCell & { icon: ForwardRefExoticComponent<IconProps & RefAttributes<Icon>> }
+		PieChartCell & {
+			icon?: ForwardRefExoticComponent<IconProps & RefAttributes<Icon>>;
+			label?: string;
+			opacity?: number;
+		}
 	>;
 }
-export const Chart = ({ chartData }: ChartProps) => {
+export const PieChart = ({ chartData, className, ...props }: PieChartProps) => {
 	const t = useTranslations();
 	const format = useFormatter();
 	const { colorScheme } = useMantineColorScheme();
@@ -30,9 +34,9 @@ export const Chart = ({ chartData }: ChartProps) => {
 	}, [chartData]);
 
 	return (
-		<Container className={`${classes.chart} bg-grid-md`}>
+		<Container className={`${classes.root} ${className} bg-grid-md`} {...props}>
 			<Container className={classes.gradient} />
-			<PieChart width={280} height={280}>
+			<PieChartComponent width={280} height={280}>
 				<Tooltip />
 				<Pie
 					data={chartData}
@@ -67,21 +71,43 @@ export const Chart = ({ chartData }: ChartProps) => {
 						const x = cx + radius * Math.cos(-midAngle * RADIAN);
 						const y = cy + radius * Math.sin(-midAngle * RADIAN);
 						const Icon = chartData[index].icon;
+						const label = chartData[index].label;
 
-						return (
-							<Icon
-								className={classes.icon}
-								size={16}
-								x={x}
-								y={y}
-								textAnchor={x > cx ? 'start' : 'end'}
-								dominantBaseline="central"
-							/>
-						);
+						if (!Icon && !label) return null;
+
+						if (label)
+							return (
+								<text
+									className={classes.label}
+									x={x}
+									y={y}
+									textAnchor="middle"
+									dominantBaseline="middle"
+								>
+									{label}
+								</text>
+							);
+
+						if (Icon)
+							return (
+								<Icon
+									className={classes.icon}
+									size={16}
+									x={x}
+									y={y}
+									textAnchor="middle"
+									dominantBaseline="middle"
+								/>
+							);
 					}}
 				>
 					{chartData.map((entry, index) => (
-						<Cell key={`cell-${index}`} fill={entry.color} className={classes.cell} />
+						<Cell
+							key={`cell-${index}`}
+							fill={entry.color}
+							opacity={entry.opacity || 1}
+							className={classes.cell}
+						/>
 					))}
 					<Label
 						content={({ viewBox }) => {
@@ -96,7 +122,7 @@ export const Chart = ({ chartData }: ChartProps) => {
 									>
 										<Text
 											component="tspan"
-											className={`${classes.key} x`}
+											className={classes.key}
 											x={viewBox.cx}
 											y={(viewBox.cy || 0) - 8}
 										>
@@ -118,7 +144,7 @@ export const Chart = ({ chartData }: ChartProps) => {
 						}}
 					/>
 				</Pie>
-			</PieChart>
+			</PieChartComponent>
 		</Container>
 	);
 };

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useMemo } from 'react';
 
 import { ActionIcon, Anchor, BoxProps, Divider, Group, Stack, Text } from '@mantine/core';
-import { IconBox, IconBrandLinkedin, IconBrandX } from '@tabler/icons-react';
+import { IconBox, IconBrandLinkedinFilled, IconBrandX } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -83,7 +83,8 @@ export const Footer = ({ className, ...props }: FooterProps) => {
 						className={classes.button}
 						variant="subtle"
 						component={Link}
-						href="ecodesign.global"
+						href="https://ecodesign.global/"
+						target="_blank"
 					>
 						<svg
 							width="16"
@@ -106,15 +107,17 @@ export const Footer = ({ className, ...props }: FooterProps) => {
 						className={classes.button}
 						variant="subtle"
 						component={Link}
-						href="linkedin.com"
+						href="https://www.linkedin.com/"
+						target="_blank"
 					>
-						<IconBrandLinkedin size={16} />
+						<IconBrandLinkedinFilled size={16} />
 					</ActionIcon>
 					<ActionIcon
 						className={classes.button}
 						variant="subtle"
 						component={Link}
-						href="x.com"
+						href="https://x.com/"
+						target="_blank"
 					>
 						<IconBrandX size={16} />
 					</ActionIcon>

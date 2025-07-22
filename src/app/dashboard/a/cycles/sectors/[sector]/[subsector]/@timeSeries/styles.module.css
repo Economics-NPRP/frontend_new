@@ -1,0 +1,162 @@
+.root {
+	@apply col-span-full;
+	@apply p-6;
+	@apply items-stretch;
+	@apply bg-white border border-solid border-gray-300;
+	@apply transition-shadow duration-300;
+
+	> .header {
+		@apply flex-col items-center justify-center flex-nowrap;
+		@apply gap-2;
+
+		> .label {
+			@apply flex-auto;
+			@apply gap-0;
+			@apply flex-col items-center;
+
+			> .title {
+				@apply heading-3 text-center;
+			}
+
+			> .subtitle {
+				@apply paragraph-sm text-center;
+			}
+		}
+
+		> .filters {
+			@apply gap-2 flex-nowrap;
+			@apply flex-shrink-0;
+			@apply flex-col items-center justify-center;
+
+			> .label {
+				@apply paragraph-sm;
+				@apply mt-2;
+			}
+
+			> .dropdown {
+				@apply flex-shrink-0;
+			}
+		}
+	}
+
+	> .stats {
+		@apply gap-0;
+		@apply grid grid-cols-1 items-center justify-center;
+
+		> .stat {
+			@apply flex-auto;
+			@apply px-6 py-3;
+			@apply border-0 border-b border-gray-100;
+
+			&:last-child {
+				@apply border-0;
+			}
+
+			&:hover {
+				box-shadow: none;
+			}
+		}
+	}
+
+	> .chart {
+		@apply relative;
+		@apply mt-4;
+
+		> .gradient {
+			@apply absolute top-0 left-0;
+			@apply w-full h-full;
+
+			background: radial-gradient(
+				at center,
+				rgba(255, 255, 255, 0) 25%,
+				rgba(255, 255, 255, 1) 100%
+			);
+		}
+
+		.legend {
+			@apply justify-center;
+		}
+
+		.forecast tspan {
+			@apply display-md;
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+			> .header {
+				@apply flex-row;
+
+				> .label {
+					@apply items-start;
+
+					> .title,
+					> .subtitle {
+						@apply text-left;
+					}
+				}
+
+				> .filters {
+					@apply flex-row justify-end;
+
+					> .label {
+						@apply mt-0 ml-2;
+					}
+				}
+			}
+
+			> .stats {
+				@apply grid-cols-2;
+
+				> .stat {
+					&:nth-child(1),
+					&:nth-child(3) {
+						@apply border-r;
+					}
+
+					&:nth-child(3),
+					&:nth-child(4) {
+						@apply border-b-0;
+					}
+				}
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root {
+			@apply px-8 py-6;
+
+			> .stats {
+				@apply grid-cols-4;
+
+				> .stat {
+					@apply border-b-0;
+
+					&:nth-child(2) {
+						@apply border-r;
+					}
+				}
+			}
+		}
+	}
+
+	@mixin dark {
+		.root {
+			@apply bg-dark-700 border-dark-500;
+
+			> .stats > .stat {
+				@apply border-dark-500;
+			}
+
+			> .chart > .gradient {
+				background: radial-gradient(
+					at center,
+					rgba(26, 27, 30, 0) 25%,
+					rgba(26, 27, 30, 1) 100%
+				);
+			}
+		}
+	}
+}

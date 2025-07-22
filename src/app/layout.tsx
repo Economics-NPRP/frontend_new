@@ -2,7 +2,7 @@ import Providers from 'app/providers';
 import 'mantine-datatable/styles.layer.css';
 import { type Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getTimeZone } from 'next-intl/server';
+import { getMessages } from 'next-intl/server';
 import Head from 'next/head';
 import { getLangDir } from 'rtl-detect';
 import * as v from 'valibot';
@@ -30,7 +30,6 @@ export default async function RootLayout({
 	const locale = await getUserLocale();
 	const direction = getLangDir(locale);
 	const messages = await getMessages();
-	const timezone = await getTimeZone();
 
 	v.setGlobalConfig({ lang: locale === 'ar-QA' ? 'ar' : 'en' });
 
@@ -44,7 +43,6 @@ export default async function RootLayout({
 					<DatesProvider
 						settings={{
 							locale,
-							timezone,
 							firstDayOfWeek: 0,
 							weekendDays: [5, 6],
 						}}

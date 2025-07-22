@@ -1,5 +1,6 @@
 import MiniSearch from 'minisearch';
 
+import { StopWords } from '@/constants/StopWords';
 import English from '@/locales/en.json';
 import {
 	AgricultureSubsectorType,
@@ -385,27 +386,13 @@ export const AgricultureSubsectorList = [
 ] as const;
 export const WasteSubsectorList = ['landfills', 'wasteProcessing'] as const;
 
-const stopWords = new Set([
-	'and',
-	'or',
-	'the',
-	'a',
-	'an',
-	'of',
-	'in',
-	'for',
-	'to',
-	'on',
-	'at',
-	'by',
-]);
 export const SubsectorSearch = new MiniSearch<SubsectorData>({
-	fields: ['id', 'title', 'description', 'alt', 'keywords'],
-	storeFields: ['id'],
+	fields: ['id', 'image', 'title', 'description', 'alt', 'keywords'],
+	storeFields: ['id', 'image', 'title', 'description', 'alt', 'keywords'],
 	searchOptions: {
 		boost: { id: 2, title: 4, description: 2, keywords: 2 },
 		fuzzy: 0.2,
 		prefix: true,
 	},
-	processTerm: (term) => (stopWords.has(term) ? null : term.toLowerCase()),
+	processTerm: (term) => (StopWords.has(term) ? null : term.toLowerCase()),
 });

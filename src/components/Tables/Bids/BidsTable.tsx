@@ -68,6 +68,8 @@ export interface BidsTableProps extends TableProps {
 
 	withViewAllButton?: boolean;
 	onViewAll?: () => void;
+
+	tableClassName?: string;
 }
 export const BidsTable = ({
 	bids,
@@ -90,6 +92,7 @@ export const BidsTable = ({
 	onViewAll,
 
 	className,
+	tableClassName,
 	...props
 }: BidsTableProps) => {
 	const t = useTranslations();
@@ -347,7 +350,7 @@ export const BidsTable = ({
 					</Group>
 				</Stack>
 			)}
-			<Stack className={classes.table} ref={tableContainerRef}>
+			<Stack className={`${classes.table} ${tableClassName}`} ref={tableContainerRef}>
 				<Table highlightOnHover withColumnBorders stickyHeader {...props}>
 					<Table.Thead>
 						<Table.Tr>

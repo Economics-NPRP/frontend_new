@@ -6,6 +6,7 @@ import { PaginatedFirmsProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
 import { Stack } from '@mantine/core';
+import { IconBuildingSkyscraper } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -23,6 +24,7 @@ export default function FirmsList({ subbanners, table }: FirmsListProps) {
 	return withProviders(
 		<Stack className={classes.root}>
 			<DashboardHero
+				icon={<IconBuildingSkyscraper size={24} />}
 				title={t('constants.pages.dashboard.admin.firms.title')}
 				description={t('constants.pages.dashboard.admin.firms.description')}
 				returnButton={{ href: '/dashboard/a', label: t('constants.return.home.label') }}

@@ -5,10 +5,11 @@
 	@apply transition-shadow duration-300;
 
 	> .header {
-		@apply items-center justify-between flex-nowrap;
-		@apply gap-1;
+		@apply items-center justify-center flex-nowrap;
+		@apply gap-2;
 
 		> .label {
+			@apply flex-auto;
 			@apply gap-0 items-start;
 
 			> .title {
@@ -26,60 +27,7 @@
 	}
 
 	> .chart {
-		@apply relative;
 		@apply py-4;
-		@apply flex flex-col items-center justify-center;
-
-		> .gradient {
-			@apply absolute top-0 left-0;
-			@apply w-full h-full;
-
-			background: radial-gradient(
-				at center,
-				rgba(255, 255, 255, 0) 25%,
-				rgba(255, 255, 255, 1) 100%
-			);
-		}
-
-		g {
-			@apply outline-none;
-		}
-
-		.cell {
-			@apply opacity-75;
-			@apply transition-opacity duration-300;
-			@apply outline-none;
-
-			&.active {
-				@apply opacity-100;
-			}
-
-			&:hover {
-				@apply opacity-100;
-			}
-		}
-
-		.icon {
-			@apply pointer-events-none;
-			@apply text-white;
-			@apply -translate-x-2 -translate-y-2;
-		}
-
-		.label {
-			@apply absolute;
-			@apply flex flex-col items-center justify-center;
-			@apply gap-0;
-
-			> .key {
-				@apply paragraph-sm;
-				@apply fill-current;
-			}
-
-			> .value {
-				@apply numeric-xl;
-				@apply fill-current;
-			}
-		}
 	}
 
 	> .table {
@@ -154,28 +102,6 @@
 	@mixin dark {
 		.root {
 			@apply bg-dark-700 border-dark-500;
-
-			> .chart {
-				> .gradient {
-					background: radial-gradient(
-						at center,
-						rgba(26, 27, 30, 0) 25%,
-						rgba(26, 27, 30, 1) 100%
-					);
-				}
-
-				.cell {
-					@apply opacity-60;
-
-					&.active {
-						@apply opacity-90;
-					}
-
-					&:hover {
-						@apply opacity-90;
-					}
-				}
-			}
 
 			> .table td:first-child,
 			> .table th:first-child {

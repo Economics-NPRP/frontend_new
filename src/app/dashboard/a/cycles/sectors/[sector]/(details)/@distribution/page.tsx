@@ -1,0 +1,267 @@
+'use client';
+
+import { sortBy } from 'lodash-es';
+import { DateTime } from 'luxon';
+import { DataTable, DataTableSortStatus } from 'mantine-datatable';
+import { useFormatter, useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { useContext, useMemo, useState } from 'react';
+
+import { BaseBadge } from '@/components/Badge';
+import { PieChart } from '@/components/Charts/Pie';
+import { SectorVariants } from '@/constants/SectorData';
+import { StopWords } from '@/constants/StopWords';
+import { AllSubsectorsBySectorContext } from '@/contexts';
+import { DATE_PICKER_FORMAT_STRING } from '@/pages/create/_components/DateTimePicker';
+import { SectorDetailsPageContext } from '@/pages/dashboard/a/cycles/sectors/[sector]/(details)/_components/Providers';
+import { SectorType } from '@/schema/models';
+import { Anchor, FloatingIndicator, Group, Stack, Tabs, Text, Title } from '@mantine/core';
+import { YearPickerInput } from '@mantine/dates';
+import { IconCalendar } from '@tabler/icons-react';
+
+import classes from './styles.module.css';
+
+const MAX_SUBSECTORS = 5;
+
+interface TableData {
+	id: string;
+	title: string;
+	permits: number;
+	emissions: number;
+	auctions: number;
+}
+
+export default function Distribution() {
+	const t = useTranslations();
+	const format = useFormatter();
+	const allSubsectors = useContext(AllSubsectorsBySectorContext);
+	const { sector } = useParams();
+
+	const { selectedPeriod, setSelectedPeriod } = useContext(SectorDetailsPageContext);
+
+	const [type, setType] = useState<'permits' | 'emissions' | 'auctions'>('permits');
+	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<TableData>>({
+		columnAccessor: 'permits',
+		direction: 'desc',
+	});
+
+	const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
+	const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
+	const setControlRef = (val: string) => (node: HTMLButtonElement) => {
+		controlsRefs[val] = node;
+		setControlsRefs(controlsRefs);
+	};
+
+	const rawData = useMemo<Array<TableData>>(
+		() =>
+			allSubsectors.data.results.slice(0, MAX_SUBSECTORS + 1).map((sector, index) => ({
+				id: sector.id,
+				title:
+					allSubsectors.data.resultCount > MAX_SUBSECTORS + 1 && index === MAX_SUBSECTORS
+						? t('constants.others')
+						: sector.title,
+				permits: Math.round(Math.random() * 100000),
+				emissions: Math.round(Math.random() * 100000),
+				auctions: Math.round(Math.random() * 1000),
+			})),
+		[t, allSubsectors.data.results],
+	);
+
+	const tableData = useMemo<Array<TableData>>(() => {
+		const data = sortBy(rawData, sortStatus.columnAccessor);
+		return sortStatus.direction === 'desc' ? data.reverse() : data;
+	}, [rawData, sortStatus]);
+
+	const tableTotals = useMemo(
+		() => ({
+			permits: rawData.reduce((acc, item) => acc + item.permits, 0),
+			emissions: rawData.reduce((acc, item) => acc + item.emissions, 0),
+			auctions: rawData.reduce((acc, item) => acc + item.auctions, 0),
+		}),
+		[rawData],
+	);
+
+	const chartData = useMemo(
+		() =>
+			rawData.map((item, index) => ({
+				name: item.title,
+				value: item[type],
+				color: `var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`,
+				opacity: (rawData.length - index) / (rawData.length + 1),
+				label: item.title
+					.split(' ')
+					.filter((word) => !StopWords.has(word))
+					.map((word) => word[0].toLocaleUpperCase())
+					.filter((word) => /[a-zA-Z]/.test(word))
+					.slice(0, 3)
+					.join(''),
+			})),
+		[rawData, type, sector],
+	);
+
+	return (
+		<Stack className={classes.root}>
+			<Group className={classes.header}>
+				<Stack className={classes.label}>
+					<Title order={2} className={classes.title}>
+						{t('dashboard.admin.cycles.sectors.details.distribution.title')}
+					</Title>
+					<Text className={classes.subtitle}>
+						{t('dashboard.admin.cycles.sectors.details.distribution.subtitle')}
+					</Text>
+				</Stack>
+				<Group className={classes.filters}>
+					<Text className={classes.label}>
+						{t(
+							'dashboard.admin.cycles.sectors.details.distribution.filters.date.label',
+						)}
+					</Text>
+					<YearPickerInput
+						className={classes.dropdown}
+						w={80}
+						placeholder={t(
+							'dashboard.admin.cycles.sectors.details.distribution.filters.date.placeholder',
+						)}
+						value={
+							selectedPeriod
+								? selectedPeriod.toFormat(DATE_PICKER_FORMAT_STRING)
+								: null
+						}
+						onChange={(value) =>
+							setSelectedPeriod(
+								value ? DateTime.fromISO(value) : DateTime.now().startOf('year'),
+							)
+						}
+						leftSection={<IconCalendar size={16} />}
+					/>
+				</Group>
+			</Group>
+			<Tabs
+				classNames={{ root: classes.tabs, list: classes.list, tab: classes.tab }}
+				variant="none"
+				value={type}
+				onChange={(value) => setType(value as 'permits' | 'emissions' | 'auctions')}
+			>
+				<Tabs.List ref={setRootRef} grow>
+					<Tabs.Tab ref={setControlRef('permits')} value="permits">
+						{t('constants.permits.key')}
+					</Tabs.Tab>
+					<Tabs.Tab ref={setControlRef('emissions')} value="emissions">
+						{t('constants.emissions.key')}
+					</Tabs.Tab>
+					<Tabs.Tab ref={setControlRef('auctions')} value="auctions">
+						{t('constants.auctions.key')}
+					</Tabs.Tab>
+
+					<FloatingIndicator
+						className={classes.indicator}
+						target={type ? controlsRefs[type] : null}
+						parent={rootRef}
+					/>
+				</Tabs.List>
+			</Tabs>
+			<PieChart className={classes.chart} chartData={chartData} />
+			<DataTable
+				className={classes.table}
+				columns={[
+					{
+						accessor: 'title',
+						sortable: false,
+						title: t(
+							'dashboard.admin.cycles.sectors.details.distribution.columns.subsector',
+						),
+						width: 160,
+						ellipsis: true,
+						render: (record) => {
+							return (
+								<Group className={classes.cell}>
+									<Anchor
+										component={Link}
+										className={classes.name}
+										href={`/dashboard/a/cycles/sectors/${record.id}`}
+									>
+										{record.title}
+									</Anchor>
+								</Group>
+							);
+						},
+					},
+					{
+						accessor: 'permits',
+						sortable: true,
+						title: t(
+							'dashboard.admin.cycles.sectors.details.distribution.columns.permits',
+						),
+						render: (record) => (
+							<Group className={classes.cell}>
+								<Text className={classes.value}>
+									{format.number(record.permits)}
+								</Text>
+								<BaseBadge className={classes.badge} variant="light">
+									{t('constants.quantities.percent.integer', {
+										value: Math.round(
+											(record.permits / tableTotals.permits) * 100,
+										),
+									})}
+								</BaseBadge>
+							</Group>
+						),
+					},
+					{
+						accessor: 'emissions',
+						sortable: true,
+						title: t(
+							'dashboard.admin.cycles.sectors.details.distribution.columns.emissions',
+						),
+						render: (record) => (
+							<Group className={classes.cell}>
+								<Text className={classes.value}>
+									{t('constants.quantities.emissions.default', {
+										value: record.emissions,
+									})}
+								</Text>
+								<BaseBadge className={classes.badge} variant="light">
+									{t('constants.quantities.percent.integer', {
+										value: Math.round(
+											(record.emissions / tableTotals.emissions) * 100,
+										),
+									})}
+								</BaseBadge>
+							</Group>
+						),
+					},
+					{
+						accessor: 'auctions',
+						sortable: true,
+						title: t(
+							'dashboard.admin.cycles.sectors.details.distribution.columns.auctions',
+						),
+						render: (record) => (
+							<Group className={classes.cell}>
+								<Text className={classes.value}>
+									{format.number(record.auctions)}
+								</Text>
+								<BaseBadge className={classes.badge} variant="light">
+									{t('constants.quantities.percent.integer', {
+										value: Math.round(
+											(record.auctions / tableTotals.auctions) * 100,
+										),
+									})}
+								</BaseBadge>
+							</Group>
+						),
+					},
+				]}
+				records={tableData}
+				sortStatus={sortStatus}
+				onSortStatusChange={setSortStatus}
+				pinFirstColumn
+				withRowBorders
+				withColumnBorders
+				highlightOnHover
+				idAccessor="id"
+			/>
+		</Stack>
+	);
+}

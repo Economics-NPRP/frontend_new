@@ -1,0 +1,103 @@
+.root {
+	@apply gap-8 items-center;
+
+	> .header {
+		@apply gap-1;
+		@apply items-stretch;
+
+		> .heading {
+			@apply text-center heading-2;
+		}
+
+		> .subheading {
+			@apply text-center paragraph-sm;
+		}
+
+		> .actions {
+			@apply mt-2;
+			@apply gap-2 justify-center items-center;
+		}
+	}
+
+	> .alert {
+		@apply self-stretch;
+	}
+
+	&.details {
+		@apply items-stretch;
+
+		.image {
+			@apply relative;
+			@apply h-80;
+			@apply overflow-hidden;
+
+			> img {
+				@apply object-contain;
+			}
+
+			> .placeholder {
+				@apply absolute top-0 left-0;
+				@apply w-full h-full;
+				@apply flex flex-col items-center justify-center;
+				@apply gap-2;
+				@apply bg-gray-100 text-gray-500;
+				@apply pointer-events-none;
+
+				> .text {
+					@apply paragraph-sm-g5;
+				}
+
+				&.error {
+					@apply bg-red-50 text-red-300;
+
+					> .text {
+						@apply !text-red-300;
+					}
+				}
+			}
+		}
+	}
+
+	&.final {
+		@apply gap-1 justify-center;
+		@apply my-auto;
+
+		> .icon {
+			@apply self-center mb-4;
+			@apply text-green-600;
+		}
+
+		> .heading {
+			@apply text-center heading-2;
+		}
+
+		> .subheading {
+			@apply text-center paragraph-sm;
+		}
+
+		> .button {
+			@apply w-[320px] mt-6 self-center;
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root {
+		}
+	}
+
+	@mixin dark {
+		.root.details .image > .placeholder {
+			@apply bg-dark-600 text-dark-200;
+
+			&.error {
+				@apply bg-red-600/10 text-red-600/50;
+
+				> .text {
+					@apply !text-red-600/50;
+				}
+			}
+		}
+	}
+}

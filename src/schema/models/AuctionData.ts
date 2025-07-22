@@ -3,10 +3,8 @@ import {
 	InferInput,
 	InferOutput,
 	boolean,
-	date,
 	forward,
 	lazy,
-	minValue,
 	nonEmpty,
 	nullish,
 	number,
@@ -21,14 +19,13 @@ import {
 	url,
 } from 'valibot';
 
-import { AllSubsectorVariants } from '@/constants/SubsectorData';
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
 
-import { ReadAuctionCycleDataSchema } from './AuctionCycleData';
+import { BaseAuctionCycleDataSchema } from './AuctionCycleData';
 import { AuctionTypeSchema } from './AuctionType';
 import { DefaultUserData } from './GeneralUserData';
 import { SectorTypeSchema } from './SectorData';
-import { SubsectorTypeSchema } from './SubsectorData';
+import { ReadSubsectorDataSchema } from './SubsectorData';
 import { BaseUserDataSchema } from './UserData';
 
 export const BaseAuctionDataSchema = object({
@@ -77,21 +74,17 @@ export const CreateAuctionDataSchema = object({
 		'hasJoined',
 	]).entries,
 
-	subsector: SubsectorTypeSchema,
-	startDatetime: pipe(date(), minValue(new Date())),
-	endDatetime: pipe(date(), minValue(new Date())),
+	subsector: UuidSchema(),
+	startDatetime: string(),
+	endDatetime: string(),
 });
 export const CreateAuctionDataSchemaTransformer = pipe(
 	CreateAuctionDataSchema,
 	transform((input) => ({
 		...input,
-		subsector: undefined,
 
-		startDatetime: DateTime.fromJSDate(input.startDatetime).toISO(),
-		endDatetime: DateTime.fromJSDate(input.endDatetime).toISO(),
-		image: AllSubsectorVariants[input.subsector]?.image,
-		title: AllSubsectorVariants[input.subsector]?.title,
-		description: AllSubsectorVariants[input.subsector]?.description,
+		startDatetime: DateTime.fromISO(input.startDatetime).toISO(),
+		endDatetime: DateTime.fromISO(input.endDatetime).toISO(),
 	})),
 );
 
@@ -99,7 +92,9 @@ export const ReadAuctionDataSchema = object({
 	...BaseAuctionDataSchema.entries,
 
 	owner: BaseUserDataSchema,
-	cycle: lazy(() => nullish(ReadAuctionCycleDataSchema)),
+	cycle: lazy(() => nullish(BaseAuctionCycleDataSchema)),
+	//	TODO: uncomment when backend has subsector data
+	// subsector: lazy(() => ReadSubsectorDataSchema),
 });
 export const UpdateAuctionDataSchema = CreateAuctionDataSchema;
 
@@ -117,7 +112,7 @@ export const DetailsAuctionDataSchema = pipe(
 	forward(
 		partialCheck(
 			[['startDatetime'], ['endDatetime']],
-			(input) => input.startDatetime <= input.endDatetime,
+			(input) => input.startDatetime < input.endDatetime,
 			'The start date must be before the end date.',
 		),
 		['startDatetime'],
@@ -167,6 +162,6 @@ export const DefaultCreateAuctionData: ICreateAuction = {
 	isPrimaryMarket: false,
 	permits: 0,
 	minBid: 0,
-	startDatetime: new Date(),
-	endDatetime: new Date(),
+	startDatetime: new Date().toISOString(),
+	endDatetime: new Date().toISOString(),
 };

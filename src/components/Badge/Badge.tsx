@@ -282,19 +282,31 @@ export const TrendBadge = ({ diff, negate, className, ...props }: TrendBadgeProp
 	const adjustedDiff = useMemo(() => (negate ? -diff : diff), [diff, negate]);
 
 	return (
-		<BaseBadge
-			className={`${classes.root} ${classes.trend} ${className}`}
-			variant="light"
-			color={adjustedDiff >= 0 ? 'green' : 'red'}
-			leftSection={
-				adjustedDiff >= 0 ? <IconTrendingUp size={12} /> : <IconTrendingDown size={12} />
+		<Tooltip
+			label={
+				adjustedDiff >= 0
+					? t('constants.trend.positive', { value: diff })
+					: t('constants.trend.negative', { value: Math.abs(diff) })
 			}
-			{...props}
 		>
-			{adjustedDiff >= 0
-				? t('constants.trend.positive', { value: diff })
-				: t('constants.trend.negative', { value: Math.abs(diff) })}
-		</BaseBadge>
+			<BaseBadge
+				className={`${classes.root} ${classes.trend} ${className}`}
+				variant="light"
+				color={adjustedDiff >= 0 ? 'green' : 'red'}
+				leftSection={
+					adjustedDiff >= 0 ? (
+						<IconTrendingUp size={12} />
+					) : (
+						<IconTrendingDown size={12} />
+					)
+				}
+				{...props}
+			>
+				{adjustedDiff >= 0
+					? t('constants.trend.positive', { value: diff })
+					: t('constants.trend.negative', { value: Math.abs(diff) })}
+			</BaseBadge>
+		</Tooltip>
 	);
 };
 

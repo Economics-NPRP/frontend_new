@@ -16,7 +16,7 @@
 		}
 
 		> .icon {
-			@apply text-gray-500;
+			@apply text-gray-500 flex-shrink-0;
 		}
 
 		> .value {
@@ -50,7 +50,7 @@
 		@apply shadow-xs;
 	}
 
-	&.positive {
+	/* &.positive {
 		background-image: radial-gradient(
 			at right top,
 			rgba(64, 192, 87, 0.05) 0%,
@@ -64,19 +64,19 @@
 			rgba(250, 82, 82, 0.05) 0%,
 			rgba(250, 82, 82, 0) 50%
 		);
-	}
+	} */
 }
 
 * {
 	@mixin dark {
 		.root {
-			@apply bg-dark-700 border-dark-400 text-dark-50;
+			@apply bg-dark-700 border-dark-500 text-dark-50;
 
 			> .icon {
 				@apply text-gray-400;
 			}
 
-			&.positive {
+			/* &.positive {
 				background-image: radial-gradient(
 					at right top,
 					rgba(64, 192, 87, 0.04) 0%,
@@ -90,7 +90,7 @@
 					rgba(250, 82, 82, 0.04) 0%,
 					rgba(250, 82, 82, 0) 40%
 				);
-			}
+			} */
 		}
 	}
 }

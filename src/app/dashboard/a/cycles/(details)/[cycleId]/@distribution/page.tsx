@@ -6,8 +6,8 @@ import { useFormatter, useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 
 import { BaseBadge } from '@/components/Badge';
+import { PieChart } from '@/components/Charts/Pie';
 import { SectorVariants } from '@/constants/SectorData';
-import { Chart } from '@/pages/dashboard/a/cycles/(details)/[cycleId]/@distribution/Chart';
 import { SectorType } from '@/schema/models';
 import { Container, Group, Select, Stack, Text, Title } from '@mantine/core';
 
@@ -99,6 +99,7 @@ export default function Distribution() {
 				value: item[type],
 				color: SectorVariants[item.id as SectorType]!.color.hex!,
 				icon: SectorVariants[item.id as SectorType]!.Icon,
+				opacity: 0.6,
 			})),
 		[rawData, type],
 	);
@@ -136,7 +137,7 @@ export default function Distribution() {
 					allowDeselect={false}
 				/>
 			</Group>
-			<Chart chartData={chartData} />
+			<PieChart className={classes.chart} chartData={chartData} />
 			<DataTable
 				className={classes.table}
 				columns={[

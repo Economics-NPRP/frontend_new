@@ -69,36 +69,38 @@ export const StatCard = ({
 	}, [type, value, format, t]);
 
 	return (
-		<Tooltip label={tooltip} disabled={!tooltip}>
-			<Stack
-				className={`${classes.root} ${adjustedDiff !== undefined && (adjustedDiff > 0 ? classes.positive : classes.negative)} ${className}`}
-				{...props}
-			>
-				<Group className={classes.row}>
-					<Text className={classes.title}>{title}</Text>
-					{tooltip && <IconInfoCircle className={classes.icon} size={16} />}
+		<Stack
+			className={`${classes.root} ${adjustedDiff !== undefined && (adjustedDiff > 0 ? classes.positive : classes.negative)} ${className}`}
+			{...props}
+		>
+			<Group className={classes.row}>
+				<Text className={classes.title}>{title}</Text>
+				{tooltip && (
+					<Tooltip label={tooltip} disabled={!tooltip}>
+						<IconInfoCircle className={classes.icon} size={16} />
+					</Tooltip>
+				)}
+			</Group>
+			<Group className={classes.row}>
+				<Group className={classes.value}>
+					<WithSkeleton loading={loading} width={120} height={30}>
+						{amount}
+						{unit && <Text className={classes.unit}>{unit}</Text>}
+					</WithSkeleton>
 				</Group>
-				<Group className={classes.row}>
-					<Group className={classes.value}>
-						<WithSkeleton loading={loading} width={120} height={30}>
-							{amount}
-							{unit && <Text className={classes.unit}>{unit}</Text>}
-						</WithSkeleton>
-					</Group>
-					{diff && (
-						<TrendBadge
-							diff={diff}
-							className={classes.diff}
-							negate={negateDiff}
-							loading={loading}
-						/>
-					)}
-				</Group>
-				<Text className={classes.comparison}>
-					{t('components.statCard.comparison', { comparison })}
-				</Text>
-				{icon && <Container className={classes.icon}>{icon}</Container>}
-			</Stack>
-		</Tooltip>
+				{diff && (
+					<TrendBadge
+						diff={diff}
+						className={classes.diff}
+						negate={negateDiff}
+						loading={loading}
+					/>
+				)}
+			</Group>
+			<Text className={classes.comparison}>
+				{t('components.statCard.comparison', { comparison })}
+			</Text>
+			{icon && <Container className={classes.icon}>{icon}</Container>}
+		</Stack>
 	);
 };

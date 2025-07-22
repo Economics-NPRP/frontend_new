@@ -153,6 +153,10 @@
 				> .column .link {
 					@apply !text-dark-50;
 				}
+
+				> .column > .row > .link {
+					@apply !text-blue-600;
+				}
 			}
 
 			> .footer > .copyright {

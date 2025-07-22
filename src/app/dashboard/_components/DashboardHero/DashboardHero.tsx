@@ -8,6 +8,7 @@ import {
 	ActionIcon,
 	Anchor,
 	Breadcrumbs,
+	Container,
 	Divider,
 	Group,
 	Skeleton,
@@ -22,6 +23,7 @@ import { IconArrowUpLeft, IconChevronRight } from '@tabler/icons-react';
 import classes from './styles.module.css';
 
 export interface DashboardHeroProps extends Omit<StackProps, 'title'> {
+	icon?: ReactNode;
 	title?: ReactNode;
 	description?: ReactNode;
 	meta?: ReactNode;
@@ -38,6 +40,7 @@ export interface DashboardHeroProps extends Omit<StackProps, 'title'> {
 	loading?: boolean;
 }
 export const DashboardHero = ({
+	icon,
 	title,
 	description,
 	meta,
@@ -81,7 +84,7 @@ export const DashboardHero = ({
 						<Divider className={classes.divider} orientation="vertical" />
 					</>
 				)}
-				{breadcrumbItems.length > 1 && (
+				{breadcrumbs.length > 1 && (
 					<Switch value={loading}>
 						<Switch.True>
 							<Breadcrumbs
@@ -91,7 +94,7 @@ export const DashboardHero = ({
 									separator: classes.separator,
 								}}
 							>
-								{breadcrumbItems.map((_, index) => (
+								{breadcrumbs.map((_, index) => (
 									<Skeleton key={index} width={80} height={14} visible />
 								))}
 							</Breadcrumbs>
@@ -122,31 +125,36 @@ export const DashboardHero = ({
 								</Stack>
 							</Switch.True>
 							<Switch.False>
-								{(meta || title || description) && (
-									<Stack className={classes.label}>
-										{meta &&
-											(typeof meta === 'string' ? (
-												<Text className={classes.meta}>{meta}</Text>
-											) : (
-												meta
-											))}
-										{title &&
-											(typeof title === 'string' ? (
-												<Title order={1} className={classes.title}>
-													{title}
-												</Title>
-											) : (
-												title
-											))}
-										{description &&
-											(typeof description === 'string' ? (
-												<Text className={classes.description}>
-													{description}
-												</Text>
-											) : (
-												description
-											))}
-									</Stack>
+								{(icon || meta || title || description) && (
+									<Group className={classes.wrapper}>
+										{icon && (
+											<Container className={classes.icon}>{icon}</Container>
+										)}
+										<Stack className={classes.label}>
+											{meta &&
+												(typeof meta === 'string' ? (
+													<Text className={classes.meta}>{meta}</Text>
+												) : (
+													meta
+												))}
+											{title &&
+												(typeof title === 'string' ? (
+													<Title order={1} className={classes.title}>
+														{title}
+													</Title>
+												) : (
+													title
+												))}
+											{description &&
+												(typeof description === 'string' ? (
+													<Text className={classes.description}>
+														{description}
+													</Text>
+												) : (
+													description
+												))}
+										</Stack>
+									</Group>
 								)}
 							</Switch.False>
 						</Switch>

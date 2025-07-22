@@ -289,7 +289,8 @@
 		@apply text-orange-600;
 	}
 
-	.uninvited {
+	.uninvited,
+	.secondaryMarket {
 		@apply text-green-600;
 	}
 }

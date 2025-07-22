@@ -55,6 +55,7 @@ export const Bids = () => {
 				myPaginatedBids={myPaginatedBids}
 				showContributingBids={hasEnded}
 				className={classes.table}
+				tableClassName={classes.inner}
 				onViewAll={openBidsDrawer}
 				loading={
 					auction.isLoading ||

@@ -1,10 +1,12 @@
-import { useTranslations } from 'next-intl';
+'use client';
+
 import Image from 'next/image';
 import { useMemo } from 'react';
 
 import { SectorBadge } from '@/components/Badge';
-import { AllSubsectorVariants } from '@/constants/SubsectorData';
-import { SectorType, SubsectorType } from '@/schema/models';
+import { Switch } from '@/components/SwitchCase';
+import { WithSkeleton } from '@/components/WithSkeleton';
+import { ISubsectorData, SectorType } from '@/schema/models';
 import {
 	ActionIcon,
 	BoxProps,
@@ -12,19 +14,21 @@ import {
 	Container,
 	Group,
 	Radio,
+	Skeleton,
 	Stack,
 	Text,
 } from '@mantine/core';
-import { IconX } from '@tabler/icons-react';
+import { IconPhotoHexagon, IconX } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
 export interface SubsectorFormCardProps extends Omit<BoxProps, 'type'> {
 	sector: SectorType;
-	subsector: SubsectorType;
+	subsector: Pick<ISubsectorData, 'id' | 'title' | 'description' | 'image' | 'alt'>;
 	type?: 'radio' | 'checkbox' | 'readonly';
 	currentSector?: SectorType;
 	onClear?: () => void;
+	loading?: boolean;
 }
 export const SubsectorFormCard = ({
 	sector,
@@ -32,13 +36,10 @@ export const SubsectorFormCard = ({
 	type = 'checkbox',
 	currentSector = sector,
 	onClear,
+	loading = false,
 	className,
 	...props
 }: SubsectorFormCardProps) => {
-	const t = useTranslations();
-
-	const subsectorData = useMemo(() => AllSubsectorVariants[subsector]!, [subsector]);
-
 	const RootElement = useMemo(
 		() => (type === 'readonly' ? Stack : type === 'radio' ? Radio.Card : Checkbox.Card),
 		[type],
@@ -48,30 +49,53 @@ export const SubsectorFormCard = ({
 		[type],
 	);
 
+	const finalClassName = useMemo(
+		() =>
+			[
+				classes.root,
+				className,
+				type === 'readonly' ? classes.horizontal : '',
+				currentSector !== sector ? classes.fade : '',
+				loading ? classes.loading : '',
+			].join(' '),
+		[className, type, currentSector, sector, loading],
+	);
+
 	return (
-		<RootElement
-			value={`${sector}:${subsector}`}
-			className={`${classes.root} ${type === 'readonly' ? classes.horizontal : ''} ${currentSector !== sector ? classes.fade : ''} ${className}`}
-			{...props}
-		>
+		<RootElement value={`${sector}:${subsector.id}`} className={finalClassName} {...props}>
 			<Stack className={classes.content}>
 				<Container className={classes.image}>
-					<Image
-						src={subsectorData.image}
-						alt={t(`constants.subsector.${subsector}.alt`)}
-						fill
-					/>
-					<Stack className={classes.overlay} />
+					<Switch value={loading}>
+						<Switch.True>
+							<Container className={classes.placeholder}>
+								<IconPhotoHexagon size={32} className={classes.icon} />
+							</Container>
+						</Switch.True>
+						<Switch.False>
+							<Image src={subsector.image} alt={subsector.alt} fill />
+							<Container className={classes.overlay} />
+						</Switch.False>
+					</Switch>
 				</Container>
 				<Group className={classes.details}>
 					<Stack className={classes.label}>
-						<SectorBadge sector={sector} />
-						<Text className={classes.title}>
-							{t(`constants.subsector.${subsector}.title`)}
-						</Text>
-						<Text className={classes.description}>
-							{t(`constants.subsector.${subsector}.description`)}
-						</Text>
+						<SectorBadge sector={sector} loading={loading} />
+						<WithSkeleton loading={loading} width={180} height={28} className="my-0.5">
+							<Text className={classes.title}>{subsector.title}</Text>
+						</WithSkeleton>
+						<Switch value={loading}>
+							<Switch.True>
+								<Stack className="gap-2">
+									<Skeleton height={14} visible />
+									<Skeleton height={14} visible />
+									<Skeleton height={14} visible />
+									<Skeleton height={14} visible />
+								</Stack>
+							</Switch.True>
+							<Switch.False>
+								<Text className={classes.description}>{subsector.description}</Text>
+							</Switch.False>
+						</Switch>
 					</Stack>
 					{type !== 'readonly' && <IndicatorElement className={classes.checkbox} />}
 					{type === 'readonly' && (

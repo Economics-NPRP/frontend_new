@@ -4,14 +4,12 @@ import {
 	InferInput,
 	InferOutput,
 	array,
-	custom,
-	date,
+	forward,
 	lazy,
-	length,
-	minValue,
 	nonEmpty,
 	object,
 	omit,
+	partialCheck,
 	pick,
 	pipe,
 	string,
@@ -19,6 +17,7 @@ import {
 	trim,
 } from 'valibot';
 
+import { DATE_PICKER_FORMAT_STRING } from '@/pages/create/_components/DateTimePicker';
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
 
 import { IAdminData, ReadAdminDataSchema } from './AdminData';
@@ -60,23 +59,14 @@ export const CreateAuctionCycleDataSchema = object({
 		financeOfficer: array(ReadAdminDataSchema),
 	}),
 
-	dates: pipe(
-		array(pipe(date(), minValue(new Date()))),
-		length(2),
-		custom((value) => {
-			const [start, end] = value as [Date, Date];
-			if (!start || !end) return false;
-			if (DateTime.fromJSDate(start) >= DateTime.fromJSDate(end)) return false;
-			return true;
-		}),
-	),
+	startDatetime: string(),
+	endDatetime: string(),
 });
 export const CreateAuctionCycleDataSchemaTransformer = pipe(
 	CreateAuctionCycleDataSchema,
 	transform((input) => {
-		const [start, end] = input.dates as [Date, Date];
 		return {
-			..._omit(input, ['dates']),
+			...input,
 
 			adminAssignments: Object.entries(input.adminAssignments).reduce(
 				(acc, [role, admins]) => {
@@ -93,8 +83,8 @@ export const CreateAuctionCycleDataSchemaTransformer = pipe(
 				[] as Array<ICreateCycleAdmin>,
 			),
 
-			startDatetime: DateTime.fromJSDate(start).toISO(),
-			endDatetime: DateTime.fromJSDate(end).toISO(),
+			startDatetime: DateTime.fromISO(input.startDatetime).toISO(),
+			endDatetime: DateTime.fromISO(input.endDatetime).toISO(),
 		};
 	}),
 );
@@ -111,11 +101,17 @@ export const ReadAuctionCycleDataSchema = object({
 });
 export const UpdateAuctionCycleDataSchema = CreateAuctionCycleDataSchema;
 
-export const FirstAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchema, [
-	'title',
-	'description',
-	'dates',
-]);
+export const FirstAuctionCycleDataSchema = pipe(
+	pick(CreateAuctionCycleDataSchema, ['title', 'description', 'startDatetime', 'endDatetime']),
+	forward(
+		partialCheck(
+			[['startDatetime'], ['endDatetime']],
+			(input) => input.startDatetime < input.endDatetime,
+			'The start date must be before the end date.',
+		),
+		['startDatetime'],
+	),
+);
 export const SectorAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchema, ['sectors']);
 export const SecondAuctionCycleDataSchema = pick(CreateAuctionCycleDataSchema, [
 	'adminAssignments',
@@ -132,8 +128,6 @@ export const ReadToCreateAuctionCycleDataTransformer = pipe(
 			'assignedAdminsCount',
 			'emissionsCount',
 			'auctions',
-			'startDatetime',
-			'endDatetime',
 			'id',
 			'status',
 			'createdAt',
@@ -153,10 +147,8 @@ export const ReadToCreateAuctionCycleDataTransformer = pipe(
 			>,
 		),
 
-		dates: [
-			DateTime.fromISO(input.startDatetime).toJSDate(),
-			DateTime.fromISO(input.endDatetime).toJSDate(),
-		],
+		startDatetime: DateTime.fromISO(input.startDatetime).toFormat(DATE_PICKER_FORMAT_STRING),
+		endDatetime: DateTime.fromISO(input.endDatetime).toFormat(DATE_PICKER_FORMAT_STRING),
 	})),
 );
 
@@ -206,5 +198,6 @@ export const DefaultCreateAuctionCycleData: ICreateAuctionCycle = {
 		permitStrategist: [],
 		financeOfficer: [],
 	},
-	dates: [new Date(), new Date()],
+	startDatetime: new Date().toISOString(),
+	endDatetime: new Date().toISOString(),
 };

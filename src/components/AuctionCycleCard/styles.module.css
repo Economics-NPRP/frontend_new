@@ -110,9 +110,9 @@
 				}
 
 				.dropdown {
-					@apply min-w-[240px];
+					@apply min-w-[240px] max-h-[320px];
 					@apply gap-2 p-0;
-					@apply items-stretch;
+					@apply items-stretch overflow-y-auto;
 
 					> .row {
 						@apply justify-start;

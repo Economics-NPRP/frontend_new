@@ -1,0 +1,4 @@
+.root {
+	@apply grid grid-cols-1;
+	@apply gap-6 items-start justify-start;
+}

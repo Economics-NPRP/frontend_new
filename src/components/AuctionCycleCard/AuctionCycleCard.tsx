@@ -124,7 +124,7 @@ export const AuctionCycleCard = ({
 									className={`${classes.basic} ${classes.badge}`}
 									loading={loading}
 								>
-									{t('components.auctionCycleCard.header.subtitle', {
+									{t('constants.lastUpdated', {
 										value: DateTime.fromISO(
 											auctionCycleData.updatedAt,
 										).toRelative(),

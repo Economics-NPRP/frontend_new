@@ -54,6 +54,7 @@ import {
 	IconHelpHexagon,
 	IconHexagonLetterO,
 	IconInfoCircle,
+	IconInfoHexagon,
 	IconReportAnalytics,
 	IconSearch,
 } from '@tabler/icons-react';
@@ -820,6 +821,15 @@ const _AuctionsTable = ({
 							</Text>
 						</Group>
 						<Group className={classes.cell}>
+							<IconInfoHexagon
+								size={16}
+								className={`${classes.icon} ${classes.secondaryMarket}`}
+							/>
+							<Text className={classes.value}>
+								{t('components.auctionsTable.legend.secondaryMarket.label')}
+							</Text>
+						</Group>
+						<Group className={classes.cell}>
 							<IconAlertHexagon
 								size={16}
 								className={`${classes.icon} ${classes.ending}`}
@@ -931,7 +941,7 @@ const _AuctionsTable = ({
 											{record.title}
 										</Anchor>
 										<Group className={classes.group}>
-											{false && (
+											{record.cycle && record.cycle.status === 'draft' && (
 												<Tooltip
 													label={t(
 														'components.auctionsTable.legend.draftCycle.tooltip',
@@ -944,7 +954,7 @@ const _AuctionsTable = ({
 													/>
 												</Tooltip>
 											)}
-											{false && (
+											{record.cycle && record.cycle.status === 'ongoing' && (
 												<Tooltip
 													label={t(
 														'components.auctionsTable.legend.ongoingCycle.tooltip',
@@ -954,6 +964,19 @@ const _AuctionsTable = ({
 													<IconHexagonLetterO
 														size={14}
 														className={classes.ongoingCycle}
+													/>
+												</Tooltip>
+											)}
+											{!record.isPrimaryMarket && (
+												<Tooltip
+													label={t(
+														'components.auctionsTable.legend.secondaryMarket.tooltip',
+													)}
+													position="top"
+												>
+													<IconInfoHexagon
+														size={14}
+														className={classes.secondaryMarket}
 													/>
 												</Tooltip>
 											)}

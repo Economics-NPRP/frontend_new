@@ -63,7 +63,7 @@ export default function Hero() {
 						className={`${classes.basic} ${classes.badge}`}
 						loading={cycle.isLoading}
 					>
-						{t('components.auctionCycleCard.header.subtitle', {
+						{t('constants.lastUpdated', {
 							value: DateTime.fromISO(cycle.data.updatedAt).toRelative(),
 						})}
 					</BaseBadge>

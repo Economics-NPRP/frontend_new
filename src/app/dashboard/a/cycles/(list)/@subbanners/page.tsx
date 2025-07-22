@@ -1,12 +1,13 @@
 'use client';
 
+import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useContext } from 'react';
 
 import { ActionBanner } from '@/components/ActionBanner';
 import { StatCard } from '@/components/StatCard';
-import { PaginatedAuctionCyclesContext } from '@/contexts';
+import { AllAuctionCyclesContext } from '@/contexts';
 import { Container } from '@mantine/core';
 import {
 	IconCalendar,
@@ -23,7 +24,7 @@ import classes from './styles.module.css';
 
 export default function SubBanners() {
 	const t = useTranslations();
-	const paginatedAuctionCycles = useContext(PaginatedAuctionCyclesContext);
+	const allAuctionCycles = useContext(AllAuctionCyclesContext);
 
 	return (
 		<Container className={classes.root}>
@@ -34,11 +35,16 @@ export default function SubBanners() {
 				tooltip={t('dashboard.admin.cycles.stats.totalCycles.tooltip')}
 				type="integer"
 				unit={t('constants.cycles.key')}
-				//	TODO: filter for only cycles this year
-				value={paginatedAuctionCycles.data.totalCount}
+				value={
+					allAuctionCycles.data.results.filter(
+						(cycle) =>
+							DateTime.fromISO(cycle.createdAt).get('year') ===
+							DateTime.now().get('year'),
+					).length
+				}
 				diff={Math.random() * 20 - 10}
 				comparison="year"
-				loading={paginatedAuctionCycles.isLoading}
+				loading={allAuctionCycles.isLoading}
 			/>
 			<StatCard
 				className={classes.stat}

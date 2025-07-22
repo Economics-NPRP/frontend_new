@@ -1,24 +1,26 @@
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { ComponentPropsWithRef, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { SectorData, SectorVariants } from '@/constants/SectorData';
 import { SectorType } from '@/schema/models';
-import { Container, Stack, Text, Title, UnstyledButton } from '@mantine/core';
+import { Container, Stack, Text, Title, UnstyledButton, UnstyledButtonProps } from '@mantine/core';
 import { IconCircleArrowRight } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
-export interface SectorCardProps extends ComponentPropsWithRef<'button'> {
+export interface SmallSectorCardProps extends UnstyledButtonProps {
 	sector: SectorType;
+	component?: any;
+	href?: string;
 }
-export const SectorCard = ({ sector, className, ...props }: SectorCardProps) => {
+export const SmallSectorCard = ({ sector, className, ...props }: SmallSectorCardProps) => {
 	const t = useTranslations();
 
 	const { image } = useMemo<SectorData>(() => SectorVariants[sector]!, [sector]);
 
 	return (
-		<UnstyledButton className={`${classes.root} ${className}`} {...props}>
+		<UnstyledButton className={`${classes.root} ${classes.small} ${className}`} {...props}>
 			<Container className={classes.image}>
 				<Image src={image} alt={t(`constants.sector.${sector}.alt`)} fill />
 				<Container className={classes.overlay} />

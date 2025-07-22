@@ -1,3 +1,4 @@
+import { AllSubsectorsProvider } from 'contexts/AllSubsectors';
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
@@ -12,5 +13,9 @@ export interface CreateAuctionProps {
 	form: ReactNode;
 }
 export default function CreateAuction({ form }: CreateAuctionProps) {
-	return withProviders(<>{form}</>, { provider: SectorChangeModalProvider });
+	return withProviders(
+		<>{form}</>,
+		{ provider: SectorChangeModalProvider },
+		{ provider: AllSubsectorsProvider },
+	);
 }

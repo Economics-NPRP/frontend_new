@@ -6,6 +6,7 @@ import { PaginatedAdminsProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
 import { Stack } from '@mantine/core';
+import { IconUsers } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -23,6 +24,7 @@ export default function AdminsList({ subbanners, table }: AdminsListProps) {
 	return withProviders(
 		<Stack className={classes.root}>
 			<DashboardHero
+				icon={<IconUsers size={24} />}
 				title={t('constants.pages.dashboard.admin.admins.title')}
 				description={t('constants.pages.dashboard.admin.admins.description')}
 				returnButton={{ href: '/dashboard/a', label: t('constants.return.home.label') }}

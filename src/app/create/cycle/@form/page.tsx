@@ -168,16 +168,42 @@ export default function CreateCycleLayout() {
 		setIsFormSubmitting(true);
 		setDisabled(true);
 
-		if (!singleCycle.isSuccess) return;
-
-		setIsFormSubmitting(false);
-		setDisabled(false);
+		if (!singleCycle.isSuccess) {
+			if (singleCycle.isError) {
+				console.error(
+					'There was an error loading the existing cycle data for editing:',
+					singleCycle,
+				);
+				notifications.show({
+					color: 'red',
+					title: t('create.cycle.error.title'),
+					message: t('create.cycle.error.message'),
+					position: 'bottom-center',
+				});
+			}
+			return;
+		}
 
 		const transformedData = safeParse(
 			ReadToCreateAuctionCycleDataTransformer,
 			singleCycle.data,
 		);
-		if (!transformedData.success) return;
+		if (!transformedData.success) {
+			console.error(
+				'There was an error loading the existing cycle data for editing:',
+				singleCycle,
+			);
+			notifications.show({
+				color: 'red',
+				title: t('create.cycle.error.title'),
+				message: t('create.cycle.error.message'),
+				position: 'bottom-center',
+			});
+			return;
+		}
+
+		setIsFormSubmitting(false);
+		setDisabled(false);
 
 		form.setValues(transformedData.output);
 		form.resetDirty(transformedData.output);

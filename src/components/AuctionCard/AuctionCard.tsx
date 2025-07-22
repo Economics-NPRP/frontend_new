@@ -198,7 +198,6 @@ export const AuctionCard = ({
 									{t('components.auctionCard.numBids.label')}
 								</Text>
 								<Text className={classes.value}>
-									{/* TODO: show actual number of bids from backend */}
 									{t('constants.quantities.bids.default', {
 										value: auction.bidsCount,
 									})}
@@ -214,7 +213,6 @@ export const AuctionCard = ({
 									{t('components.auctionCard.numBidders.label')}
 								</Text>
 								<Text className={classes.value}>
-									{/* TODO: show actual number of bidders from backend */}
 									{t('constants.quantities.bidders.default', {
 										value: auction.biddersCount,
 									})}

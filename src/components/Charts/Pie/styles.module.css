@@ -1,0 +1,93 @@
+.root {
+	@apply relative;
+	@apply flex flex-col items-center justify-center;
+
+	> .gradient {
+		@apply absolute top-0 left-0;
+		@apply w-full h-full;
+
+		background: radial-gradient(
+			at center,
+			rgba(255, 255, 255, 0) 25%,
+			rgba(255, 255, 255, 1) 100%
+		);
+	}
+
+	g {
+		@apply outline-none;
+	}
+
+	.cell {
+		@apply transition-opacity duration-300;
+		@apply outline-none;
+
+		&.active {
+			@apply opacity-90;
+
+			&:hover {
+				@apply opacity-100;
+			}
+		}
+
+		&:hover {
+			@apply opacity-100;
+		}
+	}
+
+	.icon {
+		@apply pointer-events-none;
+		@apply text-white;
+		@apply -translate-x-2 -translate-y-2;
+	}
+
+	.label {
+		@apply pointer-events-none;
+		@apply absolute;
+		@apply flex flex-col items-center justify-center;
+		@apply gap-0;
+		@apply display-sm-sb;
+		@apply fill-white;
+
+		> .key {
+			@apply cursor-text;
+			@apply pointer-events-auto;
+			@apply paragraph-sm;
+			@apply fill-current;
+		}
+
+		> .value {
+			@apply cursor-text;
+			@apply pointer-events-auto;
+			@apply numeric-xl;
+			@apply fill-current;
+		}
+	}
+}
+
+* {
+	@mixin dark {
+		.root {
+			> .gradient {
+				background: radial-gradient(
+					at center,
+					rgba(26, 27, 30, 0) 25%,
+					rgba(26, 27, 30, 1) 100%
+				);
+			}
+
+			.cell {
+				&.active {
+					@apply opacity-90;
+
+					&:hover {
+						@apply opacity-100;
+					}
+				}
+
+				&:hover {
+					@apply opacity-90;
+				}
+			}
+		}
+	}
+}
