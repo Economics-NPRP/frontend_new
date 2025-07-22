@@ -1,6 +1,5 @@
 'use client';
 
-import { AllSubsectorsBySectorContext } from 'contexts/AllSubsectorsBySector';
 import { DateTime, Interval } from 'luxon';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
@@ -8,14 +7,13 @@ import { useContext, useMemo, useState } from 'react';
 
 import { StatCard } from '@/components/StatCard';
 import { DATE_PICKER_FORMAT_STRING } from '@/pages/create/_components/DateTimePicker';
-import { SectorDetailsPageContext } from '@/pages/dashboard/a/cycles/sectors/[sector]/(details)/_components/Providers';
+import { SubsectorDetailsPageContext } from '@/pages/dashboard/a/cycles/sectors/[sector]/[subsector]/_components/Providers';
 import { Heatmap as MantineHeatmap } from '@mantine/charts';
 import {
 	Container,
 	Divider,
 	FloatingIndicator,
 	Group,
-	Select,
 	Stack,
 	Tabs,
 	Text,
@@ -23,17 +21,15 @@ import {
 	useMatches,
 } from '@mantine/core';
 import { YearPickerInput } from '@mantine/dates';
-import { IconCalendar, IconChartPie } from '@tabler/icons-react';
+import { IconCalendar } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
 export default function Heatmap() {
 	const t = useTranslations();
-	const allSubsectors = useContext(AllSubsectorsBySectorContext);
 	const { sector } = useParams();
 
-	const { selectedPeriod, setSelectedPeriod, selectedSubsector, setSelectedSubsector } =
-		useContext(SectorDetailsPageContext);
+	const { selectedPeriod, setSelectedPeriod } = useContext(SubsectorDetailsPageContext);
 
 	const dividerOrientation = useMatches<'horizontal' | 'vertical'>({
 		base: 'horizontal',
@@ -42,9 +38,9 @@ export default function Heatmap() {
 	const rectSize = useMatches<number>({
 		base: 8,
 		xs: 12,
-		md: 10,
-		lg: 12,
-		xl: 14,
+		md: 14,
+		lg: 18,
+		xl: 20,
 	});
 	const rectGap = useMatches<number>({
 		base: 2,
@@ -80,21 +76,23 @@ export default function Heatmap() {
 			<Group className={classes.header}>
 				<Stack className={classes.label}>
 					<Title order={2} className={classes.title}>
-						{t('dashboard.admin.cycles.sectors.details.heatmap.title')}
+						{t('dashboard.admin.cycles.sectors.subsector.details.heatmap.title')}
 					</Title>
 					<Text className={classes.subtitle}>
-						{t('dashboard.admin.cycles.sectors.details.heatmap.subtitle')}
+						{t('dashboard.admin.cycles.sectors.subsector.details.heatmap.subtitle')}
 					</Text>
 				</Stack>
 				<Group className={classes.filters}>
 					<Text className={classes.label}>
-						{t('dashboard.admin.cycles.sectors.details.heatmap.filters.date.label')}
+						{t(
+							'dashboard.admin.cycles.sectors.subsector.details.heatmap.filters.date.label',
+						)}
 					</Text>
 					<YearPickerInput
 						className={classes.calendar}
 						w={80}
 						placeholder={t(
-							'dashboard.admin.cycles.sectors.details.heatmap.filters.date.placeholder',
+							'dashboard.admin.cycles.sectors.subsector.details.distribution.filters.date.placeholder',
 						)}
 						value={
 							selectedPeriod
@@ -107,26 +105,6 @@ export default function Heatmap() {
 							)
 						}
 						leftSection={<IconCalendar size={16} />}
-					/>
-					<Text className={classes.label}>
-						{t(
-							'dashboard.admin.cycles.sectors.details.heatmap.filters.subsector.label',
-						)}
-					</Text>
-					<Select
-						className={classes.dropdown}
-						w={200}
-						placeholder={t(
-							'dashboard.admin.cycles.sectors.details.heatmap.filters.subsector.placeholder',
-						)}
-						value={selectedSubsector}
-						onChange={(value) => setSelectedSubsector(value)}
-						data={allSubsectors.data.results.map((sector) => ({
-							value: sector.id,
-							label: sector.title,
-						}))}
-						leftSection={<IconChartPie size={16} />}
-						clearable
 					/>
 				</Group>
 			</Group>
@@ -157,10 +135,15 @@ export default function Heatmap() {
 			<Container className={classes.stats}>
 				<StatCard
 					className={classes.stat}
-					title={t('dashboard.admin.cycles.sectors.details.heatmap.total.title')}
-					tooltip={t('dashboard.admin.cycles.sectors.details.heatmap.total.tooltip', {
-						type,
-					})}
+					title={t(
+						'dashboard.admin.cycles.sectors.subsector.details.heatmap.total.title',
+					)}
+					tooltip={t(
+						'dashboard.admin.cycles.sectors.subsector.details.heatmap.total.tooltip',
+						{
+							type,
+						},
+					)}
 					type="integer"
 					unit={t(`constants.${type}.unitShort`)}
 					value={Math.random() * 10000}
@@ -170,10 +153,13 @@ export default function Heatmap() {
 				<Divider className={classes.divider} orientation={dividerOrientation} />
 				<StatCard
 					className={classes.stat}
-					title={t('dashboard.admin.cycles.sectors.details.heatmap.avg.title')}
-					tooltip={t('dashboard.admin.cycles.sectors.details.heatmap.avg.tooltip', {
-						type,
-					})}
+					title={t('dashboard.admin.cycles.sectors.subsector.details.heatmap.avg.title')}
+					tooltip={t(
+						'dashboard.admin.cycles.sectors.subsector.details.heatmap.avg.tooltip',
+						{
+							type,
+						},
+					)}
 					type="double"
 					unit={t(`constants.${type}.unitShort`)}
 					value={Math.random() * 1000}
@@ -183,10 +169,15 @@ export default function Heatmap() {
 				<Divider className={classes.divider} orientation={dividerOrientation} />
 				<StatCard
 					className={classes.stat}
-					title={t('dashboard.admin.cycles.sectors.details.heatmap.current.title')}
-					tooltip={t('dashboard.admin.cycles.sectors.details.heatmap.current.tooltip', {
-						type,
-					})}
+					title={t(
+						'dashboard.admin.cycles.sectors.subsector.details.heatmap.current.title',
+					)}
+					tooltip={t(
+						'dashboard.admin.cycles.sectors.subsector.details.heatmap.current.tooltip',
+						{
+							type,
+						},
+					)}
 					type="integer"
 					unit={t(`constants.${type}.unitShort`)}
 					value={Math.random() * 1000}
@@ -211,15 +202,18 @@ export default function Heatmap() {
 					gap={rectGap}
 					firstDayOfWeek={0}
 					getTooltipLabel={({ date, value }) =>
-						t(`dashboard.admin.cycles.sectors.details.heatmap.chart.tooltip`, {
-							value: t(`constants.quantities.${type}.default`, { value }),
-							date: DateTime.fromISO(date).toLocaleString({
-								weekday: 'long',
-								month: 'long',
-								day: '2-digit',
-								year: 'numeric',
-							}),
-						})
+						t(
+							`dashboard.admin.cycles.sectors.subsector.details.heatmap.chart.tooltip`,
+							{
+								value: t(`constants.quantities.${type}.default`, { value }),
+								date: DateTime.fromISO(date).toLocaleString({
+									weekday: 'long',
+									month: 'long',
+									day: '2-digit',
+									year: 'numeric',
+								}),
+							},
+						)
 					}
 					withOutsideDates={false}
 					withMonthLabels
@@ -229,7 +223,7 @@ export default function Heatmap() {
 			</Container>
 			<Group className={classes.legend}>
 				<Text className={classes.label}>
-					{t('dashboard.admin.cycles.sectors.details.heatmap.legend.less')}
+					{t('dashboard.admin.cycles.sectors.subsector.details.heatmap.legend.less')}
 				</Text>
 				<Group className={classes.list} gap={rectGap}>
 					<Container className={classes.item} size={rectSize} />
@@ -238,7 +232,7 @@ export default function Heatmap() {
 					<Container className={classes.item} size={rectSize} />
 				</Group>
 				<Text className={classes.label}>
-					{t('dashboard.admin.cycles.sectors.details.heatmap.legend.more')}
+					{t('dashboard.admin.cycles.sectors.subsector.details.heatmap.legend.more')}
 				</Text>
 			</Group>
 		</Stack>

@@ -22,7 +22,7 @@
 		}
 
 		> .filters {
-			@apply gap-3 flex-nowrap;
+			@apply gap-2 flex-nowrap;
 			@apply flex-shrink-0;
 			@apply items-center justify-center;
 

@@ -113,13 +113,15 @@ export default function Distribution() {
 				</Stack>
 				<Group className={classes.filters}>
 					<Text className={classes.label}>
-						{t('dashboard.admin.cycles.sectors.details.distribution.filters.date')}
+						{t(
+							'dashboard.admin.cycles.sectors.details.distribution.filters.date.label',
+						)}
 					</Text>
 					<YearPickerInput
 						className={classes.dropdown}
 						w={80}
 						placeholder={t(
-							'dashboard.admin.cycles.sectors.details.heatmap.filters.date.placeholder',
+							'dashboard.admin.cycles.sectors.details.distribution.filters.date.placeholder',
 						)}
 						value={
 							selectedPeriod
