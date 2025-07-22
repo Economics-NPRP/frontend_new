@@ -62,7 +62,7 @@ export default function Heatmap() {
 
 	const chartData = useMemo(() => {
 		const startDate = selectedPeriod || DateTime.now().startOf('year');
-		const endDate = startDate.endOf('year');
+		const endDate = DateTime.now().endOf('day');
 		const days = Interval.fromDateTimes(startDate, endDate).splitBy({ day: 1 });
 
 		return days.reduce(
@@ -161,9 +161,9 @@ export default function Heatmap() {
 					tooltip={t('dashboard.admin.cycles.sectors.details.heatmap.total.tooltip', {
 						type,
 					})}
-					type="double"
+					type="integer"
 					unit={t(`constants.${type}.unitShort`)}
-					value={Math.random() * 1000}
+					value={Math.random() * 10000}
 					diff={Math.random() * 20 - 10}
 					comparison="year"
 				/>
@@ -189,7 +189,7 @@ export default function Heatmap() {
 					tooltip={t('dashboard.admin.cycles.sectors.details.heatmap.current.tooltip', {
 						type,
 					})}
-					type="double"
+					type="integer"
 					unit={t(`constants.${type}.unitShort`)}
 					value={Math.random() * 1000}
 					diff={Math.random() * 20 - 10}
@@ -200,14 +200,28 @@ export default function Heatmap() {
 				<MantineHeatmap
 					className={classes.heatmap}
 					data={chartData}
-					startDate={DateTime.now().startOf('year').toFormat(DATE_PICKER_FORMAT_STRING)}
-					endDate={DateTime.now().endOf('year').toFormat(DATE_PICKER_FORMAT_STRING)}
+					startDate={DateTime.now()
+						.startOf('year')
+						.plus({ day: 1 })
+						.toFormat(DATE_PICKER_FORMAT_STRING)}
+					endDate={DateTime.now()
+						.endOf('year')
+						.plus({ day: 1 })
+						.toFormat(DATE_PICKER_FORMAT_STRING)}
 					rectRadius={0}
 					rectSize={rectSize}
 					gap={rectGap}
 					firstDayOfWeek={0}
 					getTooltipLabel={({ date, value }) =>
-						`${DateTime.fromISO(date).toLocaleString()}: ${t(`constants.quantities.${type}.default`, { value })}`
+						t(`dashboard.admin.cycles.sectors.details.heatmap.chart.tooltip`, {
+							value: t(`constants.quantities.${type}.default`, { value }),
+							date: DateTime.fromISO(date).toLocaleString({
+								weekday: 'long',
+								month: 'long',
+								day: '2-digit',
+								year: 'numeric',
+							}),
+						})
 					}
 					withOutsideDates={false}
 					withMonthLabels
@@ -215,6 +229,20 @@ export default function Heatmap() {
 					withTooltip
 				/>
 			</Container>
+			<Group className={classes.legend}>
+				<Text className={classes.label}>
+					{t('dashboard.admin.cycles.sectors.details.heatmap.legend.less')}
+				</Text>
+				<Group className={classes.list} gap={rectGap}>
+					<Container className={classes.item} size={rectSize} />
+					<Container className={classes.item} size={rectSize} />
+					<Container className={classes.item} size={rectSize} />
+					<Container className={classes.item} size={rectSize} />
+				</Group>
+				<Text className={classes.label}>
+					{t('dashboard.admin.cycles.sectors.details.heatmap.legend.more')}
+				</Text>
+			</Group>
 		</Stack>
 	);
 }
