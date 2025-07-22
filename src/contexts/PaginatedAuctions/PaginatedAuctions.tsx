@@ -96,8 +96,8 @@ export const PaginatedAuctionsProvider = ({
 	);
 
 	const queryKey = useMemo(
-		() => ['marketplace', 'paginatedAuctions', (filters.type || [])[0], filters.status],
-		[filters.type, filters.status],
+		() => ['marketplace', 'paginatedAuctions', JSON.stringify(filters)],
+		[filters],
 	);
 	const queryFn = useMemo<
 		SortedOffsetPaginatedQueryProviderProps<IPaginatedAuctionsContext>['queryFn']
@@ -115,7 +115,7 @@ export const PaginatedAuctionsProvider = ({
 				}),
 				'getPaginatedAuctions',
 			),
-		[filters.type, filters.status],
+		[filters],
 	);
 
 	return (

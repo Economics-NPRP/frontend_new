@@ -30,6 +30,7 @@ export interface ContextState<T> {
 	data: T;
 	error: Error | null;
 	isLoading: boolean;
+	isFetching: boolean;
 	isError: boolean;
 	isSuccess: boolean;
 }
@@ -37,7 +38,7 @@ export interface ContextState<T> {
 export interface ArrayContextState<T> extends ContextState<ArrayServerData<T>> {}
 
 export interface InfiniteContextState<T>
-	extends Pick<ContextState<T>, 'error' | 'isLoading' | 'isError' | 'isSuccess'> {
+	extends Pick<ContextState<T>, 'error' | 'isLoading' | 'isFetching' | 'isError' | 'isSuccess'> {
 	data: InfiniteData<T>;
 	isFetchingNextPage: boolean;
 	hasNextPage: boolean;
@@ -96,6 +97,7 @@ export const getDefaultContextState = <T>(defaultData?: T): ServerContextState<T
 	} as ServerData<T>,
 	error: null,
 	isLoading: true,
+	isFetching: true,
 	isError: false,
 	isSuccess: false,
 });
@@ -109,6 +111,7 @@ export const getDefaultArrayContextState = <T>(defaultData?: Array<T>): ArrayCon
 	} as ArrayServerData<T>,
 	error: null,
 	isLoading: true,
+	isFetching: true,
 	isError: false,
 	isSuccess: false,
 });
@@ -120,6 +123,7 @@ const getInfiniteContextState = <T>(): InfiniteContextState<T> => ({
 	},
 	error: null,
 	isLoading: true,
+	isFetching: true,
 	isError: false,
 	isSuccess: false,
 	isFetchingNextPage: false,

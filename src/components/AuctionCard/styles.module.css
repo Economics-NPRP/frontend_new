@@ -61,6 +61,13 @@
 		@apply h-40;
 		@apply overflow-hidden;
 
+		> .placeholder {
+			@apply absolute top-0 left-0;
+			@apply w-full h-full;
+			@apply flex items-center justify-center;
+			@apply bg-gray-100 text-gray-500;
+		}
+
 		> img {
 			@apply object-cover;
 			@apply transition-transform duration-700;
@@ -243,14 +250,20 @@
 				@apply bg-dark-400 border-dark-800;
 			}
 
-			> .image > .overlay {
-				@apply opacity-50;
+			> .image {
+				> .placeholder {
+					@apply bg-dark-700 text-dark-300;
+				}
 
-				&.blurred {
-					@apply opacity-100;
+				> .overlay {
+					@apply opacity-50;
 
-					> .text {
-						@apply !text-white/50;
+					&.blurred {
+						@apply opacity-100;
+
+						> .text {
+							@apply !text-white/50;
+						}
 					}
 				}
 			}
