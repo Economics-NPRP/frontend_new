@@ -10,6 +10,7 @@ import { useContext, useMemo, useState } from 'react';
 import { BaseBadge } from '@/components/Badge';
 import { PieChart } from '@/components/Charts/Pie';
 import { SectorVariants } from '@/constants/SectorData';
+import { StopWords } from '@/constants/StopWords';
 import { AllSubsectorsBySectorContext } from '@/contexts';
 import { SectorType } from '@/schema/models';
 import { Anchor, FloatingIndicator, Group, Select, Stack, Tabs, Text, Title } from '@mantine/core';
@@ -82,6 +83,13 @@ export default function Distribution() {
 				value: item[type],
 				color: `var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`,
 				opacity: (rawData.length - index) / (rawData.length + 1),
+				label: item.title
+					.split(' ')
+					.filter((word) => !StopWords.has(word))
+					.map((word) => word[0].toLocaleUpperCase())
+					.filter((word) => /[a-zA-Z]/.test(word))
+					.slice(0, 3)
+					.join(''),
 			})),
 		[rawData, type, sector],
 	);

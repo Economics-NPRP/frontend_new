@@ -41,16 +41,23 @@
 	}
 
 	.label {
+		@apply pointer-events-none;
 		@apply absolute;
 		@apply flex flex-col items-center justify-center;
 		@apply gap-0;
+		@apply display-sm-sb;
+		@apply fill-white;
 
 		> .key {
+			@apply cursor-text;
+			@apply pointer-events-auto;
 			@apply paragraph-sm;
 			@apply fill-current;
 		}
 
 		> .value {
+			@apply cursor-text;
+			@apply pointer-events-auto;
 			@apply numeric-xl;
 			@apply fill-current;
 		}

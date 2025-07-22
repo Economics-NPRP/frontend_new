@@ -15,6 +15,7 @@ interface PieChartProps extends BoxProps {
 	chartData: Array<
 		PieChartCell & {
 			icon?: ForwardRefExoticComponent<IconProps & RefAttributes<Icon>>;
+			label?: string;
 			opacity?: number;
 		}
 	>;
@@ -70,19 +71,34 @@ export const PieChart = ({ chartData, className, ...props }: PieChartProps) => {
 						const x = cx + radius * Math.cos(-midAngle * RADIAN);
 						const y = cy + radius * Math.sin(-midAngle * RADIAN);
 						const Icon = chartData[index].icon;
+						const label = chartData[index].label;
 
-						if (!Icon) return null;
+						if (!Icon && !label) return null;
 
-						return (
-							<Icon
-								className={classes.icon}
-								size={16}
-								x={x}
-								y={y}
-								textAnchor={x > cx ? 'start' : 'end'}
-								dominantBaseline="central"
-							/>
-						);
+						if (label)
+							return (
+								<text
+									className={classes.label}
+									x={x}
+									y={y}
+									textAnchor="middle"
+									dominantBaseline="middle"
+								>
+									{label}
+								</text>
+							);
+
+						if (Icon)
+							return (
+								<Icon
+									className={classes.icon}
+									size={16}
+									x={x}
+									y={y}
+									textAnchor="middle"
+									dominantBaseline="middle"
+								/>
+							);
 					}}
 				>
 					{chartData.map((entry, index) => (
@@ -106,7 +122,7 @@ export const PieChart = ({ chartData, className, ...props }: PieChartProps) => {
 									>
 										<Text
 											component="tspan"
-											className={`${classes.key} x`}
+											className={classes.key}
 											x={viewBox.cx}
 											y={(viewBox.cy || 0) - 8}
 										>
