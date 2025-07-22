@@ -61,7 +61,7 @@
 				}
 			}
 
-			> .filters {
+			> .list {
 				@apply gap-2;
 
 				> .heading {
@@ -142,146 +142,6 @@
 		}
 	}
 
-	> .filters {
-		@apply col-span-3 row-end-auto gap-0;
-		@apply self-start;
-		@apply bg-white;
-		@apply border border-solid border-gray-200;
-		@apply transition-all duration-500;
-
-		> .header {
-			@apply relative;
-			@apply overflow-hidden;
-			@apply p-6 gap-0;
-			@apply bg-dark-600;
-
-			> .heading {
-				@apply heading-2-w;
-			}
-
-			> .subheading {
-				@apply paragraph-sm-g3 text-pretty;
-			}
-
-			> .bg {
-				@apply absolute top-14 -right-44;
-				@apply pointer-events-none;
-				@apply flex flex-row items-center justify-center;
-				@apply gap-4;
-				@apply opacity-10;
-				@apply -rotate-45;
-
-				> .graphic {
-					@apply h-32;
-					@apply bg-white;
-
-					&:nth-child(1) {
-						@apply w-2;
-					}
-
-					&:nth-child(2) {
-						@apply w-4;
-					}
-
-					&:nth-child(3) {
-						@apply w-6;
-					}
-
-					&:nth-child(4) {
-						@apply w-8;
-					}
-				}
-			}
-
-			> *:not(.bg) {
-				@apply z-10;
-			}
-		}
-
-		> form {
-			@apply contents;
-
-			> .accordion {
-				.chevron[data-rotate='true'] {
-					transform: rotate(45deg);
-				}
-
-				.title {
-					@apply flex flex-row items-baseline gap-2;
-					@apply display-sm-sb-d6 uppercase;
-
-					> .subtitle {
-						@apply paragraph-sm-g6 normal-case;
-					}
-				}
-
-				.content {
-					@apply flex flex-col gap-3;
-					@apply border-0 border-t border-solid border-gray-100;
-
-					> .description {
-						@apply mt-1;
-						@apply paragraph-sm-g6;
-
-						> a {
-							@apply text-blue-600;
-							font-size: inherit;
-						}
-					}
-
-					.values {
-						@apply max-h-60;
-						@apply overflow-y-auto overflow-x-hidden;
-						@apply flex flex-col gap-2;
-
-						&:has(.range) {
-							@apply px-2 pt-10 pb-1;
-							@apply overflow-y-hidden;
-						}
-
-						> .checkbox {
-							--checkbox-color: var(--mantine-color-maroon-6) !important;
-
-							input,
-							label {
-								@apply cursor-pointer;
-							}
-						}
-
-						> .range {
-							--slider-color: var(--mantine-color-maroon-6) !important;
-						}
-					}
-				}
-			}
-
-			> .footer {
-				@apply flex-col justify-between items-stretch flex-nowrap;
-				@apply p-4;
-
-				> .value {
-					@apply paragraph-sm-g6 text-center;
-				}
-
-				> .actions {
-					@apply gap-1 flex-nowrap;
-
-					> .action {
-						@apply h-8 flex-auto;
-
-						&.square {
-							@apply size-8 flex-none;
-						}
-					}
-				}
-			}
-		}
-
-		&:hover {
-			@apply shadow-xs;
-		}
-	}
-
 	> .catalogue {
 		@apply grid grid-cols-3 gap-4 col-span-full;
 		@apply self-start;
@@ -309,6 +169,168 @@
 	}
 }
 
+.filters {
+	@apply col-span-3 row-end-auto gap-0;
+	@apply self-start;
+	@apply bg-white;
+	@apply border border-solid border-gray-200;
+	@apply transition-all duration-500;
+
+	&.modal > .inner > .content {
+		@apply p-0;
+		@apply flex flex-col justify-center items-stretch;
+		@apply overflow-y-hidden;
+
+		min-width: calc(100vw - 16px);
+
+		> .body {
+			@apply min-h-0;
+			@apply flex flex-col items-stretch justify-center;
+			@apply gap-0 p-0;
+
+			> .header > .button {
+				@apply absolute right-6 top-6;
+			}
+
+			> .wrapper {
+				@apply overflow-y-auto;
+			}
+		}
+	}
+
+	.header {
+		@apply relative;
+		@apply overflow-hidden flex-shrink-0;
+		@apply p-6 gap-0;
+		@apply bg-dark-600;
+
+		> .heading {
+			@apply heading-2-w;
+		}
+
+		> .subheading {
+			@apply paragraph-sm-g3 text-pretty;
+		}
+
+		> .bg {
+			@apply absolute top-14 -right-44;
+			@apply pointer-events-none;
+			@apply flex flex-row items-center justify-center;
+			@apply gap-4;
+			@apply opacity-10;
+			@apply -rotate-45;
+
+			> .graphic {
+				@apply h-32;
+				@apply bg-white;
+
+				&:nth-child(1) {
+					@apply w-2;
+				}
+
+				&:nth-child(2) {
+					@apply w-4;
+				}
+
+				&:nth-child(3) {
+					@apply w-6;
+				}
+
+				&:nth-child(4) {
+					@apply w-8;
+				}
+			}
+		}
+
+		> *:not(.bg) {
+			@apply z-10;
+		}
+	}
+
+	form {
+		@apply contents;
+
+		> .accordion {
+			.chevron[data-rotate='true'] {
+				transform: rotate(45deg);
+			}
+
+			.title {
+				@apply flex flex-row items-baseline gap-2;
+				@apply display-sm-sb-d6 uppercase;
+
+				> .subtitle {
+					@apply paragraph-sm-g6 normal-case;
+				}
+			}
+
+			.content {
+				@apply flex flex-col gap-3;
+				@apply border-0 border-t border-solid border-gray-100;
+
+				> .description {
+					@apply mt-1;
+					@apply paragraph-sm-g6;
+
+					> a {
+						@apply text-blue-600;
+						font-size: inherit;
+					}
+				}
+
+				.values {
+					@apply max-h-60;
+					@apply overflow-y-auto overflow-x-hidden;
+					@apply flex flex-col gap-2;
+
+					&:has(.range) {
+						@apply px-2 pt-10 pb-1;
+						@apply overflow-y-hidden;
+					}
+
+					> .checkbox {
+						--checkbox-color: var(--mantine-color-maroon-6) !important;
+
+						input,
+						label {
+							@apply cursor-pointer;
+						}
+					}
+
+					> .range {
+						--slider-color: var(--mantine-color-maroon-6) !important;
+					}
+				}
+			}
+		}
+
+		> .footer {
+			@apply flex-col justify-between items-stretch flex-nowrap;
+			@apply p-4;
+
+			> .value {
+				@apply paragraph-sm-g6 text-center;
+			}
+
+			> .actions {
+				@apply gap-1 flex-nowrap;
+
+				> .action {
+					@apply h-8 flex-auto;
+
+					&.square {
+						@apply size-8 flex-none;
+					}
+				}
+			}
+		}
+	}
+
+	&:hover {
+		@apply shadow-xs;
+	}
+}
+
 * {
 	@mixin larger-than $mantine-breakpoint-xs {
 		.root > .catalogue {
@@ -325,6 +347,10 @@
 				}
 			}
 		}
+
+		.filters.modal > .inner > .content {
+			@apply min-w-[640px];
+		}
 	}
 	@mixin larger-than $mantine-breakpoint-md {
 		.root > .catalogue {
@@ -337,7 +363,7 @@
 		}
 	}
 	@mixin larger-than $mantine-breakpoint-xl {
-		.root > .filters > form > .footer {
+		.filters form > .footer {
 			@apply flex-row justify-between items-center;
 
 			> .value {
@@ -403,26 +429,26 @@
 				}
 			}
 
-			> .filters {
-				@apply bg-dark-500 border-dark-400;
+			> .bg {
+				@apply opacity-100;
+			}
+		}
 
-				> .header {
-					> .heading {
-						@apply !text-white;
-					}
+		.filters {
+			@apply bg-dark-500 border-dark-400;
 
-					> .subheading {
-						@apply !text-gray-300;
-					}
+			> .header {
+				> .heading {
+					@apply !text-white;
 				}
 
-				> form > .accordion .content {
-					@apply border-dark-400;
+				> .subheading {
+					@apply !text-gray-300;
 				}
 			}
 
-			> .bg {
-				@apply opacity-100;
+			> form > .accordion .content {
+				@apply border-dark-400;
 			}
 		}
 	}

@@ -191,8 +191,10 @@ export const Header = () => {
 				</Group>
 			</Group>
 			<Group className={classes.row}>
-				<Group className={classes.filters}>
-					<Text className={classes.heading}>Filters:</Text>
+				<Group className={classes.list}>
+					<Text className={classes.heading}>
+						{t('marketplace.home.catalogue.header.filter.list')}
+					</Text>
 					{filterBadges}
 				</Group>
 				<Group>

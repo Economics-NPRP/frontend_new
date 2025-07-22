@@ -860,7 +860,8 @@
             }
           },
           "filter": {
-            "tooltip": "Filter auctions to find what you need"
+            "tooltip": "Filter auctions to find what you need",
+            "list": "Filters:"
           }
         }
       }

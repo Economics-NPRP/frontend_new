@@ -27,7 +27,7 @@ import {
 } from '@mantine/core';
 import { DatePickerInput, DatesRangeValue } from '@mantine/dates';
 import { useForm } from '@mantine/form';
-import { IconArrowBackUp, IconCheck, IconPlus, IconTrash } from '@tabler/icons-react';
+import { IconArrowBackUp, IconCheck, IconPlus, IconTrash, IconX } from '@tabler/icons-react';
 
 import { AuctionCatalogueContext, IAuctionFilters } from './constants';
 import classes from './styles.module.css';
@@ -547,11 +547,31 @@ export const FiltersModal = () => {
 
 	return (
 		<Modal
-			title={t('marketplace.home.catalogue.filters.heading')}
+			classNames={{
+				root: `${classes.filters} ${classes.modal}`,
+				inner: classes.inner,
+				content: classes.content,
+				body: classes.body,
+			}}
+			withCloseButton={false}
 			opened={isFilterModalOpen}
 			onClose={closeFiltersModal}
+			centered
 		>
-			<FiltersCore />
+			<Stack className={classes.header}>
+				<Title order={3} className={classes.heading}>
+					{t('marketplace.home.catalogue.filters.heading')}
+				</Title>
+				<Text className={classes.subheading}>
+					{t('marketplace.home.catalogue.filters.subheading')}
+				</Text>
+				<ActionIcon className={classes.button} onClick={closeFiltersModal}>
+					<IconX size={16} />
+				</ActionIcon>
+			</Stack>
+			<Container className={classes.wrapper}>
+				<FiltersCore />
+			</Container>
 		</Modal>
 	);
 };
