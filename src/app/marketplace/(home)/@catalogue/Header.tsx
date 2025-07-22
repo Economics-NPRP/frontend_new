@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { useCallback, useContext, useMemo, useState } from 'react';
 
 import { DefaultPaginatedAuctionsContextData, PaginatedAuctionsContext } from '@/contexts';
+import { useOffsetPaginationText } from '@/hooks';
 import { SortDirection } from '@/types';
 import {
 	ActionIcon,
@@ -46,15 +47,6 @@ export const Header = () => {
 		[],
 	);
 
-	const auctionIndex = useMemo(() => {
-		const index = (paginatedAuctions.page - 1) * paginatedAuctions.perPage;
-		const end =
-			index + paginatedAuctions.perPage > paginatedAuctions.data.totalCount
-				? paginatedAuctions.data.totalCount
-				: index + paginatedAuctions.perPage;
-		return `${Math.min(index + 1, paginatedAuctions.data.totalCount)} - ${end}`;
-	}, [paginatedAuctions.page, paginatedAuctions.perPage, paginatedAuctions.data.totalCount]);
-
 	const filterBadges = useMemo(() => {
 		const output = [];
 
@@ -84,14 +76,14 @@ export const Header = () => {
 						<FilterPill key={key} onRemove={() => paginatedAuctions.removeFilter(key)}>
 							{t(
 								`marketplace.home.catalogue.filters.accordion.${key}.options.${status}`,
-							)}{' '}
-							Auctions
+							)}
 						</FilterPill>,
 					);
 				}
 			} else if (key === 'date') {
 				const [startDate, endDate] = value as DatesRangeValue;
 				output.push(
+					//	TODO: fix mantine migration bug with date strings
 					<FilterPill
 						key={`date-${startDate?.getMilliseconds()}-${endDate?.getMilliseconds()}`}
 						onRemove={() => paginatedAuctions.removeFilter(key)}
@@ -117,11 +109,13 @@ export const Header = () => {
 		if (!output.length)
 			output.push(
 				<FilterPill key={0} withRemoveButton={false}>
-					No Filters Applied
+					{t('marketplace.home.catalogue.filters.total', { value: 0 })}
 				</FilterPill>,
 			);
 		return output;
 	}, [paginatedAuctions.filters]);
+
+	const paginationText = useOffsetPaginationText('auctions', paginatedAuctions);
 
 	return (
 		<Stack className={classes.header}>
@@ -134,30 +128,48 @@ export const Header = () => {
 			<Group className={classes.row}>
 				<Group className={classes.label}>
 					<Title className={classes.heading} order={2}>
-						Auction Catalogue
+						{t('marketplace.home.catalogue.header.heading')}
 					</Title>
 					<Text className={classes.slash} visibleFrom="md">
 						-
 					</Text>
-					<Text className={classes.subheading}>
-						Showing <b>{auctionIndex}</b> of {paginatedAuctions.data.totalCount}{' '}
-						auctions
-					</Text>
+					<Text className={classes.subheading}>{paginationText}</Text>
 				</Group>
 				<Group className={classes.settings}>
-					<Text className={classes.label}>Sort by:</Text>
+					<Text className={classes.label}>{t('constants.pagination.sortBy.label')}</Text>
 					<Select
 						className={classes.dropdown}
 						w={180}
 						value={`${paginatedAuctions.sortBy}-${paginatedAuctions.sortDirection}`}
 						data={[
-							{ value: 'created_at-desc', label: 'Newest' },
-							{ value: 'created_at-asc', label: 'Oldest' },
-							{ value: 'end_datetime-asc', label: 'Ending Soon' },
-							{ value: 'permits-desc', label: 'Most Permits' },
-							{ value: 'permits-asc', label: 'Lowest Permits' },
-							{ value: 'min_bid-desc', label: 'Highest Minimum Bid' },
-							{ value: 'min_bid-asc', label: 'Lowest Minimum Bid' },
+							{
+								value: 'created_at-desc',
+								label: t('marketplace.home.catalogue.header.sortBy.newest'),
+							},
+							{
+								value: 'created_at-asc',
+								label: t('marketplace.home.catalogue.header.sortBy.oldest'),
+							},
+							{
+								value: 'end_datetime-asc',
+								label: t('marketplace.home.catalogue.header.sortBy.endingSoon'),
+							},
+							{
+								value: 'permits-desc',
+								label: t('marketplace.home.catalogue.header.sortBy.mostPermits'),
+							},
+							{
+								value: 'permits-asc',
+								label: t('marketplace.home.catalogue.header.sortBy.leastPermits'),
+							},
+							{
+								value: 'min_bid-desc',
+								label: t('marketplace.home.catalogue.header.sortBy.highMinBid'),
+							},
+							{
+								value: 'min_bid-asc',
+								label: t('marketplace.home.catalogue.header.sortBy.lowMinBid'),
+							},
 						]}
 						onChange={(value) => {
 							const [sortBy, sortDirection] = (
@@ -168,7 +180,7 @@ export const Header = () => {
 							paginatedAuctions.setSortDirection(sortDirection as SortDirection);
 						}}
 					/>
-					<Text className={classes.label}>Per page:</Text>
+					<Text className={classes.label}>{t('constants.pagination.perPage.label')}</Text>
 					<Select
 						className={classes.dropdown}
 						w={64}
@@ -185,7 +197,7 @@ export const Header = () => {
 				</Group>
 				<Group>
 					<Group className={classes.viewActions} ref={setRootRef}>
-						<Tooltip label="Switch to grid view">
+						<Tooltip label={t('marketplace.home.catalogue.header.view.grid.tooltip')}>
 							<Button
 								className={`${classes.action} ${classes.square}`}
 								ref={setControlRef('grid')}
@@ -193,10 +205,10 @@ export const Header = () => {
 								data-active={view === 'grid'}
 								leftSection={<IconLayoutGrid size={16} />}
 							>
-								Grid
+								{t('marketplace.home.catalogue.header.view.grid.label')}
 							</Button>
 						</Tooltip>
-						<Tooltip label="Switch to list view">
+						<Tooltip label={t('marketplace.home.catalogue.header.view.list.tooltip')}>
 							<Button
 								className={`${classes.action} ${classes.square}`}
 								ref={setControlRef('list')}
@@ -204,7 +216,7 @@ export const Header = () => {
 								data-active={view === 'list'}
 								leftSection={<IconListDetails size={16} />}
 							>
-								List
+								{t('marketplace.home.catalogue.header.view.list.label')}
 							</Button>
 						</Tooltip>
 
@@ -214,12 +226,12 @@ export const Header = () => {
 							parent={rootRef}
 						/>
 					</Group>
-					<Tooltip label="Download all auctions as CSV">
+					<Tooltip label={t('constants.download.auctions')}>
 						<ActionIcon className={`${classes.action} ${classes.square}`}>
 							<IconDownload size={16} />
 						</ActionIcon>
 					</Tooltip>
-					<Tooltip label="Filter auctions to find what you need">
+					<Tooltip label={t('marketplace.home.catalogue.header.filter.tooltip')}>
 						<ActionIcon
 							className={`${classes.action} ${classes.square}`}
 							onClick={openFiltersModal}
@@ -229,14 +241,6 @@ export const Header = () => {
 						</ActionIcon>
 					</Tooltip>
 				</Group>
-				{/* <Pagination
-					classNames={{
-						root: classes.pagination,
-						dots: classes.dots,
-						control: classes.action,
-					}}
-					total={10}
-				/> */}
 			</Group>
 		</Stack>
 	);

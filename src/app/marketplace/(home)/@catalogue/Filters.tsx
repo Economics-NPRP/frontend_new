@@ -134,7 +134,7 @@ const FiltersCore = () => {
 					})}
 				</Text>
 				<Group className={classes.actions}>
-					<Tooltip label="Clear all filters">
+					<Tooltip label={t('marketplace.home.catalogue.filters.clear.tooltip')}>
 						<ActionIcon
 							className={`${classes.action} ${classes.square}`}
 							onClick={handleClearFilters}
@@ -142,7 +142,7 @@ const FiltersCore = () => {
 							<IconTrash size={16} />
 						</ActionIcon>
 					</Tooltip>
-					<Tooltip label="Reset unsaved changes to filters">
+					<Tooltip label={t('marketplace.home.catalogue.filters.reset.tooltip')}>
 						<ActionIcon
 							className={`${classes.action} ${classes.square}`}
 							onClick={form.reset}
@@ -150,13 +150,13 @@ const FiltersCore = () => {
 							<IconArrowBackUp size={16} />
 						</ActionIcon>
 					</Tooltip>
-					<Tooltip label="Apply filter changes">
+					<Tooltip label={t('marketplace.home.catalogue.filters.apply.tooltip')}>
 						<Button
 							className={classes.action}
 							type="submit"
 							rightSection={<IconCheck size={16} />}
 						>
-							Apply
+							{t('marketplace.home.catalogue.filters.apply.label')}
 						</Button>
 					</Tooltip>
 				</Group>
@@ -191,14 +191,13 @@ const FiltersCore = () => {
 						<Container className={classes.values}>
 							<Checkbox
 								className={classes.checkbox}
-								// TODO: make label translatable
-								label="Open"
+								label={t('constants.auctionType.open')}
 								key={form.key('type.open')}
 								{...form.getInputProps('type.open', { type: 'checkbox' })}
 							/>
 							<Checkbox
 								className={classes.checkbox}
-								label="Sealed"
+								label={t('constants.auctionType.sealed')}
 								key={form.key('type.sealed')}
 								{...form.getInputProps('type.sealed', { type: 'checkbox' })}
 							/>
@@ -222,16 +221,24 @@ const FiltersCore = () => {
 							<Container className={classes.values}>
 								<Radio
 									className={classes.checkbox}
-									label="Upcoming"
+									label={t('constants.auctionStatus.upcoming.label')}
 									value="upcoming"
 								/>
 								<Radio
 									className={classes.checkbox}
-									label="Ongoing"
+									label={t('constants.auctionStatus.ongoing.label')}
 									value="ongoing"
 								/>
-								<Radio className={classes.checkbox} label="Ended" value="ended" />
-								<Radio className={classes.checkbox} label="All" value="all" />
+								<Radio
+									className={classes.checkbox}
+									label={t('constants.auctionStatus.ended.label')}
+									value="ended"
+								/>
+								<Radio
+									className={classes.checkbox}
+									label={t('marketplace.home.catalogue.filters.all')}
+									value="all"
+								/>
 							</Container>
 						</RadioGroup>
 					</AccordionPanel>
@@ -252,19 +259,19 @@ const FiltersCore = () => {
 						<Container className={classes.values}>
 							<Checkbox
 								className={classes.checkbox}
-								label="Energy"
+								label={t('constants.sector.energy.title')}
 								key={form.key('sector.energy')}
 								{...form.getInputProps('sector.energy', { type: 'checkbox' })}
 							/>
 							<Checkbox
 								className={classes.checkbox}
-								label="Industry"
+								label={t('constants.sector.industry.title')}
 								key={form.key('sector.industry')}
 								{...form.getInputProps('sector.industry', { type: 'checkbox' })}
 							/>
 							<Checkbox
 								className={classes.checkbox}
-								label="Transport"
+								label={t('constants.sector.transport.title')}
 								key={form.key('sector.transport')}
 								{...form.getInputProps('sector.transport', {
 									type: 'checkbox',
@@ -272,7 +279,7 @@ const FiltersCore = () => {
 							/>
 							<Checkbox
 								className={classes.checkbox}
-								label="Buildings"
+								label={t('constants.sector.buildings.title')}
 								key={form.key('sector.buildings')}
 								{...form.getInputProps('sector.buildings', {
 									type: 'checkbox',
@@ -280,7 +287,7 @@ const FiltersCore = () => {
 							/>
 							<Checkbox
 								className={classes.checkbox}
-								label="Agriculture"
+								label={t('constants.sector.agriculture.title')}
 								key={form.key('sector.agriculture')}
 								{...form.getInputProps('sector.agriculture', {
 									type: 'checkbox',
@@ -288,7 +295,7 @@ const FiltersCore = () => {
 							/>
 							<Checkbox
 								className={classes.checkbox}
-								label="Waste"
+								label={t('constants.sector.waste.title')}
 								key={form.key('sector.waste')}
 								{...form.getInputProps('sector.waste', { type: 'checkbox' })}
 							/>
@@ -478,7 +485,7 @@ const FiltersCore = () => {
 					})}
 				</Text>
 				<Group className={classes.actions}>
-					<Tooltip label="Clear all filters">
+					<Tooltip label={t('marketplace.home.catalogue.filters.clear.tooltip')}>
 						<ActionIcon
 							className={`${classes.action} ${classes.square}`}
 							onClick={handleClearFilters}
@@ -486,7 +493,7 @@ const FiltersCore = () => {
 							<IconTrash size={16} />
 						</ActionIcon>
 					</Tooltip>
-					<Tooltip label="Reset changes to filters">
+					<Tooltip label={t('marketplace.home.catalogue.filters.reset.tooltip')}>
 						<ActionIcon
 							className={`${classes.action} ${classes.square}`}
 							onClick={form.reset}
@@ -494,13 +501,13 @@ const FiltersCore = () => {
 							<IconArrowBackUp size={16} />
 						</ActionIcon>
 					</Tooltip>
-					<Tooltip label="Apply filter changes">
+					<Tooltip label={t('marketplace.home.catalogue.filters.apply.tooltip')}>
 						<Button
 							className={classes.action}
 							type="submit"
 							rightSection={<IconCheck size={16} />}
 						>
-							Apply
+							{t('marketplace.home.catalogue.filters.apply.label')}
 						</Button>
 					</Tooltip>
 				</Group>
@@ -510,6 +517,8 @@ const FiltersCore = () => {
 };
 
 export const FiltersList = () => {
+	const t = useTranslations();
+
 	return (
 		<Stack className={classes.filters} visibleFrom="md">
 			<Group className={classes.header}>
@@ -520,10 +529,10 @@ export const FiltersList = () => {
 					<Container className={classes.graphic} />
 				</Container>
 				<Title className={classes.heading} order={3}>
-					Filters List
+					{t('marketplace.home.catalogue.filters.heading')}
 				</Title>
 				<Text className={classes.subheading}>
-					Use the filters below to find the auctions you are looking for
+					{t('marketplace.home.catalogue.filters.subheading')}
 				</Text>
 			</Group>
 			<Divider />
@@ -533,10 +542,15 @@ export const FiltersList = () => {
 };
 
 export const FiltersModal = () => {
+	const t = useTranslations();
 	const { isFilterModalOpen, closeFiltersModal } = useContext(AuctionCatalogueContext);
 
 	return (
-		<Modal title="Filters List" opened={isFilterModalOpen} onClose={closeFiltersModal}>
+		<Modal
+			title={t('marketplace.home.catalogue.filters.heading')}
+			opened={isFilterModalOpen}
+			onClose={closeFiltersModal}
+		>
 			<FiltersCore />
 		</Modal>
 	);
