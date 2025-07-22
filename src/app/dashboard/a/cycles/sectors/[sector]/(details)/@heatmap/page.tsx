@@ -8,6 +8,7 @@ import { useContext, useMemo, useState } from 'react';
 
 import { StatCard } from '@/components/StatCard';
 import { DATE_PICKER_FORMAT_STRING } from '@/pages/create/_components/DateTimePicker';
+import { SectorDetailsPageContext } from '@/pages/dashboard/a/cycles/sectors/[sector]/(details)/_components/Providers';
 import { Heatmap as MantineHeatmap } from '@mantine/charts';
 import {
 	Container,
@@ -31,6 +32,9 @@ export default function Heatmap() {
 	const allSubsectors = useContext(AllSubsectorsBySectorContext);
 	const { sector } = useParams();
 
+	const { selectedPeriod, setSelectedPeriod, selectedSubsector, setSelectedSubsector } =
+		useContext(SectorDetailsPageContext);
+
 	const dividerOrientation = useMatches<'horizontal' | 'vertical'>({
 		base: 'horizontal',
 		xl: 'vertical',
@@ -48,10 +52,6 @@ export default function Heatmap() {
 	});
 
 	const [type, setType] = useState<'auctions' | 'bids' | 'permits'>('auctions');
-	const [selectedPeriod, setSelectedPeriod] = useState<DateTime | null>(
-		DateTime.now().startOf('year'),
-	);
-	const [selectedSubsector, setSelectedSubsector] = useState<string | null>(null);
 
 	const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
 	const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
@@ -102,7 +102,9 @@ export default function Heatmap() {
 								: null
 						}
 						onChange={(value) =>
-							setSelectedPeriod(value ? DateTime.fromISO(value) : null)
+							setSelectedPeriod(
+								value ? DateTime.fromISO(value) : DateTime.now().startOf('year'),
+							)
 						}
 						leftSection={<IconCalendar size={16} />}
 					/>
@@ -200,11 +202,11 @@ export default function Heatmap() {
 				<MantineHeatmap
 					className={classes.heatmap}
 					data={chartData}
-					startDate={DateTime.now()
+					startDate={selectedPeriod
 						.startOf('year')
 						.plus({ day: 1 })
 						.toFormat(DATE_PICKER_FORMAT_STRING)}
-					endDate={DateTime.now()
+					endDate={selectedPeriod
 						.endOf('year')
 						.plus({ day: 1 })
 						.toFormat(DATE_PICKER_FORMAT_STRING)}

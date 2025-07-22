@@ -21,8 +21,19 @@
 			}
 		}
 
-		> .dropdown {
+		> .filters {
+			@apply gap-3 flex-nowrap;
 			@apply flex-shrink-0;
+			@apply items-center justify-center;
+
+			> .label {
+				@apply hidden;
+				@apply paragraph-sm;
+			}
+
+			> .dropdown {
+				@apply flex-shrink-0;
+			}
 		}
 	}
 
@@ -93,10 +104,24 @@
 }
 
 * {
+	@mixin larger-than $mantine-breakpoint-xs {
+		.root > .header > .filters > .label {
+			@apply flex;
+		}
+	}
 	@mixin larger-than $mantine-breakpoint-md {
 		.root {
 			@apply col-span-5;
 			@apply px-8 py-6;
+
+			> .header > .filters > .label {
+				@apply hidden;
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root > .header > .filters > .label {
+			@apply flex;
 		}
 	}
 

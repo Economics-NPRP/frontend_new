@@ -3,24 +3,17 @@
 import { DateTime, Interval } from 'luxon';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useMemo } from 'react';
 
 import { StatCard } from '@/components/StatCard';
 import { SectorVariants } from '@/constants/SectorData';
 import { AllSubsectorsBySectorContext } from '@/contexts';
+import { DATE_PICKER_FORMAT_STRING } from '@/pages/create/_components/DateTimePicker';
+import { SectorDetailsPageContext } from '@/pages/dashboard/a/cycles/sectors/[sector]/(details)/_components/Providers';
 import { SectorType } from '@/schema/models';
 import { BarChart, BarChartSeries } from '@mantine/charts';
-import {
-	Container,
-	Group,
-	Select,
-	Stack,
-	Text,
-	Title,
-	useMantineColorScheme,
-	useMatches,
-} from '@mantine/core';
-import { MonthPickerInput } from '@mantine/dates';
+import { Container, Group, Select, Stack, Text, Title, useMantineColorScheme } from '@mantine/core';
+import { YearPickerInput } from '@mantine/dates';
 import { IconCalendar, IconChartPie } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
@@ -29,22 +22,20 @@ const MAX_SUBSECTORS = 4;
 
 export default function TimeSeries() {
 	const t = useTranslations();
-	const numCalendarColumns = useMatches({ base: 1, md: 2, lg: 3 });
 	const { sector } = useParams();
 	const { colorScheme } = useMantineColorScheme();
 	const allSubsectors = useContext(AllSubsectorsBySectorContext);
 
-	const [selectedPeriod, setSelectedPeriod] = useState<[DateTime | null, DateTime | null]>([
-		DateTime.now().startOf('year'),
-		DateTime.now().endOf('year'),
-	]);
-	const [selectedSubsector, setSelectedSubsector] = useState<string | null>(null);
+	const { selectedPeriod, setSelectedPeriod, selectedSubsector, setSelectedSubsector } =
+		useContext(SectorDetailsPageContext);
 
 	const chartData = useMemo(() => {
 		if (!allSubsectors.isSuccess) return [];
-		if (!selectedPeriod[0] || !selectedPeriod[1]) return [];
 
-		const interval = Interval.fromDateTimes(selectedPeriod[0], selectedPeriod[1]);
+		const interval = Interval.fromDateTimes(
+			selectedPeriod.startOf('year'),
+			selectedPeriod.endOf('year'),
+		);
 		return interval.splitBy({ month: 1 }).map((month) => ({
 			month: month.start!.toLocaleString({ month: 'short', year: '2-digit' }),
 			...Object.fromEntries(
@@ -52,7 +43,7 @@ export default function TimeSeries() {
 					allSubsectors.data.resultCount > MAX_SUBSECTORS + 1 && index === MAX_SUBSECTORS
 						? t('constants.others')
 						: sector.title,
-					Math.random() * 1000,
+					month.isBefore(DateTime.now()) ? Math.random() * 1000 : 0,
 				]),
 			),
 		}));
@@ -86,26 +77,21 @@ export default function TimeSeries() {
 					<Text className={classes.label}>
 						{t('dashboard.admin.cycles.sectors.details.timeSeries.filters.date.label')}
 					</Text>
-					<MonthPickerInput
+					<YearPickerInput
 						className={classes.calendar}
-						w={200}
-						numberOfColumns={numCalendarColumns}
-						type="range"
-						valueFormat="YYYY MMM"
+						w={80}
 						placeholder={t(
 							'dashboard.admin.cycles.sectors.details.timeSeries.filters.date.placeholder',
 						)}
 						value={
-							selectedPeriod.map((date) => (date ? date.toISO() : null)) as [
-								string,
-								string,
-							]
+							selectedPeriod
+								? selectedPeriod.toFormat(DATE_PICKER_FORMAT_STRING)
+								: null
 						}
 						onChange={(value) =>
-							setSelectedPeriod([
-								value[0] ? DateTime.fromISO(value[0]).startOf('month') : null,
-								value[1] ? DateTime.fromISO(value[1]).endOf('month') : null,
-							])
+							setSelectedPeriod(
+								value ? DateTime.fromISO(value) : DateTime.now().startOf('year'),
+							)
 						}
 						leftSection={<IconCalendar size={16} />}
 					/>

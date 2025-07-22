@@ -2117,6 +2117,9 @@
                 "quarter": "Past Quarter",
                 "year": "Past Year",
                 "all": "All Time"
+              },
+              "filters": {
+                "date": "Year"
               }
             },
             "list": {
@@ -2132,8 +2135,8 @@
                   "placeholder": "Filter by subsector..."
                 },
                 "date": {
-                  "label": "Date Range",
-                  "placeholder": "Select period..."
+                  "label": "Year",
+                  "placeholder": "Select Year"
                 }
               },
               "total": {

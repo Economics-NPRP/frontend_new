@@ -1,6 +1,7 @@
 'use client';
 
 import { sortBy } from 'lodash-es';
+import { DateTime } from 'luxon';
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -12,8 +13,12 @@ import { PieChart } from '@/components/Charts/Pie';
 import { SectorVariants } from '@/constants/SectorData';
 import { StopWords } from '@/constants/StopWords';
 import { AllSubsectorsBySectorContext } from '@/contexts';
+import { DATE_PICKER_FORMAT_STRING } from '@/pages/create/_components/DateTimePicker';
+import { SectorDetailsPageContext } from '@/pages/dashboard/a/cycles/sectors/[sector]/(details)/_components/Providers';
 import { SectorType } from '@/schema/models';
-import { Anchor, FloatingIndicator, Group, Select, Stack, Tabs, Text, Title } from '@mantine/core';
+import { Anchor, FloatingIndicator, Group, Stack, Tabs, Text, Title } from '@mantine/core';
+import { YearPickerInput } from '@mantine/dates';
+import { IconCalendar } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -33,8 +38,9 @@ export default function Distribution() {
 	const allSubsectors = useContext(AllSubsectorsBySectorContext);
 	const { sector } = useParams();
 
+	const { selectedPeriod, setSelectedPeriod } = useContext(SectorDetailsPageContext);
+
 	const [type, setType] = useState<'permits' | 'emissions' | 'auctions'>('permits');
-	const [period, setPeriod] = useState<'month' | 'quarter' | 'year' | 'all'>('year');
 	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<TableData>>({
 		columnAccessor: 'permits',
 		direction: 'desc',
@@ -105,39 +111,29 @@ export default function Distribution() {
 						{t('dashboard.admin.cycles.sectors.details.distribution.subtitle')}
 					</Text>
 				</Stack>
-				<Select
-					className={classes.dropdown}
-					w={120}
-					value={period}
-					onChange={(value) => setPeriod(value as 'month' | 'quarter' | 'year' | 'all')}
-					data={[
-						{
-							value: 'month',
-							label: t(
-								'dashboard.admin.cycles.sectors.details.distribution.period.month',
-							),
-						},
-						{
-							value: 'quarter',
-							label: t(
-								'dashboard.admin.cycles.sectors.details.distribution.period.quarter',
-							),
-						},
-						{
-							value: 'year',
-							label: t(
-								'dashboard.admin.cycles.sectors.details.distribution.period.year',
-							),
-						},
-						{
-							value: 'all',
-							label: t(
-								'dashboard.admin.cycles.sectors.details.distribution.period.all',
-							),
-						},
-					]}
-					allowDeselect={false}
-				/>
+				<Group className={classes.filters}>
+					<Text className={classes.label}>
+						{t('dashboard.admin.cycles.sectors.details.distribution.filters.date')}
+					</Text>
+					<YearPickerInput
+						className={classes.dropdown}
+						w={80}
+						placeholder={t(
+							'dashboard.admin.cycles.sectors.details.heatmap.filters.date.placeholder',
+						)}
+						value={
+							selectedPeriod
+								? selectedPeriod.toFormat(DATE_PICKER_FORMAT_STRING)
+								: null
+						}
+						onChange={(value) =>
+							setSelectedPeriod(
+								value ? DateTime.fromISO(value) : DateTime.now().startOf('year'),
+							)
+						}
+						leftSection={<IconCalendar size={16} />}
+					/>
+				</Group>
 			</Group>
 			<Tabs
 				classNames={{ root: classes.tabs, list: classes.list, tab: classes.tab }}

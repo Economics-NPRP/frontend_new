@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { AllSubsectorsBySectorProvider, PaginatedAuctionsProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import English from '@/locales/en.json';
+import { PageProvider } from '@/pages/dashboard/a/cycles/sectors/[sector]/(details)/_components/Providers';
 import { SectorType } from '@/schema/models';
 import { Stack } from '@mantine/core';
 
@@ -51,5 +52,6 @@ export default function SectorDetails({
 		//	TODO: add sector filter once available
 		{ provider: PaginatedAuctionsProvider, props: { defaultPerPage: 20 } },
 		{ provider: AllSubsectorsBySectorProvider },
+		{ provider: PageProvider },
 	);
 }

@@ -9,13 +9,15 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 
 export const PageProvider = ({ children }: PropsWithChildren) => {
-	const [tab, setTab] = useState<'members' | 'updates'>(DefaultCycleDetailsPageContextData.tab);
+	const [tab, setTab] = useState<'members' | 'updates' | 'comments'>(
+		DefaultCycleDetailsPageContextData.tab,
+	);
 	const [opened, { open, close }] = useDisclosure(
 		DefaultCycleDetailsPageContextData.isDrawerOpen,
 	);
 
 	const handleOpenDrawer = useCallback(
-		(tab?: 'members' | 'updates') => {
+		(tab?: 'members' | 'updates' | 'comments') => {
 			open();
 			if (tab) setTab(tab);
 		},
