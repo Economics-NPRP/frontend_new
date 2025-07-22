@@ -41,10 +41,7 @@ const MIN_PRICE = 1;
 const MAX_PRICE = 999999;
 
 const parseFilters = (filters: IAuctionFilters) => ({
-	type: {
-		open: filters.type?.includes('open') || false,
-		sealed: filters.type?.includes('sealed') || false,
-	},
+	type: filters.type,
 	status: filters.status,
 	sector: {
 		energy: filters.sector?.includes('energy') || false,
@@ -71,7 +68,7 @@ const parseRange = (value: RangeSliderValue | undefined, min: number, max: numbe
 	value ? (value[0] === min && value[1] === max ? undefined : value) : undefined;
 const parseValues = (values: ReturnType<typeof parseFilters>) =>
 	({
-		type: parseCheckboxes(values.type),
+		type: values.type,
 		status: values.status,
 		sector: parseCheckboxes(values.sector),
 		//	TODO: Add owner filter
@@ -193,20 +190,25 @@ const FiltersCore = () => {
 									{ a: (chunks) => <Anchor href="#">{chunks}</Anchor> },
 								)}
 							</Text>
-							<Container className={classes.values}>
-								<Checkbox
-									className={classes.checkbox}
-									label={t('constants.auctionType.open')}
-									key={form.key('type.open')}
-									{...form.getInputProps('type.open', { type: 'checkbox' })}
-								/>
-								<Checkbox
-									className={classes.checkbox}
-									label={t('constants.auctionType.sealed')}
-									key={form.key('type.sealed')}
-									{...form.getInputProps('type.sealed', { type: 'checkbox' })}
-								/>
-							</Container>
+							<RadioGroup key={form.key('type')} {...form.getInputProps('type')}>
+								<Container className={classes.values}>
+									<Radio
+										className={classes.checkbox}
+										label={t('constants.auctionType.open')}
+										value="open"
+									/>
+									<Radio
+										className={classes.checkbox}
+										label={t('constants.auctionType.sealed')}
+										value="sealed"
+									/>
+									<Radio
+										className={classes.checkbox}
+										label={t('marketplace.home.catalogue.filters.all')}
+										value="all"
+									/>
+								</Container>
+							</RadioGroup>
 						</AccordionPanel>
 					</AccordionItem>
 					<AccordionItem value={'status'}>

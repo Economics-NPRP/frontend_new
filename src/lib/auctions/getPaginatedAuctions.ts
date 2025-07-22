@@ -14,7 +14,7 @@ export interface IGetPaginatedAuctionsOptions extends IOffsetPagination {
 	sortDirection?: SortDirection | null;
 
 	ownerId?: string;
-	type?: AuctionType;
+	type?: 'all' | AuctionType;
 	isPending?: boolean;
 	isLive?: boolean;
 	hasEnded?: boolean;
@@ -66,7 +66,7 @@ export const getPaginatedAuctions: IFunctionSignature = cache(
 		if (sortBy) queryUrl.searchParams.append('order_by', sortBy);
 		if (sortDirection) queryUrl.searchParams.append('order_dir', sortDirection);
 		if (ownerId) queryUrl.searchParams.append('owner', ownerId);
-		if (type) queryUrl.searchParams.append('type', type);
+		if (type && type !== 'all') queryUrl.searchParams.append('type', type);
 		if (isPending) queryUrl.searchParams.append('is_pending', isPending.valueOf().toString());
 		if (isLive) queryUrl.searchParams.append('is_live', isLive.valueOf().toString());
 		if (hasEnded) queryUrl.searchParams.append('has_ended', hasEnded.valueOf().toString());

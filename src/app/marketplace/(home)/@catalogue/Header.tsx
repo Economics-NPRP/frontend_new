@@ -21,7 +21,7 @@ import {
 import { DatesRangeValue } from '@mantine/dates';
 import { IconDownload, IconFilter, IconLayoutGrid, IconListDetails } from '@tabler/icons-react';
 
-import { AuctionCatalogueContext, IAuctionFilters, IAuctionStatus } from './constants';
+import { AuctionCatalogueContext, IAuctionFilters } from './constants';
 import classes from './styles.module.css';
 
 type ViewType = 'grid' | 'list';
@@ -50,10 +50,11 @@ export const Header = () => {
 	const filterBadges = useMemo(() => {
 		const output = [];
 
-		const selectFilters = ['type', 'sector', 'owner'];
+		const selectFilters = ['sector', 'owner'];
+		const radioFilters = ['type', 'status'];
 		(
 			Object.entries(paginatedAuctions.filters) as Array<
-				[keyof IAuctionFilters, Array<unknown> | IAuctionStatus]
+				[keyof IAuctionFilters, Array<unknown> | string]
 			>
 		).forEach(([key, value]) => {
 			if (!value || (Array.isArray(value) && !value.length)) return;
@@ -69,13 +70,13 @@ export const Header = () => {
 						</FilterPill>
 					)),
 				);
-			else if (key === 'status') {
-				const status = value as IAuctionStatus;
-				if (status !== 'all') {
+			else if (radioFilters.includes(key)) {
+				if (value !== 'all') {
 					output.push(
 						<FilterPill key={key} onRemove={() => paginatedAuctions.removeFilter(key)}>
 							{t(
-								`marketplace.home.catalogue.filters.accordion.${key}.options.${status}`,
+								//	@ts-expect-error - TODO: fix type error
+								`marketplace.home.catalogue.filters.accordion.${key}.options.${value}`,
 							)}
 						</FilterPill>,
 					);

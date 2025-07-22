@@ -13,7 +13,7 @@ export const DefaultAuctionCatalogueContextData: IAuctionCatalogueContext = {
 export type IAuctionStatus = 'ongoing' | 'upcoming' | 'ended' | 'all';
 
 export interface IAuctionFilters {
-	type?: Array<AuctionType>;
+	type?: 'all' | AuctionType;
 	status?: IAuctionStatus;
 	sector?: Array<SectorType>;
 	owner?: Array<string>;

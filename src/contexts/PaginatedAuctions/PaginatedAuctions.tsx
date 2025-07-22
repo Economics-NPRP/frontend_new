@@ -28,7 +28,7 @@ const DefaultData: IPaginatedAuctionsContext = {
 	...getDefaultSortedOffsetPaginatedContextState<IAuctionData>(1, 12, 'created_at', 'desc'),
 
 	filters: {
-		type: [],
+		type: 'all',
 		status: 'all',
 		sector: [],
 		owner: [],
@@ -109,7 +109,7 @@ export const PaginatedAuctionsProvider = ({
 					perPage,
 					sortBy,
 					sortDirection,
-					type: (filters.type || [])[0],
+					type: filters.type,
 					isLive: filters.status === 'ongoing',
 					hasEnded: filters.status === 'ended',
 				}),
