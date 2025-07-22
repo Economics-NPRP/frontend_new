@@ -127,7 +127,9 @@ const FiltersCore = () => {
 	}, [paginatedAuctions.filters]);
 
 	return (
-		<Container className={classes.wrapper}>
+		<Container
+			className={`${classes.wrapper} ${paginatedAuctions.isFetching ? classes.loading : ''}`}
+		>
 			<form onSubmit={form.onSubmit((value) => paginatedAuctions.setAllFilters(value))}>
 				<LoadingOverlay visible={paginatedAuctions.isFetching} />
 				<Group className={classes.footer}>

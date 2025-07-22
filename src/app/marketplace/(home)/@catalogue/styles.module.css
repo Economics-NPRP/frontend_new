@@ -247,6 +247,10 @@
 		@apply relative;
 		@apply overflow-y-auto;
 
+		&.loading {
+			@apply overflow-y-hidden;
+		}
+
 		> form {
 			@apply contents;
 

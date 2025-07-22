@@ -191,7 +191,12 @@ export const AuctionCarousel = ({ infinitePaginatedAuctions }: AuctionCarouselPr
 			infinitePaginatedAuctions.data.pages.length === 0
 		)
 			return 'empty';
-	}, [infinitePaginatedAuctions.isLoading, infinitePaginatedAuctions.isError]);
+	}, [
+		infinitePaginatedAuctions.isLoading,
+		infinitePaginatedAuctions.isError,
+		infinitePaginatedAuctions.isSuccess,
+		infinitePaginatedAuctions.data.pages.length,
+	]);
 
 	return (
 		<Stack className={classes.root}>
@@ -226,16 +231,19 @@ export const AuctionCarousel = ({ infinitePaginatedAuctions }: AuctionCarouselPr
 								t('constants.sector.agriculture.title'),
 								t('constants.sector.waste.title'),
 							]}
+							disabled={infinitePaginatedAuctions.isFetching}
 						/>
 						<ActionIcon
 							className={`${classes.action} ${classes.square}`}
 							onClick={handlePrev}
+							disabled={infinitePaginatedAuctions.isFetching}
 						>
 							<IconChevronLeft size={20} />
 						</ActionIcon>
 						<ActionIcon
 							className={`${classes.action} ${classes.square}`}
 							onClick={handleNext}
+							disabled={infinitePaginatedAuctions.isFetching}
 						>
 							<IconChevronRight size={20} />
 						</ActionIcon>
