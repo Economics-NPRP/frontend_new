@@ -85,6 +85,7 @@ export default function Hero() {
 						href: `/dashboard/a/cycles/sectors/${sector}/${singleSubsector.data.id}`,
 					},
 				]}
+				loading={singleSubsector.isLoading}
 			/>
 		</>
 	);
