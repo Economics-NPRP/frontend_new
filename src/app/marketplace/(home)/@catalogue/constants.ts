@@ -16,7 +16,8 @@ export interface IAuctionFilters {
 	type?: 'all' | AuctionType;
 	status?: IAuctionStatus;
 	sector?: Array<SectorType>;
-	owner?: Array<string>;
+	joined?: 'joined' | 'notJoined' | 'all';
+	ownership?: 'government' | 'private' | 'all';
 	date?: DatesRangeValue;
 	permits?: RangeSliderValue;
 	minBid?: RangeSliderValue;

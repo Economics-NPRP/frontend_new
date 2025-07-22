@@ -809,10 +809,6 @@
 							"title": "Sector",
 							"description": "Filter auctions by the sector they belong to"
 						},
-						"owner": {
-							"title": "Owner",
-							"description": "Search auctions from specific owners"
-						},
 						"date": {
 							"title": "Date",
 							"description": "Filter for auctions that run during a specific time period"
@@ -828,6 +824,22 @@
 						"price": {
 							"title": "Buy Now Price",
 							"description": "Filter for auctions by the buy now price"
+						},
+						"joined": {
+							"title": "Join Status",
+							"description": "Find auctions that you have or have not joined",
+							"options": {
+								"joined": "Joined",
+								"notJoined": "Not Joined"
+							}
+						},
+						"ownership": {
+							"title": "Ownership",
+							"description": "Filter auctions by their owner, either government (admin) or private (company) owned",
+							"options": {
+								"government": "Government",
+								"private": "Private Sector"
+							}
 						}
 					},
 					"clear": {

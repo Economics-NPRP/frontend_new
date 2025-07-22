@@ -40,9 +40,10 @@ const MAX_BID = 999999;
 const MIN_PRICE = 1;
 const MAX_PRICE = 999999;
 
+//	TODO: use valibot schemas for transformations
+
 const parseFilters = (filters: IAuctionFilters) => ({
-	type: filters.type,
-	status: filters.status,
+	...filters,
 	sector: {
 		energy: filters.sector?.includes('energy') || false,
 		industry: filters.sector?.includes('industry') || false,
@@ -51,11 +52,6 @@ const parseFilters = (filters: IAuctionFilters) => ({
 		agriculture: filters.sector?.includes('agriculture') || false,
 		waste: filters.sector?.includes('waste') || false,
 	},
-	//	TODO: Add owner filter
-	date: filters.date,
-	permits: filters.permits,
-	minBid: filters.minBid,
-	price: filters.price,
 });
 
 const parseCheckboxes = (values: Record<string, unknown>) =>
@@ -71,6 +67,8 @@ const parseValues = (values: ReturnType<typeof parseFilters>) =>
 		type: values.type,
 		status: values.status,
 		sector: parseCheckboxes(values.sector),
+		joined: values.joined,
+		ownership: values.ownership,
 		//	TODO: Add owner filter
 		date: parseDatePicker(values.date),
 		permits: parseRange(values.permits, MIN_PERMITS, MAX_PERMITS),
@@ -100,21 +98,23 @@ const FiltersCore = () => {
 	);
 
 	const numFilters = useMemo(() => {
-		const type = paginatedAuctions.filters.type?.length || 0;
+		const type = paginatedAuctions.filters.type ? 1 : 0;
 		const status = paginatedAuctions.filters.status === 'all' ? 0 : 1;
 		const sector = paginatedAuctions.filters.sector?.length || 0;
-		const owner = paginatedAuctions.filters.owner?.length || 0;
+		const joined = paginatedAuctions.filters.joined ? 1 : 0;
+		const ownership = paginatedAuctions.filters.ownership ? 1 : 0;
 		const date = paginatedAuctions.filters.date ? 1 : 0;
 		const permits = paginatedAuctions.filters.permits ? 1 : 0;
 		const minBid = paginatedAuctions.filters.minBid ? 1 : 0;
 		const price = paginatedAuctions.filters.price ? 1 : 0;
-		const total = type + status + sector + owner + date + permits + minBid + price;
+		const total = type + status + sector + joined + ownership + date + permits + minBid + price;
 
 		return {
 			type,
 			status,
 			sector,
-			owner,
+			joined,
+			ownership,
 			date,
 			permits,
 			minBid,
@@ -313,75 +313,89 @@ const FiltersCore = () => {
 							</Container>
 						</AccordionPanel>
 					</AccordionItem>
-					{/* TODO: Add infinite scrolling for owner names/ids */}
-					<AccordionItem value={'owner'}>
+					<AccordionItem value={'joined'}>
 						<AccordionControl classNames={{ label: classes.title }}>
-							{t('marketplace.home.catalogue.filters.accordion.owner.title')}
+							{t('marketplace.home.catalogue.filters.accordion.joined.title')}
 							<Text className={classes.subtitle}>
 								{t('marketplace.home.catalogue.filters.count', {
-									value: numFilters.owner,
+									value: numFilters.joined,
 								})}
 							</Text>
 						</AccordionControl>
 						<AccordionPanel>
 							<Text className={classes.description}>
-								{t(
-									'marketplace.home.catalogue.filters.accordion.owner.description',
+								{t.rich(
+									'marketplace.home.catalogue.filters.accordion.joined.description',
+									{ a: (chunks) => <Anchor href="#">{chunks}</Anchor> },
 								)}
 							</Text>
-							<TextInput placeholder="Search for a firm by name or ID" />
-							<Container className={classes.values}>
-								<Checkbox
-									className={classes.checkbox}
-									label="Fake Company A (FM-a4sh4)"
-									value="FM-a4sh4"
-								/>
-								<Checkbox
-									className={classes.checkbox}
-									label="Fake Company B (FM-3r4h3)"
-									value="FM-3r4h3"
-								/>
-								<Checkbox
-									className={classes.checkbox}
-									label="Fake Company C (FM-gsdf7)"
-									value="FM-gsdf7"
-								/>
-								<Checkbox
-									className={classes.checkbox}
-									label="Fake Company D (FM-823yg)"
-									value="FM-823yg"
-								/>
-								<Checkbox
-									className={classes.checkbox}
-									label="Fake Company E (FM-13hjk)"
-									value="FM-13hjk"
-								/>
-								<Checkbox
-									className={classes.checkbox}
-									label="Fake Company F (FM-9sdf8)"
-									value="FM-9sdf8"
-								/>
-								<Checkbox
-									className={classes.checkbox}
-									label="Fake Company G (FM-1sdf2)"
-									value="FM-1sdf2"
-								/>
-								<Checkbox
-									className={classes.checkbox}
-									label="Fake Company H (FM-4sdf5)"
-									value="FM-4sdf5"
-								/>
-								<Checkbox
-									className={classes.checkbox}
-									label="Fake Company I (FM-7sdf8)"
-									value="FM-7sdf8"
-								/>
-								<Checkbox
-									className={classes.checkbox}
-									label="Fake Company J (FM-2sdf3)"
-									value="FM-2sdf3"
-								/>
-							</Container>
+							<RadioGroup key={form.key('joined')} {...form.getInputProps('joined')}>
+								<Container className={classes.values}>
+									<Radio
+										className={classes.checkbox}
+										label={t(
+											'marketplace.home.catalogue.filters.accordion.joined.options.joined',
+										)}
+										value="joined"
+									/>
+									<Radio
+										className={classes.checkbox}
+										label={t(
+											'marketplace.home.catalogue.filters.accordion.joined.options.notJoined',
+										)}
+										value="notJoined"
+									/>
+									<Radio
+										className={classes.checkbox}
+										label={t('marketplace.home.catalogue.filters.all')}
+										value="all"
+									/>
+								</Container>
+							</RadioGroup>
+						</AccordionPanel>
+					</AccordionItem>
+					<AccordionItem value={'ownership'}>
+						<AccordionControl classNames={{ label: classes.title }}>
+							{t('marketplace.home.catalogue.filters.accordion.ownership.title')}
+							<Text className={classes.subtitle}>
+								{t('marketplace.home.catalogue.filters.count', {
+									value: numFilters.ownership,
+								})}
+							</Text>
+						</AccordionControl>
+						<AccordionPanel>
+							<Text className={classes.description}>
+								{t.rich(
+									'marketplace.home.catalogue.filters.accordion.ownership.description',
+									{ a: (chunks) => <Anchor href="#">{chunks}</Anchor> },
+								)}
+							</Text>
+							<RadioGroup
+								key={form.key('ownership')}
+								{...form.getInputProps('ownership')}
+							>
+								<Container className={classes.values}>
+									<Radio
+										className={classes.checkbox}
+										label={t(
+											'marketplace.home.catalogue.filters.accordion.ownership.options.government',
+										)}
+										value="government"
+									/>
+									<Radio
+										className={classes.checkbox}
+										label={t(
+											'marketplace.home.catalogue.filters.accordion.ownership.options.private',
+										)}
+										value="private"
+									/>
+									<Radio
+										className={classes.checkbox}
+										label={t('marketplace.home.catalogue.filters.all')}
+										value="all"
+									/>
+								</Container>
+							</RadioGroup>
 						</AccordionPanel>
 					</AccordionItem>
 					<AccordionItem value={'date'}>

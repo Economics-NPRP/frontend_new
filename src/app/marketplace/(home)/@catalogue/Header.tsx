@@ -50,8 +50,8 @@ export const Header = () => {
 	const filterBadges = useMemo(() => {
 		const output = [];
 
-		const selectFilters = ['sector', 'owner'];
-		const radioFilters = ['type', 'status'];
+		const selectFilters = ['sector'];
+		const radioFilters = ['type', 'status', 'joined', 'ownership'];
 		(
 			Object.entries(paginatedAuctions.filters) as Array<
 				[keyof IAuctionFilters, Array<unknown> | string]
@@ -75,6 +75,7 @@ export const Header = () => {
 					output.push(
 						<FilterPill key={key} onRemove={() => paginatedAuctions.removeFilter(key)}>
 							{t(
+								//	TODO: get label from filters object in constants.ts
 								//	@ts-expect-error - TODO: fix type error
 								`marketplace.home.catalogue.filters.accordion.${key}.options.${value}`,
 							)}
