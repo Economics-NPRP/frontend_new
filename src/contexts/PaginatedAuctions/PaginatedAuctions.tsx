@@ -8,8 +8,7 @@ import {
 } from '@/contexts';
 import { throwError } from '@/helpers';
 import { getPaginatedAuctions } from '@/lib/auctions';
-import { IAuctionFilters } from '@/pages/marketplace/(home)/@catalogue/constants';
-import { IAuctionData } from '@/schema/models';
+import { DefaultQueryFiltersData, IAuctionData, QueryFiltersData } from '@/schema/models';
 import {
 	SortedOffsetPaginatedContextState,
 	SortedOffsetPaginatedProviderProps,
@@ -17,23 +16,18 @@ import {
 } from '@/types';
 
 export interface IPaginatedAuctionsContext extends SortedOffsetPaginatedContextState<IAuctionData> {
-	filters: IAuctionFilters;
-	setAllFilters: (filters: IAuctionFilters) => void;
+	filters: QueryFiltersData;
+	setAllFilters: (filters: QueryFiltersData) => void;
 	setSingleFilter: (key: 'type' | 'status' | 'owner', value: string) => void;
 	setArrayFilter: (key: 'sector', value: Array<string>) => void;
 	addToFilterArray: (key: 'sector', ...value: Array<string>) => void;
-	removeFilter: (key: keyof IAuctionFilters, value?: string) => void;
+	removeFilter: (key: keyof QueryFiltersData, value?: string) => void;
 	resetFilters: () => void;
 }
 const DefaultData: IPaginatedAuctionsContext = {
 	...getDefaultSortedOffsetPaginatedContextState<IAuctionData>(1, 12, 'created_at', 'desc'),
 
-	filters: {
-		type: 'all',
-		status: 'all',
-		sector: [],
-		ownership: 'all',
-	},
+	filters: DefaultQueryFiltersData,
 	setAllFilters: () => {},
 	setSingleFilter: () => {},
 	setArrayFilter: () => {},
@@ -44,7 +38,7 @@ const DefaultData: IPaginatedAuctionsContext = {
 const Context = createContext<IPaginatedAuctionsContext>(DefaultData);
 
 export interface PaginatedAuctionsProviderProps extends SortedOffsetPaginatedProviderProps {
-	defaultFilters?: IAuctionFilters;
+	defaultFilters?: QueryFiltersData;
 }
 export const PaginatedAuctionsProvider = ({
 	defaultPage,

@@ -1,7 +1,16 @@
 import { PaginatedAuctionsContext } from 'contexts/PaginatedAuctions';
 import { useTranslations } from 'next-intl';
 import { useCallback, useContext, useEffect, useMemo } from 'react';
+import { safeParse } from 'valibot';
 
+import {
+	ComponentFiltersData,
+	ComponentToQueryFiltersDataTransformer,
+	DefaultComponentFiltersData,
+	DefaultQueryFiltersData,
+	QueryFiltersData,
+	QueryToComponentFiltersDataTransformer,
+} from '@/schema/models';
 import {
 	Accordion,
 	AccordionControl,
@@ -17,77 +26,55 @@ import {
 	Modal,
 	Radio,
 	RadioGroup,
-	RangeSlider,
-	RangeSliderValue,
 	Stack,
 	Text,
 	Title,
 	Tooltip,
 } from '@mantine/core';
-import { DatePickerInput, DatesRangeValue } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { IconArrowBackUp, IconCheck, IconPlus, IconTrash, IconX } from '@tabler/icons-react';
 
 import { AuctionCatalogueContext, IAuctionFilters, getAuctionFilters } from './constants';
 import classes from './styles.module.css';
 
-const MIN_PERMITS = 1;
-const MAX_PERMITS = 99999;
-const MIN_BID = 1;
-const MAX_BID = 999999;
-const MIN_PRICE = 1;
-const MAX_PRICE = 999999;
-
-//	TODO: use valibot schemas for transformations
-
-const parseFilters = (filters: IAuctionFilters) => ({
-	...filters,
-	sector: {
-		energy: filters.sector?.includes('energy') || false,
-		industry: filters.sector?.includes('industry') || false,
-		transport: filters.sector?.includes('transport') || false,
-		buildings: filters.sector?.includes('buildings') || false,
-		agriculture: filters.sector?.includes('agriculture') || false,
-		waste: filters.sector?.includes('waste') || false,
-	},
-});
-
-const parseCheckboxes = (values: Record<string, unknown>) =>
-	Object.entries(values)
-		.filter(([, value]) => value)
-		.map(([key]) => key);
-const parseDatePicker = (value: DatesRangeValue | undefined) =>
-	value ? (value[0] === null && value[1] === null ? undefined : value) : undefined;
-const parseRange = (value: RangeSliderValue | undefined, min: number, max: number) =>
-	value ? (value[0] === min && value[1] === max ? undefined : value) : undefined;
-const parseValues = (values: ReturnType<typeof parseFilters>) =>
-	({
-		type: values.type,
-		status: values.status,
-		sector: parseCheckboxes(values.sector),
-		joined: values.joined,
-		ownership: values.ownership,
-		//	TODO: Add owner filter
-		date: parseDatePicker(values.date),
-		permits: parseRange(values.permits, MIN_PERMITS, MAX_PERMITS),
-		minBid: parseRange(values.minBid, MIN_BID, MAX_BID),
-		price: parseRange(values.price, MIN_PRICE, MAX_PRICE),
-	}) as IAuctionFilters;
-
 const FiltersCore = () => {
 	const t = useTranslations();
 	const paginatedAuctions = useContext(PaginatedAuctionsContext);
 
-	const form = useForm({
+	const form = useForm<ComponentFiltersData, (values: ComponentFiltersData) => QueryFiltersData>({
 		mode: 'uncontrolled',
-		initialValues: parseFilters(paginatedAuctions.filters),
+		initialValues: DefaultComponentFiltersData,
 
-		transformValues: parseValues,
+		transformValues: (values) => {
+			const parsedData = safeParse(ComponentToQueryFiltersDataTransformer, values);
+			if (!parsedData.success) {
+				console.error(
+					'There was an error parsing the component filters to query:',
+					parsedData.issues,
+				);
+				return DefaultQueryFiltersData;
+			}
+			return parsedData.output as QueryFiltersData;
+		},
 	});
 
 	useEffect(() => {
-		form.setInitialValues(parseFilters(paginatedAuctions.filters));
-		form.reset();
+		const parsedData = safeParse(
+			QueryToComponentFiltersDataTransformer,
+			paginatedAuctions.filters,
+		);
+
+		if (!parsedData.success) {
+			console.error(
+				'There was an error parsing the query filters to component:',
+				parsedData.issues,
+			);
+			form.setInitialValues(DefaultComponentFiltersData);
+			form.reset();
+		} else {
+			form.setInitialValues(parsedData.output);
+			form.reset();
+		}
 	}, [paginatedAuctions.filters]);
 
 	const handleClearFilters = useCallback(paginatedAuctions.resetFilters, [
@@ -229,7 +216,7 @@ const FiltersCore = () => {
 					multiple
 				>
 					{accordionSections}
-					<AccordionItem value={'date'}>
+					{/* <AccordionItem value={'date'}>
 						<AccordionControl classNames={{ label: classes.title }}>
 							{t('marketplace.home.catalogue.filters.accordion.date.title')}
 							<Text className={classes.subtitle}>
@@ -340,7 +327,7 @@ const FiltersCore = () => {
 								/>
 							</Container>
 						</AccordionPanel>
-					</AccordionItem>
+					</AccordionItem> */}
 				</Accordion>
 				<Group className={classes.footer}>
 					<Text className={classes.value}>

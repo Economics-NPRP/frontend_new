@@ -22,6 +22,7 @@ export const SectorListSchema = pipe(
 	minLength(1),
 	maxLength(6),
 );
+export const SectorListFilterSchema = array(picklist([...SectorList, 'all']));
 
 export const BaseSectorDataSchema = object({
 	sector: SectorTypeSchema,
@@ -38,6 +39,7 @@ export interface ISectorData extends InferOutput<typeof ReadSectorDataSchema> {}
 export interface IUpdateSector extends InferInput<typeof UpdateSectorDataSchema> {}
 
 export type SectorType = InferOutput<typeof SectorTypeSchema>;
+export type SectorListFilter = InferOutput<typeof SectorListFilterSchema>;
 
 export const DefaultSectorData: ISectorData = {
 	sector: 'energy',

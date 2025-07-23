@@ -6,11 +6,7 @@ import { cache } from 'react';
 import 'server-only';
 
 import { getSession } from '@/lib/auth';
-import {
-	AuctionOwnershipFilter,
-	AuctionTypeFilter,
-} from '@/pages/marketplace/(home)/@catalogue/constants';
-import { IAuctionData } from '@/schema/models';
+import { AuctionOwnershipFilter, AuctionTypeFilter, IAuctionData } from '@/schema/models';
 import { IOffsetPagination, OffsetPaginatedData, SortDirection } from '@/types';
 
 export interface IGetPaginatedAuctionsOptions extends IOffsetPagination {

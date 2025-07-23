@@ -1,9 +1,14 @@
 import { useTranslations } from 'next-intl';
 import { ReactNode, createContext } from 'react';
 
-import { AuctionType, SectorType } from '@/schema/models';
-import { Anchor, RangeSliderValue } from '@mantine/core';
-import { DatesRangeValue } from '@mantine/dates';
+import {
+	AuctionJoinedStatusFilter,
+	AuctionOwnershipFilter,
+	AuctionStatusFilter,
+	AuctionTypeFilter,
+	SectorListFilter,
+} from '@/schema/models';
+import { Anchor } from '@mantine/core';
 
 export const DefaultAuctionCatalogueContextData: IAuctionCatalogueContext = {
 	isFilterModalOpen: false,
@@ -21,21 +26,12 @@ export const AuctionCatalogueContext = createContext<IAuctionCatalogueContext>(
 	DefaultAuctionCatalogueContextData,
 );
 
-export type IAuctionStatus = 'ongoing' | 'upcoming' | 'ended' | 'all';
-export type AuctionTypeFilter = 'all' | AuctionType;
-export type AuctionJoinedFilter = 'joined' | 'notJoined' | 'all';
-export type AuctionOwnershipFilter = 'government' | 'private' | 'all';
-
 export interface IAuctionFilters {
 	type?: AuctionTypeFilter;
-	status?: IAuctionStatus;
-	sector?: Array<SectorType>;
-	joined?: AuctionJoinedFilter;
+	status?: AuctionStatusFilter;
+	sector?: SectorListFilter;
+	joined?: AuctionJoinedStatusFilter;
 	ownership?: AuctionOwnershipFilter;
-	date?: DatesRangeValue;
-	permits?: RangeSliderValue;
-	minBid?: RangeSliderValue;
-	price?: RangeSliderValue;
 }
 
 export interface AuctionFilterData {
