@@ -1,13 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { ReactNode, createContext } from 'react';
 
-import {
-	AuctionJoinedStatusFilter,
-	AuctionOwnershipFilter,
-	AuctionStatusFilter,
-	AuctionTypeFilter,
-	SectorListFilter,
-} from '@/schema/models';
+import { QueryFiltersData } from '@/schema/models';
 import { Anchor } from '@mantine/core';
 
 export const DefaultAuctionCatalogueContextData: IAuctionCatalogueContext = {
@@ -26,16 +20,8 @@ export const AuctionCatalogueContext = createContext<IAuctionCatalogueContext>(
 	DefaultAuctionCatalogueContextData,
 );
 
-export interface IAuctionFilters {
-	type?: AuctionTypeFilter;
-	status?: AuctionStatusFilter;
-	sector?: SectorListFilter;
-	joined?: AuctionJoinedStatusFilter;
-	ownership?: AuctionOwnershipFilter;
-}
-
 export interface AuctionFilterData {
-	id: keyof IAuctionFilters;
+	id: keyof QueryFiltersData;
 	title: ReactNode;
 	description: ReactNode;
 	type: 'checkbox' | 'radio';
@@ -50,8 +36,8 @@ export const getAuctionFilters: (
 ) => Array<AuctionFilterData> = (t) => [
 	{
 		id: 'type',
-		title: t('marketplace.home.catalogue.filters.accordion.type.title'),
-		description: t.rich('marketplace.home.catalogue.filters.accordion.type.description', {
+		title: t('components.auctionCatalogue.filters.accordion.type.title'),
+		description: t.rich('components.auctionCatalogue.filters.accordion.type.description', {
 			a: (chunks) => <Anchor href="#">{chunks}</Anchor>,
 		}),
 		type: 'radio',
@@ -66,14 +52,14 @@ export const getAuctionFilters: (
 			},
 			{
 				value: 'all',
-				label: t('marketplace.home.catalogue.filters.all'),
+				label: t('components.auctionCatalogue.filters.all'),
 			},
 		],
 	},
 	{
 		id: 'status',
-		title: t('marketplace.home.catalogue.filters.accordion.status.title'),
-		description: t('marketplace.home.catalogue.filters.accordion.status.description'),
+		title: t('components.auctionCatalogue.filters.accordion.status.title'),
+		description: t('components.auctionCatalogue.filters.accordion.status.description'),
 		type: 'radio',
 		options: [
 			{
@@ -90,14 +76,14 @@ export const getAuctionFilters: (
 			},
 			{
 				value: 'all',
-				label: t('marketplace.home.catalogue.filters.all'),
+				label: t('components.auctionCatalogue.filters.all'),
 			},
 		],
 	},
 	{
 		id: 'sector',
-		title: t('marketplace.home.catalogue.filters.accordion.sector.title'),
-		description: t('marketplace.home.catalogue.filters.accordion.sector.description'),
+		title: t('components.auctionCatalogue.filters.accordion.sector.title'),
+		description: t('components.auctionCatalogue.filters.accordion.sector.description'),
 		type: 'checkbox',
 		options: [
 			{
@@ -128,43 +114,43 @@ export const getAuctionFilters: (
 	},
 	{
 		id: 'joined',
-		title: t('marketplace.home.catalogue.filters.accordion.joined.title'),
-		description: t('marketplace.home.catalogue.filters.accordion.joined.description'),
+		title: t('components.auctionCatalogue.filters.accordion.joined.title'),
+		description: t('components.auctionCatalogue.filters.accordion.joined.description'),
 		type: 'radio',
 		options: [
 			{
 				value: 'joined',
-				label: t('marketplace.home.catalogue.filters.accordion.joined.options.joined'),
+				label: t('components.auctionCatalogue.filters.accordion.joined.options.joined'),
 			},
 			{
 				value: 'notJoined',
-				label: t('marketplace.home.catalogue.filters.accordion.joined.options.notJoined'),
+				label: t('components.auctionCatalogue.filters.accordion.joined.options.notJoined'),
 			},
 			{
 				value: 'all',
-				label: t('marketplace.home.catalogue.filters.all'),
+				label: t('components.auctionCatalogue.filters.all'),
 			},
 		],
 	},
 	{
 		id: 'ownership',
-		title: t('marketplace.home.catalogue.filters.accordion.ownership.title'),
-		description: t('marketplace.home.catalogue.filters.accordion.ownership.description'),
+		title: t('components.auctionCatalogue.filters.accordion.ownership.title'),
+		description: t('components.auctionCatalogue.filters.accordion.ownership.description'),
 		type: 'radio',
 		options: [
 			{
 				value: 'government',
 				label: t(
-					'marketplace.home.catalogue.filters.accordion.ownership.options.government',
+					'components.auctionCatalogue.filters.accordion.ownership.options.government',
 				),
 			},
 			{
 				value: 'private',
-				label: t('marketplace.home.catalogue.filters.accordion.ownership.options.private'),
+				label: t('components.auctionCatalogue.filters.accordion.ownership.options.private'),
 			},
 			{
 				value: 'all',
-				label: t('marketplace.home.catalogue.filters.all'),
+				label: t('components.auctionCatalogue.filters.all'),
 			},
 		],
 	},

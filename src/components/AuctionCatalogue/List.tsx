@@ -11,7 +11,7 @@ import { IconDatabaseOff, IconExclamationCircle } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
-export const List = () => {
+export const AuctionCatalogueList = () => {
 	const t = useTranslations();
 	const paginatedAuctions = useContext(PaginatedAuctionsContext);
 
@@ -54,7 +54,7 @@ export const List = () => {
 							<IconExclamationCircle size={24} />
 						</Container>
 						<Text className={classes.text}>
-							{t('components.auctionCarousel.error')}
+							{t('components.auctionCatalogue.error')}
 						</Text>
 					</Stack>
 				</Switch.Error>
@@ -64,7 +64,7 @@ export const List = () => {
 							<IconDatabaseOff size={24} />
 						</Container>
 						<Text className={classes.text}>
-							{t('components.auctionCarousel.empty')}
+							{t('components.auctionCatalogue.empty')}
 						</Text>
 					</Stack>
 				</Switch.Case>

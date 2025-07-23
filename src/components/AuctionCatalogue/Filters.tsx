@@ -34,7 +34,7 @@ import {
 import { useForm } from '@mantine/form';
 import { IconArrowBackUp, IconCheck, IconPlus, IconTrash, IconX } from '@tabler/icons-react';
 
-import { AuctionCatalogueContext, IAuctionFilters, getAuctionFilters } from './constants';
+import { AuctionCatalogueContext, getAuctionFilters } from './constants';
 import classes from './styles.module.css';
 
 const FiltersCore = () => {
@@ -82,7 +82,7 @@ const FiltersCore = () => {
 	]);
 
 	const numFilters = useMemo(() => {
-		const output: Partial<Record<keyof IAuctionFilters, number>> = {};
+		const output: Partial<Record<keyof QueryFiltersData, number>> = {};
 		const total = getAuctionFilters(t).reduce((acc, { id, type }) => {
 			let value = 0;
 			switch (type) {
@@ -104,7 +104,7 @@ const FiltersCore = () => {
 		}, 0);
 
 		return {
-			...(output as Record<keyof IAuctionFilters, number>),
+			...(output as Record<keyof QueryFiltersData, number>),
 			total,
 		};
 	}, [t, paginatedAuctions.filters]);
@@ -149,8 +149,8 @@ const FiltersCore = () => {
 						<AccordionControl classNames={{ label: classes.title }}>
 							{title}
 							<Text className={classes.subtitle}>
-								{t('marketplace.home.catalogue.filters.count', {
-									value: numFilters[id as keyof IAuctionFilters],
+								{t('components.auctionCatalogue.filters.count', {
+									value: numFilters[id],
 								})}
 							</Text>
 						</AccordionControl>
@@ -172,12 +172,12 @@ const FiltersCore = () => {
 				<LoadingOverlay visible={paginatedAuctions.isFetching} />
 				<Group className={classes.footer}>
 					<Text className={classes.value}>
-						{t('marketplace.home.catalogue.filters.total', {
+						{t('components.auctionCatalogue.filters.total', {
 							value: numFilters.total,
 						})}
 					</Text>
 					<Group className={classes.actions}>
-						<Tooltip label={t('marketplace.home.catalogue.filters.clear.tooltip')}>
+						<Tooltip label={t('components.auctionCatalogue.filters.clear.tooltip')}>
 							<ActionIcon
 								className={`${classes.action} ${classes.square}`}
 								onClick={handleClearFilters}
@@ -185,7 +185,7 @@ const FiltersCore = () => {
 								<IconTrash size={16} />
 							</ActionIcon>
 						</Tooltip>
-						<Tooltip label={t('marketplace.home.catalogue.filters.reset.tooltip')}>
+						<Tooltip label={t('components.auctionCatalogue.filters.reset.tooltip')}>
 							<ActionIcon
 								className={`${classes.action} ${classes.square}`}
 								onClick={form.reset}
@@ -193,13 +193,13 @@ const FiltersCore = () => {
 								<IconArrowBackUp size={16} />
 							</ActionIcon>
 						</Tooltip>
-						<Tooltip label={t('marketplace.home.catalogue.filters.apply.tooltip')}>
+						<Tooltip label={t('components.auctionCatalogue.filters.apply.tooltip')}>
 							<Button
 								className={classes.action}
 								type="submit"
 								rightSection={<IconCheck size={16} />}
 							>
-								{t('marketplace.home.catalogue.filters.apply.label')}
+								{t('components.auctionCatalogue.filters.apply.label')}
 							</Button>
 						</Tooltip>
 					</Group>
@@ -218,16 +218,16 @@ const FiltersCore = () => {
 					{accordionSections}
 					{/* <AccordionItem value={'date'}>
 						<AccordionControl classNames={{ label: classes.title }}>
-							{t('marketplace.home.catalogue.filters.accordion.date.title')}
+							{t('components.auctionCatalogue.filters.accordion.date.title')}
 							<Text className={classes.subtitle}>
-								{t('marketplace.home.catalogue.filters.boolean', {
+								{t('components.auctionCatalogue.filters.boolean', {
 									value: numFilters.date,
 								})}
 							</Text>
 						</AccordionControl>
 						<AccordionPanel>
 							<Text className={classes.description}>
-								{t('marketplace.home.catalogue.filters.accordion.date.description')}
+								{t('components.auctionCatalogue.filters.accordion.date.description')}
 							</Text>
 							<Container className={classes.values}>
 								<DatePickerInput
@@ -243,9 +243,9 @@ const FiltersCore = () => {
 					</AccordionItem>
 					<AccordionItem value={'permits'}>
 						<AccordionControl classNames={{ label: classes.title }}>
-							{t('marketplace.home.catalogue.filters.accordion.permits.title')}
+							{t('components.auctionCatalogue.filters.accordion.permits.title')}
 							<Text className={classes.subtitle}>
-								{t('marketplace.home.catalogue.filters.boolean', {
+								{t('components.auctionCatalogue.filters.boolean', {
 									value: numFilters.permits,
 								})}
 							</Text>
@@ -253,7 +253,7 @@ const FiltersCore = () => {
 						<AccordionPanel>
 							<Text className={classes.description}>
 								{t(
-									'marketplace.home.catalogue.filters.accordion.permits.description',
+									'components.auctionCatalogue.filters.accordion.permits.description',
 								)}
 							</Text>
 							<Container className={classes.values}>
@@ -272,9 +272,9 @@ const FiltersCore = () => {
 					</AccordionItem>
 					<AccordionItem value={'minBid'}>
 						<AccordionControl classNames={{ label: classes.title }}>
-							{t('marketplace.home.catalogue.filters.accordion.minBid.title')}
+							{t('components.auctionCatalogue.filters.accordion.minBid.title')}
 							<Text className={classes.subtitle}>
-								{t('marketplace.home.catalogue.filters.boolean', {
+								{t('components.auctionCatalogue.filters.boolean', {
 									value: numFilters.minBid,
 								})}
 							</Text>
@@ -282,7 +282,7 @@ const FiltersCore = () => {
 						<AccordionPanel>
 							<Text className={classes.description}>
 								{t(
-									'marketplace.home.catalogue.filters.accordion.minBid.description',
+									'components.auctionCatalogue.filters.accordion.minBid.description',
 								)}
 							</Text>
 							<Container className={classes.values}>
@@ -301,9 +301,9 @@ const FiltersCore = () => {
 					</AccordionItem>
 					<AccordionItem value={'price'}>
 						<AccordionControl classNames={{ label: classes.title }}>
-							{t('marketplace.home.catalogue.filters.accordion.price.title')}
+							{t('components.auctionCatalogue.filters.accordion.price.title')}
 							<Text className={classes.subtitle}>
-								{t('marketplace.home.catalogue.filters.boolean', {
+								{t('components.auctionCatalogue.filters.boolean', {
 									value: numFilters.price,
 								})}
 							</Text>
@@ -311,7 +311,7 @@ const FiltersCore = () => {
 						<AccordionPanel>
 							<Text className={classes.description}>
 								{t(
-									'marketplace.home.catalogue.filters.accordion.price.description',
+									'components.auctionCatalogue.filters.accordion.price.description',
 								)}
 							</Text>
 							<Container className={classes.values}>
@@ -331,12 +331,12 @@ const FiltersCore = () => {
 				</Accordion>
 				<Group className={classes.footer}>
 					<Text className={classes.value}>
-						{t('marketplace.home.catalogue.filters.total', {
+						{t('components.auctionCatalogue.filters.total', {
 							value: numFilters.total,
 						})}
 					</Text>
 					<Group className={classes.actions}>
-						<Tooltip label={t('marketplace.home.catalogue.filters.clear.tooltip')}>
+						<Tooltip label={t('components.auctionCatalogue.filters.clear.tooltip')}>
 							<ActionIcon
 								className={`${classes.action} ${classes.square}`}
 								onClick={handleClearFilters}
@@ -344,7 +344,7 @@ const FiltersCore = () => {
 								<IconTrash size={16} />
 							</ActionIcon>
 						</Tooltip>
-						<Tooltip label={t('marketplace.home.catalogue.filters.reset.tooltip')}>
+						<Tooltip label={t('components.auctionCatalogue.filters.reset.tooltip')}>
 							<ActionIcon
 								className={`${classes.action} ${classes.square}`}
 								onClick={form.reset}
@@ -352,13 +352,13 @@ const FiltersCore = () => {
 								<IconArrowBackUp size={16} />
 							</ActionIcon>
 						</Tooltip>
-						<Tooltip label={t('marketplace.home.catalogue.filters.apply.tooltip')}>
+						<Tooltip label={t('components.auctionCatalogue.filters.apply.tooltip')}>
 							<Button
 								className={classes.action}
 								type="submit"
 								rightSection={<IconCheck size={16} />}
 							>
-								{t('marketplace.home.catalogue.filters.apply.label')}
+								{t('components.auctionCatalogue.filters.apply.label')}
 							</Button>
 						</Tooltip>
 					</Group>
@@ -368,7 +368,7 @@ const FiltersCore = () => {
 	);
 };
 
-export const FiltersList = () => {
+export const AuctionCatalogueFiltersList = () => {
 	const t = useTranslations();
 
 	return (
@@ -381,10 +381,10 @@ export const FiltersList = () => {
 					<Container className={classes.graphic} />
 				</Container>
 				<Title className={classes.heading} order={3}>
-					{t('marketplace.home.catalogue.filters.heading')}
+					{t('components.auctionCatalogue.filters.heading')}
 				</Title>
 				<Text className={classes.subheading}>
-					{t('marketplace.home.catalogue.filters.subheading')}
+					{t('components.auctionCatalogue.filters.subheading')}
 				</Text>
 			</Group>
 			<Divider />
@@ -393,7 +393,7 @@ export const FiltersList = () => {
 	);
 };
 
-export const FiltersModal = () => {
+export const AuctionCatalogueFiltersModal = () => {
 	const t = useTranslations();
 	const { isFilterModalOpen, closeFiltersModal } = useContext(AuctionCatalogueContext);
 
@@ -412,10 +412,10 @@ export const FiltersModal = () => {
 		>
 			<Stack className={classes.header}>
 				<Title order={3} className={classes.heading}>
-					{t('marketplace.home.catalogue.filters.heading')}
+					{t('components.auctionCatalogue.filters.heading')}
 				</Title>
 				<Text className={classes.subheading}>
-					{t('marketplace.home.catalogue.filters.subheading')}
+					{t('components.auctionCatalogue.filters.subheading')}
 				</Text>
 				<ActionIcon className={classes.button} onClick={closeFiltersModal}>
 					<IconX size={16} />

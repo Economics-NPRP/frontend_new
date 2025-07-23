@@ -9,8 +9,7 @@ import {
 } from '@/contexts';
 import { throwError } from '@/helpers';
 import { getPaginatedAuctionsInCycle } from '@/lib/cycles';
-import { IAuctionFilters } from '@/pages/marketplace/(home)/@catalogue/constants';
-import { IAuctionData } from '@/schema/models';
+import { DefaultQueryFiltersData, IAuctionData, QueryFiltersData } from '@/schema/models';
 import {
 	SortedOffsetPaginatedContextState,
 	SortedOffsetPaginatedProviderProps,
@@ -19,22 +18,17 @@ import {
 
 export interface IPaginatedAuctionsInCycleContext
 	extends SortedOffsetPaginatedContextState<IAuctionData> {
-	filters: IAuctionFilters;
-	setAllFilters: (filters: IAuctionFilters) => void;
+	filters: QueryFiltersData;
+	setAllFilters: (filters: QueryFiltersData) => void;
 	setSingleFilter: (key: 'status' | 'owner', value: string) => void;
 	setArrayFilter: (key: 'type' | 'sector', value: Array<string>) => void;
 	addToFilterArray: (key: 'type' | 'sector', ...value: Array<string>) => void;
-	removeFilter: (key: keyof IAuctionFilters, value?: string) => void;
+	removeFilter: (key: keyof QueryFiltersData, value?: string) => void;
 }
 const DefaultData: IPaginatedAuctionsInCycleContext = {
 	...getDefaultSortedOffsetPaginatedContextState<IAuctionData>(1, 12, 'created_at', 'desc'),
 
-	filters: {
-		type: [],
-		status: 'all',
-		sector: [],
-		owner: [],
-	},
+	filters: DefaultQueryFiltersData,
 	setAllFilters: () => {},
 	setSingleFilter: () => {},
 	setArrayFilter: () => {},
@@ -44,7 +38,7 @@ const DefaultData: IPaginatedAuctionsInCycleContext = {
 const Context = createContext<IPaginatedAuctionsInCycleContext>(DefaultData);
 
 export interface PaginatedAuctionsInCycleProviderProps extends SortedOffsetPaginatedProviderProps {
-	defaultFilters?: IAuctionFilters;
+	defaultFilters?: QueryFiltersData;
 }
 export const PaginatedAuctionsInCycleProvider = ({
 	defaultPage,
@@ -107,10 +101,9 @@ export const PaginatedAuctionsInCycleProvider = ({
 			'admin',
 			cycleId as string,
 			'paginatedAuctionsInCycle',
-			(filters.type || [])[0],
-			filters.status,
+			JSON.stringify(filters),
 		],
-		[filters.type, filters.status],
+		[filters],
 	);
 	const queryFn = useMemo<
 		SortedOffsetPaginatedQueryProviderProps<IPaginatedAuctionsInCycleContext>['queryFn']
@@ -123,13 +116,14 @@ export const PaginatedAuctionsInCycleProvider = ({
 					perPage,
 					sortBy,
 					sortDirection,
-					type: (filters.type || [])[0],
+					type: filters.type,
+					ownership: filters.ownership,
 					isLive: filters.status === 'ongoing',
 					hasEnded: filters.status === 'ended',
 				}),
 				`getPaginatedAuctionsInCycle:${cycleId}`,
 			),
-		[filters.type, filters.status],
+		[filters],
 	);
 
 	return (

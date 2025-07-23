@@ -6,7 +6,7 @@ import { cache } from 'react';
 import 'server-only';
 
 import { getSession } from '@/lib/auth';
-import { AuctionType, IAuctionData } from '@/schema/models';
+import { AuctionOwnershipFilter, AuctionTypeFilter, IAuctionData } from '@/schema/models';
 import { IOffsetPagination, OffsetPaginatedData, SortDirection } from '@/types';
 
 export interface IGetPaginatedAuctionsInCycleOptions extends IOffsetPagination {
@@ -16,7 +16,8 @@ export interface IGetPaginatedAuctionsInCycleOptions extends IOffsetPagination {
 	sortDirection?: SortDirection | null;
 
 	ownerId?: string;
-	type?: AuctionType;
+	type?: AuctionTypeFilter;
+	ownership?: AuctionOwnershipFilter;
 	isPending?: boolean;
 	isLive?: boolean;
 	hasEnded?: boolean;

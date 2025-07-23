@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 
 import { InfinitePaginatedAuctionsProvider, PaginatedAuctionsProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
+import { DefaultQueryFiltersData } from '@/schema/models';
 import { Container } from '@mantine/core';
 
 import classes from './styles.module.css';
@@ -45,10 +46,8 @@ export default function Home({
 				defaultSortBy: 'end_datetime',
 				defaultSortDirection: 'asc',
 				defaultFilters: {
-					type: [],
+					...DefaultQueryFiltersData,
 					status: 'ongoing',
-					sector: [],
-					owner: [],
 				},
 			},
 		},

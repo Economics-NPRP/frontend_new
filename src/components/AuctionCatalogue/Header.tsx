@@ -29,7 +29,7 @@ const FilterPill = (props: PillProps) => (
 	<Pill className={classes.badge} withRemoveButton {...props} />
 );
 
-export const Header = () => {
+export const AuctionCatalogueHeader = () => {
 	const t = useTranslations();
 	const paginatedAuctions = useContext(PaginatedAuctionsContext);
 	const { openFiltersModal } = useContext(AuctionCatalogueContext);
@@ -61,7 +61,7 @@ export const Header = () => {
 									key={`${id}-${val}`}
 									onRemove={() => paginatedAuctions.removeFilter(id, val)}
 								>
-									{t('marketplace.home.catalogue.header.filter.label', {
+									{t('components.auctionCatalogue.header.filter.label', {
 										value: option ? (option.label as string) : val,
 									})}
 								</FilterPill>
@@ -75,7 +75,7 @@ export const Header = () => {
 									key={id}
 									onRemove={() => paginatedAuctions.removeFilter(id)}
 								>
-									{t('marketplace.home.catalogue.header.filter.label', {
+									{t('components.auctionCatalogue.header.filter.label', {
 										value: option
 											? (option.label as string)
 											: (value as string),
@@ -91,7 +91,7 @@ export const Header = () => {
 		if (!output.length)
 			output.push(
 				<FilterPill key={0} withRemoveButton={false}>
-					{t('marketplace.home.catalogue.filters.total', { value: 0 })}
+					{t('components.auctionCatalogue.filters.total', { value: 0 })}
 				</FilterPill>,
 			);
 
@@ -111,7 +111,7 @@ export const Header = () => {
 			<Group className={classes.row}>
 				<Group className={classes.label}>
 					<Title className={classes.heading} order={2}>
-						{t('marketplace.home.catalogue.header.heading')}
+						{t('components.auctionCatalogue.header.heading')}
 					</Title>
 					<Text className={classes.slash} visibleFrom="md">
 						-
@@ -127,31 +127,31 @@ export const Header = () => {
 						data={[
 							{
 								value: 'created_at-desc',
-								label: t('marketplace.home.catalogue.header.sortBy.newest'),
+								label: t('components.auctionCatalogue.header.sortBy.newest'),
 							},
 							{
 								value: 'created_at-asc',
-								label: t('marketplace.home.catalogue.header.sortBy.oldest'),
+								label: t('components.auctionCatalogue.header.sortBy.oldest'),
 							},
 							{
 								value: 'end_datetime-asc',
-								label: t('marketplace.home.catalogue.header.sortBy.endingSoon'),
+								label: t('components.auctionCatalogue.header.sortBy.endingSoon'),
 							},
 							{
 								value: 'permits-desc',
-								label: t('marketplace.home.catalogue.header.sortBy.mostPermits'),
+								label: t('components.auctionCatalogue.header.sortBy.mostPermits'),
 							},
 							{
 								value: 'permits-asc',
-								label: t('marketplace.home.catalogue.header.sortBy.leastPermits'),
+								label: t('components.auctionCatalogue.header.sortBy.leastPermits'),
 							},
 							{
 								value: 'min_bid-desc',
-								label: t('marketplace.home.catalogue.header.sortBy.highMinBid'),
+								label: t('components.auctionCatalogue.header.sortBy.highMinBid'),
 							},
 							{
 								value: 'min_bid-asc',
-								label: t('marketplace.home.catalogue.header.sortBy.lowMinBid'),
+								label: t('components.auctionCatalogue.header.sortBy.lowMinBid'),
 							},
 						]}
 						onChange={(value) => {
@@ -176,13 +176,13 @@ export const Header = () => {
 			<Group className={classes.row}>
 				<Group className={classes.list}>
 					<Text className={classes.heading}>
-						{t('marketplace.home.catalogue.header.filter.list')}
+						{t('components.auctionCatalogue.header.filter.list')}
 					</Text>
 					{filterBadges}
 				</Group>
 				<Group>
 					<Group className={classes.viewActions} ref={setRootRef}>
-						<Tooltip label={t('marketplace.home.catalogue.header.view.grid.tooltip')}>
+						<Tooltip label={t('components.auctionCatalogue.header.view.grid.tooltip')}>
 							<Button
 								className={`${classes.action} ${classes.square}`}
 								ref={setControlRef('grid')}
@@ -190,10 +190,10 @@ export const Header = () => {
 								data-active={view === 'grid'}
 								leftSection={<IconLayoutGrid size={16} />}
 							>
-								{t('marketplace.home.catalogue.header.view.grid.label')}
+								{t('components.auctionCatalogue.header.view.grid.label')}
 							</Button>
 						</Tooltip>
-						<Tooltip label={t('marketplace.home.catalogue.header.view.list.tooltip')}>
+						<Tooltip label={t('components.auctionCatalogue.header.view.list.tooltip')}>
 							<Button
 								className={`${classes.action} ${classes.square}`}
 								ref={setControlRef('list')}
@@ -201,7 +201,7 @@ export const Header = () => {
 								data-active={view === 'list'}
 								leftSection={<IconListDetails size={16} />}
 							>
-								{t('marketplace.home.catalogue.header.view.list.label')}
+								{t('components.auctionCatalogue.header.view.list.label')}
 							</Button>
 						</Tooltip>
 
@@ -216,7 +216,7 @@ export const Header = () => {
 							<IconDownload size={16} />
 						</ActionIcon>
 					</Tooltip>
-					<Tooltip label={t('marketplace.home.catalogue.header.filter.tooltip')}>
+					<Tooltip label={t('components.auctionCatalogue.header.filter.tooltip')}>
 						<ActionIcon
 							className={`${classes.action} ${classes.square}`}
 							onClick={openFiltersModal}
