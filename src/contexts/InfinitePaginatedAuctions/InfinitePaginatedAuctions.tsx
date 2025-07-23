@@ -90,6 +90,7 @@ export const InfinitePaginatedAuctionsProvider = ({
 			defaultData={DefaultData}
 			queryKey={queryKey}
 			queryFn={queryFn}
+			id="infinitePaginatedAuctions"
 			children={children}
 			filters={filters}
 			setAllFilters={setAllFilters}

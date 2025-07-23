@@ -46,6 +46,7 @@ export const MyPaginatedBidsProvider = ({
 					`getMyPaginatedBids:${auctionId}`,
 				)
 			}
+			id="myPaginatedBids"
 			disabled={!areBidsAvailable}
 			children={children}
 		/>

@@ -55,6 +55,7 @@ export const PaginatedOpenAuctionResultsProvider = ({
 					`getPaginatedOpenAuctionResults:${auctionId}`,
 				)
 			}
+			id="paginatedOpenAuctionResults"
 			disabled={!areResultsAvailable}
 			children={children}
 		/>

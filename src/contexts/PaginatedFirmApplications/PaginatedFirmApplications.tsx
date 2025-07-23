@@ -59,6 +59,7 @@ export const PaginatedFirmApplicationsProvider = ({
 			defaultData={DefaultData}
 			queryKey={queryKey}
 			queryFn={queryFn}
+			id="paginatedFirmApplications"
 			children={children}
 			status={status}
 			setStatus={setStatus}

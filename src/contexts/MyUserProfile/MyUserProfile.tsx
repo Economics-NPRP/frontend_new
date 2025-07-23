@@ -23,6 +23,7 @@ export const MyUserProfileProvider = ({ children }: PropsWithChildren) => {
 			defaultData={DefaultData}
 			queryKey={['users', 'mine']}
 			queryFn={() => () => throwError(getMyUserProfile(), 'getMyUserProfile')}
+			id="myUserProfile"
 			disabled={!ProtectedRoutes.some((route) => pathname.startsWith(route))}
 			children={children}
 		/>

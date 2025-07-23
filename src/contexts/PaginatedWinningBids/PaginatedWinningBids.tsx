@@ -43,6 +43,7 @@ export const PaginatedWinningBidsProvider = ({
 					`getPaginatedWinningBids:${auctionId}`,
 				)
 			}
+			id="paginatedWinningBids"
 			disabled={!areBidsAvailable}
 			children={children}
 		/>

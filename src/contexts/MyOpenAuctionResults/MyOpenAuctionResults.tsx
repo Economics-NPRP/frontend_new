@@ -34,6 +34,7 @@ export const MyOpenAuctionResultsProvider = ({ children }: PropsWithChildren) =>
 					`getMyOpenAuctionResults:${auctionId}`,
 				)
 			}
+			id="myOpenAuctionResults"
 			disabled={!areResultsAvailable}
 			children={children}
 		/>

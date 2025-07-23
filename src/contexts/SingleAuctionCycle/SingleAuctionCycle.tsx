@@ -34,6 +34,7 @@ export const SingleCycleProvider = ({ idSource = 'route', children }: SingleCycl
 			queryFn={() => () =>
 				throwError(getSingleCycle(cycleId as string), `getSingleCycle:${cycleId}`)
 			}
+			id="singleAuctionCycle"
 			children={children}
 			disabled={!cycleId}
 		/>

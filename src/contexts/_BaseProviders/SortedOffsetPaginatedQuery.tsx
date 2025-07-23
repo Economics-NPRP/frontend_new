@@ -14,7 +14,7 @@ export interface SortedOffsetPaginatedQueryProviderProps<
 > extends SortedOffsetPaginatedProviderProps,
 		Pick<
 			OffsetPaginatedQueryProviderProps<T>,
-			'context' | 'defaultData' | 'queryKey' | 'disabled'
+			'context' | 'defaultData' | 'queryKey' | 'id' | 'disabled'
 		>,
 		Record<string, unknown> {
 	queryFn: (
@@ -29,12 +29,9 @@ export const SortedOffsetPaginatedQueryProvider = <
 >({
 	defaultSortBy,
 	defaultSortDirection,
-	context,
 	defaultData,
 	queryKey,
 	queryFn,
-	disabled,
-	children,
 	...props
 }: SortedOffsetPaginatedQueryProviderProps<T>) => {
 	const [sortBy, setSortBy] = useState(defaultSortBy || defaultData.sortBy);
@@ -54,12 +51,9 @@ export const SortedOffsetPaginatedQueryProvider = <
 
 	return (
 		<OffsetPaginatedQueryProvider
-			context={context}
 			defaultData={defaultData}
 			queryKey={paginatedQueryKey}
 			queryFn={paginatedQueryFn}
-			disabled={disabled}
-			children={children}
 			sortBy={sortBy}
 			setSortBy={setSortBy}
 			sortDirection={sortDirection}

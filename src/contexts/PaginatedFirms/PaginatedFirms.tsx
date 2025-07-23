@@ -48,6 +48,7 @@ export const PaginatedFirmsProvider = ({
 					'getPaginatedFirms',
 				)
 			}
+			id="paginatedFirms"
 			children={children}
 		/>
 	);

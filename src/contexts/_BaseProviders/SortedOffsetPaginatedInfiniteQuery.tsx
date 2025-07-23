@@ -17,7 +17,7 @@ export interface SortedOffsetPaginatedInfiniteQueryProviderProps<
 > extends SortedOffsetPaginatedProviderProps,
 		Pick<
 			OffsetPaginatedInfiniteQueryProviderProps<T>,
-			'context' | 'defaultData' | 'queryKey' | 'disabled'
+			'context' | 'defaultData' | 'queryKey' | 'id' | 'disabled'
 		>,
 		Record<string, unknown> {
 	queryFn: (
@@ -31,12 +31,9 @@ export const SortedOffsetPaginatedInfiniteQueryProvider = <
 >({
 	defaultSortBy,
 	defaultSortDirection,
-	context,
 	defaultData,
 	queryKey,
 	queryFn,
-	disabled,
-	children,
 	...props
 }: SortedOffsetPaginatedInfiniteQueryProviderProps<T>) => {
 	const [sortBy, setSortBy] = useState(defaultSortBy || defaultData.sortBy);
@@ -56,12 +53,9 @@ export const SortedOffsetPaginatedInfiniteQueryProvider = <
 
 	return (
 		<OffsetPaginatedInfiniteQueryProvider
-			context={context}
 			defaultData={defaultData}
 			queryKey={paginatedQueryKey}
 			queryFn={paginatedQueryFn}
-			disabled={disabled}
-			children={children}
 			sortBy={sortBy}
 			setSortBy={setSortBy}
 			sortDirection={sortDirection}

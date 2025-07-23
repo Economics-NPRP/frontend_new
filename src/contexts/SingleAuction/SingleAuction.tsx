@@ -24,6 +24,7 @@ export const SingleAuctionProvider = ({ children }: PropsWithChildren) => {
 			queryFn={() => () =>
 				throwError(getSingleAuction(auctionId as string), `getSingleAuction:${auctionId}`)
 			}
+			id="singleAuction"
 			children={children}
 		/>
 	);

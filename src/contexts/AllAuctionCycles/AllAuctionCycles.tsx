@@ -43,6 +43,7 @@ export const AllAuctionCyclesProvider = ({
 					`getAllAuctionCycles:${auctionId}`,
 				)
 			}
+			id="allAuctionCycles"
 			children={children}
 		/>
 	);

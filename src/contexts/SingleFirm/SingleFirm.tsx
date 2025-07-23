@@ -24,6 +24,7 @@ export const SingleFirmProvider = ({ children }: PropsWithChildren) => {
 			queryFn={() => () =>
 				throwError(getSingleFirm(firmId as string), `getSingleFirm:${firmId}`)
 			}
+			id="singleFirm"
 			children={children}
 		/>
 	);

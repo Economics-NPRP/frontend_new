@@ -36,6 +36,7 @@ export const AllSubsectorsBySectorProvider = ({ children }: PropsWithChildren) =
 			queryFn={() => () =>
 				throwError(getAllSubsectorsBySector(sector), `getAllSubsectorsBySector:${sector}`)
 			}
+			id="allSubsectorsBySector"
 			children={children}
 			sector={sector}
 			setSector={setSector}

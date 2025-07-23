@@ -46,6 +46,7 @@ export const AllOpenAuctionResultsProvider = ({
 					`getAllOpenAuctionResults:${auctionId}`,
 				)
 			}
+			id="allOpenAuctionResults"
 			disabled={!areResultsAvailable}
 			children={children}
 		/>

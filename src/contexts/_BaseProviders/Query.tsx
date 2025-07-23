@@ -12,6 +12,7 @@ export interface QueryProviderProps<T extends ContextState<unknown>>
 	defaultData: T;
 	queryKey: Array<string | number | boolean | undefined | null>;
 	queryFn: () => () => Promise<unknown>;
+	id: string;
 	disabled?: boolean;
 }
 export const QueryProvider = <T extends ContextState<unknown>>({

@@ -24,6 +24,7 @@ export const AllCycleAdminsProvider = ({ children }: PropsWithChildren) => {
 			queryFn={() => () =>
 				throwError(getAllCycleAdmins(cycleId as string), `getAllCycleAdmins:${cycleId}`)
 			}
+			id="allCycleAdmins"
 			children={children}
 		/>
 	);

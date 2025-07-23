@@ -40,6 +40,7 @@ export const SingleSubsectorProvider = ({
 					`getSingleSubsector:${subsector}`,
 				)
 			}
+			id="singleSubsector"
 			children={children}
 		/>
 	);

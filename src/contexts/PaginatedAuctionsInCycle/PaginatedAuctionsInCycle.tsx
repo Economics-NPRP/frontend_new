@@ -136,6 +136,7 @@ export const PaginatedAuctionsInCycleProvider = ({
 			defaultData={DefaultData}
 			queryKey={queryKey}
 			queryFn={queryFn}
+			id="paginatedAuctionsInCycle"
 			children={children}
 			filters={filters}
 			setAllFilters={setAllFilters}

@@ -89,6 +89,7 @@ export const PaginatedAdminsProvider = ({
 			defaultData={DefaultData}
 			queryKey={queryKey}
 			queryFn={queryFn}
+			id="paginatedAdmins"
 			children={children}
 			excludeIds={excludeIds}
 			setAllExcludeIds={setAllExcludeIds}

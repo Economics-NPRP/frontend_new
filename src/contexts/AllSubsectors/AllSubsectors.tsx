@@ -19,6 +19,7 @@ export const AllSubsectorsProvider = ({ children }: PropsWithChildren) => {
 			defaultData={DefaultData}
 			queryKey={['allSubsectors']}
 			queryFn={() => () => throwError(getAllSubsectors(), 'getAllSubsectors')}
+			id="allSubsectors"
 			children={children}
 		/>
 	);
