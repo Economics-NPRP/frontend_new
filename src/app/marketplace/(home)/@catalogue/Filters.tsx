@@ -8,7 +8,6 @@ import {
 	AccordionItem,
 	AccordionPanel,
 	ActionIcon,
-	Anchor,
 	Button,
 	Checkbox,
 	Container,
@@ -22,7 +21,6 @@ import {
 	RangeSliderValue,
 	Stack,
 	Text,
-	TextInput,
 	Title,
 	Tooltip,
 } from '@mantine/core';
@@ -30,7 +28,7 @@ import { DatePickerInput, DatesRangeValue } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { IconArrowBackUp, IconCheck, IconPlus, IconTrash, IconX } from '@tabler/icons-react';
 
-import { AuctionCatalogueContext, IAuctionFilters } from './constants';
+import { AuctionCatalogueContext, IAuctionFilters, getAuctionFilters } from './constants';
 import classes from './styles.module.css';
 
 const MIN_PERMITS = 1;
@@ -92,36 +90,92 @@ const FiltersCore = () => {
 		form.reset();
 	}, [paginatedAuctions.filters]);
 
-	const handleClearFilters = useCallback(
-		() => paginatedAuctions.setAllFilters({}),
-		[paginatedAuctions.setAllFilters],
-	);
+	const handleClearFilters = useCallback(paginatedAuctions.resetFilters, [
+		paginatedAuctions.resetFilters,
+	]);
 
 	const numFilters = useMemo(() => {
-		const type = paginatedAuctions.filters.type ? 1 : 0;
-		const status = paginatedAuctions.filters.status === 'all' ? 0 : 1;
-		const sector = paginatedAuctions.filters.sector?.length || 0;
-		const joined = paginatedAuctions.filters.joined ? 1 : 0;
-		const ownership = paginatedAuctions.filters.ownership ? 1 : 0;
-		const date = paginatedAuctions.filters.date ? 1 : 0;
-		const permits = paginatedAuctions.filters.permits ? 1 : 0;
-		const minBid = paginatedAuctions.filters.minBid ? 1 : 0;
-		const price = paginatedAuctions.filters.price ? 1 : 0;
-		const total = type + status + sector + joined + ownership + date + permits + minBid + price;
+		const output: Partial<Record<keyof IAuctionFilters, number>> = {};
+		const total = getAuctionFilters(t).reduce((acc, { id, type }) => {
+			let value = 0;
+			switch (type) {
+				case 'checkbox':
+					value = paginatedAuctions.filters[id]?.length || 0;
+					break;
+				case 'radio':
+					value =
+						!paginatedAuctions.filters[id] || paginatedAuctions.filters[id] === 'all'
+							? 0
+							: 1;
+					break;
+				default:
+					value = paginatedAuctions.filters[id] ? 1 : 0;
+					break;
+			}
+			output[id] = value;
+			return acc + value;
+		}, 0);
 
 		return {
-			type,
-			status,
-			sector,
-			joined,
-			ownership,
-			date,
-			permits,
-			minBid,
-			price,
+			...(output as Record<keyof IAuctionFilters, number>),
 			total,
 		};
-	}, [paginatedAuctions.filters]);
+	}, [t, paginatedAuctions.filters]);
+
+	const accordionSections = useMemo(
+		() =>
+			getAuctionFilters(t).map(({ id, title, description, type, options }) => {
+				let content = <></>;
+				switch (type) {
+					case 'checkbox':
+						content = (
+							<Container className={classes.values}>
+								{(options || []).map(({ value, label }) => (
+									<Checkbox
+										className={classes.checkbox}
+										value={value}
+										label={label}
+										key={form.key(`${id}.${value}`)}
+										{...form.getInputProps(`${id}.${value}`, {
+											type: 'checkbox',
+										})}
+									/>
+								))}
+							</Container>
+						);
+						break;
+					case 'radio':
+						content = (
+							<RadioGroup key={form.key(id)} {...form.getInputProps(id)}>
+								<Container className={classes.values}>
+									{(options || []).map(({ value, label }) => (
+										<Radio key={value} value={value} label={label} />
+									))}
+								</Container>
+							</RadioGroup>
+						);
+						break;
+				}
+
+				return (
+					<AccordionItem value={id}>
+						<AccordionControl classNames={{ label: classes.title }}>
+							{title}
+							<Text className={classes.subtitle}>
+								{t('marketplace.home.catalogue.filters.count', {
+									value: numFilters[id as keyof IAuctionFilters],
+								})}
+							</Text>
+						</AccordionControl>
+						<AccordionPanel>
+							<Text className={classes.description}>{description}</Text>
+							{content}
+						</AccordionPanel>
+					</AccordionItem>
+				);
+			}),
+		[t, numFilters, form],
+	);
 
 	return (
 		<Container
@@ -174,230 +228,7 @@ const FiltersCore = () => {
 					chevron={<IconPlus size={16} />}
 					multiple
 				>
-					<AccordionItem value={'type'}>
-						<AccordionControl classNames={{ label: classes.title }}>
-							{t('marketplace.home.catalogue.filters.accordion.type.title')}
-							<Text className={classes.subtitle}>
-								{t('marketplace.home.catalogue.filters.count', {
-									value: numFilters.type,
-								})}
-							</Text>
-						</AccordionControl>
-						<AccordionPanel>
-							<Text className={classes.description}>
-								{t.rich(
-									'marketplace.home.catalogue.filters.accordion.type.description',
-									{ a: (chunks) => <Anchor href="#">{chunks}</Anchor> },
-								)}
-							</Text>
-							<RadioGroup key={form.key('type')} {...form.getInputProps('type')}>
-								<Container className={classes.values}>
-									<Radio
-										className={classes.checkbox}
-										label={t('constants.auctionType.open')}
-										value="open"
-									/>
-									<Radio
-										className={classes.checkbox}
-										label={t('constants.auctionType.sealed')}
-										value="sealed"
-									/>
-									<Radio
-										className={classes.checkbox}
-										label={t('marketplace.home.catalogue.filters.all')}
-										value="all"
-									/>
-								</Container>
-							</RadioGroup>
-						</AccordionPanel>
-					</AccordionItem>
-					<AccordionItem value={'status'}>
-						<AccordionControl classNames={{ label: classes.title }}>
-							{t('marketplace.home.catalogue.filters.accordion.status.title')}
-							<Text className={classes.subtitle}>
-								{t('marketplace.home.catalogue.filters.count', {
-									value: numFilters.status,
-								})}
-							</Text>
-						</AccordionControl>
-						<AccordionPanel>
-							<Text className={classes.description}>
-								{t(
-									'marketplace.home.catalogue.filters.accordion.status.description',
-								)}
-							</Text>
-							<RadioGroup key={form.key('status')} {...form.getInputProps('status')}>
-								<Container className={classes.values}>
-									<Radio
-										className={classes.checkbox}
-										label={t('constants.auctionStatus.upcoming.label')}
-										value="upcoming"
-									/>
-									<Radio
-										className={classes.checkbox}
-										label={t('constants.auctionStatus.ongoing.label')}
-										value="ongoing"
-									/>
-									<Radio
-										className={classes.checkbox}
-										label={t('constants.auctionStatus.ended.label')}
-										value="ended"
-									/>
-									<Radio
-										className={classes.checkbox}
-										label={t('marketplace.home.catalogue.filters.all')}
-										value="all"
-									/>
-								</Container>
-							</RadioGroup>
-						</AccordionPanel>
-					</AccordionItem>
-					<AccordionItem value={'sector'}>
-						<AccordionControl classNames={{ label: classes.title }}>
-							{t('marketplace.home.catalogue.filters.accordion.sector.title')}
-							<Text className={classes.subtitle}>
-								{t('marketplace.home.catalogue.filters.count', {
-									value: numFilters.sector,
-								})}
-							</Text>
-						</AccordionControl>
-						<AccordionPanel>
-							<Text className={classes.description}>
-								{t(
-									'marketplace.home.catalogue.filters.accordion.sector.description',
-								)}
-							</Text>
-							<Container className={classes.values}>
-								<Checkbox
-									className={classes.checkbox}
-									label={t('constants.sector.energy.title')}
-									key={form.key('sector.energy')}
-									{...form.getInputProps('sector.energy', { type: 'checkbox' })}
-								/>
-								<Checkbox
-									className={classes.checkbox}
-									label={t('constants.sector.industry.title')}
-									key={form.key('sector.industry')}
-									{...form.getInputProps('sector.industry', { type: 'checkbox' })}
-								/>
-								<Checkbox
-									className={classes.checkbox}
-									label={t('constants.sector.transport.title')}
-									key={form.key('sector.transport')}
-									{...form.getInputProps('sector.transport', {
-										type: 'checkbox',
-									})}
-								/>
-								<Checkbox
-									className={classes.checkbox}
-									label={t('constants.sector.buildings.title')}
-									key={form.key('sector.buildings')}
-									{...form.getInputProps('sector.buildings', {
-										type: 'checkbox',
-									})}
-								/>
-								<Checkbox
-									className={classes.checkbox}
-									label={t('constants.sector.agriculture.title')}
-									key={form.key('sector.agriculture')}
-									{...form.getInputProps('sector.agriculture', {
-										type: 'checkbox',
-									})}
-								/>
-								<Checkbox
-									className={classes.checkbox}
-									label={t('constants.sector.waste.title')}
-									key={form.key('sector.waste')}
-									{...form.getInputProps('sector.waste', { type: 'checkbox' })}
-								/>
-							</Container>
-						</AccordionPanel>
-					</AccordionItem>
-					<AccordionItem value={'joined'}>
-						<AccordionControl classNames={{ label: classes.title }}>
-							{t('marketplace.home.catalogue.filters.accordion.joined.title')}
-							<Text className={classes.subtitle}>
-								{t('marketplace.home.catalogue.filters.count', {
-									value: numFilters.joined,
-								})}
-							</Text>
-						</AccordionControl>
-						<AccordionPanel>
-							<Text className={classes.description}>
-								{t.rich(
-									'marketplace.home.catalogue.filters.accordion.joined.description',
-									{ a: (chunks) => <Anchor href="#">{chunks}</Anchor> },
-								)}
-							</Text>
-							<RadioGroup key={form.key('joined')} {...form.getInputProps('joined')}>
-								<Container className={classes.values}>
-									<Radio
-										className={classes.checkbox}
-										label={t(
-											'marketplace.home.catalogue.filters.accordion.joined.options.joined',
-										)}
-										value="joined"
-									/>
-									<Radio
-										className={classes.checkbox}
-										label={t(
-											'marketplace.home.catalogue.filters.accordion.joined.options.notJoined',
-										)}
-										value="notJoined"
-									/>
-									<Radio
-										className={classes.checkbox}
-										label={t('marketplace.home.catalogue.filters.all')}
-										value="all"
-									/>
-								</Container>
-							</RadioGroup>
-						</AccordionPanel>
-					</AccordionItem>
-					<AccordionItem value={'ownership'}>
-						<AccordionControl classNames={{ label: classes.title }}>
-							{t('marketplace.home.catalogue.filters.accordion.ownership.title')}
-							<Text className={classes.subtitle}>
-								{t('marketplace.home.catalogue.filters.count', {
-									value: numFilters.ownership,
-								})}
-							</Text>
-						</AccordionControl>
-						<AccordionPanel>
-							<Text className={classes.description}>
-								{t.rich(
-									'marketplace.home.catalogue.filters.accordion.ownership.description',
-									{ a: (chunks) => <Anchor href="#">{chunks}</Anchor> },
-								)}
-							</Text>
-							<RadioGroup
-								key={form.key('ownership')}
-								{...form.getInputProps('ownership')}
-							>
-								<Container className={classes.values}>
-									<Radio
-										className={classes.checkbox}
-										label={t(
-											'marketplace.home.catalogue.filters.accordion.ownership.options.government',
-										)}
-										value="government"
-									/>
-									<Radio
-										className={classes.checkbox}
-										label={t(
-											'marketplace.home.catalogue.filters.accordion.ownership.options.private',
-										)}
-										value="private"
-									/>
-									<Radio
-										className={classes.checkbox}
-										label={t('marketplace.home.catalogue.filters.all')}
-										value="all"
-									/>
-								</Container>
-							</RadioGroup>
-						</AccordionPanel>
-					</AccordionItem>
+					{accordionSections}
 					<AccordionItem value={'date'}>
 						<AccordionControl classNames={{ label: classes.title }}>
 							{t('marketplace.home.catalogue.filters.accordion.date.title')}

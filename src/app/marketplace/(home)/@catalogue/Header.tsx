@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl';
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useContext, useMemo, useState } from 'react';
 
 import { DefaultPaginatedAuctionsContextData, PaginatedAuctionsContext } from '@/contexts';
 import { useOffsetPaginationText } from '@/hooks';
@@ -18,10 +18,9 @@ import {
 	Title,
 	Tooltip,
 } from '@mantine/core';
-import { DatesRangeValue } from '@mantine/dates';
 import { IconDownload, IconFilter, IconLayoutGrid, IconListDetails } from '@tabler/icons-react';
 
-import { AuctionCatalogueContext, IAuctionFilters } from './constants';
+import { AuctionCatalogueContext, getAuctionFilters } from './constants';
 import classes from './styles.module.css';
 
 type ViewType = 'grid' | 'list';
@@ -50,63 +49,38 @@ export const Header = () => {
 	const filterBadges = useMemo(() => {
 		const output = [];
 
-		const selectFilters = ['sector'];
-		const radioFilters = ['type', 'status', 'joined', 'ownership'];
-		(
-			Object.entries(paginatedAuctions.filters) as Array<
-				[keyof IAuctionFilters, Array<unknown> | string]
-			>
-		).forEach(([key, value]) => {
-			if (!value || (Array.isArray(value) && !value.length)) return;
-			if (selectFilters.includes(key))
-				output.push(
-					...(value as Array<string>).map((val) => (
-						<FilterPill
-							key={`${key}-${val}`}
-							onRemove={() => paginatedAuctions.removeFilter(key, val)}
-						>
-							{t(`marketplace.home.catalogue.filters.accordion.${key}.title`)}: "{val}
-							"
-						</FilterPill>
-					)),
-				);
-			else if (radioFilters.includes(key)) {
-				if (value !== 'all') {
-					output.push(
-						<FilterPill key={key} onRemove={() => paginatedAuctions.removeFilter(key)}>
-							{t(
-								//	TODO: get label from filters object in constants.ts
-								//	@ts-expect-error - TODO: fix type error
-								`marketplace.home.catalogue.filters.accordion.${key}.options.${value}`,
-							)}
-						</FilterPill>,
-					);
+		output.push(
+			...getAuctionFilters(t).reduce((acc, { id, type, options }) => {
+				const value = paginatedAuctions.filters[id];
+				const option = options?.find(({ value: optionVal }) => optionVal === value);
+				switch (type) {
+					case 'checkbox':
+						acc.push(
+							...((value as Array<string>) || []).map((val) => (
+								<FilterPill
+									key={`${id}-${val}`}
+									onRemove={() => paginatedAuctions.removeFilter(id, val)}
+								>
+									{option ? option.label : val}
+								</FilterPill>
+							)),
+						);
+						break;
+					case 'radio':
+						if (value && value !== 'all')
+							acc.push(
+								<FilterPill
+									key={id}
+									onRemove={() => paginatedAuctions.removeFilter(id)}
+								>
+									{option ? option.label : (value as string)}
+								</FilterPill>,
+							);
+						break;
 				}
-			} else if (key === 'date') {
-				const [startDate, endDate] = value as DatesRangeValue;
-				output.push(
-					//	TODO: fix mantine migration bug with date strings
-					<FilterPill
-						key={`date-${startDate?.getMilliseconds()}-${endDate?.getMilliseconds()}`}
-						onRemove={() => paginatedAuctions.removeFilter(key)}
-					>
-						{t(`marketplace.home.catalogue.filters.accordion.${key}.title`)}: "
-						{startDate?.toLocaleDateString()} - {endDate?.toLocaleDateString()}"
-					</FilterPill>,
-				);
-			} else if (key === 'permits' || key === 'minBid' || key === 'price') {
-				const [min, max] = value as [number, number];
-				output.push(
-					<FilterPill
-						key={`${key}-${min}-${max}`}
-						onRemove={() => paginatedAuctions.removeFilter(key)}
-					>
-						{t(`marketplace.home.catalogue.filters.accordion.${key}.title`)}: "{min} -{' '}
-						{max}"
-					</FilterPill>,
-				);
-			}
-		});
+				return acc;
+			}, [] as Array<ReactNode>),
+		);
 
 		if (!output.length)
 			output.push(
@@ -114,8 +88,9 @@ export const Header = () => {
 					{t('marketplace.home.catalogue.filters.total', { value: 0 })}
 				</FilterPill>,
 			);
+
 		return output;
-	}, [paginatedAuctions.filters]);
+	}, [t, paginatedAuctions.filters]);
 
 	const paginationText = useOffsetPaginationText('auctions', paginatedAuctions);
 

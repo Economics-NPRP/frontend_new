@@ -6,7 +6,11 @@ import { cache } from 'react';
 import 'server-only';
 
 import { getSession } from '@/lib/auth';
-import { AuctionType, IAuctionData } from '@/schema/models';
+import {
+	AuctionOwnershipFilter,
+	AuctionTypeFilter,
+} from '@/pages/marketplace/(home)/@catalogue/constants';
+import { IAuctionData } from '@/schema/models';
 import { IOffsetPagination, OffsetPaginatedData, SortDirection } from '@/types';
 
 export interface IGetPaginatedAuctionsOptions extends IOffsetPagination {
@@ -14,8 +18,8 @@ export interface IGetPaginatedAuctionsOptions extends IOffsetPagination {
 	sortDirection?: SortDirection | null;
 
 	ownerId?: string;
-	type?: 'all' | AuctionType;
-	ownership?: 'government' | 'private' | 'all';
+	type?: AuctionTypeFilter;
+	ownership?: AuctionOwnershipFilter;
 	isPending?: boolean;
 	isLive?: boolean;
 	hasEnded?: boolean;

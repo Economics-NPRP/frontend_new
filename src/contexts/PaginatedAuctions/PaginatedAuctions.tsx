@@ -19,10 +19,11 @@ import {
 export interface IPaginatedAuctionsContext extends SortedOffsetPaginatedContextState<IAuctionData> {
 	filters: IAuctionFilters;
 	setAllFilters: (filters: IAuctionFilters) => void;
-	setSingleFilter: (key: 'status' | 'owner', value: string) => void;
-	setArrayFilter: (key: 'type' | 'sector', value: Array<string>) => void;
-	addToFilterArray: (key: 'type' | 'sector', ...value: Array<string>) => void;
+	setSingleFilter: (key: 'type' | 'status' | 'owner', value: string) => void;
+	setArrayFilter: (key: 'sector', value: Array<string>) => void;
+	addToFilterArray: (key: 'sector', ...value: Array<string>) => void;
 	removeFilter: (key: keyof IAuctionFilters, value?: string) => void;
+	resetFilters: () => void;
 }
 const DefaultData: IPaginatedAuctionsContext = {
 	...getDefaultSortedOffsetPaginatedContextState<IAuctionData>(1, 12, 'created_at', 'desc'),
@@ -38,6 +39,7 @@ const DefaultData: IPaginatedAuctionsContext = {
 	setArrayFilter: () => {},
 	addToFilterArray: () => {},
 	removeFilter: () => {},
+	resetFilters: () => {},
 };
 const Context = createContext<IPaginatedAuctionsContext>(DefaultData);
 
@@ -53,6 +55,10 @@ export const PaginatedAuctionsProvider = ({
 	children,
 }: PaginatedAuctionsProviderProps) => {
 	const [filters, setAllFilters] = useState(defaultFilters || DefaultData.filters);
+
+	const resetFilters = useCallback<IPaginatedAuctionsContext['resetFilters']>(() => {
+		setAllFilters(DefaultData.filters);
+	}, []);
 
 	const removeFilter = useCallback<IPaginatedAuctionsContext['removeFilter']>((key, value) => {
 		if (value) {
@@ -77,6 +83,7 @@ export const PaginatedAuctionsProvider = ({
 
 	const setArrayFilter = useCallback<IPaginatedAuctionsContext['setArrayFilter']>(
 		(key, value) => {
+			//	@ts-expect-error - should be gone once we add a new type to array filter key
 			setAllFilters((filters) => ({
 				...filters,
 				[key]: Array.from(new Set(value)),
@@ -87,6 +94,7 @@ export const PaginatedAuctionsProvider = ({
 
 	const addToFilterArray = useCallback<IPaginatedAuctionsContext['addToFilterArray']>(
 		(key, ...value) => {
+			//	@ts-expect-error - should be gone once we add a new type to array filter key
 			setAllFilters((filters) => ({
 				...filters,
 				[key]: Array.from(new Set([...filters[key]!, ...value])),
@@ -136,6 +144,7 @@ export const PaginatedAuctionsProvider = ({
 			setArrayFilter={setArrayFilter}
 			addToFilterArray={addToFilterArray}
 			removeFilter={removeFilter}
+			resetFilters={resetFilters}
 		/>
 	);
 };

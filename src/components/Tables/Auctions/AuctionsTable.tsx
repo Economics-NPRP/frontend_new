@@ -136,24 +136,32 @@ const _AuctionsTable = ({
 				break;
 		}
 
-		if (auctions.filters.type)
-			output.push(
-				...auctions.filters.type.map((type, index) => (
+		switch (auctions.filters.type) {
+			case 'open':
+				output.push(
 					<Pill
-						key={`type-${index}`}
+						key={'open'}
 						className={classes.badge}
-						onRemove={() =>
-							auctions.setArrayFilter(
-								'type',
-								(auctions.filters.type || []).filter((t) => t !== type),
-							)
-						}
+						onRemove={() => auctions.setSingleFilter('type', 'all')}
 						withRemoveButton
 					>
-						{t(`components.auctionsTable.filters.badges.${type}`)}
-					</Pill>
-				)),
-			);
+						{t('components.auctionsTable.filters.badges.open')}
+					</Pill>,
+				);
+				break;
+			case 'sealed':
+				output.push(
+					<Pill
+						key={'sealed'}
+						className={classes.badge}
+						onRemove={() => auctions.setSingleFilter('type', 'all')}
+						withRemoveButton
+					>
+						{t('components.auctionsTable.filters.badges.sealed')}
+					</Pill>,
+				);
+				break;
+		}
 
 		if (output.length === 0)
 			return (
@@ -680,28 +688,23 @@ const _AuctionsTable = ({
 								<Menu.Label className={classes.label}>
 									{t('components.auctionsTable.filters.menu.type.label')}
 								</Menu.Label>
-								<Checkbox.Group
+								<Radio.Group
 									value={auctions.filters.type}
-									onChange={(values) =>
-										auctions.setArrayFilter(
-											'type',
-											values as Array<IAuctionStatus>,
-										)
+									onChange={(value) =>
+										auctions.setSingleFilter('type', value as IAuctionStatus)
 									}
 								>
 									<Stack className={classes.options}>
-										<Checkbox
-											className={classes.checkbox}
+										<Radio
 											value="open"
 											label={t('constants.auctionType.open')}
 										/>
-										<Checkbox
-											className={classes.checkbox}
+										<Radio
 											value="sealed"
 											label={t('constants.auctionType.sealed')}
 										/>
 									</Stack>
-								</Checkbox.Group>
+								</Radio.Group>
 								<Menu.Divider className={classes.divider} />
 								<Menu.Label className={classes.label}>
 									{t('components.auctionsTable.filters.menu.status.label')}
