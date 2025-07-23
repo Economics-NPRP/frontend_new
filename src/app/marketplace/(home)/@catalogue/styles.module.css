@@ -150,6 +150,23 @@
 			@apply col-span-full;
 			@apply justify-self-center;
 		}
+
+		> .placeholder {
+			@apply col-span-full;
+			@apply h-[440px];
+			@apply justify-center items-center;
+
+			> .icon {
+				@apply size-12;
+				@apply flex justify-center items-center;
+				@apply bg-gray-100 text-gray-600;
+				@apply rounded-sm;
+			}
+
+			> .text {
+				@apply w-64 text-center paragraph-sm-g6;
+			}
+		}
 	}
 
 	> .bg {
@@ -355,6 +372,18 @@
 
 		.filters.modal > .inner > .content {
 			@apply min-w-[640px];
+
+			.wrapper > form > .footer {
+				@apply flex-row justify-between items-center;
+
+				> .value {
+					@apply text-left;
+				}
+
+				> .actions > .action {
+					@apply flex-initial;
+				}
+			}
 		}
 	}
 	@mixin larger-than $mantine-breakpoint-md {
@@ -368,7 +397,7 @@
 		}
 	}
 	@mixin larger-than $mantine-breakpoint-xl {
-		.filters form > .footer {
+		.filters .wrapper > form > .footer {
 			@apply flex-row justify-between items-center;
 
 			> .value {
@@ -432,6 +461,10 @@
 						}
 					}
 				}
+			}
+
+			> .catalogue > .placeholder > .icon {
+				@apply bg-dark-600 text-dark-300;
 			}
 
 			> .bg {

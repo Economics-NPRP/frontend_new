@@ -21,8 +21,7 @@ import {
 import { IPaginatedAuctionsContext } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { ENDING_SOON_THRESHOLD, useOffsetPaginationText } from '@/hooks';
-import { IAuctionStatus } from '@/pages/marketplace/(home)/@catalogue/constants';
-import { IAuctionData, SectorType } from '@/schema/models';
+import { AuctionStatusFilter, AuctionTypeFilter, IAuctionData, SectorType } from '@/schema/models';
 import {
 	ActionIcon,
 	Alert,
@@ -691,7 +690,7 @@ const _AuctionsTable = ({
 								<Radio.Group
 									value={auctions.filters.type}
 									onChange={(value) =>
-										auctions.setSingleFilter('type', value as IAuctionStatus)
+										auctions.setSingleFilter('type', value as AuctionTypeFilter)
 									}
 								>
 									<Stack className={classes.options}>
@@ -712,7 +711,10 @@ const _AuctionsTable = ({
 								<Radio.Group
 									value={auctions.filters.status}
 									onChange={(value) =>
-										auctions.setSingleFilter('status', value as IAuctionStatus)
+										auctions.setSingleFilter(
+											'status',
+											value as AuctionStatusFilter,
+										)
 									}
 								>
 									<Stack className={classes.options}>

@@ -61,7 +61,9 @@ export const Header = () => {
 									key={`${id}-${val}`}
 									onRemove={() => paginatedAuctions.removeFilter(id, val)}
 								>
-									{option ? option.label : val}
+									{t('marketplace.home.catalogue.header.filter.label', {
+										value: option ? (option.label as string) : val,
+									})}
 								</FilterPill>
 							)),
 						);
@@ -73,7 +75,11 @@ export const Header = () => {
 									key={id}
 									onRemove={() => paginatedAuctions.removeFilter(id)}
 								>
-									{option ? option.label : (value as string)}
+									{t('marketplace.home.catalogue.header.filter.label', {
+										value: option
+											? (option.label as string)
+											: (value as string),
+									})}
 								</FilterPill>,
 							);
 						break;
