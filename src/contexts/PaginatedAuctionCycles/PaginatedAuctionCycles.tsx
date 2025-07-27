@@ -33,13 +33,7 @@ const DefaultData = {
 };
 const Context = createContext<IPaginatedAuctionCyclesContext>(DefaultData);
 
-export const PaginatedAuctionCyclesProvider = ({
-	defaultPage,
-	defaultPerPage,
-	defaultSortBy,
-	defaultSortDirection,
-	children,
-}: SortedOffsetPaginatedProviderProps) => {
+export const PaginatedAuctionCyclesProvider = (props: SortedOffsetPaginatedProviderProps) => {
 	const [status, setStatus] = useState<AuctionCycleStatusFilter>(DefaultData.status);
 
 	const queryKey = useMemo(
@@ -65,18 +59,14 @@ export const PaginatedAuctionCyclesProvider = ({
 
 	return (
 		<SortedOffsetPaginatedQueryProvider
-			defaultPage={defaultPage}
-			defaultPerPage={defaultPerPage}
-			defaultSortBy={defaultSortBy}
-			defaultSortDirection={defaultSortDirection}
 			context={Context}
 			defaultData={DefaultData}
 			queryKey={queryKey}
 			queryFn={queryFn}
 			id="paginatedAuctionCycles"
-			children={children}
 			status={status}
 			setStatus={setStatus}
+			{...props}
 		/>
 	);
 };

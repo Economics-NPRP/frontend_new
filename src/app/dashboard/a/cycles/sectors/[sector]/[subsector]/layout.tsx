@@ -50,7 +50,10 @@ export default function SubsectorDetails({
 			{table}
 		</Stack>,
 		//	TODO: add sector filter once available
-		{ provider: PaginatedAuctionsProvider, props: { defaultPerPage: 20 } },
+		{
+			provider: PaginatedAuctionsProvider,
+			props: { defaultPerPage: 20, syncWithSearchParams: true },
+		},
 		{ provider: SingleSubsectorProvider, props: { defaultPerPage: 20 } },
 		{ provider: PageProvider },
 	);

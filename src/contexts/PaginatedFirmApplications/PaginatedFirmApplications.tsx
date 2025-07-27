@@ -25,11 +25,7 @@ const DefaultData = {
 };
 const Context = createContext<IPaginatedFirmApplicationsContext>(DefaultData);
 
-export const PaginatedFirmApplicationsProvider = ({
-	defaultCursor,
-	defaultPerPage,
-	children,
-}: KeysetPaginatedProviderProps) => {
+export const PaginatedFirmApplicationsProvider = (props: KeysetPaginatedProviderProps) => {
 	const [status, setStatus] = useState<FirmApplicationsFilter>(DefaultData.status);
 
 	const queryKey = useMemo(
@@ -53,16 +49,14 @@ export const PaginatedFirmApplicationsProvider = ({
 
 	return (
 		<KeysetPaginatedQueryProvider
-			defaultCursor={defaultCursor}
-			defaultPerPage={defaultPerPage}
 			context={Context}
 			defaultData={DefaultData}
 			queryKey={queryKey}
 			queryFn={queryFn}
 			id="paginatedFirmApplications"
-			children={children}
 			status={status}
 			setStatus={setStatus}
+			{...props}
 		/>
 	);
 };

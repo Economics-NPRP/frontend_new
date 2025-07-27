@@ -324,12 +324,6 @@ const _FirmApplicationsTable = ({
 		firmApplications.setCursor(firmApplications.data.cursorForNextPage);
 	}, [firmApplications, tableContainerRef]);
 
-	//	Reset the page when the filter or per page changes
-	useEffect(
-		() => firmApplications.setCursor(null),
-		[firmApplications.status, sectorFilter, firmApplications.perPage],
-	);
-
 	//	If we are showing selected only and there are no selected auctions, disable the filter
 	useEffect(() => {
 		if (showSelectedOnly && selectedApplications.length === 0) setShowSelectedOnly(false);

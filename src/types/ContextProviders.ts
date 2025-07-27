@@ -81,10 +81,12 @@ export interface KeysetPaginatedInfiniteContextState<T>
 
 export interface SortedOffsetContextStateCore {
 	sortBy: string | null;
-	setSortBy: (sortBy: string) => void;
+	setSortBy: (sortBy: string | null) => void;
 
 	sortDirection: SortDirection | null;
-	setSortDirection: (sortDirection: SortDirection) => void;
+	setSortDirection: (sortDirection: SortDirection | null) => void;
+
+	setSort: (sortBy: string | null, sortDirection: SortDirection | null) => void;
 }
 export interface SortedOffsetPaginatedContextState<T>
 	extends OffsetPaginatedContextState<T>,
@@ -173,6 +175,8 @@ export const getDefaultSortedOffsetPaginatedContextState = <T>(
 
 	sortDirection: defaultSortDirection,
 	setSortDirection: () => {},
+
+	setSort: () => {},
 
 	...getDefaultOffsetPaginatedContextState(defaultPage, defaultPerPage, defaultData),
 });

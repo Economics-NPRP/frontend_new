@@ -51,6 +51,10 @@
 				@apply bg-white text-dark-600;
 			}
 		}
+
+		.mantine-Loader-root {
+			--loader-color: var(--mantine-color-white);
+		}
 	}
 }
 

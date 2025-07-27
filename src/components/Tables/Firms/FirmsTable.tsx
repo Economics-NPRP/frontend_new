@@ -26,7 +26,6 @@ import {
 	Badge,
 	Button,
 	Checkbox,
-	CopyButton,
 	Divider,
 	Group,
 	HoverCard,
@@ -45,8 +44,6 @@ import { useListState, useMediaQuery } from '@mantine/hooks';
 import {
 	IconAdjustments,
 	IconArrowUpRight,
-	IconCheck,
-	IconCopy,
 	IconDownload,
 	IconFileSearch,
 	IconFilterSearch,
@@ -282,9 +279,6 @@ const _FirmsTable = ({
 		],
 		[t],
 	);
-
-	//	Reset the page when the bids filter or per page changes
-	useEffect(() => firms.setPage(1), [statusFilter, sectorFilter, firms.perPage]);
 
 	//	If we are showing selected only and there are no selected auctions, disable the filter
 	useEffect(() => {
@@ -545,71 +539,14 @@ const _FirmsTable = ({
 								sortable: true,
 								title: t('components.firmsTable.columns.crn'),
 								width: 180,
-								render: () => (
-									<Group className={classes.between}>
-										{/* TODO: change when firm is joined with application table */}
-										<Text>1234567890</Text>
-										<CopyButton value={'1234567890'} timeout={2000}>
-											{({ copied, copy }) => (
-												<Tooltip
-													label={
-														copied
-															? t('constants.actions.copied.label')
-															: t('constants.actions.copy.label')
-													}
-												>
-													<ActionIcon
-														className={classes.copy}
-														color={copied ? 'teal' : 'gray'}
-														variant="light"
-														onClick={copy}
-													>
-														{copied ? (
-															<IconCheck size={14} />
-														) : (
-															<IconCopy size={14} />
-														)}
-													</ActionIcon>
-												</Tooltip>
-											)}
-										</CopyButton>
-									</Group>
-								),
+								render: () => 1234567890,
 							},
 							{
 								accessor: 'iban',
 								sortable: true,
 								title: t('components.firmsTable.columns.iban'),
 								width: 180,
-								render: () => (
-									<Group className={classes.between}>
-										<Text>1234567890</Text>
-										<CopyButton value={'1234567890'} timeout={2000}>
-											{({ copied, copy }) => (
-												<Tooltip
-													label={
-														copied
-															? t('constants.actions.copied.label')
-															: t('constants.actions.copy.label')
-													}
-												>
-													<ActionIcon
-														className={classes.copy}
-														color={copied ? 'teal' : 'gray'}
-														variant="light"
-														onClick={copy}
-													>
-														{copied ? (
-															<IconCheck size={14} />
-														) : (
-															<IconCopy size={14} />
-														)}
-													</ActionIcon>
-												</Tooltip>
-											)}
-										</CopyButton>
-									</Group>
-								),
+								render: () => 1234567890,
 							},
 						],
 					},

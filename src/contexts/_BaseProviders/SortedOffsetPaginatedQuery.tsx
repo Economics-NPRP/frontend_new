@@ -1,6 +1,7 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { OffsetPaginatedQueryProvider, OffsetPaginatedQueryProviderProps } from '@/contexts';
 import {
@@ -14,7 +15,7 @@ export interface SortedOffsetPaginatedQueryProviderProps<
 > extends SortedOffsetPaginatedProviderProps,
 		Pick<
 			OffsetPaginatedQueryProviderProps<T>,
-			'context' | 'defaultData' | 'queryKey' | 'id' | 'disabled'
+			'context' | 'defaultData' | 'queryKey' | 'syncWithSearchParams' | 'id' | 'disabled'
 		>,
 		Record<string, unknown> {
 	queryFn: (
@@ -32,11 +33,100 @@ export const SortedOffsetPaginatedQueryProvider = <
 	defaultData,
 	queryKey,
 	queryFn,
+	syncWithSearchParams = false,
 	...props
 }: SortedOffsetPaginatedQueryProviderProps<T>) => {
+	const router = useRouter();
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
+
+	const [searchParamsState, setSearchParamsState] = useState(searchParams.toString() || '');
 	const [sortBy, setSortBy] = useState(defaultSortBy || defaultData.sortBy);
 	const [sortDirection, setSortDirection] = useState(
 		defaultSortDirection || defaultData.sortDirection,
+	);
+
+	//	Update sortBy and sortDirection from search params
+	useEffect(() => {
+		if (!syncWithSearchParams) return;
+
+		const parsedSearchParams = new URLSearchParams(searchParamsState);
+
+		const newSortBy = parsedSearchParams.get('sortBy') || defaultSortBy || defaultData.sortBy;
+		const newSortDirection =
+			(parsedSearchParams.get('sortDirection') as SortDirection | null) ||
+			defaultSortDirection ||
+			defaultData.sortDirection;
+
+		const hasSortByChanged = newSortBy && newSortBy !== sortBy;
+		const hasSortDirectionChanged = newSortDirection && newSortDirection !== sortDirection;
+		const hasSearchParamsChanged = searchParamsState !== searchParams.toString();
+
+		if (hasSortByChanged) setSortBy(newSortBy);
+		if (hasSortDirectionChanged) setSortDirection(newSortDirection);
+		if (hasSearchParamsChanged && (hasSortByChanged || hasSortDirectionChanged))
+			router.replace(`${pathname}?${searchParamsState.toString()}`, {
+				scroll: false,
+			});
+	}, [syncWithSearchParams, searchParams, searchParamsState]);
+
+	const handleSetSortBy = useCallback(
+		(sortBy: string | null) => {
+			if (!syncWithSearchParams) return setSortBy(sortBy);
+
+			const params = new URL(document.URL).searchParams;
+
+			if (sortBy && sortBy !== (defaultSortBy || defaultData.sortBy))
+				params.set('sortBy', sortBy);
+			else params.delete('sortBy');
+
+			setSearchParamsState(params.toString());
+		},
+		[syncWithSearchParams, pathname, router],
+	);
+
+	const handleSetSortDirection = useCallback(
+		(sortDirection: SortDirection | null) => {
+			if (!syncWithSearchParams) return setSortDirection(sortDirection);
+
+			const params = new URL(document.URL).searchParams;
+
+			if (
+				sortDirection &&
+				sortDirection !== (defaultSortDirection || defaultData.sortDirection)
+			)
+				params.set('sortDirection', sortDirection);
+			else params.delete('sortDirection');
+
+			setSearchParamsState(params.toString());
+		},
+		[syncWithSearchParams, pathname, router],
+	);
+
+	const handleSetSort = useCallback(
+		(sortBy: string | null, sortDirection: SortDirection | null) => {
+			if (!syncWithSearchParams) {
+				setSortBy(sortBy);
+				setSortDirection(sortDirection);
+				return;
+			}
+
+			const params = new URL(document.URL).searchParams;
+
+			if (sortBy && sortBy !== (defaultSortBy || defaultData.sortBy))
+				params.set('sortBy', sortBy);
+			else params.delete('sortBy');
+
+			if (
+				sortDirection &&
+				sortDirection !== (defaultSortDirection || defaultData.sortDirection)
+			)
+				params.set('sortDirection', sortDirection);
+			else params.delete('sortDirection');
+
+			setSearchParamsState(params.toString());
+		},
+		[syncWithSearchParams, pathname, router],
 	);
 
 	//	Add page and perPage to the query key and function
@@ -44,8 +134,8 @@ export const SortedOffsetPaginatedQueryProvider = <
 		() => [...queryKey, sortBy, sortDirection],
 		[queryKey, sortBy, sortDirection],
 	);
-	const paginatedQueryFn = useMemo<OffsetPaginatedQueryProviderProps<T>['queryFn']>(
-		() => (page, perPage) => queryFn(page, perPage, sortBy, sortDirection),
+	const paginatedQueryFn = useCallback<OffsetPaginatedQueryProviderProps<T>['queryFn']>(
+		(page, perPage) => queryFn(page, perPage, sortBy, sortDirection),
 		[queryFn, sortBy, sortDirection],
 	);
 
@@ -54,10 +144,12 @@ export const SortedOffsetPaginatedQueryProvider = <
 			defaultData={defaultData}
 			queryKey={paginatedQueryKey}
 			queryFn={paginatedQueryFn}
+			syncWithSearchParams={syncWithSearchParams}
 			sortBy={sortBy}
-			setSortBy={setSortBy}
+			setSortBy={handleSetSortBy}
 			sortDirection={sortDirection}
-			setSortDirection={setSortDirection}
+			setSortDirection={handleSetSortDirection}
+			setSort={handleSetSort}
 			{...props}
 		/>
 	);

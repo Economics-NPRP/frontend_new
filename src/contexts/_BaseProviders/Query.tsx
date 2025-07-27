@@ -1,6 +1,6 @@
 'use client';
 
-import { Context, PropsWithChildren, useMemo } from 'react';
+import { Context, PropsWithChildren } from 'react';
 
 import { ContextState } from '@/types';
 import { keepPreviousData, skipToken, useQuery } from '@tanstack/react-query';
@@ -24,11 +24,9 @@ export const QueryProvider = <T extends ContextState<unknown>>({
 	children,
 	...props
 }: QueryProviderProps<T>) => {
-	const memoizedQueryFn = useMemo(() => queryFn(), [queryFn]);
-
 	const queryResults = useQuery({
 		queryKey,
-		queryFn: disabled ? skipToken : memoizedQueryFn,
+		queryFn: disabled ? skipToken : queryFn(),
 		placeholderData: keepPreviousData,
 	});
 

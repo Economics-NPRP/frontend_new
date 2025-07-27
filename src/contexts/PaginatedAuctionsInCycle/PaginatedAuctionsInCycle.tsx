@@ -41,12 +41,8 @@ export interface PaginatedAuctionsInCycleProviderProps extends SortedOffsetPagin
 	defaultFilters?: QueryFiltersData;
 }
 export const PaginatedAuctionsInCycleProvider = ({
-	defaultPage,
-	defaultPerPage,
-	defaultSortBy,
-	defaultSortDirection,
 	defaultFilters,
-	children,
+	...props
 }: PaginatedAuctionsInCycleProviderProps) => {
 	const { cycleId } = useParams();
 	const [filters, setAllFilters] = useState(defaultFilters || DefaultData.filters);
@@ -128,22 +124,18 @@ export const PaginatedAuctionsInCycleProvider = ({
 
 	return (
 		<SortedOffsetPaginatedQueryProvider
-			defaultPage={defaultPage}
-			defaultPerPage={defaultPerPage}
-			defaultSortBy={defaultSortBy}
-			defaultSortDirection={defaultSortDirection}
 			context={Context}
 			defaultData={DefaultData}
 			queryKey={queryKey}
 			queryFn={queryFn}
 			id="paginatedAuctionsInCycle"
-			children={children}
 			filters={filters}
 			setAllFilters={setAllFilters}
 			setSingleFilter={setSingleFilter}
 			setArrayFilter={setArrayFilter}
 			addToFilterArray={addToFilterArray}
 			removeFilter={removeFilter}
+			{...props}
 		/>
 	);
 };

@@ -42,7 +42,7 @@ export default function CyclesList({ subbanners, list }: CyclesListProps) {
 			{subbanners}
 			{list}
 		</Stack>,
-		{ provider: PaginatedAuctionCyclesProvider },
+		{ provider: PaginatedAuctionCyclesProvider, props: { syncWithSearchParams: true } },
 		{ provider: AllAuctionCyclesProvider },
 	);
 }

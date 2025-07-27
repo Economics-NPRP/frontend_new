@@ -249,9 +249,6 @@ const _AdminsTable = ({
 		[t],
 	);
 
-	//	Reset the page when the bids filter or per page changes
-	useEffect(() => admins.setPage(1), [roleFilter, admins.perPage]);
-
 	//	If we are showing selected only and there are no selected auctions, disable the filter
 	useEffect(() => {
 		if (showSelectedOnly && selectedAdmins.length === 0) setShowSelectedOnly(false);

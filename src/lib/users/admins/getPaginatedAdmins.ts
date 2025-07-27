@@ -13,6 +13,7 @@ export interface IGetPaginatedAdminsOptions extends IOffsetPagination {
 	sortBy?: string | null;
 	sortDirection?: SortDirection | null;
 
+	isActive?: boolean;
 	excludeIds?: Array<string>;
 }
 
@@ -33,7 +34,7 @@ type IFunctionSignature = (
 	options: IGetPaginatedAdminsOptions,
 ) => Promise<OffsetPaginatedData<IAdminData>>;
 export const getPaginatedAdmins: IFunctionSignature = cache(
-	async ({ excludeIds, page, perPage, sortBy, sortDirection }) => {
+	async ({ isActive = true, excludeIds, page, perPage, sortBy, sortDirection }) => {
 		const t = await getTranslations();
 
 		const cookieHeaders = await getSession();
@@ -47,6 +48,7 @@ export const getPaginatedAdmins: IFunctionSignature = cache(
 		};
 
 		const queryUrl = new URL('/v1/users/admins', process.env.NEXT_PUBLIC_BACKEND_URL);
+		if (isActive) queryUrl.searchParams.append('is_active', isActive.toString());
 		if (page) queryUrl.searchParams.append('page', page.toString());
 		if (perPage) queryUrl.searchParams.append('per_page', perPage.toString());
 		if (sortBy) queryUrl.searchParams.append('order_by', sortBy);

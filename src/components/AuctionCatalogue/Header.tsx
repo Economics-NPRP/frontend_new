@@ -159,8 +159,7 @@ export const AuctionCatalogueHeader = () => {
 								value ||
 								`${DefaultPaginatedAuctionsContextData.sortBy}-${DefaultPaginatedAuctionsContextData.sortDirection}`
 							).split('-');
-							paginatedAuctions.setSortBy(sortBy);
-							paginatedAuctions.setSortDirection(sortDirection as SortDirection);
+							paginatedAuctions.setSort(sortBy, sortDirection as SortDirection);
 						}}
 					/>
 					<Text className={classes.label}>{t('constants.pagination.perPage.label')}</Text>

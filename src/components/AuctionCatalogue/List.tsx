@@ -36,7 +36,7 @@ export const AuctionCatalogueList = () => {
 							context={paginatedAuctions}
 						/>
 					),
-		[paginatedAuctions.isLoading, paginatedAuctions.data.pageCount],
+		[paginatedAuctions],
 	);
 
 	return (

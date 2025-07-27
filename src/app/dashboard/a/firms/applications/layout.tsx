@@ -44,7 +44,7 @@ export default function FirmApplicationsList({ table }: FirmApplicationsListProp
 			/>
 			{table}
 		</Stack>,
-		{ provider: PaginatedFirmApplicationsProvider },
+		{ provider: PaginatedFirmApplicationsProvider, props: { syncWithSearchParams: true } },
 		{ provider: InvitationModalProvider },
 	);
 }

@@ -640,9 +640,6 @@ const _AuctionsTable = ({
 		[t, format],
 	);
 
-	//	Reset the page when the filter or per page changes
-	useEffect(() => auctions.setPage(1), [auctions.filters, auctions.perPage]);
-
 	//	If we are showing selected only and there are no selected auctions, disable the filter
 	useEffect(() => {
 		if (showSelectedOnly && selectedAuctions.length === 0) setShowSelectedOnly(false);

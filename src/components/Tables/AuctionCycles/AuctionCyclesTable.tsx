@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 import { AuctionCycleCard } from '@/components/AuctionCycleCard';
 import { Switch } from '@/components/SwitchCase';
@@ -108,9 +108,6 @@ export const AuctionCyclesTable = ({
 			);
 		return output;
 	}, [auctionCycles, t]);
-
-	//	Reset the page when the filter or per page changes
-	useEffect(() => auctionCycles.setPage(1), [auctionCycles.status, auctionCycles.perPage]);
 
 	const currentState = useMemo(() => {
 		if (auctionCycles.isLoading) return 'loading';

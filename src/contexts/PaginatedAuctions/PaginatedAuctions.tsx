@@ -41,12 +41,8 @@ export interface PaginatedAuctionsProviderProps extends SortedOffsetPaginatedPro
 	defaultFilters?: QueryFiltersData;
 }
 export const PaginatedAuctionsProvider = ({
-	defaultPage,
-	defaultPerPage,
-	defaultSortBy,
-	defaultSortDirection,
 	defaultFilters,
-	children,
+	...props
 }: PaginatedAuctionsProviderProps) => {
 	const [filters, setAllFilters] = useState(defaultFilters || DefaultData.filters);
 
@@ -123,16 +119,11 @@ export const PaginatedAuctionsProvider = ({
 
 	return (
 		<SortedOffsetPaginatedQueryProvider
-			defaultPage={defaultPage}
-			defaultPerPage={defaultPerPage}
-			defaultSortBy={defaultSortBy}
-			defaultSortDirection={defaultSortDirection}
 			context={Context}
 			defaultData={DefaultData}
 			queryKey={queryKey}
 			queryFn={queryFn}
 			id="paginatedAuctions"
-			children={children}
 			filters={filters}
 			setAllFilters={setAllFilters}
 			setSingleFilter={setSingleFilter}
@@ -140,6 +131,7 @@ export const PaginatedAuctionsProvider = ({
 			addToFilterArray={addToFilterArray}
 			removeFilter={removeFilter}
 			resetFilters={resetFilters}
+			{...props}
 		/>
 	);
 };

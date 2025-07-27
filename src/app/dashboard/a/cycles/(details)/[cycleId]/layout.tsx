@@ -67,6 +67,7 @@ export default function CycleDetails({
 				defaultPerPage: 20,
 				defaultSortBy: 'created_at',
 				defaultSortDirection: 'desc',
+				syncWithSearchParams: true,
 			},
 		},
 		{ provider: ApprovalModalProvider },
