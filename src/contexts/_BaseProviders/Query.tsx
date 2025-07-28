@@ -1,19 +1,15 @@
 'use client';
 
-import { Context, PropsWithChildren } from 'react';
+import { Context } from 'react';
 
-import { ContextState } from '@/types';
+import { ContextState, CoreProviderProps } from '@/types';
 import { keepPreviousData, skipToken, useQuery } from '@tanstack/react-query';
 
-export interface QueryProviderProps<T extends ContextState<unknown>>
-	extends PropsWithChildren,
-		Record<string, unknown> {
+export interface QueryProviderProps<T extends ContextState<unknown>> extends CoreProviderProps {
 	context: Context<T>;
 	defaultData: T;
 	queryKey: Array<string | number | boolean | undefined | null>;
 	queryFn: () => () => Promise<unknown>;
-	id: string;
-	disabled?: boolean;
 }
 export const QueryProvider = <T extends ContextState<unknown>>({
 	context,

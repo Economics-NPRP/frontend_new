@@ -7,7 +7,7 @@ import { QueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
 import { getSingleCycle } from '@/lib/cycles';
 import { DefaultAuctionCycleData, IAuctionCycleData } from '@/schema/models';
-import { ServerContextState, getDefaultContextState } from '@/types';
+import { CoreProviderProps, ServerContextState, getDefaultContextState } from '@/types';
 
 export interface ISingleCycleContext extends ServerContextState<IAuctionCycleData> {}
 const DefaultData = getDefaultContextState(DefaultAuctionCycleData);
@@ -16,7 +16,11 @@ const Context = createContext<ISingleCycleContext>(DefaultData);
 export interface SingleCycleProviderProps extends PropsWithChildren {
 	idSource?: 'route' | 'searchParams';
 }
-export const SingleCycleProvider = ({ idSource = 'route', children }: SingleCycleProviderProps) => {
+export const SingleCycleProvider = ({
+	idSource = 'route',
+	id = 'singleCycle',
+	...props
+}: CoreProviderProps) => {
 	const params = useParams();
 	const searchParams = useSearchParams();
 
@@ -34,9 +38,9 @@ export const SingleCycleProvider = ({ idSource = 'route', children }: SingleCycl
 			queryFn={() => () =>
 				throwError(getSingleCycle(cycleId as string), `getSingleCycle:${cycleId}`)
 			}
-			id="singleAuctionCycle"
-			children={children}
+			id={id}
 			disabled={!cycleId}
+			{...props}
 		/>
 	);
 };

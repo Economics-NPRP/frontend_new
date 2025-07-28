@@ -18,7 +18,10 @@ export interface IPaginatedBidsContext extends KeysetPaginatedContextState<IBidD
 const DefaultData = getDefaultKeysetPaginatedContextState<IBidData>();
 const Context = createContext<IPaginatedBidsContext>(DefaultData);
 
-export const PaginatedBidsProvider = (props: KeysetPaginatedProviderProps) => {
+export const PaginatedBidsProvider = ({
+	id = 'paginatedBids',
+	...props
+}: KeysetPaginatedProviderProps) => {
 	const { auctionId } = useParams();
 	const { areBidsAvailable } = useAuctionAvailability();
 
@@ -37,7 +40,7 @@ export const PaginatedBidsProvider = (props: KeysetPaginatedProviderProps) => {
 					`getPaginatedBids:${auctionId}`,
 				)
 			}
-			id="paginatedBids"
+			id={id}
 			disabled={!areBidsAvailable}
 			{...props}
 		/>

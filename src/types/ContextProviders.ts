@@ -9,14 +9,19 @@ import {
 } from '@/types/ServerData';
 import { InfiniteData } from '@tanstack/react-query';
 
-export interface OffsetPaginatedProviderProps extends PropsWithChildren {
+export interface CoreProviderProps extends PropsWithChildren, Record<string, unknown> {
+	id: string;
+	disabled?: boolean;
+}
+
+export interface OffsetPaginatedProviderProps extends CoreProviderProps {
 	defaultPage?: number;
 	defaultPerPage?: number;
 
 	syncWithSearchParams?: boolean;
 }
 
-export interface KeysetPaginatedProviderProps extends PropsWithChildren {
+export interface KeysetPaginatedProviderProps extends CoreProviderProps {
 	defaultCursor?: string | null;
 	defaultPerPage?: number;
 

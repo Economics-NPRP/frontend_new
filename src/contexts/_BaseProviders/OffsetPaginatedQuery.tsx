@@ -9,7 +9,7 @@ import { OffsetPaginatedContextState, OffsetPaginatedProviderProps } from '@/typ
 
 export interface OffsetPaginatedQueryProviderProps<T extends OffsetPaginatedContextState<unknown>>
 	extends OffsetPaginatedProviderProps,
-		Pick<QueryProviderProps<T>, 'context' | 'defaultData' | 'queryKey' | 'id' | 'disabled'>,
+		Pick<QueryProviderProps<T>, 'context' | 'defaultData' | 'queryKey'>,
 		Record<string, unknown> {
 	queryFn: (page: number, perPage: number) => () => Promise<unknown>;
 }

@@ -9,7 +9,7 @@ import { KeysetPaginatedContextState, KeysetPaginatedProviderProps } from '@/typ
 
 export interface KeysetPaginatedQueryProviderProps<T extends KeysetPaginatedContextState<unknown>>
 	extends KeysetPaginatedProviderProps,
-		Pick<QueryProviderProps<T>, 'context' | 'defaultData' | 'queryKey' | 'id' | 'disabled'>,
+		Pick<QueryProviderProps<T>, 'context' | 'defaultData' | 'queryKey'>,
 		Record<string, unknown> {
 	queryFn: (cursor: string | null, perPage: number) => () => Promise<unknown>;
 }

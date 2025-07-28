@@ -18,7 +18,10 @@ export interface IAllWinningBidsContext extends OffsetPaginatedContextState<IBid
 const DefaultData = getDefaultOffsetPaginatedContextState<IBidData>();
 const Context = createContext<IAllWinningBidsContext>(DefaultData);
 
-export const AllWinningBidsProvider = ({ children }: OffsetPaginatedProviderProps) => {
+export const AllWinningBidsProvider = ({
+	id = 'allWinningBids',
+	...props
+}: OffsetPaginatedProviderProps) => {
 	const { auctionId } = useParams();
 	const { areBidsAvailable } = useAuctionAvailability();
 
@@ -39,9 +42,9 @@ export const AllWinningBidsProvider = ({ children }: OffsetPaginatedProviderProp
 					`getAllWinningBids:${auctionId}`,
 				)
 			}
-			id="allWinningBids"
+			id={id}
 			disabled={!areBidsAvailable}
-			children={children}
+			{...props}
 		/>
 	);
 };

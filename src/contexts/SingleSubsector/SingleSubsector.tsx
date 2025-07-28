@@ -1,24 +1,25 @@
 'use client';
 
 import { useParams, useSearchParams } from 'next/navigation';
-import { PropsWithChildren, createContext, useMemo } from 'react';
+import { createContext, useMemo } from 'react';
 
 import { QueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
 import { getSingleSubsector } from '@/lib/subsectors';
 import { DefaultSubsectorData, ISubsectorData } from '@/schema/models';
-import { ServerContextState, getDefaultContextState } from '@/types';
+import { CoreProviderProps, ServerContextState, getDefaultContextState } from '@/types';
 
 export interface ISingleSubsectorContext extends ServerContextState<ISubsectorData> {}
 const DefaultData = getDefaultContextState(DefaultSubsectorData);
 const Context = createContext<ISingleSubsectorContext>(DefaultData);
 
-export interface SingleCycleProviderProps extends PropsWithChildren {
+export interface SingleCycleProviderProps extends CoreProviderProps {
 	idSource?: 'route' | 'searchParams';
 }
 export const SingleSubsectorProvider = ({
 	idSource = 'route',
-	children,
+	id = 'singleSubsector',
+	...props
 }: SingleCycleProviderProps) => {
 	const params = useParams();
 	const searchParams = useSearchParams();
@@ -40,8 +41,8 @@ export const SingleSubsectorProvider = ({
 					`getSingleSubsector:${subsector}`,
 				)
 			}
-			id="singleSubsector"
-			children={children}
+			id={id}
+			{...props}
 		/>
 	);
 };

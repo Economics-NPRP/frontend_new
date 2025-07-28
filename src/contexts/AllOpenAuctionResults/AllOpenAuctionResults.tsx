@@ -22,7 +22,8 @@ const Context = createContext<IAllOpenAuctionResultsContext>(DefaultData);
 export const AllOpenAuctionResultsProvider = ({
 	defaultSortBy,
 	defaultSortDirection,
-	children,
+	id = 'allOpenAuctionResults',
+	...props
 }: SortedOffsetPaginatedProviderProps) => {
 	const { auctionId } = useParams();
 	const { areResultsAvailable } = useAuctionAvailability();
@@ -46,9 +47,9 @@ export const AllOpenAuctionResultsProvider = ({
 					`getAllOpenAuctionResults:${auctionId}`,
 				)
 			}
-			id="allOpenAuctionResults"
+			id={id}
 			disabled={!areResultsAvailable}
-			children={children}
+			{...props}
 		/>
 	);
 };

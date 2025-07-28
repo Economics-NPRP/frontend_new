@@ -14,7 +14,7 @@ import { skipToken, useInfiniteQuery } from '@tanstack/react-query';
 export interface OffsetPaginatedInfiniteQueryProviderProps<
 	T extends OffsetPaginatedInfiniteContextState<unknown>,
 > extends OffsetPaginatedProviderProps,
-		Pick<QueryProviderProps<T>, 'context' | 'defaultData' | 'queryKey' | 'id' | 'disabled'>,
+		Pick<QueryProviderProps<T>, 'context' | 'defaultData' | 'queryKey'>,
 		Record<string, unknown> {
 	queryFn: (perPage: number) => (params: { pageParam: unknown }) => Promise<unknown>;
 }

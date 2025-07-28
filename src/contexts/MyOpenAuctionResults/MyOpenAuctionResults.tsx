@@ -1,13 +1,14 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { PropsWithChildren, createContext, useContext } from 'react';
+import { createContext, useContext } from 'react';
 
 import { MyUserProfileContext, QueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
 import { useAuctionAvailability } from '@/hooks';
 import { getMyOpenAuctionResults } from '@/lib/results/open';
 import {
+	CoreProviderProps,
 	DefaultMyAuctionResultsData,
 	IMyAuctionResultsData,
 	ServerContextState,
@@ -18,7 +19,10 @@ export interface IMyOpenAuctionResultsContext extends ServerContextState<IMyAuct
 const DefaultData = getDefaultContextState(DefaultMyAuctionResultsData);
 const Context = createContext<IMyOpenAuctionResultsContext>(DefaultData);
 
-export const MyOpenAuctionResultsProvider = ({ children }: PropsWithChildren) => {
+export const MyOpenAuctionResultsProvider = ({
+	id = 'myOpenAuctionResults',
+	...props
+}: CoreProviderProps) => {
 	const myUser = useContext(MyUserProfileContext);
 	const { auctionId } = useParams();
 	const { areResultsAvailable } = useAuctionAvailability();
@@ -34,9 +38,9 @@ export const MyOpenAuctionResultsProvider = ({ children }: PropsWithChildren) =>
 					`getMyOpenAuctionResults:${auctionId}`,
 				)
 			}
-			id="myOpenAuctionResults"
+			id={id}
 			disabled={!areResultsAvailable}
-			children={children}
+			{...props}
 		/>
 	);
 };

@@ -57,6 +57,7 @@ export interface PaginatedAuctionsProviderProps extends SortedOffsetPaginatedPro
 export const PaginatedAuctionsProvider = ({
 	defaultFilters,
 	syncWithSearchParams = false,
+	id = 'paginatedAuctions',
 	...props
 }: PaginatedAuctionsProviderProps) => {
 	const [, setPage] = useQueryState(
@@ -153,7 +154,7 @@ export const PaginatedAuctionsProvider = ({
 			defaultData={DefaultData}
 			queryKey={queryKey}
 			queryFn={queryFn}
-			id="paginatedAuctions"
+			id={id}
 			syncWithSearchParams={syncWithSearchParams}
 			filters={filters}
 			setAllFilters={setAllFilters}

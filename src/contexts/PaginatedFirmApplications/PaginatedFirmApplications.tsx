@@ -32,6 +32,7 @@ const Context = createContext<IPaginatedFirmApplicationsContext>(DefaultData);
 
 export const PaginatedFirmApplicationsProvider = ({
 	syncWithSearchParams,
+	id = 'paginatedFirmApplications',
 	...props
 }: KeysetPaginatedProviderProps) => {
 	const [, setCursor] = useQueryState(
@@ -71,7 +72,7 @@ export const PaginatedFirmApplicationsProvider = ({
 			defaultData={DefaultData}
 			queryKey={queryKey}
 			queryFn={queryFn}
-			id="paginatedFirmApplications"
+			id={id}
 			syncWithSearchParams={syncWithSearchParams}
 			status={status}
 			setStatus={setStatus}

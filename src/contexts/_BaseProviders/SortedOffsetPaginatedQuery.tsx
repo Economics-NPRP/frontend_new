@@ -14,10 +14,7 @@ import {
 export interface SortedOffsetPaginatedQueryProviderProps<
 	T extends SortedOffsetPaginatedContextState<unknown>,
 > extends SortedOffsetPaginatedProviderProps,
-		Pick<
-			OffsetPaginatedQueryProviderProps<T>,
-			'context' | 'defaultData' | 'queryKey' | 'id' | 'disabled'
-		>,
+		Pick<OffsetPaginatedQueryProviderProps<T>, 'context' | 'defaultData' | 'queryKey'>,
 		Record<string, unknown> {
 	queryFn: (
 		page: number,

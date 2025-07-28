@@ -32,6 +32,7 @@ const Context = createContext<IInfinitePaginatedAuctionsContext>(DefaultData);
 
 export const InfinitePaginatedAuctionsProvider = ({
 	defaultFilters,
+	id = 'infinitePaginatedAuctions',
 	...props
 }: PaginatedAuctionsProviderProps) => {
 	const [filters, setAllFilters] = useState(defaultFilters || DefaultData.filters);
@@ -82,7 +83,7 @@ export const InfinitePaginatedAuctionsProvider = ({
 			defaultData={DefaultData}
 			queryKey={queryKey}
 			queryFn={queryFn}
-			id="infinitePaginatedAuctions"
+			id={id}
 			filters={filters}
 			setAllFilters={setAllFilters}
 			removeFilter={removeFilter}

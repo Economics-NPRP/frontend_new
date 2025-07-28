@@ -21,7 +21,10 @@ const DefaultData = getDefaultSortedOffsetPaginatedContextState<IFirmData>(
 );
 const Context = createContext<IPaginatedFirmsContext>(DefaultData);
 
-export const PaginatedFirmsProvider = (props: SortedOffsetPaginatedProviderProps) => (
+export const PaginatedFirmsProvider = ({
+	id = 'paginatedFirms',
+	...props
+}: SortedOffsetPaginatedProviderProps) => (
 	<SortedOffsetPaginatedQueryProvider
 		context={Context}
 		defaultData={DefaultData}
@@ -37,7 +40,7 @@ export const PaginatedFirmsProvider = (props: SortedOffsetPaginatedProviderProps
 				'getPaginatedFirms',
 			)
 		}
-		id="paginatedFirms"
+		id={id}
 		{...props}
 	/>
 );

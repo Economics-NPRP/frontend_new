@@ -59,6 +59,7 @@ export interface PaginatedAuctionsInCycleProviderProps extends SortedOffsetPagin
 export const PaginatedAuctionsInCycleProvider = ({
 	defaultFilters,
 	syncWithSearchParams,
+	id = 'paginatedAuctionsInCycle',
 	...props
 }: PaginatedAuctionsInCycleProviderProps) => {
 	const { cycleId } = useParams();
@@ -164,7 +165,7 @@ export const PaginatedAuctionsInCycleProvider = ({
 			defaultData={DefaultData}
 			queryKey={queryKey}
 			queryFn={queryFn}
-			id="paginatedAuctionsInCycle"
+			id={id}
 			syncWithSearchParams={syncWithSearchParams}
 			filters={filters}
 			setAllFilters={setAllFilters}

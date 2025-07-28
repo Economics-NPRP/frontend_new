@@ -1,13 +1,13 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { PropsWithChildren, createContext, useState } from 'react';
+import { createContext, useState } from 'react';
 
 import { ArrayQueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
 import { getAllSubsectorsBySector } from '@/lib/sector';
 import { ISubsectorData, SectorType } from '@/schema/models';
-import { ArrayContextState, getDefaultArrayContextState } from '@/types';
+import { ArrayContextState, CoreProviderProps, getDefaultArrayContextState } from '@/types';
 
 export interface IAllSubsectorsBySectorContext extends ArrayContextState<ISubsectorData> {
 	sector: SectorType;
@@ -21,7 +21,10 @@ const DefaultData = {
 };
 const Context = createContext<IAllSubsectorsBySectorContext>(DefaultData);
 
-export const AllSubsectorsBySectorProvider = ({ children }: PropsWithChildren) => {
+export const AllSubsectorsBySectorProvider = ({
+	id = 'allSubsectorsBySector',
+	...props
+}: CoreProviderProps) => {
 	const { sector: paramsSector } = useParams();
 
 	const [sector, setSector] = useState<SectorType>(
@@ -36,8 +39,8 @@ export const AllSubsectorsBySectorProvider = ({ children }: PropsWithChildren) =
 			queryFn={() => () =>
 				throwError(getAllSubsectorsBySector(sector), `getAllSubsectorsBySector:${sector}`)
 			}
-			id="allSubsectorsBySector"
-			children={children}
+			id={id}
+			{...props}
 			sector={sector}
 			setSector={setSector}
 		/>

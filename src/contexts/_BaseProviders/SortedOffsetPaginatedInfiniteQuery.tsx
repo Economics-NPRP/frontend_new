@@ -15,10 +15,7 @@ import {
 export interface SortedOffsetPaginatedInfiniteQueryProviderProps<
 	T extends SortedOffsetPaginatedInfiniteContextState<unknown>,
 > extends SortedOffsetPaginatedProviderProps,
-		Pick<
-			OffsetPaginatedInfiniteQueryProviderProps<T>,
-			'context' | 'defaultData' | 'queryKey' | 'id' | 'disabled'
-		>,
+		Pick<OffsetPaginatedInfiniteQueryProviderProps<T>, 'context' | 'defaultData' | 'queryKey'>,
 		Record<string, unknown> {
 	queryFn: (
 		perPage: number,

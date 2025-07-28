@@ -40,6 +40,7 @@ const Context = createContext<IPaginatedAuctionCyclesContext>(DefaultData);
 
 export const PaginatedAuctionCyclesProvider = ({
 	syncWithSearchParams,
+	id = 'paginatedAuctionCycles',
 	...props
 }: SortedOffsetPaginatedProviderProps) => {
 	const [, setPage] = useQueryState(
@@ -81,7 +82,7 @@ export const PaginatedAuctionCyclesProvider = ({
 			defaultData={DefaultData}
 			queryKey={queryKey}
 			queryFn={queryFn}
-			id="paginatedAuctionCycles"
+			id={id}
 			syncWithSearchParams={syncWithSearchParams}
 			status={status}
 			setStatus={setStatus}

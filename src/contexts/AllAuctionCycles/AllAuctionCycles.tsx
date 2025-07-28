@@ -21,7 +21,8 @@ const Context = createContext<IAllAuctionCyclesContext>(DefaultData);
 export const AllAuctionCyclesProvider = ({
 	defaultSortBy,
 	defaultSortDirection,
-	children,
+	id = 'allAuctionCycles',
+	...props
 }: SortedOffsetPaginatedProviderProps) => {
 	const { auctionId } = useParams();
 
@@ -43,8 +44,8 @@ export const AllAuctionCyclesProvider = ({
 					`getAllAuctionCycles:${auctionId}`,
 				)
 			}
-			id="allAuctionCycles"
-			children={children}
+			id={id}
+			{...props}
 		/>
 	);
 };

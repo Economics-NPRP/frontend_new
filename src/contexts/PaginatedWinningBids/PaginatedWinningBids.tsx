@@ -18,7 +18,10 @@ export interface IPaginatedWinningBidsContext extends OffsetPaginatedContextStat
 const DefaultData = getDefaultOffsetPaginatedContextState<IBidData>();
 const Context = createContext<IPaginatedWinningBidsContext>(DefaultData);
 
-export const PaginatedWinningBidsProvider = (props: OffsetPaginatedProviderProps) => {
+export const PaginatedWinningBidsProvider = ({
+	id = 'paginatedWinningBids',
+	...props
+}: OffsetPaginatedProviderProps) => {
 	const { auctionId } = useParams();
 	const { areBidsAvailable } = useAuctionAvailability();
 
@@ -37,7 +40,7 @@ export const PaginatedWinningBidsProvider = (props: OffsetPaginatedProviderProps
 					`getPaginatedWinningBids:${auctionId}`,
 				)
 			}
-			id="paginatedWinningBids"
+			id={id}
 			disabled={!areBidsAvailable}
 			{...props}
 		/>

@@ -36,6 +36,7 @@ export interface PaginatedAdminsProviderProps extends SortedOffsetPaginatedProvi
 }
 export const PaginatedAdminsProvider = ({
 	defaultExcludeIds,
+	id = 'paginatedAdmins',
 	...props
 }: PaginatedAdminsProviderProps) => {
 	const [excludeIds, setAllExcludeIds] = useState(defaultExcludeIds || DefaultData.excludeIds);
@@ -81,7 +82,7 @@ export const PaginatedAdminsProvider = ({
 			defaultData={DefaultData}
 			queryKey={queryKey}
 			queryFn={queryFn}
-			id="paginatedAdmins"
+			id={id}
 			excludeIds={excludeIds}
 			setAllExcludeIds={setAllExcludeIds}
 			addToExcludeIds={addToExcludeIds}

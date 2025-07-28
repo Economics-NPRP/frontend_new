@@ -1,19 +1,19 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { PropsWithChildren, createContext } from 'react';
+import { createContext } from 'react';
 
 import { ArrayQueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
 import { getAllCycleAdmins } from '@/lib/cycles';
 import { ICycleAdminData } from '@/schema/models/CycleAdminData';
-import { ArrayContextState, getDefaultArrayContextState } from '@/types';
+import { ArrayContextState, CoreProviderProps, getDefaultArrayContextState } from '@/types';
 
 export interface IAllCycleAdminsContext extends ArrayContextState<ICycleAdminData> {}
 const DefaultData = getDefaultArrayContextState<ICycleAdminData>();
 const Context = createContext<IAllCycleAdminsContext>(DefaultData);
 
-export const AllCycleAdminsProvider = ({ children }: PropsWithChildren) => {
+export const AllCycleAdminsProvider = ({ id = 'allCycleAdmins', ...props }: CoreProviderProps) => {
 	const { cycleId } = useParams();
 
 	return (
@@ -24,8 +24,8 @@ export const AllCycleAdminsProvider = ({ children }: PropsWithChildren) => {
 			queryFn={() => () =>
 				throwError(getAllCycleAdmins(cycleId as string), `getAllCycleAdmins:${cycleId}`)
 			}
-			id="allCycleAdmins"
-			children={children}
+			id={id}
+			{...props}
 		/>
 	);
 };

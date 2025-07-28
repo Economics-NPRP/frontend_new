@@ -21,7 +21,8 @@ const Context = createContext<IMyPaginatedWinningBidsContext>(DefaultData);
 export const MyPaginatedWinningBidsProvider = ({
 	defaultPage,
 	defaultPerPage,
-	children,
+	id = 'myPaginatedWinningBids',
+	...props
 }: OffsetPaginatedProviderProps) => {
 	const myUser = useContext(MyUserProfileContext);
 	const { auctionId } = useParams();
@@ -49,9 +50,9 @@ export const MyPaginatedWinningBidsProvider = ({
 					`getMyPaginatedWinningBids:${auctionId}`,
 				)
 			}
-			id="myPaginatedWinningBids"
+			id={id}
 			disabled={!areBidsAvailable}
-			children={children}
+			{...props}
 		/>
 	);
 };

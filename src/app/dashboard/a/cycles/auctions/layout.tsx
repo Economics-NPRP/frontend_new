@@ -50,6 +50,7 @@ export default function AllAuctionsList({ table }: AllAuctionsListProps) {
 				defaultSortBy: 'created_at',
 				defaultSortDirection: 'desc',
 				syncWithSearchParams: true,
+				id: 'paginatedAuctionsDashboard',
 			},
 		},
 	);

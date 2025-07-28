@@ -24,7 +24,10 @@ const DefaultData = getDefaultSortedOffsetPaginatedContextState<IAuctionResultsD
 );
 const Context = createContext<IPaginatedOpenAuctionResultsContext>(DefaultData);
 
-export const PaginatedOpenAuctionResultsProvider = (props: SortedOffsetPaginatedProviderProps) => {
+export const PaginatedOpenAuctionResultsProvider = ({
+	id = 'paginatedOpenAuctionResults',
+	...props
+}: SortedOffsetPaginatedProviderProps) => {
 	const { auctionId } = useParams();
 	const { areResultsAvailable } = useAuctionAvailability();
 
@@ -45,7 +48,7 @@ export const PaginatedOpenAuctionResultsProvider = (props: SortedOffsetPaginated
 					`getPaginatedOpenAuctionResults:${auctionId}`,
 				)
 			}
-			id="paginatedOpenAuctionResults"
+			id={id}
 			disabled={!areResultsAvailable}
 			{...props}
 		/>
