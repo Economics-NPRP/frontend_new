@@ -5,13 +5,12 @@ import { getTranslations } from 'next-intl/server';
 import { cache } from 'react';
 import 'server-only';
 
-import { FirmApplicationsFilter } from '@/components/Tables/FirmApplications';
 import { getSession } from '@/lib/auth';
-import { IFirmApplication } from '@/schema/models';
+import { FirmApplicationStatusFilter, IFirmApplication } from '@/schema/models';
 import { IKeysetPagination, KeysetPaginatedData } from '@/types';
 
 export interface IGetPaginatedApplicationsOptions extends IKeysetPagination {
-	status?: FirmApplicationsFilter;
+	status?: FirmApplicationStatusFilter;
 }
 
 const getDefaultData: (...errors: Array<string>) => KeysetPaginatedData<IFirmApplication> = (

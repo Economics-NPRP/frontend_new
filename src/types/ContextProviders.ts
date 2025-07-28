@@ -12,16 +12,18 @@ import { InfiniteData } from '@tanstack/react-query';
 export interface OffsetPaginatedProviderProps extends PropsWithChildren {
 	defaultPage?: number;
 	defaultPerPage?: number;
+
+	syncWithSearchParams?: boolean;
 }
 
 export interface KeysetPaginatedProviderProps extends PropsWithChildren {
 	defaultCursor?: string | null;
 	defaultPerPage?: number;
+
+	syncWithSearchParams?: boolean;
 }
 
-export interface SortedOffsetPaginatedProviderProps extends PropsWithChildren {
-	defaultPage?: number;
-	defaultPerPage?: number;
+export interface SortedOffsetPaginatedProviderProps extends OffsetPaginatedProviderProps {
 	defaultSortBy?: string | null;
 	defaultSortDirection?: SortDirection | null;
 }

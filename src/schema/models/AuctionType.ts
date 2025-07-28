@@ -1,7 +1,10 @@
 import { InferOutput, nonEmpty, picklist, pipe } from 'valibot';
 
-export const AuctionTypeSchema = pipe(picklist(['open', 'sealed']), nonEmpty());
-export const AuctionTypeFilterSchema = pipe(picklist(['all', 'open', 'sealed']), nonEmpty());
+export const AuctionTypeList = ['open', 'sealed'] as const;
+export const AuctionTypeListFilter = ['all', 'open', 'sealed'] as const;
+
+export const AuctionTypeSchema = pipe(picklist(AuctionTypeList), nonEmpty());
+export const AuctionTypeFilterSchema = pipe(picklist(AuctionTypeListFilter), nonEmpty());
 
 export type AuctionType = InferOutput<typeof AuctionTypeSchema>;
 export type AuctionTypeFilter = InferOutput<typeof AuctionTypeFilterSchema>;

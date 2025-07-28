@@ -48,6 +48,7 @@ export const getPaginatedAuctionsInCycle: IFunctionSignature = cache(
 		sortDirection,
 		ownerId,
 		type,
+		ownership,
 		isPending,
 		isLive,
 		hasEnded,
@@ -73,7 +74,12 @@ export const getPaginatedAuctionsInCycle: IFunctionSignature = cache(
 		if (sortBy) queryUrl.searchParams.append('order_by', sortBy);
 		if (sortDirection) queryUrl.searchParams.append('order_dir', sortDirection);
 		if (ownerId) queryUrl.searchParams.append('owner', ownerId);
-		if (type) queryUrl.searchParams.append('type', type);
+		if (type && type !== 'all') queryUrl.searchParams.append('type', type);
+		if (ownership && ownership !== 'all')
+			queryUrl.searchParams.append(
+				'is_primary_market',
+				ownership === 'government' ? 'true' : 'false',
+			);
 		if (isPending) queryUrl.searchParams.append('is_pending', isPending.valueOf().toString());
 		if (isLive) queryUrl.searchParams.append('is_live', isLive.valueOf().toString());
 		if (hasEnded) queryUrl.searchParams.append('has_ended', hasEnded.valueOf().toString());

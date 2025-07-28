@@ -1,15 +1,20 @@
 'use client';
 
-import { createContext, useMemo, useState } from 'react';
+import { useConditionalQueryState } from 'hooks/useConditionalQueryState';
+import { parseAsInteger, parseAsStringLiteral, useQueryState } from 'nuqs';
+import { createContext, useMemo } from 'react';
 
-import { AuctionCycleStatusFilter } from '@/components/Tables/AuctionCycles';
 import {
 	SortedOffsetPaginatedQueryProvider,
 	SortedOffsetPaginatedQueryProviderProps,
 } from '@/contexts';
 import { throwError } from '@/helpers';
 import { getPaginatedCycles } from '@/lib/cycles';
-import { IAuctionCycleData } from '@/schema/models';
+import {
+	AuctionCycleStatusFilter,
+	AuctionCycleStatusListFilter,
+	IAuctionCycleData,
+} from '@/schema/models';
 import {
 	SortedOffsetPaginatedContextState,
 	SortedOffsetPaginatedProviderProps,
@@ -33,8 +38,21 @@ const DefaultData = {
 };
 const Context = createContext<IPaginatedAuctionCyclesContext>(DefaultData);
 
-export const PaginatedAuctionCyclesProvider = (props: SortedOffsetPaginatedProviderProps) => {
-	const [status, setStatus] = useState<AuctionCycleStatusFilter>(DefaultData.status);
+export const PaginatedAuctionCyclesProvider = ({
+	syncWithSearchParams,
+	...props
+}: SortedOffsetPaginatedProviderProps) => {
+	const [, setPage] = useQueryState(
+		'page',
+		parseAsInteger.withDefault(props.defaultPage || DefaultData.page),
+	);
+	const [status, setStatus] = useConditionalQueryState({
+		key: 'status',
+		defaultValue: DefaultData.status,
+		parser: parseAsStringLiteral(AuctionCycleStatusListFilter),
+		syncWithSearchParams,
+		onValueChange: () => setPage(props.defaultPage || DefaultData.page),
+	});
 
 	const queryKey = useMemo(
 		() => ['dashboard', 'admin', 'paginatedAuctionCycles', status],
@@ -64,6 +82,7 @@ export const PaginatedAuctionCyclesProvider = (props: SortedOffsetPaginatedProvi
 			queryKey={queryKey}
 			queryFn={queryFn}
 			id="paginatedAuctionCycles"
+			syncWithSearchParams={syncWithSearchParams}
 			status={status}
 			setStatus={setStatus}
 			{...props}

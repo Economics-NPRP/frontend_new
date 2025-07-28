@@ -31,12 +31,8 @@ const DefaultData: IInfinitePaginatedAuctionsContext = {
 const Context = createContext<IInfinitePaginatedAuctionsContext>(DefaultData);
 
 export const InfinitePaginatedAuctionsProvider = ({
-	defaultPage,
-	defaultPerPage,
-	defaultSortBy,
-	defaultSortDirection,
 	defaultFilters,
-	children,
+	...props
 }: PaginatedAuctionsProviderProps) => {
 	const [filters, setAllFilters] = useState(defaultFilters || DefaultData.filters);
 
@@ -66,7 +62,7 @@ export const InfinitePaginatedAuctionsProvider = ({
 			({ pageParam }) =>
 				throwError(
 					getPaginatedAuctions({
-						page: (pageParam as number) || defaultPage,
+						page: (pageParam as number) || props.defaultPage,
 						perPage,
 						sortBy,
 						sortDirection,
@@ -82,19 +78,15 @@ export const InfinitePaginatedAuctionsProvider = ({
 
 	return (
 		<SortedOffsetPaginatedInfiniteQueryProvider
-			defaultPage={defaultPage}
-			defaultPerPage={defaultPerPage}
-			defaultSortBy={defaultSortBy}
-			defaultSortDirection={defaultSortDirection}
 			context={Context}
 			defaultData={DefaultData}
 			queryKey={queryKey}
 			queryFn={queryFn}
 			id="infinitePaginatedAuctions"
-			children={children}
 			filters={filters}
 			setAllFilters={setAllFilters}
 			removeFilter={removeFilter}
+			{...props}
 		/>
 	);
 };

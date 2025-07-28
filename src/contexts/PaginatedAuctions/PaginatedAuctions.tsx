@@ -1,14 +1,25 @@
 'use client';
 
-import { createContext, useCallback, useMemo, useState } from 'react';
+import { parseAsArrayOf, parseAsInteger, parseAsStringLiteral, useQueryState } from 'nuqs';
+import { createContext, useCallback, useMemo } from 'react';
 
+import { SectorList } from '@/constants/SectorData';
 import {
 	SortedOffsetPaginatedQueryProvider,
 	SortedOffsetPaginatedQueryProviderProps,
 } from '@/contexts';
 import { throwError } from '@/helpers';
+import { useConditionalQueryStates } from '@/hooks';
 import { getPaginatedAuctions } from '@/lib/auctions';
-import { DefaultQueryFiltersData, IAuctionData, QueryFiltersData } from '@/schema/models';
+import {
+	AuctionJoinedStatusListFilter,
+	AuctionOwnershipListFilter,
+	AuctionStatusListFilter,
+	AuctionTypeListFilter,
+	DefaultQueryFiltersData,
+	IAuctionData,
+	QueryFiltersData,
+} from '@/schema/models';
 import {
 	SortedOffsetPaginatedContextState,
 	SortedOffsetPaginatedProviderProps,
@@ -18,7 +29,10 @@ import {
 export interface IPaginatedAuctionsContext extends SortedOffsetPaginatedContextState<IAuctionData> {
 	filters: QueryFiltersData;
 	setAllFilters: (filters: QueryFiltersData) => void;
-	setSingleFilter: (key: 'type' | 'status' | 'owner', value: string) => void;
+	setSingleFilter: (
+		key: 'type' | 'status' | 'joined' | 'ownership',
+		value: string | undefined,
+	) => void;
 	setArrayFilter: (key: 'sector', value: Array<string>) => void;
 	addToFilterArray: (key: 'sector', ...value: Array<string>) => void;
 	removeFilter: (key: keyof QueryFiltersData, value?: string) => void;
@@ -42,55 +56,71 @@ export interface PaginatedAuctionsProviderProps extends SortedOffsetPaginatedPro
 }
 export const PaginatedAuctionsProvider = ({
 	defaultFilters,
+	syncWithSearchParams = false,
 	...props
 }: PaginatedAuctionsProviderProps) => {
-	const [filters, setAllFilters] = useState(defaultFilters || DefaultData.filters);
+	const [, setPage] = useQueryState(
+		'page',
+		parseAsInteger.withDefault(props.defaultPage || DefaultData.page),
+	);
+	const [filters, setAllFilters] = useConditionalQueryStates<QueryFiltersData>({
+		type: parseAsStringLiteral(AuctionTypeListFilter),
+		status: parseAsStringLiteral(AuctionStatusListFilter),
+		sector: parseAsArrayOf(parseAsStringLiteral(SectorList)),
+		joined: parseAsStringLiteral(AuctionJoinedStatusListFilter),
+		ownership: parseAsStringLiteral(AuctionOwnershipListFilter),
 
-	const resetFilters = useCallback<IPaginatedAuctionsContext['resetFilters']>(() => {
-		setAllFilters(DefaultData.filters);
-	}, []);
+		defaultValue: defaultFilters || DefaultData.filters,
+		syncWithSearchParams,
 
-	const removeFilter = useCallback<IPaginatedAuctionsContext['removeFilter']>((key, value) => {
-		if (value) {
-			setAllFilters((filters) => ({
-				...filters,
-				[key]: (filters[key] as Array<string>).filter((v) => v !== value),
-			}));
-		} else {
-			setAllFilters((filters) => ({ ...filters, [key]: DefaultData.filters[key] }));
-		}
-	}, []);
+		//	Go back to the first page when filters change
+		onValueChange: () => setPage(props.defaultPage || DefaultData.page),
+	});
+
+	const resetFilters = useCallback<IPaginatedAuctionsContext['resetFilters']>(
+		() => setAllFilters(DefaultData.filters),
+		[],
+	);
+
+	const removeFilter = useCallback<IPaginatedAuctionsContext['removeFilter']>(
+		(key, value) => {
+			if (value)
+				setAllFilters({
+					...filters,
+					[key]: (filters[key] as Array<string>).filter((v) => v !== value),
+				});
+			else setAllFilters({ ...filters, [key]: DefaultData.filters[key] });
+		},
+		[filters],
+	);
 
 	const setSingleFilter = useCallback<IPaginatedAuctionsContext['setSingleFilter']>(
-		(key, value) => {
-			setAllFilters((filters) => ({
+		(key, value) =>
+			setAllFilters({
 				...filters,
-				[key]: value,
-			}));
-		},
-		[],
+				[key]: value || DefaultData.filters[key],
+			}),
+		[filters],
 	);
 
 	const setArrayFilter = useCallback<IPaginatedAuctionsContext['setArrayFilter']>(
-		(key, value) => {
-			//	@ts-expect-error - should be gone once we add a new type to array filter key
-			setAllFilters((filters) => ({
+		(key, value) =>
+			setAllFilters({
 				...filters,
+				//	@ts-expect-error - should be gone once we add a new type to array filter key
 				[key]: Array.from(new Set(value)),
-			}));
-		},
-		[],
+			}),
+		[filters],
 	);
 
 	const addToFilterArray = useCallback<IPaginatedAuctionsContext['addToFilterArray']>(
-		(key, ...value) => {
-			//	@ts-expect-error - should be gone once we add a new type to array filter key
-			setAllFilters((filters) => ({
+		(key, ...value) =>
+			setAllFilters({
 				...filters,
+				//	@ts-expect-error - should be gone once we add a new type to array filter key
 				[key]: Array.from(new Set([...filters[key]!, ...value])),
-			}));
-		},
-		[],
+			}),
+		[filters],
 	);
 
 	const queryKey = useMemo(
@@ -124,6 +154,7 @@ export const PaginatedAuctionsProvider = ({
 			queryKey={queryKey}
 			queryFn={queryFn}
 			id="paginatedAuctions"
+			syncWithSearchParams={syncWithSearchParams}
 			filters={filters}
 			setAllFilters={setAllFilters}
 			setSingleFilter={setSingleFilter}
