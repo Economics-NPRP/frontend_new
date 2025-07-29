@@ -43,7 +43,6 @@
 			}
 		}
 	}
-
 	@mixin larger-than $mantine-breakpoint-xs {
 		.root > .cards {
 			@apply grid grid-cols-2;
@@ -54,14 +53,26 @@
 			}
 		}
 	}
-
 	@mixin larger-than $mantine-breakpoint-sm {
-		.root {
-			@apply col-span-7;
+		.root > .cards {
+			@apply grid-cols-3;
 		}
 	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+			@apply col-span-7;
 
+			> .cards {
+				@apply grid-cols-2;
+			}
+		}
+	}
 	@mixin larger-than $mantine-breakpoint-lg {
+		.root > .cards {
+			@apply grid-cols-3;
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-xl {
 		.root > .cards {
 			@apply grid-cols-3;
 		}

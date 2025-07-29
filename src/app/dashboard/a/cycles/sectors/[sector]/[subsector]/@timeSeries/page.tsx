@@ -157,7 +157,7 @@ export default function TimeSeries() {
 						stroke: `var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`,
 						strokeWidth: 1,
 						strokeDasharray: '4 4',
-						strokeOpacity: 1,
+						strokeOpacity: 0.8,
 					}}
 					valueFormatter={(value) =>
 						t('constants.quantities.emissions.default', { value })
@@ -186,18 +186,18 @@ export default function TimeSeries() {
 							patternTransform="rotate(-45)"
 						>
 							<rect
-								width="10"
+								width="8"
 								height="16"
 								transform="translate(0,0)"
 								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
-								opacity={1}
+								opacity={0.8}
 							/>
 							<rect
-								width="6"
+								width="8"
 								height="16"
-								transform="translate(10,0)"
+								transform="translate(8,0)"
 								fill={`var(--mantine-color-${SectorVariants[sector as SectorType]?.color.token}-6)`}
-								opacity={0.9}
+								opacity={0.7}
 							/>
 						</pattern>
 					</defs>

@@ -49,6 +49,8 @@ export default function AllAuctionsList({ table }: AllAuctionsListProps) {
 				defaultPerPage: 20,
 				defaultSortBy: 'created_at',
 				defaultSortDirection: 'desc',
+				syncWithSearchParams: true,
+				id: 'paginatedAuctionsDashboard',
 			},
 		},
 	);

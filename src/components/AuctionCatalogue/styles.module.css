@@ -61,7 +61,7 @@
 				}
 			}
 
-			> .filters {
+			> .list {
 				@apply gap-2;
 
 				> .heading {
@@ -142,60 +142,130 @@
 		}
 	}
 
-	> .filters {
-		@apply col-span-3 row-end-auto gap-0;
+	> .catalogue {
+		@apply grid grid-cols-3 gap-4 col-span-full;
 		@apply self-start;
-		@apply bg-white;
-		@apply border border-solid border-gray-200;
-		@apply transition-all duration-500;
 
-		> .header {
-			@apply relative;
-			@apply overflow-hidden;
-			@apply p-6 gap-0;
-			@apply bg-dark-600;
+		> .pagination {
+			@apply col-span-full;
+			@apply justify-self-center;
+		}
 
-			> .heading {
-				@apply heading-2-w;
+		> .placeholder {
+			@apply col-span-full;
+			@apply h-[440px];
+			@apply justify-center items-center;
+
+			> .icon {
+				@apply size-12;
+				@apply flex justify-center items-center;
+				@apply bg-gray-100 text-gray-600;
+				@apply rounded-sm;
 			}
 
-			> .subheading {
-				@apply paragraph-sm-g3 text-pretty;
+			> .text {
+				@apply w-64 text-center paragraph-sm-g6;
 			}
+		}
+	}
 
-			> .bg {
-				@apply absolute top-14 -right-44;
-				@apply pointer-events-none;
-				@apply flex flex-row items-center justify-center;
-				@apply gap-4;
-				@apply opacity-10;
-				@apply -rotate-45;
+	> .bg {
+		@apply absolute top-0 left-0;
+		@apply w-full h-full;
+		@apply opacity-75;
 
-				> .graphic {
-					@apply h-32;
-					@apply bg-white;
+		> .graphic {
+			@apply absolute top-0 left-0;
+			@apply w-full h-full;
+			@apply !bg-transparent;
+		}
+	}
 
-					&:nth-child(1) {
-						@apply w-2;
-					}
+	> *:not(.bg) {
+		@apply z-10;
+	}
+}
 
-					&:nth-child(2) {
-						@apply w-4;
-					}
+.filters {
+	@apply col-span-3 row-end-auto gap-0;
+	@apply self-start;
+	@apply bg-white;
+	@apply border border-solid border-gray-200;
+	@apply transition-all duration-500;
 
-					&:nth-child(3) {
-						@apply w-6;
-					}
+	&.modal > .inner > .content {
+		@apply p-0;
+		@apply flex flex-col justify-center items-stretch;
+		@apply overflow-y-hidden;
 
-					&:nth-child(4) {
-						@apply w-8;
-					}
+		min-width: calc(100vw - 16px);
+
+		> .body {
+			@apply min-h-0;
+			@apply flex flex-col items-stretch justify-center;
+			@apply gap-0 p-0;
+
+			> .header > .button {
+				@apply absolute right-6 top-6;
+			}
+		}
+	}
+
+	.header {
+		@apply relative;
+		@apply overflow-hidden flex-shrink-0;
+		@apply p-6 gap-0;
+		@apply bg-dark-600;
+
+		> .heading {
+			@apply heading-2-w;
+		}
+
+		> .subheading {
+			@apply paragraph-sm-g3 text-pretty;
+		}
+
+		> .bg {
+			@apply absolute top-14 -right-44;
+			@apply pointer-events-none;
+			@apply flex flex-row items-center justify-center;
+			@apply gap-4;
+			@apply opacity-10;
+			@apply -rotate-45;
+
+			> .graphic {
+				@apply h-32;
+				@apply bg-white;
+
+				&:nth-child(1) {
+					@apply w-2;
+				}
+
+				&:nth-child(2) {
+					@apply w-4;
+				}
+
+				&:nth-child(3) {
+					@apply w-6;
+				}
+
+				&:nth-child(4) {
+					@apply w-8;
 				}
 			}
+		}
 
-			> *:not(.bg) {
-				@apply z-10;
-			}
+		> *:not(.bg) {
+			@apply z-10;
+		}
+	}
+
+	.wrapper {
+		@apply relative;
+		@apply overflow-y-auto;
+
+		&.loading {
+			@apply overflow-y-hidden;
 		}
 
 		> form {
@@ -276,36 +346,10 @@
 				}
 			}
 		}
-
-		&:hover {
-			@apply shadow-xs;
-		}
 	}
 
-	> .catalogue {
-		@apply grid grid-cols-3 gap-4 col-span-full;
-		@apply self-start;
-
-		> .pagination {
-			@apply col-span-full;
-			@apply justify-self-center;
-		}
-	}
-
-	> .bg {
-		@apply absolute top-0 left-0;
-		@apply w-full h-full;
-		@apply opacity-75;
-
-		> .graphic {
-			@apply absolute top-0 left-0;
-			@apply w-full h-full;
-			@apply !bg-transparent;
-		}
-	}
-
-	> *:not(.bg) {
-		@apply z-10;
+	&:hover {
+		@apply shadow-xs;
 	}
 }
 
@@ -325,6 +369,22 @@
 				}
 			}
 		}
+
+		.filters.modal > .inner > .content {
+			@apply min-w-[640px];
+
+			.wrapper > form > .footer {
+				@apply flex-row justify-between items-center;
+
+				> .value {
+					@apply text-left;
+				}
+
+				> .actions > .action {
+					@apply flex-initial;
+				}
+			}
+		}
 	}
 	@mixin larger-than $mantine-breakpoint-md {
 		.root > .catalogue {
@@ -337,7 +397,7 @@
 		}
 	}
 	@mixin larger-than $mantine-breakpoint-xl {
-		.root > .filters > form > .footer {
+		.filters .wrapper > form > .footer {
 			@apply flex-row justify-between items-center;
 
 			> .value {
@@ -403,26 +463,30 @@
 				}
 			}
 
-			> .filters {
-				@apply bg-dark-500 border-dark-400;
-
-				> .header {
-					> .heading {
-						@apply !text-white;
-					}
-
-					> .subheading {
-						@apply !text-gray-300;
-					}
-				}
-
-				> form > .accordion .content {
-					@apply border-dark-400;
-				}
+			> .catalogue > .placeholder > .icon {
+				@apply bg-dark-600 text-dark-300;
 			}
 
 			> .bg {
 				@apply opacity-100;
+			}
+		}
+
+		.filters {
+			@apply bg-dark-500 border-dark-400;
+
+			.header {
+				> .heading {
+					@apply !text-white;
+				}
+
+				> .subheading {
+					@apply !text-gray-300;
+				}
+			}
+
+			.wrapper > form > .accordion .content {
+				@apply border-dark-400;
 			}
 		}
 	}

@@ -9,27 +9,36 @@ import {
 } from '@/types/ServerData';
 import { InfiniteData } from '@tanstack/react-query';
 
-export interface OffsetPaginatedProviderProps extends PropsWithChildren {
-	defaultPage?: number;
-	defaultPerPage?: number;
+export interface CoreProviderProps extends PropsWithChildren, Record<string, unknown> {
+	id: string;
+	disabled?: boolean;
 }
 
-export interface KeysetPaginatedProviderProps extends PropsWithChildren {
+export interface OffsetPaginatedProviderProps extends CoreProviderProps {
+	defaultPage?: number;
+	defaultPerPage?: number;
+
+	syncWithSearchParams?: boolean;
+}
+
+export interface KeysetPaginatedProviderProps extends CoreProviderProps {
 	defaultCursor?: string | null;
 	defaultPerPage?: number;
+
+	syncWithSearchParams?: boolean;
 }
 
-export interface SortedOffsetPaginatedProviderProps extends PropsWithChildren {
-	defaultPage?: number;
-	defaultPerPage?: number;
+export interface SortedOffsetPaginatedProviderProps extends OffsetPaginatedProviderProps {
 	defaultSortBy?: string | null;
 	defaultSortDirection?: SortDirection | null;
 }
 
 export interface ContextState<T> {
+	id: string;
 	data: T;
 	error: Error | null;
 	isLoading: boolean;
+	isFetching: boolean;
 	isError: boolean;
 	isSuccess: boolean;
 }
@@ -37,7 +46,10 @@ export interface ContextState<T> {
 export interface ArrayContextState<T> extends ContextState<ArrayServerData<T>> {}
 
 export interface InfiniteContextState<T>
-	extends Pick<ContextState<T>, 'error' | 'isLoading' | 'isError' | 'isSuccess'> {
+	extends Pick<
+		ContextState<T>,
+		'error' | 'isLoading' | 'isFetching' | 'isError' | 'isSuccess' | 'id'
+	> {
 	data: InfiniteData<T>;
 	isFetchingNextPage: boolean;
 	hasNextPage: boolean;
@@ -76,10 +88,12 @@ export interface KeysetPaginatedInfiniteContextState<T>
 
 export interface SortedOffsetContextStateCore {
 	sortBy: string | null;
-	setSortBy: (sortBy: string) => void;
+	setSortBy: (sortBy: string | null) => void;
 
 	sortDirection: SortDirection | null;
-	setSortDirection: (sortDirection: SortDirection) => void;
+	setSortDirection: (sortDirection: SortDirection | null) => void;
+
+	setSort: (sortBy: string | null, sortDirection: SortDirection | null) => void;
 }
 export interface SortedOffsetPaginatedContextState<T>
 	extends OffsetPaginatedContextState<T>,
@@ -89,6 +103,7 @@ export interface SortedOffsetPaginatedInfiniteContextState<T>
 		SortedOffsetContextStateCore {}
 
 export const getDefaultContextState = <T>(defaultData?: T): ServerContextState<T> => ({
+	id: '',
 	data: {
 		ok: false,
 		errors: [],
@@ -96,11 +111,13 @@ export const getDefaultContextState = <T>(defaultData?: T): ServerContextState<T
 	} as ServerData<T>,
 	error: null,
 	isLoading: true,
+	isFetching: true,
 	isError: false,
 	isSuccess: false,
 });
 
 export const getDefaultArrayContextState = <T>(defaultData?: Array<T>): ArrayContextState<T> => ({
+	id: '',
 	data: {
 		ok: false,
 		errors: [],
@@ -109,17 +126,20 @@ export const getDefaultArrayContextState = <T>(defaultData?: Array<T>): ArrayCon
 	} as ArrayServerData<T>,
 	error: null,
 	isLoading: true,
+	isFetching: true,
 	isError: false,
 	isSuccess: false,
 });
 
 const getInfiniteContextState = <T>(): InfiniteContextState<T> => ({
+	id: '',
 	data: {
 		pages: [],
 		pageParams: [],
 	},
 	error: null,
 	isLoading: true,
+	isFetching: true,
 	isError: false,
 	isSuccess: false,
 	isFetchingNextPage: false,
@@ -162,6 +182,8 @@ export const getDefaultSortedOffsetPaginatedContextState = <T>(
 
 	sortDirection: defaultSortDirection,
 	setSortDirection: () => {},
+
+	setSort: () => {},
 
 	...getDefaultOffsetPaginatedContextState(defaultPage, defaultPerPage, defaultData),
 });

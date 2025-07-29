@@ -1,12 +1,17 @@
 'use client';
 
-import { createContext, useMemo, useState } from 'react';
+import { parseAsString, parseAsStringLiteral, useQueryState } from 'nuqs';
+import { createContext, useMemo } from 'react';
 
-import { FirmApplicationsFilter } from '@/components/Tables/FirmApplications';
 import { KeysetPaginatedQueryProvider, KeysetPaginatedQueryProviderProps } from '@/contexts';
 import { throwError } from '@/helpers';
+import { useConditionalQueryState } from '@/hooks';
 import { getPaginatedApplications } from '@/lib/users/firms/applications';
-import { IFirmApplication } from '@/schema/models';
+import {
+	FirmApplicationStatusFilter,
+	FirmApplicationStatusListFilter,
+	IFirmApplication,
+} from '@/schema/models';
 import {
 	KeysetPaginatedContextState,
 	KeysetPaginatedProviderProps,
@@ -15,22 +20,32 @@ import {
 
 export interface IPaginatedFirmApplicationsContext
 	extends KeysetPaginatedContextState<IFirmApplication> {
-	status: FirmApplicationsFilter;
-	setStatus: (status: FirmApplicationsFilter) => void;
+	status: FirmApplicationStatusFilter;
+	setStatus: (status: FirmApplicationStatusFilter) => void;
 }
 const DefaultData = {
 	...getDefaultKeysetPaginatedContextState<IFirmApplication>(),
-	status: 'pending' as FirmApplicationsFilter,
+	status: 'pending' as FirmApplicationStatusFilter,
 	setStatus: () => {},
 };
 const Context = createContext<IPaginatedFirmApplicationsContext>(DefaultData);
 
 export const PaginatedFirmApplicationsProvider = ({
-	defaultCursor,
-	defaultPerPage,
-	children,
+	syncWithSearchParams,
+	id = 'paginatedFirmApplications',
+	...props
 }: KeysetPaginatedProviderProps) => {
-	const [status, setStatus] = useState<FirmApplicationsFilter>(DefaultData.status);
+	const [, setCursor] = useQueryState(
+		'cursor',
+		parseAsString.withDefault((props.defaultCursor || DefaultData.cursor) as string),
+	);
+	const [status, setStatus] = useConditionalQueryState({
+		key: 'status',
+		defaultValue: DefaultData.status,
+		parser: parseAsStringLiteral(FirmApplicationStatusListFilter),
+		syncWithSearchParams,
+		onValueChange: () => setCursor(props.defaultCursor || DefaultData.cursor),
+	});
 
 	const queryKey = useMemo(
 		() => ['dashboard', 'admin', 'paginatedFirmApplications', status],
@@ -53,15 +68,15 @@ export const PaginatedFirmApplicationsProvider = ({
 
 	return (
 		<KeysetPaginatedQueryProvider
-			defaultCursor={defaultCursor}
-			defaultPerPage={defaultPerPage}
 			context={Context}
 			defaultData={DefaultData}
 			queryKey={queryKey}
 			queryFn={queryFn}
-			children={children}
+			id={id}
+			syncWithSearchParams={syncWithSearchParams}
 			status={status}
 			setStatus={setStatus}
+			{...props}
 		/>
 	);
 };

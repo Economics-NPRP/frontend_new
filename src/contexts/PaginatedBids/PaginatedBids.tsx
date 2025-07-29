@@ -19,17 +19,14 @@ const DefaultData = getDefaultKeysetPaginatedContextState<IBidData>();
 const Context = createContext<IPaginatedBidsContext>(DefaultData);
 
 export const PaginatedBidsProvider = ({
-	defaultCursor,
-	defaultPerPage,
-	children,
+	id = 'paginatedBids',
+	...props
 }: KeysetPaginatedProviderProps) => {
 	const { auctionId } = useParams();
 	const { areBidsAvailable } = useAuctionAvailability();
 
 	return (
 		<KeysetPaginatedQueryProvider
-			defaultCursor={defaultCursor}
-			defaultPerPage={defaultPerPage}
 			context={Context}
 			defaultData={DefaultData}
 			queryKey={['marketplace', auctionId as string, 'paginatedBids']}
@@ -43,8 +40,9 @@ export const PaginatedBidsProvider = ({
 					`getPaginatedBids:${auctionId}`,
 				)
 			}
+			id={id}
 			disabled={!areBidsAvailable}
-			children={children}
+			{...props}
 		/>
 	);
 };

@@ -19,17 +19,14 @@ const DefaultData = getDefaultOffsetPaginatedContextState<IBidData>();
 const Context = createContext<IPaginatedWinningBidsContext>(DefaultData);
 
 export const PaginatedWinningBidsProvider = ({
-	defaultPage,
-	defaultPerPage,
-	children,
+	id = 'paginatedWinningBids',
+	...props
 }: OffsetPaginatedProviderProps) => {
 	const { auctionId } = useParams();
 	const { areBidsAvailable } = useAuctionAvailability();
 
 	return (
 		<OffsetPaginatedQueryProvider
-			defaultPage={defaultPage}
-			defaultPerPage={defaultPerPage}
 			context={Context}
 			defaultData={DefaultData}
 			queryKey={['marketplace', auctionId as string, 'paginatedWinningBids']}
@@ -43,8 +40,9 @@ export const PaginatedWinningBidsProvider = ({
 					`getPaginatedWinningBids:${auctionId}`,
 				)
 			}
+			id={id}
 			disabled={!areBidsAvailable}
-			children={children}
+			{...props}
 		/>
 	);
 };

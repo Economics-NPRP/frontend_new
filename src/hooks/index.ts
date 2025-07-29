@@ -1,5 +1,6 @@
 export * from './useApplicationReview';
 export * from './useAuctionAvailability';
+export * from './useConditionalQueryState';
 export * from './useCountdown';
 export * from './useCreateAuction';
 export * from './useCreateCycle';

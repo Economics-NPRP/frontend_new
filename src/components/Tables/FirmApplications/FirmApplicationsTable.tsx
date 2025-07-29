@@ -7,7 +7,6 @@ import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'r
 
 import { FirmStatusBadge, SectorBadge } from '@/components/Badge';
 import { SummaryTableGroup } from '@/components/SummaryTable';
-import { FirmApplicationsFilter } from '@/components/Tables/FirmApplications/types';
 import {
 	SelectionSummaryContext,
 	SelectionSummaryProvider,
@@ -17,7 +16,7 @@ import { IPaginatedFirmApplicationsContext } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { useKeysetPaginationText } from '@/hooks';
 import { InvitationModalContext } from '@/pages/dashboard/a/firms/_components/InvitationModal';
-import { IFirmApplication, SectorType } from '@/schema/models';
+import { FirmApplicationStatusFilter, IFirmApplication, SectorType } from '@/schema/models';
 import {
 	ActionIcon,
 	Alert,
@@ -324,12 +323,6 @@ const _FirmApplicationsTable = ({
 		firmApplications.setCursor(firmApplications.data.cursorForNextPage);
 	}, [firmApplications, tableContainerRef]);
 
-	//	Reset the page when the filter or per page changes
-	useEffect(
-		() => firmApplications.setCursor(null),
-		[firmApplications.status, sectorFilter, firmApplications.perPage],
-	);
-
 	//	If we are showing selected only and there are no selected auctions, disable the filter
 	useEffect(() => {
 		if (showSelectedOnly && selectedApplications.length === 0) setShowSelectedOnly(false);
@@ -379,7 +372,9 @@ const _FirmApplicationsTable = ({
 								<Radio.Group
 									value={firmApplications.status}
 									onChange={(value) =>
-										firmApplications.setStatus(value as FirmApplicationsFilter)
+										firmApplications.setStatus(
+											value as FirmApplicationStatusFilter,
+										)
 									}
 								>
 									<Stack className={classes.options}>

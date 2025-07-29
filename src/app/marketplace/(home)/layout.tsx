@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 
 import { InfinitePaginatedAuctionsProvider, PaginatedAuctionsProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
+import { DefaultQueryFiltersData } from '@/schema/models';
 import { Container } from '@mantine/core';
 
 import classes from './styles.module.css';
@@ -15,7 +16,7 @@ export interface HomeProps {
 	banner: ReactNode;
 	subbanners: ReactNode;
 	categories: ReactNode;
-	calendar: ReactNode;
+	promo: ReactNode;
 	ending: ReactNode;
 	catalogue: ReactNode;
 }
@@ -23,7 +24,7 @@ export default function Home({
 	banner,
 	subbanners,
 	categories,
-	calendar,
+	promo,
 	ending,
 	catalogue,
 }: HomeProps) {
@@ -34,7 +35,7 @@ export default function Home({
 				{subbanners}
 			</Container>
 			{categories}
-			{calendar}
+			{promo}
 			{ending}
 			{catalogue}
 		</Container>,
@@ -45,15 +46,16 @@ export default function Home({
 				defaultSortBy: 'end_datetime',
 				defaultSortDirection: 'asc',
 				defaultFilters: {
-					type: [],
+					...DefaultQueryFiltersData,
 					status: 'ongoing',
-					sector: [],
-					owner: [],
 				},
 			},
 		},
 		{
 			provider: PaginatedAuctionsProvider,
+			props: {
+				syncWithSearchParams: true,
+			},
 		},
 	);
 }

@@ -18,6 +18,10 @@
 		@apply display-sm-sb-d3;
 	}
 
+	&.sector {
+		@apply cursor-pointer;
+	}
+
 	&.auctionType.open {
 		@apply bg-gray-100 text-gray-600;
 	}

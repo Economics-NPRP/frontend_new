@@ -1,15 +1,25 @@
 'use client';
 
-import { createContext, useCallback, useMemo, useState } from 'react';
+import { parseAsArrayOf, parseAsInteger, parseAsStringLiteral, useQueryState } from 'nuqs';
+import { createContext, useCallback, useMemo } from 'react';
 
+import { SectorList } from '@/constants/SectorData';
 import {
 	SortedOffsetPaginatedQueryProvider,
 	SortedOffsetPaginatedQueryProviderProps,
 } from '@/contexts';
 import { throwError } from '@/helpers';
+import { useConditionalQueryStates } from '@/hooks';
 import { getPaginatedAuctions } from '@/lib/auctions';
-import { IAuctionFilters } from '@/pages/marketplace/(home)/@catalogue/constants';
-import { IAuctionData } from '@/schema/models';
+import {
+	AuctionJoinedStatusListFilter,
+	AuctionOwnershipListFilter,
+	AuctionStatusListFilter,
+	AuctionTypeListFilter,
+	DefaultQueryFiltersData,
+	IAuctionData,
+	QueryFiltersData,
+} from '@/schema/models';
 import {
 	SortedOffsetPaginatedContextState,
 	SortedOffsetPaginatedProviderProps,
@@ -17,87 +27,106 @@ import {
 } from '@/types';
 
 export interface IPaginatedAuctionsContext extends SortedOffsetPaginatedContextState<IAuctionData> {
-	filters: IAuctionFilters;
-	setAllFilters: (filters: IAuctionFilters) => void;
-	setSingleFilter: (key: 'status' | 'owner', value: string) => void;
-	setArrayFilter: (key: 'type' | 'sector', value: Array<string>) => void;
-	addToFilterArray: (key: 'type' | 'sector', ...value: Array<string>) => void;
-	removeFilter: (key: keyof IAuctionFilters, value?: string) => void;
+	filters: QueryFiltersData;
+	setAllFilters: (filters: QueryFiltersData) => void;
+	setSingleFilter: (
+		key: 'type' | 'status' | 'joined' | 'ownership',
+		value: string | undefined,
+	) => void;
+	setArrayFilter: (key: 'sector', value: Array<string>) => void;
+	addToFilterArray: (key: 'sector', ...value: Array<string>) => void;
+	removeFilter: (key: keyof QueryFiltersData, value?: string) => void;
+	resetFilters: () => void;
 }
 const DefaultData: IPaginatedAuctionsContext = {
 	...getDefaultSortedOffsetPaginatedContextState<IAuctionData>(1, 12, 'created_at', 'desc'),
 
-	filters: {
-		type: [],
-		status: 'all',
-		sector: [],
-		owner: [],
-	},
+	filters: DefaultQueryFiltersData,
 	setAllFilters: () => {},
 	setSingleFilter: () => {},
 	setArrayFilter: () => {},
 	addToFilterArray: () => {},
 	removeFilter: () => {},
+	resetFilters: () => {},
 };
 const Context = createContext<IPaginatedAuctionsContext>(DefaultData);
 
 export interface PaginatedAuctionsProviderProps extends SortedOffsetPaginatedProviderProps {
-	defaultFilters?: IAuctionFilters;
+	defaultFilters?: QueryFiltersData;
 }
 export const PaginatedAuctionsProvider = ({
-	defaultPage,
-	defaultPerPage,
-	defaultSortBy,
-	defaultSortDirection,
 	defaultFilters,
-	children,
+	syncWithSearchParams = false,
+	id = 'paginatedAuctions',
+	...props
 }: PaginatedAuctionsProviderProps) => {
-	const [filters, setAllFilters] = useState(defaultFilters || DefaultData.filters);
+	const [, setPage] = useQueryState(
+		'page',
+		parseAsInteger.withDefault(props.defaultPage || DefaultData.page),
+	);
+	const [filters, setAllFilters] = useConditionalQueryStates<QueryFiltersData>({
+		type: parseAsStringLiteral(AuctionTypeListFilter),
+		status: parseAsStringLiteral(AuctionStatusListFilter),
+		sector: parseAsArrayOf(parseAsStringLiteral(SectorList)),
+		joined: parseAsStringLiteral(AuctionJoinedStatusListFilter),
+		ownership: parseAsStringLiteral(AuctionOwnershipListFilter),
 
-	const removeFilter = useCallback<IPaginatedAuctionsContext['removeFilter']>((key, value) => {
-		if (value) {
-			setAllFilters((filters) => ({
-				...filters,
-				[key]: (filters[key] as Array<string>).filter((v) => v !== value),
-			}));
-		} else {
-			setAllFilters((filters) => ({ ...filters, [key]: DefaultData.filters[key] }));
-		}
-	}, []);
+		defaultValue: defaultFilters || DefaultData.filters,
+		syncWithSearchParams,
+
+		//	Go back to the first page when filters change
+		onValueChange: () => setPage(props.defaultPage || DefaultData.page),
+	});
+
+	const resetFilters = useCallback<IPaginatedAuctionsContext['resetFilters']>(
+		() => setAllFilters(DefaultData.filters),
+		[],
+	);
+
+	const removeFilter = useCallback<IPaginatedAuctionsContext['removeFilter']>(
+		(key, value) => {
+			if (value)
+				setAllFilters({
+					...filters,
+					[key]: (filters[key] as Array<string>).filter((v) => v !== value),
+				});
+			else setAllFilters({ ...filters, [key]: DefaultData.filters[key] });
+		},
+		[filters],
+	);
 
 	const setSingleFilter = useCallback<IPaginatedAuctionsContext['setSingleFilter']>(
-		(key, value) => {
-			setAllFilters((filters) => ({
+		(key, value) =>
+			setAllFilters({
 				...filters,
-				[key]: value,
-			}));
-		},
-		[],
+				[key]: value || DefaultData.filters[key],
+			}),
+		[filters],
 	);
 
 	const setArrayFilter = useCallback<IPaginatedAuctionsContext['setArrayFilter']>(
-		(key, value) => {
-			setAllFilters((filters) => ({
+		(key, value) =>
+			setAllFilters({
 				...filters,
+				//	@ts-expect-error - should be gone once we add a new type to array filter key
 				[key]: Array.from(new Set(value)),
-			}));
-		},
-		[],
+			}),
+		[filters],
 	);
 
 	const addToFilterArray = useCallback<IPaginatedAuctionsContext['addToFilterArray']>(
-		(key, ...value) => {
-			setAllFilters((filters) => ({
+		(key, ...value) =>
+			setAllFilters({
 				...filters,
+				//	@ts-expect-error - should be gone once we add a new type to array filter key
 				[key]: Array.from(new Set([...filters[key]!, ...value])),
-			}));
-		},
-		[],
+			}),
+		[filters],
 	);
 
 	const queryKey = useMemo(
-		() => ['marketplace', 'paginatedAuctions', (filters.type || [])[0], filters.status],
-		[filters.type, filters.status],
+		() => ['marketplace', 'paginatedAuctions', JSON.stringify(filters)],
+		[filters],
 	);
 	const queryFn = useMemo<
 		SortedOffsetPaginatedQueryProviderProps<IPaginatedAuctionsContext>['queryFn']
@@ -109,32 +138,32 @@ export const PaginatedAuctionsProvider = ({
 					perPage,
 					sortBy,
 					sortDirection,
-					type: (filters.type || [])[0],
+					type: filters.type,
+					ownership: filters.ownership,
 					isLive: filters.status === 'ongoing',
 					hasEnded: filters.status === 'ended',
 				}),
 				'getPaginatedAuctions',
 			),
-		[filters.type, filters.status],
+		[filters],
 	);
 
 	return (
 		<SortedOffsetPaginatedQueryProvider
-			defaultPage={defaultPage}
-			defaultPerPage={defaultPerPage}
-			defaultSortBy={defaultSortBy}
-			defaultSortDirection={defaultSortDirection}
 			context={Context}
 			defaultData={DefaultData}
 			queryKey={queryKey}
 			queryFn={queryFn}
-			children={children}
+			id={id}
+			syncWithSearchParams={syncWithSearchParams}
 			filters={filters}
 			setAllFilters={setAllFilters}
 			setSingleFilter={setSingleFilter}
 			setArrayFilter={setArrayFilter}
 			addToFilterArray={addToFilterArray}
 			removeFilter={removeFilter}
+			resetFilters={resetFilters}
+			{...props}
 		/>
 	);
 };

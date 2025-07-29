@@ -1,15 +1,14 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 import { AuctionCycleCard } from '@/components/AuctionCycleCard';
 import { Switch } from '@/components/SwitchCase';
-import { AuctionCycleStatusFilter } from '@/components/Tables/AuctionCycles/types';
 import { TablePagination } from '@/components/Tables/_components/Pagination';
 import { IPaginatedAuctionCyclesContext } from '@/contexts';
 import { useOffsetPaginationText } from '@/hooks';
-import { DefaultAuctionCycleData } from '@/schema/models';
+import { AuctionCycleStatusFilter, DefaultAuctionCycleData } from '@/schema/models';
 import {
 	ActionIcon,
 	Container,
@@ -108,9 +107,6 @@ export const AuctionCyclesTable = ({
 			);
 		return output;
 	}, [auctionCycles, t]);
-
-	//	Reset the page when the filter or per page changes
-	useEffect(() => auctionCycles.setPage(1), [auctionCycles.status, auctionCycles.perPage]);
 
 	const currentState = useMemo(() => {
 		if (auctionCycles.isLoading) return 'loading';

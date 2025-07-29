@@ -21,6 +21,7 @@ import {
 	Container,
 	Divider,
 	Group,
+	Skeleton,
 	Stack,
 	Text,
 	Tooltip,
@@ -33,6 +34,7 @@ import {
 	IconCalendar,
 	IconCheckbox,
 	IconLicense,
+	IconPhotoHexagon,
 	IconShare,
 } from '@tabler/icons-react';
 
@@ -68,10 +70,11 @@ export const AuctionCard = ({
 	const joinAuction = useJoinAuction(auction.id, () => router.push(url));
 
 	const currentState = useMemo(() => {
+		if (loading) return 'loading';
 		if (isUpcoming) return 'upcoming';
 		if (isLive) return 'live';
 		if (hasEnded) return 'ended';
-	}, [isUpcoming, isLive, hasEnded]);
+	}, [loading, isUpcoming, isLive, hasEnded]);
 
 	return (
 		<Stack className={`${classes.root} ${className}`} {...props}>
@@ -90,54 +93,83 @@ export const AuctionCard = ({
 				</Tooltip>
 			)}
 			<UnstyledButton className={classes.image} component={Link} href={url}>
-				<Image src={src} alt={'Image of a power plant'} fill />
-				<Stack
-					className={`${classes.overlay} ${(hasEnded || isUpcoming) && classes.blurred}`}
-				>
-					<Switch value={currentState}>
-						<Switch.Ended>
-							<Text className={classes.text}>
-								{t('constants.auctionStatus.ended.label')}
-							</Text>
-						</Switch.Ended>
-						<Switch.Upcoming>
-							<Text className={classes.text}>
-								{t('constants.auctionStatus.upcoming.label')}
-							</Text>
-						</Switch.Upcoming>
-					</Switch>
-				</Stack>
+				<Switch value={loading}>
+					<Switch.True>
+						<Container className={classes.placeholder}>
+							<IconPhotoHexagon size={32} className={classes.icon} />
+						</Container>
+					</Switch.True>
+					<Switch.False>
+						<Image src={src} alt={'Image of a power plant'} fill />
+						<Stack
+							className={`${classes.overlay} ${(hasEnded || isUpcoming) && classes.blurred}`}
+						>
+							<Switch value={currentState}>
+								<Switch.Ended>
+									<Text className={classes.text}>
+										{t('constants.auctionStatus.ended.label')}
+									</Text>
+								</Switch.Ended>
+								<Switch.Upcoming>
+									<Text className={classes.text}>
+										{t('constants.auctionStatus.upcoming.label')}
+									</Text>
+								</Switch.Upcoming>
+							</Switch>
+						</Stack>
+					</Switch.False>
+				</Switch>
 			</UnstyledButton>
 			<Group className={classes.meta}>
-				<Badge className={classes.permits} leftSection={<IconLicense size={14} />}>
-					{t('constants.quantities.permits.withEmissions', {
-						value: auction.permits,
-						emissions: 1800,
-					})}
-				</Badge>
-				<SectorBadge className={classes.sector} sector={auction.sector} />
+				<Switch value={loading}>
+					<Switch.True>
+						<Badge className={classes.permits} leftSection={<IconLicense size={14} />}>
+							<Skeleton width={160} height={18} visible data-dark />
+						</Badge>
+						<Badge className={classes.sector}>
+							<Skeleton width={80} height={18} visible data-dark />
+						</Badge>
+					</Switch.True>
+					<Switch.False>
+						<Badge className={classes.permits} leftSection={<IconLicense size={14} />}>
+							{t('constants.quantities.permits.withEmissions', {
+								value: auction.permits,
+								emissions: 1800,
+							})}
+						</Badge>
+						<SectorBadge className={classes.sector} sector={auction.sector} />
+					</Switch.False>
+				</Switch>
 			</Group>
 			<Stack className={classes.body}>
 				<Stack className={classes.header}>
-					<Id value={auction.id} variant={auction.sector} />
+					<WithSkeleton loading={loading} width={260} height={14}>
+						<Id value={auction.id} variant={auction.sector} />
+					</WithSkeleton>
 					<Group className={classes.label}>
 						<Stack className={classes.left}>
-							<Anchor component={Link} className={classes.heading} href={url}>
-								Flare Gas Burning
-							</Anchor>
+							<WithSkeleton loading={loading} width={160} height={24}>
+								<Anchor component={Link} className={classes.heading} href={url}>
+									Flare Gas Burning
+								</Anchor>
+							</WithSkeleton>
 						</Stack>
 						<Group className={classes.right}>
-							<ActionIcon className={classes.action} variant="outline">
-								<IconBookmark size={14} />
-							</ActionIcon>
-							<ActionIcon className={classes.action} variant="outline">
-								<IconShare size={14} />
-							</ActionIcon>
+							{!loading && (
+								<>
+									<ActionIcon className={classes.action} variant="outline">
+										<IconBookmark size={14} />
+									</ActionIcon>
+									<ActionIcon className={classes.action} variant="outline">
+										<IconShare size={14} />
+									</ActionIcon>
+								</>
+							)}
 						</Group>
 					</Group>
 					<Group className={classes.badges}>
-						<AuctionTypeBadge type={auction.type} showOpen />
-						<EndingSoonBadge auction={auction} />
+						<AuctionTypeBadge type={auction.type} showOpen loading={loading} />
+						<EndingSoonBadge auction={auction} loading={loading} />
 					</Group>
 					<Group className={classes.owner}>
 						<WithSkeleton loading={loading} width={40} height={40} circle>
@@ -163,6 +195,10 @@ export const AuctionCard = ({
 				<Group className={classes.properties}>
 					<Stack className={classes.cell}>
 						<Switch value={currentState}>
+							<Switch.Loading>
+								<Skeleton width={70} height={16} visible className="my-0.5" />
+								<Skeleton width={120} height={24} visible className="my-0.5" />
+							</Switch.Loading>
 							<Switch.Upcoming>
 								<Text className={classes.subtext}>
 									{t('constants.auctionStatus.startsIn.label')}
@@ -208,6 +244,10 @@ export const AuctionCard = ({
 					<Divider className={classes.divider} orientation="vertical" />
 					<Stack className={classes.cell}>
 						<Switch value={currentState}>
+							<Switch.Loading>
+								<Skeleton width={70} height={16} visible className="my-0.5" />
+								<Skeleton width={120} height={24} visible className="my-0.5" />
+							</Switch.Loading>
 							<Switch.Ended>
 								<Text className={classes.subtext}>
 									{t('components.auctionCard.numBidders.label')}
@@ -235,6 +275,10 @@ export const AuctionCard = ({
 				<Divider className={classes.divider} />
 				<Group className={classes.footer}>
 					<Switch value={currentState}>
+						<Switch.Loading>
+							<Skeleton height={36} visible className="flex-auto" />
+							<Skeleton height={36} visible className="flex-auto" />
+						</Switch.Loading>
 						<Switch.Ended>
 							<Button
 								className={`${classes.secondary} ${classes.button}`}

@@ -1,15 +1,20 @@
 'use client';
 
-import { createContext, useMemo, useState } from 'react';
+import { useConditionalQueryState } from 'hooks/useConditionalQueryState';
+import { parseAsInteger, parseAsStringLiteral, useQueryState } from 'nuqs';
+import { createContext, useMemo } from 'react';
 
-import { AuctionCycleStatusFilter } from '@/components/Tables/AuctionCycles';
 import {
 	SortedOffsetPaginatedQueryProvider,
 	SortedOffsetPaginatedQueryProviderProps,
 } from '@/contexts';
 import { throwError } from '@/helpers';
 import { getPaginatedCycles } from '@/lib/cycles';
-import { IAuctionCycleData } from '@/schema/models';
+import {
+	AuctionCycleStatusFilter,
+	AuctionCycleStatusListFilter,
+	IAuctionCycleData,
+} from '@/schema/models';
 import {
 	SortedOffsetPaginatedContextState,
 	SortedOffsetPaginatedProviderProps,
@@ -34,13 +39,21 @@ const DefaultData = {
 const Context = createContext<IPaginatedAuctionCyclesContext>(DefaultData);
 
 export const PaginatedAuctionCyclesProvider = ({
-	defaultPage,
-	defaultPerPage,
-	defaultSortBy,
-	defaultSortDirection,
-	children,
+	syncWithSearchParams,
+	id = 'paginatedAuctionCycles',
+	...props
 }: SortedOffsetPaginatedProviderProps) => {
-	const [status, setStatus] = useState<AuctionCycleStatusFilter>(DefaultData.status);
+	const [, setPage] = useQueryState(
+		'page',
+		parseAsInteger.withDefault(props.defaultPage || DefaultData.page),
+	);
+	const [status, setStatus] = useConditionalQueryState({
+		key: 'status',
+		defaultValue: DefaultData.status,
+		parser: parseAsStringLiteral(AuctionCycleStatusListFilter),
+		syncWithSearchParams,
+		onValueChange: () => setPage(props.defaultPage || DefaultData.page),
+	});
 
 	const queryKey = useMemo(
 		() => ['dashboard', 'admin', 'paginatedAuctionCycles', status],
@@ -65,17 +78,15 @@ export const PaginatedAuctionCyclesProvider = ({
 
 	return (
 		<SortedOffsetPaginatedQueryProvider
-			defaultPage={defaultPage}
-			defaultPerPage={defaultPerPage}
-			defaultSortBy={defaultSortBy}
-			defaultSortDirection={defaultSortDirection}
 			context={Context}
 			defaultData={DefaultData}
 			queryKey={queryKey}
 			queryFn={queryFn}
-			children={children}
+			id={id}
+			syncWithSearchParams={syncWithSearchParams}
 			status={status}
 			setStatus={setStatus}
+			{...props}
 		/>
 	);
 };

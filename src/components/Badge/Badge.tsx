@@ -1,6 +1,8 @@
 import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
-import { ReactNode, useMemo } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { FunctionComponent, ReactNode, useMemo } from 'react';
 
 import { SectorVariants } from '@/constants/SectorData';
 import { useAuctionAvailability } from '@/hooks';
@@ -29,15 +31,17 @@ import {
 import classes from './styles.module.css';
 
 export interface BaseBadgeProps extends BadgeProps {
+	component?: FunctionComponent<any>;
 	loading?: boolean;
 	withRemoveButton?: boolean;
 	onRemove?: () => void;
 }
 export const BaseBadge = ({
-	className,
+	component,
 	loading,
 	withRemoveButton,
 	onRemove,
+	className,
 	rightSection,
 	...props
 }: BaseBadgeProps) => {
@@ -46,6 +50,7 @@ export const BaseBadge = ({
 	) : (
 		<Badge
 			className={`${classes.root} ${className}`}
+			component={component}
 			rightSection={
 				rightSection ||
 				(withRemoveButton && (
@@ -119,8 +124,14 @@ export interface SectorBadgeProps extends BaseBadgeProps {
 }
 export const SectorBadge = ({ sector, text, hideText, className, ...props }: SectorBadgeProps) => {
 	const t = useTranslations();
+	const pathname = usePathname();
 
 	const Sector = useMemo(() => SectorVariants[sector.toLowerCase() as SectorType], [sector]);
+
+	const href = useMemo(() => {
+		if (pathname.startsWith('dashboard/a')) return `/dashboard/a/cycles/sectors/${sector}`;
+		return `/marketplace/sector/${sector}`;
+	}, [pathname, sector]);
 
 	return Sector ? (
 		<BaseBadge
@@ -128,6 +139,9 @@ export const SectorBadge = ({ sector, text, hideText, className, ...props }: Sec
 				root: `${classes.root} ${classes.sector} ${className}`,
 				section: hideText ? 'm-0' : '',
 			}}
+			component={Link}
+			//	@ts-expect-error - Badge component is not a valid anchor tag
+			href={href}
 			leftSection={<Sector.Icon size={14} />}
 			style={{ backgroundColor: colors[Sector.color.token!][6] }}
 			autoContrast

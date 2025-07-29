@@ -22,7 +22,8 @@ const Context = createContext<IMyPaginatedBidsContext>(DefaultData);
 export const MyPaginatedBidsProvider = ({
 	defaultCursor,
 	defaultPerPage,
-	children,
+	id = 'myPaginatedBids',
+	...props
 }: KeysetPaginatedProviderProps) => {
 	const myUser = useContext(MyUserProfileContext);
 	const { auctionId } = useParams();
@@ -46,8 +47,9 @@ export const MyPaginatedBidsProvider = ({
 					`getMyPaginatedBids:${auctionId}`,
 				)
 			}
+			id={id}
 			disabled={!areBidsAvailable}
-			children={children}
+			{...props}
 		/>
 	);
 };

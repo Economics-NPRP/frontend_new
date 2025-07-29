@@ -498,31 +498,39 @@
 				}
 			}
 
-			> .footer {
-				> .pagination > .button {
-					@apply bg-dark-700 border-dark-400 text-white;
+			> .footer > .row > .button {
+				@apply bg-dark-700 border-dark-400 text-white;
 
-					&:hover {
-						@apply bg-dark-600;
-					}
-
-					&:disabled {
-						@apply bg-dark-600;
-						@apply opacity-40;
-					}
-				}
-
-				> .row > .button {
-					@apply bg-dark-700 border-dark-400 text-white;
-
-					&:hover {
-						@apply bg-dark-600;
-					}
+				&:hover {
+					@apply bg-dark-600;
 				}
 			}
 
 			.mine {
 				@apply text-dark-50;
+			}
+		}
+
+		.pagination {
+			button[data-active='true'] {
+				@apply bg-white border-white text-dark-600;
+
+				&:hover {
+					@apply bg-dark-50 border-dark-50;
+				}
+			}
+
+			> .button {
+				@apply bg-dark-700 border-dark-400 text-white;
+
+				&:hover {
+					@apply bg-dark-600;
+				}
+
+				&:disabled {
+					@apply bg-dark-600;
+					@apply opacity-40;
+				}
 			}
 		}
 	}

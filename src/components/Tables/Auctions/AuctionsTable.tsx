@@ -21,8 +21,7 @@ import {
 import { IPaginatedAuctionsContext } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { ENDING_SOON_THRESHOLD, useOffsetPaginationText } from '@/hooks';
-import { IAuctionStatus } from '@/pages/marketplace/(home)/@catalogue/constants';
-import { IAuctionData, SectorType } from '@/schema/models';
+import { AuctionStatusFilter, AuctionTypeFilter, IAuctionData, SectorType } from '@/schema/models';
 import {
 	ActionIcon,
 	Alert,
@@ -136,24 +135,32 @@ const _AuctionsTable = ({
 				break;
 		}
 
-		if (auctions.filters.type)
-			output.push(
-				...auctions.filters.type.map((type, index) => (
+		switch (auctions.filters.type) {
+			case 'open':
+				output.push(
 					<Pill
-						key={`type-${index}`}
+						key={'open'}
 						className={classes.badge}
-						onRemove={() =>
-							auctions.setArrayFilter(
-								'type',
-								(auctions.filters.type || []).filter((t) => t !== type),
-							)
-						}
+						onRemove={() => auctions.setSingleFilter('type', 'all')}
 						withRemoveButton
 					>
-						{t(`components.auctionsTable.filters.badges.${type}`)}
-					</Pill>
-				)),
-			);
+						{t('components.auctionsTable.filters.badges.open')}
+					</Pill>,
+				);
+				break;
+			case 'sealed':
+				output.push(
+					<Pill
+						key={'sealed'}
+						className={classes.badge}
+						onRemove={() => auctions.setSingleFilter('type', 'all')}
+						withRemoveButton
+					>
+						{t('components.auctionsTable.filters.badges.sealed')}
+					</Pill>,
+				);
+				break;
+		}
 
 		if (output.length === 0)
 			return (
@@ -633,9 +640,6 @@ const _AuctionsTable = ({
 		[t, format],
 	);
 
-	//	Reset the page when the filter or per page changes
-	useEffect(() => auctions.setPage(1), [auctions.filters, auctions.perPage]);
-
 	//	If we are showing selected only and there are no selected auctions, disable the filter
 	useEffect(() => {
 		if (showSelectedOnly && selectedAuctions.length === 0) setShowSelectedOnly(false);
@@ -680,28 +684,23 @@ const _AuctionsTable = ({
 								<Menu.Label className={classes.label}>
 									{t('components.auctionsTable.filters.menu.type.label')}
 								</Menu.Label>
-								<Checkbox.Group
+								<Radio.Group
 									value={auctions.filters.type}
-									onChange={(values) =>
-										auctions.setArrayFilter(
-											'type',
-											values as Array<IAuctionStatus>,
-										)
+									onChange={(value) =>
+										auctions.setSingleFilter('type', value as AuctionTypeFilter)
 									}
 								>
 									<Stack className={classes.options}>
-										<Checkbox
-											className={classes.checkbox}
+										<Radio
 											value="open"
 											label={t('constants.auctionType.open')}
 										/>
-										<Checkbox
-											className={classes.checkbox}
+										<Radio
 											value="sealed"
 											label={t('constants.auctionType.sealed')}
 										/>
 									</Stack>
-								</Checkbox.Group>
+								</Radio.Group>
 								<Menu.Divider className={classes.divider} />
 								<Menu.Label className={classes.label}>
 									{t('components.auctionsTable.filters.menu.status.label')}
@@ -709,7 +708,10 @@ const _AuctionsTable = ({
 								<Radio.Group
 									value={auctions.filters.status}
 									onChange={(value) =>
-										auctions.setSingleFilter('status', value as IAuctionStatus)
+										auctions.setSingleFilter(
+											'status',
+											value as AuctionStatusFilter,
+										)
 									}
 								>
 									<Stack className={classes.options}>

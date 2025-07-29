@@ -42,6 +42,6 @@ export default function AdminsList({ subbanners, table }: AdminsListProps) {
 			{subbanners}
 			{table}
 		</Stack>,
-		{ provider: PaginatedAdminsProvider },
+		{ provider: PaginatedAdminsProvider, props: { syncWithSearchParams: true } },
 	);
 }

@@ -22,35 +22,27 @@ const DefaultData = getDefaultSortedOffsetPaginatedContextState<IFirmData>(
 const Context = createContext<IPaginatedFirmsContext>(DefaultData);
 
 export const PaginatedFirmsProvider = ({
-	defaultPage,
-	defaultPerPage,
-	defaultSortBy,
-	defaultSortDirection,
-	children,
-}: SortedOffsetPaginatedProviderProps) => {
-	return (
-		<SortedOffsetPaginatedQueryProvider
-			defaultPage={defaultPage}
-			defaultPerPage={defaultPerPage}
-			defaultSortBy={defaultSortBy}
-			defaultSortDirection={defaultSortDirection}
-			context={Context}
-			defaultData={DefaultData}
-			queryKey={['dashboard', 'admin', 'paginatedFirms']}
-			queryFn={(page, perPage, sortBy, sortDirection) => () =>
-				throwError(
-					getPaginatedFirms({
-						page,
-						perPage,
-						sortBy,
-						sortDirection,
-					}),
-					'getPaginatedFirms',
-				)
-			}
-			children={children}
-		/>
-	);
-};
+	id = 'paginatedFirms',
+	...props
+}: SortedOffsetPaginatedProviderProps) => (
+	<SortedOffsetPaginatedQueryProvider
+		context={Context}
+		defaultData={DefaultData}
+		queryKey={['dashboard', 'admin', 'paginatedFirms']}
+		queryFn={(page, perPage, sortBy, sortDirection) => () =>
+			throwError(
+				getPaginatedFirms({
+					page,
+					perPage,
+					sortBy,
+					sortDirection,
+				}),
+				'getPaginatedFirms',
+			)
+		}
+		id={id}
+		{...props}
+	/>
+);
 
 export { DefaultData as DefaultPaginatedFirmsContextData, Context as PaginatedFirmsContext };

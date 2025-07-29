@@ -1,19 +1,19 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { PropsWithChildren, createContext } from 'react';
+import { createContext } from 'react';
 
 import { QueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
 import { getSingleFirm } from '@/lib/users/firms';
 import { DefaultFirmData, IFirmData } from '@/schema/models';
-import { ServerContextState, getDefaultContextState } from '@/types';
+import { CoreProviderProps, ServerContextState, getDefaultContextState } from '@/types';
 
 export interface ISingleFirmContext extends ServerContextState<IFirmData> {}
 const DefaultData = getDefaultContextState(DefaultFirmData);
 const Context = createContext<ISingleFirmContext>(DefaultData);
 
-export const SingleFirmProvider = ({ children }: PropsWithChildren) => {
+export const SingleFirmProvider = ({ id = 'singleFirm', ...props }: CoreProviderProps) => {
 	const { firmId } = useParams();
 
 	return (
@@ -24,7 +24,8 @@ export const SingleFirmProvider = ({ children }: PropsWithChildren) => {
 			queryFn={() => () =>
 				throwError(getSingleFirm(firmId as string), `getSingleFirm:${firmId}`)
 			}
-			children={children}
+			id={id}
+			{...props}
 		/>
 	);
 };

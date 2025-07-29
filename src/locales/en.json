@@ -779,51 +779,11 @@
 					"prompt": "Filter by sector"
 				}
 			},
-			"catalogue": {
-				"filters": {
-					"count": "{value, plural, =0 {} =1 {1 filter applied} other {# filters applied}}",
-					"boolean": "{value, plural, =0 {} =1 {Filter applied} other {Filter applied}}",
-					"total": "{value, plural, =0 {No filters applied} =1 {1 filter applied} other {# filters applied}}",
-					"accordion": {
-						"type": {
-							"title": "Auction Type",
-							"description": "Filter for open or sealed auctions. <a>What's the difference?</a>"
-						},
-						"status": {
-							"title": "Auction Status",
-							"description": "Find auctions that are ongoing, ended, or upcoming",
-							"options": {
-								"ongoing": "Ongoing",
-								"upcoming": "Upcoming",
-								"ended": "Ended",
-								"all": "All"
-							}
-						},
-						"sector": {
-							"title": "Sector",
-							"description": "Filter auctions by the sector they belong to"
-						},
-						"owner": {
-							"title": "Owner",
-							"description": "Search auctions from specific owners"
-						},
-						"date": {
-							"title": "Date",
-							"description": "Filter for auctions that run during a specific time period"
-						},
-						"permits": {
-							"title": "Permits Offered",
-							"description": "Filter for auctions by the number of permits they offer"
-						},
-						"minBid": {
-							"title": "Minimum Winning Bid",
-							"description": "Filter for auctions by the minimum bid required to win"
-						},
-						"price": {
-							"title": "Buy Now Price",
-							"description": "Filter for auctions by the buy now price"
-						}
-					}
+			"promo": {
+				"title": "Missed An Auction Cycle? No Problem.",
+				"description": "Whether you're short on permits or planning ahead, <mark>private-owned auctions</mark> let you trade flexibly outside of government schedules.",
+				"button": {
+					"label": "Browse Private Auctions"
 				}
 			}
 		},
@@ -1097,6 +1057,112 @@
 		}
 	},
 	"components": {
+		"auctionCatalogue": {
+			"filters": {
+				"count": "{value, plural, =0 {} =1 {1 filter applied} other {# filters applied}}",
+				"boolean": "{value, plural, =0 {} =1 {Filter applied} other {Filter applied}}",
+				"total": "{value, plural, =0 {No filters applied} =1 {1 filter applied} other {# filters applied}}",
+				"all": "All",
+				"accordion": {
+					"type": {
+						"title": "Auction Type",
+						"description": "Filter for open or sealed auctions. <a>What's the difference?</a>",
+						"options": {
+							"open": "Open Auctions",
+							"sealed": "Sealed Auctions",
+							"all": "All Auctions"
+						}
+					},
+					"status": {
+						"title": "Auction Status",
+						"description": "Find auctions that are ongoing, ended, or upcoming",
+						"options": {
+							"ongoing": "Ongoing Auctions",
+							"upcoming": "Upcoming Auctions",
+							"ended": "Ended Auctions",
+							"all": "All Auctions"
+						}
+					},
+					"sector": {
+						"title": "Sector",
+						"description": "Filter auctions by the sector they belong to"
+					},
+					"date": {
+						"title": "Date",
+						"description": "Filter for auctions that run during a specific time period"
+					},
+					"permits": {
+						"title": "Permits Offered",
+						"description": "Filter for auctions by the number of permits they offer"
+					},
+					"minBid": {
+						"title": "Minimum Winning Bid",
+						"description": "Filter for auctions by the minimum bid required to win"
+					},
+					"price": {
+						"title": "Buy Now Price",
+						"description": "Filter for auctions by the buy now price"
+					},
+					"joined": {
+						"title": "Join Status",
+						"description": "Find auctions that you have or have not joined",
+						"options": {
+							"joined": "Joined",
+							"notJoined": "Not Joined"
+						}
+					},
+					"ownership": {
+						"title": "Ownership",
+						"description": "Filter auctions by their owner, either government (admin) or private (company) owned",
+						"options": {
+							"government": "Government",
+							"private": "Private Sector"
+						}
+					}
+				},
+				"clear": {
+					"tooltip": "Clear all filters"
+				},
+				"reset": {
+					"tooltip": "Reset unsaved changes to filters"
+				},
+				"apply": {
+					"tooltip": "Apply filter changes",
+					"label": "Apply"
+				},
+				"heading": "Filters List",
+				"subheading": "Use the filters below to find the auctions you are looking for"
+			},
+			"header": {
+				"heading": "Auction Catalogue",
+				"sortBy": {
+					"newest": "Newest",
+					"oldest": "Oldest",
+					"endingSoon": "Ending Soon",
+					"mostPermits": "Most Permits",
+					"leastPermits": "Least Permits",
+					"highMinBid": "Highest Minimum Bid",
+					"lowMinBid": "Lowest Minimum Bid"
+				},
+				"view": {
+					"grid": {
+						"tooltip": "Switch to grid view",
+						"label": "Grid"
+					},
+					"list": {
+						"tooltip": "Switch to list view",
+						"label": "List"
+					}
+				},
+				"filter": {
+					"tooltip": "Filter auctions to find what you need",
+					"list": "Filters:",
+					"label": "{value} Auctions"
+				}
+			},
+			"error": "There was an error loading the auctions. Please try again later.",
+			"empty": "There are no auctions available at the moment. Please check back later."
+		},
 		"countdown": {
 			"label": {
 				"long": {

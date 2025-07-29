@@ -42,6 +42,6 @@ export default function FirmsList({ subbanners, table }: FirmsListProps) {
 			{subbanners}
 			{table}
 		</Stack>,
-		{ provider: PaginatedFirmsProvider },
+		{ provider: PaginatedFirmsProvider, props: { syncWithSearchParams: true } },
 	);
 }

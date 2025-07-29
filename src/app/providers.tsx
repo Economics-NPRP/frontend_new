@@ -1,5 +1,6 @@
 'use client';
 
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { ComponentPropsWithRef } from 'react';
 
 import { MyUserProfileProvider } from '@/contexts';
@@ -39,5 +40,6 @@ export default function Providers({ children }: ProvidersProps) {
 		{ provider: MantineProvider, props: { theme } },
 		{ provider: DirectionProvider },
 		{ provider: QueryClientProvider, props: { client: queryClient } },
+		{ provider: NuqsAdapter },
 	);
 }

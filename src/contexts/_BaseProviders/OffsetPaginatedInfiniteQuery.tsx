@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import { QueryProviderProps } from '@/contexts';
 import {
@@ -8,12 +8,13 @@ import {
 	OffsetPaginatedInfiniteContextState,
 	OffsetPaginatedProviderProps,
 } from '@/types';
+import { useLocalStorage } from '@mantine/hooks';
 import { skipToken, useInfiniteQuery } from '@tanstack/react-query';
 
 export interface OffsetPaginatedInfiniteQueryProviderProps<
 	T extends OffsetPaginatedInfiniteContextState<unknown>,
 > extends OffsetPaginatedProviderProps,
-		Pick<QueryProviderProps<T>, 'context' | 'defaultData' | 'queryKey' | 'disabled'>,
+		Pick<QueryProviderProps<T>, 'context' | 'defaultData' | 'queryKey'>,
 		Record<string, unknown> {
 	queryFn: (perPage: number) => (params: { pageParam: unknown }) => Promise<unknown>;
 }
@@ -26,11 +27,15 @@ export const OffsetPaginatedInfiniteQueryProvider = <
 	defaultData,
 	queryKey,
 	queryFn,
+	id,
 	disabled,
 	children,
 	...props
 }: OffsetPaginatedInfiniteQueryProviderProps<T>) => {
-	const [perPage, setPerPage] = useState(defaultPerPage || defaultData.perPage);
+	const [perPage, setPerPage] = useLocalStorage({
+		key: `perPage-${id || queryKey.join('-')}`,
+		defaultValue: defaultPerPage || defaultData.perPage,
+	});
 
 	//	Add page and perPage to the query key and function
 	const paginatedQueryKey = useMemo(() => [...queryKey, perPage], [queryKey, perPage]);
@@ -55,6 +60,7 @@ export const OffsetPaginatedInfiniteQueryProvider = <
 					data: queryResults.data || defaultData.data,
 					error: queryResults.error,
 					isLoading: queryResults.isLoading,
+					isFetching: queryResults.isFetching,
 					isError: queryResults.isError,
 					isSuccess: queryResults.isSuccess,
 					isFetchingNextPage: queryResults.isFetchingNextPage,

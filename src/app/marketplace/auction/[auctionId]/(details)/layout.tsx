@@ -15,6 +15,7 @@ import {
 } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { PageProviders } from '@/pages/marketplace/auction/[auctionId]/(details)/_components/Providers';
+import { DefaultQueryFiltersData } from '@/schema/models';
 import { Button, Container, Stack } from '@mantine/core';
 import { IconArrowUpLeft } from '@tabler/icons-react';
 
@@ -92,10 +93,8 @@ export default function AuctionPage({
 				defaultSortBy: 'end_datetime',
 				defaultSortDirection: 'asc',
 				defaultFilters: {
-					type: [],
+					...DefaultQueryFiltersData,
 					status: 'ongoing',
-					sector: [],
-					owner: [],
 				},
 			},
 		},

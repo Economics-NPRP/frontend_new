@@ -6,7 +6,7 @@ import { cache } from 'react';
 import 'server-only';
 
 import { getSession } from '@/lib/auth';
-import { AuctionType, IAuctionData } from '@/schema/models';
+import { AuctionOwnershipFilter, AuctionTypeFilter, IAuctionData } from '@/schema/models';
 import { IOffsetPagination, OffsetPaginatedData, SortDirection } from '@/types';
 
 export interface IGetPaginatedAuctionsOptions extends IOffsetPagination {
@@ -14,7 +14,8 @@ export interface IGetPaginatedAuctionsOptions extends IOffsetPagination {
 	sortDirection?: SortDirection | null;
 
 	ownerId?: string;
-	type?: AuctionType;
+	type?: AuctionTypeFilter;
+	ownership?: AuctionOwnershipFilter;
 	isPending?: boolean;
 	isLive?: boolean;
 	hasEnded?: boolean;
@@ -44,6 +45,7 @@ export const getPaginatedAuctions: IFunctionSignature = cache(
 		sortDirection,
 		ownerId,
 		type,
+		ownership,
 		isPending,
 		isLive,
 		hasEnded,
@@ -66,7 +68,12 @@ export const getPaginatedAuctions: IFunctionSignature = cache(
 		if (sortBy) queryUrl.searchParams.append('order_by', sortBy);
 		if (sortDirection) queryUrl.searchParams.append('order_dir', sortDirection);
 		if (ownerId) queryUrl.searchParams.append('owner', ownerId);
-		if (type) queryUrl.searchParams.append('type', type);
+		if (type && type !== 'all') queryUrl.searchParams.append('type', type);
+		if (ownership && ownership !== 'all')
+			queryUrl.searchParams.append(
+				'is_primary_market',
+				ownership === 'government' ? 'true' : 'false',
+			);
 		if (isPending) queryUrl.searchParams.append('is_pending', isPending.valueOf().toString());
 		if (isLive) queryUrl.searchParams.append('is_live', isLive.valueOf().toString());
 		if (hasEnded) queryUrl.searchParams.append('has_ended', hasEnded.valueOf().toString());

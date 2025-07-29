@@ -1,8 +1,10 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { ParserBuilder, parseAsString } from 'nuqs';
+import { useCallback, useMemo } from 'react';
 
 import { OffsetPaginatedQueryProvider, OffsetPaginatedQueryProviderProps } from '@/contexts';
+import { useConditionalQueryState } from '@/hooks';
 import {
 	SortDirection,
 	SortedOffsetPaginatedContextState,
@@ -12,10 +14,7 @@ import {
 export interface SortedOffsetPaginatedQueryProviderProps<
 	T extends SortedOffsetPaginatedContextState<unknown>,
 > extends SortedOffsetPaginatedProviderProps,
-		Pick<
-			OffsetPaginatedQueryProviderProps<T>,
-			'context' | 'defaultData' | 'queryKey' | 'disabled'
-		>,
+		Pick<OffsetPaginatedQueryProviderProps<T>, 'context' | 'defaultData' | 'queryKey'>,
 		Record<string, unknown> {
 	queryFn: (
 		page: number,
@@ -29,17 +28,31 @@ export const SortedOffsetPaginatedQueryProvider = <
 >({
 	defaultSortBy,
 	defaultSortDirection,
-	context,
 	defaultData,
 	queryKey,
 	queryFn,
-	disabled,
-	children,
+	syncWithSearchParams = false,
 	...props
 }: SortedOffsetPaginatedQueryProviderProps<T>) => {
-	const [sortBy, setSortBy] = useState(defaultSortBy || defaultData.sortBy);
-	const [sortDirection, setSortDirection] = useState(
-		defaultSortDirection || defaultData.sortDirection,
+	const [sortBy, setSortBy] = useConditionalQueryState({
+		key: 'sortBy',
+		defaultValue: defaultSortBy || defaultData.sortBy,
+		parser: parseAsString as ParserBuilder<string | null>,
+		syncWithSearchParams,
+	});
+	const [sortDirection, setSortDirection] = useConditionalQueryState({
+		key: 'sortDirection',
+		defaultValue: defaultSortDirection || defaultData.sortDirection,
+		parser: parseAsString as ParserBuilder<SortDirection | null>,
+		syncWithSearchParams,
+	});
+
+	const handleSetSort = useCallback(
+		(sortBy: string | null, sortDirection: SortDirection | null) => {
+			setSortBy(sortBy);
+			setSortDirection(sortDirection);
+		},
+		[],
 	);
 
 	//	Add page and perPage to the query key and function
@@ -47,23 +60,22 @@ export const SortedOffsetPaginatedQueryProvider = <
 		() => [...queryKey, sortBy, sortDirection],
 		[queryKey, sortBy, sortDirection],
 	);
-	const paginatedQueryFn = useMemo<OffsetPaginatedQueryProviderProps<T>['queryFn']>(
-		() => (page, perPage) => queryFn(page, perPage, sortBy, sortDirection),
+	const paginatedQueryFn = useCallback<OffsetPaginatedQueryProviderProps<T>['queryFn']>(
+		(page, perPage) => queryFn(page, perPage, sortBy, sortDirection),
 		[queryFn, sortBy, sortDirection],
 	);
 
 	return (
 		<OffsetPaginatedQueryProvider
-			context={context}
 			defaultData={defaultData}
 			queryKey={paginatedQueryKey}
 			queryFn={paginatedQueryFn}
-			disabled={disabled}
-			children={children}
+			syncWithSearchParams={syncWithSearchParams}
 			sortBy={sortBy}
 			setSortBy={setSortBy}
 			sortDirection={sortDirection}
 			setSortDirection={setSortDirection}
+			setSort={handleSetSort}
 			{...props}
 		/>
 	);

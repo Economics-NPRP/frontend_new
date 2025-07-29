@@ -1,0 +1,107 @@
+.root {
+	@apply relative;
+	@apply min-h-[320px];
+	@apply col-span-full;
+	@apply flex flex-col items-center justify-center;
+	@apply p-16 gap-8;
+	@apply bg-dark-600 border border-solid border-dark-500;
+	@apply transition-shadow duration-500;
+
+	> .bg {
+		@apply absolute top-0 left-0;
+		@apply w-full h-full;
+		@apply overflow-hidden;
+		@apply pointer-events-none;
+
+		> .image,
+		> .pattern,
+		> .gradient {
+			@apply absolute top-0 left-0;
+			@apply w-full h-full;
+		}
+
+		> .image {
+			@apply overflow-hidden;
+
+			> img {
+				@apply object-cover;
+				@apply transition-all duration-1000;
+			}
+		}
+
+		> .pattern {
+			@apply w-[unset];
+			@apply fill-dark-300;
+
+			mask-image: linear-gradient(
+				180deg,
+				#000 0%,
+				rgba(0, 0, 0, 0) 20%,
+				rgba(0, 0, 0, 0) 80%,
+				#000 100%
+			);
+		}
+
+		> .gradient {
+			background: radial-gradient(
+					35.95% 50% at 50% 50%,
+					rgba(0, 0, 0, 0) 50%,
+					rgba(0, 0, 0, 0.1) 100%
+				),
+				linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%);
+		}
+	}
+
+	> .label {
+		@apply items-center justify-center;
+		@apply gap-1;
+
+		> .title {
+			@apply heading-2-w text-center;
+			@apply !text-white;
+		}
+
+		> .description {
+			@apply paragraph-sm-w text-center;
+			@apply !text-white;
+
+			> mark {
+				@apply bg-transparent !text-white;
+				@apply underline underline-offset-4 decoration-2 decoration-dashed decoration-white;
+			}
+		}
+	}
+
+	> .button {
+		@apply h-9;
+		@apply gap-2;
+		@apply bg-white text-dark-600;
+		@apply pointer-events-none;
+		@apply transition-all duration-500;
+	}
+
+	> :not(.bg) {
+		@apply z-10;
+	}
+
+	&:hover {
+		@apply shadow-xs;
+
+		> .bg > .image img {
+			@apply blur-[2px];
+			@apply scale-105;
+		}
+
+		> .button {
+			@apply bg-dark-50;
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+			@apply col-span-5 min-h-[480px];
+		}
+	}
+}

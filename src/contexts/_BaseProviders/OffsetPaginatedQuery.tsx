@@ -1,49 +1,61 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { parseAsInteger } from 'nuqs';
+import { useCallback, useMemo } from 'react';
 
 import { QueryProvider, QueryProviderProps } from '@/contexts';
+import { useConditionalQueryState } from '@/hooks';
 import { OffsetPaginatedContextState, OffsetPaginatedProviderProps } from '@/types';
 
 export interface OffsetPaginatedQueryProviderProps<T extends OffsetPaginatedContextState<unknown>>
 	extends OffsetPaginatedProviderProps,
-		Pick<QueryProviderProps<T>, 'context' | 'defaultData' | 'queryKey' | 'disabled'>,
+		Pick<QueryProviderProps<T>, 'context' | 'defaultData' | 'queryKey'>,
 		Record<string, unknown> {
 	queryFn: (page: number, perPage: number) => () => Promise<unknown>;
 }
 export const OffsetPaginatedQueryProvider = <T extends OffsetPaginatedContextState<unknown>>({
 	defaultPage,
 	defaultPerPage,
-	context,
 	defaultData,
 	queryKey,
 	queryFn,
-	disabled,
-	children,
+	syncWithSearchParams = false,
+	id,
 	...props
 }: OffsetPaginatedQueryProviderProps<T>) => {
-	const [page, setPage] = useState(defaultPage || defaultData.page);
-	const [perPage, setPerPage] = useState(defaultPerPage || defaultData.perPage);
+	const [page, setPage] = useConditionalQueryState({
+		key: 'page',
+		defaultValue: defaultPage || defaultData.page,
+		parser: parseAsInteger,
+		syncWithSearchParams,
+	});
+	const [perPage, setPerPage] = useConditionalQueryState({
+		key: 'perPage',
+		defaultValue: defaultPerPage || defaultData.perPage,
+		parser: parseAsInteger,
+		syncWithSearchParams,
+		saveToLocalStorage: true,
+		localStorageKey: `perPage-${id || queryKey.join('-')}`,
+		onValueChange: () => setPage(defaultPage || defaultData.page),
+	});
 
 	//	Add page and perPage to the query key and function
 	const paginatedQueryKey = useMemo(
 		() => [...queryKey, perPage, page],
 		[queryKey, perPage, page],
 	);
-	const paginatedQueryFn = useMemo(() => () => queryFn(page, perPage), [queryFn, perPage, page]);
+	const paginatedQueryFn = useCallback(() => queryFn(page, perPage), [queryFn, perPage, page]);
 
 	return (
 		<QueryProvider
-			context={context}
 			defaultData={defaultData}
 			queryKey={paginatedQueryKey}
 			queryFn={paginatedQueryFn}
-			disabled={disabled}
-			children={children}
 			page={page}
 			setPage={setPage}
 			perPage={perPage}
 			setPerPage={setPerPage}
+			id={id}
 			{...props}
 		/>
 	);
