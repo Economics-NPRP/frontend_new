@@ -52,7 +52,11 @@ export default function SectorDetails({
 		//	TODO: add sector filter once available
 		{
 			provider: PaginatedAuctionsProvider,
-			props: { defaultPerPage: 20, syncWithSearchParams: true },
+			props: {
+				defaultPerPage: 20,
+				syncWithSearchParams: true,
+				id: 'paginatedAuctionsDashboardSector',
+			},
 		},
 		{ provider: AllSubsectorsBySectorProvider },
 		{ provider: PageProvider },

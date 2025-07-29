@@ -778,6 +778,13 @@
 				"filter": {
 					"prompt": "Filter by sector"
 				}
+			},
+			"promo": {
+				"title": "Missed An Auction Cycle? No Problem.",
+				"description": "Whether you're short on permits or planning ahead, <mark>private-owned auctions</mark> let you trade flexibly outside of government schedules.",
+				"button": {
+					"label": "Browse Private Auctions"
+				}
 			}
 		},
 		"auction": {

@@ -16,7 +16,7 @@ export interface HomeProps {
 	banner: ReactNode;
 	subbanners: ReactNode;
 	categories: ReactNode;
-	calendar: ReactNode;
+	promo: ReactNode;
 	ending: ReactNode;
 	catalogue: ReactNode;
 }
@@ -24,7 +24,7 @@ export default function Home({
 	banner,
 	subbanners,
 	categories,
-	calendar,
+	promo,
 	ending,
 	catalogue,
 }: HomeProps) {
@@ -35,7 +35,7 @@ export default function Home({
 				{subbanners}
 			</Container>
 			{categories}
-			{calendar}
+			{promo}
 			{ending}
 			{catalogue}
 		</Container>,

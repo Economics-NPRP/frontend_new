@@ -5,7 +5,7 @@
 }
 
 * {
-	@mixin larger-than $mantine-breakpoint-sm {
+	@mixin larger-than $mantine-breakpoint-lg {
 		.root {
 			@apply col-span-4;
 		}
