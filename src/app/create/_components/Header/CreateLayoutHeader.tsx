@@ -3,10 +3,10 @@
 import Link from 'next/link';
 import { useContextSelector } from 'use-context-selector';
 
-import { HeaderButton } from '@/components/Header/HeaderButton';
-import { UserProfile } from '@/components/Header/UserProfile';
 import { Switch } from '@/components/SwitchCase';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
+import { HeaderButton } from '@/pages/marketplace/_components/MarketplaceHeader/HeaderButton';
+import { UserProfile } from '@/pages/marketplace/_components/MarketplaceHeader/UserProfile';
 import { ActionIcon, Button, Divider, Group, Title, useMatches } from '@mantine/core';
 import { IconArrowUpLeft } from '@tabler/icons-react';
 
