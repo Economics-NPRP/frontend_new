@@ -1,0 +1,3 @@
+.root {
+	@apply min-h-0 flex-auto;
+}

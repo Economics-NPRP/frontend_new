@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { ReactNode, createContext } from 'react';
 
 import {
+	IconBellBolt,
 	IconBuildingSkyscraper,
 	IconCalendar,
 	IconChartBar,
@@ -11,8 +12,12 @@ import {
 	IconCreditCard,
 	IconGavel,
 	IconLayoutGrid,
+	IconLeaf,
 	IconListDetails,
+	IconReport,
 	IconStack3,
+	IconTag,
+	IconTargetArrow,
 	IconUserCircle,
 	IconUserSearch,
 	IconUserShield,
@@ -182,5 +187,99 @@ export const SidebarLinks: Record<
 			],
 		},
 	],
-	firm: () => [],
+	firm: (t, expanded) => [
+		{
+			id: 'home',
+			label: t('constants.pages.dashboard.firm.home.title'),
+			tooltip: expanded
+				? t('constants.pages.dashboard.firm.home.tooltip')
+				: t('constants.pages.dashboard.firm.home.title'),
+			icon: <IconLayoutGrid size={16} />,
+			href: '/dashboard/f',
+		},
+		{
+			id: 'statistics',
+			label: t('constants.pages.dashboard.firm.statistics.title'),
+			tooltip: expanded
+				? t('constants.pages.dashboard.firm.statistics.tooltip')
+				: t('constants.pages.dashboard.firm.statistics.title'),
+			icon: <IconChartBar size={16} />,
+			href: '/dashboard/f/statistics',
+		},
+		{
+			id: 'carbon',
+			label: t('constants.pages.dashboard.firm.carbon.title'),
+			subHrefs: [
+				{
+					id: 'pe',
+					label: t('constants.pages.dashboard.firm.carbon.pe.title'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.firm.carbon.pe.tooltip')
+						: t('constants.pages.dashboard.firm.carbon.pe.title'),
+					icon: <IconLeaf size={16} />,
+					href: '/dashboard/f/carbon/pe',
+				},
+				{
+					id: 'targets',
+					label: t('constants.pages.dashboard.firm.carbon.targets.title'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.firm.carbon.targets.tooltip')
+						: t('constants.pages.dashboard.firm.carbon.targets.title'),
+					icon: <IconTargetArrow size={16} />,
+					href: '/dashboard/f/carbon/targets',
+				},
+				{
+					id: 'report',
+					label: t('constants.pages.dashboard.firm.carbon.report.title'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.firm.carbon.report.tooltip')
+						: t('constants.pages.dashboard.firm.carbon.report.title'),
+					icon: <IconReport size={16} />,
+					href: '/dashboard/f/carbon/report',
+				},
+			],
+		},
+		{
+			id: 'economic',
+			label: t('constants.pages.dashboard.firm.economic.title'),
+			subHrefs: [
+				{
+					id: 'auctions',
+					label: t('constants.pages.dashboard.firm.economic.auctions.title'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.firm.economic.auctions.tooltip')
+						: t('constants.pages.dashboard.firm.economic.auctions.title'),
+					icon: <IconGavel size={16} />,
+					href: '/dashboard/f/economic/auctions',
+				},
+				{
+					id: 'notifications',
+					label: t('constants.pages.dashboard.firm.economic.notifications.title'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.firm.economic.notifications.tooltip')
+						: t('constants.pages.dashboard.firm.economic.notifications.title'),
+					icon: <IconBellBolt size={16} />,
+					href: '/dashboard/f/economic/notifications',
+				},
+				{
+					id: 'payments',
+					label: t('constants.pages.dashboard.firm.economic.payments.title'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.firm.economic.payments.tooltip')
+						: t('constants.pages.dashboard.firm.economic.payments.title'),
+					icon: <IconCreditCard size={16} />,
+					href: '/dashboard/f/economic/payments',
+				},
+				{
+					id: 'sell',
+					label: t('constants.pages.dashboard.firm.economic.sell.title'),
+					icon: <IconTag size={16} />,
+					tooltip: expanded
+						? t('constants.pages.dashboard.firm.economic.sell.tooltip')
+						: t('constants.pages.dashboard.firm.economic.sell.title'),
+					href: '/create/auction',
+				},
+			],
+		},
+	],
 };
