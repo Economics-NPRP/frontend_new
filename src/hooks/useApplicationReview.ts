@@ -6,12 +6,17 @@ import { throwError } from '@/helpers';
 import { approveApplication, rejectApplication } from '@/lib/users/firms/applications';
 import { ServerData } from '@/types';
 import { notifications } from '@mantine/notifications';
-import { UseMutationResult, useMutation } from '@tanstack/react-query';
+import { UseMutationResult, useMutation, useQueryClient } from '@tanstack/react-query';
 
 type ApplicationReviewProps = (
 	id: string,
 	options?: {
+		onApproveSettled?: () => void;
+		onApproveError?: (error: Error) => void;
 		onApproveSuccess?: () => void;
+
+		onRejectSettled?: () => void;
+		onRejectError?: (error: Error) => void;
 		onRejectSuccess?: () => void;
 	},
 ) => {
@@ -20,14 +25,25 @@ type ApplicationReviewProps = (
 };
 export const useApplicationReview: ApplicationReviewProps = (
 	id,
-	{ onApproveSuccess, onRejectSuccess } = {},
+	{
+		onApproveSettled,
+		onApproveError,
+		onApproveSuccess,
+		onRejectSettled,
+		onRejectError,
+		onRejectSuccess,
+	} = {},
 ) => {
 	const t = useTranslations();
+	const queryClient = useQueryClient();
 
 	const approve = useMutation({
 		mutationFn: () => throwError(approveApplication(id), `approveApplication:${id}`),
+		onSettled: onApproveSettled,
 		onSuccess: () => {
-			//	TODO: invalidate paginated applications after approval or rejection
+			queryClient.invalidateQueries({
+				queryKey: ['dashboard', 'admin', 'paginatedFirmApplications'],
+			});
 			notifications.show({
 				color: 'green',
 				title: t('lib.users.firms.applications.approve.success.title'),
@@ -43,6 +59,7 @@ export const useApplicationReview: ApplicationReviewProps = (
 				message: error.message,
 				position: 'bottom-center',
 			});
+			onApproveError?.(error);
 		},
 		retry: false,
 	});
@@ -50,7 +67,11 @@ export const useApplicationReview: ApplicationReviewProps = (
 	const reject = useMutation({
 		mutationFn: (reason: string) =>
 			throwError(rejectApplication(id, reason), `rejectApplication:${id}`),
+		onSettled: onRejectSettled,
 		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ['dashboard', 'admin', 'paginatedFirmApplications'],
+			});
 			notifications.show({
 				color: 'green',
 				title: t('lib.users.firms.applications.reject.success.title'),
@@ -66,6 +87,7 @@ export const useApplicationReview: ApplicationReviewProps = (
 				message: error.message,
 				position: 'bottom-center',
 			});
+			onRejectError?.(error);
 		},
 		retry: false,
 	});

@@ -5,16 +5,20 @@ import { getTranslations } from 'next-intl/server';
 import { cache } from 'react';
 import 'server-only';
 
-import { DefaultFirmApplication, IFirmApplication } from '@/schema/models';
+import { DefaultCreateFirmApplication, ICreateFirmApplication } from '@/schema/models';
 import { ServerData } from '@/types';
 
-const getDefaultData: (...errors: Array<string>) => ServerData<IFirmApplication> = (...errors) => ({
+const getDefaultData: (...errors: Array<string>) => ServerData<ICreateFirmApplication> = (
+	...errors
+) => ({
 	ok: false,
 	errors: errors,
-	...DefaultFirmApplication,
+	...DefaultCreateFirmApplication,
 });
 
-type IFunctionSignature = (data: IFirmApplication) => Promise<ServerData<IFirmApplication>>;
+type IFunctionSignature = (
+	data: ICreateFirmApplication,
+) => Promise<ServerData<ICreateFirmApplication>>;
 export const createApplication: IFunctionSignature = cache(async (data) => {
 	const t = await getTranslations();
 
@@ -29,7 +33,7 @@ export const createApplication: IFunctionSignature = cache(async (data) => {
 	const queryUrl = new URL('/v1/users/firms/applications/', process.env.NEXT_PUBLIC_BACKEND_URL);
 
 	const response = await fetch(queryUrl, querySettings);
-	const rawData = camelCase(await response.json(), 5) as ServerData<IFirmApplication>;
+	const rawData = camelCase(await response.json(), 5) as ServerData<ICreateFirmApplication>;
 
 	//	If theres an issue, return the default data with errors
 	if (response.status === 409) return getDefaultData(t('lib.users.firms.applications.exists'));
@@ -42,5 +46,5 @@ export const createApplication: IFunctionSignature = cache(async (data) => {
 	return {
 		...rawData,
 		ok: true,
-	} as ServerData<IFirmApplication>;
+	} as ServerData<ICreateFirmApplication>;
 });

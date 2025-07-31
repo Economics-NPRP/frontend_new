@@ -2,11 +2,11 @@
 
 import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { useTranslations } from 'next-intl';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { ReactElement, useCallback, useState } from 'react';
 
 import { PasswordInput } from '@/components/PasswordInput';
-import { register } from '@/lib/auth/register';
+import { useAuth } from '@/hooks';
 import classes from '@/pages/(auth)/(external)/styles.module.css';
 import {
 	CreateUserPasswordSchema,
@@ -23,14 +23,19 @@ import {
 	Text,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
 import { IconExclamationCircle, IconKey } from '@tabler/icons-react';
 
 export default function Form() {
 	const t = useTranslations();
 	const router = useRouter();
-	const searchParams = useSearchParams();
 	const [formError, setFormError] = useState<Array<ReactElement>>([]);
+
+	const { register } = useAuth({
+		onRegisterSettled: () => form.setSubmitting(false),
+		onRegisterSuccess: () => router.push('/marketplace'),
+		onRegisterError: () =>
+			setFormError([<List.Item key={0}>{t('auth.register.error.message')}</List.Item>]),
+	});
 
 	const form = useForm<ICreateUserPassword>({
 		mode: 'uncontrolled',
@@ -40,48 +45,12 @@ export default function Form() {
 	});
 
 	const handleSubmit = useCallback(
-		({ password }: ICreateUserPassword) => {
+		(values: ICreateUserPassword) => {
 			form.setSubmitting(true);
 			setFormError([]);
-
-			//	Send login request
-			const registrationToken = searchParams.get('token');
-			register({ registrationToken, password })
-				.then((res) => {
-					if (res.ok) {
-						notifications.show({
-							color: 'green',
-							title: t('lib.auth.register.success.title'),
-							message: t('lib.auth.register.success.message'),
-							position: 'bottom-center',
-						});
-						router.push('/marketplace');
-					} else {
-						const errorMessage = (res.errors || ['Unknown error']).join(', ');
-						console.error('Error registering your account:', errorMessage);
-						setFormError(
-							(res.errors || []).map((error, index) => (
-								<List.Item key={index}>{error}</List.Item>
-							)),
-						);
-						notifications.show({
-							color: 'red',
-							title: t('auth.onboarding.error.title'),
-							message: errorMessage,
-							position: 'bottom-center',
-						});
-					}
-					form.setSubmitting(false);
-				})
-				.catch((err) => {
-					console.error('Error registering your account:', err);
-					setFormError([
-						<List.Item key={0}>{t('auth.onboarding.error.message')}</List.Item>,
-					]);
-					form.setSubmitting(false);
-				});
+			register.mutate(values);
 		},
-		[form, router, searchParams],
+		[form, router, register],
 	);
 
 	return (

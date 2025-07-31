@@ -1,27 +1,39 @@
 'use client';
 
+import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 
-import { resendOtp } from '@/lib/auth/resendOtp';
-import { verifyOtp } from '@/lib/auth/verifyOtp';
+import { useAuth } from '@/hooks';
 import classes from '@/pages/(auth)/(internal)/styles.module.css';
+import { DefaultOTPData, IOTPData, OTPDataSchema } from '@/schema/models';
 import { Alert, Button, Group, List, PinInput, Stack, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useInterval } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
 import { IconExclamationCircle } from '@tabler/icons-react';
-
-interface IOTPData {
-	otp: string;
-}
 
 export default function Form() {
 	const t = useTranslations();
 	const router = useRouter();
 	const [resent, setResent] = useState(false);
 	const [formError, setFormError] = useState<Array<ReactElement>>([]);
+
+	const { verifyOtp, resendOtp } = useAuth({
+		onVerifyOtpSettled: () => form.setSubmitting(false),
+		onVerifyOtpSuccess: () => router.push('/marketplace'),
+		onVerifyOtpError: () =>
+			setFormError([<List.Item key={0}>{t('lib.auth.resendOtp.error')}</List.Item>]),
+
+		onResendOtpSettled: () => form.setSubmitting(false),
+		onResendOtpSuccess: () => {
+			setResent(true);
+			setSeconds(60);
+			interval.start();
+		},
+		onResendOtpError: () =>
+			setFormError([<List.Item key={0}>{t('lib.auth.resendOtp.error')}</List.Item>]),
+	});
 
 	const [seconds, setSeconds] = useState(60);
 	const interval = useInterval(() => setSeconds((s) => s - 1), 1000, { autoInvoke: true });
@@ -35,68 +47,21 @@ export default function Form() {
 
 	const form = useForm<IOTPData>({
 		mode: 'uncontrolled',
+		initialValues: DefaultOTPData,
+		validate: valibotResolver(OTPDataSchema),
+		onValuesChange: () => setFormError([]),
 	});
 
 	const handleSubmit = useCallback(
 		(values: IOTPData) => {
 			form.setSubmitting(true);
 			setFormError([]);
-
-			//	Send login request
-			verifyOtp(values.otp)
-				.then((res) => {
-					//	TODO: change url to dashboard or marketplace depending on the user type
-					if (res.ok) router.push('/marketplace');
-					else {
-						const errorMessage = (res.errors || ['Unknown error']).join(', ');
-						console.error('Error verifying OTP:', errorMessage);
-						setFormError(
-							(res.errors || []).map((error, index) => (
-								<List.Item key={index}>{error}</List.Item>
-							)),
-						);
-						notifications.show({
-							color: 'red',
-							title: t('auth.otp.error.title'),
-							message: errorMessage,
-							position: 'bottom-center',
-						});
-					}
-					form.setSubmitting(false);
-				})
-				.catch((err) => {
-					console.error('Error verifying OTP:', err);
-					setFormError([<List.Item key={0}>{t('auth.otp.error.message')}</List.Item>]);
-					form.setSubmitting(false);
-				});
+			verifyOtp.mutate(values);
 		},
-		[form, router],
+		[form, router, verifyOtp],
 	);
 
-	const handleResend = useCallback(() => {
-		//	Send resend request
-		resendOtp()
-			.then(() => {
-				notifications.show({
-					color: 'green',
-					title: t('auth.otp.notifications.resend.success.title'),
-					message: t('auth.otp.notifications.resend.success.message'),
-					position: 'bottom-center',
-				});
-				setResent(true);
-				setSeconds(60);
-				interval.start();
-			})
-			.catch((err) => {
-				console.error('Error resending OTP:', err);
-				notifications.show({
-					color: 'red',
-					title: t('auth.otp.notifications.resend.error.title'),
-					message: err.message,
-					position: 'bottom-center',
-				});
-			});
-	}, [form, router]);
+	const handleResend = useCallback(() => resendOtp.mutate(), [resendOtp]);
 
 	return (
 		<form onSubmit={form.onSubmit(handleSubmit)}>

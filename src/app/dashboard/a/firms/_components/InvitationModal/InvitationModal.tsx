@@ -11,7 +11,7 @@ import {
 	DefaultInvitationModalContextData,
 	InvitationModalContext,
 } from '@/pages/dashboard/a/firms/_components/InvitationModal/constants';
-import { IFirmApplication } from '@/schema/models';
+import { ICreateFirmApplication, IFirmApplication } from '@/schema/models';
 import {
 	Button,
 	Group,
@@ -25,23 +25,14 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconCheck, IconX } from '@tabler/icons-react';
-import { useQueryClient } from '@tanstack/react-query';
 
 import classes from './styles.module.css';
 
 export const InvitationModal = ({ className, ...props }: ModalProps) => {
 	const t = useTranslations();
-	const queryClient = useQueryClient();
 	const { data, openReject, close } = useContext(InvitationModalContext);
 
-	const { approve } = useApplicationReview(data.id, {
-		onApproveSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey: ['dashboard', 'admin', 'paginatedFirmApplications'],
-			});
-			close();
-		},
-	});
+	const { approve } = useApplicationReview(data.id, { onApproveSuccess: close });
 
 	return (
 		<Modal
@@ -63,7 +54,7 @@ export const InvitationModal = ({ className, ...props }: ModalProps) => {
 					{t('dashboard.admin.firms.invitationModal.description')}
 				</Text>
 			</Stack>
-			<FirmApplicationSummary firmData={data} />
+			<FirmApplicationSummary firmData={data as any as ICreateFirmApplication} />
 			<Group className={classes.actions}>
 				<Button
 					className={`${classes.secondary} ${classes.button}`}
@@ -96,10 +87,18 @@ export const InvitationModal = ({ className, ...props }: ModalProps) => {
 
 export const RejectionModal = ({ className, ...props }: ModalProps) => {
 	const t = useTranslations();
-	const queryClient = useQueryClient();
 	const { data, close, closeReject } = useContext(InvitationModalContext);
 
-	const { reject } = useApplicationReview(data.id);
+	const { reject } = useApplicationReview(data.id, {
+		onRejectSettled: () => form.setSubmitting(false),
+		onRejectSuccess: () => {
+			closeReject();
+			close();
+		},
+		onRejectError: (error: Error) => {
+			form.setErrors({ reason: error.message });
+		},
+	});
 
 	const form = useForm({
 		mode: 'uncontrolled',
@@ -111,20 +110,7 @@ export const RejectionModal = ({ className, ...props }: ModalProps) => {
 	const handleSubmit = useCallback(
 		({ reason }: { reason: string }) => {
 			form.setSubmitting(true);
-			reject.mutate(reason, {
-				onSuccess: () => {
-					form.setSubmitting(false);
-					queryClient.invalidateQueries({
-						queryKey: ['dashboard', 'admin', 'paginatedFirmApplications'],
-					});
-					closeReject();
-					close();
-				},
-				onError: (error: Error) => {
-					form.setSubmitting(false);
-					form.setErrors({ reason: error.message });
-				},
-			});
+			reject.mutate(reason);
 		},
 		[form, reject, close],
 	);

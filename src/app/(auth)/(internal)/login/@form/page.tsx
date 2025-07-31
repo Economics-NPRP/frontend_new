@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 
-import { login } from '@/lib/auth/login';
+import { useAuth } from '@/hooks';
 import classes from '@/pages/(auth)/(internal)/styles.module.css';
 import { DefaultLoginData, ILoginData, LoginDataSchema } from '@/schema/models';
 import {
@@ -29,6 +29,12 @@ export default function Form() {
 	const router = useRouter();
 	const [formError, setFormError] = useState<Array<ReactElement>>([]);
 
+	const { login } = useAuth({
+		onLoginSettled: () => form.setSubmitting(false),
+		onLoginError: () =>
+			setFormError([<List.Item key={0}>{t('auth.login.error.message')}</List.Item>]),
+	});
+
 	const form = useForm<ILoginData>({
 		mode: 'uncontrolled',
 		initialValues: DefaultLoginData,
@@ -46,34 +52,9 @@ export default function Form() {
 		(values: ILoginData) => {
 			form.setSubmitting(true);
 			setFormError([]);
-
-			//	Save the remember me option in localStorage
-			localStorage.setItem('ets_remember_me', String(values.remember));
-
-			//	Send login request
-			login(values)
-				.then((res) => {
-					if (res.ok) {
-						if (process.env.NODE_ENV === 'development') router.push('/marketplace');
-						else router.push('/otp');
-					} else {
-						const errorMessage = (res.errors || ['Unknown error']).join(', ');
-						console.error('Error logging in:', errorMessage);
-						setFormError(
-							(res.errors || []).map((error, index) => (
-								<List.Item key={index}>{error}</List.Item>
-							)),
-						);
-					}
-					form.setSubmitting(false);
-				})
-				.catch((err) => {
-					console.error('Error logging in:', err);
-					setFormError([<List.Item key={0}>{t('auth.login.error.message')}</List.Item>]);
-					form.setSubmitting(false);
-				});
+			login.mutate(values);
 		},
-		[form, router],
+		[form, router, login],
 	);
 
 	return (
