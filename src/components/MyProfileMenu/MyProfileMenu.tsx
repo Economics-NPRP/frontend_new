@@ -2,15 +2,14 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useCallback, useContext, useMemo } from 'react';
+import { usePathname } from 'next/navigation';
+import { useContext, useMemo } from 'react';
 
 import { Id } from '@/components/Id';
 import { Switch } from '@/components/SwitchCase';
 import { MyUserProfileContext } from '@/contexts';
-import { logout } from '@/lib/auth/logout';
+import { useAuth } from '@/hooks';
 import {
-	ActionIconProps,
 	Alert,
 	Avatar,
 	Container,
@@ -20,20 +19,22 @@ import {
 	MenuDropdown,
 	MenuItem,
 	MenuLabel,
+	MenuProps,
 	MenuTarget,
 	Rating,
 	Skeleton,
 	Stack,
 	Text,
 } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
 import {
 	IconArrowUpRight,
 	IconBookmark,
+	IconBuildingSkyscraper,
+	IconBuildingStore,
 	IconCalendar,
 	IconChartBar,
-	IconCoins,
 	IconExclamationCircle,
+	IconGavel,
 	IconHelp,
 	IconHistory,
 	IconLayoutGrid,
@@ -41,57 +42,21 @@ import {
 	IconLogout,
 	IconMessage,
 	IconSettings,
+	IconUsers,
 } from '@tabler/icons-react';
-import { useQueryClient } from '@tanstack/react-query';
 
-import { HeaderButton } from './HeaderButton';
 import classes from './styles.module.css';
 
-export interface UserProfileProps extends ActionIconProps {
-	variant: 'marketplace' | 'adminDashboard';
-}
-export const UserProfile = ({ variant, className, ...props }: UserProfileProps) => {
+export interface MyProfileMenuProps extends MenuProps {}
+export const MyProfileMenu = ({ children, ...props }: MyProfileMenuProps) => {
 	const t = useTranslations();
-	const router = useRouter();
-	const queryClient = useQueryClient();
+	const pathname = usePathname();
 	const myUser = useContext(MyUserProfileContext);
 
-	//	Clear cookies and redirect to login page
-	const handleLogout = useCallback(() => {
-		logout()
-			.then((res) => {
-				if (res.ok) {
-					queryClient.invalidateQueries({
-						queryKey: ['users', 'mine'],
-					});
-					notifications.show({
-						color: 'green',
-						title: t('components.header.user.logout.success.title'),
-						message: t('components.header.user.logout.success.message'),
-						position: 'bottom-center',
-					});
-					router.push('/login');
-				} else {
-					const errorMessage = (res.errors || []).join(' ');
-					console.error('Error logging out:', errorMessage);
-					notifications.show({
-						color: 'red',
-						title: t('components.header.user.logout.error.title'),
-						message: errorMessage,
-						position: 'bottom-center',
-					});
-				}
-			})
-			.catch((err) => {
-				console.error('Error logging out:', err);
-				notifications.show({
-					color: 'red',
-					title: t('components.header.user.logout.error.title'),
-					message: err.message ?? t('lib.unknownError'),
-					position: 'bottom-center',
-				});
-			});
-	}, [router]);
+	const { logout } = useAuth();
+
+	const isMarketplace = useMemo(() => pathname.startsWith('/marketplace'), [pathname]);
+	const isAdmin = useMemo(() => myUser.data.type === 'admin', [myUser.data.type]);
 
 	const currentState = useMemo(() => {
 		if (myUser.isError) return 'error';
@@ -100,18 +65,19 @@ export const UserProfile = ({ variant, className, ...props }: UserProfileProps) 
 	}, [myUser]);
 
 	return (
-		<Menu width={320} offset={4} position="bottom-end">
-			<MenuTarget>
-				<HeaderButton
-					className={`${classes.user} ${className}`}
-					variant="user"
-					{...props}
-				/>
-			</MenuTarget>
+		<Menu
+			classNames={{
+				dropdown: `${classes.root} ${myUser.isLoading ? classes.loading : ''}`,
+				item: classes.item,
+			}}
+			width={320}
+			offset={4}
+			position="bottom-end"
+			{...props}
+		>
+			<MenuTarget>{children}</MenuTarget>
 
-			<MenuDropdown
-				className={`${classes.userDropdown} ${myUser.isLoading ? classes.loading : ''}`}
-			>
+			<MenuDropdown>
 				<Switch value={currentState}>
 					<Switch.Loading>
 						<Container className={`${classes.bg} bg-grid-sm`} />
@@ -137,7 +103,7 @@ export const UserProfile = ({ variant, className, ...props }: UserProfileProps) 
 						<Alert
 							variant="light"
 							color="red"
-							title={t('components.header.user.profile.error.title')}
+							title={t('components.myProfileMenu.profile.error.title')}
 							icon={<IconExclamationCircle />}
 							className="mb-4"
 						>
@@ -170,43 +136,36 @@ export const UserProfile = ({ variant, className, ...props }: UserProfileProps) 
 								</Text>
 							</Stack>
 						</Group>
-						<Switch value={variant}>
-							<Switch.Case when="marketplace">
-								<MenuItem
-									classNames={{
-										item: classes.primary,
-										itemLabel: 'flex-none',
-										itemSection: 'm-0',
-									}}
-									component={Link}
-									href={`/dashboard/${myUser.data.type === 'admin' ? 'a' : 'f'}`}
-									rightSection={<IconArrowUpRight size={16} />}
-								>
-									{t('components.header.user.profile.cta.dashboard')}
-								</MenuItem>
-							</Switch.Case>
-							<Switch.Case when="adminDashboard">
-								<MenuItem
-									classNames={{
-										item: classes.primary,
-										itemLabel: 'flex-none',
-										itemSection: 'm-0',
-									}}
-									component={Link}
-									href="/marketplace"
-									rightSection={<IconArrowUpRight size={16} />}
-								>
-									{t('components.header.user.profile.cta.marketplace')}
-								</MenuItem>
-							</Switch.Case>
-						</Switch>
+						<MenuItem
+							classNames={{
+								item: classes.primary,
+								itemLabel: 'flex-none',
+								itemSection: 'm-0',
+							}}
+							component={Link}
+							href={
+								isMarketplace ? `/dashboard/${isAdmin ? 'a' : 'f'}` : '/marketplace'
+							}
+							rightSection={<IconArrowUpRight size={16} />}
+						>
+							{isMarketplace
+								? t('components.myProfileMenu.profile.cta.dashboard')
+								: t('components.myProfileMenu.profile.cta.marketplace')}
+						</MenuItem>
 					</Switch.Else>
 				</Switch>
 
 				<MenuDivider />
-				<MenuLabel>{t('components.header.user.marketplace')} </MenuLabel>
+				<MenuLabel>{t('components.myProfileMenu.marketplace.label')} </MenuLabel>
+				<MenuItem
+					component={Link}
+					href="/marketplace"
+					leftSection={<IconBuildingStore size={16} />}
+				>
+					{t('components.myProfileMenu.marketplace.home')}
+				</MenuItem>
 				<MenuItem component={Link} href="" leftSection={<IconHistory size={16} />} disabled>
-					{t('components.header.user.biddingHistory')}
+					{t('components.myProfileMenu.marketplace.biddingHistory')}
 				</MenuItem>
 				<MenuItem
 					component={Link}
@@ -214,36 +173,69 @@ export const UserProfile = ({ variant, className, ...props }: UserProfileProps) 
 					leftSection={<IconCalendar size={16} />}
 					disabled
 				>
-					{t('components.header.user.auctionCalendar')}
+					{t('components.myProfileMenu.marketplace.auctionCalendar')}
 				</MenuItem>
 				<MenuItem leftSection={<IconBookmark size={16} />} disabled>
-					{t('components.header.user.savedAuctions')}
+					{t('components.myProfileMenu.marketplace.savedAuctions')}
 				</MenuItem>
 
 				<MenuDivider />
-				<MenuLabel>{t('components.header.user.dashboard')}</MenuLabel>
+				<MenuLabel>{t('components.myProfileMenu.dashboard.label')}</MenuLabel>
 				<MenuItem
 					component={Link}
-					href=""
+					href={isAdmin ? '/dashboard/a' : '/dashboard/f'}
 					leftSection={<IconLayoutGrid size={16} />}
-					disabled
 				>
-					{t('components.header.user.myDashboard')}
+					{t('components.myProfileMenu.dashboard.home')}
 				</MenuItem>
 				<MenuItem
 					component={Link}
-					href=""
+					href={`/dashboard/${isAdmin ? 'a' : 'f'}/statistics`}
 					leftSection={<IconChartBar size={16} />}
-					disabled
 				>
-					{t('components.header.user.statistics')}
+					{t('components.myProfileMenu.dashboard.statistics')}
 				</MenuItem>
-				<MenuItem component={Link} href="" leftSection={<IconCoins size={16} />} disabled>
-					{t('components.header.user.transactions')}
-				</MenuItem>
-				<MenuItem component={Link} href="" leftSection={<IconLeaf size={16} />} disabled>
-					{t('components.header.user.permits')}
-				</MenuItem>
+				<Switch value={myUser.data.type}>
+					<Switch.Case when="admin">
+						<MenuItem
+							component={Link}
+							href="/dashboard/a/cycles"
+							leftSection={<IconGavel size={16} />}
+						>
+							{t('components.myProfileMenu.dashboard.admin.auctionsAndCycles')}
+						</MenuItem>
+						<MenuItem
+							component={Link}
+							href="/dashboard/a/admins"
+							leftSection={<IconUsers size={16} />}
+						>
+							{t('components.myProfileMenu.dashboard.admin.admins')}
+						</MenuItem>
+						<MenuItem
+							component={Link}
+							href="/dashboard/a/firms"
+							leftSection={<IconBuildingSkyscraper size={16} />}
+						>
+							{t('components.myProfileMenu.dashboard.admin.firms')}
+						</MenuItem>
+					</Switch.Case>
+					<Switch.Else>
+						<MenuItem
+							component={Link}
+							href="/dashboard/f/pe"
+							leftSection={<IconLeaf size={16} />}
+						>
+							{t('components.myProfileMenu.dashboard.firm.carbon')}
+						</MenuItem>
+						<MenuItem
+							component={Link}
+							href="/dashboard/f/auctions"
+							leftSection={<IconGavel size={16} />}
+						>
+							{t('components.myProfileMenu.dashboard.firm.economic')}
+						</MenuItem>
+					</Switch.Else>
+				</Switch>
 
 				<MenuDivider />
 				<MenuItem
@@ -270,8 +262,8 @@ export const UserProfile = ({ variant, className, ...props }: UserProfileProps) 
 				>
 					{t('constants.pages.settings.title')}
 				</MenuItem>
-				<MenuItem onClick={handleLogout} leftSection={<IconLogout size={16} />}>
-					{t('components.header.user.logout.label')}
+				<MenuItem onClick={() => logout.mutate()} leftSection={<IconLogout size={16} />}>
+					{t('components.myProfileMenu.logout')}
 				</MenuItem>
 			</MenuDropdown>
 		</Menu>

@@ -1327,38 +1327,6 @@
 					"tooltip": "Go to Marketplace"
 				}
 			},
-			"user": {
-				"profile": {
-					"cta": {
-						"marketplace": "Go to Marketplace",
-						"dashboard": "Go to Dashboard"
-					},
-					"error": {
-						"title": "There was an error displaying your profile"
-					}
-				},
-				"marketplace": "Marketplace",
-				"biddingHistory": "Bidding History",
-				"auctionCalendar": "Auction Calendar",
-				"dashboard": "Dashboard",
-				"myDashboard": "My Dashboard",
-				"statistics": "Statistics",
-				"transactions": "Transactions",
-				"permits": "Permits",
-				"helpCenter": "Help Center",
-				"settings": "Settings",
-				"logout": {
-					"label": "Logout",
-					"error": {
-						"title": "There was a problem logging out"
-					},
-					"success": {
-						"title": "Logged Out Successfully",
-						"message": "You have been logged out successfully. You can now close this tab or return to the login page."
-					}
-				},
-				"savedAuctions": "Saved Auctions"
-			},
 			"admin": {
 				"tabs": {
 					"home": {
@@ -1375,6 +1343,41 @@
 					}
 				}
 			}
+		},
+		"myProfileMenu": {
+			"profile": {
+				"cta": {
+					"marketplace": "Go to Marketplace",
+					"dashboard": "Go to Dashboard"
+				},
+				"error": {
+					"title": "There was an error displaying your profile"
+				}
+			},
+			"marketplace": {
+				"label": "Marketplace",
+				"home": "Marketplace Home",
+				"biddingHistory": "Bidding History",
+				"auctionCalendar": "Auction Calendar",
+				"savedAuctions": "Saved Auctions"
+			},
+			"dashboard": {
+				"label": "Dashboard",
+				"home": "My Dashboard",
+				"statistics": "Statistics",
+				"admin": {
+					"auctionsAndCycles": "Auctions & Cycles",
+					"admins": "Admins",
+					"firms": "Companies"
+				},
+				"firm": {
+					"carbon": "Carbon Management",
+					"economic": "Economic Activity"
+				}
+			},
+			"helpCenter": "Help Center",
+			"settings": "Settings",
+			"logout": "Logout"
 		},
 		"auctionCard": {
 			"numBids": {
@@ -2431,7 +2434,11 @@
 			},
 			"logout": {
 				"loggedIn": "You must be logged in to log out",
-				"error": "There was an error logging out"
+				"error": "There was an error logging out",
+				"success": {
+					"title": "Logged Out Successfully",
+					"message": "You have been logged out successfully. You can now close this tab or return to the login page."
+				}
 			},
 			"register": {
 				"noToken": "No registration token provided",

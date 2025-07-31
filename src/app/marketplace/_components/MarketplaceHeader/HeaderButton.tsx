@@ -1,8 +1,9 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
-import { MouseEventHandler, useEffect, useMemo, useState } from 'react';
+import { MouseEventHandler, useContext, useEffect, useMemo, useState } from 'react';
 
+import { MyUserProfileContext } from '@/contexts';
 import { toggleUserLocale } from '@/locales';
 import { ActionIcon, ActionIconProps, Tooltip, useMantineColorScheme } from '@mantine/core';
 
@@ -16,6 +17,8 @@ export const HeaderButton = ({ variant, className, ...props }: HeaderButtonProps
 	const t = useTranslations();
 	const locale = useLocale();
 	const { colorScheme, setColorScheme } = useMantineColorScheme();
+
+	const currentUser = useContext(MyUserProfileContext);
 
 	const [tooltip, setTooltip] = useState<string>();
 	const [ariaLabel, setAriaLabel] = useState<string>();
@@ -50,12 +53,15 @@ export const HeaderButton = ({ variant, className, ...props }: HeaderButtonProps
 			case 'language':
 				args = locale;
 				break;
+			case 'user':
+				args = currentUser.data;
+				break;
 		}
 
 		if (typeof tooltip === 'function') setTooltip(tooltip(args as never));
 		if (typeof ariaLabel === 'function') setAriaLabel(ariaLabel(args as never));
 		if (typeof icon === 'function') setIcon(icon(args as never));
-	}, [locale, colorScheme, variant]);
+	}, [locale, colorScheme, currentUser, variant]);
 
 	return (
 		<Tooltip label={tooltip && t(tooltip as never)}>

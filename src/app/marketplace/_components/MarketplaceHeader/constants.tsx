@@ -1,4 +1,5 @@
 import { Locale } from '@/locales';
+import { DefaultUserData, IReadUser } from '@/schema/models';
 import { Avatar, type MantineColorScheme } from '@mantine/core';
 import {
 	IconAccessible,
@@ -53,9 +54,11 @@ export const HeaderButtonVariants: Record<HeaderButtonVariantType, HeaderButtonD
 			theme === 'light' ? <IconSun size={16} /> : <IconMoon size={16} />,
 	},
 	user: {
-		tooltip: `components.header.buttons.user.tooltip`,
-		ariaLabel: `components.header.buttons.user.aria`,
-		icon: <Avatar name="John Doe" color="initials" />,
+		tooltip: () => `components.header.buttons.user.tooltip`,
+		ariaLabel: () => `components.header.buttons.user.aria`,
+		icon: (currentUser: IReadUser) => (
+			<Avatar name={(currentUser || DefaultUserData).name} color="initials" />
+		),
 	},
 	marketplace: {
 		tooltip: 'components.header.buttons.marketplace.tooltip',
@@ -64,4 +67,4 @@ export const HeaderButtonVariants: Record<HeaderButtonVariantType, HeaderButtonD
 	},
 };
 
-export const DynamicVariants: Array<HeaderButtonVariantType> = ['language', 'theme'];
+export const DynamicVariants: Array<HeaderButtonVariantType> = ['language', 'theme', 'user'];

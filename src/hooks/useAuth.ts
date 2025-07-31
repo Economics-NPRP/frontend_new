@@ -122,8 +122,8 @@ export const useAuth: AuthProps = ({
 			});
 			notifications.show({
 				color: 'green',
-				title: t('components.header.user.logout.success.title'),
-				message: t('components.header.user.logout.success.message'),
+				title: t('lib.auth.logout.success.title'),
+				message: t('lib.auth.logout.success.message'),
 				position: 'bottom-center',
 			});
 			onLogoutSuccess?.();
