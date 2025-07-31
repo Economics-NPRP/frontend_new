@@ -6,14 +6,16 @@ import { cookies } from 'next/headers';
 import 'server-only';
 
 import { extractSessionCookies } from '@/helpers';
+import { DefaultUserData, IReadUser } from '@/schema/models';
 import { ServerData } from '@/types';
 
-const getDefaultData: (...errors: Array<string>) => ServerData<{}> = (...errors) => ({
+const getDefaultData: (...errors: Array<string>) => ServerData<IReadUser> = (...errors) => ({
 	ok: false,
 	errors: errors,
+	...DefaultUserData,
 });
 
-type IFunctionSignature = (otp: string) => Promise<ServerData<{}>>;
+type IFunctionSignature = (otp: string) => Promise<ServerData<IReadUser>>;
 export const verifyOtp: IFunctionSignature = async (otp) => {
 	const t = await getTranslations();
 
@@ -56,6 +58,7 @@ export const verifyOtp: IFunctionSignature = async (otp) => {
 	});
 
 	return {
+		...rawData,
 		ok: true,
-	};
+	} as ServerData<IReadUser>;
 };

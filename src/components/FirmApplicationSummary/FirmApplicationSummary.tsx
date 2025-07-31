@@ -2,13 +2,13 @@ import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
 import { SectorBadge } from '@/components/Badge';
-import { IFirmApplication } from '@/schema/models';
+import { ICreateFirmApplication } from '@/schema/models';
 import { Avatar, Group, Stack, Table, TableProps } from '@mantine/core';
 
 import classes from './styles.module.css';
 
 export interface FirmApplicationSummaryProps extends TableProps {
-	firmData: IFirmApplication;
+	firmData: ICreateFirmApplication;
 }
 export const FirmApplicationSummary = ({
 	firmData,

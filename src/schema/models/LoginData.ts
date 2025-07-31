@@ -48,8 +48,13 @@ export const CreateUserPasswordSchema = pipe(
 	),
 );
 
+export const OTPDataSchema = object({
+	otp: pipe(string(), trim(), nonEmpty(), minLength(6)),
+});
+
 export interface ILoginData extends InferOutput<typeof LoginDataSchema> {}
 export interface ICreateUserPassword extends InferInput<typeof CreateUserPasswordSchema> {}
+export interface IOTPData extends InferInput<typeof OTPDataSchema> {}
 
 export const DefaultLoginData: ILoginData = {
 	email: '',
@@ -60,4 +65,8 @@ export const DefaultLoginData: ILoginData = {
 export const DefaultCreateUserPassword: ICreateUserPassword = {
 	password: '',
 	confirmPassword: '',
+};
+
+export const DefaultOTPData: IOTPData = {
+	otp: '',
 };

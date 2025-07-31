@@ -9,10 +9,10 @@ import { AvatarUpload } from '@/components/AvatarUpload';
 import { FirmApplicationSummary } from '@/components/FirmApplicationSummary';
 import { SectorFormCard } from '@/components/SectorFormCard';
 import { Switch } from '@/components/SwitchCase';
-import { createApplication } from '@/lib/users/firms/applications';
+import { useCreateApplication } from '@/hooks';
 import { RegistrationPageContext } from '@/pages/(auth)/(external)/register/_components/Providers';
 import classes from '@/pages/(auth)/(external)/styles.module.css';
-import { IFirmApplication } from '@/schema/models';
+import { ICreateFirmApplication } from '@/schema/models';
 import {
 	Alert,
 	Button,
@@ -28,7 +28,6 @@ import {
 	Textarea,
 	Title,
 } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
 import {
 	IconArrowNarrowRight,
 	IconBriefcase,
@@ -49,41 +48,18 @@ export default function Form() {
 	const { form, formError, setFormError, activeStep, handleNextStep, handlePrevStep } =
 		useContext(RegistrationPageContext);
 
+	const createApplication = useCreateApplication({
+		onSettled: () => form.setSubmitting(false),
+		onSuccess: handleNextStep,
+	});
+
 	const handleSubmit = useCallback(
-		(formData: IFirmApplication) => {
+		(formData: ICreateFirmApplication) => {
 			form.setSubmitting(true);
 			setFormError([]);
-
-			//	Send registration request
-			createApplication(formData)
-				.then((res) => {
-					if (res.ok) handleNextStep();
-					else {
-						const errorMessage = (res.errors || ['Unknown error']).join(', ');
-						console.error('Error registering your account:', errorMessage);
-						setFormError(
-							(res.errors || []).map((error, index) => (
-								<List.Item key={index}>{error}</List.Item>
-							)),
-						);
-						notifications.show({
-							color: 'red',
-							title: t('auth.onboarding.error.title'),
-							message: errorMessage,
-							position: 'bottom-center',
-						});
-					}
-					form.setSubmitting(false);
-				})
-				.catch((err) => {
-					console.error('Error registering your account:', err);
-					setFormError([
-						<List.Item key={0}>{t('auth.register.error.message')}</List.Item>,
-					]);
-					form.setSubmitting(false);
-				});
+			createApplication.mutate(formData);
 		},
-		[form, router],
+		[form, router, createApplication],
 	);
 
 	//	Scroll to top whenever step changes or there is an error

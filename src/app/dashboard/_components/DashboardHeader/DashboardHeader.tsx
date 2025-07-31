@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useContext } from 'react';
 
+import { MyProfileMenu } from '@/components/MyProfileMenu';
 import { MyUserProfileContext } from '@/contexts';
 import { Avatar, Button, Container, Group, Text, Tooltip, UnstyledButton } from '@mantine/core';
 import { IconBox, IconChevronDown, IconCommand, IconSearch } from '@tabler/icons-react';
@@ -51,16 +52,18 @@ export const DashboardHeader = () => {
 					{t('components.header.search.shortcut')}
 				</Container>
 			</Group>
-			<UnstyledButton className={classes.user}>
-				<Avatar
-					color="initials"
-					size="sm"
-					className={classes.avatar}
-					name={currentUser.data.name}
-				/>
-				<Text className={classes.name}>{currentUser.data.name}</Text>
-				<IconChevronDown size={14} className={classes.icon} />
-			</UnstyledButton>
+			<MyProfileMenu>
+				<UnstyledButton className={classes.user}>
+					<Avatar
+						color="initials"
+						size="sm"
+						className={classes.avatar}
+						name={currentUser.data.name}
+					/>
+					<Text className={classes.name}>{currentUser.data.name}</Text>
+					<IconChevronDown size={14} className={classes.icon} />
+				</UnstyledButton>
+			</MyProfileMenu>
 		</Group>
 	);
 };

@@ -3,12 +3,12 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
+import { MyProfileMenu } from '@/components/MyProfileMenu';
 import { Button, Center, Flex, Group, Text, Tooltip } from '@mantine/core';
 import { IconArrowUpLeft, IconBox } from '@tabler/icons-react';
 
 import { HeaderButton } from './HeaderButton';
 import { SearchBar } from './SearchBar';
-import { UserProfile } from './UserProfile';
 import classes from './styles.module.css';
 
 export const MarketplaceHeader = () => {
@@ -61,7 +61,12 @@ export const MarketplaceHeader = () => {
 					<HeaderButton variant="accessibility" visibleFrom="xs" />
 					<HeaderButton variant="language" visibleFrom="xs" />
 					<HeaderButton variant="theme" visibleFrom="xs" />
-					<UserProfile variant="marketplace" />
+					<MyProfileMenu>
+						<HeaderButton
+							className={`${classes.user} ${classes.button}`}
+							variant="user"
+						/>
+					</MyProfileMenu>
 				</Flex>
 			</Group>
 		</Center>

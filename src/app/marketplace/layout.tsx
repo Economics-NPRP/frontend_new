@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 import { Footer } from '@/components/Footer';
-import { MarketplaceHeader } from '@/components/Header';
+import { MarketplaceHeader } from '@/pages/marketplace/_components/MarketplaceHeader';
 import '@/styles/globals.css';
 import { AppShell, Container } from '@mantine/core';
 

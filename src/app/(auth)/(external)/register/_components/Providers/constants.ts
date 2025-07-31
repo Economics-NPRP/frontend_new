@@ -2,13 +2,13 @@
 
 import { ReactElement, createContext } from 'react';
 
-import { ICreateFirmApplication, IFirmApplication } from '@/schema/models';
+import { ICreateFirmApplication } from '@/schema/models';
 import { UseFormReturnType } from '@mantine/form';
 
 export const DefaultRegistrationPageContextData: IRegistrationPageContext = {
 	form: {} as UseFormReturnType<
 		ICreateFirmApplication,
-		(values: ICreateFirmApplication) => IFirmApplication
+		(values: ICreateFirmApplication) => ICreateFirmApplication
 	>,
 	formError: [],
 	setFormError: () => {},
@@ -22,7 +22,7 @@ export const DefaultRegistrationPageContextData: IRegistrationPageContext = {
 export interface IRegistrationPageContext {
 	form: UseFormReturnType<
 		ICreateFirmApplication,
-		(values: ICreateFirmApplication) => IFirmApplication
+		(values: ICreateFirmApplication) => ICreateFirmApplication
 	>;
 	formError: Array<ReactElement>;
 	setFormError: (errors: Array<ReactElement>) => void;

@@ -3,10 +3,10 @@
 import Link from 'next/link';
 import { useContextSelector } from 'use-context-selector';
 
-import { HeaderButton } from '@/components/Header/HeaderButton';
-import { UserProfile } from '@/components/Header/UserProfile';
+import { MyProfileMenu } from '@/components/MyProfileMenu';
 import { Switch } from '@/components/SwitchCase';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
+import { HeaderButton } from '@/pages/marketplace/_components/MarketplaceHeader/HeaderButton';
 import { ActionIcon, Button, Divider, Group, Title, useMatches } from '@mantine/core';
 import { IconArrowUpLeft } from '@tabler/icons-react';
 
@@ -55,10 +55,9 @@ export const CreateLayoutHeader = () => {
 				<HeaderButton className={classes.button} variant="accessibility" visibleFrom="xs" />
 				<HeaderButton className={classes.button} variant="language" visibleFrom="xs" />
 				<HeaderButton className={classes.button} variant="theme" visibleFrom="xs" />
-				<UserProfile
-					className={`${classes.user} ${classes.button}`}
-					variant="marketplace"
-				/>
+				<MyProfileMenu>
+					<HeaderButton className={`${classes.user} ${classes.button}`} variant="user" />
+				</MyProfileMenu>
 			</Group>
 		</Group>
 	);

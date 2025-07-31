@@ -655,6 +655,50 @@
 						"title": "Statistics",
 						"tooltip": "View all statistics in one page"
 					}
+				},
+				"firm": {
+					"home": {
+						"title": "Home",
+						"tooltip": "Go to home page"
+					},
+					"statistics": {
+						"title": "Statistics",
+						"tooltip": "View all statistics in one page"
+					},
+					"carbon": {
+						"title": "Carbon Management",
+						"pe": {
+							"title": "Permits & Emissions",
+							"tooltip": "View and manage your permits and emissions"
+						},
+						"targets": {
+							"title": "Environmental Targets",
+							"tooltip": "Set and manage environmental targets"
+						},
+						"report": {
+							"title": "Report Emissions",
+							"tooltip": "Report company emissions for compliance auditing"
+						}
+					},
+					"economic": {
+						"title": "Economic Activity",
+						"auctions": {
+							"title": "List of Auctions",
+							"tooltip": "View all auctions you participated in or own"
+						},
+						"notifications": {
+							"title": "Notification Center",
+							"tooltip": "Overview of the latest activity"
+						},
+						"payments": {
+							"title": "Payments & Cash Flow",
+							"tooltip": "View pending payments and company environmental cash flow"
+						},
+						"sell": {
+							"title": "Sell Permits",
+							"tooltip": "Create an auction to sell off your excess permits"
+						}
+					}
 				}
 			},
 			"feedback": {
@@ -1283,38 +1327,6 @@
 					"tooltip": "Go to Marketplace"
 				}
 			},
-			"user": {
-				"profile": {
-					"cta": {
-						"marketplace": "Go to Marketplace",
-						"dashboard": "Go to Dashboard"
-					},
-					"error": {
-						"title": "There was an error displaying your profile"
-					}
-				},
-				"marketplace": "Marketplace",
-				"biddingHistory": "Bidding History",
-				"auctionCalendar": "Auction Calendar",
-				"dashboard": "Dashboard",
-				"myDashboard": "My Dashboard",
-				"statistics": "Statistics",
-				"transactions": "Transactions",
-				"permits": "Permits",
-				"helpCenter": "Help Center",
-				"settings": "Settings",
-				"logout": {
-					"label": "Logout",
-					"error": {
-						"title": "There was a problem logging out"
-					},
-					"success": {
-						"title": "Logged Out Successfully",
-						"message": "You have been logged out successfully. You can now close this tab or return to the login page."
-					}
-				},
-				"savedAuctions": "Saved Auctions"
-			},
 			"admin": {
 				"tabs": {
 					"home": {
@@ -1331,6 +1343,41 @@
 					}
 				}
 			}
+		},
+		"myProfileMenu": {
+			"profile": {
+				"cta": {
+					"marketplace": "Go to Marketplace",
+					"dashboard": "Go to Dashboard"
+				},
+				"error": {
+					"title": "There was an error displaying your profile"
+				}
+			},
+			"marketplace": {
+				"label": "Marketplace",
+				"home": "Marketplace Home",
+				"biddingHistory": "Bidding History",
+				"auctionCalendar": "Auction Calendar",
+				"savedAuctions": "Saved Auctions"
+			},
+			"dashboard": {
+				"label": "Dashboard",
+				"home": "My Dashboard",
+				"statistics": "Statistics",
+				"admin": {
+					"auctionsAndCycles": "Auctions & Cycles",
+					"admins": "Admins",
+					"firms": "Companies"
+				},
+				"firm": {
+					"carbon": "Carbon Management",
+					"economic": "Economic Activity"
+				}
+			},
+			"helpCenter": "Help Center",
+			"settings": "Settings",
+			"logout": "Logout"
 		},
 		"auctionCard": {
 			"numBids": {
@@ -2377,11 +2424,21 @@
 		"auth": {
 			"login": {
 				"invalid": "Invalid email or password",
-				"error": "There was an error logging in"
+				"error": "There was an error logging in",
+				"success": {
+					"titleDev": "Successfully logged in!",
+					"messageDev": "Welcome to the ETS platform!",
+					"title": "Authentication Successful",
+					"message": "Before proceeding, please verify your identity by entering the OTP sent to your email address."
+				}
 			},
 			"logout": {
 				"loggedIn": "You must be logged in to log out",
-				"error": "There was an error logging out"
+				"error": "There was an error logging out",
+				"success": {
+					"title": "Logged Out Successfully",
+					"message": "You have been logged out successfully. You can now close this tab or return to the login page."
+				}
 			},
 			"register": {
 				"noToken": "No registration token provided",
@@ -2393,7 +2450,19 @@
 			},
 			"otp": {
 				"expired": "OTP code may have expired, please try logging in again.",
-				"invalid": "OTP code is invalid, please make sure the code is 6 numbers long"
+				"invalid": "OTP code is invalid, please make sure the code is 6 numbers long",
+				"success": {
+					"title": "Login Successful!",
+					"message": "Welcome to the ETS platform!"
+				},
+				"error": "There was a problem verifying your OTP, please view the console for more details."
+			},
+			"resendOtp": {
+				"success": {
+					"title": "Verification Email Resent",
+					"message": "Another email has been sent with your new OTP code"
+				},
+				"error": "There was a problem resending your OTP, please view the console for more details."
 			},
 			"adminError": "You must be logged in as an admin to perform this action."
 		},
@@ -2420,6 +2489,13 @@
 			"firms": {
 				"applications": {
 					"exists": "An application with the same CRN or email already exists",
+					"create": {
+						"error": "There was an error during registration, please view the console for more details.",
+						"success": {
+							"title": "Company Registration Successfull",
+							"message": "Please wait for the company to be approved by the admin, you will receive an email once your account is approved."
+						}
+					},
 					"approve": {
 						"error": "There was an error approving the application",
 						"success": {

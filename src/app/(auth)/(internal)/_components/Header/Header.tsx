@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
-import { HeaderButton } from '@/components/Header/HeaderButton';
 import classes from '@/pages/(auth)/(internal)/styles.module.css';
+import { HeaderButton } from '@/pages/marketplace/_components/MarketplaceHeader/HeaderButton';
 import { Button, Group, Stack, Text, Title } from '@mantine/core';
 import { IconArrowLeft, IconBox } from '@tabler/icons-react';
 

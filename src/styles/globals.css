@@ -58,6 +58,10 @@
 	}
 }
 
+.mantine-Alert-body {
+	@apply min-w-0;
+}
+
 button,
 a {
 	@apply transition-all duration-150;
