@@ -21,7 +21,6 @@ export default function Form() {
 
 	const { verifyOtp, resendOtp } = useAuth({
 		onVerifyOtpSettled: () => form.setSubmitting(false),
-		onVerifyOtpSuccess: () => router.push('/marketplace'),
 		onVerifyOtpError: () =>
 			setFormError([<List.Item key={0}>{t('lib.auth.resendOtp.error')}</List.Item>]),
 

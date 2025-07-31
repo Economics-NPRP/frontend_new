@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 import { ProtectedRoutes } from '@/constants/ProtectedRoutes';
-import { verifySession } from '@/lib/auth';
+import { verifySession } from '@/lib/auth/sessionUtils';
 
 const otpRoute = '/otp';
 

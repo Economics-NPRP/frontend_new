@@ -238,27 +238,16 @@ export const MyProfileMenu = ({ children, ...props }: MyProfileMenuProps) => {
 				</Switch>
 
 				<MenuDivider />
-				<MenuItem
-					component={Link}
-					href="/feedback"
-					leftSection={<IconMessage size={16} />}
-					disabled
-				>
+				<MenuItem component={Link} href="/feedback" leftSection={<IconMessage size={16} />}>
 					{t('constants.pages.feedback.title')}
 				</MenuItem>
-				<MenuItem
-					component={Link}
-					href="/help"
-					leftSection={<IconHelp size={16} />}
-					disabled
-				>
+				<MenuItem component={Link} href="/help" leftSection={<IconHelp size={16} />}>
 					{t('constants.pages.help.title')}
 				</MenuItem>
 				<MenuItem
 					component={Link}
 					href={`/dashboard/${myUser.data.type === 'admin' ? 'a' : 'f'}/settings`}
 					leftSection={<IconSettings size={16} />}
-					disabled
 				>
 					{t('constants.pages.settings.title')}
 				</MenuItem>

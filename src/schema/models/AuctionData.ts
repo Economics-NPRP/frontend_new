@@ -25,7 +25,6 @@ import { BaseAuctionCycleDataSchema } from './AuctionCycleData';
 import { AuctionTypeSchema } from './AuctionType';
 import { DefaultUserData } from './GeneralUserData';
 import { SectorTypeSchema } from './SectorData';
-import { ReadSubsectorDataSchema } from './SubsectorData';
 import { BaseUserDataSchema } from './UserData';
 
 export const BaseAuctionDataSchema = object({

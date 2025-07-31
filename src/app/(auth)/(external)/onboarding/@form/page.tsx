@@ -32,7 +32,6 @@ export default function Form() {
 
 	const { register } = useAuth({
 		onRegisterSettled: () => form.setSubmitting(false),
-		onRegisterSuccess: () => router.push('/marketplace'),
 		onRegisterError: () =>
 			setFormError([<List.Item key={0}>{t('auth.register.error.message')}</List.Item>]),
 	});

@@ -13,7 +13,7 @@ import {
 	resendOtp as resendOtpApi,
 	verifyOtp as verifyOtpApi,
 } from '@/lib/auth';
-import { ICreateUserPassword, ILoginData, IOTPData } from '@/schema/models';
+import { ICreateUserPassword, ILoginData, IOTPData, IReadUser } from '@/schema/models';
 import { ServerData } from '@/types';
 import { notifications } from '@mantine/notifications';
 import { UseMutationResult, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -42,7 +42,7 @@ type AuthProps = (options?: {
 	login: UseMutationResult<ServerData<{}>, Error, ILoginData, unknown>;
 	logout: UseMutationResult<ServerData<{}>, Error, void, unknown>;
 	register: UseMutationResult<ServerData<{}>, Error, ICreateUserPassword, unknown>;
-	verifyOtp: UseMutationResult<ServerData<{}>, Error, IOTPData, unknown>;
+	verifyOtp: UseMutationResult<ServerData<IReadUser>, Error, IOTPData, unknown>;
 	resendOtp: UseMutationResult<ServerData<{}>, Error, void, unknown>;
 };
 export const useAuth: AuthProps = ({
@@ -162,6 +162,7 @@ export const useAuth: AuthProps = ({
 				message: t('lib.auth.register.success.message'),
 				position: 'bottom-center',
 			});
+			router.push('/dashboard/f');
 			onRegisterSuccess?.();
 		},
 		onError: (error: Error) => {
@@ -180,7 +181,7 @@ export const useAuth: AuthProps = ({
 	const verifyOtp = useMutation({
 		mutationFn: ({ otp }: IOTPData) => throwError(verifyOtpApi(otp), 'verifyOtp'),
 		onSettled: onVerifyOtpSettled,
-		onSuccess: () => {
+		onSuccess: (userData: ServerData<IReadUser>) => {
 			queryClient.invalidateQueries({
 				queryKey: ['users', 'mine'],
 			});
@@ -190,6 +191,7 @@ export const useAuth: AuthProps = ({
 				message: t('lib.auth.otp.success.message'),
 				position: 'bottom-center',
 			});
+			router.push(`/dashboard/${userData.type === 'admin' ? 'a' : 'f'}`);
 			onVerifyOtpSuccess?.();
 		},
 		onError: (error: Error) => {
