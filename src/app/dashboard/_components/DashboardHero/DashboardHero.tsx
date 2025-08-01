@@ -35,7 +35,7 @@ export interface DashboardHeroProps extends Omit<StackProps, 'title'> {
 	};
 	breadcrumbs: Array<{
 		label: string;
-		href: string;
+		href?: string;
 	}>;
 	loading?: boolean;
 }
@@ -59,11 +59,15 @@ export const DashboardHero = ({
 
 	const breadcrumbItems = useMemo(
 		() =>
-			breadcrumbs.map(({ label, href }) => (
-				<Anchor component={Link} key={label} href={href}>
-					{label}
-				</Anchor>
-			)),
+			breadcrumbs.map(({ label, href }) =>
+				href ? (
+					<Anchor component={Link} key={label} href={href}>
+						{label}
+					</Anchor>
+				) : (
+					<Text key={label}>{label}</Text>
+				),
+			),
 		[breadcrumbs],
 	);
 

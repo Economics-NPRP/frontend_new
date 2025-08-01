@@ -1,0 +1,11 @@
+.root {
+	@apply col-span-full;
+
+	.actions {
+		@apply gap-2;
+
+		> .label {
+			@apply display-md-sb text-center;
+		}
+	}
+}

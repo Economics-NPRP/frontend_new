@@ -20,6 +20,10 @@
 				@apply underline underline-offset-4 decoration-1 decoration-dashed decoration-gray-600;
 			}
 
+			> p {
+				@apply paragraph-sm;
+			}
+
 			> .elipsis {
 				@apply flex-shrink-0;
 				@apply paragraph-sm;
