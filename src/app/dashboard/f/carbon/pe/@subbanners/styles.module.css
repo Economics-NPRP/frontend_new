@@ -1,0 +1,27 @@
+.stats {
+	@apply col-span-full;
+	@apply grid grid-cols-1;
+	@apply gap-2 items-start justify-start;
+}
+
+.cta {
+	@apply col-span-full;
+	@apply h-full;
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.stats {
+			@apply grid-cols-2;
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.stats {
+			@apply col-span-8;
+		}
+
+		.cta {
+			@apply col-span-4;
+		}
+	}
+}

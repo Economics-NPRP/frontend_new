@@ -119,51 +119,50 @@ export const DashboardHero = ({
 			</Group>
 			{(meta || title || description || badges || actions) && (
 				<Group className={classes.row}>
-					<Stack className={classes.content}>
-						<Switch value={loading}>
-							<Switch.True>
-								<Stack className={classes.label}>
-									<Skeleton width={260} height={14} visible className="my-0.5" />
-									<Skeleton width={360} height={40} visible className="my-0.5" />
-									<Skeleton width={320} height={16} visible className="my-0.5" />
-								</Stack>
-							</Switch.True>
-							<Switch.False>
-								{(icon || meta || title || description) && (
-									<Group className={classes.wrapper}>
-										{icon && (
-											<Container className={classes.icon}>{icon}</Container>
+					<Switch value={loading}>
+						<Switch.True>
+							<Stack className={classes.label}>
+								<Skeleton width={260} height={14} visible className="my-0.5" />
+								<Skeleton width={360} height={40} visible className="my-0.5" />
+								<Skeleton width={320} height={16} visible className="my-0.5" />
+								{badges && <Group className={classes.badges}>{badges}</Group>}
+							</Stack>
+						</Switch.True>
+						<Switch.False>
+							{(icon || meta || title || description || badges) && (
+								<Group className={classes.content}>
+									{icon && <Container className={classes.icon}>{icon}</Container>}
+									<Stack className={classes.label}>
+										{meta &&
+											(typeof meta === 'string' ? (
+												<Text className={classes.meta}>{meta}</Text>
+											) : (
+												meta
+											))}
+										{title &&
+											(typeof title === 'string' ? (
+												<Title order={1} className={classes.title}>
+													{title}
+												</Title>
+											) : (
+												title
+											))}
+										{description &&
+											(typeof description === 'string' ? (
+												<Text className={classes.description}>
+													{description}
+												</Text>
+											) : (
+												description
+											))}
+										{badges && (
+											<Group className={classes.badges}>{badges}</Group>
 										)}
-										<Stack className={classes.label}>
-											{meta &&
-												(typeof meta === 'string' ? (
-													<Text className={classes.meta}>{meta}</Text>
-												) : (
-													meta
-												))}
-											{title &&
-												(typeof title === 'string' ? (
-													<Title order={1} className={classes.title}>
-														{title}
-													</Title>
-												) : (
-													title
-												))}
-											{description &&
-												(typeof description === 'string' ? (
-													<Text className={classes.description}>
-														{description}
-													</Text>
-												) : (
-													description
-												))}
-										</Stack>
-									</Group>
-								)}
-							</Switch.False>
-						</Switch>
-						{badges && <Group className={classes.badges}>{badges}</Group>}
-					</Stack>
+									</Stack>
+								</Group>
+							)}
+						</Switch.False>
+					</Switch>
 					<Group className={classes.actions}>{actions}</Group>
 				</Group>
 			)}

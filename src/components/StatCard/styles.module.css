@@ -43,7 +43,6 @@
 		@apply size-20;
 		@apply absolute -bottom-2 -right-2;
 		@apply text-gray-100;
-		@apply mix-blend-multiply;
 	}
 
 	&:hover {
@@ -73,7 +72,7 @@
 			@apply bg-dark-700 border-dark-500 text-dark-50;
 
 			> .icon {
-				@apply text-gray-400;
+				@apply text-dark-600;
 			}
 
 			/* &.positive {

@@ -781,6 +781,17 @@
         "title": "Finance Officer",
         "description": "Has access to finances for auction cycle and handles payment-related activity"
       }
+    },
+    "compliance": {
+      "compliant": {
+        "label": "Compliant"
+      },
+      "risk": {
+        "label": "At Risk"
+      },
+      "deficit": {
+        "label": "Deficit"
+      }
     }
   },
   "marketplace": {
@@ -2425,6 +2436,32 @@
         "pe": {
           "actions": {
             "label": "Next Audit Period"
+          },
+          "report": {
+            "heading": "Report Emissions",
+            "subheading": "Report carbon emissions for compliance auditing before the deadline"
+          },
+          "stats": {
+            "avgPermits": {
+              "title": "Average Permit Reserves",
+              "tooltip": "t"
+            },
+            "efficiency": {
+              "title": "Average Permit Efficiency",
+              "tooltip": "How much of the permit reserves are used up annually on average"
+            },
+            "age": {
+              "title": "Average Permit Age",
+              "tooltip": "How much your company tends to hold on to permits before using them"
+            },
+            "coverage": {
+              "title": "Projected Emissions Coverage Status",
+              "tooltip": "Indicates whether your current permit balance is sufficient to cover projected emissions"
+            },
+            "deficit": {
+              "title": "Expected Permit Deficit",
+              "tooltip": "How many extra permits need to be obtained to meet expected emissions, positive number is a deficit, negative number is an excess"
+            }
           }
         }
       }
