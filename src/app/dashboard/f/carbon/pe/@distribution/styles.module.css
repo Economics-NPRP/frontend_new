@@ -1,0 +1,179 @@
+.root {
+	@apply col-span-full;
+	@apply p-6 items-stretch;
+	@apply bg-white border border-solid border-gray-300;
+	@apply transition-shadow duration-300;
+
+	> .header {
+		@apply items-center justify-center flex-nowrap;
+		@apply gap-2;
+
+		> .label {
+			@apply flex-auto;
+			@apply gap-0 items-start;
+
+			> .title {
+				@apply heading-3;
+			}
+
+			> .subtitle {
+				@apply paragraph-sm;
+			}
+		}
+
+		> .filters {
+			@apply gap-2 flex-nowrap;
+			@apply flex-shrink-0;
+			@apply items-center justify-center;
+
+			> .label {
+				@apply hidden;
+				@apply paragraph-sm;
+			}
+
+			> .dropdown {
+				@apply flex-shrink-0;
+			}
+		}
+	}
+
+	> .tabs {
+		@apply flex flex-col items-center justify-start;
+		@apply gap-8;
+
+		> .list {
+			@apply relative;
+			@apply w-full h-10 px-1 gap-1;
+			@apply justify-center items-center flex-nowrap;
+			@apply bg-gray-50;
+
+			> .tab {
+				@apply h-8;
+				@apply display-sm-sb-d3;
+				@apply transition-colors;
+				@apply z-[1];
+
+				&[data-active] {
+					@apply display-sm-sb-d6;
+				}
+
+				&:not([data-active]):hover {
+					@apply bg-gray-100;
+				}
+			}
+
+			> .indicator {
+				@apply h-7;
+				@apply bg-white border border-solid border-gray-300;
+				@apply shadow-xs;
+			}
+		}
+	}
+
+	> .chart {
+		@apply py-4;
+	}
+
+	> .table {
+		td:first-child,
+		th:first-child {
+			@apply bg-white;
+		}
+
+		.cell {
+			@apply flex-nowrap items-center justify-start;
+			@apply gap-2;
+
+			> .name {
+				@apply truncate;
+				@apply display-sm-sb-d3;
+				@apply underline underline-offset-4 decoration-1 decoration-dashed decoration-gray-600;
+			}
+
+			> .value {
+				@apply flex-auto;
+				@apply paragraph-sm;
+			}
+
+			> .scope {
+				@apply size-2;
+				@apply rounded-full;
+
+				&.scope1 {
+					@apply bg-maroon-600;
+				}
+				&.scope2 {
+					@apply bg-purple-600;
+				}
+				&.scope3 {
+					@apply bg-palm-600;
+				}
+			}
+
+			> .badge {
+				@apply w-12;
+				@apply text-gray-600;
+			}
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-xs {
+		.root > .header > .filters > .label {
+			@apply flex;
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-md {
+		.root {
+			@apply col-span-5;
+			@apply px-8 py-6;
+
+			> .header > .filters > .label {
+				@apply hidden;
+			}
+		}
+	}
+	@mixin larger-than $mantine-breakpoint-lg {
+		.root > .header > .filters > .label {
+			@apply flex;
+		}
+	}
+
+	@mixin dark {
+		.root {
+			@apply bg-dark-700 border-dark-500;
+
+			> .tabs > .list {
+				@apply bg-dark-600;
+
+				> .tab {
+					@apply text-dark-50;
+
+					&[data-active='true'] {
+						@apply text-white;
+					}
+
+					&:not([data-active='true']):hover {
+						@apply bg-dark-500;
+					}
+				}
+
+				> .indicator {
+					@apply bg-dark-400 border-0;
+					box-shadow: none;
+				}
+			}
+
+			> .table td:first-child,
+			> .table th:first-child {
+				@apply bg-dark-700 border-dark-400;
+			}
+
+			> .table .cell > .name {
+				@apply text-dark-50;
+				@apply decoration-dark-50;
+			}
+		}
+	}
+}

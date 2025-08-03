@@ -727,6 +727,17 @@
     "na": "N/A",
     "others": "Others",
     "lastUpdated": "Last Updated: {value}",
+    "scope": {
+      "scope1": {
+        "label": "Scope 1"
+      },
+      "scope2": {
+        "label": "Scope 2"
+      },
+      "scope3": {
+        "label": "Scope 3"
+      }
+    },
     "download": {
       "default": "Download as CSV",
       "companyData": "Download all company data as CSV",
@@ -2486,6 +2497,22 @@
             },
             "forecasted": {
               "label": "Forecasted Emissions"
+            }
+          },
+          "distribution": {
+            "columns": {
+              "title": "Category",
+              "scope": "Scope",
+              "permits": "Permits (% Total)",
+              "emissions": "Emissions (% Total)"
+            },
+            "title": "Scope Distribution",
+            "subtitle": "Distribution of different statistics based on scope",
+            "filters": {
+              "date": {
+                "label": "Year",
+                "placeholder": "Select Year"
+              }
             }
           }
         }
