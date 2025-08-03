@@ -2444,7 +2444,7 @@
           "stats": {
             "avgPermits": {
               "title": "Average Permit Reserves",
-              "tooltip": "t"
+              "tooltip": "Number of leftover permits averaged out over the past years"
             },
             "efficiency": {
               "title": "Average Permit Efficiency",
@@ -2461,6 +2461,31 @@
             "deficit": {
               "title": "Expected Permit Deficit",
               "tooltip": "How many extra permits need to be obtained to meet expected emissions, positive number is a deficit, negative number is an excess"
+            }
+          },
+          "timeSeries": {
+            "filters": {
+              "date": {
+                "label": "Year",
+                "placeholder": "Select Year"
+              }
+            },
+            "title": "Permit Flow",
+            "subtitle": "Overview of the permit movement in and out of your company inventory, as well as annual reporting",
+            "inflow": {
+              "label": "Permits Inflow"
+            },
+            "outflow": {
+              "label": "Permits Outflow"
+            },
+            "reported": {
+              "label": "Reported Emissions"
+            },
+            "reserves": {
+              "label": "Permit Reserves"
+            },
+            "forecasted": {
+              "label": "Forecasted Emissions"
             }
           }
         }

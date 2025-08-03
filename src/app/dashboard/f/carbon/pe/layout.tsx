@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
+import { withProviders } from '@/helpers';
+import { PageProvider } from '@/pages/dashboard/f/carbon/pe/_components/Providers';
 import { Stack } from '@mantine/core';
 
 import classes from './styles.module.css';
@@ -17,13 +19,14 @@ export interface HomeProps {
 	table: ReactNode;
 }
 export default function Home({ hero, subbanners, distribution, timeSeries, table }: HomeProps) {
-	return (
+	return withProviders(
 		<Stack className={classes.root}>
 			{hero}
 			{subbanners}
-			{distribution}
 			{timeSeries}
+			{distribution}
 			{table}
-		</Stack>
+		</Stack>,
+		{ provider: PageProvider },
 	);
 }
