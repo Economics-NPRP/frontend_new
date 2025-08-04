@@ -235,6 +235,14 @@ export default function Distribution() {
 				className={classes.table}
 				columns={[
 					{
+						accessor: 'title',
+						sortable: false,
+						title: t('dashboard.firm.carbon.pe.distribution.columns.title'),
+						width: 200,
+						ellipsis: true,
+						render: (record) => record.title,
+					},
+					{
 						accessor: 'scope',
 						sortable: false,
 						title: t('dashboard.firm.carbon.pe.distribution.columns.scope'),
@@ -250,14 +258,6 @@ export default function Distribution() {
 								/>
 							</Group>
 						),
-					},
-					{
-						accessor: 'title',
-						sortable: false,
-						title: t('dashboard.firm.carbon.pe.distribution.columns.title'),
-						width: 200,
-						ellipsis: true,
-						render: (record) => record.title,
 					},
 					{
 						accessor: 'emissions',
@@ -303,6 +303,7 @@ export default function Distribution() {
 				records={tableData}
 				sortStatus={sortStatus}
 				onSortStatusChange={setSortStatus}
+				pinFirstColumn
 				withRowBorders
 				withColumnBorders
 				highlightOnHover

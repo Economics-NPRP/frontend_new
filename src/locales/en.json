@@ -2514,6 +2514,13 @@
                 "placeholder": "Select Year"
               }
             }
+          },
+          "table": {
+            "tabs": {
+              "history": {
+                "label": "Carbon History"
+              }
+            }
           }
         }
       }

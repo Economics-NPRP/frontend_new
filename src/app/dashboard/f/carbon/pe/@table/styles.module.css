@@ -1,0 +1,68 @@
+.root {
+	@apply col-span-full;
+
+	> .tabs {
+		@apply flex flex-col items-center justify-start;
+		@apply gap-8;
+
+		> .list {
+			@apply relative;
+			@apply w-full p-1 gap-1;
+			@apply justify-center items-center flex-nowrap;
+			@apply bg-gray-50;
+
+			> .tab {
+				@apply h-10;
+				@apply display-md-15-sb;
+				@apply transition-colors;
+				@apply z-[1];
+
+				> .label {
+					@apply flex flex-row items-center justify-center;
+					@apply gap-2;
+				}
+
+				&[data-active] {
+					@apply display-md-15;
+				}
+
+				&:not([data-active]):hover {
+					@apply bg-gray-100;
+				}
+			}
+
+			> .indicator {
+				@apply h-7;
+				@apply bg-white border border-solid border-gray-300;
+				@apply shadow-xs;
+			}
+		}
+	}
+}
+
+* {
+	@mixin dark {
+		.root {
+			> .tabs > .list {
+				@apply bg-dark-600;
+
+				> .tab {
+					@apply text-dark-50;
+
+					&[data-active='true'] {
+						@apply text-white;
+					}
+
+					&:not([data-active='true']):hover {
+						@apply bg-dark-500;
+					}
+				}
+
+				> .indicator {
+					@apply bg-dark-400 border-0;
+					box-shadow: none;
+				}
+			}
+		}
+	}
+}
