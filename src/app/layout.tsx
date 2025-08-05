@@ -8,7 +8,6 @@ import { getLangDir } from 'rtl-detect';
 import * as v from 'valibot';
 
 import { getUserLocale } from '@/locales';
-import '@/schema/models/AuctionData';
 import '@/styles/globals.css';
 import { ColorSchemeScript } from '@mantine/core';
 import { DatesProvider } from '@mantine/dates';
@@ -36,7 +35,7 @@ export default async function RootLayout({
 	return (
 		<html dir={direction} lang={locale} suppressHydrationWarning>
 			<Head>
-				<ColorSchemeScript />
+				<ColorSchemeScript defaultColorScheme="auto" />
 			</Head>
 			<body className="antialiased overflow-x-hidden">
 				<Providers>

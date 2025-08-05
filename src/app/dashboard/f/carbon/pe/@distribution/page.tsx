@@ -263,6 +263,7 @@ export default function Distribution() {
 						accessor: 'emissions',
 						sortable: true,
 						title: t('dashboard.firm.carbon.pe.distribution.columns.emissions'),
+						width: 200,
 						render: (record) => (
 							<Group className={classes.cell}>
 								<Text className={classes.value}>
@@ -284,6 +285,7 @@ export default function Distribution() {
 						accessor: 'permits',
 						sortable: true,
 						title: t('dashboard.firm.carbon.pe.distribution.columns.permits'),
+						width: 200,
 						render: (record) => (
 							<Group className={classes.cell}>
 								<Text className={classes.value}>

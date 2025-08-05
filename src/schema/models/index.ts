@@ -16,6 +16,7 @@ export * from './FirmApplicationStatus';
 export * from './FirmData';
 export * from './GeneralUserData';
 export * from './LoginData';
+export * from './PermitData';
 export * from './SectorData';
 export * from './SubsectorData';
 export * from './UserData';

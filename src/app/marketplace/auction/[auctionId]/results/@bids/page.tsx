@@ -53,22 +53,17 @@ export default function Bids() {
 					root: classes.root,
 					list: classes.list,
 					tab: classes.tab,
+					tabLabel: classes.label,
 					panel: classes.panel,
 				}}
 			>
-				<Tabs.List ref={setRootRef}>
-					<Tabs.Tab
-						value="results"
-						ref={setControlRef('results')}
-						leftSection={<IconAward size={16} />}
-					>
+				<Tabs.List ref={setRootRef} grow>
+					<Tabs.Tab value="results" ref={setControlRef('results')}>
+						<IconAward size={16} />
 						{t('marketplace.auction.results.bids.tabs.results')}
 					</Tabs.Tab>
-					<Tabs.Tab
-						value="all"
-						ref={setControlRef('all')}
-						leftSection={<IconGavel size={16} />}
-					>
+					<Tabs.Tab value="all" ref={setControlRef('all')}>
+						<IconGavel size={16} />
 						{t('marketplace.auction.results.bids.tabs.bids')}
 					</Tabs.Tab>
 

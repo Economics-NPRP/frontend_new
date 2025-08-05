@@ -18,6 +18,7 @@ export * from './PaginatedBids';
 export * from './PaginatedFirmApplications';
 export * from './PaginatedFirms';
 export * from './PaginatedOpenAuctionResults';
+export * from './PaginatedPermits';
 export * from './PaginatedWinningBids';
 export * from './RealtimeBids';
 export * from './SingleAuction';
