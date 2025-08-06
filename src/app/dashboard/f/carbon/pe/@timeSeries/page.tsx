@@ -40,7 +40,7 @@ export default function TimeSeries() {
 				inflow,
 				outflow,
 				reported,
-				reserves,
+				reserves: month.isBefore(DateTime.now()) ? reserves : undefined,
 			};
 		});
 	}, [t, selectedPeriod]);

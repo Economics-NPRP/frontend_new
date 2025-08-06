@@ -1,18 +1,32 @@
 'use client';
 
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 import { MyUserProfileContext, SortedOffsetPaginatedQueryProvider } from '@/contexts';
 // import { getPaginatedPermits } from '@/lib/permits';
-import { IPermitData } from '@/schema/models';
+import { IPermitData, PermitExpiryFilter, PermitUsageFilter } from '@/schema/models';
 import {
 	SortedOffsetPaginatedContextState,
 	SortedOffsetPaginatedProviderProps,
 	getDefaultSortedOffsetPaginatedContextState,
 } from '@/types';
 
-export interface IPaginatedPermitsContext extends SortedOffsetPaginatedContextState<IPermitData> {}
-const DefaultData = getDefaultSortedOffsetPaginatedContextState<IPermitData>();
+export interface IPaginatedPermitsContext extends SortedOffsetPaginatedContextState<IPermitData> {
+	usage: PermitUsageFilter;
+	setUsage: (usage: PermitUsageFilter) => void;
+
+	expiry: PermitExpiryFilter;
+	setExpiry: (expiry: PermitExpiryFilter) => void;
+}
+const DefaultData = {
+	...getDefaultSortedOffsetPaginatedContextState<IPermitData>(),
+
+	usage: 'all' as PermitUsageFilter,
+	setUsage: () => {},
+
+	expiry: 'all' as PermitExpiryFilter,
+	setExpiry: () => {},
+};
 const Context = createContext<IPaginatedPermitsContext>(DefaultData);
 
 export const PaginatedPermitsProvider = ({
@@ -20,6 +34,9 @@ export const PaginatedPermitsProvider = ({
 	...props
 }: SortedOffsetPaginatedProviderProps) => {
 	const myUser = useContext(MyUserProfileContext);
+
+	const [usage, setUsage] = useState<PermitUsageFilter>(DefaultData.usage);
+	const [expiry, setExpiry] = useState<PermitExpiryFilter>(DefaultData.expiry);
 
 	return (
 		<SortedOffsetPaginatedQueryProvider
@@ -43,6 +60,10 @@ export const PaginatedPermitsProvider = ({
 			}
 			id={id}
 			{...props}
+			usage={usage}
+			setUsage={setUsage}
+			expiry={expiry}
+			setExpiry={setExpiry}
 		/>
 	);
 };

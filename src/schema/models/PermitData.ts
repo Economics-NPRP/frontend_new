@@ -8,12 +8,14 @@ import {
 	nullish,
 	number,
 	object,
+	picklist,
 	pipe,
 } from 'valibot';
 
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
 
 import { ReadAuctionDataSchema } from './AuctionData';
+import { EmissionCategorySchema } from './EmissionCategory';
 import { BaseFirmDataSchema, DefaultFirmData } from './FirmData';
 import { SectorTypeSchema } from './SectorData';
 
@@ -21,7 +23,8 @@ export const BasePermitDataSchema = object({
 	id: UuidSchema(),
 
 	sector: SectorTypeSchema,
-	scope: pipe(number(), minValue(1), maxValue(3)),
+	scope: pipe(number(), minValue(1), maxValue(3), picklist([1, 2, 3])),
+	category: EmissionCategorySchema,
 	capacity: PositiveNumberSchema(true),
 
 	linkedEmissions: array(UuidSchema()),
@@ -30,7 +33,7 @@ export const BasePermitDataSchema = object({
 
 	obtainDate: TimestampSchema(),
 	expiryDate: TimestampSchema(),
-	releaseDate: TimestampSchema(),
+	issueDate: TimestampSchema(),
 });
 
 // export const CreatePermitDataSchema = object({
@@ -97,6 +100,7 @@ export const DefaultPermitData: IPermitData = {
 
 	sector: 'energy',
 	scope: 1,
+	category: 'stationaryCombustion',
 	capacity: 0,
 	usage: 0,
 	cost: 0,
@@ -107,7 +111,7 @@ export const DefaultPermitData: IPermitData = {
 
 	obtainDate: new Date().toISOString(),
 	expiryDate: new Date().toISOString(),
-	releaseDate: new Date().toISOString(),
+	issueDate: new Date().toISOString(),
 
 	auction: null,
 	owner: DefaultFirmData,
@@ -118,6 +122,7 @@ export const DefaultCreatePermitData: ICreatePermit = {
 
 	sector: 'energy',
 	scope: 1,
+	category: 'stationaryCombustion',
 	capacity: 0,
 
 	linkedEmissions: [],
@@ -126,5 +131,5 @@ export const DefaultCreatePermitData: ICreatePermit = {
 
 	obtainDate: new Date().toISOString(),
 	expiryDate: new Date().toISOString(),
-	releaseDate: new Date().toISOString(),
+	issueDate: new Date().toISOString(),
 };

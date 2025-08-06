@@ -1,8 +1,10 @@
 'use client';
 
+import { PaginatedPermitsContext } from 'contexts/PaginatedPermits';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
+import { PermitsTable } from '@/components/Tables/Permits';
 import { FloatingIndicator, Stack, Tabs } from '@mantine/core';
 import { IconHistory, IconLeaf, IconLicense } from '@tabler/icons-react';
 
@@ -10,6 +12,7 @@ import classes from './styles.module.css';
 
 export default function Table() {
 	const t = useTranslations();
+	const permits = useContext(PaginatedPermitsContext);
 
 	const [type, setType] = useState<'permits' | 'emissions' | 'history'>('permits');
 
@@ -54,7 +57,9 @@ export default function Table() {
 					/>
 				</Tabs.List>
 
-				<Tabs.Panel value="permits">permits</Tabs.Panel>
+				<Tabs.Panel value="permits">
+					<PermitsTable permits={permits} />
+				</Tabs.Panel>
 
 				<Tabs.Panel value="emissions">emissions</Tabs.Panel>
 

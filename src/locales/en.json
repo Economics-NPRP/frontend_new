@@ -569,7 +569,8 @@
         "firms": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {companies} =1 {company} other {companies}}",
         "admins": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {admins} =1 {admin} other {admins}}",
         "auctionCycles": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {auction cycles} =1 {auction cycle} other {auction cycles}}",
-        "auctions": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {auctions} =1 {auction} other {auctions}}"
+        "auctions": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {auctions} =1 {auction} other {auctions}}",
+        "permits": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {permits} =1 {permit} other {permits}}"
       },
       "perPage": {
         "label": "Per page:"
@@ -738,13 +739,76 @@
         "label": "Scope 3"
       }
     },
+    "emissionCategory": {
+      "stationaryCombustion": {
+        "label": "Stationary Combustion"
+      },
+      "mobileCombustion": {
+        "label": "Mobile Combustion"
+      },
+      "fuelCombustion": {
+        "label": "Fuel Combustion"
+      },
+      "purchasedElectricity": {
+        "label": "Purchased Electricity"
+      },
+      "purchasedHeat": {
+        "label": "Purchased Heat"
+      },
+      "purchasedGoodsAndServices": {
+        "label": "Purchased Goods and Services"
+      },
+      "capitalGoods": {
+        "label": "Capital Goods"
+      },
+      "fuelAndEnergyRelatedActivities": {
+        "label": "Fuel and Energy-Related Activities"
+      },
+      "upStreamTransportationAndDistribution": {
+        "label": "Upstream Transportation and Distribution"
+      },
+      "wasteGeneratedInOperations": {
+        "label": "Waste Generated in Operations"
+      },
+      "businessTravel": {
+        "label": "Business Travel"
+      },
+      "employeeCommute": {
+        "label": "Employee Commuting"
+      },
+      "upStreamLeasedAssets": {
+        "label": "Upstream Leased Assets"
+      },
+      "downStreamTransportationAndDistribution": {
+        "label": "Downstream Transportation and Distribution"
+      },
+      "processingOfSoldProducts": {
+        "label": "Processing of Sold Products"
+      },
+      "useOfSoldProducts": {
+        "label": "Use of Sold Products"
+      },
+      "endOfLifeTreatmentOfSoldProducts": {
+        "label": "End-of-Life Treatment of Sold Products"
+      },
+      "downStreamLeasedAssets": {
+        "label": "Downstream Leased Assets"
+      },
+      "franchises": {
+        "label": "Franchises"
+      },
+      "investments": {
+        "label": "Investments"
+      }
+    },
     "download": {
       "default": "Download as CSV",
       "companyData": "Download all company data as CSV",
       "applications": "Download all applications as CSV",
       "bids": "Download all bids as CSV",
       "results": "Download all auction results as CSV",
-      "auctions": "Download all auctions as CSV"
+      "auctions": "Download all auctions as CSV",
+      "permits": "Download all permits as a CSV"
     },
     "auctionCycleStatus": {
       "draft": "Draft",
@@ -802,6 +866,19 @@
       },
       "deficit": {
         "label": "Deficit"
+      }
+    },
+    "permitUsage": {
+      "high": "High Usage",
+      "medium": "Medium Usage",
+      "low": "Low Usage"
+    },
+    "permitExpiry": {
+      "expired": {
+        "label": "Expired"
+      },
+      "soon": {
+        "label": "Expiring Soon"
       }
     }
   },
@@ -2006,6 +2083,78 @@
         "auth": "Terms of Service",
         "privacy": "Privacy Policy"
       }
+    },
+    "permitsTable": {
+      "filters": {
+        "badges": {
+          "usage": {
+            "high": "High Usage Permits Only",
+            "medium": "Medium Usage Permits Only",
+            "low": "Low Usage Permits Only"
+          },
+          "unexpired": "Unexpired Permits Only",
+          "expired": "Expired Permits Only",
+          "all": "Showing All Permits"
+        },
+        "menu": {
+          "usage": {
+            "label": "Permit Usage",
+            "all": "Show permits at all usage amounts"
+          },
+          "expiry": {
+            "label": "Permit Expiry",
+            "unexpired": "Only show unexpired permits",
+            "expired": "Only show expired permits",
+            "all": "Show both unexpired and expired permits"
+          }
+        },
+        "label": "Filters:"
+      },
+      "title": "Permits Portfolio",
+      "legend": {
+        "expiring": {
+          "label": "Expiring Soon",
+          "tooltip": "This permit is expiring soon"
+        },
+        "highUsage": {
+          "label": "High Usage",
+          "tooltip": "This permit has high usage"
+        }
+      },
+      "search": {
+        "placeholder": "Search for a specific permit..."
+      },
+      "groups": {
+        "details": "Permit Details",
+        "usage": "Permit Usage",
+        "expiry": "Permit Expiry",
+        "miscellaneous": "Miscellaneous"
+      },
+      "empty": "No permits found",
+      "columns": {
+        "sector": "Sector",
+        "purchaseDate": "Purchase Date",
+        "obtainDate": "Obtain Date",
+        "scopeCategory": "Scope / Category",
+        "capacity": "Capacity",
+        "usage": "Usage",
+        "percentage": "Percentage",
+        "issueDate": "Issue Date",
+        "expiryDate": "Expiry Date",
+        "lifespan": "Lifespan",
+        "expiryStatus": "Status",
+        "cost": "Cost",
+        "auction": "Source Auction",
+        "actions": {
+          "use": {
+            "tooltip": "Report emissions using this permit"
+          },
+          "sell": {
+            "tooltip": "Create a new auction to sell this permit"
+          }
+        }
+      },
+      "scopeCategory": "{scope} / {category}"
     }
   },
   "dashboard": {

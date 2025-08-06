@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
+import { PaginatedPermitsProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { PageProvider } from '@/pages/dashboard/f/carbon/pe/_components/Providers';
 import { Stack } from '@mantine/core';
@@ -27,6 +28,7 @@ export default function Home({ hero, subbanners, distribution, timeSeries, table
 			{distribution}
 			{table}
 		</Stack>,
+		{ provider: PaginatedPermitsProvider },
 		{ provider: PageProvider },
 	);
 }

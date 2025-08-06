@@ -285,8 +285,13 @@
 	}
 
 	.unverified,
-	.ending {
+	.ending,
+	.expiring {
 		@apply text-orange-600;
+	}
+
+	.highUsage {
+		@apply text-red-600;
 	}
 
 	.uninvited,
