@@ -37,6 +37,10 @@
 				@apply shadow-xs;
 			}
 		}
+
+		> .panel {
+			@apply w-full;
+		}
 	}
 }
 

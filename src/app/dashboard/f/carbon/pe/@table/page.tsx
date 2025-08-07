@@ -31,6 +31,7 @@ export default function Table() {
 					list: classes.list,
 					tab: classes.tab,
 					tabLabel: classes.label,
+					panel: classes.panel,
 				}}
 				variant="none"
 				value={type}
