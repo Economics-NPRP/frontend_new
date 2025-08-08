@@ -372,6 +372,9 @@
       },
       "sectorDetails": {
         "label": "Return to Sector Details Page"
+      },
+      "permitsEmissions": {
+        "label": "Return to Permits & Emissions Page"
       }
     },
     "view": {
@@ -3393,6 +3396,40 @@
         "nextQuarterStart": "Start of Next Quarter",
         "nextQuarter": "Next Quarter",
         "tomorrow": "Tomorrow"
+      }
+    },
+    "emission": {
+      "final": {
+        "header": {
+          "heading": "Your Emissions Report Has Been Submitted",
+          "subheading": "Please wait for an admin to verify your report before it shows up on your dashboard"
+        }
+      },
+      "error": {
+        "title": "There was an error reporting your emissions",
+        "message": "Please check the console for further details"
+      },
+      "title": "Report Emissions",
+      "complete": {
+        "label": "Submit Emissions Report"
+      },
+      "review": {
+        "steps": {
+          "label": "Review Emissions Report",
+          "description": "Ensure emissions are correctly and accurately mentioned before submitting the report"
+        }
+      },
+      "numbers": {
+        "steps": {
+          "label": "Emission Data",
+          "description": "Record your emissions for the current reporting period"
+        }
+      },
+      "report": {
+        "steps": {
+          "label": "Report Upload",
+          "description": "Submit your supporting sustainability documentation"
+        }
       }
     }
   }

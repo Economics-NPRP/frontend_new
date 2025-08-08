@@ -636,7 +636,7 @@ const _PermitsTable = ({
 										>
 											<ActionIcon
 												component={Link}
-												href={`/dashboard/f/carbon/report?permit=${record.id}`}
+												href={`/create/emission?permit=${record.id}`}
 												target="_blank"
 												className={`${classes.button}`}
 											>

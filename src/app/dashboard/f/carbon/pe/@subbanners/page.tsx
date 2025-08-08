@@ -59,7 +59,7 @@ export default function Subbanners() {
 				heading={t('dashboard.firm.carbon.pe.report.heading')}
 				subheading={t('dashboard.firm.carbon.pe.report.subheading')}
 				component={Link}
-				href="/dashboard/f/carbon/report"
+				href="/create/emission"
 				index={1}
 				style={{ height: '100%' }}
 			/>

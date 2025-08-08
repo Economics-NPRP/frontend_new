@@ -235,7 +235,7 @@ export const SidebarLinks: Record<
 						? t('constants.pages.dashboard.firm.carbon.report.tooltip')
 						: t('constants.pages.dashboard.firm.carbon.report.title'),
 					icon: <IconReport size={16} />,
-					href: '/dashboard/f/carbon/report',
+					href: '/create/emission',
 				},
 			],
 		},
