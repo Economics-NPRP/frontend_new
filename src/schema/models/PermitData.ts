@@ -16,7 +16,8 @@ import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/util
 
 import { ReadAuctionDataSchema } from './AuctionData';
 import { EmissionCategorySchema } from './EmissionCategory';
-import { BaseFirmDataSchema, DefaultFirmData } from './FirmData';
+import { ReadEmissionDataSchema } from './EmissionData';
+import { BaseFirmDataSchema, DefaultFirmData, ReadFirmDataSchema } from './FirmData';
 import { SectorTypeSchema } from './SectorData';
 
 export const BasePermitDataSchema = object({
@@ -27,9 +28,9 @@ export const BasePermitDataSchema = object({
 	category: EmissionCategorySchema,
 	capacity: PositiveNumberSchema(true),
 
-	linkedEmissions: array(UuidSchema()),
-	previousAuctions: array(UuidSchema()),
-	previousOwners: array(UuidSchema()),
+	linkedEmissionIds: array(UuidSchema()),
+	previousAuctionIds: array(UuidSchema()),
+	previousOwnerIds: array(UuidSchema()),
 
 	obtainDate: TimestampSchema(),
 	expiryDate: TimestampSchema(),
@@ -79,6 +80,10 @@ export const ReadPermitDataSchema = object({
 	usage: PositiveNumberSchema(true),
 	cost: PositiveNumberSchema(true),
 
+	linkedEmissions: array(ReadEmissionDataSchema),
+	previousAuctions: array(ReadAuctionDataSchema),
+	previousOwners: array(ReadFirmDataSchema),
+
 	auction: lazy(() => nullish(ReadAuctionDataSchema)),
 	owner: lazy(() => BaseFirmDataSchema),
 });
@@ -105,6 +110,10 @@ export const DefaultPermitData: IPermitData = {
 	usage: 0,
 	cost: 0,
 
+	linkedEmissionIds: [],
+	previousAuctionIds: [],
+	previousOwnerIds: [],
+
 	linkedEmissions: [],
 	previousAuctions: [],
 	previousOwners: [],
@@ -117,7 +126,7 @@ export const DefaultPermitData: IPermitData = {
 	owner: DefaultFirmData,
 };
 
-export const DefaultCreatePermitData: ICreatePermit = {
+export const DefaultCreatePermit: ICreatePermit = {
 	id: '',
 
 	sector: 'energy',
@@ -125,9 +134,9 @@ export const DefaultCreatePermitData: ICreatePermit = {
 	category: 'stationaryCombustion',
 	capacity: 0,
 
-	linkedEmissions: [],
-	previousAuctions: [],
-	previousOwners: [],
+	linkedEmissionIds: [],
+	previousAuctionIds: [],
+	previousOwnerIds: [],
 
 	obtainDate: new Date().toISOString(),
 	expiryDate: new Date().toISOString(),

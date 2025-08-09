@@ -3,12 +3,12 @@
 import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { useContextSelector } from 'use-context-selector';
 import { safeParse } from 'valibot';
 
 import { Switch } from '@/components/SwitchCase';
-import { useCreateEmission } from '@/hooks';
+// import { useCreateEmission } from '@/hooks';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { FinalStep } from '@/pages/create/emission/@form/Final';
 import {
@@ -17,8 +17,6 @@ import {
 	DefaultCreateEmission,
 	ICreateEmission,
 	ICreateEmissionOutput,
-	ReadToCreateEmissionDataTransformer,
-	SectorType,
 } from '@/schema/models';
 import { List } from '@mantine/core';
 import { UseFormReturnType, useForm } from '@mantine/form';
@@ -28,7 +26,7 @@ export default function CreateEmissionLayout() {
 	const t = useTranslations();
 	const searchParams = useSearchParams();
 
-	const [disabled, setDisabled] = useState(false);
+	// const [disabled, setDisabled] = useState(false);
 	// const createEmission = useCreateEmission();
 
 	const setTitle = useContextSelector(CreateLayoutContext, (context) => context.setTitle);
@@ -82,10 +80,7 @@ export default function CreateEmissionLayout() {
 		mode: 'uncontrolled',
 		validateInputOnBlur: true,
 		clearInputErrorOnChange: true,
-		initialValues: {
-			...DefaultCreateEmission,
-			sector: searchParams.get('sector') as SectorType,
-		},
+		initialValues: DefaultCreateEmission,
 		validate: (values) => handleIsStepValid(activeStep, values),
 		transformValues: (values) => {
 			const parsedData = safeParse(CreateEmissionDataSchemaTransformer, values);
@@ -101,13 +96,14 @@ export default function CreateEmissionLayout() {
 	});
 
 	const handleFormSubmit = useCallback(
-		(formData: ICreateEmissionOutput) => {
+		// (formData: ICreateEmissionOutput) => {
+		() => {
 			setIsFormSubmitting(true);
 			setFormError([]);
-			createEmission.mutate(formData, {
-				onSettled: () => setIsFormSubmitting(false),
-				onSuccess: () => handleFinalStep(),
-			});
+			// createEmission.mutate(formData, {
+			// 	onSettled: () => setIsFormSubmitting(false),
+			// 	onSuccess: () => handleFinalStep(),
+			// });
 		},
 		[handleFinalStep, searchParams],
 	);
@@ -144,49 +140,53 @@ export default function CreateEmissionLayout() {
 		if (activeStep >= 2) return;
 		if (!searchParams.get('emission')) return;
 
-		setIsFormSubmitting(true);
-		setDisabled(true);
+		// setIsFormSubmitting(true);
+		// setDisabled(true);
 
-		if (!singleEmission.isSuccess) {
-			if (singleEmission.isError) {
-				console.error(
-					'There was an error loading the existing emission data for editing:',
-					singleEmission,
-				);
-				notifications.show({
-					color: 'red',
-					title: t('create.emission.error.title'),
-					message: t('create.emission.error.message'),
-					position: 'bottom-center',
-				});
-			}
-			return;
-		}
+		// if (!singleEmission.isSuccess) {
+		// 	if (singleEmission.isError) {
+		// 		console.error(
+		// 			'There was an error loading the existing emission data for editing:',
+		// 			singleEmission,
+		// 		);
+		// 		notifications.show({
+		// 			color: 'red',
+		// 			title: t('create.emission.error.title'),
+		// 			message: t('create.emission.error.message'),
+		// 			position: 'bottom-center',
+		// 		});
+		// 	}
+		// 	return;
+		// }
 
-		const transformedData = safeParse(ReadToCreateEmissionDataTransformer, singleEmission.data);
-		if (!transformedData.success) {
-			console.error(
-				'There was an error loading the existing emission data for editing:',
-				transformedData.issues,
-			);
-			notifications.show({
-				color: 'red',
-				title: t('create.emission.error.title'),
-				message: t('create.emission.error.message'),
-				position: 'bottom-center',
-			});
-			return;
-		}
+		// const transformedData = safeParse(ReadToCreateEmissionDataTransformer, singleEmission.data);
+		// if (!transformedData.success) {
+		// 	console.error(
+		// 		'There was an error loading the existing emission data for editing:',
+		// 		transformedData.issues,
+		// 	);
+		// 	notifications.show({
+		// 		color: 'red',
+		// 		title: t('create.emission.error.title'),
+		// 		message: t('create.emission.error.message'),
+		// 		position: 'bottom-center',
+		// 	});
+		// 	return;
+		// }
 
-		setIsFormSubmitting(false);
-		setDisabled(false);
+		// setIsFormSubmitting(false);
+		// setDisabled(false);
 
-		form.setValues(transformedData.output);
-		form.resetDirty(transformedData.output);
-		form.validate();
+		// form.setValues(transformedData.output);
+		// form.resetDirty(transformedData.output);
+		// form.validate();
 
-		handleSearchParamStep();
-	}, [searchParams, singleEmission.data, handleSearchParamStep]);
+		// handleSearchParamStep();
+	}, [
+		searchParams,
+		// singleEmission.data,
+		handleSearchParamStep,
+	]);
 
 	useEffect(() => setHandleFormSubmit(() => form.onSubmit(handleFormSubmit)), [handleFormSubmit]);
 	useEffect(

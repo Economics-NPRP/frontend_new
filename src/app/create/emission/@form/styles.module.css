@@ -46,7 +46,7 @@
 	}
 }
 
-* {
+/* * {
 	@mixin larger-than $mantine-breakpoint-sm {
 		.root {
 		}
@@ -54,4 +54,4 @@
 
 	@mixin dark {
 	}
-}
+} */

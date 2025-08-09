@@ -62,6 +62,10 @@ export default function Form() {
 		[form, router, createApplication],
 	);
 
+	const handleAvatarUpload = useCallback((file: File | null) => {
+		console.log(file);
+	}, []);
+
 	//	Scroll to top whenever step changes or there is an error
 	useEffect(() => window.scrollTo({ top: 0, behavior: 'smooth' }), [activeStep]);
 	useEffect(() => {
@@ -98,7 +102,10 @@ export default function Form() {
 							description={t('auth.register.form.first.logo.description')}
 							className={classes.avatar}
 						>
-							<AvatarUpload className={classes.input} />
+							<AvatarUpload
+								className={classes.input}
+								onChangeFile={handleAvatarUpload}
+							/>
 						</Input.Wrapper>
 						<TextInput
 							label={t('auth.register.form.first.name.label')}

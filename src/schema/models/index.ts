@@ -12,6 +12,7 @@ export * from './BidData';
 export * from './CycleAdminData';
 export * from './CycleAdminListData';
 export * from './EmissionCategory';
+export * from './EmissionData';
 export * from './FirmApplicationData';
 export * from './FirmApplicationStatus';
 export * from './FirmData';
