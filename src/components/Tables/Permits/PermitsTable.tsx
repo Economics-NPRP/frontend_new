@@ -604,11 +604,11 @@ const _PermitsTable = ({
 								render: (record) => (
 									<Anchor
 										className={classes.anchor}
-										href={`marketplace/auction/${record.previousAuctions[record.previousAuctions.length - 1]}`}
+										href={`marketplace/auction/${record.previousAuctionIds[record.previousAuctionIds.length - 1]}`}
 									>
 										{
-											record.previousAuctions[
-												record.previousAuctions.length - 1
+											record.previousAuctionIds[
+												record.previousAuctionIds.length - 1
 											]
 										}
 									</Anchor>

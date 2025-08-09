@@ -32,9 +32,9 @@ export const CreateFirmDataSchema = omit(BaseFirmDataSchema, [
 export const ReadFirmDataSchema = BaseFirmDataSchema;
 export const UpdateFirmDataSchema = CreateFirmDataSchema;
 
-export interface IFirmData extends InferOutput<typeof BaseFirmDataSchema> {}
+export interface IBaseFirmData extends InferOutput<typeof BaseFirmDataSchema> {}
 export interface ICreateFirm extends InferInput<typeof CreateFirmDataSchema> {}
-export interface IReadFirm extends InferInput<typeof ReadFirmDataSchema> {}
+export interface IFirmData extends InferOutput<typeof ReadFirmDataSchema> {}
 export interface IUpdateFirm extends InferInput<typeof UpdateFirmDataSchema> {}
 
 export const DefaultFirmData: IFirmData = {

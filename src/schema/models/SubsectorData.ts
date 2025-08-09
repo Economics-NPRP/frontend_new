@@ -66,7 +66,7 @@ export const UpdateSubsectorDataSchema = CreateSubsectorDataSchema;
 //	TODO: remove default alt and keywords once backend has them
 //	TODO: remove partial
 export const ReadToCreateSubsectorDataTransformer = pipe(
-	partial(ReadSubsectorDataSchema),
+	partial(ReadSubsectorDataSchema, ['id', 'createdAt', 'updatedAt']),
 	transform((input) => ({
 		..._omit(input, ['id', 'name', 'createdAt', 'updatedAt']),
 

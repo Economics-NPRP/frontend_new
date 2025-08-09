@@ -8,7 +8,6 @@ import { Id } from '@/components/Id';
 import { WithSkeleton } from '@/components/WithSkeleton';
 import { SectorVariants } from '@/constants/SectorData';
 import { SingleFirmContext } from '@/contexts';
-import { InvitationModalContext } from '@/pages/dashboard/a/firms/_components/InvitationModal';
 import { SectorType } from '@/schema/models';
 import {
 	ActionIcon,
@@ -30,7 +29,6 @@ import {
 	IconFileSearch,
 	IconFlag,
 	IconMail,
-	IconMailShare,
 	IconPhone,
 	IconWorld,
 } from '@tabler/icons-react';
@@ -40,7 +38,6 @@ import classes from './styles.module.css';
 export default function Details() {
 	const t = useTranslations();
 	const firm = useContext(SingleFirmContext);
-	const invitationModal = useContext(InvitationModalContext);
 
 	const badges = useMemo(
 		() =>
@@ -159,13 +156,6 @@ export default function Details() {
 					leftSection={<IconFileSearch size={16} />}
 				>
 					{t('dashboard.admin.firms.details.details.actions.audit.label')}
-				</Button>
-				<Button
-					className={`${classes.primary} ${classes.button}`}
-					leftSection={<IconMailShare size={16} />}
-					onClick={() => invitationModal.open(firm.data)}
-				>
-					{t('dashboard.admin.firms.details.details.actions.invite.label')}
 				</Button>
 			</Group>
 		</Stack>
