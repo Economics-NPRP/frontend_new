@@ -9,10 +9,20 @@ import { Container, Stack } from '@mantine/core';
 
 import classes from './styles.module.css';
 
-type Props = {
-	params: Promise<{ firmId: string }>;
-};
-export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+type SegmentParams<T extends object = any> = T extends Record<string, any>
+	? { [K in keyof T]: T[K] extends string ? string | string[] | undefined : never }
+	: T
+type LayoutProps = {
+	children?: React.ReactNode
+	banner: React.ReactNode
+	details: React.ReactNode
+	environment: React.ReactNode
+	hero: React.ReactNode
+	trading: React.ReactNode
+	users: React.ReactNode
+	params?: Promise<SegmentParams>
+}
+export const generateMetadata = async ({ params }: LayoutProps): Promise<Metadata> => {
 	const { firmId } = await params;
 	const firm = await getSingleFirm(firmId);
 	if (!firm) {

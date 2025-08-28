@@ -13,14 +13,14 @@ export interface ISingleSubsectorContext extends ServerContextState<ISubsectorDa
 const DefaultData = getDefaultContextState(DefaultSubsectorData);
 const Context = createContext<ISingleSubsectorContext>(DefaultData);
 
-export interface SingleCycleProviderProps extends CoreProviderProps {
+export interface SingleSubsectorProviderProps extends CoreProviderProps {
 	idSource?: 'route' | 'searchParams';
 }
 export const SingleSubsectorProvider = ({
 	idSource = 'route',
 	id = 'singleSubsector',
 	...props
-}: SingleCycleProviderProps) => {
+}: SingleSubsectorProviderProps): JSX.Element => {
 	const params = useParams();
 	const searchParams = useSearchParams();
 

@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { SectorBadge } from '@/components/Badge';
 import { ICreateFirmApplication } from '@/schema/models';
@@ -21,6 +21,10 @@ export const FirmApplicationSummary = ({
 		() => firmData.sectors.map((sector) => <SectorBadge key={sector} sector={sector} />),
 		[firmData.sectors],
 	);
+
+	useEffect(() => {
+		console.log(firmData)
+	}, [])
 
 	return (
 		<Stack className={`${classes.root} ${className}`}>
@@ -82,7 +86,8 @@ export const FirmApplicationSummary = ({
 						<Table.Th>
 							{t('components.firmApplicationSummary.columns.website')}
 						</Table.Th>
-						<Table.Td>{firmData.websites[0]}</Table.Td>
+						{/* Change to firmData.websites[0] */}
+						<Table.Td>{firmData.websites || ""}</Table.Td>
 					</Table.Tr>
 					<Table.Tr>
 						<Table.Th>

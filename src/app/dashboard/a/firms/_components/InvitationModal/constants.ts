@@ -3,6 +3,8 @@
 import { createContext } from 'react';
 
 import { DefaultFirmApplication, IFirmApplication } from '@/schema/models';
+// import { ServerData } from '@/types';
+// import { IFirmData } from '@/schema/models';
 
 export const DefaultInvitationModalContextData: IInvitationModalContext = {
 	data: DefaultFirmApplication,
