@@ -1,8 +1,9 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 
+import { DataTable } from 'mantine-datatable';
 import { ResultsTable } from '@/components/Tables/AuctionResults';
 import { BidsTable } from '@/components/Tables/Bids';
 import {
@@ -17,7 +18,7 @@ import {
 import { useAuctionAvailability } from '@/hooks';
 import { AuctionResultsPageContext } from '@/pages/marketplace/auction/[auctionId]/results/_components/Providers';
 import { FloatingIndicator, Tabs } from '@mantine/core';
-import { IconAward, IconGavel } from '@tabler/icons-react';
+import { IconAward, IconGavel, IconReportAnalytics } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -37,10 +38,15 @@ export default function Bids() {
 	const [currentTab, setCurrentTab] = useState<string | null>('results');
 	const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
 	const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
+	
 	const setControlRef = (val: string) => (node: HTMLButtonElement) => {
 		controlsRefs[val] = node;
 		setControlsRefs(controlsRefs);
 	};
+
+	useEffect(() => {
+		console.log(paginatedOpenAuctionResults)
+	}, [paginatedOpenAuctionResults]);
 
 	return (
 		<>
@@ -104,6 +110,9 @@ export default function Bids() {
 							myPaginatedBids.isLoading ||
 							myOpenAuctionResults.isLoading
 						}
+					/>
+					<DataTable 
+						
 					/>
 				</Tabs.Panel>
 			</Tabs>

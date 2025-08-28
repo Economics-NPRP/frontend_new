@@ -44,7 +44,7 @@ export const useAuctionAvailability = (defaultAuction?: IAuctionData) => {
 		() =>
 			auction.isSuccess &&
 			(auction.data.type === 'open' ||
-				(auction.data.type === 'sealed' && auction.data.hasJoined && hasEnded)),
+				(auction.data.type === 'sealed' && !auction.data.hasJoined && hasEnded)),
 		[auction.data.type, auction.data.hasJoined, hasEnded, auction.isSuccess],
 	);
 

@@ -1,9 +1,9 @@
 import { DateTime } from 'luxon';
 import { useTranslations } from 'next-intl';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { WithSkeleton } from '@/components/WithSkeleton';
-import { SingleAuctionContext } from '@/contexts';
+import { ISingleAuctionContext, SingleAuctionContext } from '@/contexts';
 import { useAuctionAvailability } from '@/hooks';
 import { Container, Group, Stack, Text } from '@mantine/core';
 import {
@@ -21,9 +21,13 @@ import classes from './styles.module.css';
 
 export const Properties = () => {
 	const t = useTranslations();
-	const auction = useContext(SingleAuctionContext);
+	const auction = useContext<ISingleAuctionContext>(SingleAuctionContext);
 
-	const { areBidsAvailable } = useAuctionAvailability();
+	const availability = useAuctionAvailability();
+
+	useEffect(() => {
+		console.log("action data: ", availability, auction.data);
+	}, [auction.data]);
 
 	return (
 		<Group className={classes.properties}>
@@ -120,7 +124,7 @@ export const Properties = () => {
 				</Text>
 				<WithSkeleton width={64} height={20} loading={auction.isLoading} data-dark>
 					<Text className={classes.value}>
-						{areBidsAvailable
+						{availability.areBidsAvailable
 							? t('constants.quantities.bids.default', {
 									value: auction.data.bidsCount,
 								})

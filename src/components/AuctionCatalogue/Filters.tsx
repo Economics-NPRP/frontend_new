@@ -206,6 +206,7 @@ const FiltersCore = () => {
 				</Group>
 				<Divider />
 				<Accordion
+					key={form.key('accordion')}
 					classNames={{
 						root: classes.accordion,
 						chevron: classes.chevron,
