@@ -7,7 +7,10 @@ export const isolateMessage = (msg:string):string => {
       start = true;
       i += 11;
     }
-    if (start && msg[i] === "\"") return result
+    if (start && msg[i] === "\"") {
+      console.log("Original Error Message: "+msg)
+      return result
+    }
     if (start) {
       result += msg[i];
     }
