@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
-import { throwError } from '@/helpers';
+import { throwError, isolateMessage } from '@/helpers';
 import { approveCycle } from '@/lib/cycles';
 import { ServerData } from '@/types';
 import { notifications } from '@mantine/notifications';
@@ -37,7 +37,7 @@ export const useCycleApproval: CycleApprovalProps = (id, onSuccess) => {
 			notifications.show({
 				color: 'red',
 				title: t('lib.cycles.approve.error'),
-				message: error.message,
+				message: isolateMessage(error.message),
 				position: 'bottom-center',
 			});
 		},

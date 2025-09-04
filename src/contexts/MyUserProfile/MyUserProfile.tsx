@@ -11,7 +11,7 @@ import { DefaultUserData, IUserData } from '@/schema/models';
 import { CoreProviderProps, ServerContextState, getDefaultContextState } from '@/types';
 
 export interface IMyUserProfileContext extends ServerContextState<IUserData> {}
-const DefaultData = getDefaultContextState(DefaultUserData);
+const DefaultData: ServerContextState<IUserData> = getDefaultContextState(DefaultUserData);
 const Context = createContext<IMyUserProfileContext>(DefaultData);
 
 export const MyUserProfileProvider = ({ id = 'myUserProfile', ...props }: CoreProviderProps) => {

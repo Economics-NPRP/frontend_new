@@ -5,7 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useContext } from 'react';
 
 import { MyUserProfileContext } from '@/contexts';
-import { throwError } from '@/helpers';
+import { throwError, isolateMessage } from '@/helpers';
+
 import {
 	login as loginApi,
 	logout as logoutApi,
@@ -102,7 +103,7 @@ export const useAuth: AuthProps = ({
 			notifications.show({
 				color: 'red',
 				title: t('lib.auth.login.error'),
-				message: error.message ?? t('lib.unknownError'),
+				message: isolateMessage(error.message) ?? t('lib.unknownError'),
 				position: 'bottom-center',
 			});
 			onLoginError?.(error);
@@ -133,7 +134,7 @@ export const useAuth: AuthProps = ({
 			notifications.show({
 				color: 'red',
 				title: t('lib.auth.logout.error'),
-				message: error.message ?? t('lib.unknownError'),
+				message: isolateMessage(error.message) ?? t('lib.unknownError'),
 				position: 'bottom-center',
 			});
 			onLogoutError?.(error);
@@ -170,7 +171,7 @@ export const useAuth: AuthProps = ({
 			notifications.show({
 				color: 'red',
 				title: t('lib.auth.register.error'),
-				message: error.message,
+				message: isolateMessage(error.message),
 				position: 'bottom-center',
 			});
 			onRegisterError?.(error);
@@ -199,7 +200,7 @@ export const useAuth: AuthProps = ({
 			notifications.show({
 				color: 'red',
 				title: t('lib.auth.otp.error'),
-				message: error.message,
+				message: isolateMessage(error.message),
 				position: 'bottom-center',
 			});
 			onVerifyOtpError?.(error);
@@ -224,7 +225,7 @@ export const useAuth: AuthProps = ({
 			notifications.show({
 				color: 'red',
 				title: t('lib.auth.resendOtp.error'),
-				message: error.message,
+				message: isolateMessage(error.message),
 				position: 'bottom-center',
 			});
 			onResendOtpError?.(error);

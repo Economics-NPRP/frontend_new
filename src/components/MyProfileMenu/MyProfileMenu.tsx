@@ -1,7 +1,7 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { usePathname } from 'next/navigation';
 import { useContext, useMemo } from 'react';
 
@@ -47,10 +47,13 @@ import {
 
 import classes from './styles.module.css';
 
+import { isolateMessage } from 'helpers/isolateMessage';
+
 export interface MyProfileMenuProps extends MenuProps {}
 export const MyProfileMenu = ({ children, ...props }: MyProfileMenuProps) => {
 	const t = useTranslations();
 	const pathname = usePathname();
+	
 	const myUser = useContext(MyUserProfileContext);
 
 	const { logout } = useAuth();
@@ -107,7 +110,7 @@ export const MyProfileMenu = ({ children, ...props }: MyProfileMenuProps) => {
 							icon={<IconExclamationCircle />}
 							className="mb-4"
 						>
-							{myUser.error?.message}
+							{isolateMessage(myUser.error?.message || "")}
 						</Alert>
 					</Switch.Error>
 					<Switch.Else>
