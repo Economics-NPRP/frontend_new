@@ -14,7 +14,6 @@ import {
 	FirstFirmApplicationDataSchema,
 	FourthFirmApplicationDataSchema,
 	ICreateFirmApplication,
-	IFirmApplication,
 	SecondFirmApplicationDataSchema,
 	ThirdFirmApplicationDataSchema,
 } from '@/schema/models';
@@ -28,7 +27,7 @@ export const PageProvider = ({ children }: PropsWithChildren) => {
 
 	const form = useForm<
 		ICreateFirmApplication,
-		(values: ICreateFirmApplication) => IFirmApplication
+		(values: ICreateFirmApplication) => ICreateFirmApplication
 	>({
 		mode: 'uncontrolled',
 		initialValues: DefaultCreateFirmApplication,
@@ -43,7 +42,7 @@ export const PageProvider = ({ children }: PropsWithChildren) => {
 		},
 		onValuesChange: () => setFormError([]),
 		transformValues: (values) =>
-			safeParse(CreateFirmApplicationDataSchema, values).output as IFirmApplication,
+			safeParse(CreateFirmApplicationDataSchema, values).output as ICreateFirmApplication,
 	});
 
 	const handleStepChange = useCallback(

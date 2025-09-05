@@ -192,8 +192,18 @@ export default function CreateSubsectorLayout() {
 		setIsFormSubmitting(false);
 		setDisabled(false);
 
+		if (!transformedData.output) {
+			console.error("Failed to transform data");
+		}
+
 		form.setValues(transformedData.output);
-		form.resetDirty(transformedData.output);
+		form.resetDirty({
+			...transformedData.output,
+			title: transformedData.output.title ?? '',
+			image: transformedData.output.image ?? '',
+			description: transformedData.output.description ?? '',
+			sector: transformedData.output.sector ?? 'energy', // or another default sector
+		});
 		form.validate();
 
 		handleSearchParamStep();

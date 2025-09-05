@@ -98,7 +98,17 @@ export default function Form() {
 							description={t('auth.register.form.first.logo.description')}
 							className={classes.avatar}
 						>
-							<AvatarUpload className={classes.input} />
+							<AvatarUpload accept='image/png,image/jpeg' onChangeFile={file => {
+								if (!file) return
+								const reader = new FileReader()
+								if (!reader) return null
+								reader.onload = e => {
+									if (typeof e.target?.result === 'string') {
+										form.setFieldValue('logo', e.target.result)
+									}
+								}
+								reader.readAsDataURL(file)
+							}} className={classes.input} />
 						</Input.Wrapper>
 						<TextInput
 							label={t('auth.register.form.first.name.label')}

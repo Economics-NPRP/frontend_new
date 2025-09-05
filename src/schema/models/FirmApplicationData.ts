@@ -30,8 +30,10 @@ export const BaseApplicationSchema = object({
 	repPosition: optional(pipe(string(), trim())),
 });
 
+// Change company image to pipe
 export const BaseFirmApplicationDataSchema = object({
 	companyName: pipe(string(), trim(), nonEmpty()),
+	logo: pipe(string(), trim(), nonEmpty(), url()),
 	crn: pipe(
 		string(),
 		trim(),
@@ -107,6 +109,7 @@ export const DefaultApplication: IApplication = {
 
 export const DefaultFirmApplication: IFirmApplication = {
 	companyName: '',
+	logo: '',
 	crn: 0,
 	repEmail: '',
 	repPhone: '',
@@ -127,6 +130,7 @@ export const DefaultFirmApplication: IFirmApplication = {
 export const DefaultCreateFirmApplication: ICreateFirmApplication = {
 	companyName: '',
 	crn: '',
+	logo: '',
 	repEmail: '',
 	repPhone: '',
 	iban: '',
