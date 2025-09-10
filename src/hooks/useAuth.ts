@@ -94,7 +94,7 @@ export const useAuth: AuthProps = ({
 				position: 'bottom-center',
 			});
 			//	TODO: once backend returns current user, redirect based on user type
-			if (process.env.NODE_ENV === 'development') router.push('/marketplace');
+			if (process.env.NODE_ENV === 'development') router.back();
 			else router.push('/otp');
 			onLoginSuccess?.();
 		},
