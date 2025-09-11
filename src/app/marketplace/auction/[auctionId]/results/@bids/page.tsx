@@ -138,7 +138,7 @@ export default function Bids() {
 				</Tabs.Panel>
 
 				<Tabs.Panel value="all">
-					<BidsTable
+					{/* <BidsTable
 						className={classes.table}
 						bids={paginatedBids}
 						allWinningBids={allWinningBids}
@@ -148,7 +148,7 @@ export default function Bids() {
 						showContributingBids={hasEnded}
 						loading={loadingAll}
 					/>
-					<hr/>
+					<hr/> */}
 					<NewBidsTable
 						className={classes.table}
 						bids={paginatedBids}
@@ -159,7 +159,7 @@ export default function Bids() {
 						showContributingBids={hasEnded}
 						loading={loadingAll}
 						bidsRecords={bidsRecords}
-						
+
 					/>
 				</Tabs.Panel>
 			</Tabs>

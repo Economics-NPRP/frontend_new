@@ -1394,6 +1394,9 @@
 			}
 		},
 		"bidsTable": {
+			"search": {
+				"placeholder": "Search for a specific company..."
+			},
 			"filters": {
 				"badges": {
 					"all": "Showing All Bids",

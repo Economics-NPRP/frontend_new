@@ -237,7 +237,9 @@
 		@apply relative;
 		@apply flex-1;
 	}
-
+	> .button {
+		@apply inline-block w-fit;
+	}
 	> .footer {
 		@apply justify-center items-center flex-nowrap gap-4;
 

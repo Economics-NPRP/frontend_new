@@ -37,6 +37,9 @@ import {
   Text,
   Title,
   Tooltip,
+  Flex,
+  TextInput,
+  Input
 } from '@mantine/core';
 import { DataTable } from 'mantine-datatable';
 import { useListState } from '@mantine/hooks';
@@ -52,6 +55,7 @@ import {
   IconError404,
   IconX,
   IconReportAnalytics,
+  IconSearch,
 } from '@tabler/icons-react';
 
 import classes from '../styles.module.css';
@@ -113,8 +117,9 @@ const _NewBidsTable = ({
   const myUser = useContext(MyUserProfileContext);
 
   const [bidsFilter, setBidsFilter] = useState<BidsFilter>('all');
-  
-  const [selectedResult, setSelected] = useListState([]);
+
+  const [searchFilter, setSearchFilter] = useState('');
+  const [selectedResults, setSelected] = useListState([]);
   const { open } = useContext(SelectionSummaryContext);
 
   //	Generate the table rows
@@ -145,14 +150,14 @@ const _NewBidsTable = ({
         accessor: 'company',
         title: t('components.bidsTable.columns.company'),
         width: 200,
-        render: (record: any) => record.bidder.name,
+        render: (record: any) => <span className="font-semibold">{record.bidder.name}</span>,
       },
       {
         accessor: 'bid',
         title: t('components.bidsTable.columns.bid'),
-        textAlign: 'right' as const,
+        textAlign: 'left' as const,
         render: (record: any) => (
-          <span className="flex items-center justify-end gap-1">
+          <span className="flex items-center justify-start gap-1">
             <CurrencyBadge /> {format.number(record.amount, 'money')}
           </span>
         ),
@@ -160,15 +165,15 @@ const _NewBidsTable = ({
       {
         accessor: 'permits',
         title: t('constants.permits.key'),
-        textAlign: 'right' as const,
+        textAlign: 'left' as const,
         render: (record: any) => format.number(record.permits),
       },
       {
         accessor: 'total',
         title: t('components.bidsTable.columns.totalBid'),
-        textAlign: 'right' as const,
+        textAlign: 'left' as const,
         render: (record: any) => (
-          <span className="flex items-center justify-end gap-1">
+          <span className="flex items-center justify-start gap-1">
             <CurrencyBadge /> {format.number(record.amount * record.permits, 'money')}
           </span>
         ),
@@ -319,7 +324,7 @@ const _NewBidsTable = ({
   }, [loading, tableData]);
 
   // NEW - start
-  const generateSummaryGroups = useCallback((selected:any) => [
+  const generateSummaryGroups = useCallback((selected: any) => [
     {
       title: t('components.auctionsTable.summary.distribution.title'),
       rows: [
@@ -331,7 +336,7 @@ const _NewBidsTable = ({
         }
       ],
     },
-  ], [selectedResult]);
+  ], [selectedResults]);
 
   // const dataTableRowClassName = (record: any) => {
   //   if (!record || record.length === 0) return 'bg-gray-50 dark:bg-dark-500';
@@ -438,60 +443,66 @@ const _NewBidsTable = ({
           </Group>
         </Stack>
       )}
-      <Stack className={`${classes.table} ${tableClassName}`} ref={tableContainerRef}>
-        <Switch value={currentState}>
-          <Switch.Loading>
-            <Stack className={classes.placeholder}>
-              <Loader color="gray" />
-            </Stack>
-          </Switch.Loading>
-          <Switch.Case when="unavailable">
-            <Stack className={classes.placeholder}>
-              <Container className={classes.icon}>
-                <IconError404 size={28} />
-              </Container>
-              <Text className={classes.text}>
-                {t('components.bidsTable.sealed.unavailable')}
-              </Text>
-            </Stack>
-          </Switch.Case>
-          <Switch.Case when="empty">
-            <Stack className={classes.placeholder}>
-              <Container className={classes.icon}>
-                <IconDatabaseOff size={24} />
-              </Container>
-              <Text className={classes.text}>{t('components.bidsTable.empty')}</Text>
-            </Stack>
-          </Switch.Case>
-        </Switch>
-      </Stack>
-      <Button
-        className={`${classes.secondary} ${classes.button}`}
-        variant="outline"
-        disabled={selectedResult.length === 0}
-        rightSection={<IconReportAnalytics size={16} />}
-        onClick={() =>
-          open(
-            selectedResult,
-            generateSummaryGroups,
-          )
-        }
-      >
-        {t('components.table.selected.viewSummary')}
-      </Button>
+      <Flex>
+        <Flex align="center" justify="space-between" className="w-full">
+          <TextInput
+            className="inline-block w-72"
+            placeholder={t('components.bidsTable.search.placeholder')}
+            value={searchFilter}
+            onChange={(event) => setSearchFilter(event.currentTarget.value)}
+            leftSection={<IconSearch size={16} />}
+            rightSection={
+              searchFilter !== '' ? (
+                <Input.ClearButton onClick={() => setSearchFilter('')} />
+              ) : undefined
+            }
+            rightSectionPointerEvents="auto"
+          />
+          <Flex align="center" className="gap-4 mb-4">
+            <Pill
+              classNames={{
+                root: classes.count,
+                label: classes.label,
+                remove: classes.remove,
+              }}
+              variant="subtle"
+              // onRemove={() => selectedAuctionsHandlers.setState([])}
+              // withRemoveButton={selectedAuctions.length > 0}
+            >
+              {t('components.table.selected.count', {
+                value: selectedResults.length,
+              })}
+            </Pill>
+            <Button
+              className={`${classes.secondary} ${classes.button}`}
+              variant="outline"
+              disabled={selectedResults.length === 0}
+              rightSection={<IconReportAnalytics size={16} />}
+              onClick={() =>
+                open(
+                  selectedResults,
+                  generateSummaryGroups,
+                )
+              }
+            >
+              {t('components.table.selected.viewSummary')}
+            </Button>
+          </Flex>
+        </Flex>
+      </Flex>
       <DataTable
         className={classes.table}
         withColumnBorders
-        highlightOnHover
         records={bidsRecords}
         columns={dataTableColumns as any}
         fetching={loading}
         idAccessor="id"
-        selectedRecords={selectedResult}
+        selectedRecords={selectedResults}
         onSelectedRecordsChange={setSelected.setState as React.Dispatch<React.SetStateAction<IBidData[]>>} // Don't focus on the type too much it's just to get rid of type errors
         noRecordsText={t('components.bidsTable.empty')}
-        // rowClassName={dataTableRowClassName}
+      // rowClassName={dataTableRowClassName}
       />
+      {/* Changing page */}
       <Group className={classes.footer}>
         {bids.isSuccess && (
           <Group className={classes.pagination}>
