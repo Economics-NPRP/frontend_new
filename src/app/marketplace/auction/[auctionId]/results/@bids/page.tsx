@@ -1,11 +1,11 @@
 'use client';
 
 import { useTranslations, useFormatter } from 'next-intl';
-import { useContext, useState, useEffect, useMemo } from 'react';
+import { useContext, useState, useEffect, useMemo, useCallback } from 'react';
 
 import { DataTable } from 'mantine-datatable';
 import { ResultsTable } from '@/components/Tables/AuctionResults';
-import { BidsTable } from '@/components/Tables/Bids';
+import { BidsTable, NewBidsTable } from '@/components/Tables/Bids';
 import {
 	AllWinningBidsContext,
 	MyOpenAuctionResultsContext,
@@ -16,16 +16,17 @@ import {
 	SingleAuctionContext,
 	MyUserProfileContext,
 } from '@/contexts';
+import { SelectionSummaryContext } from '@/components/Tables/_components/SelectionSummary';
 import { useAuctionAvailability } from '@/hooks';
 import { AuctionResultsPageContext } from '@/pages/marketplace/auction/[auctionId]/results/_components/Providers';
-import { FloatingIndicator, Tabs } from '@mantine/core';
+import { FloatingIndicator, Tabs, Button } from '@mantine/core';
 import { CurrencyBadge } from '@/components/Badge';
 import { DateTime } from 'luxon';
 import { IconAward, IconGavel, IconReportAnalytics } from '@tabler/icons-react';
+import { IBidData } from '@/schema/models';
 
 import classes from './styles.module.css';
 import { useListState } from '@mantine/hooks';
-import { IBidData } from '@/schema/models';
 
 export default function Bids() {
 	const t = useTranslations();
@@ -45,7 +46,8 @@ export default function Bids() {
 	const [currentTab, setCurrentTab] = useState<string | null>('results');
 	const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
 	const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
-	const [selected, setSelected] = useListState([]);
+	const [selectedResult, setSelected] = useListState([]);
+	const { open } = useContext(SelectionSummaryContext);
 
 	const setControlRef = (val: string) => (node: HTMLButtonElement) => {
 		controlsRefs[val] = node;
@@ -76,50 +78,6 @@ export default function Bids() {
 		myPaginatedBids.isLoading ||
 		myOpenAuctionResults.isLoading),
 		[auction, paginatedBids, allWinningBids, paginatedWinningBids, myPaginatedBids, myOpenAuctionResults]
-	);
-
-	const dataTableColumns = useMemo(
-		() => [
-			{
-				accessor: 'company',
-				title: t('components.bidsTable.columns.company'),
-				width: 200,
-				render: (record: any) => record.bidder.name,
-			},
-			{
-				accessor: 'bid',
-				title: t('components.bidsTable.columns.bid'),
-				textAlign: 'right' as const,
-				render: (record: any) => (
-					<span className="flex items-center justify-end gap-1">
-						<CurrencyBadge /> {format.number(record.amount, 'money')}
-					</span>
-				),
-			},
-			{
-				accessor: 'permits',
-				title: t('constants.permits.key'),
-				textAlign: 'right' as const,
-				render: (record: any) => format.number(record.permits),
-			},
-			{
-				accessor: 'total',
-				title: t('components.bidsTable.columns.totalBid'),
-				textAlign: 'right' as const,
-				render: (record: any) => (
-					<span className="flex items-center justify-end gap-1">
-						<CurrencyBadge /> {format.number(record.amount * record.permits, 'money')}
-					</span>
-				),
-			},
-			{
-				accessor: 'timestamp',
-				title: t('components.bidsTable.columns.timestamp'),
-				width: 160,
-				render: (record: any) => DateTime.fromISO(record.timestamp).toRelative(),
-			},
-		],
-		[t, format],
 	);
 
 	const dataTableRowClassName = (record: any) => {
@@ -190,10 +148,36 @@ export default function Bids() {
 						showContributingBids={hasEnded}
 						loading={loadingAll}
 					/>
+					<hr/>
+					<NewBidsTable
+						className={classes.table}
+						bids={paginatedBids}
+						allWinningBids={allWinningBids}
+						paginatedWinningBids={paginatedWinningBids}
+						myPaginatedBids={myPaginatedBids}
+						myOpenAuctionResults={myOpenAuctionResults}
+						showContributingBids={hasEnded}
+						loading={loadingAll}
+						bidsRecords={bidsRecords}
+						
+					/>
 				</Tabs.Panel>
 			</Tabs>
 			{/* --- Appended Mantine DataTable preview (legacy BidsTable retained above) --- */}
-			
+			{/* <Button
+				className={`${classes.secondary} ${classes.button}`}
+				variant="outline"
+				disabled={selectedResult.length === 0}
+				rightSection={<IconReportAnalytics size={16} />}
+				onClick={() =>
+					open(
+						selectedResult,
+						generateSummaryGroups,
+					)
+				}
+			>
+				{t('components.table.selected.viewSummary')}
+			</Button>
 			<DataTable
 				className={classes.table}
 				withColumnBorders
@@ -202,11 +186,11 @@ export default function Bids() {
 				columns={dataTableColumns as any}
 				fetching={loadingAll}
 				idAccessor="id"
-				selectedRecords={selected}
+				selectedRecords={selectedResult}
 				onSelectedRecordsChange={setSelected.setState as React.Dispatch<React.SetStateAction<IBidData[]>>} // Don't focus on the type too much it's just to get rid of type errors
 				noRecordsText={t('components.bidsTable.empty')}
 				rowClassName={dataTableRowClassName}
-			/>
+			/> */}
 		</>
 	);
 }

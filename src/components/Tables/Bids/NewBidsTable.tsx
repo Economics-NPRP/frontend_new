@@ -1,11 +1,12 @@
 'use client';
 
 // import { useTranslations } from 'next-intl';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useFormatter } from 'next-intl';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Switch } from '@/components/SwitchCase';
 import { generateBidsRows, generateLegend } from '@/components/Tables/Bids/helpers';
+import { withProviders } from '@/helpers';
 import { BidsFilter } from '@/components/Tables/Bids/types';
 import {
   IAllWinningBidsContext,
@@ -15,6 +16,7 @@ import {
   IPaginatedWinningBidsContext,
   MyUserProfileContext,
 } from '@/contexts';
+import { SelectionSummaryContext, SelectionSummaryProvider } from '@/components/Tables/_components/SelectionSummary';
 import { useKeysetPaginationText } from '@/hooks';
 import { IBidData } from '@/schema/models';
 import { KeysetPaginatedData } from '@/types';
@@ -36,6 +38,10 @@ import {
   Title,
   Tooltip,
 } from '@mantine/core';
+import { DataTable } from 'mantine-datatable';
+import { useListState } from '@mantine/hooks';
+import { CurrencyBadge } from '@/components/Badge';
+import { DateTime } from 'luxon';
 import {
   IconAdjustments,
   IconArrowNarrowDown,
@@ -45,11 +51,12 @@ import {
   IconDownload,
   IconError404,
   IconX,
+  IconReportAnalytics,
 } from '@tabler/icons-react';
 
 import classes from '../styles.module.css';
 
-export interface BidsTableProps extends TableProps {
+export interface NewBidsTableProps extends TableProps {
   bids: IPaginatedBidsContext;
   allWinningBids?: IAllWinningBidsContext;
   paginatedWinningBids?: IPaginatedWinningBidsContext;
@@ -70,8 +77,10 @@ export interface BidsTableProps extends TableProps {
   onViewAll?: () => void;
 
   tableClassName?: string;
+
+  bidsRecords?: IBidData[];
 }
-export const BidsTable = ({
+const _NewBidsTable = ({
   bids,
   allWinningBids,
   paginatedWinningBids,
@@ -93,13 +102,20 @@ export const BidsTable = ({
 
   className,
   tableClassName,
+
+  bidsRecords,
+
   ...props
-}: BidsTableProps) => {
+}: NewBidsTableProps) => {
   const t = useTranslations();
+  const format = useFormatter();
   const tableContainerRef = useRef<HTMLDivElement>(null);
   const myUser = useContext(MyUserProfileContext);
 
   const [bidsFilter, setBidsFilter] = useState<BidsFilter>('all');
+  
+  const [selectedResult, setSelected] = useListState([]);
+  const { open } = useContext(SelectionSummaryContext);
 
   //	Generate the table rows
   const tableData = useMemo(() => {
@@ -122,6 +138,50 @@ export const BidsTable = ({
     bidsFilter,
     myUser,
   ]);
+
+  const dataTableColumns = useMemo(
+    () => [
+      {
+        accessor: 'company',
+        title: t('components.bidsTable.columns.company'),
+        width: 200,
+        render: (record: any) => record.bidder.name,
+      },
+      {
+        accessor: 'bid',
+        title: t('components.bidsTable.columns.bid'),
+        textAlign: 'right' as const,
+        render: (record: any) => (
+          <span className="flex items-center justify-end gap-1">
+            <CurrencyBadge /> {format.number(record.amount, 'money')}
+          </span>
+        ),
+      },
+      {
+        accessor: 'permits',
+        title: t('constants.permits.key'),
+        textAlign: 'right' as const,
+        render: (record: any) => format.number(record.permits),
+      },
+      {
+        accessor: 'total',
+        title: t('components.bidsTable.columns.totalBid'),
+        textAlign: 'right' as const,
+        render: (record: any) => (
+          <span className="flex items-center justify-end gap-1">
+            <CurrencyBadge /> {format.number(record.amount * record.permits, 'money')}
+          </span>
+        ),
+      },
+      {
+        accessor: 'timestamp',
+        title: t('components.bidsTable.columns.timestamp'),
+        width: 160,
+        render: (record: any) => DateTime.fromISO(record.timestamp).toRelative(),
+      },
+    ],
+    [t, format],
+  );
 
   //	Generate the filter badges
   const filterBadges = useMemo(() => {
@@ -258,6 +318,34 @@ export const BidsTable = ({
     return 'ok';
   }, [loading, tableData]);
 
+  // NEW - start
+  const generateSummaryGroups = useCallback((selected:any) => [
+    {
+      title: t('components.auctionsTable.summary.distribution.title'),
+      rows: [
+        {
+          label: t('components.auctionsTable.summary.distribution.total'),
+          value: t('constants.quantities.auctions.default', {
+            value: selected.length,
+          }),
+        }
+      ],
+    },
+  ], [selectedResult]);
+
+  // const dataTableRowClassName = (record: any) => {
+  //   if (!record || record.length === 0) return 'bg-gray-50 dark:bg-dark-500';
+  //   const isMine = record.bidder.id === myUser?.data.id;
+  //   const isWinning = winningBidIds.includes(record.id);
+  //   const isContributing = contributingBidIds.includes(record.id);
+  //   const arr: string[] = [];
+  //   if (isMine) arr.push('bg-gray-50 dark:bg-dark-500');
+  //   if (isWinning) arr.push('outline outline-1 outline-green-500');
+  //   if (isContributing) arr.push('outline outline-1 outline-amber-500');
+  //   return arr.join(' ');
+  // };
+  // NEW - END
+
   return (
     <Stack className={`${classes.root} ${className}`}>
       {!hideHeader && (
@@ -351,29 +439,6 @@ export const BidsTable = ({
         </Stack>
       )}
       <Stack className={`${classes.table} ${tableClassName}`} ref={tableContainerRef}>
-        <Table highlightOnHover withColumnBorders stickyHeader {...props}>
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th className="min-w-[120px]">
-                {t('components.bidsTable.columns.company')}
-              </Table.Th>
-              <Table.Th className="min-w-[160px] flex items-center justify-between">
-                {t('components.bidsTable.columns.bid')}
-                <IconArrowNarrowDown size={14} />
-              </Table.Th>
-              <Table.Th className="min-w-[80px]">
-                {t('constants.permits.key')}
-              </Table.Th>
-              <Table.Th className="min-w-[160px]">
-                {t('components.bidsTable.columns.totalBid')}
-              </Table.Th>
-              <Table.Th className="min-w-[120px]">
-                {t('components.bidsTable.columns.timestamp')}
-              </Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{tableData}</Table.Tbody>
-        </Table>
         <Switch value={currentState}>
           <Switch.Loading>
             <Stack className={classes.placeholder}>
@@ -400,6 +465,33 @@ export const BidsTable = ({
           </Switch.Case>
         </Switch>
       </Stack>
+      <Button
+        className={`${classes.secondary} ${classes.button}`}
+        variant="outline"
+        disabled={selectedResult.length === 0}
+        rightSection={<IconReportAnalytics size={16} />}
+        onClick={() =>
+          open(
+            selectedResult,
+            generateSummaryGroups,
+          )
+        }
+      >
+        {t('components.table.selected.viewSummary')}
+      </Button>
+      <DataTable
+        className={classes.table}
+        withColumnBorders
+        highlightOnHover
+        records={bidsRecords}
+        columns={dataTableColumns as any}
+        fetching={loading}
+        idAccessor="id"
+        selectedRecords={selectedResult}
+        onSelectedRecordsChange={setSelected.setState as React.Dispatch<React.SetStateAction<IBidData[]>>} // Don't focus on the type too much it's just to get rid of type errors
+        noRecordsText={t('components.bidsTable.empty')}
+        // rowClassName={dataTableRowClassName}
+      />
       <Group className={classes.footer}>
         {bids.isSuccess && (
           <Group className={classes.pagination}>
@@ -441,3 +533,6 @@ export const BidsTable = ({
     </Stack>
   );
 };
+
+export const NewBidsTable: React.JSXElementConstructor<NewBidsTableProps> = (props: NewBidsTableProps) =>
+  withProviders(<_NewBidsTable {...props} />, { provider: SelectionSummaryProvider });

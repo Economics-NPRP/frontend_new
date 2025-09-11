@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 import { DataTable } from 'mantine-datatable';
 import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import {
 	AuctionStatusBadge,
@@ -171,8 +171,7 @@ const _AuctionsTable = ({
 		return output;
 	}, [auctions, auctions.filters.status, auctions.filters.type, showSelectedOnly, t]);
 
-	const generateSummaryGroups = useMemo(
-		() => (selected: Array<IAuctionData>) => [
+	const generateSummaryGroups = useCallback((selected: Array<IAuctionData>) => [
 			{
 				title: t('components.auctionsTable.summary.distribution.title'),
 				rows: [
