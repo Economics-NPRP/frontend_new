@@ -2,11 +2,11 @@
 
 import { camelCase } from 'change-case/keys';
 import { jwtDecode } from 'jwt-decode';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import 'server-only';
 
-import { extractSessionCookies } from '@/helpers';
+import { extractSessionCookies, getCookieOptions, internalUrl } from '@/helpers';
 
 const DEV_LOGIN = new FormData();
 DEV_LOGIN.append('username', process.env.SUPERUSER_EMAIL!);
@@ -14,10 +14,14 @@ DEV_LOGIN.append('password', process.env.SUPERUSER_PASSWORD!);
 
 export const createSession = async (req: NextRequest, res: NextResponse) => {
 	//	Login as superuser for development purposes
-	const queryUrl = new URL('/dev/auth/login', process.env.NEXT_PUBLIC_BACKEND_URL);
-	const response = await fetch(queryUrl, {
+	const response = await fetch(await internalUrl('/api/proxy/dev/auth/login'), {
 		method: 'POST',
 		body: DEV_LOGIN,
+		headers: {
+			...(req.headers.get('x-forwarded-for')
+				? { 'X-Forwarded-For': req.headers.get('x-forwarded-for') as string }
+				: {}),
+		},
 	});
 
 	if (!response.ok) return response;
@@ -25,13 +29,7 @@ export const createSession = async (req: NextRequest, res: NextResponse) => {
 
 	//	Take cookies from backend and set them in the frontend
 	extractSessionCookies(response, (key, value, exp) => {
-		res.cookies.set(key, value, {
-			httpOnly: true,
-			secure: true,
-			expires: exp,
-			sameSite: 'lax',
-			path: '/',
-		});
+		res.cookies.set(key, value, getCookieOptions(exp));
 	});
 };
 
@@ -54,13 +52,24 @@ export const verifySession = async (req: NextRequest, res: NextResponse) => {
 	let sessionCookie =
 		req.cookies.get('ets_session')?.value ||
 		`ets_access_token=${accessToken.value}; ets_refresh_token=${refreshToken.value}`;
-	const queryUrl = new URL('/v1/auth/validate', process.env.NEXT_PUBLIC_BACKEND_URL);
-	const response = await fetch(queryUrl, {
+	const requestInit: RequestInit = {
 		method: 'GET',
 		headers: {
 			Cookie: sessionCookie,
+			...(req.headers.get('x-forwarded-for')
+				? { 'X-Forwarded-For': req.headers.get('x-forwarded-for') as string }
+				: {}),
 		},
-	});
+	};
+
+	// Forward client IP if available so backend IP binding check matches
+	try {
+		const h = await headers();
+		const xff = h.get('x-forwarded-for') || h.get('x-real-ip');
+		if (xff) (requestInit.headers as Record<string, string>)['X-Forwarded-For'] = xff;
+	} catch {}
+
+	const response = await fetch(await internalUrl('/api/proxy/v1/auth/validate'), requestInit);
 
 	if (!response.ok) return null;
 
@@ -69,13 +78,7 @@ export const verifySession = async (req: NextRequest, res: NextResponse) => {
 
 	if (data.refreshed) {
 		const cookies = extractSessionCookies(response, (key, value, exp) => {
-			res.cookies.set(key, value, {
-				httpOnly: true,
-				secure: true,
-				expires: exp,
-				sameSite: 'lax',
-				path: '/',
-			});
+			res.cookies.set(key, value, getCookieOptions(exp));
 		});
 		sessionCookie = cookies[0].value;
 	}

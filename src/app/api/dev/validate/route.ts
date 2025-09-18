@@ -1,5 +1,6 @@
 export async function GET(req: Request) {
 	const cookie = req.headers.get('cookie') ?? '';
+	const xff = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || '';
 	const backend = process.env.NEXT_PUBLIC_BACKEND_URL;
 	if (!backend) {
 		return new Response(JSON.stringify({ error: 'NEXT_PUBLIC_BACKEND_URL not set' }), {
@@ -9,7 +10,7 @@ export async function GET(req: Request) {
 	}
 
 	const r = await fetch(`${backend}/v1/auth/validate`, {
-		headers: { cookie },
+		headers: { cookie, ...(xff ? { 'X-Forwarded-For': xff } : {}) },
 		cache: 'no-store',
 	});
 	const body = await r.text();
