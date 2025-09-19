@@ -1,10 +1,10 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import 'server-only';
 
-import { extractSessionCookies } from '@/helpers';
+import { extractSessionCookies, getCookieOptions, internalUrl } from '@/helpers';
 import { ServerData } from '@/types';
 
 export interface IRegisterOptions {
@@ -23,19 +23,21 @@ export const register: IFunctionSignature = async ({ registrationToken, password
 
 	if (!registrationToken) return getDefaultData(t('lib.auth.register.noToken'));
 
+	const h = await headers();
+	const xff = h.get('x-forwarded-for') || h.get('x-real-ip');
 	const querySettings: RequestInit = {
 		method: 'POST',
 		body: JSON.stringify({ password }),
 		headers: {
 			'Content-Type': 'application/json',
+			...(xff ? { 'X-Forwarded-For': xff } : {}),
 		},
 	};
 
-	const queryUrl = new URL(
-		`/v1/auth/register/${registrationToken}`,
-		process.env.NEXT_PUBLIC_BACKEND_URL,
+	const response = await fetch(
+		await internalUrl(`/api/proxy/v1/auth/register/${registrationToken}`),
+		querySettings,
 	);
-	const response = await fetch(queryUrl, querySettings);
 
 	if (!response.ok) return getDefaultData(t('lib.auth.register.error'));
 	if (!response.headers || response.headers.getSetCookie().length === 0)
@@ -43,13 +45,7 @@ export const register: IFunctionSignature = async ({ registrationToken, password
 
 	const cookieStore = await cookies();
 	extractSessionCookies(response, (key, value, exp) => {
-		cookieStore.set(key, value, {
-			httpOnly: true,
-			secure: true,
-			expires: exp,
-			sameSite: 'lax',
-			path: '/',
-		});
+		cookieStore.set(key, value, getCookieOptions(exp));
 	});
 
 	//	TODO: change this once the backend doesnt return null

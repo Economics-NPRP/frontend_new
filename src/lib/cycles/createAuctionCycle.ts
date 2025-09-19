@@ -2,10 +2,11 @@
 
 import { camelCase, snakeCase } from 'change-case/keys';
 import { getTranslations } from 'next-intl/server';
+import { cookies, headers } from 'next/headers';
 import { cache } from 'react';
 import 'server-only';
 
-import { getSession } from '@/lib/auth';
+import { internalUrl } from '@/helpers';
 import {
 	AdminRole,
 	DefaultAuctionCycleData,
@@ -31,7 +32,11 @@ type IFunctionSignature = (
 export const createAuctionCycle: IFunctionSignature = cache(async (data, cycleId) => {
 	const t = await getTranslations();
 
-	const cookieHeaders = await getSession();
+	const cookieStore = await cookies();
+	const access = cookieStore.get('ets_access_token')?.value;
+	const refresh = cookieStore.get('ets_refresh_token')?.value;
+	const cookieHeaders =
+		access && refresh ? `ets_access_token=${access}; ets_refresh_token=${refresh}` : '';
 	if (!cookieHeaders) return getDefaultData(t('lib.notLoggedIn'));
 
 	data.adminAssignments = data.adminAssignments.map((admin) => {
@@ -47,15 +52,22 @@ export const createAuctionCycle: IFunctionSignature = cache(async (data, cycleId
 		headers: {
 			'Content-Type': 'application/json',
 			Cookie: cookieHeaders,
+			...(await (async () => {
+				try {
+					const h = await headers();
+					const xff = h.get('x-forwarded-for') || h.get('x-real-ip');
+					return xff ? { 'X-Forwarded-For': xff } : {};
+				} catch {
+					return {} as Record<string, string>;
+				}
+			})()),
 		},
 	};
 
-	const queryUrl = new URL(
-		cycleId ? `/v1/cycles/${cycleId}` : '/v1/cycles/',
-		process.env.NEXT_PUBLIC_BACKEND_URL,
+	const response = await fetch(
+		await internalUrl(cycleId ? `/api/proxy/v1/cycles/${cycleId}` : '/api/proxy/v1/cycles/'),
+		querySettings,
 	);
-
-	const response = await fetch(queryUrl, querySettings);
 	const rawData = camelCase(await response.json(), 5) as ServerData<IAuctionCycleData>;
 
 	//	If theres an issue, return the default data with errors

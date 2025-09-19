@@ -2,10 +2,11 @@
 
 import { camelCase, snakeCase } from 'change-case/keys';
 import { getTranslations } from 'next-intl/server';
+import { cookies, headers } from 'next/headers';
 import { cache } from 'react';
 import 'server-only';
 
-import { getSession } from '@/lib/auth';
+import { internalUrl } from '@/helpers';
 import { DefaultSubsectorData, ICreateSubsector, ISubsectorData } from '@/schema/models';
 import { ServerData } from '@/types';
 
@@ -22,7 +23,11 @@ type IFunctionSignature = (
 export const createSubsector: IFunctionSignature = cache(async (data, subsectorId) => {
 	const t = await getTranslations();
 
-	const cookieHeaders = await getSession();
+	const cookieStore = await cookies();
+	const access = cookieStore.get('ets_access_token')?.value;
+	const refresh = cookieStore.get('ets_refresh_token')?.value;
+	const cookieHeaders =
+		access && refresh ? `ets_access_token=${access}; ets_refresh_token=${refresh}` : '';
 	if (!cookieHeaders) return getDefaultData(t('lib.notLoggedIn'));
 
 	const querySettings: RequestInit = {
@@ -31,15 +36,22 @@ export const createSubsector: IFunctionSignature = cache(async (data, subsectorI
 		headers: {
 			'Content-Type': 'application/json',
 			Cookie: cookieHeaders,
+			...(await (async () => {
+				try {
+					const h = await headers();
+					const xff = h.get('x-forwarded-for') || h.get('x-real-ip');
+					return xff ? { 'X-Forwarded-For': xff } : {};
+				} catch {
+					return {} as Record<string, string>;
+				}
+			})()),
 		},
 	};
 
-	const queryUrl = new URL(
-		subsectorId ? `/v1/subsectors/${subsectorId}` : '/v1/subsectors/',
-		process.env.NEXT_PUBLIC_BACKEND_URL,
-	);
-
-	const response = await fetch(queryUrl, querySettings);
+	const path = subsectorId
+		? `/api/proxy/v1/subsectors/${subsectorId}`
+		: '/api/proxy/v1/subsectors/';
+	const response = await fetch(await internalUrl(path), querySettings);
 	const rawData = camelCase(await response.json(), 5) as ServerData<ISubsectorData>;
 
 	//	If theres an issue, return the default data with errors

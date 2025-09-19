@@ -2,10 +2,10 @@
 
 import { camelCase } from 'change-case/keys';
 import { getTranslations } from 'next-intl/server';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import 'server-only';
 
-import { extractSessionCookies } from '@/helpers';
+import { extractSessionCookies, getCookieOptions, internalUrl } from '@/helpers';
 import { ServerData } from '@/types';
 
 const getDefaultData: (...errors: Array<string>) => ServerData<{}> = (...errors) => ({
@@ -17,6 +17,8 @@ type IFunctionSignature = () => Promise<ServerData<{}>>;
 export const resendOtp: IFunctionSignature = async () => {
 	const t = await getTranslations();
 
+	const h = await headers();
+	const xff = h.get('x-forwarded-for') || h.get('x-real-ip');
 	const cookieStore = await cookies();
 	const otpToken = cookieStore.get('ets_otp_token');
 	const querySettings: RequestInit = {
@@ -24,12 +26,11 @@ export const resendOtp: IFunctionSignature = async () => {
 		headers: {
 			'Content-Type': 'application/json',
 			Cookie: otpToken ? `ets_otp_token=${otpToken.value}` : '',
+			...(xff ? { 'X-Forwarded-For': xff } : {}),
 		},
 	};
 
-	const queryUrl = new URL('/v1/auth/otp/resend', process.env.NEXT_PUBLIC_BACKEND_URL);
-
-	const response = await fetch(queryUrl, querySettings);
+	const response = await fetch(await internalUrl('/api/proxy/v1/auth/otp/resend'), querySettings);
 	const rawData = camelCase(await response.json(), 5) as ServerData<{}>;
 
 	//	If theres an issue, return the default data with errors
@@ -43,13 +44,7 @@ export const resendOtp: IFunctionSignature = async () => {
 
 	//	Extract new otp token
 	extractSessionCookies(response, (key, value, exp) => {
-		cookieStore.set(key, value, {
-			httpOnly: true,
-			secure: true,
-			expires: exp, // Convert milliseconds to seconds
-			sameSite: 'lax',
-			path: '/',
-		});
+		cookieStore.set(key, value, getCookieOptions(exp));
 	});
 
 	return {

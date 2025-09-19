@@ -67,10 +67,10 @@ export const RealtimeBidsProvider = ({ children, ...props }: PropsWithChildren) 
 	useEffect(() => {
 		if (!areBidsAvailable) return;
 
-		const queryUrl = new URL('/v1/notify/bidders', process.env.NEXT_PUBLIC_BACKEND_URL);
-		queryUrl.searchParams.append('auction_id', auctionId as string);
+		const url = new URL(`/api/proxy/v1/notify/bidders`, window.location.origin);
+		url.searchParams.append('auction_id', auctionId as string);
 
-		const eventSource = new EventSource(queryUrl, { withCredentials: true });
+		const eventSource = new EventSource(url, { withCredentials: true });
 		eventSource.onopen = handleOnOpen;
 		eventSource.onerror = handleOnError;
 
