@@ -70,7 +70,9 @@ async function fetchFollowingRedirects(
 
 // Use `any` for context to align with Next's generated RouteContext types in .next/types
 async function forward(req: NextRequest, ctx: any) {
-	const path = (ctx?.params?.path as string[]) || [];
+	const context = await ctx
+	const contextParams = await context.params
+	const path = contextParams?.path || []
 	const target = buildTargetUrl(req, path);
 
 	const incoming = req.headers;
