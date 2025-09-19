@@ -937,7 +937,7 @@ const _AuctionsTable = ({
 										<Anchor
 											component={Link}
 											className={classes.anchor}
-											href={`/dashboard/a/cycles/auctions/${record.id}`}
+											href={`/marketplace/auction/${record.id}`}
 										>
 											{record.title}
 										</Anchor>
