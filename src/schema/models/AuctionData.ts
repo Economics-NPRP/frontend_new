@@ -26,6 +26,7 @@ import { AuctionTypeSchema } from './AuctionType';
 import { DefaultUserData } from './GeneralUserData';
 import { SectorTypeSchema } from './SectorData';
 import { BaseUserDataSchema } from './UserData';
+import { toIsoUtcMicro } from 'helpers/cycleInfoFormat';
 
 export const BaseAuctionDataSchema = object({
 	id: UuidSchema(),
@@ -82,8 +83,8 @@ export const CreateAuctionDataSchemaTransformer = pipe(
 	transform((input) => ({
 		...input,
 
-		startDatetime: DateTime.fromISO(input.startDatetime).toISO(),
-		endDatetime: DateTime.fromISO(input.endDatetime).toISO(),
+		startDatetime: toIsoUtcMicro(DateTime.fromISO(input.startDatetime).toISO() || input.startDatetime),
+		endDatetime: toIsoUtcMicro(DateTime.fromISO(input.endDatetime).toISO() || input.endDatetime),
 	})),
 );
 

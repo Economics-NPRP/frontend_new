@@ -152,7 +152,7 @@ export default function Details() {
 							<UnstyledButton
 								className={classes.cycle}
 								component={Link}
-								href={`/marketplace/cycles/${auction.data.cycleId}`}
+								href={`/dashboard/a/cycles/${auction.data.cycleId}`}
 							>
 								<Stack className={classes.left}>
 									<Text className={classes.title}>

@@ -35,9 +35,6 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 	const setFormError = useContextSelector(CreateLayoutContext, (context) => context.setFormError);
 	const allSubsectors = useContext(AllSubsectorsContext);
 	const { open } = useContext(SectorChangeModalContext);
-	useEffect(() => {
-		console.log(allSubsectors, "ALL SUBSECTORS IN SUBSECTOR STEP");
-	}, [allSubsectors])
 	const [value, setValue] = useState('');
 	const [selectedSubsectorData, setSelectedSubsectorData] = useState<ISubsectorData | null>(null);
 	const [searchFilter, setSearchFilter] = useState('');

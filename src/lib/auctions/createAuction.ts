@@ -1,12 +1,12 @@
 'use server';
 
-import { camelCase, snakeCase } from 'change-case/keys';
+import { camelCase } from 'change-case/keys';
 import { getTranslations } from 'next-intl/server';
 import { cookies, headers } from 'next/headers';
 import { cache } from 'react';
 import 'server-only';
 
-import { internalUrl } from '@/helpers';
+import { toSnakeCase } from '@/helpers';
 import { DefaultAuctionData, IAuctionData, ICreateAuctionOutput } from '@/schema/models';
 import { ServerData } from '@/types';
 
@@ -28,7 +28,7 @@ export const createAuction: IFunctionSignature = cache(async (data) => {
 	if (!cookieHeaders) return getDefaultData(t('lib.notLoggedIn'));
 	const querySettings: RequestInit = {
 		method: 'POST',
-		body: JSON.stringify(snakeCase(data, 5)),
+		body: JSON.stringify(toSnakeCase({ ...data, title: "some auction Title", description: "some auction Description" })),
 		headers: {
 			'Content-Type': 'application/json',
 			Cookie: cookieHeaders,
@@ -44,8 +44,10 @@ export const createAuction: IFunctionSignature = cache(async (data) => {
 		},
 	};
 
-	const path = data.type === 'open' ? '/api/proxy/v1/auctions/o/' : '/api/proxy/v1/auctions/s/';
-	const response = await fetch(await internalUrl(path), querySettings);
+	const path = data.type === 'open' ? '/api/v1/auctions/o/' : '/api/v1/auctions/s/';
+	console.log("THIS DATA ->", JSON.stringify(toSnakeCase({ ...data, title: "some auction Title", description: "some auction Description" })))
+	const response = await fetch("http://localhost:8080/v1/auctions/o/", querySettings);
+	console.log("THIS RESPONSE ->", response)
 	const rawData = camelCase(await response.json(), 5) as ServerData<IAuctionData>;
 
 	//	If theres an issue, return the default data with errors

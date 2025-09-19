@@ -20,12 +20,12 @@ function buildTargetUrl(req: NextRequest, _path: string[]) {
 async function fetchFollowingRedirects(
 	input: RequestInfo | URL,
 	init: RequestInit,
-	maxRedirects = 5,
+	maxRedirects = 2,
 ) {
 	let url = typeof input === 'string' ? input : input.toString();
 	let method = (init.method || 'GET').toUpperCase();
 	let body = init.body;
-	const headers = init.headers as Record<string, string>;
+	const headers = (init.headers || {}) as Record<string, string>;
 	const setCookieAccum: string[] = [];
 
 	for (let i = 0; i < maxRedirects; i++) {
@@ -34,32 +34,36 @@ async function fetchFollowingRedirects(
 		const status = resp.status;
 		const location = resp.headers.get('location');
 
-		// Collect any Set-Cookie headers on the way
+		// Accumulate Set-Cookie across hops (Next runtime provides getSetCookie)
 		const sc = resp.headers.getSetCookie?.() || [];
 		for (const c of sc) setCookieAccum.push(c);
 
-		if (location && [301, 302, 303, 307, 308].includes(status)) {
-			// Resolve relative redirects against current URL
+		if (location && (status === 301 || status === 302 || status === 303 || status === 307 || status === 308)) {
 			const resolved = /^https?:\/\//i.test(location)
 				? location
 				: new URL(location, url).toString();
 
-			// For 301/302/303 switch to GET and drop body per spec if not HEAD
-			if ([301, 302, 303].includes(status) && method !== 'HEAD') {
+			// ✅ Only for 303 change method to GET and drop the body
+			if (status === 303) {
 				method = 'GET';
 				body = undefined;
+				// Optional: content-type is meaningless on GET with no body
+				if ('content-type' in headers) delete headers['content-type'];
+			} else {
+				// ✅ Preserve method & body for 301/302/307/308
+				// (This avoids POST→GET on trailing-slash redirects.)
 			}
 
 			url = resolved;
 			continue;
 		}
 
-		// Build final response mirroring headers and accumulated cookies
+		// Build final response with accumulated cookies and key headers
 		const respHeaders = new Headers();
-		const rct = resp.headers.get('content-type');
-		if (rct) respHeaders.set('content-type', rct);
-		const rcl = resp.headers.get('content-length');
-		if (rcl) respHeaders.set('content-length', rcl);
+		const ct = resp.headers.get('content-type');
+		if (ct) respHeaders.set('content-type', ct);
+		const cl = resp.headers.get('content-length');
+		if (cl) respHeaders.set('content-length', cl);
 		for (const c of setCookieAccum) respHeaders.append('set-cookie', c);
 
 		return new Response(resp.body, { status: resp.status, headers: respHeaders });
@@ -67,6 +71,7 @@ async function fetchFollowingRedirects(
 
 	return new Response('Too many redirects', { status: 508 });
 }
+
 
 // Use `any` for context to align with Next's generated RouteContext types in .next/types
 async function forward(req: NextRequest, ctx: any) {

@@ -49,10 +49,6 @@ export const SubsectorFormCard = ({
 		[type],
 	);
 
-	useEffect(() => {
-		console.log(subsector, "SUBSECTOR IN CARD");
-	}, [subsector])
-
 	const finalClassName = useMemo(
 		() =>
 			[
