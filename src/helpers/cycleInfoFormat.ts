@@ -1,7 +1,6 @@
 export const toIsoUtcMicro = (input: (Date | string) = new Date()): string => {
   if (typeof input === "string") {
-    const test = "2025-09-27 13:00:00"
-    const [date, time] = test.split(" ")
+    const [date, time] = input.split(" ")
     const dateAsArr = date.split("-")
     const year = dateAsArr[0]
     const month = dateAsArr[1]

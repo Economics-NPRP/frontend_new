@@ -18,7 +18,6 @@ import {
 	trim,
 } from 'valibot';
 
-import { DATE_PICKER_FORMAT_STRING } from '@/pages/create/_components/DateTimePicker';
 import { PositiveNumberSchema, TimestampSchema, UuidSchema } from '@/schema/utils';
 
 import { IAdminData, ReadAdminDataSchema } from './AdminData';
@@ -84,7 +83,6 @@ export const CreateAuctionCycleDataSchemaTransformer = pipe(
 				},
 				[] as Array<ICreateCycleAdmin>,
 			),
-
 			startDatetime: toIsoUtcMicro(DateTime.fromISO(input.startDatetime).toISO() || input.startDatetime),
 			endDatetime: toIsoUtcMicro(DateTime.fromISO(input.endDatetime).toISO() || input.endDatetime),
 		};
@@ -148,9 +146,8 @@ export const ReadToCreateAuctionCycleDataTransformer = pipe(
 				Array<IAdminData>
 			>,
 		),
-
-		startDatetime: DateTime.fromISO(input.startDatetime).toFormat(DATE_PICKER_FORMAT_STRING),
-		endDatetime: DateTime.fromISO(input.endDatetime).toFormat(DATE_PICKER_FORMAT_STRING),
+		startDatetime: toIsoUtcMicro(DateTime.fromISO(input.startDatetime).toISO() || input.startDatetime),
+		endDatetime: toIsoUtcMicro(DateTime.fromISO(input.endDatetime).toISO() || input.endDatetime),
 	})),
 );
 

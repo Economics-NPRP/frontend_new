@@ -121,7 +121,7 @@ export default function CreateCycleLayout() {
 				onSettled: () => setIsFormSubmitting(false),
 				onSuccess: () => handleFinalStep(),
 			});
-			console.log(formData)
+			// console.log(formData)
 		},
 		[handleFinalStep, searchParams],
 	);
