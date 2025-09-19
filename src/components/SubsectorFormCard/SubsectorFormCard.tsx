@@ -50,7 +50,7 @@ export const SubsectorFormCard = ({
 	);
 
 	useEffect(() => {
-		console.log(sector, subsector, "SECTOR IN SUBSECTOR FORM CARD");
+		console.log(subsector, "SUBSECTOR IN CARD");
 	}, [subsector])
 
 	const finalClassName = useMemo(
@@ -76,7 +76,7 @@ export const SubsectorFormCard = ({
 							</Container>
 						</Switch.True>
 						<Switch.False>
-							<Image src={"https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=800&h=600&fit=crop"} alt={subsector.alt} fill />
+							<Image src={subsector.image} alt={subsector.alt || ""} fill />
 							<Container className={classes.overlay} />
 						</Switch.False>
 					</Switch>
