@@ -3,7 +3,7 @@ import { useFormatter, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ComponentPropsWithRef, useMemo } from 'react';
+import { ComponentPropsWithRef, useEffect, useMemo } from 'react';
 
 import { AuctionTypeBadge, CurrencyBadge, EndingSoonBadge, SectorBadge } from '@/components/Badge';
 import { SmallCountdown } from '@/components/Countdown';
@@ -53,7 +53,6 @@ export const AuctionCard = ({
 	const t = useTranslations();
 	const format = useFormatter();
 	const router = useRouter();
-
 	const { isUpcoming, hasEnded, isLive } = useAuctionAvailability(auction);
 
 	const url = `/marketplace/auction/${auction.id}`;
@@ -150,7 +149,7 @@ export const AuctionCard = ({
 						<Stack className={classes.left}>
 							<WithSkeleton loading={loading} width={160} height={24}>
 								<Anchor component={Link} className={classes.heading} href={url}>
-									Flare Gas Burning
+									{auction.title.split(" - ")[0]}
 								</Anchor>
 							</WithSkeleton>
 						</Stack>

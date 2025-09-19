@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { AuctionTypeBadge, EndingSoonBadge, SectorBadge } from '@/components/Badge';
 import { Id } from '@/components/Id';
@@ -66,7 +66,7 @@ export default function Details() {
 									{t(`constants.sector.${auction.data.sector}.title`)}
 								</Anchor>
 								<Anchor component={Link} href="/marketplace">
-									Flare Gas Burning
+									{auction.data.title.split(" - ")[0]}
 								</Anchor>
 							</Breadcrumbs>
 						</Switch.False>
@@ -81,7 +81,7 @@ export default function Details() {
 					</Group>
 				</Group>
 				<WithSkeleton loading={auction.isLoading} width={360} height={40}>
-					<Title className={classes.title}>Flare Gas Burning</Title>
+					<Title className={classes.title}>{auction.data.title.split(" - ")[0]}</Title>
 				</WithSkeleton>
 				<Group className={classes.row}>
 					<Group className={classes.cell}>
