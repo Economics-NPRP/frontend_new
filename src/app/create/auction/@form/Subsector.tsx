@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { ReactNode, useCallback, useContext, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useContext, useMemo, useState, useEffect } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { BaseBadge, SectorBadge } from '@/components/Badge';
@@ -35,11 +35,13 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 	const setFormError = useContextSelector(CreateLayoutContext, (context) => context.setFormError);
 	const allSubsectors = useContext(AllSubsectorsContext);
 	const { open } = useContext(SectorChangeModalContext);
-
+	useEffect(() => {
+		console.log(allSubsectors, "ALL SUBSECTORS IN SUBSECTOR STEP");
+	}, [allSubsectors])
 	const [value, setValue] = useState('');
 	const [selectedSubsectorData, setSelectedSubsectorData] = useState<ISubsectorData | null>(null);
 	const [searchFilter, setSearchFilter] = useState('');
-
+	
 	const cardElements = useMemo(() => {
 		if (allSubsectors.isLoading)
 			return [
@@ -78,6 +80,7 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 				//	Make sure the current selected sector is first
 				.sort((a) => (a.sector === form.getValues().sector ? -1 : 1))
 				.reduce((acc, { sector, subsectors }) => {
+					console.log(allSubsectors, "SPLITTER", sector, subsectors, "SECTOR IN SUBSECTOR STEP");
 					SubsectorSearch.removeAll();
 					SubsectorSearch.addAll(subsectors);
 					const searchResults = SubsectorSearch.search(searchFilter);

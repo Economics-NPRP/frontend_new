@@ -41,6 +41,7 @@ export const MembersContent = () => {
 					auctionOperator: [],
 					permitStrategist: [],
 					financeOfficer: [],
+					permitDistributor: [],
 				} as Record<AdminRole, Array<IAdminData>>,
 			),
 		[cycle.data.adminAssignments],

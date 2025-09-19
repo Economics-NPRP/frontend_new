@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { SectorBadge } from '@/components/Badge';
 import { Switch } from '@/components/SwitchCase';
@@ -49,6 +49,10 @@ export const SubsectorFormCard = ({
 		[type],
 	);
 
+	useEffect(() => {
+		console.log(sector, subsector, "SECTOR IN SUBSECTOR FORM CARD");
+	}, [subsector])
+
 	const finalClassName = useMemo(
 		() =>
 			[
@@ -72,7 +76,7 @@ export const SubsectorFormCard = ({
 							</Container>
 						</Switch.True>
 						<Switch.False>
-							<Image src={subsector.image} alt={subsector.alt} fill />
+							<Image src={"https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=800&h=600&fit=crop"} alt={subsector.alt} fill />
 							<Container className={classes.overlay} />
 						</Switch.False>
 					</Switch>

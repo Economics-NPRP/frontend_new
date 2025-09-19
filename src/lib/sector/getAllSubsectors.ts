@@ -44,9 +44,8 @@ export const getAllSubsectors: IFunctionSignature = cache(async () => {
 		},
 	};
 
-	const response = await fetch(await internalUrl(`/api/proxy/v1/sectors`), querySettings);
+	const response = await fetch(await internalUrl(`/api/proxy/v1/sectors/`), querySettings);
 	const rawData = camelCase(await response.json(), 5) as ArrayServerData<unknown>;
-
 	//	If theres an issue, return the default data with errors
 	if (!rawData) return getDefaultData(t('lib.noData'));
 	if (rawData.detail) return getDefaultData(rawData.detail ?? '');
