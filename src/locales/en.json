@@ -779,6 +779,10 @@
 			"finance": {
 				"title": "Finance Officer",
 				"description": "Has access to finances for auction cycle and handles payment-related activity"
+			},
+			"distributor": {
+				"title": "Permit Distributor",
+				"description": "Handles communication with firms after they win to give them their awards"
 			}
 		}
 	},

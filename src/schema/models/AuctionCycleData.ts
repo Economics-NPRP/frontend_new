@@ -1,5 +1,6 @@
 import { omit as _omit } from 'lodash-es';
 import { DateTime } from 'luxon';
+import { toIsoUtcMicro } from '@/helpers';
 import {
 	InferInput,
 	InferOutput,
@@ -57,6 +58,7 @@ export const CreateAuctionCycleDataSchema = object({
 		auctionOperator: array(ReadAdminDataSchema),
 		permitStrategist: array(ReadAdminDataSchema),
 		financeOfficer: array(ReadAdminDataSchema),
+		permitDistributor: array(ReadAdminDataSchema),
 	}),
 
 	startDatetime: string(),
@@ -83,8 +85,8 @@ export const CreateAuctionCycleDataSchemaTransformer = pipe(
 				[] as Array<ICreateCycleAdmin>,
 			),
 
-			startDatetime: DateTime.fromISO(input.startDatetime).toISO(),
-			endDatetime: DateTime.fromISO(input.endDatetime).toISO(),
+			startDatetime: toIsoUtcMicro(DateTime.fromISO(input.startDatetime).toISO() || input.startDatetime),
+			endDatetime: toIsoUtcMicro(DateTime.fromISO(input.endDatetime).toISO() || input.endDatetime),
 		};
 	}),
 );
@@ -152,12 +154,12 @@ export const ReadToCreateAuctionCycleDataTransformer = pipe(
 	})),
 );
 
-export interface IBaseAuctionCycleData extends InferOutput<typeof BaseAuctionCycleDataSchema> {}
-export interface ICreateAuctionCycle extends InferInput<typeof CreateAuctionCycleDataSchema> {}
+export interface IBaseAuctionCycleData extends InferOutput<typeof BaseAuctionCycleDataSchema> { }
+export interface ICreateAuctionCycle extends InferInput<typeof CreateAuctionCycleDataSchema> { }
 export interface ICreateAuctionCycleOutput
-	extends InferOutput<typeof CreateAuctionCycleDataSchemaTransformer> {}
-export interface IAuctionCycleData extends InferOutput<typeof ReadAuctionCycleDataSchema> {}
-export interface IUpdateAuctionCycle extends InferInput<typeof UpdateAuctionCycleDataSchema> {}
+	extends InferOutput<typeof CreateAuctionCycleDataSchemaTransformer> { }
+export interface IAuctionCycleData extends InferOutput<typeof ReadAuctionCycleDataSchema> { }
+export interface IUpdateAuctionCycle extends InferInput<typeof UpdateAuctionCycleDataSchema> { }
 
 export const DefaultBaseAuctionCycleData: IBaseAuctionCycleData = {
 	id: '',
@@ -197,6 +199,7 @@ export const DefaultCreateAuctionCycleData: ICreateAuctionCycle = {
 		auctionOperator: [],
 		permitStrategist: [],
 		financeOfficer: [],
+		permitDistributor: [],
 	},
 	startDatetime: new Date().toISOString(),
 	endDatetime: new Date().toISOString(),

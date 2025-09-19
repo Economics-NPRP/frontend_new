@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 import { safeParse } from 'valibot';
+// import { toSnakeCase } from '@/helpers'
 
 import { Switch } from '@/components/SwitchCase';
 import { SingleCycleContext } from '@/contexts';
@@ -76,6 +77,7 @@ export default function CreateCycleLayout() {
 	);
 
 	const handleIsStepValid = useCallback((step: number, values: ICreateAuctionCycle) => {
+		// console.log(values, "TO BE VALIDATED")
 		const step1 = valibotResolver(FirstAuctionCycleDataSchema)(values);
 		const step2 = valibotResolver(SectorAuctionCycleDataSchema)(values);
 		const step3 = {};
@@ -119,6 +121,7 @@ export default function CreateCycleLayout() {
 				onSettled: () => setIsFormSubmitting(false),
 				onSuccess: () => handleFinalStep(),
 			});
+			console.log(formData)
 		},
 		[handleFinalStep, searchParams],
 	);

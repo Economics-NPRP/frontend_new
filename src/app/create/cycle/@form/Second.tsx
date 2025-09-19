@@ -102,6 +102,14 @@ export const SecondStep = ({ form, disabled }: ICreateCycleStepProps) => {
 				form={form}
 				disabled={disabled}
 			/>
+			<MemberSelection
+				title={t('constants.adminRoles.distributor.title')}
+				description={t('constants.adminRoles.distributor.description')}
+				role="permitDistributor"
+				maxMembers={1}
+				form={form}
+				disabled={disabled}
+			/>
 			<Divider className={classes.divider} />
 		</Stack>
 	);
@@ -154,7 +162,7 @@ const MemberSelection = ({
 	useEffect(() => {
 		const currentValue =
 			form.getValues().adminAssignments || DefaultCreateAuctionCycleData.adminAssignments;
-		selectedHandlers.setState([...new Set(currentValue[role] || [])]);
+		selectedHandlers.setState([...new Set(currentValue[role] || [])] as IReadAdmin[]);
 	}, [form.getValues().adminAssignments]);
 
 	const memberCards = useMemo(

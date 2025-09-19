@@ -1,12 +1,12 @@
 'use server';
 
-import { camelCase, snakeCase } from 'change-case/keys';
+import { camelCase } from 'change-case/keys';
 import { getTranslations } from 'next-intl/server';
 import { cookies, headers } from 'next/headers';
 import { cache } from 'react';
 import 'server-only';
 
-import { internalUrl } from '@/helpers';
+import { internalUrl, replaceRoleNames, toSnakeCase } from '@/helpers';
 import {
 	AdminRole,
 	DefaultAuctionCycleData,
@@ -39,13 +39,16 @@ export const createAuctionCycle: IFunctionSignature = cache(async (data, cycleId
 		access && refresh ? `ets_access_token=${access}; ets_refresh_token=${refresh}` : '';
 	if (!cookieHeaders) return getDefaultData(t('lib.notLoggedIn'));
 
-	data.adminAssignments = data.adminAssignments.map((admin) => {
-		const snakeCaseData = snakeCase(admin, 5) as ICreateCycleAdmin;
-		snakeCaseData.role = F2BRoleMap[admin.role] as AdminRole;
-		return snakeCaseData;
-	});
+	// data.adminAssignments = data.adminAssignments.map((admin) => {
+	// 	const snakeCaseData = snakeCase(admin, 5) as ICreateCycleAdmin;
+	// 	snakeCaseData.role = F2BRoleMap[admin.role] as AdminRole;
+	// 	return snakeCaseData;
+	// });
 
-	const payload = snakeCase(data, 5);
+	const payload = toSnakeCase(data);
+
+	replaceRoleNames((payload as any)?.admin_assignments as { role: string; admin_id: string }[]);
+
 	const querySettings: RequestInit = {
 		method: cycleId ? 'PUT' : 'POST',
 		body: JSON.stringify(payload),

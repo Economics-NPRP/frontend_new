@@ -18,6 +18,7 @@ export const F2BRoleMap: Record<AdminRole, string> = {
 	auctionOperator: 'coordinator',
 	permitStrategist: 'permits_allocator',
 	financeOfficer: 'payment_collector',
+	permitDistributor: 'permit_distributor',
 };
 
 export const BaseCycleAdminDataSchema = object({
