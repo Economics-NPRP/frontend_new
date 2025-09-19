@@ -1,11 +1,10 @@
 'use client';
 
-import { useTranslations, useFormatter } from 'next-intl';
-import { useContext, useState, useEffect, useMemo, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
+import { useContext, useState, useEffect, useMemo } from 'react';
 
-import { DataTable } from 'mantine-datatable';
 import { ResultsTable } from '@/components/Tables/AuctionResults';
-import { BidsTable, NewBidsTable } from '@/components/Tables/Bids';
+import { NewBidsTable } from '@/components/Tables/Bids';
 import {
 	AllWinningBidsContext,
 	MyOpenAuctionResultsContext,
@@ -14,19 +13,16 @@ import {
 	PaginatedOpenAuctionResultsContext,
 	PaginatedWinningBidsContext,
 	SingleAuctionContext,
-	MyUserProfileContext,
+	// MyUserProfileContext,
 } from '@/contexts';
-import { SelectionSummaryContext } from '@/components/Tables/_components/SelectionSummary';
+// import { SelectionSummaryContext } from '@/components/Tables/_components/SelectionSummary';
 import { useAuctionAvailability } from '@/hooks';
 import { AuctionResultsPageContext } from '@/pages/marketplace/auction/[auctionId]/results/_components/Providers';
-import { FloatingIndicator, Tabs, Button } from '@mantine/core';
-import { CurrencyBadge } from '@/components/Badge';
-import { DateTime } from 'luxon';
-import { IconAward, IconGavel, IconReportAnalytics } from '@tabler/icons-react';
-import { IBidData } from '@/schema/models';
+import { FloatingIndicator, Tabs } from '@mantine/core';
+import { IconAward, IconGavel } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
-import { useListState } from '@mantine/hooks';
+// import { useListState } from '@mantine/hooks';
 
 export default function Bids() {
 	const t = useTranslations();
@@ -37,17 +33,14 @@ export default function Bids() {
 	const myPaginatedBids = useContext(MyPaginatedBidsContext);
 	const paginatedOpenAuctionResults = useContext(PaginatedOpenAuctionResultsContext);
 	const myOpenAuctionResults = useContext(MyOpenAuctionResultsContext);
-	const myUser = useContext(MyUserProfileContext);
+	// const myUser = useContext(MyUserProfileContext);
 	const { historyRef } = useContext(AuctionResultsPageContext);
-	const format = useFormatter();
 
 	const { hasEnded } = useAuctionAvailability();
 
 	const [currentTab, setCurrentTab] = useState<string | null>('results');
 	const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
 	const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
-	const [selectedResult, setSelected] = useListState([]);
-	const { open } = useContext(SelectionSummaryContext);
 
 	const setControlRef = (val: string) => (node: HTMLButtonElement) => {
 		controlsRefs[val] = node;
@@ -61,14 +54,14 @@ export default function Bids() {
 	// ------------------------------------------------------------------
 	// Derived data for appended Mantine DataTable (non-destructive addition)
 	// ------------------------------------------------------------------
-	const contributingBidIds = useMemo(
-		() => myOpenAuctionResults?.data.contributingLosingBids.map(({ id }) => id) || [],
-		[myOpenAuctionResults],
-	);
-	const winningBidIds = useMemo(
-		() => allWinningBids?.data.results.map(({ id }) => id) || [],
-		[allWinningBids],
-	);
+	// const contributingBidIds = useMemo(
+	// 	() => myOpenAuctionResults?.data.contributingLosingBids.map(({ id }) => id) || [],
+	// 	[myOpenAuctionResults],
+	// );
+	// const winningBidIds = useMemo(
+	// 	() => allWinningBids?.data.results.map(({ id }) => id) || [],
+	// 	[allWinningBids],
+	// );
 	const bidsRecords = useMemo(() => paginatedBids?.data.results || [], [paginatedBids?.data.results]);
 	const loadingAll = useMemo(() => 
 		(auction.isLoading ||
@@ -80,17 +73,17 @@ export default function Bids() {
 		[auction, paginatedBids, allWinningBids, paginatedWinningBids, myPaginatedBids, myOpenAuctionResults]
 	);
 
-	const dataTableRowClassName = (record: any) => {
-		if (!record || record.length === 0) return 'bg-gray-50 dark:bg-dark-500';
-		const isMine = record.bidder.id === myUser?.data.id;
-		const isWinning = winningBidIds.includes(record.id);
-		const isContributing = contributingBidIds.includes(record.id);
-		const arr: string[] = [];
-		if (isMine) arr.push('bg-gray-50 dark:bg-dark-500');
-		if (isWinning) arr.push('outline outline-1 outline-green-500');
-		if (isContributing) arr.push('outline outline-1 outline-amber-500');
-		return arr.join(' ');
-	};
+	// const dataTableRowClassName = (record: any) => {
+	// 	if (!record || record.length === 0) return 'bg-gray-50 dark:bg-dark-500';
+	// 	const isMine = record.bidder.id === myUser?.data.id;
+	// 	const isWinning = winningBidIds.includes(record.id);
+	// 	const isContributing = contributingBidIds.includes(record.id);
+	// 	const arr: string[] = [];
+	// 	if (isMine) arr.push('bg-gray-50 dark:bg-dark-500');
+	// 	if (isWinning) arr.push('outline outline-1 outline-green-500');
+	// 	if (isContributing) arr.push('outline outline-1 outline-amber-500');
+	// 	return arr.join(' ');
+	// };
 
 	return (
 		<>

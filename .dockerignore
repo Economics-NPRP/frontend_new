@@ -1,0 +1,13 @@
+node_modules
+.pnpm-store
+.pnpm
+.pnp
+.pnp.cjs
+.next
+dist
+out
+.git
+.gitignore
+*.log
+.env
+.env.*

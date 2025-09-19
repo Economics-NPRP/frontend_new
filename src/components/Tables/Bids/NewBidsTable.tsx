@@ -4,8 +4,10 @@
 import { useTranslations, useFormatter } from 'next-intl';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
-import { Switch } from '@/components/SwitchCase';
-import { generateBidsRows, generateLegend } from '@/components/Tables/Bids/helpers';
+// import { Switch } from '@/components/SwitchCase';
+import { 
+  // generateBidsRows, 
+  generateLegend } from '@/components/Tables/Bids/helpers';
 import { withProviders } from '@/helpers';
 import { BidsFilter } from '@/components/Tables/Bids/types';
 import {
@@ -14,7 +16,7 @@ import {
   IMyPaginatedBidsContext,
   IPaginatedBidsContext,
   IPaginatedWinningBidsContext,
-  MyUserProfileContext,
+  // MyUserProfileContext,
 } from '@/contexts';
 import { SelectionSummaryContext, SelectionSummaryProvider } from '@/components/Tables/_components/SelectionSummary';
 import { useKeysetPaginationText } from '@/hooks';
@@ -23,16 +25,16 @@ import { KeysetPaginatedData } from '@/types';
 import {
   ActionIcon,
   Button,
-  Container,
+  // Container,
   Divider,
   Group,
-  Loader,
+  // Loader,
   Menu,
   Pill,
   Radio,
   Select,
   Stack,
-  Table,
+  // Table,
   TableProps,
   Text,
   Title,
@@ -47,12 +49,12 @@ import { CurrencyBadge } from '@/components/Badge';
 import { DateTime } from 'luxon';
 import {
   IconAdjustments,
-  IconArrowNarrowDown,
+  // IconArrowNarrowDown,
   IconChevronLeft,
   IconChevronRight,
-  IconDatabaseOff,
+  // IconDatabaseOff,
   IconDownload,
-  IconError404,
+  // IconError404,
   IconX,
   IconReportAnalytics,
   IconSearch,
@@ -86,15 +88,15 @@ export interface NewBidsTableProps extends TableProps {
 }
 const _NewBidsTable = ({
   bids,
-  allWinningBids,
+  // allWinningBids,
   paginatedWinningBids,
   myPaginatedBids,
-  myOpenAuctionResults,
+  // myOpenAuctionResults,
 
   showContributingBids,
 
   loading = false,
-  unavailable = false,
+  // unavailable = false,
 
   withCloseButton,
   onClose,
@@ -105,16 +107,15 @@ const _NewBidsTable = ({
   onViewAll,
 
   className,
-  tableClassName,
+  // tableClassName,
 
-  bidsRecords,
-
-  ...props
+  bidsRecords
+  // use ...props if needed
 }: NewBidsTableProps) => {
   const t = useTranslations();
   const format = useFormatter();
   const tableContainerRef = useRef<HTMLDivElement>(null);
-  const myUser = useContext(MyUserProfileContext);
+  // const myUser = useContext(MyUserProfileContext);
 
   const [bidsFilter, setBidsFilter] = useState<BidsFilter>('all');
 
@@ -123,26 +124,26 @@ const _NewBidsTable = ({
   const { open } = useContext(SelectionSummaryContext);
 
   //	Generate the table rows
-  const tableData = useMemo(() => {
-    if (!bids) return null;
-    return generateBidsRows({
-      bids,
-      allWinningBids,
-      paginatedWinningBids,
-      myPaginatedBids,
-      myOpenAuctionResults,
-      bidsFilter,
-      myUser,
-    });
-  }, [
-    bids,
-    allWinningBids,
-    paginatedWinningBids,
-    myPaginatedBids,
-    myOpenAuctionResults,
-    bidsFilter,
-    myUser,
-  ]);
+  // const tableData = useMemo(() => {
+  //   if (!bids) return null;
+  //   return generateBidsRows({
+  //     bids,
+  //     allWinningBids,
+  //     paginatedWinningBids,
+  //     myPaginatedBids,
+  //     myOpenAuctionResults,
+  //     bidsFilter,
+  //     myUser,
+  //   });
+  // }, [
+  //   bids,
+  //   allWinningBids,
+  //   paginatedWinningBids,
+  //   myPaginatedBids,
+  //   myOpenAuctionResults,
+  //   bidsFilter,
+  //   myUser,
+  // ]);
 
   const dataTableColumns = useMemo(
     () => [
@@ -316,12 +317,12 @@ const _NewBidsTable = ({
     if (myPaginatedBids) myPaginatedBids.setCursor(null);
   }, [bidsFilter, bids.perPage, paginatedWinningBids?.perPage, myPaginatedBids?.perPage]);
 
-  const currentState = useMemo(() => {
-    if (!tableData && loading) return 'loading';
-    if (unavailable) return 'unavailable';
-    if (!tableData || tableData.length === 0) return 'empty';
-    return 'ok';
-  }, [loading, tableData]);
+  // const currentState = useMemo(() => {
+  //   if (!tableData && loading) return 'loading';
+  //   if (unavailable) return 'unavailable';
+  //   if (!tableData || tableData.length === 0) return 'empty';
+  //   return 'ok';
+  // }, [loading, tableData]);
 
   // NEW - start
   const generateSummaryGroups = useCallback((selected: any) => [
