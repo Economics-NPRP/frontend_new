@@ -44,9 +44,12 @@ export const createAuction: IFunctionSignature = cache(async (data) => {
 		},
 	};
 
-	const path = data.type === 'open' ? '/api/v1/auctions/o/' : '/api/v1/auctions/s/';
+	// const path = data.type === 'open' ? '/api/v1/auctions/o/' : '/api/v1/auctions/s/';
+	const path = data.type === 'open' ? '/v1/auctions/o/' : '/v1/auctions/s/';
+	const queryUrl = new URL(path, process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080');
 	console.log("THIS DATA ->", JSON.stringify(toSnakeCase({ ...data, title: "some auction Title", description: "some auction Description" })))
-	const response = await fetch("http://localhost:8080/v1/auctions/o/", querySettings);
+
+	const response = await fetch(queryUrl, querySettings);
 	console.log("THIS RESPONSE ->", response)
 	const rawData = camelCase(await response.json(), 5) as ServerData<IAuctionData>;
 
