@@ -7,6 +7,13 @@ import { verifySession } from '@/lib/auth/sessionUtils';
 const otpRoute = '/otp';
 
 export async function middleware(req: NextRequest) {
+	// Lightweight logging for all matched frontend requests (pages and assets covered by matcher)
+	try {
+		const url = new URL(req.url);
+		const xff = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || '';
+		console.log(`[next] ${req.method} ${url.pathname}${url.search} ip=${xff}`);
+	} catch {}
+
 	const res = NextResponse.next();
 
 	//	If the request is for the OTP route, redirect if user doesnt have otp token
