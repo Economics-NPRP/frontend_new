@@ -38,7 +38,10 @@ async function fetchFollowingRedirects(
 		const sc = resp.headers.getSetCookie?.() || [];
 		for (const c of sc) setCookieAccum.push(c);
 
-		if (location && (status === 301 || status === 302 || status === 303 || status === 307 || status === 308)) {
+		if (
+			location &&
+			(status === 301 || status === 302 || status === 303 || status === 307 || status === 308)
+		) {
 			const resolved = /^https?:\/\//i.test(location)
 				? location
 				: new URL(location, url).toString();
@@ -72,13 +75,17 @@ async function fetchFollowingRedirects(
 	return new Response('Too many redirects', { status: 508 });
 }
 
-
 // Use `any` for context to align with Next's generated RouteContext types in .next/types
 async function forward(req: NextRequest, ctx: any) {
-	const context = await ctx
-	const contextParams = await context.params
-	const path = contextParams?.path || []
+	const context = await ctx;
+	const contextParams = await context.params;
+	const path = contextParams?.path || [];
 	const target = buildTargetUrl(req, path);
+
+	// Lightweight server-side logging for observability in container logs
+	try {
+		console.log(`[proxy] ${req.method} ${req.url} -> ${target}`);
+	} catch {}
 
 	const incoming = req.headers;
 	const headers: Record<string, string> = {};
@@ -103,7 +110,23 @@ async function forward(req: NextRequest, ctx: any) {
 	const hasBody = !['GET', 'HEAD'].includes(method);
 	const body = hasBody ? await req.arrayBuffer() : undefined;
 
-	return fetchFollowingRedirects(target, { method, headers, body, redirect: 'manual' });
+	try {
+		const resp = await fetchFollowingRedirects(target, {
+			method,
+			headers,
+			body,
+			redirect: 'manual',
+		});
+		try {
+			console.log(`[proxy] ${req.method} ${target} => ${resp.status}`);
+		} catch {}
+		return resp;
+	} catch (err) {
+		try {
+			console.error(`[proxy] ${req.method} ${target} failed:`, err);
+		} catch {}
+		throw err;
+	}
 }
 
 export function GET(req: NextRequest, ctx: any) {
