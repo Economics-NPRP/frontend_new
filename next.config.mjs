@@ -10,6 +10,14 @@ const withNextIntl = createNextIntlPlugin( './src/locales/request.ts' );
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: 'standalone',
+    images: {
+        dangerouslyAllowSVG: true,
+        remotePatterns: [
+            {
+                hostname: '*',
+            }
+        ]
+    },
     // typescript: {
     //   ignoreBuildErrors: true,
     // },

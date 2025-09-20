@@ -1,152 +1,142 @@
 import type { NextRequest } from 'next/server';
 
-const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL as string | undefined;
+const BACKEND = (process.env.INTERNAL_BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL) as
+	| string
+	| undefined;
 
-function buildTargetUrl(req: NextRequest, _path: string[]) {
+function buildTargetUrl(req: NextRequest) {
 	if (!BACKEND) throw new Error('NEXT_PUBLIC_BACKEND_URL not set');
 	const url = new URL(req.url);
-	// Preserve the exact path (including trailing slash) after /api/proxy
 	const proxyPrefix = '/api/proxy';
 	let suffix = url.pathname.startsWith(proxyPrefix)
 		? url.pathname.slice(proxyPrefix.length)
 		: url.pathname;
-	// Ensure suffix starts with '/'
 	if (!suffix.startsWith('/')) suffix = `/${suffix}`;
+
+	// Normalize known collection index endpoints to include trailing slash
+	const needsSlash = [
+		/^\/v\d+\/[A-Za-z0-9_-]+$/, // /v1/cycles, /v1/sectors, /v1/auctions
+		/^\/v\d+\/users\/(firms|admins)$/,
+		/^\/v\d+\/users\/firms\/applications$/,
+		/^\/v\d+\/auctions\/(o|s)$/,
+		/^\/v\d+\/bids\/(o|s)$/,
+		/^\/v\d+\/results\/(o|s)$/,
+	].some((re) => re.test(suffix));
+	if (needsSlash && !suffix.endsWith('/')) {
+		const before = suffix;
+		suffix = `${suffix}/`;
+		try {
+			console.log(`[proxy] normalized index path: ${before} -> ${suffix}`);
+		} catch {}
+	}
+
 	const base = BACKEND.endsWith('/') ? BACKEND.slice(0, -1) : BACKEND;
 	return `${base}${suffix}${url.search}`;
 }
 
-// Follow backend redirects manually to preserve Set-Cookie and avoid surfacing 30x to callers
-async function fetchFollowingRedirects(
-	input: RequestInfo | URL,
-	init: RequestInit,
-	maxRedirects = 2,
-) {
-	let url = typeof input === 'string' ? input : input.toString();
-	let method = (init.method || 'GET').toUpperCase();
-	let body = init.body;
-	const headers = (init.headers || {}) as Record<string, string>;
-	const setCookieAccum: string[] = [];
+async function forward(req: NextRequest): Promise<Response> {
+	const target0 = buildTargetUrl(req);
 
-	for (let i = 0; i < maxRedirects; i++) {
-		const resp = await fetch(url, { ...init, method, body, redirect: 'manual' });
-
-		const status = resp.status;
-		const location = resp.headers.get('location');
-
-		// Accumulate Set-Cookie across hops (Next runtime provides getSetCookie)
-		const sc = resp.headers.getSetCookie?.() || [];
-		for (const c of sc) setCookieAccum.push(c);
-
-		if (
-			location &&
-			(status === 301 || status === 302 || status === 303 || status === 307 || status === 308)
-		) {
-			const resolved = /^https?:\/\//i.test(location)
-				? location
-				: new URL(location, url).toString();
-
-			// ✅ Only for 303 change method to GET and drop the body
-			if (status === 303) {
-				method = 'GET';
-				body = undefined;
-				// Optional: content-type is meaningless on GET with no body
-				if ('content-type' in headers) delete headers['content-type'];
-			} else {
-				// ✅ Preserve method & body for 301/302/307/308
-				// (This avoids POST→GET on trailing-slash redirects.)
-			}
-
-			url = resolved;
-			continue;
-		}
-
-		// Build final response with accumulated cookies and key headers
-		const respHeaders = new Headers();
-		const ct = resp.headers.get('content-type');
-		if (ct) respHeaders.set('content-type', ct);
-		const cl = resp.headers.get('content-length');
-		if (cl) respHeaders.set('content-length', cl);
-		for (const c of setCookieAccum) respHeaders.append('set-cookie', c);
-
-		return new Response(resp.body, { status: resp.status, headers: respHeaders });
-	}
-
-	return new Response('Too many redirects', { status: 508 });
-}
-
-// Use `any` for context to align with Next's generated RouteContext types in .next/types
-async function forward(req: NextRequest, ctx: any) {
-	const context = await ctx;
-	const contextParams = await context.params;
-	const path = contextParams?.path || [];
-	const target = buildTargetUrl(req, path);
-
-	// Lightweight server-side logging for observability in container logs
-	try {
-		console.log(`[proxy] ${req.method} ${req.url} -> ${target}`);
-	} catch {}
-
+	// Build forward headers
 	const incoming = req.headers;
 	const headers: Record<string, string> = {};
-
-	// Forward allowed headers
 	const cookie = incoming.get('cookie');
 	const ct = incoming.get('content-type');
 	const accept = incoming.get('accept');
+	const auth = incoming.get('authorization');
 	if (cookie) headers['cookie'] = cookie;
 	if (ct) headers['content-type'] = ct;
 	if (accept) headers['accept'] = accept;
+	if (auth) headers['authorization'] = auth;
 
-	// Forward IP headers for token IP-binding
+	// Propagate client IP-ish headers (best-effort)
 	const xff = incoming.get('x-forwarded-for');
-	const cfip = incoming.get('cf-connecting-ip');
 	const xreal = incoming.get('x-real-ip');
 	if (xff) headers['X-Forwarded-For'] = xff;
-	if (cfip) headers['CF-Connecting-IP'] = cfip;
 	if (xreal) headers['X-Real-IP'] = xreal;
 
-	const method = req.method;
-	const hasBody = !['GET', 'HEAD'].includes(method);
-	const body = hasBody ? await req.arrayBuffer() : undefined;
+	let method = req.method.toUpperCase();
+	let body: BodyInit | undefined = !['GET', 'HEAD'].includes(method)
+		? await req.arrayBuffer()
+		: undefined;
 
-	try {
-		const resp = await fetchFollowingRedirects(target, {
+	// Follow up to 3 redirects manually to avoid surfacing 307 loops
+	let currentUrl = target0;
+	let resp: Response | null = null;
+	for (let i = 0; i < 3; i++) {
+		resp = await fetch(currentUrl, {
 			method,
 			headers,
 			body,
 			redirect: 'manual',
 		});
-		try {
-			console.log(`[proxy] ${req.method} ${target} => ${resp.status}`);
-		} catch {}
-		return resp;
-	} catch (err) {
-		try {
-			console.error(`[proxy] ${req.method} ${target} failed:`, err);
-		} catch {}
-		throw err;
+		const status = resp.status;
+		const loc = resp.headers.get('location');
+		if (loc && [301, 302, 303, 307, 308].includes(status)) {
+			const resolved = /^https?:\/\//i.test(loc) ? loc : new URL(loc, currentUrl).toString();
+			// 303 forces GET (body dropped)
+			if (status === 303 && method !== 'GET' && method !== 'HEAD') {
+				method = 'GET';
+				body = undefined;
+			}
+			currentUrl = resolved;
+			// Continue to next hop
+			continue;
+		}
+		break;
 	}
+
+	const final = resp ?? new Response('Bad Gateway', { status: 502 });
+	try {
+		console.log(`[proxy] ${req.method} ${target0} => ${final.status}`);
+	} catch {}
+
+	// Filter hop-by-hop headers and preserve multiple Set-Cookie if present
+	const hopByHop = new Set([
+		'connection',
+		'keep-alive',
+		'proxy-authenticate',
+		'proxy-authorization',
+		'te',
+		'trailer',
+		'transfer-encoding',
+		'upgrade',
+	]);
+
+	const outHeaders = new Headers();
+	final.headers.forEach((value, key) => {
+		if (!hopByHop.has(key.toLowerCase())) outHeaders.set(key, value);
+	});
+	const anyHeaders: any = final.headers as any;
+	if (typeof anyHeaders.getSetCookie === 'function') {
+		const cookies: string[] = anyHeaders.getSetCookie();
+		if (cookies && cookies.length) {
+			outHeaders.delete('set-cookie');
+			for (const c of cookies) outHeaders.append('set-cookie', c);
+		}
+	}
+
+	return new Response(final.body, { status: final.status, headers: outHeaders });
 }
 
-export function GET(req: NextRequest, ctx: any) {
-	return forward(req, ctx);
+export function GET(req: NextRequest) {
+	return forward(req);
 }
-export function POST(req: NextRequest, ctx: any) {
-	return forward(req, ctx);
+export function POST(req: NextRequest) {
+	return forward(req);
 }
-export function PUT(req: NextRequest, ctx: any) {
-	return forward(req, ctx);
+export function PUT(req: NextRequest) {
+	return forward(req);
 }
-export function PATCH(req: NextRequest, ctx: any) {
-	return forward(req, ctx);
+export function PATCH(req: NextRequest) {
+	return forward(req);
 }
-export function DELETE(req: NextRequest, ctx: any) {
-	return forward(req, ctx);
+export function DELETE(req: NextRequest) {
+	return forward(req);
 }
-export function HEAD(req: NextRequest, ctx: any) {
-	return forward(req, ctx);
+export function HEAD(req: NextRequest) {
+	return forward(req);
 }
-export function OPTIONS(req: NextRequest, ctx: any) {
-	return forward(req, ctx);
+export function OPTIONS(req: NextRequest) {
+	return forward(req);
 }
