@@ -2,8 +2,8 @@ import { DateTime } from 'luxon';
 import { useLocale, useTranslations } from 'next-intl';
 
 import { LargeCountdown } from '@/components/Countdown';
-import { ActionIcon, Button, ButtonGroup, Container, Text, Title, Tooltip } from '@mantine/core';
-import { IconArrowUpRight, IconCalendarSearch } from '@tabler/icons-react';
+import { ActionIcon, Button, ButtonGroup, Container, Text, Title, Tooltip, Anchor } from '@mantine/core';
+import { IconArrowUpRight, IconCalendarSearch, IconArrowDown } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 
@@ -39,12 +39,14 @@ export default function Banner() {
 					</ActionIcon>
 				</Tooltip>
 				<Tooltip label={t('marketplace.home.banner.actions.explore.tooltip')}>
-					<Button
-						className={classes.primary}
-						rightSection={<IconArrowUpRight size={16} />}
-					>
-						{t('marketplace.home.banner.actions.explore.text')}
-					</Button>
+					<Anchor href="#marketplace-catalogue">
+						<Button
+							className={classes.primary}
+							rightSection={<IconArrowDown size={16} />}
+						>
+							{t('marketplace.home.banner.actions.explore.text')}
+						</Button>
+					</Anchor>
 				</Tooltip>
 			</ButtonGroup>
 		</Container>

@@ -18,7 +18,7 @@ import classes from './styles.module.css';
 export const AuctionCatalogue = () => {
 	return withProviders(
 		<>
-			<Container className={classes.root}>
+			<Container id="marketplace-catalogue" className={classes.root}>
 				<Container className={classes.bg}>
 					<Container className={`${classes.graphic} bg-grid-md`} />
 				</Container>

@@ -698,7 +698,25 @@
 							"title": "Sell Permits",
 							"tooltip": "Create an auction to sell off your excess permits"
 						}
-					}
+					},
+					"auctions":{
+						"joined": {
+							"title": "Joined Auctions",
+							"home": {
+								"title": "Joined",
+								"tooltip": "Number of auctions you have joined"
+							},
+							"audit": {
+								"title": "Winning Bids",
+								"tooltip": "Number of winning bids you have placed"
+							},
+							"roles": {
+								"title": "Admin Roles",
+								"tooltip": "View and manage admin roles"
+							},
+							"description": "View and manage all administrators who help operate the carbon trading platform. This includes their roles, permissions, and activity."
+						}
+					} 
 				}
 			},
 			"feedback": {
