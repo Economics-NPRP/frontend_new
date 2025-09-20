@@ -58,9 +58,7 @@ export const CreateAuctionDataSchema = object({
 	...omit(BaseAuctionDataSchema, [
 		'id',
 
-		'title',
 		'image',
-		'description',
 
 		'bidsCount',
 		'biddersCount',
@@ -155,6 +153,8 @@ export const DefaultAuctionData: IAuctionData = {
 export const DefaultCreateAuctionData: ICreateAuction = {
 	ownerId: '',
 	cycleId: '',
+	title: '',
+	description: '',
 	emissionId: 1,
 	sector: 'energy',
 	subsector: 'gasTurbine',

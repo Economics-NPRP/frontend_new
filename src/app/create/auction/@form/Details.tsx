@@ -7,7 +7,7 @@ import { useContextSelector } from 'use-context-selector';
 import { DateTimePicker } from '@/pages/create/_components/DateTimePicker';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { ICreateAuctionStepProps } from '@/pages/create/auction/@form/page';
-import { Alert, List, NumberInput, Select, Stack, Text, Title } from '@mantine/core';
+import { Alert, List, NumberInput, Select, Stack, Text, Title, TextInput } from '@mantine/core';
 import { IconExclamationCircle } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
@@ -41,6 +41,20 @@ export const DetailsStep = ({ form }: ICreateAuctionStepProps) => {
 				</Alert>
 			)}
 			<Stack className={classes.inputs}>
+				<TextInput 
+					label={t('create.auction.details.title.label')}
+					description={t('create.auction.details.title.description')}
+					required 
+					key={form.key('title')}
+					{...form.getInputProps('title')}
+				/>
+				<TextInput
+					label={t('create.auction.details.description.label')}
+					description={t('create.auction.details.description.description')}
+					required
+					key={form.key('description')}
+					{...form.getInputProps('description')}
+				/>
 				<Select
 					label={t('create.auction.details.type.label')}
 					description={t('create.auction.details.type.description')}

@@ -3052,6 +3052,14 @@
 				"type": {
 					"label": "Auction Type",
 					"description": "Should this be an open or sealed auction?"
+				},
+				"title": {
+					"label": "Auction Title",
+					"description": "Give the auction a name"
+				},
+				"description": {
+					"label": "Auction Description",
+					"description": "Write a descriptive statement about this auction"
 				}
 			},
 			"review": {
