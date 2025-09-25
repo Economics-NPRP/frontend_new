@@ -43,14 +43,64 @@ export const useCreateAuction: CreateAuctionProps = ({ onSettled, onSuccess, onE
 			onSuccess?.();
 		},
 		onError: (error: Error) => {
-			console.error('Error creating a new auction:', error.message);
+			let message = error.message;
+			// Pattern 1 (new): Backend composite message listing both or one violation
+			// Example: "Auction start 2025-09-25T21:00:00+00:00 is before cycle start 2025-09-26T16:20:42+00:00; auction end 2025-09-28T21:00:00+00:00 is after cycle end 2025-09-29T21:00:00+00:00"
+			const startBeforeRegex = /auction start\s+(\S+)\s+is before cycle start\s+(\S+)/i;
+			const endAfterRegex = /auction end\s+(\S+)\s+is after cycle end\s+(\S+)/i;
+			const startBefore = message.match(startBeforeRegex);
+			const endAfter = message.match(endAfterRegex);
+
+			// Pattern 2 (legacy): "Auction schedule (start=..., end=...) lies outside cycle window (start=..., end=...)."
+			const legacyRegex =
+				/Auction schedule \(start=([^,]+), end=([^\)]+)\) lies outside cycle window \(start=([^,]+), end=([^\)]+)\)\./;
+			const legacyMatch = message.match(legacyRegex);
+
+			if (startBefore || endAfter || legacyMatch) {
+				let parts: string[] = [];
+				if (startBefore) {
+					const [, aStart, cStart] = startBefore;
+					parts.push(
+						t('lib.auctions.create.outOfCycleBounds', {
+							auctionStart: aStart,
+							auctionEnd: '-',
+							cycleStart: cStart,
+							cycleEnd: '-',
+						}),
+					);
+				}
+				if (endAfter) {
+					const [, aEnd, cEnd] = endAfter;
+					parts.push(
+						t('lib.auctions.create.outOfCycleBounds', {
+							auctionStart: '-',
+							auctionEnd: aEnd,
+							cycleStart: '-',
+							cycleEnd: cEnd,
+						}),
+					);
+				}
+				if (!startBefore && !endAfter && legacyMatch) {
+					const [, aStart, aEnd, cStart, cEnd] = legacyMatch;
+					parts = [
+						t('lib.auctions.create.outOfCycleBounds', {
+							auctionStart: aStart,
+							auctionEnd: aEnd,
+							cycleStart: cStart,
+							cycleEnd: cEnd,
+						}),
+					];
+				}
+				message = parts.join('\n');
+			}
+			console.error('Error creating a new auction:', message);
 			notifications.show({
 				color: 'red',
 				title: t('lib.auctions.create.error'),
-				message: error.message,
+				message,
 				position: 'bottom-center',
 			});
-			onError?.(error);
+			onError?.(new Error(message));
 		},
 		retry: false,
 	});

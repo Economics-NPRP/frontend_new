@@ -7,7 +7,7 @@ import { useContextSelector } from 'use-context-selector';
 import { DateTimePicker } from '@/pages/create/_components/DateTimePicker';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
 import { ICreateAuctionStepProps } from '@/pages/create/auction/@form/page';
-import { Alert, List, NumberInput, Select, Stack, Text, Title, TextInput } from '@mantine/core';
+import { Alert, List, NumberInput, Select, Stack, Text, TextInput, Title } from '@mantine/core';
 import { IconExclamationCircle } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
@@ -41,10 +41,10 @@ export const DetailsStep = ({ form }: ICreateAuctionStepProps) => {
 				</Alert>
 			)}
 			<Stack className={classes.inputs}>
-				<TextInput 
+				<TextInput
 					label={t('create.auction.details.title.label')}
 					description={t('create.auction.details.title.description')}
-					required 
+					required
 					key={form.key('title')}
 					{...form.getInputProps('title')}
 				/>
@@ -130,7 +130,7 @@ export const DetailsStep = ({ form }: ICreateAuctionStepProps) => {
 					label={t('create.auction.details.startDatetime.label')}
 					description={t('create.auction.details.startDatetime.description')}
 					placeholder={t('create.auction.details.startDatetime.placeholder')}
-					minDate={DateTime.now().toJSDate()}
+					minDate={DateTime.now().plus({ days: 2 }).startOf('day').toJSDate()}
 					required
 					key={form.key('startDatetime')}
 					{...form.getInputProps('startDatetime')}
@@ -139,7 +139,7 @@ export const DetailsStep = ({ form }: ICreateAuctionStepProps) => {
 					label={t('create.auction.details.endDatetime.label')}
 					description={t('create.auction.details.endDatetime.description')}
 					placeholder={t('create.auction.details.endDatetime.placeholder')}
-					minDate={DateTime.now().toJSDate()}
+					minDate={DateTime.now().plus({ days: 2 }).startOf('day').toJSDate()}
 					required
 					key={form.key('endDatetime')}
 					{...form.getInputProps('endDatetime')}
