@@ -1,3 +1,4 @@
+import { toIsoUtcMicro } from 'helpers/cycleInfoFormat';
 import { DateTime } from 'luxon';
 import {
 	InferInput,
@@ -26,7 +27,6 @@ import { AuctionTypeSchema } from './AuctionType';
 import { DefaultUserData } from './GeneralUserData';
 import { SectorTypeSchema } from './SectorData';
 import { BaseUserDataSchema } from './UserData';
-import { toIsoUtcMicro } from 'helpers/cycleInfoFormat';
 
 export const BaseAuctionDataSchema = object({
 	id: UuidSchema(),
@@ -81,8 +81,12 @@ export const CreateAuctionDataSchemaTransformer = pipe(
 	transform((input) => ({
 		...input,
 
-		startDatetime: toIsoUtcMicro(DateTime.fromISO(input.startDatetime).toISO() || input.startDatetime),
-		endDatetime: toIsoUtcMicro(DateTime.fromISO(input.endDatetime).toISO() || input.endDatetime),
+		startDatetime: toIsoUtcMicro(
+			DateTime.fromISO(input.startDatetime).toISO() || input.startDatetime,
+		),
+		endDatetime: toIsoUtcMicro(
+			DateTime.fromISO(input.endDatetime).toISO() || input.endDatetime,
+		),
 	})),
 );
 
@@ -162,6 +166,6 @@ export const DefaultCreateAuctionData: ICreateAuction = {
 	isPrimaryMarket: false,
 	permits: 0,
 	minBid: 0,
-	startDatetime: new Date().toISOString(),
-	endDatetime: new Date().toISOString(),
+	startDatetime: DateTime.now().plus({ days: 1 }).toISO() || new Date().toISOString(),
+	endDatetime: DateTime.now().plus({ days: 1, hours: 1 }).toISO() || new Date().toISOString(),
 };
