@@ -6,6 +6,9 @@
 	> .banner {
 		@apply col-span-1;
 	}
+	> .fullBanner {
+		@apply col-span-1;
+	}
 }
 
 * {
@@ -16,12 +19,18 @@
 			> .banner {
 				@apply col-span-1;
 			}
+			> .fullBanner {
+				@apply col-span-2;
+			}
 		}
 	}
 
 	@mixin larger-than $mantine-breakpoint-3xl {
 		.root {
 			@apply grid-cols-4;
+			> .fullBanner {
+				@apply col-span-4;
+			}
 		}
 	}
 }

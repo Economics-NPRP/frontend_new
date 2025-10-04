@@ -2181,6 +2181,14 @@
                         },
                         "comments": {
                             "tooltip": "View or place comments on this auction cycle"
+                        },
+                        "start": {
+                            "heading": "Start Cycle",
+                            "subheading": "Click here to start the cycle and release it to the public"
+                        },
+                        "ongoing": {
+                            "heading": "Ongoing Cycle",
+                            "subheading": "The current cycle is ongoing"
                         }
                     },
                     "title": "Cycle KPIs",
@@ -2546,7 +2554,15 @@
                 "error": "There was an error approving the cycle",
                 "success": {
                     "title": "Auction Cycle Approved",
-                    "message": "This auction cycle has been approved and its auctions have been released for the public"
+                    "message": "This auction cycle has been approved and can be started."
+                }
+            },
+            "start": {
+                "invalidStatus": "Only approved cycles can be started.",
+                "error": "There was an error starting the cycle",
+                "success": {
+                    "title": "Auction Cycle Started",
+                    "message": "This auction cycle has been started and its auctions are now live"
                 }
             },
             "create": {

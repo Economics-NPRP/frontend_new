@@ -1,3 +1,4 @@
+export * from './startCycle';
 export * from './approveCycle';
 export * from './createAuctionCycle';
 export * from './getAllCycleAdmins';
