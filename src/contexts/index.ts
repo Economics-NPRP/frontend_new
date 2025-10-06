@@ -10,6 +10,7 @@ export * from './MyOpenAuctionResults';
 export * from './MyPaginatedBids';
 export * from './MyPaginatedWinningBids';
 export * from './MyUserProfile';
+export * from './OnboardingData';
 export * from './PaginatedAdmins';
 export * from './PaginatedAuctionCycles';
 export * from './PaginatedAuctions';

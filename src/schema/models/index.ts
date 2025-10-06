@@ -20,3 +20,4 @@ export * from './SectorData';
 export * from './SubsectorData';
 export * from './UserData';
 export * from './UserType';
+export * from './OnboardingData';

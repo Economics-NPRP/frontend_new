@@ -4,3 +4,4 @@ export * from './register';
 export * from './resendOtp';
 export * from './sessionUtils';
 export * from './verifyOtp';
+export * from './getRegistrationInfo';
