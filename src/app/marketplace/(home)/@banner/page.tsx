@@ -3,7 +3,7 @@ import { useLocale, useTranslations } from 'next-intl';
 
 import { LargeCountdown } from '@/components/Countdown';
 import { ActionIcon, Button, ButtonGroup, Container, Text, Title, Tooltip, Anchor } from '@mantine/core';
-import { IconArrowUpRight, IconCalendarSearch, IconArrowDown } from '@tabler/icons-react';
+import { IconCalendarSearch, IconArrowDown } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 

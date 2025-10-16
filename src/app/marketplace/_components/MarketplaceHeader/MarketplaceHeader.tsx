@@ -1,6 +1,8 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { useContext, useMemo } from 'react';
+import { MyUserProfileContext } from 'contexts';
 import Link from 'next/link';
 
 import { MyProfileMenu } from '@/components/MyProfileMenu';
@@ -13,6 +15,16 @@ import classes from './styles.module.css';
 
 export const MarketplaceHeader = () => {
 	const t = useTranslations();
+	const myUser = useContext(MyUserProfileContext);
+
+	const isAdmin = useMemo(() => myUser?.data?.type === 'admin', [myUser?.data?.type]);
+
+	const currentState = useMemo(() => {
+		if (!myUser) return 'loading';
+		if (myUser.isError) return 'error';
+		if (myUser.isSuccess) return 'success';
+		return 'loading';
+	}, [myUser]);
 
 	return (
 		<Center component="header" className={classes.root}>
@@ -21,7 +33,7 @@ export const MarketplaceHeader = () => {
 					<Tooltip label={t('constants.return.dashboard.tooltip')}>
 						<Button
 							component={Link}
-							href="/dashboard"
+							href={(currentState === 'loading' || currentState === "error") ? '#' : (isAdmin ? '/dashboard/a' : '/dashboard/f')}
 							aria-label={t('constants.return.dashboard.aria')}
 							className={classes.dashboardButton}
 							variant="light"
@@ -61,7 +73,11 @@ export const MarketplaceHeader = () => {
 					<HeaderButton variant="accessibility" visibleFrom="xs" />
 					<HeaderButton variant="language" visibleFrom="xs" />
 					<HeaderButton variant="theme" visibleFrom="xs" />
-					<MyProfileMenu>
+					<MyProfileMenu
+						myUser={myUser}
+						isAdmin={isAdmin}
+						currentState={currentState}
+					>
 						<HeaderButton
 							className={`${classes.user} ${classes.button}`}
 							variant="user"
