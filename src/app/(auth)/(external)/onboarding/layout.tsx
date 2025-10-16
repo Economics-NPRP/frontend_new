@@ -1,20 +1,24 @@
-import { Metadata } from 'next';
+"use client"
 import { useTranslations } from 'next-intl';
-import { ReactNode } from 'react';
+import { ReactNode, useContext, useEffect } from 'react';
 
+import { OnBoardingContext, OnBoardingProvider } from '@/contexts';
+import { withProviders } from '@/helpers';
 import classes from '@/pages/(auth)/(external)/styles.module.css';
 import { Stack, Text, Title } from '@mantine/core';
-
-export const metadata: Metadata = {
-	title: 'Onboarding',
-};
 
 export interface OnboardingProps {
 	details: ReactNode;
 	form: ReactNode;
 }
-export default function Onboarding({ details, form }: OnboardingProps) {
+
+function OnboardingContent({ details, form }: OnboardingProps) {
 	const t = useTranslations();
+	const onboardingContext = useContext(OnBoardingContext);
+
+	useEffect(() => {
+		console.log('OnboardingContext', onboardingContext);
+	}, [onboardingContext]);
 
 	return (
 		<>
@@ -25,5 +29,12 @@ export default function Onboarding({ details, form }: OnboardingProps) {
 			{details}
 			{form}
 		</>
+	);
+}
+
+export default function Onboarding(props: OnboardingProps) {
+	return withProviders(
+		<OnboardingContent {...props} />,
+		{ provider: OnBoardingProvider, props: { tokenSource: 'searchParams' } },
 	);
 }

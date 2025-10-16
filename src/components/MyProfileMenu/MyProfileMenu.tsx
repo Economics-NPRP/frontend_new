@@ -3,11 +3,11 @@
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { usePathname } from 'next/navigation';
-import { useContext, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { Id } from '@/components/Id';
 import { Switch } from '@/components/SwitchCase';
-import { MyUserProfileContext } from '@/contexts';
+import { IMyUserProfileContext } from '@/contexts';
 import { useAuth } from '@/hooks';
 import {
 	Alert,
@@ -49,34 +49,36 @@ import classes from './styles.module.css';
 
 import { isolateMessage } from 'helpers/isolateMessage';
 
-export interface MyProfileMenuProps extends MenuProps {}
-export const MyProfileMenu = ({ children, ...props }: MyProfileMenuProps) => {
+export interface MyProfileMenuProps extends MenuProps {
+	myUser: IMyUserProfileContext;
+	isAdmin: boolean;
+	currentState: 'loading' | 'error' | 'success';
+}
+export const MyProfileMenu = ({ children, myUser, isAdmin, currentState, ...menuProps }: MyProfileMenuProps) => {
 	const t = useTranslations();
 	const pathname = usePathname();
-	
-	const myUser = useContext(MyUserProfileContext);
 
 	const { logout } = useAuth();
 
-	const isMarketplace = useMemo(() => pathname.startsWith('/marketplace'), [pathname]);
-	const isAdmin = useMemo(() => myUser.data.type === 'admin', [myUser.data.type]);
+	useEffect(() => { console.log(myUser) }, [myUser]);
 
-	const currentState = useMemo(() => {
-		if (myUser.isError) return 'error';
-		if (myUser.isSuccess) return 'success';
-		return 'loading';
-	}, [myUser]);
+	const isMarketplace = useMemo(() => pathname.startsWith('/marketplace'), [pathname]);
+
+	// Safeguard against undefined myUser
+	const safeIsLoading = myUser?.isLoading ?? true;
+	const safeError = myUser?.error;
+	const safeData = myUser?.data ?? { id: '', name: '', type: 'firm' as const };
 
 	return (
 		<Menu
 			classNames={{
-				dropdown: `${classes.root} ${myUser.isLoading ? classes.loading : ''}`,
+				dropdown: `${classes.root} ${safeIsLoading ? classes.loading : ''}`,
 				item: classes.item,
 			}}
 			width={320}
 			offset={4}
 			position="bottom-end"
-			{...props}
+			{...menuProps}
 		>
 			<MenuTarget>{children}</MenuTarget>
 
@@ -110,21 +112,21 @@ export const MyProfileMenu = ({ children, ...props }: MyProfileMenuProps) => {
 							icon={<IconExclamationCircle />}
 							className="mb-4"
 						>
-							{isolateMessage(myUser.error?.message || "")}
+							{isolateMessage(safeError?.message || "")}
 						</Alert>
 					</Switch.Error>
 					<Switch.Else>
 						<Container className={`${classes.bg} bg-grid-sm`} />
 						<Avatar
 							className={classes.avatar}
-							name={myUser.data.name}
+							name={safeData.name}
 							color="initials"
 							size={'lg'}
 						/>
 						<Group className={classes.details}>
 							<Stack className={classes.id}>
-								<Id value={myUser.data.id} variant="company" truncate />
-								<Text className={classes.text}>{myUser.data.name}</Text>
+								<Id value={safeData.id} variant="company" truncate />
+								<Text className={classes.text}>{safeData.name}</Text>
 							</Stack>
 							<Stack className={classes.rating}>
 								<Rating
@@ -198,7 +200,7 @@ export const MyProfileMenu = ({ children, ...props }: MyProfileMenuProps) => {
 				>
 					{t('components.myProfileMenu.dashboard.statistics')}
 				</MenuItem>
-				<Switch value={myUser.data.type}>
+				<Switch value={safeData.type}>
 					<Switch.Case when="admin">
 						<MenuItem
 							component={Link}
@@ -249,7 +251,7 @@ export const MyProfileMenu = ({ children, ...props }: MyProfileMenuProps) => {
 				</MenuItem>
 				<MenuItem
 					component={Link}
-					href={`/dashboard/${myUser.data.type === 'admin' ? 'a' : 'f'}/settings`}
+					href={`/dashboard/${safeData.type === 'admin' ? 'a' : 'f'}/settings`}
 					leftSection={<IconSettings size={16} />}
 				>
 					{t('constants.pages.settings.title')}
