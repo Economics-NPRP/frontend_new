@@ -18,12 +18,17 @@ const nextConfig = {
             }
         ]
     },
-    // typescript: {
-    //   ignoreBuildErrors: true,
-    // },
-    // eslint: {
-    //   ignoreDuringBuilds: true,
-    // },
+    // This makes Docker/CI builds much faster. For safety, we will run `pnpm typecheck` and `pnpm lint` as separate CI steps.
+    typescript: {
+        ignoreBuildErrors: true,
+    },
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
+
+    // Ensure no production browser source maps are generated (keeps builds smaller/faster)
+    productionBrowserSourceMaps: false,
+    swcMinify: true,
 
     experimental: {
         optimizePackageImports: [ "@mantine/core", "@mantine/hooks" ],

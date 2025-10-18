@@ -14,7 +14,7 @@ COPY package.json pnpm-lock.yaml ./
 # Ensure devDependencies (postcss plugins, etc.) are installed for the build
 ENV NODE_ENV=development
 # Use a cached pnpm store to speed up installs across builds
-RUN --mount=type=cache,target=/root/.pnpm-store \
+RUN --mount=type=cache,target=/root/.pnpm-store,id=pnpm-store-cache \
 	pnpm install --frozen-lockfile --prefer-offline --prod=false
 
 FROM base AS build
@@ -26,7 +26,8 @@ ENV NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL}
 # Fail fast if backend URL isn't provided at build time (avoids "Invalid URL" at runtime)
 RUN if [ -z "$NEXT_PUBLIC_BACKEND_URL" ]; then echo "Error: NEXT_PUBLIC_BACKEND_URL build arg is required" >&2; exit 1; fi
 # Cache next build artifacts between builds
-RUN --mount=type=cache,target=/app/.next/cache \
+ENV NODE_OPTIONS="--max-old-space-size=2048"
+RUN --mount=type=cache,target=/app/.next/cache,id=next-cache \
 	pnpm build
 
 # Lightweight runtime with standalone output
