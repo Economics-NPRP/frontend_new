@@ -5,9 +5,6 @@
 
 	&.draft {
 		> .left {
-			> .bg {
-			}
-
 			> .header > .wrapper > .indicator {
 				@apply bg-gray-200;
 			}
@@ -51,7 +48,9 @@
 		> .bg {
 			@apply absolute;
 		}
-
+		> .heading {
+			@apply text-gray-600 font-semibold mb-2;
+		}
 		> .header {
 			@apply flex-col flex-nowrap;
 			@apply gap-4 items-stretch justify-center;
@@ -197,6 +196,10 @@
 			}
 		}
 	}
+	> .date {
+		@apply heading-4 bg-dark-600 text-center py-1;
+		color: white;
+	}
 
 	> .right {
 		@apply flex-col items-stretch flex-nowrap flex-shrink-0;
@@ -298,7 +301,7 @@
 	}
 
 	@mixin larger-than $mantine-breakpoint-sm {
-		.root {
+		.root:not(.home) {
 			@apply flex-row;
 
 			> .left {

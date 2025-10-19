@@ -6,18 +6,19 @@ import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
 import { Stack } from '@mantine/core';
 
 import classes from './styles.module.css';
-
+import { withProviders } from 'helpers/withProviders';
+import { PaginatedAuctionCyclesProvider } from 'contexts/PaginatedAuctionCycles';
 export const metadata: Metadata = {
 	title: 'Home',
 };
 
 export interface HomeProps {
-	welcome: ReactNode;
+	content: ReactNode;
 }
-export default function Home({ welcome }: HomeProps) {
+export default function Home({ content }: HomeProps) {
 	const t = useTranslations();
 
-	return (
+	return withProviders(
 		<Stack className={classes.root}>
 			<DashboardHero
 				title={t('constants.pages.dashboard.admin.home.title')}
@@ -28,7 +29,9 @@ export default function Home({ welcome }: HomeProps) {
 					},
 				]}
 			/>
-			{welcome}
+			{content}
 		</Stack>
-	);
+	, {
+		provider: PaginatedAuctionCyclesProvider
+	});
 }
