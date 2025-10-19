@@ -197,7 +197,7 @@
 		}
 	}
 	> .date {
-		@apply heading-4 bg-dark-600 text-center py-1;
+		@apply heading-4 bg-dark-600 text-center py-1 flex justify-center items-center;
 		color: white;
 	}
 

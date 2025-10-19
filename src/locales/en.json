@@ -744,7 +744,7 @@
     "na": "N/A",
     "others": "Others",
     "lastUpdated": "Last Updated: {value}",
-    "endsAt": "Ends At ",
+    "endsAt": "Ends At",
     "download": {
       "default": "Download as CSV",
       "companyData": "Download all company data as CSV",

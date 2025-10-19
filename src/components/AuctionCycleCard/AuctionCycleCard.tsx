@@ -303,9 +303,7 @@ export const HomeAuctionCycleCard = ({
 	...props
 }: AuctionCycleCardProps) => {
 	const t = useTranslations();
-	const format = useFormatter();
 	const truncate = useMatches({ base: false, xs: true, sm: false, md: true, lg: false });
-	const { duration, interval } = useCycleStatus(auctionCycleData);
 
 	return (
 		<Group className={`${classes[auctionCycleData.status]} ${classes.root} ${classes.home}`} {...props}>
@@ -461,11 +459,14 @@ export const HomeAuctionCycleCard = ({
 					</Stack>
 				</Group>
 			</Stack>
-			<Text className={classes.date}><strong>{t('constants.endsAt')}</strong>{
-				DateTime.fromISO(
-					auctionCycleData.endDatetime,
-				).toLocaleString(DateTime.DATETIME_MED).split(",").slice(0, 2).join(",")
-			}</Text>
+				{!loading ?
+				<Text className={classes.date}><strong>
+						{t('constants.endsAt')}&nbsp;
+						</strong>
+						{DateTime.fromISO(
+							auctionCycleData.endDatetime,
+						).toLocaleString(DateTime.DATETIME_MED).split(",").slice(0, 2).join(",")}
+				</Text> : <></>}
 		</Group>
 	);
 };
