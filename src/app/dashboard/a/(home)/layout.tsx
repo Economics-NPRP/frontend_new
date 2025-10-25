@@ -32,6 +32,8 @@ export default function Home({ content }: HomeProps) {
 			{content}
 		</Stack>
 	, {
-		provider: PaginatedAuctionCyclesProvider
+		provider: PaginatedAuctionCyclesProvider, props: {
+			status: 'ongoing',
+		}
 	});
 }

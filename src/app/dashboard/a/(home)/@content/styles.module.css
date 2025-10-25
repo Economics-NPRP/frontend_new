@@ -1,0 +1,11 @@
+.root {
+  .chartContainer {
+    @apply hover:drop-shadow-sm border border-solid border-gray-300 p-0;
+    .chartStack {
+      @apply border-gray-100;
+      .chartTitle {
+        @apply text-gray-600 font-semibold relative top-4 left-4;
+      }
+    }
+  }
+}

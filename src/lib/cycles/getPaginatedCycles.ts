@@ -36,6 +36,7 @@ type IFunctionSignature = (
 export const getPaginatedCycles: IFunctionSignature = cache(
 	async ({ page, perPage, sortBy, sortDirection, status }) => {
 		const t = await getTranslations();
+		console.log(status);
 
 		const cookieStore = await cookies();
 		const access = cookieStore.get('ets_access_token')?.value;

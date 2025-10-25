@@ -2197,7 +2197,8 @@
           "subtitle": "Track the progress and measure the success of this cycle with key performance indicators.",
           "distribution": {
             "chart": {
-              "label": "Sector Diversity Index"
+              "label": "Sector Diversity Index",
+              "auctionsLabel": "Auctions"
             },
             "title": "Sector Distribution",
             "subtitle": "Chart showing the distribution of sectors in the cycle.",
@@ -3192,5 +3193,8 @@
         "tomorrow": "Tomorrow"
       }
     }
+  },
+  "homepage": {
+    "chartTitle": "Auction Distribution"
   }
 }

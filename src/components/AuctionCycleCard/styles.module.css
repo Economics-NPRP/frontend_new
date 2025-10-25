@@ -301,9 +301,11 @@
 	}
 
 	@mixin larger-than $mantine-breakpoint-sm {
-		.root:not(.home) {
+		.root {
 			@apply flex-row;
-
+			&.home {
+				@apply flex-col;
+			}
 			> .left {
 				@apply p-6;
 
