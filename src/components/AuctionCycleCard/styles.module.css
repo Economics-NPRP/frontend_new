@@ -2,7 +2,9 @@
 	@apply flex-col self-stretch items-stretch flex-nowrap;
 	@apply gap-0;
 	@apply transition-shadow duration-300;
-
+	&.home {
+		@apply h-full;
+	}
 	&.draft {
 		> .left {
 			> .header > .wrapper > .indicator {

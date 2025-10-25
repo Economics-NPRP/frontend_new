@@ -1,22 +1,19 @@
 'use client'
 import classes from './styles.module.css';
 import { HomeAuctionCycleCard } from "@/components/AuctionCycleCard";
-import { useContext, useEffect, useState, useCallback, ForwardRefExoticComponent, RefAttributes } from "react";
-import { PaginatedAuctionCyclesContext } from 'contexts/PaginatedAuctionCycles';
-import { DefaultAuctionCycleData, IAuctionData } from "@/schema/models";
+import { useEffect, useState } from "react";
+import { DefaultAuctionCycleData } from "@/schema/models";
 import { Group, Stack, Grid, Text } from "@mantine/core";
 import { PieChart } from "@/components/Charts/Pie";
 import { useTranslations } from "next-intl";
-import { SectorVariants } from "@/constants/SectorData";
-import { SectorType } from "@/schema/models";
-import { buildChartData } from "@/lib/homepages/buildChartData";
-import { Icon, IconProps, IconBuildingSkyscraper, IconUser } from "@tabler/icons-react";
+import { IconBuildingSkyscraper, IconUser } from "@tabler/icons-react";
 import { useAdminHomeData } from 'hooks';
+import { CompanyApplication } from './_components';
 
 export default function Content() {
 	const t = useTranslations()
 	const [isClient, setIsClient] = useState(false);
-	const { chartData, data, isLoading } = useAdminHomeData()
+	const { chartData, cycles, loading } = useAdminHomeData()
 
 	// Something that ai suggested so nextjs doesnt scream about hydration mismatch
 	useEffect(() => {
@@ -30,22 +27,23 @@ export default function Content() {
 	return (
 		<Grid className={classes.root} columns={4}>
 			{/* Current ongoing cycle */}
-			<Grid.Col span={2}>
+			<Grid.Col style={{ padding: 0 }} span={2}>
 				<HomeAuctionCycleCard
-					auctionCycleData={data.results[0] ?? DefaultAuctionCycleData}
-					loading={isLoading}
+					auctionCycleData={cycles[0] ?? DefaultAuctionCycleData}
+					loading={loading[0]}
 				/>
 			</Grid.Col>
 			{/* Auction distribution */}
-			<Grid.Col className={classes.chartContainer} span={1}>
+			<Grid.Col className={classes.component} span={1}>
 				<Stack className={classes.chartStack}>
-					<Text className={classes.chartTitle}>{t('homepage.chartTitle')}</Text>
+					<Text className={classes.title}>{t('homepage.chartTitle')}</Text>
 					<PieChart scale={0.9} size={220} type='auctions' className={classes.chart} chartData={chartData} />
 				</Stack>
 			</Grid.Col>
 			{/* Audit company & admin */}
-			<Grid.Col span={1}>
-				<Stack>
+			<Grid.Col style={{ padding: 0 }} span={1}>
+				<Stack className={classes.component} align="flex-start" h="100%" gap={16}>
+					<Text className={classes.title}>Audits</Text>
 					<Group>
 						<Text className={classes.auditCompany}>Audit Company</Text>
 						<IconBuildingSkyscraper size={20} />
@@ -57,12 +55,51 @@ export default function Content() {
 				</Stack>
 			</Grid.Col>
 			{/* Recent company applications */}
-			<Grid.Col span={2}>
-				Recent company applications
+			<Grid.Col style={{ padding: 0 }} span={2}>
+				<Stack className={`${classes.component} ${classes.companyApplications}`}>
+					<Text className={classes.title}>Recent company applications</Text>
+					<Stack className={classes.applicationsList} align='flex-start' px={24} pt={20} pb={32} gap={16}>
+						<CompanyApplication 
+							crn="654948135136"
+							companyName="The Dih Company"
+							applicationDate="10/12/2025, 5:45 PM"
+							sectors={['energy']}
+							status="approved"
+							loading={loading[1]}
+						/>
+						<CompanyApplication
+							crn="654948135136"
+							companyName="The Dih Company"
+							applicationDate="10/12/2025, 5:45 PM"
+							sectors={['energy']}
+							status="pending"
+							loading={loading[1]}
+						/>
+						<CompanyApplication
+							crn="654948135136"
+							companyName="The Dih Company"
+							applicationDate="10/12/2025, 5:45 PM"
+							sectors={['energy']}
+							status="rejected"
+							loading={loading[1]}
+						/>
+						<CompanyApplication
+							crn="654948135136"
+							companyName="The Dih Company"
+							applicationDate="10/12/2025, 5:45 PM"
+							sectors={['energy']}
+							status="rejected"
+							loading={loading[1]}
+						/>
+					</Stack>
+				</Stack>
+				
 			</Grid.Col>
 			{/* Latest auctions table */}
-			<Grid.Col span={2}>
-				Latest Auctions
+			<Grid.Col style={{ padding: 0 }} span={2}>
+				<Stack h="100%" className={classes.component}>
+					<Text className={classes.title}>Latest Auctions</Text>
+				</Stack>
 			</Grid.Col>
 		</Grid>
 	);

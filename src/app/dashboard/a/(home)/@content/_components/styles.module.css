@@ -1,3 +1,52 @@
 .companyApplication {
-  
+  @apply h-fit py-4 px-8 border border-solid border-t-transparent hover:border-t-gray-400 border-x-transparent hover:border-x-gray-400 hover:shadow-sm transition-shadow border-b-gray-400 w-fit;
+  background: linear-gradient(97deg, #FFF 40.55%, rgba(254, 243, 210, 0.10) 110.53%);
+  .information {
+    @apply flex flex-col;
+    .name {
+      @apply heading-2 mb-1;
+    }
+    .date {
+      @apply paragraph-sm-g6;
+    }
+  }
+  .statusContainer {
+    .label {
+      @apply paragraph-sm-g6;
+    }
+    .status {
+      @apply rounded-md flex gap-1 items-center;
+      .text {
+        @apply uppercase font-semibold text-sm;
+      }
+      &.pending {
+        @apply bg-orange-100;
+        .text {
+          @apply text-orange-800;
+        }
+        .iconPending {
+          @apply text-orange-800;
+        }
+      }
+      &.approved {
+        @apply bg-green-100;
+        .text {
+          @apply text-green-800;
+        }
+        .iconApproved {
+          @apply text-green-800;
+        }
+      }
+      &.rejected {
+        @apply bg-red-100;
+        .text {
+          @apply text-red-800;
+        }
+        .iconRejected {
+          @apply text-red-800;
+        }
+      }
+      
+    }
+  }
 }

@@ -1,6 +1,6 @@
 import { SectorType } from '@/schema/models';
 
-export type IdVariantType = 'company' | 'auctionCycle' | SectorType;
+export type IdVariantType = 'company' | 'auctionCycle' | 'crn' | SectorType;
 
 export const IdPrefixes: Partial<Record<IdVariantType, string>> = {
 	company: 'CO',
@@ -11,4 +11,5 @@ export const IdPrefixes: Partial<Record<IdVariantType, string>> = {
 	buildings: 'BU',
 	agriculture: 'AG',
 	waste: 'WA',
+	crn: 'CRN'
 };

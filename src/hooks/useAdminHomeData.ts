@@ -18,6 +18,12 @@ export function useAdminHomeData() {
   const firmApplications = useContext(PaginatedFirmApplicationsContext)
   const auctions = useContext(PaginatedAuctionsContext)
 
+  const [loading, setLoading] = useState<boolean[]>([true, true, true]);
+  
+  useEffect(() => {
+    setLoading([cycle.isLoading, firmApplications.isLoading, auctions.isLoading]);
+  }, [cycle.isLoading, firmApplications.isLoading, auctions.isLoading]);
+
   const [chartData, setChartData] = useState<{
     name: string;
     value: number;
@@ -39,7 +45,7 @@ export function useAdminHomeData() {
   }, [t])
 
   useEffect(() => {
-    if (cycle.data && !cycle.isLoading && cycle.data.results.length > 0) {
+    if (cycle.data && loading[0] && cycle.data.results.length > 0) {
       const defaultChartData = [
         {
           id: 'energy',
@@ -84,7 +90,6 @@ export function useAdminHomeData() {
           auctions: 0,
         },
       ]
-
       const newChartData = buildChartData(
         ((cycle.data.results[0].auctions as unknown) as IAuctionData[] || defaultChartData),
         getTranslatedName
@@ -102,8 +107,8 @@ export function useAdminHomeData() {
 
   return { 
     chartData, 
-    isLoading: cycle.isLoading, 
-    data: (cycle && cycle.data || []), 
+    loading, 
+    cycles: (cycle && cycle.data && cycle.data.results || []), 
     firmApplications: (firmApplications && firmApplications.data && firmApplications.data.results || []),
     auctions: (auctions && auctions.data && auctions.data.results || []),
   }

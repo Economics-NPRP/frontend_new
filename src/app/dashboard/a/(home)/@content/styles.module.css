@@ -1,11 +1,18 @@
 .root {
-  .chartContainer {
-    @apply bg-white hover:shadow-xs transition-shadow border border-solid border-gray-300 p-0;
-    .chartStack {
-      @apply border-gray-100;
-      .chartTitle {
-        @apply text-gray-600 font-semibold relative top-4 left-4;
-      }
+  @apply bg-red-400;
+  .component {
+    @apply bg-white hover:shadow-xs transition-shadow border border-solid border-gray-300 p-0 m-0;
+    .title {
+      @apply text-gray-600 font-semibold relative z-10 top-6 left-6;
+    }
+  }
+  .chartStack {
+    @apply border-gray-100;
+  }
+  .companyApplications {
+    @apply m-0 p-0;
+    .applicationsList {
+      @apply h-96 overflow-auto;
     }
   }
 }
