@@ -9,12 +9,15 @@ import { IAuctionData } from "@/schema/models";
 import { SectorVariants } from "@/constants/SectorData";
 import { SectorType } from "@/schema/models";
 import { buildChartData } from "@/lib/homepages/buildChartData";
+import { PaginatedFirmApplicationsContext } from "contexts/PaginatedFirmApplications";
+import { PaginatedAuctionsContext } from "contexts/PaginatedAuctions";
 
 export function useAdminHomeData() {
   const t = useTranslations();
   const cycle = useContext(PaginatedAuctionCyclesContext);
+  const firmApplications = useContext(PaginatedFirmApplicationsContext)
+  const auctions = useContext(PaginatedAuctionsContext)
 
-  const [data, isLoading] = [cycle.data, cycle.isLoading];
   const [chartData, setChartData] = useState<{
     name: string;
     value: number;
@@ -36,8 +39,7 @@ export function useAdminHomeData() {
   }, [t])
 
   useEffect(() => {
-    if (data && !isLoading) {
-      cycle.setStatus('ongoing');
+    if (cycle.data && !cycle.isLoading && cycle.data.results.length > 0) {
       const defaultChartData = [
         {
           id: 'energy',
@@ -82,16 +84,27 @@ export function useAdminHomeData() {
           auctions: 0,
         },
       ]
-      const newChartData = buildChartData(((data.results[0].auctions as unknown) as IAuctionData[] || defaultChartData), getTranslatedName).map((item) => ({
+
+      const newChartData = buildChartData(
+        ((cycle.data.results[0].auctions as unknown) as IAuctionData[] || defaultChartData),
+        getTranslatedName
+      ).map((item) => ({
         name: item.title,
         value: item['auctions'],
         color: SectorVariants[item.id as SectorType]!.color.hex!,
         icon: SectorVariants[item.id as SectorType]!.Icon,
         opacity: 0.6,
       }))
+
       setChartData(newChartData);
     }
-  }, [data]);
+  }, [cycle, t, getTranslatedName, firmApplications, auctions]);
 
-  return { chartData, isLoading, data }
+  return { 
+    chartData, 
+    isLoading: cycle.isLoading, 
+    data: (cycle && cycle.data || []), 
+    firmApplications: (firmApplications && firmApplications.data && firmApplications.data.results || []),
+    auctions: (auctions && auctions.data && auctions.data.results || []),
+  }
 }

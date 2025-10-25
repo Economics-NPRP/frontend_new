@@ -20,7 +20,6 @@ export function buildChartData(
   data: (IChartAuctionData | IAuctionData)[],
   getTranslatedName: (name: string) => string,
 ) {
-  console.log("DATA", data)
   /* TODO: 1. create a hashmap with each key is a sector and value is the count */
   const sectorCountMap = new Map<
     string,

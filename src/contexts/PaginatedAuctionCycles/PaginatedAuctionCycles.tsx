@@ -34,22 +34,23 @@ const DefaultData = {
 		'desc',
 	),
 	status: 'all' as AuctionCycleStatusFilter,
-	setStatus: () => {},
+	setStatus: () => { },
 };
 const Context = createContext<IPaginatedAuctionCyclesContext>(DefaultData);
 
 export const PaginatedAuctionCyclesProvider = ({
 	syncWithSearchParams,
 	id = 'paginatedAuctionCycles',
+	defaultStatus,
 	...props
-}: SortedOffsetPaginatedProviderProps) => {
+}: SortedOffsetPaginatedProviderProps & { defaultStatus?: AuctionCycleStatusFilter }) => {
 	const [, setPage] = useQueryState(
 		'page',
 		parseAsInteger.withDefault(props.defaultPage || DefaultData.page),
 	);
 	const [status, setStatus] = useConditionalQueryState({
 		key: 'status',
-		defaultValue: DefaultData.status,
+		defaultValue: defaultStatus || DefaultData.status,
 		parser: parseAsStringLiteral(AuctionCycleStatusListFilter),
 		syncWithSearchParams,
 		onValueChange: () => setPage(props.defaultPage || DefaultData.page),

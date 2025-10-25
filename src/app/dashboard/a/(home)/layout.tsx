@@ -8,6 +8,9 @@ import { Stack } from '@mantine/core';
 import classes from './styles.module.css';
 import { withProviders } from 'helpers/withProviders';
 import { PaginatedAuctionCyclesProvider } from 'contexts/PaginatedAuctionCycles';
+import { PaginatedFirmApplicationsProvider } from 'contexts/PaginatedFirmApplications';
+import { PaginatedAuctionsProvider } from 'contexts/PaginatedAuctions';
+
 export const metadata: Metadata = {
 	title: 'Home',
 };
@@ -31,9 +34,22 @@ export default function Home({ content }: HomeProps) {
 			/>
 			{content}
 		</Stack>
-	, {
-		provider: PaginatedAuctionCyclesProvider, props: {
-			status: 'ongoing',
-		}
-	});
+		, {
+			provider: PaginatedAuctionCyclesProvider,
+			props: {
+				id: 'adminHomeCycles',
+				syncWithSearchParams: false,
+				defaultStatus: 'ongoing',
+				defaultPage: 1,
+				defaultPerPage: 10,
+				defaultSortBy: 'start_datetime',
+				defaultSortDirection: 'desc',
+			}
+		},
+	{
+		provider: PaginatedFirmApplicationsProvider
+	},
+{
+	provider: PaginatedAuctionsProvider
+});
 }
