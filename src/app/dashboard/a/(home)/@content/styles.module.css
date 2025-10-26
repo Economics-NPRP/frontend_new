@@ -1,18 +1,43 @@
 .root {
-  @apply bg-red-400;
   .component {
-    @apply bg-white hover:shadow-xs transition-shadow border border-solid border-gray-300 p-0 m-0;
+    @apply bg-white hover:shadow-xs transition-shadow border border-solid border-gray-300 p-0;
     .title {
       @apply text-gray-600 font-semibold relative z-10 top-6 left-6;
     }
-  }
-  .chartStack {
-    @apply border-gray-100;
   }
   .companyApplications {
     @apply m-0 p-0;
     .applicationsList {
       @apply h-96 overflow-auto;
+    }
+  }
+  .auditContainer {
+    @apply h-full;
+    .audit {
+      @apply relative flex items-center px-8 border border-solid border-gray-300 h-full overflow-hidden;
+      .auditContent {
+        .text {
+          @apply heading-2 z-10;
+        }
+        .description {
+          @apply text-slate-700 z-10;
+        }
+      }
+      .icon {
+        @apply absolute -right-4 -bottom-4 z-0;
+      }
+      &.company {
+        background: linear-gradient(97deg, #ffffff 40.55%, rgba(164, 77, 222, 0.1) 110.53%);
+        .icon {
+          @apply text-violet-100;
+        }
+      }
+      &.admin {
+        background: linear-gradient(97deg, #ffffff 40.55%, rgba(77, 181, 222, 0.15) 110.53%);
+        .icon {
+          @apply text-cyan-100;
+        }
+      }
     }
   }
 }

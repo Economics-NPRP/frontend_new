@@ -2,10 +2,11 @@ import classes from "./styles.module.css"
 import { SectorType } from "@/schema/models";
 import { useMatches } from "@mantine/core";
 import { Id } from '@/components/Id';
-import { Group, Stack, Text, Box, Anchor } from "@mantine/core"
+import { Flex, Group, Stack, Text, Box, Anchor } from "@mantine/core"
 import { Switch } from "@/components/SwitchCase";
 import { WithSkeleton } from "@/components/WithSkeleton";
 import { IconDotsCircleHorizontal, IconCheck, IconX } from "@tabler/icons-react";
+import { SectorBadge } from "@/components/Badge";
 
 type CompanyApplicationProps = {
   companyName: string;
@@ -28,8 +29,8 @@ const CompanyApplication = ({
   const truncate = useMatches({ base: false, xs: true, sm: false, md: true, lg: false });
 
   return (
-    <Anchor style={{ textDecoration: 'none' }} href={`/dashboard/a/firms/applications`}>
-      <Group gap={48} className={classes.companyApplication}>
+    <Anchor style={{ textDecoration: 'none', width: '100%' }} href={`/dashboard/a/firms/applications`}>
+      <Flex justify="space-between" className={classes.companyApplication}>
         <Stack justify="flex-start" flex={1} gap={0} className={classes.information}>
           <WithSkeleton loading={loading} height={14} width={100}>
             <Id 
@@ -54,6 +55,15 @@ const CompanyApplication = ({
           >
             <Text className={classes.date}>Registered on: {applicationDate}</Text>
           </WithSkeleton>
+          <Group gap={8} className={classes.sectors}>
+            {sectors && sectors.length > 0 && 
+              sectors.map(sector => (
+                <SectorBadge 
+                  key={sector}
+                  sector={sector}
+                />
+            ))}
+          </Group>
         </Stack>
         <Stack className={classes.statusContainer} justify="center" align="center" gap={4}>
           <Text className={classes.label}>Status</Text>
@@ -84,7 +94,7 @@ const CompanyApplication = ({
             </Switch.Case>
           </Switch>
         </Stack>
-      </Group>
+      </Flex>
     </Anchor>
   )
 }
