@@ -41,6 +41,7 @@ export const BaseAuctionDataSchema = object({
 	image: nullish(pipe(string(), trim(), url())),
 	description: nullish(pipe(string(), trim())),
 	permits: PositiveNumberSchema(),
+	emissions: nullish(PositiveNumberSchema()),
 	bidsCount: PositiveNumberSchema(true),
 	biddersCount: PositiveNumberSchema(true),
 	minBid: PositiveNumberSchema(),
@@ -121,12 +122,12 @@ export const DetailsAuctionDataSchema = pipe(
 	),
 );
 
-export interface IBaseAuctionData extends InferOutput<typeof BaseAuctionDataSchema> {}
-export interface ICreateAuction extends InferInput<typeof CreateAuctionDataSchema> {}
+export interface IBaseAuctionData extends InferOutput<typeof BaseAuctionDataSchema> { }
+export interface ICreateAuction extends InferInput<typeof CreateAuctionDataSchema> { }
 export interface ICreateAuctionOutput
-	extends InferOutput<typeof CreateAuctionDataSchemaTransformer> {}
-export interface IAuctionData extends InferOutput<typeof ReadAuctionDataSchema> {}
-export interface IUpdateAuction extends InferInput<typeof UpdateAuctionDataSchema> {}
+	extends InferOutput<typeof CreateAuctionDataSchemaTransformer> { }
+export interface IAuctionData extends InferOutput<typeof ReadAuctionDataSchema> { }
+export interface IUpdateAuction extends InferInput<typeof UpdateAuctionDataSchema> { }
 
 export const DefaultAuctionData: IAuctionData = {
 	id: '',

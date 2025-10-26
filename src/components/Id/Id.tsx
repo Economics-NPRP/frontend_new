@@ -10,8 +10,9 @@ export interface IdProps extends ComponentPropsWithRef<'div'> {
 	value: string;
 	variant: IdVariantType;
 	truncate?: boolean;
+	includeHash?: boolean;
 }
-export const Id = ({ value, variant, truncate, className, ...props }: IdProps) => {
+export const Id = ({ value, variant, truncate, className, includeHash=true, ...props }: IdProps) => {
 	const prefix = useMemo(() => IdPrefixes[variant], [variant]);
 	const text = useMemo(
 		() => (truncate ? `${prefix}-${value.split('-')[0]}-...` : `${prefix}-${value}`),
@@ -26,7 +27,7 @@ export const Id = ({ value, variant, truncate, className, ...props }: IdProps) =
 					{...(truncate && { title: 'Click to view the full ID' })}
 					{...props}
 				>
-					<IconHash className={classes.icon} size={12} /> {text}
+					{includeHash && <IconHash className={classes.icon} size={12} />}{text}
 				</Text>
 			</PopoverTarget>
 			<PopoverDropdown>

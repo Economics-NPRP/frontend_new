@@ -29,6 +29,7 @@ import {
 } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
+import { stat } from 'fs';
 
 export interface BaseBadgeProps extends BadgeProps {
 	component?: FunctionComponent<any>;
@@ -323,13 +324,28 @@ export const TrendBadge = ({ diff, negate, className, ...props }: TrendBadgeProp
 		</Tooltip>
 	);
 };
-
+export type AuctionStatusType = 'live' | 'upcoming' | 'ended';
 export interface AuctionStatusBadgeProps extends BaseBadgeProps {
-	auctionData: IAuctionData;
+	auctionData?: IAuctionData;
+	badgeStyle?: "strict" | "loose";
+	status?: AuctionStatusType;
 }
-export const AuctionStatusBadge = ({ auctionData }: AuctionStatusBadgeProps) => {
+export const AuctionStatusBadge = ({ auctionData, badgeStyle = "strict", status }: AuctionStatusBadgeProps) => {
 	const t = useTranslations();
-	const { isUpcoming, hasEnded, isLive } = useAuctionAvailability(auctionData);
+	const availability = useAuctionAvailability(auctionData);
+
+	let [isUpcoming, hasEnded, isLive] = [false, false, false];
+
+	if (badgeStyle === "strict") {
+		isUpcoming = availability.isUpcoming;
+		hasEnded = availability.hasEnded;
+		isLive = availability.isLive;
+	} else if (badgeStyle === "loose") {
+		hasEnded = status === 'ended';
+		isLive = status === 'live';
+		isUpcoming = status === 'upcoming';
+	}
+
 
 	if (isUpcoming)
 		return (

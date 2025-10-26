@@ -19,8 +19,11 @@ interface PieChartProps extends BoxProps {
 			opacity?: number;
 		}
 	>;
+	type?: "permits" | "emissions" | "auctions";
+	size?: number;
+	scale?: number;
 }
-export const PieChart = ({ chartData, className, ...props }: PieChartProps) => {
+export const PieChart = ({ chartData, className, type, size=280, scale=1, ...props }: PieChartProps) => {
 	const t = useTranslations();
 	const format = useFormatter();
 	const { colorScheme } = useMantineColorScheme();
@@ -36,14 +39,14 @@ export const PieChart = ({ chartData, className, ...props }: PieChartProps) => {
 	return (
 		<Container className={`${classes.root} ${className} bg-grid-md`} {...props}>
 			<Container className={classes.gradient} />
-			<PieChartComponent width={280} height={280}>
+			<PieChartComponent style={{ scale: scale }} width={size} height={size}>
 				<Tooltip />
 				<Pie
 					data={chartData}
 					dataKey="value"
 					nameKey="name"
-					innerRadius={70}
-					outerRadius={120}
+					innerRadius={size/4}
+					outerRadius={(size/2)-20}
 					strokeWidth={5}
 					stroke={colorScheme === 'light' ? '#ffffff' : '#1a1b1e'}
 					activeIndex={biggestIndex}
@@ -126,9 +129,11 @@ export const PieChart = ({ chartData, className, ...props }: PieChartProps) => {
 											x={viewBox.cx}
 											y={(viewBox.cy || 0) - 8}
 										>
-											{t(
+											{(type === "auctions" ? t(
+												'dashboard.admin.cycles.details.distribution.chart.auctionsLabel',
+											) : t(
 												'dashboard.admin.cycles.details.distribution.chart.label',
-											)}
+											))}
 										</Text>
 										<Text
 											component="tspan"
@@ -136,7 +141,7 @@ export const PieChart = ({ chartData, className, ...props }: PieChartProps) => {
 											x={viewBox.cx}
 											y={(viewBox.cy || 0) + 16}
 										>
-											{format.number(Math.random(), 'index')}
+											{(type === "auctions" ? (chartData.reduce((acc, item) => acc + item.value, 0)) : format.number(Math.random(), 'index'))}
 										</Text>
 									</text>
 								);

@@ -296,3 +296,177 @@ export const AuctionCycleCard = ({
 		</Group>
 	);
 };
+
+export const HomeAuctionCycleCard = ({
+	auctionCycleData,
+	loading = false,
+	...props
+}: AuctionCycleCardProps) => {
+	const t = useTranslations();
+	const truncate = useMatches({ base: false, xs: true, sm: false, md: true, lg: false });
+
+	return (
+		<Group className={`${classes[auctionCycleData.status]} ${classes.root} ${classes.home}`} {...props}>
+			<Stack className={classes.left}>
+				<Text className={classes.heading}>{t('components.auctionCycleCard.header.title')}</Text>
+				<Container className={classes.bg} />
+				<Group className={classes.header}>
+					<Group className={classes.wrapper}>
+						<WithSkeleton loading={loading} width={4} height={64} radius={4}>
+							<Container className={classes.indicator} />
+						</WithSkeleton>
+						<Stack className={classes.content}>
+							<Stack className={classes.label}>
+								<WithSkeleton
+									loading={loading}
+									width={160}
+									height={14}
+									className="my-0.5"
+								>
+									<Id
+										variant="auctionCycle"
+										value={auctionCycleData.id}
+										truncate={truncate}
+										className={classes.id}
+									/>
+								</WithSkeleton>
+								<WithSkeleton
+									loading={loading}
+									width={240}
+									height={36}
+									className="my-0.5"
+								>
+									<Anchor
+										component={Link}
+										href={`/dashboard/a/cycles/${auctionCycleData.id}`}
+										className={classes.title}
+									>
+										{auctionCycleData.title}
+									</Anchor>
+								</WithSkeleton>
+								<WithSkeleton
+									loading={loading}
+									width={140}
+									height={20}
+									className="my-0.5"
+								>
+									<Text className={classes.subtitle}>
+										{auctionCycleData.description}
+									</Text>
+								</WithSkeleton>
+							</Stack>
+							<Group className={classes.badges}>
+								<AuctionCycleStatusBadge
+									status={auctionCycleData.status}
+									className={classes.badge}
+									loading={loading}
+								/>
+								{auctionCycleData.sectors.map((sector) => (
+									<SectorBadge
+										key={sector}
+										sector={sector}
+										className={classes.badge}
+										loading={loading}
+									/>
+								))}
+							</Group>
+						</Stack>
+					</Group>
+					<Stack className={classes.team}>
+						<Text className={classes.label}>
+							{t('components.auctionCycleCard.header.team.label')}
+						</Text>
+						<HoverCard position="top" withinPortal={false}>
+							<HoverCard.Target>
+								<Avatar.Group>
+									<Switch value={loading}>
+										<Switch.True>
+											<Skeleton
+												visible
+												width={38}
+												height={38}
+												circle
+												className="-ml-3"
+											/>
+											<Skeleton
+												visible
+												width={38}
+												height={38}
+												circle
+												className="-ml-3"
+											/>
+											<Skeleton
+												visible
+												width={38}
+												height={38}
+												circle
+												className="-ml-3"
+											/>
+											<Skeleton
+												visible
+												width={38}
+												height={38}
+												circle
+												className="-ml-3"
+											/>
+											<Skeleton
+												visible
+												width={38}
+												height={38}
+												circle
+												className="-ml-3"
+											/>
+										</Switch.True>
+										<Switch.False>
+											{auctionCycleData.adminAssignments
+												.slice(0, 3)
+												.map((admin) => (
+													<Avatar
+														key={admin.adminId}
+														className={classes.avatar}
+														color="initials"
+														name={admin.admin.name}
+													/>
+												))}
+											{auctionCycleData.adminAssignments.length > 3 && (
+												<Avatar className={classes.avatar}>
+													+{auctionCycleData.assignedAdminsCount - 3}
+												</Avatar>
+											)}
+										</Switch.False>
+									</Switch>
+								</Avatar.Group>
+							</HoverCard.Target>
+							<HoverCard.Dropdown className={classes.dropdown}>
+								{auctionCycleData.adminAssignments.map((admin) => (
+									<Group key={admin.adminId} className={classes.row}>
+										<Avatar
+											className={classes.avatar}
+											color="initials"
+											name={admin.admin.name}
+											size="sm"
+										/>
+										<Anchor
+											className={classes.name}
+											href={`/dashboard/a/admins/${admin.adminId}`}
+										>
+											{admin.admin.name}
+										</Anchor>
+									</Group>
+								))}
+							</HoverCard.Dropdown>
+						</HoverCard>
+					</Stack>
+				</Group>
+			</Stack>
+				{!loading ?
+				<Text className={classes.date}><strong>
+						{t('constants.endsAt')}&nbsp;
+						</strong>
+						{DateTime.fromISO(
+							auctionCycleData.endDatetime,
+						).toLocaleString(DateTime.DATETIME_MED).split(",").slice(0, 2).join(",")}
+				</Text> : <></>}
+		</Group>
+	);
+};
