@@ -13,7 +13,7 @@ import { CompanyApplication, LatestAuctionsTable } from './_components';
 export default function Content() {
 	const t = useTranslations()
 	const [isClient, setIsClient] = useState(false);
-	const { chartData, cycles, loading } = useAdminHomeData()
+	const { chartData, cycles, loading, auctions, firmApplications } = useAdminHomeData()
 
 	// Something that ai suggested so nextjs doesnt scream about hydration mismatch
 	useEffect(() => {
@@ -64,38 +64,27 @@ export default function Content() {
 				<Stack className={`${classes.component} ${classes.companyApplications}`}>
 					<Text className={classes.title}>Recent company applications</Text>
 					<Stack className={classes.applicationsList} align='flex-start' px={24} pt={20} pb={32} gap={16}>
-						<CompanyApplication
-							crn="654948135136"
-							companyName="The Dih Company"
-							applicationDate="10/12/2025, 5:45 PM"
-							sectors={['energy', 'industry', 'transport', 'waste', 'agriculture']}
-							status="approved"
-							loading={loading[1]}
-						/>
-						<CompanyApplication
-							crn="654948135136"
-							companyName="The Dih Company"
-							applicationDate="10/12/2025, 5:45 PM"
-							sectors={['energy']}
-							status="pending"
-							loading={loading[1]}
-						/>
-						<CompanyApplication
-							crn="654948135136"
-							companyName="The Dih Company"
-							applicationDate="10/12/2025, 5:45 PM"
-							sectors={['energy']}
-							status="rejected"
-							loading={loading[1]}
-						/>
-						<CompanyApplication
-							crn="654948135136"
-							companyName="The Dih Company"
-							applicationDate="10/12/2025, 5:45 PM"
-							sectors={['energy']}
-							status="rejected"
-							loading={loading[1]}
-						/>
+						{firmApplications && firmApplications.length > 0 ? firmApplications.map((application, index) => (
+							<CompanyApplication
+								key={'application-'+index}
+								crn={application.crn}
+								companyName={application.companyName}
+								applicationDate={application.applicationDate}
+								sectors={application.sectors}
+								status={application.status}
+								loading={loading[1]}
+							/>
+						)) : (
+								<CompanyApplication
+									key={'loading-application'}
+									crn={''}
+									companyName={''}
+									applicationDate={''}
+									sectors={[]}
+									status={'pending'}
+									loading={loading[1]}
+								/>
+						)}
 					</Stack>
 				</Stack>
 
@@ -105,7 +94,10 @@ export default function Content() {
 				<Stack h="100%" className={classes.component}>
 					<Text className={classes.title}>Latest Auctions</Text>
 					<Stack>
-						<LatestAuctionsTable />
+						<LatestAuctionsTable
+							records={auctions || null}
+							loading={loading[2]}
+						/>
 					</Stack>
 				</Stack>
 			</Grid.Col>

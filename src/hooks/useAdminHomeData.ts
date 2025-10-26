@@ -11,6 +11,23 @@ import { SectorType } from "@/schema/models";
 import { buildChartData } from "@/lib/homepages/buildChartData";
 import { PaginatedFirmApplicationsContext } from "contexts/PaginatedFirmApplications";
 import { PaginatedAuctionsContext } from "contexts/PaginatedAuctions";
+import { AuctionStatusType } from "@/components/Badge";
+
+export type HomeFirmApplication = {
+  crn: string;
+  companyName: string;
+  applicationDate: string;
+  sectors: SectorType[];
+  status: 'pending' | 'approved' | 'rejected';
+}
+export type HomeAuctionData = {
+  name: string;
+  status: string;
+  sector: SectorType;
+  bidders: number;
+  bids: number;
+  type: string;
+}
 
 export function useAdminHomeData() {
   const t = useTranslations();
@@ -19,6 +36,8 @@ export function useAdminHomeData() {
   const auctions = useContext(PaginatedAuctionsContext)
 
   const [loading, setLoading] = useState<boolean[]>([true, true, true]);
+  const [applications, setApplications] = useState<HomeFirmApplication[]>([])
+  const [auctionList, setAuctionList] = useState<HomeAuctionData[]>([])
   
   useEffect(() => {
     setLoading([cycle.isLoading, firmApplications.isLoading, auctions.isLoading]);
@@ -31,6 +50,48 @@ export function useAdminHomeData() {
     icon: ForwardRefExoticComponent<IconProps & RefAttributes<Icon>>;
     opacity: number;
   }[]>([]);
+  
+  const getApplications = () => {
+    if (!firmApplications || !firmApplications.data || firmApplications.data.results.length === 0) return [];
+    let result: HomeFirmApplication[] = []
+    for (let application of firmApplications.data.results) {
+      result.push({
+        crn: ''+application.crn,
+        companyName: application.companyName,
+        applicationDate: new Date(application.createdAt).toLocaleString(),
+        sectors: application.sectors,
+        status: application.status,
+      })
+    }
+    return result;
+  }
+
+  const auctionStatus = (auction:IAuctionData):AuctionStatusType => {
+    const start = new Date(auction.startDatetime).getTime();
+    const end = new Date(auction.endDatetime).getTime();
+    const now = Date.now();
+
+    if (now < start) return 'upcoming';
+    if (now >= start && now <= end) return 'live';
+    if (now > end) return 'ended';
+    return 'ended';
+  }
+
+  const getAuctions = () => {
+    if (!auctions || !auctions.data || auctions.data.results.length === 0) return [];
+    let result: HomeAuctionData[] = []
+    for (let auction of auctions.data.results) {
+      result.push({
+        name: auction.title,
+        status: auctionStatus(auction),
+        sector: auction.sector as SectorType,
+        bidders: auction.biddersCount,
+        bids: auction.bidsCount,
+        type: auction.type,
+      })
+    }
+    return result;
+  }
 
   const getTranslatedName = useCallback((name: string) => {
     switch (name) {
@@ -100,16 +161,22 @@ export function useAdminHomeData() {
         icon: SectorVariants[item.id as SectorType]!.Icon,
         opacity: 0.6,
       }))
-
       setChartData(newChartData);
+    } 
+    else if (firmApplications.data && loading[1] && firmApplications.data.results.length > 0) {
+      const applicationsData = getApplications();
+      setApplications(applicationsData);
+    } else if (auctions.data && loading[2] && auctions.data.results.length > 0) {
+      const auctionsData = getAuctions();
+      setAuctionList(auctionsData);
     }
   }, [cycle, t, getTranslatedName, firmApplications, auctions]);
 
   return { 
     chartData, 
-    loading, 
+    loading,
     cycles: (cycle && cycle.data && cycle.data.results || []), 
-    firmApplications: (firmApplications && firmApplications.data && firmApplications.data.results || []),
-    auctions: (auctions && auctions.data && auctions.data.results || []),
+    firmApplications: (applications.length > 0 ? applications : []),
+    auctions: (auctionList.length > 0 ? auctionList : []),
   }
 }

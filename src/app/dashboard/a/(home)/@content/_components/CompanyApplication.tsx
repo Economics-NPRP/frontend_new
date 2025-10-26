@@ -15,6 +15,7 @@ type CompanyApplicationProps = {
   crn: string;
   sectors: SectorType[];
   loading: boolean;
+  key: string;
 }
 
 const CompanyApplication = ({
@@ -23,13 +24,14 @@ const CompanyApplication = ({
   status,
   crn,
   sectors,
-  loading=true
+  loading=true,
+  key
 }:CompanyApplicationProps) => {
 
   const truncate = useMatches({ base: false, xs: true, sm: false, md: true, lg: false });
 
   return (
-    <Anchor style={{ textDecoration: 'none', width: '100%' }} href={`/dashboard/a/firms/applications`}>
+    <Anchor key={key} style={{ textDecoration: 'none', width: '100%' }} href={`/dashboard/a/firms/applications`}>
       <Flex justify="space-between" className={classes.companyApplication}>
         <Stack justify="flex-start" flex={1} gap={0} className={classes.information}>
           <WithSkeleton loading={loading} height={14} width={100}>

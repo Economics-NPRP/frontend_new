@@ -10,26 +10,21 @@ import { AuctionType } from "@/schema/models"
 import { AuctionStatusBadge, AuctionStatusType } from "@/components/Badge"
 import classes from './styles.module.css'
 import { useRouter } from "next/navigation"
+import { HomeAuctionData } from "hooks/useAdminHomeData"
 
 type LatestAuctionsTableProps = {
   className?: string;
-  records?: {
-    name: string;
-    status: string;
-    sectors: SectorType[];
-    bidders: number;
-    bids: number;
-    type: string;
-  }[];
+  records?: HomeAuctionData[] | null;
+  loading?: boolean;
 }
 
-const LatestAuctionsTable = ({ className, records }: LatestAuctionsTableProps) => {
+const LatestAuctionsTable = ({ className, records, loading }: LatestAuctionsTableProps) => {
   const t = useTranslations()
   const router = useRouter()
   const handleRoute = () => {
     router.push('/dashboard/a/cycles/auctions')
   }
-
+  if (!records || records.length === 0) return 
   return (
     <DataTable
       className={classes.latestAuctions + ' ' + (className || '')}
@@ -38,15 +33,8 @@ const LatestAuctionsTable = ({ className, records }: LatestAuctionsTableProps) =
       }}
       onRowClick={handleRoute}
       height={96*4-16}
-      records={records ? records : 
-        Array.from({ length: 10 }).map((_, index) => ({
-        name: `Auction ${index + 1} fghfd ghfdhjg fhjdfghjghj fghjfghj gfhjf ghj fghj`,
-        status: index % 2 === 0 ? 'live' : 'ended',
-        sectors: ['energy', 'industry', 'agriculture'],
-        bidders: Math.floor(Math.random() * 100) + 1,
-        bids: Math.floor(Math.random() * 200) + 1,
-        type: index % 2 === 0 ? 'open' : 'sealed',
-      }))}
+      fetching={loading || records === null}
+      records={records}
       columns={[
         {
           cellsClassName: classes.name,
@@ -75,7 +63,7 @@ const LatestAuctionsTable = ({ className, records }: LatestAuctionsTableProps) =
           render: (record) => {
             const badges = useMemo(
               () =>
-                (record.sectors as SectorType[])
+                ([record.sector] as SectorType[])
                   .filter(
                     (sector) =>
                       SectorVariants[
@@ -85,7 +73,7 @@ const LatestAuctionsTable = ({ className, records }: LatestAuctionsTableProps) =
                   .map((sector) => (
                     <SectorBadge key={sector} sector={sector} />
                   )),
-              [record.sectors],
+              [record.sector],
             );
 
             return (
