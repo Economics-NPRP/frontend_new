@@ -22,6 +22,8 @@ import {
 	IconUserSearch,
 	IconUserShield,
 	IconUsers,
+	IconFileCheck,
+	IconFileSearch
 } from '@tabler/icons-react';
 
 export const DefaultDashboardSidebarContextData: IDashboardSidebarContext = {
@@ -112,7 +114,7 @@ export const SidebarLinks: Record<
 			],
 		},
 		{
-			id: 'cycles',
+			id: 'permits',
 			label: t('constants.pages.dashboard.admin.permits.title'),
 			subHrefs: [
 				{
@@ -121,7 +123,7 @@ export const SidebarLinks: Record<
 					tooltip: expanded
 						? t('constants.pages.dashboard.admin.permits.home.tooltip')
 						: t('constants.pages.dashboard.admin.permits.home.title'),
-					icon: <IconCalendar size={16} />,
+					icon: <IconFileCheck size={16} />,
 					href: '/dashboard/a/permits',
 				},
 				{
@@ -130,7 +132,7 @@ export const SidebarLinks: Record<
 					tooltip: expanded
 						? t('constants.pages.dashboard.admin.permits.audit.tooltip')
 						: t('constants.pages.dashboard.admin.permits.audit.title'),
-					icon: <IconGavel size={16} />,
+					icon: <IconFileSearch size={16} />,
 					href: '/dashboard/a/permits/audit',
 				},
 			],

@@ -616,7 +616,7 @@
           },
           "permits": {
             "title": "Permit Management",
-            "description": "Manage and track scheduled auction cycles, set performance targets, and monitor overall cycle outcomes. Each cycle defines the timeframe and structure for related emissions auctions.",
+            "description": "Manage all permits issued on the platform, including approval, expiry, and rejection of permits. Monitor permit usage and compliance across all registered firms.",
             "home": {
               "title": "Permits",
               "tooltip": "View and manage all permits on the platform"
