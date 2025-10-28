@@ -112,6 +112,30 @@ export const SidebarLinks: Record<
 			],
 		},
 		{
+			id: 'cycles',
+			label: t('constants.pages.dashboard.admin.permits.title'),
+			subHrefs: [
+				{
+					id: 'home',
+					label: t('constants.pages.dashboard.admin.permits.home.title'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.admin.permits.home.tooltip')
+						: t('constants.pages.dashboard.admin.permits.home.title'),
+					icon: <IconCalendar size={16} />,
+					href: '/dashboard/a/permits',
+				},
+				{
+					id: 'auctions',
+					label: t('constants.pages.dashboard.admin.permits.audit.title'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.admin.permits.audit.tooltip')
+						: t('constants.pages.dashboard.admin.permits.audit.title'),
+					icon: <IconGavel size={16} />,
+					href: '/dashboard/a/permits/audit',
+				},
+			],
+		},
+		{
 			id: 'admins',
 			label: t('constants.pages.dashboard.admin.admins.title'),
 			subHrefs: [

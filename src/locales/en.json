@@ -614,6 +614,18 @@
             },
             "description": "View all verified firms participating in the platform. Browse key details, manage accounts, and access firm-specific statistics, auction history, and billing status."
           },
+          "permits": {
+            "title": "Permit Management",
+            "description": "Manage and track scheduled auction cycles, set performance targets, and monitor overall cycle outcomes. Each cycle defines the timeframe and structure for related emissions auctions.",
+            "home": {
+              "title": "Permits",
+              "tooltip": "View and manage all permits on the platform"
+            },
+            "audit": {
+              "title": "Audit Logs",
+              "tooltip": "View and manage audit logs for permits"
+            }
+          },
           "cycles": {
             "title": "Auctions & Cycles",
             "home": {
