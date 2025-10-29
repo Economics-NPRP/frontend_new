@@ -2422,6 +2422,301 @@
           }
         }
       },
+      "permits": {
+        "stats": {
+          "pending": {
+            "title": "Pending Permits",
+            "tooltip": "Permits that are pending approval.",
+            "subtitle": "Awaiting approval or rejection."
+          },
+          "locked": {
+            "title": "Locked Permits",
+            "tooltip": "Total number of permits that are locked.",
+            "subtitle": "Awaiting to be unlocked."
+          },
+          "expired": {
+            "title": "Expired Permits",
+            "tooltip": "Total number of permits that have expired.",
+            "subtitle": "Expired manually or automatically."
+          },
+          "distribution": {
+            "title": "Total Permits",
+            "tooltip": "{value} Permits {status}"
+          }
+        },
+        "details": {
+          "aside": {
+            "members": {
+              "tab": "Team Members",
+              "edit": "Edit Team Members"
+            },
+            "updates": {
+              "tab": "Latest Updates"
+            },
+            "title": "Collaboration Panel",
+            "comments": {
+              "tab": "Comments"
+            }
+          },
+          "actions": {
+            "members": {
+              "tooltip": "View admins assigned to this cycle"
+            },
+            "updates": {
+              "tooltip": "View latest changes made to this cycle"
+            },
+            "edit": {
+              "tooltip": "Edit details for this auction cycle"
+            },
+            "create": {
+              "heading": "Create New Auction",
+              "subheading": "Make a new auction to be released during this cycle"
+            },
+            "permits": {
+              "heading": "Allocate Permits",
+              "subheading": "Click here to plan the free permits to be allocated"
+            },
+            "kpis": {
+              "heading": "Edit Performance Targets",
+              "subheading": "Set or edit the performance targets for this cycle"
+            },
+            "approve": {
+              "heading": "Approve Cycle",
+              "subheading": "Once the cycle is ready, click here to approve it and release it to the public"
+            },
+            "comments": {
+              "tooltip": "View or place comments on this auction cycle"
+            },
+            "start": {
+              "heading": "Start Cycle",
+              "subheading": "Click here to start the cycle and release it to the public"
+            },
+            "ongoing": {
+              "heading": "Ongoing Cycle",
+              "subheading": "The current cycle is ongoing"
+            }
+          },
+          "title": "Cycle KPIs",
+          "subtitle": "Track the progress and measure the success of this cycle with key performance indicators.",
+          "distribution": {
+            "chart": {
+              "label": "Sector Diversity Index",
+              "auctionsLabel": "Auctions"
+            },
+            "title": "Sector Distribution",
+            "subtitle": "Chart showing the distribution of sectors in the cycle.",
+            "columns": {
+              "sector": "Sector",
+              "permits": "Permit Inflow (% Total)",
+              "emissions": "Equivalent Emissions (% Total)",
+              "auctions": "Auctions (% Total)"
+            }
+          },
+          "approvalModal": {
+            "title": "Review Draft Auction Cycle",
+            "description": "Please ensure that all details are correct before approving the draft cycle.",
+            "actions": {
+              "approve": {
+                "label": "Approve Auction Cycle"
+              }
+            }
+          },
+          "confirmationModal": {
+            "actions": {
+              "approve": {
+                "label": "Approve and Release Auctions"
+              }
+            },
+            "title": "Approve Draft Auction Cycle",
+            "description": "Are you sure you want to approve this auction cycle? This will release all auctions in the cycle to the public.",
+            "kpi": {
+              "label": "KPIs Targets",
+              "description": "I have reviewed the KPI targets, their current progress, and their alignment with policy objectives and have approved them."
+            },
+            "auctions": {
+              "label": "Auctions Setup",
+              "description": "I have verified all auctions under this cycle, including their schedules, permit quantities, and minimum bid requirements."
+            },
+            "permits": {
+              "label": "Permit Distribution",
+              "description": "I have reviewed the total permits to be distributed, including free allocations, and approve the distribution logic."
+            },
+            "final": {
+              "label": "Final Confirmation",
+              "description": "I acknowledge that I am responsible for approving this cycle and that I have completed all necessary reviews."
+            }
+          }
+        },
+        "sectors": {
+          "details": {
+            "actions": {
+              "create": {
+                "heading": "Create New Subsector",
+                "subheading": "Click here to add a new subsector under this one"
+              }
+            },
+            "distribution": {
+              "title": "Subsector Distribution",
+              "subtitle": "Distribution of different statistics based on subsector",
+              "columns": {
+                "subsector": "Subsector",
+                "permits": "Permit Inflow (% Total)",
+                "emissions": "Equivalent Emissions (% Total)",
+                "auctions": "Auctions (% Total)"
+              },
+              "period": {
+                "month": "Past Month",
+                "quarter": "Past Quarter",
+                "year": "Past Year",
+                "all": "All Time"
+              },
+              "filters": {
+                "date": {
+                  "label": "Year",
+                  "placeholder": "Select Year"
+                }
+              }
+            },
+            "list": {
+              "heading": "List of Subsectors",
+              "subheading": "View a list of all subsectors under the current sector"
+            },
+            "timeSeries": {
+              "title": "Emission Trends",
+              "subtitle": "An overview of reported and forecasted emissions and during the selected period",
+              "filters": {
+                "subsector": {
+                  "label": "Subsector",
+                  "placeholder": "Filter by subsector..."
+                },
+                "date": {
+                  "label": "Year",
+                  "placeholder": "Select Year"
+                }
+              },
+              "total": {
+                "title": "Total Emissions",
+                "tooltip": "Total emissions reported in the selected period"
+              },
+              "avg": {
+                "title": "Average Monthly Emissions",
+                "tooltip": "How many tCO2e were reported on average per month"
+              },
+              "forecasted": {
+                "title": "Forecasted Emissions",
+                "tooltip": "Predicted number of emissions that will be reported in this month",
+                "line": "Forecasted"
+              },
+              "current": {
+                "title": "Current Emissions",
+                "tooltip": "The current number of emissions reported this month"
+              }
+            },
+            "heatmap": {
+              "title": "Statistics Heatmap",
+              "subtitle": "Visual overview of auction statistics under this sector",
+              "filters": {
+                "date": {
+                  "label": "Year",
+                  "placeholder": "Select Year"
+                },
+                "subsector": {
+                  "label": "Subsector",
+                  "placeholder": "Filter by subsector..."
+                }
+              },
+              "total": {
+                "title": "Annual Total",
+                "tooltip": "Total number of {type, select, auctions {auctions} bids {bids} permits {permits} other {}} under this sector in the selected year"
+              },
+              "avg": {
+                "title": "Monthly Average",
+                "tooltip": "Average number of {type, select, auctions {auctions} bids {bids} permits {permits} other {}} under this sector in the current month"
+              },
+              "current": {
+                "title": "Monthly Current",
+                "tooltip": "Total number of {type, select, auctions {auctions} bids {bids} permits {permits} other {}} under this sector in the current month"
+              },
+              "chart": {
+                "tooltip": "{value} on {date}"
+              },
+              "legend": {
+                "less": "Less",
+                "more": "More"
+              }
+            }
+          },
+          "subsector": {
+            "details": {
+              "heatmap": {
+                "title": "Statistics Heatmap",
+                "subtitle": "Visual overview of auction statistics under this subsector",
+                "filters": {
+                  "date": {
+                    "label": "Year"
+                  }
+                },
+                "total": {
+                  "title": "Annual Total",
+                  "tooltip": "Total number of {type, select, auctions {auctions} bids {bids} permits {permits} other {}} under this subsector in the selected year"
+                },
+                "avg": {
+                  "title": "Monthly Average",
+                  "tooltip": "Average number of {type, select, auctions {auctions} bids {bids} permits {permits} other {}} under this subsector in the current month"
+                },
+                "current": {
+                  "title": "Monthly Current",
+                  "tooltip": "Total number of {type, select, auctions {auctions} bids {bids} permits {permits} other {}} under this subsector in the current month"
+                },
+                "chart": {
+                  "tooltip": "{value} on {date}"
+                },
+                "legend": {
+                  "less": "Less",
+                  "more": "More"
+                }
+              },
+              "distribution": {
+                "filters": {
+                  "date": {
+                    "placeholder": "Select Year"
+                  }
+                }
+              },
+              "timeSeries": {
+                "title": "Emission Trends",
+                "subtitle": "An overview of reported and forecasted emissions and during the selected period",
+                "filters": {
+                  "date": {
+                    "label": "Year",
+                    "placeholder": "Select Year"
+                  }
+                },
+                "total": {
+                  "title": "Total Emissions",
+                  "tooltip": "Total emissions reported in the selected period"
+                },
+                "avg": {
+                  "title": "Average Monthly Emissions",
+                  "tooltip": "How many tCO2e were reported on average per month"
+                },
+                "forecasted": {
+                  "title": "Forecasted Emissions",
+                  "tooltip": "Predicted number of emissions that will be reported in this month"
+                },
+                "current": {
+                  "title": "Current Emissions",
+                  "tooltip": "The current number of emissions reported this month"
+                }
+              }
+            }
+          }
+        },
+        "list": {
+          "title": "Ended Auctions",
+          "description": "Ended auctions with winning bids or something idk"
+        }
+      },
       "admins": {
         "stats": {
           "total": {
@@ -2465,6 +2760,16 @@
           "description": "See what's happening in the carbon marketplace. New auctions are waiting for you.",
           "button": "Go to Marketplace"
         }
+      }
+    },
+    "permits": {
+      "endedAuctions": {
+        "chart": "Status",
+        "winningBids": "Winning Bids",
+        "tooltip": "{status}: {value}",
+        "cycle": "Cycle",
+        "owner": "Owner",
+        "endDate": "Ended at"
       }
     }
   },

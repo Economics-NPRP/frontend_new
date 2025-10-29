@@ -1,0 +1,57 @@
+.root {
+  @apply justify-between gap-4 h-full;
+	@apply overflow-hidden flex-wrap;
+	@apply border border-solid border-gray-300 text-dark-600;
+  @apply hover:shadow-xs;
+	@apply transition-all duration-500;
+  > .left {
+    @apply bg-white px-8 py-6 pb-8;
+    > .text {
+      > .description {
+        @apply paragraph-md mt-1;
+      }
+      > .winners {
+        @apply mt-2 flex items-end gap-1.5;
+        > .winnerCount {
+          @apply heading-1;
+        }
+        > :not(.winnerCount) {
+          @apply paragraph-md;
+        }
+      }
+    }
+    > .chart {
+      @apply w-fit h-fit;
+      > .chartText {
+        @apply paragraph-lg;
+      }
+      .tooltip {
+        @apply py-1 px-2 bg-white flex border border-solid border-gray-300;
+      }
+    }
+  } 
+  > .right {
+    @apply h-full w-full bg-primary-600;
+    background-image: repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.02),
+      rgba(255, 255, 255, 0.02) 20px,
+      transparent 20px,
+      transparent 40px
+    );
+    > .info {
+      > .infoText, > .infoTitle {
+        @apply text-white;
+      }
+      > .infoTitle {
+        @apply mb-2 mt-1;
+      }
+      > .icon {
+        @apply text-white;
+      }
+    }
+    > .divider {
+      @apply opacity-75;
+    }
+  }
+}

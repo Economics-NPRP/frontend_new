@@ -45,6 +45,27 @@
 		@apply text-gray-100;
 		@apply mix-blend-multiply;
 	}
+	&.large {
+		@apply justify-normal gap-1;
+			> .row {
+				> .value {
+				@apply gap-1 flex-nowrap;
+
+				> .amount {
+					@apply text-3xl;
+					@apply self-baseline;
+				}
+
+				> .unit {
+					@apply display-sm-sb-d3;
+					@apply self-baseline;
+				}
+			}
+		}
+		> .icon {
+			@apply absolute -bottom-3 -translate-y-1/2 right-0 -translate-x-1/2;
+		}
+	}
 
 	&:hover {
 		@apply shadow-xs;

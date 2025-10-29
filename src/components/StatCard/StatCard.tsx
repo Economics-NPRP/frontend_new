@@ -19,8 +19,10 @@ export interface StatCardProps extends BoxComponentProps {
 	unit?: string;
 	diff?: number;
 	negateDiff?: boolean;
-	comparison?: 'day' | 'month' | 'year';
+	comparison?: 'day' | 'month' | 'year' | 'none';
+	subtitle?: string;
 	loading?: boolean;
+	large?: boolean;
 }
 export const StatCard = ({
 	tooltip,
@@ -33,6 +35,8 @@ export const StatCard = ({
 	negateDiff,
 	comparison,
 	loading = false,
+	subtitle,
+	large = false,
 	className,
 	...props
 }: StatCardProps) => {
@@ -70,7 +74,7 @@ export const StatCard = ({
 
 	return (
 		<Stack
-			className={`${classes.root} ${adjustedDiff !== undefined && (adjustedDiff > 0 ? classes.positive : classes.negative)} ${className}`}
+			className={`${classes.root} ${adjustedDiff !== undefined && (adjustedDiff > 0 ? classes.positive : classes.negative)} ${large ? classes.large : ''} ${className}`}
 			{...props}
 		>
 			<Group className={classes.row}>
@@ -97,9 +101,12 @@ export const StatCard = ({
 					/>
 				)}
 			</Group>
-			<Text className={classes.comparison}>
+			{comparison !== 'none' && <Text className={classes.comparison}>
 				{t('components.statCard.comparison', { comparison })}
-			</Text>
+			</Text>}
+			{subtitle && <Text className={classes.comparison}>
+				{subtitle}
+			</Text>}
 			{icon && <Container className={classes.icon}>{icon}</Container>}
 		</Stack>
 	);
