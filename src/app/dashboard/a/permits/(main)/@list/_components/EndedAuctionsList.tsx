@@ -4,7 +4,7 @@ import { EndedAuctionProps } from "./EndedAuction"
 const EndedAuctionsList = () => {
 
   const testData: EndedAuctionProps = {
-    id: "676767",
+    id: "4bfef440-e5d5-4cf4-9163-7d6abb6435c5",
     name: "big auctions",
     description: "this is a description of a big auction",
     winningBids: 5,

@@ -83,19 +83,19 @@ const EndedAuction = (props: EndedAuctionProps) => {
         <Flex flex={1} justify="center" align="center" className={classes.right}>
           <Stack flex={1} gap={0} align="center" className={classes.info}>
             <IconUser size={32} className={classes.icon} />
-            <Title className={classes.infoTitle} order={4}>{t("dashboard.permits.endedAuctions.owner")}</Title>
+            <Title className={classes.infoTitle} order={5}>{t("dashboard.permits.endedAuctions.owner")}</Title>
             <Text className={classes.infoText} fw={600}>{props.owner}</Text>
           </Stack>
           <Divider orientation="vertical" my={32} className={classes.divider} />
           <Stack flex={1.2} gap={0} align="center" className={classes.info}>
             <IconRefresh size={32} className={classes.icon} />
-            <Title className={classes.infoTitle} order={4}>{t("dashboard.permits.endedAuctions.cycle")}</Title>
+            <Title className={classes.infoTitle} order={5}>{t("dashboard.permits.endedAuctions.cycle")}</Title>
             <Text className={classes.infoText} fw={600}>{props.cycle}</Text>
           </Stack>
           <Divider orientation="vertical" my={32} className={classes.divider} />
           <Stack flex={1} gap={0} align="center" className={classes.info}>
             <IconCalendar size={32} className={classes.icon} />
-            <Title className={classes.infoTitle} order={4}>{t("dashboard.permits.endedAuctions.endDate")}</Title>
+            <Title className={classes.infoTitle} order={5}>{t("dashboard.permits.endedAuctions.endDate")}</Title>
             <Text className={classes.infoText} fw={600}>{props.endDate}</Text>
           </Stack>
         </Flex>

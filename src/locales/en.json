@@ -349,6 +349,9 @@
       "home": {
         "label": "Return to Home"
       },
+      "permits": {
+        "label": "Return to Permit Management Page"
+      },
       "firmsList": {
         "label": "Return to List of Companies"
       },
@@ -620,6 +623,10 @@
             "home": {
               "title": "Permits",
               "tooltip": "View and manage all permits on the platform"
+            },
+            "auctions": {
+              "title": "Winning Bids",
+              "description": "View all winning bids for permits in the \"{value}\" auction."
             },
             "audit": {
               "title": "Audit Logs",
@@ -2715,6 +2722,13 @@
         "list": {
           "title": "Ended Auctions",
           "description": "Ended auctions with winning bids or something idk"
+        },
+        "callToAction": {
+          "title": "Permits Status",
+          "auditCompany": {
+            "heading": "Audit Company Permits",
+            "subheading": "Manage company specific permits"
+          }
         }
       },
       "admins": {
