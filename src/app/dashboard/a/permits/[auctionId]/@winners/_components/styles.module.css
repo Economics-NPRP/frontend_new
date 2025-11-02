@@ -9,9 +9,70 @@
       }
     }
   }
-  > .table {
-    .bidder {
-      @apply paragraph-md decoration-dashed;
+}
+.permitsWon {
+  @apply border border-gray-300 border-solid bg-white h-40 p-0;
+  @apply transition-shadow;
+  @apply hover:shadow;
+  > .text {
+    @apply py-6 px-8;
+    > .name {
+      @apply heading-2;
+    }
+    > .owner {
+      @apply paragraph-md;
+    }
+    > .total {
+      > .value {
+        @apply heading-2;
+      }
+      > .label {
+        @apply paragraph-sm-15;
+      }
+    }
+  }
+  > .statistics {
+    > .status {
+      > .label {
+        @apply paragraph-md;
+      }
+      > .value {
+        @apply heading-2;
+      }
+      > .unit {
+        @apply paragraph-sm-15;
+      }
+    }
+  }
+  > .grid {
+    @apply h-full w-full relative top-[-1.5px];
+    .col {
+      @apply h-[calc(5rem-1px)];
+    }
+    .buttonContainer {
+      @apply w-full h-full flex justify-center items-center;
+      &.approve {
+        @apply bg-green-800;
+      }
+      &.reject {
+        @apply bg-rose-800;
+      }
+      &.lock {
+        @apply bg-gray-700;
+      }
+      &.expire {
+        @apply bg-orange-800;
+      }
+      background-image: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(0, 0, 0, 0.03) 10px,
+        rgba(0, 0, 0, 0.03) 20px
+      );
+      > .button {
+        @apply w-28;
+      }
     }
   }
 }

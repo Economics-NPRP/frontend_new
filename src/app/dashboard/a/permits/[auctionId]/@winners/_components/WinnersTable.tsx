@@ -1,3 +1,4 @@
+'use client'
 import { Stack, Flex, Text, Group, Pill, Select, Menu, ActionIcon, Container, TextInput, Button, Checkbox, Anchor } from "@mantine/core";
 import { useMediaQuery, useListState } from "@mantine/hooks";
 import { useContext, useEffect, useMemo, useRef, useState, useCallback } from "react";
@@ -10,38 +11,12 @@ import { useOffsetPaginationText } from "@/hooks";
 import { IBidData, PermitsFilterType } from "@/schema/models";
 import { DataTable } from "mantine-datatable";
 import { useRouter } from "next/navigation";
+import { PermitsWon, demoData } from "./PermitsWon";
 
 type WinnersTableProps = {
   bids: IPaginatedWinningBidsContext;
 }
-const bid = {
-  "id": 0,
-  "auctionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "bidderId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "timestamp": "2025-11-01T10:40:48.364Z",
-  "amount": 25200000,
-  "permits": 96,
-  "bidder": {
-    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "name": "BigBidder",
-    "phone": "12345678",
-    "email": "user@example.com",
-    "otherEmails": [
-      "user@example.com"
-    ],
-    "sectors": [
-      "energy"
-    ],
-    "emailVerified": true,
-    "phoneVerified": true,
-    "isActive": true,
-    "createdAt": "2025-11-01T10:40:48.364Z",
-    "applicationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-  }
-}
-const demoData = [
-  ...Array(10).fill(bid)
-]
+
 const WinnersTable = ({ bids }: WinnersTableProps) => {
 
   const router = useRouter()
@@ -273,11 +248,13 @@ const WinnersTable = ({ bids }: WinnersTableProps) => {
         </Group>
       </Stack>
       {/* Table would go here */}
-      <Container className={classes.table}>
+      <Stack className={classes.table}>
         {
-          
+          demoData.map((bid) => (
+            <PermitsWon key={bid.id} bid={bid} loading={bids.isLoading} />
+          ))
         }
-      </Container>
+      </Stack>
     </Stack>
   )
 }
