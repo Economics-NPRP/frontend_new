@@ -243,7 +243,7 @@ export const SidebarLinks: Record<
 						? t('constants.pages.dashboard.firm.carbon.pe.tooltip')
 						: t('constants.pages.dashboard.firm.carbon.pe.title'),
 					icon: <IconLeaf size={16} />,
-					href: '/dashboard/f/carbon/pe',
+					href: '/dashboard/f/carbon/pae',
 				},
 				{
 					id: 'targets',

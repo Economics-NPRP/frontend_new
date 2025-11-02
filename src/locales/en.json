@@ -737,6 +737,15 @@
               "description": "View and manage all administrators who help operate the carbon trading platform. This includes their roles, permissions, and activity."
             }
           }
+        },
+        "firms": {
+          "pae": {
+            "title": "Permits & Emissions",
+            "description": "Some description that describes the management of permits & emissions"
+          },
+          "home": {
+            "title": "Home"
+          }
         }
       },
       "feedback": {

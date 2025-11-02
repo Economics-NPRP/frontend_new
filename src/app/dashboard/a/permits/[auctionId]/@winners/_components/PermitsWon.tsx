@@ -54,7 +54,7 @@ const PermitsWon = ({ bid, loading }: PermitsWonProps) => {
         <WithSkeleton loading={loading} height={24} width={80}>
           <Text className={classes.total + " mt-2"}>
             <Text span className={classes.value}>{bid.bids.total}</Text>
-            &nbsp;<Text span className={classes.label}>Permits Won</Text>
+            &nbsp;<Text span className={classes.label}>Total Permits Won</Text>
           </Text>
         </WithSkeleton>
       </Stack>
