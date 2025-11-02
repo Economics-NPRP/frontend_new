@@ -1,13 +1,12 @@
 import { Stack } from "@mantine/core"
-import { useTranslations } from "next-intl"
 import { withProviders } from "helpers/withProviders"
 import { SingleAuctionProvider } from "contexts/SingleAuction"
-import { SingleAuctionContext } from "contexts/SingleAuction"
-import { useContext, useEffect } from "react"
+import { PaginatedWinningBidsProvider } from "contexts/PaginatedWinningBids"
+import { MyUserProfileProvider } from "contexts/MyUserProfile"
 import { AuctionPermitsHero } from "@/pages/dashboard/a/permits/[auctionId]/_components/AuctionPermitsHero"
 import { Metadata } from "next"
 
-export const metadata:Metadata = {
+export const metadata: Metadata = {
   title: 'Auction Permits',
 };
 
@@ -23,7 +22,9 @@ const AuctionPermits = ({ winners, calltoaction }: AuctionPermitsProps) => {
       {calltoaction}
       {winners}
     </Stack>,
-    { provider: SingleAuctionProvider }
+    { provider: MyUserProfileProvider },
+    { provider: SingleAuctionProvider },
+    { provider: PaginatedWinningBidsProvider }
   )
 }
 

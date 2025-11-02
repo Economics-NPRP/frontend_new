@@ -1,0 +1,17 @@
+.winnersTable {
+  > .header {
+    > .row {
+      > .search {
+        @apply w-[400px];
+      }
+      > .subtitle {
+        @apply paragraph-md
+      }
+    }
+  }
+  > .table {
+    .bidder {
+      @apply paragraph-md decoration-dashed;
+    }
+  }
+}

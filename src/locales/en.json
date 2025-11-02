@@ -570,6 +570,7 @@
       "offset": {
         "results": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {results} =1 {result} other {results}}",
         "firms": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {companies} =1 {company} other {companies}}",
+        "winningBids": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {bids} =1 {bid} other {bids}}",
         "admins": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {admins} =1 {admin} other {admins}}",
         "auctionCycles": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {auction cycles} =1 {auction cycle} other {auction cycles}}",
         "auctions": "Showing {start, number} - {end, number} of {total, number} {total, plural, =0 {auctions} =1 {auction} other {auctions}}"
@@ -2450,6 +2451,10 @@
             "title": "Total Permits",
             "tooltip": "{value} Permits {status}"
           }
+        },
+        "winners": {
+          "title": "Bids List",
+          "subtitle": "List of winning bids for allocated permits"
         },
         "details": {
           "aside": {

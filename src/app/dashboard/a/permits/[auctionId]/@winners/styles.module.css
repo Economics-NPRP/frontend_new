@@ -1,0 +1,8 @@
+.root {
+  > .title {
+    @apply heading-1;
+  }
+  > .description {
+    @apply paragraph-md;
+  }
+}

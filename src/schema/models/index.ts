@@ -21,3 +21,4 @@ export * from './SubsectorData';
 export * from './UserData';
 export * from './UserType';
 export * from './OnboardingData';
+export * from './PermitsFilter';
