@@ -5,13 +5,14 @@ import classes from "./styles.module.css"
 type CardProps = {
   title: string;
   tooltip?: string;
-  size: 'sm' | 'md' | 'lg';
+  className?: string;
+  size?: 'sm' | 'md' | 'lg';
   children: React.ReactNode;
 }
 
-const Card = ({ tooltip, title, size, children }: CardProps) => {
+const Card = ({ tooltip, title, size="lg", className, children }: CardProps) => {
   return (
-    <Stack className={`${classes.card} ${classes[size]}`}>
+    <Stack gap={0} className={`${classes.card} ${classes[size]} ${className}`}>
       <Group className={classes.header} justify="space-between" align="center">
         <Title className={classes.title} order={4}>{title}</Title>
         {tooltip && (

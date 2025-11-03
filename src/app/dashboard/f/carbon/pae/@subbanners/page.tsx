@@ -37,17 +37,18 @@ const SubBanners = () => {
           },
         ]}
       />
-      <Grid columns={12}>
-        <Grid.Col span={3}>
+      <Grid columns={13}>
+        <Grid.Col span={4}>
           <Card
             title={t('dashboard.firm.carbon.pe.subbanners.distribution.title')}
             size="md"
             tooltip={t('dashboard.firm.carbon.pe.subbanners.distribution.tooltip')}
+            className={"!py-4 !px-6"}
           >
             <BarChart
               h={110}
               data={demoData}
-              textColor="gray.8"
+              textColor="gray.6"
               dataKey="label"
               orientation="vertical"
               series={[{ name: 'value', color: 'color' }]}
@@ -79,10 +80,11 @@ const SubBanners = () => {
             title={t('dashboard.firm.carbon.pe.subbanners.approved.title')}
             tooltip={t('dashboard.firm.carbon.pe.subbanners.approved.tooltip')}
             value={42}
+            className="h-full !py-4 !px-6"
             type="integer"
-            mid={true}
+            large={true}
             unit={t('constants.permits.key')}
-            icon={<IconFileCheck size={100} />}
+            icon={<IconFileCheck size={120} />}
             comparison="none"
             subtitle={t('dashboard.firm.carbon.pe.subbanners.approved.subtitle')}
           />
@@ -92,10 +94,11 @@ const SubBanners = () => {
             title={t('dashboard.firm.carbon.pe.subbanners.locked.title')}
             tooltip={t('dashboard.firm.carbon.pe.subbanners.locked.tooltip')}
             value={32}
+            className="h-full !py-4 !px-6"
             type="integer"
-            mid={true}
+            large={true}
             unit={t('constants.permits.key')}
-            icon={<IconLock size={100} />}
+            icon={<IconLock size={120} />}
             comparison="none"
             subtitle={t('dashboard.firm.carbon.pe.subbanners.locked.subtitle')}
           />
@@ -105,10 +108,11 @@ const SubBanners = () => {
             title={t('dashboard.firm.carbon.pe.subbanners.expired.title')}
             tooltip={t('dashboard.firm.carbon.pe.subbanners.expired.tooltip')}
             value={32}
+            className="h-full !py-4 !px-6"
             type="integer"
-            mid={true}
+            large={true}
             unit={t('constants.permits.key')}
-            icon={<IconCalendarX size={100} />}
+            icon={<IconCalendarX size={120} />}
             comparison="none"
             subtitle={t('dashboard.firm.carbon.pe.subbanners.expired.subtitle')}
           />
