@@ -23,6 +23,7 @@ export interface StatCardProps extends BoxComponentProps {
 	subtitle?: string;
 	loading?: boolean;
 	large?: boolean;
+	mid?: boolean;
 }
 export const StatCard = ({
 	tooltip,
@@ -37,6 +38,7 @@ export const StatCard = ({
 	loading = false,
 	subtitle,
 	large = false,
+	mid = false,
 	className,
 	...props
 }: StatCardProps) => {
@@ -74,7 +76,7 @@ export const StatCard = ({
 
 	return (
 		<Stack
-			className={`${classes.root} ${adjustedDiff !== undefined && (adjustedDiff > 0 ? classes.positive : classes.negative)} ${large ? classes.large : ''} ${className}`}
+			className={`${classes.root} ${adjustedDiff !== undefined && (adjustedDiff > 0 ? classes.positive : classes.negative)} ${large ? classes.large : mid ? classes.mid : ''} ${className}`}
 			{...props}
 		>
 			<Group className={classes.row}>

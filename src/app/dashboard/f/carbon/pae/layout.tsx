@@ -11,14 +11,14 @@ export const metadata: Metadata = {
 };
 
 export interface PermitsAndEmissionsProps {
-  header: ReactNode;
+  subbanners: ReactNode;
 }
-export default function PermitsAndEmissionsProps({ header }: PermitsAndEmissionsProps) {
+export default function PermitsAndEmissionsProps({ subbanners }: PermitsAndEmissionsProps) {
   const t = useTranslations();
 
   return (
     <Stack className={classes.root}>
-      {header}
+      {subbanners}
     </Stack>
   );
 }

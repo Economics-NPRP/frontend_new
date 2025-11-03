@@ -2772,6 +2772,33 @@
         }
       }
     },
+    "firm": {
+      "carbon": {
+        "pe": {
+          "subbanners": {
+            "approved": {
+              "title": "Approved Permits",
+              "tooltip": "Number of approved permits",
+              "subtitle": "Ready to be used"
+            },
+            "locked": {
+              "title": "Locked Permits",
+              "tooltip": "Number of locked permits",
+              "subtitle": "Cannot be currently used"
+            },
+            "expired": {
+              "title": "Expired Permits",
+              "tooltip": "Number of expired permits",
+              "subtitle": "Cannot be used"
+            },
+            "distribution": {
+              "title": "Total Permits",
+              "tooltip": "View status of all permits"
+            }
+          }
+        }
+      }
+    },
     "header": {
       "search": {
         "label": "Search"
