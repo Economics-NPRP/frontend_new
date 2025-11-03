@@ -1,5 +1,5 @@
 .companyApplication {
-  @apply h-fit py-4 px-4 border border-solid border-t-transparent hover:border-t-gray-400 border-x-transparent hover:border-x-gray-400 hover:shadow-sm transition-shadow border-b-gray-400;
+  @apply h-fit py-4 px-4 border border-solid border-t-transparent hover:border-t-gray-400 border-x-transparent hover:border-x-gray-400 hover:shadow transition-shadow border-b-gray-400;
   background: linear-gradient(97deg, #FFF 40.55%, rgba(254, 243, 210, 0.10) 110.53%);
   .information {
     @apply flex flex-col;

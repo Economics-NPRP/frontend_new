@@ -2779,7 +2779,7 @@
             "approved": {
               "title": "Approved Permits",
               "tooltip": "Number of approved permits",
-              "subtitle": "Ready to be used"
+              "subtitle": "Ready to be used or sold"
             },
             "locked": {
               "title": "Locked Permits",
@@ -2794,6 +2794,16 @@
             "distribution": {
               "title": "Total Permits",
               "tooltip": "View status of all permits"
+            },
+            "cta": {
+              "sell": {
+                "heading": "Sell Excess Permits",
+                "subheading": "Start an auction on permits you do not currently need"
+              },
+              "report": {
+                "heading": "Report Emissions",
+                "subheading": "Report emission consumption"
+              }
             }
           }
         }

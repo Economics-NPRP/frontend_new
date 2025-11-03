@@ -1,4 +1,5 @@
 .root {
+  @apply relative;
   .component {
     @apply bg-white hover:shadow-xs transition-shadow border border-solid border-gray-300 p-0;
     .title {
@@ -39,5 +40,8 @@
         }
       }
     }
+  }
+  .subtitle {
+    @apply my-4 heading-2 !text-[28px];
   }
 }

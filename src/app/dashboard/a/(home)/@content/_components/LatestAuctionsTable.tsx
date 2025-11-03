@@ -40,7 +40,7 @@ const LatestAuctionsTable = ({ className, records, loading }: LatestAuctionsTabl
           cellsClassName: classes.name,
           accessor: 'name',
           title: t('components.auctionsTable.columns.name'),
-          textAlign: 'center',
+          textAlign: 'left',
           ellipsis: true,
           width: 110
         },

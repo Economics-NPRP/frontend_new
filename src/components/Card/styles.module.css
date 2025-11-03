@@ -5,6 +5,7 @@
 	@apply py-6 px-8 gap-0;
 	@apply bg-white border border-solid border-gray-300 text-dark-600;
 	@apply transition-all duration-500;
+	@apply bg-white hover:shadow;
 
 	&.mid {
 		@apply py-4 px-6;

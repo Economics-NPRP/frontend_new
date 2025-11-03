@@ -97,6 +97,7 @@ export default function Content() {
 						<LatestAuctionsTable
 							records={auctions || null}
 							loading={loading[2]}
+							className='px-4'
 						/>
 					</Stack>
 				</Stack>

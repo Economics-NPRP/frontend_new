@@ -1,0 +1,5 @@
+.root {
+  .tooltip {
+    @apply bg-white border-gray-300 border border-solid py-2 px-6;
+  }
+}
