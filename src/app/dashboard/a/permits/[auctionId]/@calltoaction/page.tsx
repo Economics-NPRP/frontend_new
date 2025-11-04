@@ -44,7 +44,7 @@ const CallToAction = () => {
                       <Group gap={8} wrap="nowrap">
                         <IconCircleFilled size={12} color={data.payload.color} />
                         <Text size="sm" c="gray.7" fw={500}>
-                          {data.payload.label}: {data.value}
+                          {data.payload.label}: <Text fw={600} span>{data.value}</Text>
                         </Text>
                       </Group>
                     </Container>

@@ -21,7 +21,8 @@
           @apply heading-2 z-10;
         }
         .description {
-          @apply text-slate-700 z-10;
+          @apply paragraph-md z-10;
+          line-height: 20px;
         }
       }
       .icon {

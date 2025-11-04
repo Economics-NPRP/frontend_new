@@ -20,6 +20,10 @@ export default function Content() {
 		setIsClient(true);
 	}, []);
 
+	useEffect(() => {
+		console.log(firmApplications)
+	}, [firmApplications])
+
 	if (!isClient) {
 		return null;
 	}
@@ -44,16 +48,16 @@ export default function Content() {
 			<Grid.Col span={1}>
 				<Stack className={classes.auditContainer}>
 					<Anchor style={{ textDecoration: 'none' }} href='/dashboard/a/firms' className={`${classes.audit} ${classes.company}`}>
-						<Stack className={classes.auditContent} gap={0}>
+						<Stack className={classes.auditContent} gap={8}>
 							<Text className={classes.text}>Audit Company</Text>
-							<Text className={classes.description}>decription about the economic state of the world</Text>
+							<Text className={classes.description}>{"Review and manage company permits"}</Text>
 						</Stack>
 						<IconBuildingSkyscraper className={classes.icon} size={96} />
 					</Anchor>
 					<Anchor style={{ textDecoration: 'none' }} href='/dashboard/a/admins' className={`${classes.audit} ${classes.admin}`}>
-						<Stack className={classes.auditContent} gap={0}>
+						<Stack className={classes.auditContent} gap={8}>
 							<Text className={classes.text}>Audit Admin</Text>
-							<Text className={classes.description}>decription about the economic state of the world</Text>
+							<Text className={classes.description}>{"Review admin activity and permissions"}</Text>
 						</Stack>
 						<IconUser className={classes.icon} size={96} />
 					</Anchor>

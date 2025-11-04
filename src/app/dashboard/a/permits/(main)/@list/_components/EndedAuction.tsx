@@ -12,7 +12,6 @@ export type EndedAuctionProps = {
   description: string;
   winningBids: number;
   cycle: string;
-  owner: string;
   endDate: string;
   pieChartData: {
     accepted: number;
@@ -81,12 +80,6 @@ const EndedAuction = (props: EndedAuctionProps) => {
           </Group>
         </Flex>
         <Flex flex={1} justify="center" align="center" className={classes.right}>
-          <Stack flex={1} gap={0} align="center" className={classes.info}>
-            <IconUser size={32} className={classes.icon} />
-            <Title className={classes.infoTitle} order={5}>{t("dashboard.permits.endedAuctions.owner")}</Title>
-            <Text className={classes.infoText} fw={600}>{props.owner}</Text>
-          </Stack>
-          <Divider orientation="vertical" my={32} className={classes.divider} />
           <Stack flex={1.2} gap={0} align="center" className={classes.info}>
             <IconRefresh size={32} className={classes.icon} />
             <Title className={classes.infoTitle} order={5}>{t("dashboard.permits.endedAuctions.cycle")}</Title>

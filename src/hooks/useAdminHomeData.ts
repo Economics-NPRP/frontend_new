@@ -170,7 +170,7 @@ export function useAdminHomeData() {
       const auctionsData = getAuctions();
       setAuctionList(auctionsData);
     }
-  }, [cycle, t, getTranslatedName, firmApplications, auctions]);
+  }, [cycle, t, getTranslatedName, firmApplications, auctions, getApplications, getAuctions, loading]);
 
   return { 
     chartData, 
