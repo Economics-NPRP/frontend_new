@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useContext, useMemo } from 'react';
 import { MyUserProfileContext } from 'contexts';
+import { IMyUserProfileContext } from 'contexts';
 import Link from 'next/link';
 
 import { MyProfileMenu } from '@/components/MyProfileMenu';
@@ -15,7 +16,8 @@ import classes from './styles.module.css';
 
 export const MarketplaceHeader = () => {
 	const t = useTranslations();
-	const myUser = useContext(MyUserProfileContext);
+
+	const myUser = useContext<IMyUserProfileContext>(MyUserProfileContext);
 
 	const isAdmin = useMemo(() => myUser?.data?.type === 'admin', [myUser?.data?.type]);
 
@@ -73,11 +75,7 @@ export const MarketplaceHeader = () => {
 					<HeaderButton variant="accessibility" visibleFrom="xs" />
 					<HeaderButton variant="language" visibleFrom="xs" />
 					<HeaderButton variant="theme" visibleFrom="xs" />
-					<MyProfileMenu
-						myUser={myUser}
-						isAdmin={isAdmin}
-						currentState={currentState}
-					>
+					<MyProfileMenu>
 						<HeaderButton
 							className={`${classes.user} ${classes.button}`}
 							variant="user"
