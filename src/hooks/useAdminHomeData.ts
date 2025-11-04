@@ -53,8 +53,8 @@ export function useAdminHomeData() {
   
   const getApplications = () => {
     if (!firmApplications || !firmApplications.data || firmApplications.data.results.length === 0) return [];
-    let result: HomeFirmApplication[] = []
-    for (let application of firmApplications.data.results) {
+    const result: HomeFirmApplication[] = []
+    for (const application of firmApplications.data.results) {
       result.push({
         crn: ''+application.crn,
         companyName: application.companyName,
@@ -79,8 +79,8 @@ export function useAdminHomeData() {
 
   const getAuctions = () => {
     if (!auctions || !auctions.data || auctions.data.results.length === 0) return [];
-    let result: HomeAuctionData[] = []
-    for (let auction of auctions.data.results) {
+    const result: HomeAuctionData[] = []
+    for (const auction of auctions.data.results) {
       result.push({
         name: auction.title,
         status: auctionStatus(auction),

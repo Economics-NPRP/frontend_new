@@ -11,12 +11,15 @@ import { ActionIcon, Button, Divider, Group, Title, useMatches } from '@mantine/
 import { IconArrowUpLeft } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
+import { useContext, useMemo } from 'react';
+import { MyUserProfileContext } from 'contexts/MyUserProfile';
 
 export const CreateLayoutHeader = () => {
 	const shortReturn = useMatches({ base: true, md: false });
 	const title = useContextSelector(CreateLayoutContext, (context) => context.title);
 	const returnHref = useContextSelector(CreateLayoutContext, (context) => context.returnHref);
 	const returnLabel = useContextSelector(CreateLayoutContext, (context) => context.returnLabel);
+
 
 	return (
 		<Group className={classes.root} component="header">

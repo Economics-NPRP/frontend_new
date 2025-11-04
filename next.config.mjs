@@ -20,10 +20,10 @@ const nextConfig = {
     },
     // This makes Docker/CI builds much faster. For safety, we will run `pnpm typecheck` and `pnpm lint` as separate CI steps.
     typescript: {
-        ignoreBuildErrors: true,
+        ignoreBuildErrors: false,
     },
     eslint: {
-        ignoreDuringBuilds: true,
+        ignoreDuringBuilds: false,
     },
 
     // Ensure no production browser source maps are generated (keeps builds smaller/faster)

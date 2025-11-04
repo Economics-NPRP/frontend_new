@@ -3,11 +3,12 @@
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { usePathname } from 'next/navigation';
-import { useEffect, useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 
 import { Id } from '@/components/Id';
 import { Switch } from '@/components/SwitchCase';
 import { IMyUserProfileContext } from '@/contexts';
+import { MyUserProfileContext } from '@/contexts';
 import { useAuth } from '@/hooks';
 import {
 	Alert,
@@ -49,18 +50,23 @@ import classes from './styles.module.css';
 
 import { isolateMessage } from 'helpers/isolateMessage';
 
-export interface MyProfileMenuProps extends MenuProps {
-	myUser: IMyUserProfileContext;
-	isAdmin: boolean;
-	currentState: 'loading' | 'error' | 'success';
-}
-export const MyProfileMenu = ({ children, myUser, isAdmin, currentState, ...menuProps }: MyProfileMenuProps) => {
+export interface MyProfileMenuProps extends MenuProps {}
+export const MyProfileMenu = ({ children, ...menuProps }: MyProfileMenuProps) => {
 	const t = useTranslations();
 	const pathname = usePathname();
 
 	const { logout } = useAuth();
 
-	useEffect(() => { console.log(myUser) }, [myUser]);
+	const myUser = useContext<IMyUserProfileContext>(MyUserProfileContext);
+
+	const isAdmin = useMemo(() => myUser?.data?.type === 'admin', [myUser?.data?.type]);
+
+	const currentState = useMemo(() => {
+		if (!myUser) return 'loading';
+		if (myUser.isError) return 'error';
+		if (myUser.isSuccess) return 'success';
+		return 'loading';
+	}, [myUser]);
 
 	const isMarketplace = useMemo(() => pathname.startsWith('/marketplace'), [pathname]);
 
