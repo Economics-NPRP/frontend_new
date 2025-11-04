@@ -9,7 +9,6 @@ const EndedAuctionsList = () => {
     description: "this is a description of a big auction",
     winningBids: 5,
     cycle: "Future Cycle - Extended",
-    owner: "The Big Man",
     endDate: "October 7th, 2025",
     pieChartData: {
       accepted: 10,
