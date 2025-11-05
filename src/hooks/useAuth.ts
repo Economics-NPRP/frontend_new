@@ -192,7 +192,8 @@ export const useAuth: AuthProps = ({
 				message: t('lib.auth.otp.success.message'),
 				position: 'bottom-center',
 			});
-			router.push(`/dashboard/${userData.type === 'admin' ? 'a' : 'f'}`);
+			// router.push(`/dashboard/${userData.type === 'admin' ? 'a' : 'f'}`);
+			router.push('/marketplace');
 			onVerifyOtpSuccess?.();
 		},
 		onError: (error: Error) => {
