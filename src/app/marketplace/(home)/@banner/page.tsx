@@ -11,7 +11,7 @@ export default function Banner() {
 	const t = useTranslations();
 	const locale = useLocale();
 
-	const date = DateTime.fromObject({ year: 2025, month: 12, day: 20 }).setLocale(locale);
+	const date = DateTime.fromObject({ year: 2025, month: 11, day: 6, hour: 15, minute: 30 }).setLocale(locale);
 
 	return (
 		<Container className={`${classes.root} bg-stagger-md`}>
@@ -26,8 +26,7 @@ export default function Banner() {
 				{t('marketplace.home.banner.title')}
 			</Title>
 			<Text className={classes.date}>
-				{t('marketplace.home.banner.startDate')}{' '}
-				{date.toLocaleString(DateTime.DATETIME_FULL)}
+				Currently Running...
 			</Text>
 
 			<LargeCountdown className={classes.countdown} targetDate={date.toISO()!} />

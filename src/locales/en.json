@@ -838,7 +838,7 @@
     "home": {
       "banner": {
         "subtitle": "Government Auctions",
-        "title": "Next Auction Period",
+        "title": "Upcoming Auction Cycle",
         "actions": {
           "calendar": {
             "tooltip": "Open the auction calendar"
