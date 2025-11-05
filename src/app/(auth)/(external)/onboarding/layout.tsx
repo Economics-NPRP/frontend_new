@@ -14,11 +14,6 @@ export interface OnboardingProps {
 
 function OnboardingContent({ details, form }: OnboardingProps) {
 	const t = useTranslations();
-	const onboardingContext = useContext(OnBoardingContext);
-
-	useEffect(() => {
-		console.log('OnboardingContext', onboardingContext);
-	}, [onboardingContext]);
 
 	return (
 		<>

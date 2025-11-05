@@ -163,7 +163,7 @@ export const useAuth: AuthProps = ({
 				message: t('lib.auth.register.success.message'),
 				position: 'bottom-center',
 			});
-			router.push('/dashboard/f');
+			router.push('/marketplace');
 			onRegisterSuccess?.();
 		},
 		onError: (error: Error) => {
