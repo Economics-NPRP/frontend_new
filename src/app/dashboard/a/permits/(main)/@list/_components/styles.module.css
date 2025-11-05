@@ -7,6 +7,10 @@
   > .left {
     @apply bg-white px-8 py-6 pb-8;
     > .text {
+      @apply w-72 mr-4;
+      > .name {
+        @apply heading-2 w-full;
+      }
       > .description {
         @apply paragraph-md mt-1;
       }
@@ -21,9 +25,9 @@
       }
     }
     > .chart {
-      @apply w-fit h-fit;
+      @apply w-56 h-fit;
       > .chartText {
-        @apply paragraph-lg;
+        @apply paragraph-md order-2;
       }
       .tooltip {
         @apply py-1 px-2 bg-white flex border border-solid border-gray-300;
@@ -55,19 +59,36 @@
     }
   }
 }
-
-.header {
-  > .row {
-    > .settings {
-      > .label {
+.list {
+  .header {
+    .filterMenu {
+      @apply bg-red-400;
+    }
+    > .row {
+      > .settings {
+        > .label {
+          @apply paragraph-sm;
+        }
+      }
+      > .subtitle {
         @apply paragraph-sm;
       }
+      > .search {
+        @apply w-96;
+      }
     }
-    > .subtitle {
-      @apply paragraph-sm;
+  }
+  
+  .placeholder {
+    @apply flex flex-col items-center my-8;
+    > .icon, .text {
+      @apply text-gray-500;
     }
-    > .search {
-      @apply w-96;
+    > .text {
+      @apply font-semibold;
     }
+  }
+  > .footer {
+    @apply justify-center mt-4;
   }
 }

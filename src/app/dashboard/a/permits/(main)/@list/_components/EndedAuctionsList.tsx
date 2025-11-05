@@ -1,21 +1,26 @@
 'use client'
 import { Stack, Flex, Text, Group, Pill, Select, Menu, ActionIcon, TextInput, Button, Radio } from "@mantine/core"
 import { IconAdjustments, IconReportAnalytics, IconFilterSearch, IconSearch } from "@tabler/icons-react"
-import { useListState } from "@mantine/hooks"
-import { useContext, useEffect, useMemo, useState, useCallback } from "react"
+import { generateDescription } from "@/lib/auctions"
+import { useContext, useEffect, useMemo, useState, useRef } from "react"
 import { useTranslations, useFormatter } from "next-intl"
 import { EndedAuction } from "./EndedAuction"
 import { EndedAuctionProps } from "./EndedAuction"
 import { PaginatedAuctionsContext } from "contexts/PaginatedAuctions"
-import { SelectionSummaryContext } from "@/components/Tables/_components/SelectionSummary"
+import { DateTime } from "luxon"
 import { useOffsetPaginationText } from "@/hooks"
-import { IAuctionData, AuctionStatusFilter, AuctionTypeFilter } from "@/schema/models"
+import { AuctionTypeFilter } from "@/schema/models"
+import { TablePagination } from "@/components/Tables/_components/Pagination"
+
+import { IconX, IconDots } from "@tabler/icons-react"
+
 import classes from "./styles.module.css"
 
 const EndedAuctionsList = () => {
 
   const auctions = useContext(PaginatedAuctionsContext)
   const t = useTranslations()
+  const listContainer = useRef(null)
   const paginationText = useOffsetPaginationText('auctions', auctions)
 
   const [searchFilter, setSearchFilter] = useState('')
@@ -105,7 +110,7 @@ const EndedAuctionsList = () => {
   }
 
   return (
-    <Stack>
+    <Stack className={classes.list}>
       <Stack className={classes.header}>
         <Flex justify={"space-between"} className={`${classes.row} ${classes.wrapMobile}`}>
           <Group className={classes.label}>
@@ -116,7 +121,7 @@ const EndedAuctionsList = () => {
           </Group>
           <Group className={classes.settings}>
             <Text className={classes.label}>
-              Per page
+              Per page {/* TODO: Change to translated */}
             </Text>
             <Select
               className={classes.dropdown}
@@ -132,8 +137,8 @@ const EndedAuctionsList = () => {
                   <IconAdjustments size={16} />
                 </ActionIcon>
               </Menu.Target>
-              <Menu.Dropdown className={classes.filterMenu}>
-                <Menu.Label className={classes.label}>
+              <Menu.Dropdown className={"px-4 pt-2 pb-4"}>
+                <Menu.Label className={"p-0 mb-3"}>
                   Auction Type
                 </Menu.Label>
                 <Radio.Group
@@ -167,20 +172,41 @@ const EndedAuctionsList = () => {
           </Text>
         </Group>
       </Stack>
-      <EndedAuction
-        {...testData}
-      />
-      <EndedAuction
-        {...testData}
-        winningBids={12}
-        name="Another Auction"
-        description="this is another description of a big auction"
-        pieChartData={{
-          accepted: 3,
-          rejected: 5,
-          pending: 25,
-        }}
-      />
+      <Stack ref={listContainer} gap={16} className={classes.list}>
+        {auctions && auctions.data && auctions.data.results && auctions.data.results.length > 0 && !auctions.isLoading ? (
+          auctions.data.results.map((auction) => (
+            <EndedAuction
+              key={auction.id}
+              id={auction.id}
+              name={auction.title}
+              description={auction.description || generateDescription(auction.title, auction.sector)}
+              winningBids={auction.biddersCount}
+              cycle={auction.cycle?.title || ''}
+              endDate={auction.endDatetime}
+              pieChartData={{
+                accepted: Math.floor(Math.random() * 20),
+                rejected: Math.floor(Math.random() * 20),
+                pending: Math.floor(Math.random() * 20),
+              }}
+            />
+          ))
+        ) : (auctions.isLoading) ? (
+          <Text className={classes.placeholder}>
+            <IconDots className={classes.icon} size={32} />
+            <Text className={classes.text} span>{t("dashboard.permits.endedAuctions.loading")}</Text>
+          </Text>
+        ) : (
+          <Text className={classes.placeholder}>
+            <IconX className={classes.icon} size={32} />
+            <Text className={classes.text} span>{t("dashboard.permits.endedAuctions.empty")}</Text>
+          </Text>
+        )}
+      </Stack>
+      <Group className={classes.footer}>
+        {auctions.isSuccess && (
+          <TablePagination context={auctions} tableContainerRef={listContainer} />
+        )}
+      </Group>
     </Stack>
   )
 }

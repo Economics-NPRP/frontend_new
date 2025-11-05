@@ -2831,10 +2831,15 @@
       "endedAuctions": {
         "chart": "Permits",
         "winningBids": "Winning Bids",
-        "tooltip": "{status}: {value}",
+        "tooltip": {
+          "status": "{status} ",
+          "value": "{value}"
+        },
         "cycle": "Cycle",
         "owner": "Owner",
-        "endDate": "Ended at"
+        "endDate": "Ended at",
+        "loading": "Loading ended auctions...",
+        "empty": "No Auctions to be displayed"
       }
     }
   },
