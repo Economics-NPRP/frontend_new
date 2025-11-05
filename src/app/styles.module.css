@@ -1,0 +1,9 @@
+.notFound {
+  @apply h-dvh flex justify-center items-center;
+  > .title {
+    @apply heading-1 flex items-center gap-2;
+  }
+  > .text {
+    @apply paragraph-md;
+  }
+}
