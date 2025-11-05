@@ -61,11 +61,7 @@ export const DashboardHeader = () => {
 					{t('components.header.search.shortcut')}
 				</Container>
 			</Group>
-			<MyProfileMenu
-				myUser={currentUser!}
-				isAdmin={isAdmin}
-				currentState={currentState}
-			>
+			<MyProfileMenu>
 				<UnstyledButton className={classes.user}>
 					<Avatar
 						color="initials"
