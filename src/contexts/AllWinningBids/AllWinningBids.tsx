@@ -1,9 +1,9 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { createContext } from 'react';
+import { createContext, useContext , useMemo} from 'react';
 
-import { OffsetPaginatedQueryProvider } from '@/contexts';
+import { MyUserProfileContext, OffsetPaginatedQueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
 import { useAuctionAvailability } from '@/hooks';
 import { getPaginatedWinningBids } from '@/lib/bids/open';
@@ -14,7 +14,7 @@ import {
 	getDefaultOffsetPaginatedContextState,
 } from '@/types';
 
-export interface IAllWinningBidsContext extends OffsetPaginatedContextState<IBidData> {}
+export interface IAllWinningBidsContext extends OffsetPaginatedContextState<IBidData> { }
 const DefaultData = getDefaultOffsetPaginatedContextState<IBidData>();
 const Context = createContext<IAllWinningBidsContext>(DefaultData);
 
@@ -24,6 +24,8 @@ export const AllWinningBidsProvider = ({
 }: OffsetPaginatedProviderProps) => {
 	const { auctionId } = useParams();
 	const { areBidsAvailable } = useAuctionAvailability();
+	const myUser = useContext(MyUserProfileContext)
+	const isAdmin = useMemo(() => myUser?.data?.type === 'admin', [myUser?.data?.type]);
 
 	return (
 		<OffsetPaginatedQueryProvider
@@ -43,7 +45,7 @@ export const AllWinningBidsProvider = ({
 				)
 			}
 			id={id}
-			disabled={!areBidsAvailable}
+			disabled={!areBidsAvailable && !isAdmin}
 			{...props}
 		/>
 	);

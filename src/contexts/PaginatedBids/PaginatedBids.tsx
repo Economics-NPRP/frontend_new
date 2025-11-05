@@ -1,7 +1,8 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { createContext } from 'react';
+import { createContext, useContext, useMemo } from 'react';
+import { MyUserProfileContext } from '@/contexts';
 
 import { KeysetPaginatedQueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
@@ -24,6 +25,8 @@ export const PaginatedBidsProvider = ({
 }: KeysetPaginatedProviderProps) => {
 	const { auctionId } = useParams();
 	const { areBidsAvailable } = useAuctionAvailability();
+	const myUser = useContext(MyUserProfileContext)
+	const isAdmin = useMemo(() => myUser?.data?.type === 'admin', [myUser?.data?.type]);
 
 	return (
 		<KeysetPaginatedQueryProvider
@@ -41,7 +44,7 @@ export const PaginatedBidsProvider = ({
 				)
 			}
 			id={id}
-			disabled={!areBidsAvailable}
+			disabled={!areBidsAvailable && !isAdmin}
 			{...props}
 		/>
 	);

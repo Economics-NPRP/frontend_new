@@ -5,7 +5,7 @@ import { Id } from '@/components/Id';
 import { Flex, Group, Stack, Text, Box, Anchor } from "@mantine/core"
 import { Switch } from "@/components/SwitchCase";
 import { WithSkeleton } from "@/components/WithSkeleton";
-import { IconDotsCircleHorizontal, IconCheck, IconX } from "@tabler/icons-react";
+import { IconDotsCircleHorizontal, IconCheck, IconX, IconDots } from "@tabler/icons-react";
 import { SectorBadge } from "@/components/Badge";
 
 type CompanyApplicationProps = {
@@ -30,7 +30,7 @@ const CompanyApplication = ({
 
   const truncate = useMatches({ base: false, xs: true, sm: false, md: true, lg: false });
 
-  return (
+  return crn ? (
     <Anchor key={key} style={{ textDecoration: 'none', width: '100%' }} href={`/dashboard/a/firms/applications`}>
       <Flex justify="space-between" className={classes.companyApplication}>
         <Stack justify="flex-start" flex={1} gap={0} className={classes.information}>
@@ -98,6 +98,20 @@ const CompanyApplication = ({
         </Stack>
       </Flex>
     </Anchor>
+  ) : loading ? (
+    <>
+      <Stack align="center" gap={16} className={classes.fallback}>
+        <IconDots size={32} />
+        <Text span>Loading Firm Applications...</Text>
+      </Stack>
+    </>
+  ) : (
+    <>
+      <Stack align="center" gap={16} className={classes.fallback}>
+        <IconCheck size={32} />
+        <Text span>All Applications Have Been Reviewed</Text>
+      </Stack>
+    </>
   )
 }
 
