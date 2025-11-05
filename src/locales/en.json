@@ -2829,7 +2829,7 @@
     },
     "permits": {
       "endedAuctions": {
-        "chart": "Status",
+        "chart": "Permits",
         "winningBids": "Winning Bids",
         "tooltip": "{status}: {value}",
         "cycle": "Cycle",

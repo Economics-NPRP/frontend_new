@@ -7,6 +7,8 @@ import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
 import { Stack } from '@mantine/core';
 import { IconFileCheck } from '@tabler/icons-react';
 
+import { PaginatedAuctionsProvider } from 'contexts/PaginatedAuctions';
+
 import classes from './styles.module.css';
 
 export const metadata: Metadata = {
@@ -41,5 +43,17 @@ export default function Permits({ subbanners, list }: PermitsProps) {
       {subbanners}
       {list}
     </Stack>,
+    {
+      provider: PaginatedAuctionsProvider,
+      props: {
+        defaultFilters: {
+          status: 'ended',
+          type: 'all',
+          sector: [],
+          joined: 'all',
+          ownership: 'all'
+        }
+      }
+    }
   );
 }

@@ -55,3 +55,19 @@
     }
   }
 }
+
+.header {
+  > .row {
+    > .settings {
+      > .label {
+        @apply paragraph-sm;
+      }
+    }
+    > .subtitle {
+      @apply paragraph-sm;
+    }
+    > .search {
+      @apply w-96;
+    }
+  }
+}

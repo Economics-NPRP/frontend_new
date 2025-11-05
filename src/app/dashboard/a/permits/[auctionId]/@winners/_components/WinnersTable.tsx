@@ -19,11 +19,8 @@ type WinnersTableProps = {
 
 const WinnersTable = ({ bids }: WinnersTableProps) => {
 
-  const router = useRouter()
   const t = useTranslations();
   const format = useFormatter();
-  const isMobile = useMediaQuery('(max-width: 48em)');
-  const tableContainerRef = useRef<HTMLTableElement>(null);
   const paginationText = useOffsetPaginationText('winningBids', bids);
   const { open } = useContext(SelectionSummaryContext);
 
