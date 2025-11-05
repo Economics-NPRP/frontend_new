@@ -3,7 +3,7 @@ import { DataTable } from "mantine-datatable"
 import { SectorVariants } from "@/constants/SectorData"
 import { SectorType } from "@/schema/models"
 import { SectorBadge } from "@/components/Badge"
-import { HoverCard, Group, Badge } from "@mantine/core"
+import { HoverCard, Group, Badge, Stack, Text } from "@mantine/core"
 import { useTranslations } from "next-intl"
 import { AuctionTypeBadge } from "@/components/Badge"
 import { AuctionType } from "@/schema/models"
@@ -11,6 +11,7 @@ import { AuctionStatusBadge, AuctionStatusType } from "@/components/Badge"
 import classes from './styles.module.css'
 import { useRouter } from "next/navigation"
 import { HomeAuctionData } from "hooks/useAdminHomeData"
+import { IconDots } from "@tabler/icons-react"
 
 type LatestAuctionsTableProps = {
   className?: string;
@@ -24,8 +25,15 @@ const LatestAuctionsTable = ({ className, records, loading }: LatestAuctionsTabl
   const handleRoute = () => {
     router.push('/dashboard/a/cycles/auctions')
   }
-  if (!records || records.length === 0) return 
-  return (
+  if (!records || records.length === 0) return null
+
+  return loading ? (
+  <>
+    <Stack align="center" gap={16} className={classes.fallback}>
+      <IconDots size={32} />
+      <Text span>Loading Firm Applications...</Text>
+    </Stack>
+  </>) : (
     <DataTable
       className={classes.latestAuctions + ' ' + (className || '')}
       classNames={{
@@ -40,7 +48,7 @@ const LatestAuctionsTable = ({ className, records, loading }: LatestAuctionsTabl
           cellsClassName: classes.name,
           accessor: 'name',
           title: t('components.auctionsTable.columns.name'),
-          textAlign: 'center',
+          textAlign: 'left',
           ellipsis: true,
           width: 110
         },

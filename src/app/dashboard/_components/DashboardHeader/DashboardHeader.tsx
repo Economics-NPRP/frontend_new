@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 
 import { MyProfileMenu } from '@/components/MyProfileMenu';
 import { MyUserProfileContext } from '@/contexts';
@@ -14,6 +14,15 @@ import classes from './styles.module.css';
 export const DashboardHeader = () => {
 	const t = useTranslations();
 	const currentUser = useContext(MyUserProfileContext);
+
+	const isAdmin = useMemo(() => currentUser?.data?.type === 'admin', [currentUser?.data?.type]);
+
+	const currentState = useMemo(() => {
+		if (!currentUser) return 'loading';
+		if (currentUser.isError) return 'error';
+		if (currentUser.isSuccess) return 'success';
+		return 'loading';
+	}, [currentUser]);
 
 	return (
 		<Group className={classes.root}>
@@ -52,7 +61,11 @@ export const DashboardHeader = () => {
 					{t('components.header.search.shortcut')}
 				</Container>
 			</Group>
-			<MyProfileMenu>
+			<MyProfileMenu
+				myUser={currentUser!}
+				isAdmin={isAdmin}
+				currentState={currentState}
+			>
 				<UnstyledButton className={classes.user}>
 					<Avatar
 						color="initials"

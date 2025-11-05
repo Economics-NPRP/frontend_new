@@ -22,6 +22,8 @@ import {
 	IconUserSearch,
 	IconUserShield,
 	IconUsers,
+	IconFileCheck,
+	IconFileSearch
 } from '@tabler/icons-react';
 
 export const DefaultDashboardSidebarContextData: IDashboardSidebarContext = {
@@ -108,6 +110,30 @@ export const SidebarLinks: Record<
 						: t('constants.pages.dashboard.admin.cycles.presets.title'),
 					icon: <IconStack3 size={16} />,
 					href: '/dashboard/a/cycles/presets',
+				},
+			],
+		},
+		{
+			id: 'permits',
+			label: t('constants.pages.dashboard.admin.permits.title'),
+			subHrefs: [
+				{
+					id: 'home',
+					label: t('constants.pages.dashboard.admin.permits.home.title'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.admin.permits.home.tooltip')
+						: t('constants.pages.dashboard.admin.permits.home.title'),
+					icon: <IconFileCheck size={16} />,
+					href: '/dashboard/a/permits',
+				},
+				{
+					id: 'auctions',
+					label: t('constants.pages.dashboard.admin.permits.audit.title'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.admin.permits.audit.tooltip')
+						: t('constants.pages.dashboard.admin.permits.audit.title'),
+					icon: <IconFileSearch size={16} />,
+					href: '/dashboard/a/permits/audit',
 				},
 			],
 		},
@@ -217,7 +243,7 @@ export const SidebarLinks: Record<
 						? t('constants.pages.dashboard.firm.carbon.pe.tooltip')
 						: t('constants.pages.dashboard.firm.carbon.pe.title'),
 					icon: <IconLeaf size={16} />,
-					href: '/dashboard/f/carbon/pe',
+					href: '/dashboard/f/carbon/pae',
 				},
 				{
 					id: 'targets',

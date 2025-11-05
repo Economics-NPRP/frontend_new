@@ -1326,3 +1326,4 @@ const _AuctionsTable = ({
 };
 export const AuctionsTable = (props: AuctionsTableProps) =>
 	withProviders(<_AuctionsTable {...props} />, { provider: SelectionSummaryProvider });
+ 

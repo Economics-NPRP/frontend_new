@@ -1,0 +1,10 @@
+.root {
+  > .text {
+    > .title {
+      @apply heading-1;
+    }
+    > .description {
+      @apply paragraph-md text-pretty;
+    }
+  }
+}

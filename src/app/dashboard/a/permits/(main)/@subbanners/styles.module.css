@@ -1,0 +1,13 @@
+.root {
+  > .row {
+    > .statCard {
+      @apply flex-1;
+    }
+    > .distribution {
+      @apply border border-gray-100;
+    }
+  }
+  > .divider {
+    @apply border-gray-200 my-4;
+  }
+}

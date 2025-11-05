@@ -36,7 +36,7 @@ export default function Home({
 			</Container>
 			{categories}
 			{promo}
-			{ending}
+			{/* {ending} */}
 			{catalogue}
 		</Container>,
 		{
