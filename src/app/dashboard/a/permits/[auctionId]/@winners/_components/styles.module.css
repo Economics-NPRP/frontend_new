@@ -4,13 +4,16 @@
       @apply border border-gray-300 border-solid border-b-0 last:border-b;
     }
   }
+  > .footer {
+    @apply justify-center my-8;
+  }
 }
 .permitsWon {
   @apply bg-white h-32 p-0 z-[1] ;
   @apply transition-shadow;
   @apply hover:shadow hover:z-10;
   > .text {
-    @apply py-6 px-8;
+    @apply py-6 px-4;
     > .name {
       @apply heading-2;
     }

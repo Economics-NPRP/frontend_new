@@ -5,7 +5,7 @@
   @apply hover:shadow-xs;
 	@apply transition-all duration-500;
   > .left {
-    @apply bg-white px-8 py-6 pb-8;
+    @apply pl-8 py-6 pb-8;
     > .text {
       @apply w-72 mr-4;
       > .name {

@@ -1,13 +1,11 @@
 'use client'
 import { Stack, Flex, Text, Group, Pill, Select, Menu, ActionIcon, TextInput, Button, Radio } from "@mantine/core"
-import { IconAdjustments, IconReportAnalytics, IconFilterSearch, IconSearch } from "@tabler/icons-react"
+import { IconAdjustments, IconSearch } from "@tabler/icons-react"
 import { generateDescription } from "@/lib/auctions"
-import { useContext, useEffect, useMemo, useState, useRef } from "react"
-import { useTranslations, useFormatter } from "next-intl"
+import { useContext, useMemo, useState, useRef } from "react"
+import { useTranslations } from "next-intl"
 import { EndedAuction } from "./EndedAuction"
-import { EndedAuctionProps } from "./EndedAuction"
 import { PaginatedAuctionsContext } from "contexts/PaginatedAuctions"
-import { DateTime } from "luxon"
 import { useOffsetPaginationText } from "@/hooks"
 import { AuctionTypeFilter } from "@/schema/models"
 import { TablePagination } from "@/components/Tables/_components/Pagination"
@@ -24,10 +22,6 @@ const EndedAuctionsList = () => {
   const paginationText = useOffsetPaginationText('auctions', auctions)
 
   const [searchFilter, setSearchFilter] = useState('')
-
-  useEffect(() => {
-    console.log(auctions)
-  }, [auctions])
 
   //	Generate the filter badges
   const filterBadges = useMemo(() => {
@@ -94,20 +88,6 @@ const EndedAuctionsList = () => {
       )
     return output
   }, [auctions, auctions?.filters.status, auctions?.filters.type, t])
-
-  const testData: EndedAuctionProps = {
-    id: "4bfef440-e5d5-4cf4-9163-7d6abb6435c5",
-    name: "big auctions",
-    description: "this is a description of a big auction",
-    winningBids: 5,
-    cycle: "Future Cycle - Extended",
-    endDate: "October 7th, 2025",
-    pieChartData: {
-      accepted: 10,
-      rejected: 5,
-      pending: 2,
-    }
-  }
 
   return (
     <Stack className={classes.list}>

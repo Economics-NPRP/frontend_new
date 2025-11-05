@@ -10,7 +10,7 @@ import { useTranslations, useFormatter } from "next-intl";
 import { useOffsetPaginationText } from "@/hooks";
 import { IBidData, PermitsFilterType } from "@/schema/models";
 import { DataTable } from "mantine-datatable";
-import { useRouter } from "next/navigation";
+import { TablePagination } from "@/components/Tables/_components/Pagination";
 import { PermitsWon, demoData } from "./PermitsWon";
 
 type WinnersTableProps = {
@@ -21,12 +21,17 @@ const WinnersTable = ({ bids }: WinnersTableProps) => {
 
   const t = useTranslations();
   const format = useFormatter();
+  const listContainer = useRef(null);
   const paginationText = useOffsetPaginationText('winningBids', bids);
   const { open } = useContext(SelectionSummaryContext);
 
   const [showSelectedOnly, setShowSelectedOnly] = useState(false);
   const [searchFilter, setSearchFilter] = useState('');
-  const [selectedBids, selectedBidsHandlers] = useListState<IBidData>([]);
+  const [selectedBids, selectedBidsHandlers] = useListState<Record<string, string> | IBidData>([]);
+
+  useEffect(() => {
+    console.log(bids)
+  }, [bids])
 
   //	Generate the filter badges
   const filterBadges = useMemo(() => {
@@ -73,65 +78,121 @@ const WinnersTable = ({ bids }: WinnersTableProps) => {
     ));
   }, [bids, bids?.filters.type, showSelectedOnly, t]);
 
-  const generateSummaryGroups = useCallback((selected: Array<IBidData>) => [
-    {
-      title: 'Distribution',
-      rows: [
+  const generateSummaryGroups = useCallback((selected: Array<any>) => {
+    // Handle both IBidData and demoData structure
+    const hasBidsProperty = selected.length > 0 && 'bids' in selected[0];
+
+    if (hasBidsProperty) {
+      // Demo data structure
+      return [
         {
-          label: 'Total Bids',
-          value: selected.length,
+          title: 'Distribution',
+          rows: [
+            {
+              label: 'Total Companies',
+              value: selected.length,
+            },
+            {
+              label: 'Total Permits',
+              value: selected.reduce((acc, bid) => acc + bid.bids.total, 0),
+            },
+            {
+              label: 'Approved Permits',
+              value: selected.reduce((acc, bid) => acc + bid.bids.approved, 0),
+            },
+          ],
         },
         {
-          label: 'Total Permits',
-          value: selected.reduce((acc, bid) => acc + bid.permits, 0),
+          title: 'Permit Status',
+          rows: [
+            {
+              label: 'Pending',
+              value: selected.reduce((acc, bid) => acc + bid.bids.pending, 0),
+            },
+            {
+              label: 'Rejected',
+              value: selected.reduce((acc, bid) => acc + bid.bids.rejected, 0),
+            },
+            {
+              label: 'Locked',
+              value: selected.reduce((acc, bid) => acc + bid.bids.locked, 0),
+            },
+          ],
+        },
+      ];
+    } else {
+      // IBidData structure
+      return [
+        {
+          title: 'Distribution',
+          rows: [
+            {
+              label: 'Total Bids',
+              value: selected.length,
+            },
+            {
+              label: 'Total Permits',
+              value: selected.reduce((acc, bid) => acc + (bid.permits || 0), 0),
+            },
+            {
+              label: 'Total Amount',
+              value: format.number(selected.reduce((acc, bid) => acc + (bid.amount || 0), 0), 'money'),
+            },
+          ],
         },
         {
-          label: 'Total Amount',
-          value: format.number(selected.reduce((acc, bid) => acc + bid.amount, 0), 'money'),
-        },
-      ],
-    },
-    {
-      title: 'Permits',
-      rows: [
-        {
-          label: 'Min Permits',
-          value: Math.min(...selected.map((bid) => bid.permits)),
-        },
-        {
-          label: 'Avg Permits',
-          value: Math.round(selected.reduce((acc, bid) => acc + bid.permits, 0) / selected.length),
-        },
-        {
-          label: 'Max Permits',
-          value: Math.max(...selected.map((bid) => bid.permits)),
-        },
-      ],
-    },
-    {
-      title: 'Bid Amount',
-      rows: [
-        {
-          label: 'Min Amount',
-          value: format.number(Math.min(...selected.map((bid) => bid.amount)), 'money'),
+          title: 'Permits',
+          rows: [
+            {
+              label: 'Min Permits',
+              value: Math.min(...selected.map((bid) => bid.permits || 0)),
+            },
+            {
+              label: 'Avg Permits',
+              value: Math.round(selected.reduce((acc, bid) => acc + (bid.permits || 0), 0) / selected.length),
+            },
+            {
+              label: 'Max Permits',
+              value: Math.max(...selected.map((bid) => bid.permits || 0)),
+            },
+          ],
         },
         {
-          label: 'Avg Amount',
-          value: format.number(selected.reduce((acc, bid) => acc + bid.amount, 0) / selected.length, 'money'),
+          title: 'Bid Amount',
+          rows: [
+            {
+              label: 'Min Amount',
+              value: format.number(Math.min(...selected.map((bid) => bid.amount || 0)), 'money'),
+            },
+            {
+              label: 'Avg Amount',
+              value: format.number(selected.reduce((acc, bid) => acc + (bid.amount || 0), 0) / selected.length, 'money'),
+            },
+            {
+              label: 'Max Amount',
+              value: format.number(Math.max(...selected.map((bid) => bid.amount || 0)), 'money'),
+            },
+          ],
         },
-        {
-          label: 'Max Amount',
-          value: format.number(Math.max(...selected.map((bid) => bid.amount)), 'money'),
-        },
-      ],
-    },
-  ], [format]);
+      ];
+    }
+  }, [format]);
 
   //	If we are showing selected only and there are no selected bids, disable the filter
   useEffect(() => {
     if (showSelectedOnly && selectedBids.length === 0) setShowSelectedOnly(false);
+    console.log(selectedBids)
   }, [showSelectedOnly, selectedBids.length]);
 
+  const handleAppendSelectedBid = (bid: IBidData | typeof demoData[0], checked: boolean) => {
+    if (!checked) {
+      // Remove item if not checked
+      const bidId = bid.id;
+      selectedBidsHandlers.setState(selectedBids.filter((item) => item.id !== bidId));
+    } else {
+      selectedBidsHandlers.append(bid as IBidData);
+    }
+  }
 
   return (
     <Stack className={classes.winnersTable}>
@@ -215,12 +276,7 @@ const WinnersTable = ({ bids }: WinnersTableProps) => {
                 variant="outline"
                 disabled={selectedBids.length === 0}
                 rightSection={<IconReportAnalytics size={16} />}
-                onClick={() =>
-                  open(
-                    selectedBids,
-                    generateSummaryGroups as () => Array<any>,
-                  )
-                }
+                onClick={() => open(selectedBids, generateSummaryGroups)}
               >
                 View Summary
               </Button>
@@ -245,13 +301,18 @@ const WinnersTable = ({ bids }: WinnersTableProps) => {
         </Group>
       </Stack>
       {/* Table would go here */}
-      <Stack gap={0} className={classes.table}>
+      <Stack ref={listContainer} gap={0} className={classes.table}>
         {
           demoData.map((bid) => (
-            <PermitsWon className={classes.row} key={bid.id} bid={bid} loading={bids.isLoading} />
+            <PermitsWon select={handleAppendSelectedBid} className={classes.row} key={bid.id} bid={bid} loading={bids.isLoading} />
           ))
         }
       </Stack>
+      <Group className={classes.footer}>
+        {bids.isSuccess && (
+          <TablePagination context={bids} tableContainerRef={listContainer} />
+        )}
+      </Group>
     </Stack>
   )
 }

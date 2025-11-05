@@ -1,9 +1,10 @@
 "use client"
-import { Group, Grid, Flex, Stack, Container, Title, Text, Anchor, Button } from "@mantine/core"
+import { Group, Grid, Flex, Stack, Container, Title, Text, Anchor, Button, Checkbox } from "@mantine/core"
 import { IconUser } from "@tabler/icons-react"
 import { Id } from "@/components/Id"
 import classes from "./styles.module.css"
 import { WithSkeleton } from "@/components/WithSkeleton"
+import { IBidData } from "@/schema/models"
 
 type PermitsWonProps = {
   bid: {
@@ -21,8 +22,9 @@ type PermitsWonProps = {
   },
   loading: boolean;
   className?: string;
+  select: (bid: IBidData | typeof demoData[0], checked: boolean) => void;
 }
-const PermitsWon = ({ bid, loading, className }: PermitsWonProps) => {
+const PermitsWon = ({ bid, loading, select, className }: PermitsWonProps) => {
 
   const statuses = [
     { label: 'Total', value: bid.bids.total },
@@ -33,25 +35,30 @@ const PermitsWon = ({ bid, loading, className }: PermitsWonProps) => {
 
   return (
     <Group justify="space-between" className={`${classes.permitsWon} ${className}`}>
-      <Stack gap={0} flex={1} className={classes.text}>
-        <WithSkeleton loading={loading} height={14} width={100} className="mb-1">
-          <Id
-            variant="company"
-            value={bid.id}
-          />
-        </WithSkeleton>
-        <WithSkeleton loading={loading} height={24} width={200} className="mb-2">
-          <Anchor className="block no-underline" href={`/companies/${bid.id}`}>
-            <Title className={classes.name} order={2}>{bid.companyName}</Title>
-          </Anchor>
-        </WithSkeleton>
-        <WithSkeleton loading={loading} height={16} width={150} className="mb-3">
-          <Flex align={"center"} className={classes.owner} gap={2}>
-            <IconUser size={14} />
-            <Text className={classes.name} span>{bid.owner}</Text>
-          </Flex>
-        </WithSkeleton>
-      </Stack>
+      <Group className={classes.text} flex={1}>
+        <Checkbox onChange={e => {
+          select(bid, e.currentTarget.checked);
+        }} />
+        <Stack gap={0}>
+          <WithSkeleton loading={loading} height={14} width={100} className="mb-1">
+            <Id
+              variant="company"
+              value={bid.id}
+            />
+          </WithSkeleton>
+          <WithSkeleton loading={loading} height={24} width={200} className="mb-2">
+            <Anchor className="block no-underline" href={`/companies/${bid.id}`}>
+              <Title className={classes.name} order={2}>{bid.companyName}</Title>
+            </Anchor>
+          </WithSkeleton>
+          <WithSkeleton loading={loading} height={16} width={150} className="mb-3">
+            <Flex align={"center"} className={classes.owner} gap={2}>
+              <IconUser size={14} />
+              <Text className={classes.name} span>{bid.owner}</Text>
+            </Flex>
+          </WithSkeleton>
+        </Stack>
+      </Group>
       <Flex justify="center" gap={64} flex={2} className={classes.statistics}>
         {statuses.map((status) => (
           <Stack key={status.label} align="center" gap={0} className={classes.status}>
