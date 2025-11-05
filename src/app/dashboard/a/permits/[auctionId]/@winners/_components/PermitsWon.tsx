@@ -20,19 +20,19 @@ type PermitsWonProps = {
     }
   },
   loading: boolean;
+  className?: string;
 }
-const PermitsWon = ({ bid, loading }: PermitsWonProps) => {
+const PermitsWon = ({ bid, loading, className }: PermitsWonProps) => {
 
   const statuses = [
-    { label: 'Approved', value: bid.bids.approved },
+    { label: 'Total', value: bid.bids.total },
     { label: 'Pending', value: bid.bids.pending },
+    { label: 'Approved', value: bid.bids.approved },
     { label: 'Rejected', value: bid.bids.rejected },
-    { label: 'Locked', value: bid.bids.locked },
-    { label: 'Expired', value: bid.bids.expired },
   ]
 
   return (
-    <Group justify="space-between" className={classes.permitsWon}>
+    <Group justify="space-between" className={`${classes.permitsWon} ${className}`}>
       <Stack gap={0} flex={1} className={classes.text}>
         <WithSkeleton loading={loading} height={14} width={100} className="mb-1">
           <Id
@@ -51,14 +51,8 @@ const PermitsWon = ({ bid, loading }: PermitsWonProps) => {
             <Text className={classes.name} span>{bid.owner}</Text>
           </Flex>
         </WithSkeleton>
-        <WithSkeleton loading={loading} height={24} width={80}>
-          <Text className={classes.total + " mt-2"}>
-            <Text span className={classes.value}>{bid.bids.total}</Text>
-            &nbsp;<Text span className={classes.label}>Total Permits Won</Text>
-          </Text>
-        </WithSkeleton>
       </Stack>
-      <Flex justify="space-around" flex={2} className={classes.statistics}>
+      <Flex justify="center" gap={64} flex={2} className={classes.statistics}>
         {statuses.map((status) => (
           <Stack key={status.label} align="center" gap={0} className={classes.status}>
             <Text className={classes.label + " mb-2"}>{status.label}</Text>
@@ -67,52 +61,16 @@ const PermitsWon = ({ bid, loading }: PermitsWonProps) => {
           </Stack>
         ))}
       </Flex>
-      <Grid columns={2} flex={1.25} gutter={0} className={classes.grid}>
-        <Grid.Col className={classes.col} span={1}>
-          <Container className={`${classes.buttonContainer} ${classes.approve}`}>
-            <Button
-              className={classes.button}
-              disabled={loading}
-              variant="white"
-              color="green.9"
-            >
-              Approve
-            </Button>
-          </Container>
-          <Container className={`${classes.buttonContainer} ${classes.lock}`}>
-            <Button
-              className={classes.button}
-              disabled={loading}
-              variant="white"
-              color="gray.7"
-            >
-              Lock
-            </Button>
-          </Container>
-        </Grid.Col>
-        <Grid.Col className={classes.col} span={1}>
-          <Container className={`${classes.buttonContainer} ${classes.reject}`}>
-            <Button
-              className={classes.button}
-              disabled={loading}
-              variant="white"
-              color="red.9"
-            >
-              Reject
-            </Button>
-          </Container>
-          <Container className={`${classes.buttonContainer} ${classes.expire}`}>
-            <Button
-              className={classes.button}
-              disabled={loading}
-              variant="white"
-              color="yellow.9"
-            >
-              Force Expire
-            </Button>
-          </Container>
-        </Grid.Col>
-      </Grid>
+      <Container flex={1} className={`${classes.buttonContainer} ${classes.review}`}>
+        <Button
+          className={classes.button}
+          disabled={loading}
+          variant="white"
+          color="gray.7"
+        >
+          Review Permits
+        </Button>
+      </Container>
     </Group>
   )
 }

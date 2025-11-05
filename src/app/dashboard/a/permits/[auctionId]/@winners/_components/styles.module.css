@@ -1,19 +1,14 @@
 .winnersTable {
-  > .header {
+  > .table {
     > .row {
-      > .search {
-        @apply w-[400px];
-      }
-      > .subtitle {
-        @apply paragraph-md
-      }
+      @apply border border-gray-300 border-solid border-b-0 last:border-b;
     }
   }
 }
 .permitsWon {
-  @apply border border-gray-300 border-solid bg-white h-40 p-0;
+  @apply bg-white h-32 p-0 z-[1] ;
   @apply transition-shadow;
-  @apply hover:shadow;
+  @apply hover:shadow hover:z-10;
   > .text {
     @apply py-6 px-8;
     > .name {
@@ -44,35 +39,20 @@
       }
     }
   }
-  > .grid {
-    @apply h-full w-full relative top-[-1.5px];
-    .col {
-      @apply h-[calc(5rem-1px)];
+  > .buttonContainer {
+    @apply w-full h-full flex justify-center items-center;
+    &.review {
+      @apply bg-gray-700;
     }
-    .buttonContainer {
-      @apply w-full h-full flex justify-center items-center;
-      &.approve {
-        @apply bg-green-800;
-      }
-      &.reject {
-        @apply bg-rose-800;
-      }
-      &.lock {
-        @apply bg-gray-700;
-      }
-      &.expire {
-        @apply bg-orange-800;
-      }
-      background-image: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 10px,
-        rgba(0, 0, 0, 0.03) 10px,
-        rgba(0, 0, 0, 0.03) 20px
-      );
-      > .button {
-        @apply w-28;
-      }
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(0, 0, 0, 0.03) 10px,
+      rgba(0, 0, 0, 0.03) 20px
+    );
+    > .button {
+      @apply w-40;
     }
   }
 }

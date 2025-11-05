@@ -62,3 +62,9 @@
     @apply justify-items-center text-gray-700 font-semibold;
   }
 }
+.fallback {
+  @apply m-auto;
+  * {
+    @apply text-gray-400 font-semibold;
+  }
+}

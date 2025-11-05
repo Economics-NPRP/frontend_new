@@ -2462,7 +2462,7 @@
           }
         },
         "winners": {
-          "title": "Bids List",
+          "title": "Pending Permits",
           "subtitle": "List of winning bids for allocated permits"
         },
         "details": {

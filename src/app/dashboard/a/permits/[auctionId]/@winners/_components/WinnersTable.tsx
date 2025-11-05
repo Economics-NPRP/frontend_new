@@ -248,10 +248,10 @@ const WinnersTable = ({ bids }: WinnersTableProps) => {
         </Group>
       </Stack>
       {/* Table would go here */}
-      <Stack className={classes.table}>
+      <Stack gap={0} className={classes.table}>
         {
           demoData.map((bid) => (
-            <PermitsWon key={bid.id} bid={bid} loading={bids.isLoading} />
+            <PermitsWon className={classes.row} key={bid.id} bid={bid} loading={bids.isLoading} />
           ))
         }
       </Stack>
