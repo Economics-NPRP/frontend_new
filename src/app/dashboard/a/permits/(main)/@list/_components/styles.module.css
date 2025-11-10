@@ -7,17 +7,17 @@
   > .left {
     @apply pl-8 py-6 pb-8;
     > .text {
-      @apply w-72 mr-4;
+      @apply w-full mr-4;
       > .name {
-        @apply heading-2 w-full;
+        @apply heading-3;
       }
       > .description {
-        @apply paragraph-md mt-1;
+        @apply paragraph-sm mt-1;
       }
       > .winners {
         @apply mt-2 flex items-end gap-1.5;
         > .winnerCount {
-          @apply heading-1;
+          @apply heading-2;
         }
         > :not(.winnerCount) {
           @apply paragraph-md;
@@ -25,7 +25,7 @@
       }
     }
     > .chart {
-      @apply w-56 h-fit;
+      @apply w-fit relative h-fit mr-4;
       > .chartText {
         @apply paragraph-md order-2;
       }
@@ -49,6 +49,9 @@
       }
       > .infoTitle {
         @apply mb-2 mt-1;
+      }
+      > .infoText {
+        @apply paragraph-sm-w;
       }
       > .icon {
         @apply text-white;
@@ -90,5 +93,12 @@
   }
   > .footer {
     @apply justify-center mt-4;
+  }
+}
+
+.chartIcon {
+  @apply absolute flex justify-center items-center pointer-events-none;
+  > .icon {
+    @apply text-white;
   }
 }

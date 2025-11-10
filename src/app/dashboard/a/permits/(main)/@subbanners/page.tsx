@@ -47,6 +47,7 @@ const PermitSubbanners = () => {
         />
         <StatCard
           large={true}
+          truncate={false}
           className={classes.statCard}
           icon={<IconCalendarX size={120} />}
           title={t('dashboard.admin.permits.stats.expired.title')}

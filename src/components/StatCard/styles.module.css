@@ -39,8 +39,10 @@
 	}
 
 	> .comparison {
-		@apply truncate;
 		@apply paragraph-sm-g6 text-left;
+		&.truncateText {
+			@apply truncate;
+		}
 	}
 
 	> .icon {
