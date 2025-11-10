@@ -14,12 +14,12 @@ export const useOffsetPaginationText = (
 	return useMemo(
 		() =>
 			t(`constants.pagination.offset.${type}`, {
-				start: Math.min((page - 1) * perPage + 1, totalCount),
+				start: (Math.min((page - 1) * perPage + 1, totalCount)) || 0,
 				end:
-					(page - 1) * perPage + perPage > totalCount
+					((page - 1) * perPage + perPage > totalCount
 						? totalCount
-						: (page - 1) * perPage + perPage,
-				total: totalCount,
+						: (page - 1) * perPage + perPage) || 0,
+				total: totalCount || 0,
 			}),
 		[t, page, perPage, totalCount],
 	);

@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
 import { Stack } from '@mantine/core';
@@ -15,7 +14,6 @@ export interface PermitsAndEmissionsProps {
   auctions: ReactNode;
 }
 export default function PermitsAndEmissionsProps({ subbanners, auctions }: PermitsAndEmissionsProps) {
-  const t = useTranslations();
 
   return (
     <Stack className={classes.root}>

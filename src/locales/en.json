@@ -2810,6 +2810,12 @@
               }
             }
           }
+        },
+        "pae": {
+          "myAuctions": {
+            "title": "Your Auctions",
+            "description": "View and manage all auctions you've created. Track bids, monitor auction status, and manage your active listings in one convenient location."
+          }
         }
       }
     },
