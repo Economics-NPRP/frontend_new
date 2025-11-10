@@ -309,7 +309,7 @@ const WinnersTable = ({ bids }: WinnersTableProps) => {
         }
       </Stack>
       <Group className={classes.footer}>
-        {bids.isSuccess && (
+        {(bids.isSuccess || true) && (
           <TablePagination context={bids} tableContainerRef={listContainer} />
         )}
       </Group>

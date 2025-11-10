@@ -47,13 +47,13 @@ const PermitsWon = ({ bid, loading, select, className }: PermitsWonProps) => {
             />
           </WithSkeleton>
           <WithSkeleton loading={loading} height={24} width={200} className="mb-2">
-            <Anchor className="block no-underline" href={`/companies/${bid.id}`}>
+            <Anchor className="block no-underline" href={`/dashboard/a/firms/${bid.id}`}>
               <Title className={classes.name} order={2}>{bid.companyName}</Title>
             </Anchor>
           </WithSkeleton>
           <WithSkeleton loading={loading} height={16} width={150} className="mb-3">
             <Flex align={"center"} className={classes.owner} gap={2}>
-              <IconUser size={14} />
+              <IconUser className={classes.icon} size={14} />
               <Text className={classes.name} span>{bid.owner}</Text>
             </Flex>
           </WithSkeleton>
