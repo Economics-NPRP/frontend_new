@@ -3,7 +3,7 @@ import { Grid, Stack, Container, Group, Text, Divider } from "@mantine/core"
 import { BarChart } from "@mantine/charts"
 import { DashboardHero } from "@/pages/dashboard/_components/DashboardHero"
 import { useTranslations } from "next-intl"
-import { IconFileDescription, IconFileCheck, IconLock, IconCalendarX, IconCircleFilled, IconGavel, IconReport } from "@tabler/icons-react"
+import { IconFileDescription, IconFileCheck, IconLock, IconCalendarX, IconCircleFilled, IconGavel, IconReport, IconTimeline } from "@tabler/icons-react"
 import { StatCard } from "@/components/StatCard"
 import Card from "@/components/Card/Card"
 import Link from "next/link"
@@ -120,7 +120,7 @@ const SubBanners = () => {
           />
         </Grid.Col>
       </Grid>
-      <Grid columns={2}>
+      <Grid columns={3}>
         <Grid.Col span={1}>
           <ActionBanner
             icon={<IconGavel size={32} />}
@@ -139,6 +139,16 @@ const SubBanners = () => {
             component={Link}
             href="/dashboard/f/carbon/pe/report"
             index={2}
+          />
+        </Grid.Col>
+        <Grid.Col span={1}>
+          <ActionBanner
+            icon={<IconTimeline size={32} />}
+            heading={t('dashboard.firm.carbon.pe.subbanners.cta.emissionKpis.heading')}
+            subheading={t('dashboard.firm.carbon.pe.subbanners.cta.emissionKpis.subheading')}
+            component={Link}
+            href="#emission-kpis"
+            index={4}
           />
         </Grid.Col>
       </Grid>

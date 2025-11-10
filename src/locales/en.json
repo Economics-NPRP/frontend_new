@@ -2798,11 +2798,15 @@
             "cta": {
               "sell": {
                 "heading": "Sell Excess Permits",
-                "subheading": "Start an auction on permits you do not currently need"
+                "subheading": "Start an auction on excess permits"
               },
               "report": {
                 "heading": "Report Emissions",
                 "subheading": "Report emission consumption"
+              },
+              "emissionKpis": {
+                "heading": "Emission KPIs",
+                "subheading": "Track information about your emissions"
               }
             }
           }
