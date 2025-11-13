@@ -1,23 +1,24 @@
 'use client';
 import { Stack, Group, Text, Pill, Select, TextInput, Anchor, Input } from "@mantine/core";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useContext } from "react";
 import { IconSearch } from "@tabler/icons-react";
 import { DataTable } from "mantine-datatable";
 import { DateTime } from "luxon";
 import Link from "next/link";
 import { useTranslations, useFormatter } from "next-intl";
 import { useOffsetPaginationText } from "@/hooks";
-import { IPaginatedAuctionsContext } from "@/contexts";
+import { IPaginatedAuctionsContext, PaginatedAuctionsContext, PaginatedAuctionsProvider, MyUserProfileContext } from "@/contexts";
 import { TablePagination } from "@/components/Tables/_components/Pagination";
 import { AuctionTypeBadge, AuctionStatusBadge, SectorBadge, CurrencyBadge } from "@/components/Badge";
 import classes from "./styles.module.css";
+import { withProviders } from "helpers/withProviders";
 
 export interface MyAuctionsTableProps {
   auctions: IPaginatedAuctionsContext;
   className?: string;
 }
 
-const MyAuctionsTable = ({ auctions, className }: MyAuctionsTableProps) => {
+const _MyAuctionsTable = ({ auctions, className }: MyAuctionsTableProps) => {
   const t = useTranslations();
   const format = useFormatter();
   const tableContainerRef = useRef<HTMLTableElement>(null);
@@ -278,5 +279,16 @@ const MyAuctionsTable = ({ auctions, className }: MyAuctionsTableProps) => {
     </Stack>
   );
 };
-
+const MyAuctionsTable = (props: MyAuctionsTableProps) => {
+  const firm = useContext(MyUserProfileContext);
+  return withProviders(<_MyAuctionsTable {...props} />, {
+    provider: PaginatedAuctionsProvider,
+    props: {
+      defaultFilters: {
+        ownerId: firm?.id || '',
+        ownership: 'private'
+      }
+    }
+  });
+}
 export { MyAuctionsTable };

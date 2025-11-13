@@ -1,10 +1,11 @@
 'use client'
 import { Stack } from "@mantine/core"
 import { MyAuctionsTable } from "../_components/MyAuctionsTable"
-import { useMemo } from "react"
+import { useContext, useMemo } from "react"
+import { PaginatedAuctionsContext } from "contexts/PaginatedAuctions"
 
 const SMAuctionList = () => {
-  // TODO: Replace with actual PaginatedAuctionsContext
+  const auctions = useContext(PaginatedAuctionsContext)
   const emptyAuctionsContext = useMemo(() => ({
     data: { results: [], total: 0 },
     isLoading: false,
@@ -30,7 +31,7 @@ const SMAuctionList = () => {
 
   return (
     <Stack>
-      <MyAuctionsTable auctions={emptyAuctionsContext as any} />
+      <MyAuctionsTable auctions={auctions} />
     </Stack>
   )
 }

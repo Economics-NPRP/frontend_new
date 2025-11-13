@@ -12,13 +12,15 @@ export const metadata: Metadata = {
 export interface PermitsAndEmissionsProps {
   subbanners: ReactNode;
   auctions: ReactNode;
+  emissionKpis: ReactNode;
 }
-export default function PermitsAndEmissionsProps({ subbanners, auctions }: PermitsAndEmissionsProps) {
+export default function PermitsAndEmissionsProps({ subbanners, auctions, emissionKpis }: PermitsAndEmissionsProps) {
 
   return (
     <Stack className={classes.root}>
       {subbanners}
       {auctions}
+      {emissionKpis}
     </Stack>
   );
 }

@@ -2777,8 +2777,8 @@
         "pe": {
           "subbanners": {
             "approved": {
-              "title": "Approved Permits",
-              "tooltip": "Number of approved permits",
+              "title": "Available Permits",
+              "tooltip": "Number of available permits",
               "subtitle": "Ready to be used or sold"
             },
             "locked": {
