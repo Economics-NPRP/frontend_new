@@ -14,7 +14,7 @@ import {
 } from '@tabler/icons-react';
 
 export interface SectorData {
-	Icon: ForwardRefExoticComponent<IconProps & RefAttributes<Icon>>;
+	Icon: ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>;
 	image: string;
 	color: {
 		token?: ThemeColors;

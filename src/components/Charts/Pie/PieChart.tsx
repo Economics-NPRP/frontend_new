@@ -14,7 +14,7 @@ import classes from './styles.module.css';
 interface PieChartProps extends BoxProps {
 	chartData: Array<
 		PieChartCell & {
-			icon?: ForwardRefExoticComponent<IconProps & RefAttributes<Icon>>;
+			icon?: ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>;
 			label?: string;
 			opacity?: number;
 		}
