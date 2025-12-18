@@ -141,8 +141,8 @@ export const PaginatedAuctionsProvider = ({
 					sortBy,
 					sortDirection,
 					type: filters.type,
-					ownership: filters.ownership,
-					ownerId: filters.ownerId || undefined,
+					ownership: filters.ownership, 
+					ownerId: filters.ownerId || undefined, // Use the UserProfile context to get ownerID
 					isLive: filters.status === 'ongoing',
 					hasEnded: filters.status === 'ended',
 				}),

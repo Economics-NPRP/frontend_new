@@ -3,6 +3,10 @@ import { ReactNode } from 'react';
 
 import { Stack } from '@mantine/core';
 
+import { withProviders } from 'helpers/withProviders';
+
+import { PaginatedAuctionsProvider } from 'contexts';
+
 import classes from './styles.module.css';
 
 export const metadata: Metadata = {
@@ -12,15 +16,21 @@ export const metadata: Metadata = {
 export interface PermitsAndEmissionsProps {
   subbanners: ReactNode;
   auctions: ReactNode;
-  emissionKpis: ReactNode;
 }
-export default function PermitsAndEmissionsProps({ subbanners, auctions, emissionKpis }: PermitsAndEmissionsProps) {
+export default function PermitsAndEmissionsProps({ subbanners, auctions }: PermitsAndEmissionsProps) {
 
-  return (
+  return withProviders(
     <Stack className={classes.root}>
       {subbanners}
       {auctions}
-      {emissionKpis}
     </Stack>
-  );
+    , {
+      provider: PaginatedAuctionsProvider,
+      props: {
+        defaultFilters: {
+          sector: [],
+          ownership: 'all'
+        }
+      } 
+  });
 }

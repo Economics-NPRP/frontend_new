@@ -102,15 +102,6 @@ export const SidebarLinks: Record<
 					icon: <IconChartPie size={16} />,
 					href: '/dashboard/a/cycles/sectors',
 				},
-				{
-					id: 'presets',
-					label: t('constants.pages.dashboard.admin.cycles.presets.title'),
-					tooltip: expanded
-						? t('constants.pages.dashboard.admin.cycles.presets.tooltip')
-						: t('constants.pages.dashboard.admin.cycles.presets.title'),
-					icon: <IconStack3 size={16} />,
-					href: '/dashboard/a/cycles/presets',
-				},
 			],
 		},
 		{

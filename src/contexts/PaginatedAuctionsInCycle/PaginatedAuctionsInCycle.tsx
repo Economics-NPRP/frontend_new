@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { parseAsArrayOf, parseAsInteger, parseAsStringLiteral, useQueryState } from 'nuqs';
+import { parseAsArrayOf, parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from 'nuqs';
 import { createContext, useCallback, useMemo } from 'react';
 
 import { SectorList } from '@/constants/SectorData';
@@ -74,6 +74,7 @@ export const PaginatedAuctionsInCycleProvider = ({
 		sector: parseAsArrayOf(parseAsStringLiteral(SectorList)),
 		joined: parseAsStringLiteral(AuctionJoinedStatusListFilter),
 		ownership: parseAsStringLiteral(AuctionOwnershipListFilter),
+		ownerId: parseAsString,
 
 		defaultValue: defaultFilters || DefaultData.filters,
 		syncWithSearchParams,
