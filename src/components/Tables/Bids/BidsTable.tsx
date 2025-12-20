@@ -252,7 +252,7 @@ export const BidsTable = ({
 	}, [bidsFilter, bids.perPage, paginatedWinningBids?.perPage, myPaginatedBids?.perPage]);
 
 	const currentState = useMemo(() => {
-		if (!tableData && loading) return 'loading';
+		if ((tableData === null || !tableData.length) && loading) return 'loading';
 		if (unavailable) return 'unavailable';
 		if (!tableData || tableData.length === 0) return 'empty';
 		return 'ok';
