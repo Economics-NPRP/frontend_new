@@ -24,6 +24,7 @@ import { IBidData } from '@/schema/models';
 import { KeysetPaginatedData } from '@/types';
 import {
   ActionIcon,
+  Anchor,
   Button,
   // Container,
   Divider,
@@ -58,6 +59,8 @@ import {
   IconX,
   IconReportAnalytics,
   IconSearch,
+  IconHexagonLetterW,
+  IconHexagonLetterC
 } from '@tabler/icons-react';
 
 import classes from '../styles.module.css';
@@ -85,10 +88,15 @@ export interface NewBidsTableProps extends TableProps {
   tableClassName?: string;
 
   bidsRecords?: IBidData[];
+
+  winningBidIds: string[];
+  contributingBidIds: string[];
 }
 const _NewBidsTable = ({
   bids,
   // allWinningBids,
+  winningBidIds,
+  contributingBidIds,
   paginatedWinningBids,
   myPaginatedBids,
   // myOpenAuctionResults,
@@ -122,7 +130,6 @@ const _NewBidsTable = ({
   const [searchFilter, setSearchFilter] = useState('');
   const [selectedResults, setSelected] = useListState([]);
   const { open } = useContext(SelectionSummaryContext);
-
   //	Generate the table rows
   // const tableData = useMemo(() => {
   //   if (!bids) return null;
@@ -150,8 +157,35 @@ const _NewBidsTable = ({
       {
         accessor: 'company',
         title: t('components.bidsTable.columns.company'),
-        width: 200,
-        render: (record: any) => <span className="font-semibold">{record.bidder.name}</span>,
+        width: 300,
+        ellipsis: true,
+        render: (record: any) => {
+          return (
+            <Anchor 
+              href={`/companies/${record.bidder.id}`}
+              className={"flex items-center gap-2"}  
+            >
+              <Text className={classes.anchor} span>{record.bidder.name}</Text>
+              
+              {
+                winningBidIds.includes(record.id) ?  
+                  <Tooltip
+                    label={t('components.bidsTable.legend.winning.tooltip')}
+                    position="top"
+                  >
+                    <IconHexagonLetterW size={14} className={classes.winning} />
+                  </Tooltip>
+              : contributingBidIds.includes(record.id) ? 
+                <Tooltip
+                  label={t('components.bidsTable.legend.contributing.tooltip')}
+                  position="top"
+                >
+                  <IconHexagonLetterC size={14} className={classes.contributing} />
+                </Tooltip>
+              : <></>
+            }
+            </Anchor>
+          )},
       },
       {
         accessor: 'bid',
