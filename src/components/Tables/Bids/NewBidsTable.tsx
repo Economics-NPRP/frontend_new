@@ -163,7 +163,7 @@ const _NewBidsTable = ({
           return (
             <Anchor 
               href={`/companies/${record.bidder.id}`}
-              className={"flex items-center gap-2"}  
+              className={"flex items-center gap-2 no-underline"}  
             >
               <Text className={classes.anchor} span>{record.bidder.name}</Text>
               

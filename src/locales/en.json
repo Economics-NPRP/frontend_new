@@ -618,6 +618,18 @@
             },
             "description": "View all verified firms participating in the platform. Browse key details, manage accounts, and access firm-specific statistics, auction history, and billing status."
           },
+          "sma": {
+            "title": "Secondary Market",
+            "auction-applications": {
+              "title": "Auction Applications",
+              "tooltip": "View all applications submitted by firms"
+            },
+            "audit": {
+              "title": "Audit Logs",
+              "tooltip": "View company audit logs"
+            },
+            "description": "View all verified firms participating in the platform. Browse key details, manage accounts, and access firm-specific statistics, auction history, and billing status."
+          },
           "permits": {
             "title": "Permit Management",
             "description": "Manage all permits issued on the platform, including approval, expiry, and rejection of permits. Monitor permit usage and compliance across all registered firms.",
