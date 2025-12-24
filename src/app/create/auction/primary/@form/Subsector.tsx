@@ -10,8 +10,8 @@ import { Switch } from '@/components/SwitchCase';
 import { SubsectorSearch } from '@/constants/SubsectorData';
 import { AllSubsectorsContext } from '@/contexts';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
-import { ICreateAuctionStepProps } from '@/pages/create/auction/@form/page';
-import { SectorChangeModalContext } from '@/pages/create/auction/_components/SectorChangeModal';
+import { ICreateAuctionStepProps } from '@/pages/create/auction/primary/@form/page';
+import { SectorChangeModalContext } from '@/pages/create/auction/primary/_components/SectorChangeModal';
 import { DefaultSubsectorData, ISubsectorData, SectorType } from '@/schema/models';
 import {
 	Alert,
@@ -38,7 +38,7 @@ export const SubsectorStep = ({ form }: ICreateAuctionStepProps) => {
 	const [value, setValue] = useState('');
 	const [selectedSubsectorData, setSelectedSubsectorData] = useState<ISubsectorData | null>(null);
 	const [searchFilter, setSearchFilter] = useState('');
-	
+
 	const cardElements = useMemo(() => {
 		if (allSubsectors.isLoading)
 			return [

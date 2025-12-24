@@ -7,7 +7,7 @@ import { SectorBadge } from '@/components/Badge';
 import {
 	DefaultSectorChangeModalContextData,
 	SectorChangeModalContext,
-} from '@/pages/create/auction/_components/SectorChangeModal';
+} from '@/pages/create/auction/primary/_components/SectorChangeModal';
 import { SectorType } from '@/schema/models';
 import { Button, Group, Modal, ModalProps, Stack, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -81,7 +81,7 @@ export const SectorChangeModalProvider = ({ children }: PropsWithChildren) => {
 	const [newSector, setNewSector] = useState<SectorType>(
 		DefaultSectorChangeModalContextData.newSector,
 	);
-	const [onConfirm, setOnConfirm] = useState(() => () => {});
+	const [onConfirm, setOnConfirm] = useState(() => () => { });
 	const [opened, { open, close }] = useDisclosure();
 
 	const handleConfirm = useCallback(() => {

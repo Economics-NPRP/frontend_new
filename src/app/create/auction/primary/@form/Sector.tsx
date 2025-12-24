@@ -5,7 +5,7 @@ import { useContextSelector } from 'use-context-selector';
 
 import { SectorFormCard } from '@/components/SectorFormCard';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
-import { ICreateAuctionStepProps } from '@/pages/create/auction/@form/page';
+import { ICreateAuctionStepProps } from '@/pages/create/auction/primary/@form/page';
 import { Alert, List, Radio, Stack, Text, Title } from '@mantine/core';
 import { IconExclamationCircle } from '@tabler/icons-react';
 
