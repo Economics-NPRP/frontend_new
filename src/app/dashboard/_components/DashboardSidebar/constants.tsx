@@ -303,7 +303,7 @@ export const SidebarLinks: Record<
 					tooltip: expanded
 						? t('constants.pages.dashboard.firm.economic.sell.tooltip')
 						: t('constants.pages.dashboard.firm.economic.sell.title'),
-					href: '/create/auction',
+					href: '/create/auction/secondary',
 				},
 			],
 		},

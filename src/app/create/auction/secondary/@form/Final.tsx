@@ -15,9 +15,9 @@ export const FinalStep = () => {
 	return (
 		<Stack className={`${classes.final} ${classes.root}`}>
 			<IconRosetteDiscountCheck size={64} className={classes.icon} />
-			<Title className={classes.heading}>{t('create.auction.final.header.heading')}</Title>
+			<Title className={classes.heading}>{t('create.auction.final.secondary.header.heading')}</Title>
 			<Text className={classes.subheading}>
-				{t('create.auction.final.header.subheading')}
+				{t('create.auction.final.secondary.header.subheading')}
 			</Text>
 			<Switch value={searchParams.get('cycleId')}>
 				<Switch.Case when={undefined}>
