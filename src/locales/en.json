@@ -837,8 +837,14 @@
   "marketplace": {
     "home": {
       "banner": {
-        "subtitle": "Government Auctions",
-        "title": "Upcoming Auction Cycle",
+        "subtitle": {
+          "government": "Government Auctions",
+          "private": "Private Auctions"
+        },
+        "title": {
+          "government": "Upcoming Auction Cycle",
+          "private": "Explore Private Owned Auctions"
+        },
         "actions": {
           "calendar": {
             "tooltip": "Open the auction calendar"
@@ -848,7 +854,11 @@
             "text": "Explore Auctions"
           }
         },
-        "startDate": "Starts on"
+        "startDate": "Starts on",
+        "excessPermits": "You have {permits} Excess Permits",
+        "ongoing": "Currently Ongoing",
+        "privateDescription": "Bid on admin approved auctions on excess permits",
+        "governmentDescription": "Participate in official auction cycles and acquire permits directly from the government"
       },
       "subbanner": {
         "1": {
@@ -876,10 +886,19 @@
         }
       },
       "promo": {
-        "title": "Missed An Auction Cycle? No Problem.",
-        "description": "Whether you're short on permits or planning ahead, <mark>private-owned auctions</mark> let you trade flexibly outside of government schedules.",
-        "button": {
-          "label": "Browse Private Auctions"
+        "government": {
+          "title": "Missed An Auction Cycle? No Problem.",
+          "description": "Whether you're short on permits or planning ahead, <mark>private-owned auctions</mark> let you trade flexibly outside of government schedules.",
+          "button": {
+            "label": "Browse Private Auctions"
+          }
+        },
+        "private": {
+          "title": "Looking For Government led Auctions?",
+          "description": "Participate in official auction cycles to acquire permits directly from the government.",
+          "button": {
+            "label": "Browse Government Auctions"
+          }
         }
       }
     },

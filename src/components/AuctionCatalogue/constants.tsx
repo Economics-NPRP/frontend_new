@@ -131,27 +131,5 @@ export const getAuctionFilters: (
 				label: t('components.auctionCatalogue.filters.all'),
 			},
 		],
-	},
-	{
-		id: 'ownership',
-		title: t('components.auctionCatalogue.filters.accordion.ownership.title'),
-		description: t('components.auctionCatalogue.filters.accordion.ownership.description'),
-		type: 'radio',
-		options: [
-			{
-				value: 'government',
-				label: t(
-					'components.auctionCatalogue.filters.accordion.ownership.options.government',
-				),
-			},
-			{
-				value: 'private',
-				label: t('components.auctionCatalogue.filters.accordion.ownership.options.private'),
-			},
-			{
-				value: 'all',
-				label: t('components.auctionCatalogue.filters.all'),
-			},
-		],
-	},
+	}
 ];

@@ -16,7 +16,7 @@
 	}
 
 	> .date {
-		@apply paragraph-sm-g6;
+		@apply paragraph-sm-g6 mt-1;
 	}
 
 	> .countdown {
@@ -51,15 +51,22 @@
 			@apply absolute top-0 left-0;
 			@apply w-full h-full;
 
-			&:nth-child(1) {
+			&.government:nth-child(1) {
 				background: radial-gradient(
 					at center,
 					rgba(255, 255, 255, 0) 25%,
 					rgba(255, 255, 255, 1) 75%
 				);
 			}
+			&.private:nth-child(1) {
+				background: radial-gradient(
+					at center,
+					rgba(255, 255, 255, 0) 25%,
+					rgb(255, 255, 255) 75%
+				);
+			}
 
-			&:nth-child(2) {
+			&.government:nth-child(2) {
 				background: radial-gradient(
 					at left top,
 					rgba(138, 21, 56, 0.1) 0%,
@@ -67,11 +74,27 @@
 				);
 			}
 
-			&:nth-child(3) {
+			&.private:nth-child(2) {
+				background: radial-gradient(
+					at left top,
+					rgba(64, 21, 138, 0.1) 0%,
+					hsla(257, 75%, 80%, 0) 50%
+				);
+			}
+
+			&.government:nth-child(3) {
 				background: radial-gradient(
 					at right bottom,
 					rgba(128, 103, 164, 0.1) 0%,
 					hsla(202, 76%, 80%, 0) 50%
+				);
+			}
+
+			&.private:nth-child(3) {
+				background: radial-gradient(
+					at right bottom,
+					rgba(103, 129, 164, 0.1) 0%,
+					hsla(259, 76%, 80%, 0) 50%
 				);
 			}
 		}

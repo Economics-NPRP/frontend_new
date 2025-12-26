@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
-import { InfinitePaginatedAuctionsProvider, PaginatedAuctionsProvider } from '@/contexts';
+import { InfinitePaginatedAuctionsProvider, MyUserProfileProvider, PaginatedAuctionsProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { DefaultQueryFiltersData } from '@/schema/models';
 import { Container } from '@mantine/core';
@@ -57,5 +57,8 @@ export default function Home({
 				syncWithSearchParams: true,
 			},
 		},
+		{
+			provider: MyUserProfileProvider
+		}
 	);
 }

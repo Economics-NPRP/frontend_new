@@ -1,34 +1,42 @@
+'use client'
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import Link from 'next/link';
 
 import { Button, Container, Mark, Stack, Text, Title, UnstyledButton } from '@mantine/core';
 import { IconArrowUpRight } from '@tabler/icons-react';
 
 import classes from './styles.module.css';
 import PatternSvg from './topography.svg';
+import { useQueryState } from 'nuqs';
+import { useWindowScroll } from '@mantine/hooks';
 
 export default function Promo() {
 	const t = useTranslations();
+	const [ownership, setOwnership] = useQueryState('ownership')
+	const [_, scrollTo] = useWindowScroll()
+
+	const handleButtonClick = () => {
+		scrollTo({ y: 0 })
+		setOwnership(current => current === 'private' ? 'government' : 'private')
+	}
 
 	return (
 		<UnstyledButton
-			component={Link}
-			href="/marketplace/explore?ownership=private"
+			onClick={handleButtonClick}
 			className={classes.root}
 		>
 			<Stack className={classes.label}>
 				<Title order={3} className={classes.title}>
-					{t('marketplace.home.promo.title')}
+					{t(ownership === 'private' ? 'marketplace.home.promo.private.title' : 'marketplace.home.promo.government.title')}
 				</Title>
 				<Text className={classes.description}>
-					{t.rich('marketplace.home.promo.description', {
+					{t.rich(ownership === 'private' ? 'marketplace.home.promo.private.description' : 'marketplace.home.promo.government.description', {
 						mark: (chunks) => <Mark className={classes.highlight}>{chunks}</Mark>,
 					})}
 				</Text>
 			</Stack>
 			<Button className={classes.button} rightSection={<IconArrowUpRight size={16} />}>
-				{t('marketplace.home.promo.button.label')}
+				{t(ownership === 'private' ? 'marketplace.home.promo.private.button.label' : 'marketplace.home.promo.government.button.label')}
 			</Button>
 
 			<Container className={classes.bg}>
