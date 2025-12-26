@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 
 export interface HomeProps {
 	banner: ReactNode;
+	cycle: ReactNode;
 	subbanners: ReactNode;
 	categories: ReactNode;
 	promo: ReactNode;
@@ -22,6 +23,7 @@ export interface HomeProps {
 }
 export default function Home({
 	banner,
+	cycle,
 	subbanners,
 	categories,
 	promo,
@@ -32,6 +34,7 @@ export default function Home({
 		<Container className={classes.root}>
 			<Container className={classes.banners}>
 				{banner}
+				{cycle}
 				{subbanners}
 			</Container>
 			{categories}

@@ -1,4 +1,6 @@
+'use client'
 import { useTranslations } from 'next-intl';
+import { useQueryState } from 'nuqs';
 import Link from 'next/link';
 
 import { ActionBanner } from '@/components/ActionBanner';
@@ -10,19 +12,21 @@ import classes from './styles.module.css';
 export default function SubBanners() {
 	const t = useTranslations();
 
+	const [ownership, _] = useQueryState('ownership');
+
 	return (
 		<>
 			<ActionBanner
-				className={classes.root}
+				className={`${classes.root} ${classes[ownership || 'government']} ${classes.createAuction}`}
 				icon={<IconCirclePlus size={32} />}
 				heading={t('marketplace.home.subbanner.2.heading')}
 				subheading={t('marketplace.home.subbanner.2.text')}
 				component={Link}
-				href=""
+				href="/create/auction/secondary"
 				index={1}
 			/>
 			<ActionBanner
-				className={classes.root}
+				className={`${classes.root} ${classes[ownership || 'government']}`}
 				icon={<IconBolt size={32} />}
 				heading={t('marketplace.home.subbanner.1.heading')}
 				subheading={t.rich('marketplace.home.subbanner.1.text', {
@@ -34,7 +38,7 @@ export default function SubBanners() {
 				index={2}
 			/>
 			<ActionBanner
-				className={classes.root}
+				className={`${classes.root} ${classes[ownership || 'government']}`}
 				icon={<IconAward size={32} />}
 				heading={t('marketplace.home.subbanner.3.heading')}
 				subheading={t.rich('marketplace.home.subbanner.3.text', {

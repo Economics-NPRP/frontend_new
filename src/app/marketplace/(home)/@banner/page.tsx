@@ -23,7 +23,7 @@ export default function Banner() {
 	
 	const [ownership, _] = useQueryState('ownership');
 
-	const date = DateTime.fromObject({ year: 2026, month: 11, day: 6, hour: 15, minute: 30 }).setLocale(locale);
+	const date = DateTime.fromObject({ year: 2025, month: 11, day: 6, hour: 15, minute: 30 }).setLocale(locale);
 
 	return (
 		<Container className={`${classes.root} bg-stagger-md`}>
@@ -35,7 +35,7 @@ export default function Banner() {
 
 			<Text className={classes.subheading}>{t(ownership === 'private' ? 'marketplace.home.banner.subtitle.private' : 'marketplace.home.banner.subtitle.government')}</Text>
 			<Title className={classes.heading} order={1}>
-				{t(`marketplace.home.banner.title.${ownership === 'private' ? 'private' : 'government'}`)}
+				{t(`marketplace.home.banner.title.${ownership === 'private' ? 'private' : date > DateTime.now() ? 'government' : 'ongoing'}`)}
 			</Title>
 			<Text className={classes.date}>
 				{

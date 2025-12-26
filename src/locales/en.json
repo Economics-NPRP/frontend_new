@@ -843,6 +843,7 @@
         },
         "title": {
           "government": "Upcoming Auction Cycle",
+          "ongoing": "Ongoing Auction Cycle",
           "private": "Explore Private Owned Auctions"
         },
         "actions": {
@@ -900,6 +901,9 @@
             "label": "Browse Government Auctions"
           }
         }
+      },
+      "cycle": {
+        "endTime": "Ends in"
       }
     },
     "auction": {
