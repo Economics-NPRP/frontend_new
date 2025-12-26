@@ -2937,6 +2937,12 @@
     "auction": {
       "join": {
         "error": "There was a problem joining the auction"
+      },
+      "creation": {
+        "error": "There was an error creating the auction.",
+        "secondary": {
+          "forbidden": "You do not have enough active permits."
+        }
       }
     },
     "invitations": {
@@ -3433,9 +3439,17 @@
     },
     "auction": {
       "final": {
-        "header": {
-          "heading": "Auction Created!",
-          "subheading": "You can find your new auction on the marketplace once the start date has passed."
+        "primary": {
+          "header": {
+            "heading": "Auction Created!",
+            "subheading": "You can find your new auction on the marketplace once the start date has passed."
+          }
+        },
+        "secondary": {
+          "header": {
+            "heading": "Auction Creation Request Sent!",
+            "subheading": "Your auction creation request was sent to the super admin for approval."
+          }
         }
       },
       "error": {
