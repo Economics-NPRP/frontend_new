@@ -1,27 +1,17 @@
 import {
   InferInput,
   InferOutput,
-  email,
-  integer,
-  minValue,
   nonEmpty,
-  nullish,
-  number,
   object,
-  omit,
-  optional,
-  pick,
   pipe,
   string,
-  transform,
-  trim,
-  url,
+  trim
 } from 'valibot';
 
-import { TimestampSchema, UuidSchema, PositiveNumber, PositiveNumberSchema } from '@/schema/utils';
+import { TimestampSchema, PositiveNumberSchema } from '@/schema/utils';
 
-import { AuctionApplicationStatus, AuctionApplicationStatusSchema } from './AuctionApplicationStatus';
-import { SectorListSchema } from './SectorData';
+import { AuctionApplicationStatusSchema } from './AuctionApplicationStatus';
+import { SectorTypeSchema } from './SectorData';
 
 // Change company image to pipe
 export const BaseAuctionApplicationDataSchema = object({
@@ -44,10 +34,16 @@ export const BaseAuctionApplicationDataSchema = object({
 
 });
 
-export const CreateAuctionApplicationDataSchema = omit(BaseAuctionApplicationDataSchema, [
-  'id',
-  'status'
-]);
+export const CreateAuctionApplicationDataSchema = object({
+  description: pipe(string(), trim(), nonEmpty()),
+  endDatetime: pipe(string(), trim(), nonEmpty()),
+  sector: SectorTypeSchema,
+  startDatetime: pipe(string(), trim(), nonEmpty()),
+  title: pipe(string(), trim(), nonEmpty()),
+  minBid: PositiveNumberSchema(),
+  permits: PositiveNumberSchema(),
+  emissionId: PositiveNumberSchema(),
+});
 
 export interface IAuctionApplication extends InferOutput<typeof BaseAuctionApplicationDataSchema> { }
 export interface ICreateAuctionApplication
@@ -74,15 +70,13 @@ export const DefaultAuctionApplication: IAuctionApplication = {
 };
 
 export const DefaultCreateAuctionApplication: ICreateAuctionApplication = {
-  auctionId: '',
-  requestedById: '',
-  decidedById: '',
-  decisionNotes: '',
-  executedById: '',
-  executionNotes: '',
-  requestedAt: '',
-  decidedAt: '',
-  lockedAt: '',
-  executedAt: '',
+  description: '',
+  endDatetime: '',
+  sector: 'energy',
+  startDatetime: '',
+  title: '',
+  minBid: 0,
+  permits: 0,
+  emissionId: 0,
 };
 
