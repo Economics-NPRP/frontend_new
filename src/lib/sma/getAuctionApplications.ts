@@ -8,21 +8,24 @@ import 'server-only';
 
 import { internalUrl } from '@/helpers';
 import { DefaultMyAuctionResultsData, IMyAuctionResultsData, ServerData } from '@/types';
+import { DefaultAuctionApplication, IAuctionApplication } from '@/schema/models/AuctionApplicationData';
 
-export interface IGetMyOpenAuctionResultsOptions {
-  auctionId: string;
+export interface IGetAuctionApplications {
+  status: string;
+  limit: number;
 }
 
-const getDefaultData: (...errors: Array<string>) => ServerData<IMyAuctionResultsData> = (
+const getDefaultData: (...errors: Array<string>) => ServerData<IAuctionApplication> = (
   ...errors
 ) => ({
-  ...DefaultMyAuctionResultsData,
+  ...DefaultAuctionApplication,
   ok: false,
   errors: errors,
 });
 
-type IFunctionSignature = (auctionId: string) => Promise<ServerData<IMyAuctionResultsData>>;
-export const getMyOpenAuctionResults: IFunctionSignature = cache(async (auctionId) => {
+type IFunctionSignature = (status: string, limit: number) => Promise<ServerData<IAuctionApplication>>;
+
+export const getAuctionApplications: IFunctionSignature = cache(async (status, limit) => {
   const t = await getTranslations();
 
   const cookieStore = await cookies();
@@ -48,25 +51,28 @@ export const getMyOpenAuctionResults: IFunctionSignature = cache(async (auctionI
     },
   };
 
+  const params = new URLSearchParams();
+  if (status) params.append('status', status);
+  if (limit) params.append('limit', String(limit));
+
   const response = await fetch(
-    await internalUrl(`/api/proxy/v1/results/o/me/?auction_id=${auctionId}`),
+    await internalUrl(`/api/proxy/v1/auctions/secondary/approvals${params.toString() ? `?${params.toString()}` : ''}`),
     querySettings,
   );
-  const rawData = camelCase(await response.json(), 5) as ServerData<IMyAuctionResultsData>;
+  const rawData = camelCase(await response.json(), 5) as ServerData<IAuctionApplication>;
 
   //	If theres an issue, return the default data with errors
   if (!rawData) return getDefaultData(t('lib.noData'));
   if (rawData.detail) return getDefaultData(rawData.detail ?? '');
   if (rawData.errors) return getDefaultData(...rawData.errors);
 
-  //	TODO: Validate the data using schema
   return {
     ...rawData,
     ok: true,
-  } as ServerData<IMyAuctionResultsData>;
+  } as ServerData<IAuctionApplication>;
 });
 
 //	@ts-expect-error - Preload doesn't return anything but signature requires a return
-export const preloadMyOpenAuctionResults: IFunctionSignature = async (options) => {
-  void getMyOpenAuctionResults(options);
+export const preloadAuctionApplications: IFunctionSignature = async (status, limit) => {
+  void getAuctionApplications(status, limit);
 };
