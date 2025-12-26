@@ -620,15 +620,20 @@
           },
           "sma": {
             "title": "Secondary Market",
-            "auction-applications": {
+            "auctions": {
               "title": "Auction Applications",
-              "tooltip": "View all applications submitted by firms"
+              "tooltip": "View all applications submitted by firms",
+              "description": "Manage and oversee all secondary market auction applications submitted by firms. Review application details, approve or reject submissions, and monitor the status of each application throughout the evaluation process."
             },
             "audit": {
               "title": "Audit Logs",
               "tooltip": "View company audit logs"
             },
-            "description": "View all verified firms participating in the platform. Browse key details, manage accounts, and access firm-specific statistics, auction history, and billing status."
+            "description": "View all verified firms participating in the platform. Browse key details, manage accounts, and access firm-specific statistics, auction history, and billing status.",
+            "transfer": {
+              "title": "Transfer Applications",
+              "tooltip": "Manage permit transfer applications between firms"
+            }
           },
           "permits": {
             "title": "Permit Management",
