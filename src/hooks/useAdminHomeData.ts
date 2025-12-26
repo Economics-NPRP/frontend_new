@@ -47,7 +47,7 @@ export function useAdminHomeData() {
     name: string;
     value: number;
     color: string;
-    icon: ForwardRefExoticComponent<IconProps & RefAttributes<Icon>>;
+    icon: ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>;
     opacity: number;
   }[]>([]);
   

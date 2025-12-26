@@ -54,14 +54,14 @@ export default function Bids() {
 	// ------------------------------------------------------------------
 	// Derived data for appended Mantine DataTable (non-destructive addition)
 	// ------------------------------------------------------------------
-	// const contributingBidIds = useMemo(
-	// 	() => myOpenAuctionResults?.data.contributingLosingBids.map(({ id }) => id) || [],
-	// 	[myOpenAuctionResults],
-	// );
-	// const winningBidIds = useMemo(
-	// 	() => allWinningBids?.data.results.map(({ id }) => id) || [],
-	// 	[allWinningBids],
-	// );
+	const contributingBidIds = useMemo(
+		() => myOpenAuctionResults?.data.contributingLosingBids.map(({ id }) => id) || [],
+		[myOpenAuctionResults],
+	);
+	const winningBidIds = useMemo(
+		() => allWinningBids?.data.results.map(({ id }) => id) || [],
+		[allWinningBids],
+	);
 	const bidsRecords = useMemo(() => paginatedBids?.data.results || [], [paginatedBids?.data.results]);
 	const loadingAll = useMemo(() => 
 		(auction.isLoading ||
@@ -150,9 +150,10 @@ export default function Bids() {
 						myPaginatedBids={myPaginatedBids}
 						myOpenAuctionResults={myOpenAuctionResults}
 						showContributingBids={hasEnded}
+						winningBidIds={winningBidIds}
+						contributingBidIds={contributingBidIds}
 						loading={loadingAll}
 						bidsRecords={bidsRecords}
-
 					/>
 				</Tabs.Panel>
 			</Tabs>

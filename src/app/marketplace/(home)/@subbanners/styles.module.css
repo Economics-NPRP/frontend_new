@@ -2,6 +2,14 @@
 	@apply h-auto;
 	@apply self-stretch;
 	@apply col-span-full;
+
+	&.createAuction:not(.private) {
+		@apply hidden;
+	}
+
+	&.government {
+		@apply col-span-6;
+	}
 }
 
 * {

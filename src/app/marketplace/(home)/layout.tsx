@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
-import { InfinitePaginatedAuctionsProvider, PaginatedAuctionsProvider } from '@/contexts';
+import { InfinitePaginatedAuctionsProvider, MyUserProfileProvider, PaginatedAuctionsProvider } from '@/contexts';
 import { withProviders } from '@/helpers';
 import { DefaultQueryFiltersData } from '@/schema/models';
 import { Container } from '@mantine/core';
@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 
 export interface HomeProps {
 	banner: ReactNode;
+	cycle: ReactNode;
 	subbanners: ReactNode;
 	categories: ReactNode;
 	promo: ReactNode;
@@ -22,6 +23,7 @@ export interface HomeProps {
 }
 export default function Home({
 	banner,
+	cycle,
 	subbanners,
 	categories,
 	promo,
@@ -32,6 +34,7 @@ export default function Home({
 		<Container className={classes.root}>
 			<Container className={classes.banners}>
 				{banner}
+				{cycle}
 				{subbanners}
 			</Container>
 			{categories}
@@ -57,5 +60,8 @@ export default function Home({
 				syncWithSearchParams: true,
 			},
 		},
+		{
+			provider: MyUserProfileProvider
+		}
 	);
 }
