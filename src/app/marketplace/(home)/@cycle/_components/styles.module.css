@@ -1,0 +1,29 @@
+.infoBox {
+  @apply py-4 px-12;
+  @apply text-slate-100;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.05) 0px,
+    rgba(255, 255, 255, 0.05) 10px,
+    rgba(255, 255, 255, 0) 10px,
+    rgba(255, 255, 255, 0) 20px
+  );
+  > .icon {
+    @apply text-gray-100;
+  }
+  > .label {
+    @apply mt-2 paragraph-sm;
+    @apply text-gray-100;
+    font-weight: 600;
+  }
+  > .value {
+    @apply heading-2;
+    @apply text-gray-100;
+  }
+  &.auction {
+    @apply bg-dark-600;
+  }
+  &.energy {
+    @apply bg-yellow-900;
+  }
+}
