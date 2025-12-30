@@ -618,6 +618,18 @@
             },
             "description": "View all verified firms participating in the platform. Browse key details, manage accounts, and access firm-specific statistics, auction history, and billing status."
           },
+          "sma": {
+            "title": "Secondary Market",
+            "auction-applications": {
+              "title": "Auction Applications",
+              "tooltip": "View all applications submitted by firms"
+            },
+            "audit": {
+              "title": "Audit Logs",
+              "tooltip": "View company audit logs"
+            },
+            "description": "View all verified firms participating in the platform. Browse key details, manage accounts, and access firm-specific statistics, auction history, and billing status."
+          },
           "permits": {
             "title": "Permit Management",
             "description": "Manage all permits issued on the platform, including approval, expiry, and rejection of permits. Monitor permit usage and compliance across all registered firms.",
@@ -837,8 +849,15 @@
   "marketplace": {
     "home": {
       "banner": {
-        "subtitle": "Government Auctions",
-        "title": "Upcoming Auction Cycle",
+        "subtitle": {
+          "government": "Government Auctions",
+          "private": "Private Auctions"
+        },
+        "title": {
+          "government": "Upcoming Auction Cycle",
+          "ongoing": "Ongoing Auction Cycle",
+          "private": "Explore Private Owned Auctions"
+        },
         "actions": {
           "calendar": {
             "tooltip": "Open the auction calendar"
@@ -848,7 +867,11 @@
             "text": "Explore Auctions"
           }
         },
-        "startDate": "Starts on"
+        "startDate": "Starts on",
+        "excessPermits": "You have {permits} Excess Permits",
+        "ongoing": "Currently Ongoing",
+        "privateDescription": "Bid on admin approved auctions on excess permits",
+        "governmentDescription": "Participate in official auction cycles and acquire permits directly from the government"
       },
       "subbanner": {
         "1": {
@@ -876,11 +899,23 @@
         }
       },
       "promo": {
-        "title": "Missed An Auction Cycle? No Problem.",
-        "description": "Whether you're short on permits or planning ahead, <mark>private-owned auctions</mark> let you trade flexibly outside of government schedules.",
-        "button": {
-          "label": "Browse Private Auctions"
+        "government": {
+          "title": "Missed An Auction Cycle? No Problem.",
+          "description": "Whether you're short on permits or planning ahead, <mark>private-owned auctions</mark> let you trade flexibly outside of government schedules.",
+          "button": {
+            "label": "Browse Private Auctions"
+          }
+        },
+        "private": {
+          "title": "Looking For Government led Auctions?",
+          "description": "Participate in official auction cycles to acquire permits directly from the government.",
+          "button": {
+            "label": "Browse Government Auctions"
+          }
         }
+      },
+      "cycle": {
+        "endTime": "Ends in"
       }
     },
     "auction": {

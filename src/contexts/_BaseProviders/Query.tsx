@@ -22,7 +22,10 @@ export const QueryProvider = <T extends ContextState<unknown>>({
 }: QueryProviderProps<T>) => {
 	const queryResults = useQuery({
 		queryKey,
-		queryFn: disabled ? skipToken : queryFn(),
+		queryFn: disabled ? skipToken : async () => {
+			const fn = queryFn();
+			return await fn();
+		},
 		placeholderData: keepPreviousData,
 	});
 

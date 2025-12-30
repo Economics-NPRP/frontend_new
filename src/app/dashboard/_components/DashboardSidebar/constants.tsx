@@ -203,6 +203,39 @@ export const SidebarLinks: Record<
 				},
 			],
 		},
+		{
+			id: 'firms',
+			label: t('constants.pages.dashboard.admin.sma.title'),
+			subHrefs: [
+				{
+					id: 'home',
+					label: t('constants.pages.dashboard.admin.sma.auction-applications.title'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.admin.sma.auction-applications.tooltip')
+						: t('constants.pages.dashboard.admin.sma.auction-applications.title'),
+					icon: <IconBuildingSkyscraper size={16} />,
+					href: '/dashboard/a/sma/auction-applications',
+				},
+				{
+					id: 'audit',
+					label: t('constants.pages.dashboard.admin.sma.audit.title'),
+					tooltip: expanded
+						? t('constants.pages.dashboard.admin.sma.audit.tooltip')
+						: t('constants.pages.dashboard.admin.sma.audit.title'),
+					icon: <IconUserSearch size={16} />,
+					href: '/dashboard/a/sma/audit',
+				},
+				{
+					id: 'payments',
+					label: t('constants.pages.dashboard.admin.firms.payments.title'),
+					icon: <IconCreditCard size={16} />,
+					tooltip: expanded
+						? t('constants.pages.dashboard.admin.firms.payments.tooltip')
+						: t('constants.pages.dashboard.admin.firms.payments.title'),
+					href: '/dashboard/a/firms/payments',
+				},
+			],
+		}
 	],
 	firm: (t, expanded) => [
 		{
