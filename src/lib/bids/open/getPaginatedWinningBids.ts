@@ -66,7 +66,6 @@ export const getPaginatedWinningBids: IFunctionSignature = cache(
 			querySettings,
 		);
 		const rawData = camelCase(await response.json(), 5) as OffsetPaginatedData<unknown>;
-
 		//	If theres an issue, return the default data with errors
 		if (!rawData) return getDefaultData(t('lib.noData'));
 		if (rawData.detail) return getDefaultData(rawData.detail ?? '');

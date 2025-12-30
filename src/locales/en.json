@@ -2783,6 +2783,11 @@
             "heading": "Audit Company Permits",
             "subheading": "Manage company specific permits"
           }
+        },
+        "review": {
+          "description": "Approve or reject permits awarded to this firm",
+          "quantity": "Number of permits to approve/reject",
+          "note": "Write a note to the firm"
         }
       },
       "admins": {
@@ -3041,6 +3046,22 @@
           "message": "You can now create auctions under this subsector."
         },
         "error": "There was an error creating the subsector, please view the console for more details."
+      }
+    },
+    "permits": {
+      "accept": {
+        "success": {
+          "title": "Permits Approved",
+          "message": "Permits approved successfully"
+        },
+        "error": "Error Approving Permits"
+      },
+      "reject": {
+        "success": {
+          "title": "Permits Rejected",
+          "message": "Permits rejected successfully"
+        },
+        "error": "Error rejecting permits"
       }
     }
   },

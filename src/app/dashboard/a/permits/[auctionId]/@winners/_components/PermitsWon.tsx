@@ -5,10 +5,13 @@ import { Id } from "@/components/Id"
 import classes from "./styles.module.css"
 import { WithSkeleton } from "@/components/WithSkeleton"
 import { IBidData } from "@/schema/models"
+import { useContext } from "react"
+import { ReviewPermitsModalContext } from "./ReviewPermitsModal"
 
 type PermitsWonProps = {
   bid: {
     id: string;
+    bidId?: string;
     companyName: string;
     owner: string;
     bids: {
@@ -25,6 +28,7 @@ type PermitsWonProps = {
   select: (bid: IBidData | typeof demoData[0], checked: boolean) => void;
 }
 const PermitsWon = ({ bid, loading, select, className }: PermitsWonProps) => {
+  const { open } = useContext(ReviewPermitsModalContext);
 
   const statuses = [
     { label: 'Total', value: bid.bids.total },
@@ -74,6 +78,7 @@ const PermitsWon = ({ bid, loading, select, className }: PermitsWonProps) => {
           disabled={loading}
           variant="white"
           color="gray.7"
+          onClick={() => bid.id && open(bid.id)}
         >
           Review Permits
         </Button>

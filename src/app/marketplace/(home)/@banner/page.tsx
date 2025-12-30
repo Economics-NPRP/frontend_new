@@ -57,7 +57,7 @@ export default function Banner() {
 						loading={userInfo.isLoading}
 					/>
 					:
-					ownership === 'government' && Date.now() >= date.toMillis() ? 
+					ownership !== 'private' && Date.now() >= date.toMillis() ? 
 					<InfoText
 						text={t('marketplace.home.banner.ongoing')}
 					/>

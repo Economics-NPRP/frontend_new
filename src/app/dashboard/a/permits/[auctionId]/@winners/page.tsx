@@ -5,6 +5,7 @@ import classes from "./styles.module.css"
 import { useContext, useEffect } from "react"
 import { PaginatedWinningBidsContext } from "contexts/PaginatedWinningBids"
 import { WinnersTable } from "./_components/WinnersTable"
+import { ReviewPermitsModalProvider } from "./_components/ReviewPermitsModal"
 
 const Winners = () => {
   const t = useTranslations()

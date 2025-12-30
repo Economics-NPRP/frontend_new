@@ -2,16 +2,12 @@
 import { useTranslations } from 'next-intl'
 import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero'
 import { IconGavel } from '@tabler/icons-react'
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { SingleAuctionContext } from 'contexts/SingleAuction'
 
 const AuctionPermitsHero = () => {
   const t = useTranslations()
   const auction = useContext(SingleAuctionContext)
-
-  useEffect(() => {
-    console.log('Auction Data in Hero:', auction)
-  }, [auction])
 
   return (
     <DashboardHero
