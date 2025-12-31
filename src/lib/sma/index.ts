@@ -1,2 +1,2 @@
-export * from './auctionApplicationAction'
-export * from './getAuctionApplications'
+export * from './auctionApplicationAction';
+export * from './getSecondaryMarketApprovals';

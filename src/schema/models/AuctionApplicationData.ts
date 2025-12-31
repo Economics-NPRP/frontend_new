@@ -20,6 +20,7 @@ export const BaseAuctionApplicationDataSchema = object({
   requestedById: pipe(string(), trim(), nonEmpty()),
 
   status: AuctionApplicationStatusSchema,
+  lockedQty: PositiveNumberSchema(),
 
   decidedById: pipe(string(), trim(), nonEmpty()),
   decisionNotes: pipe(string(), trim(), nonEmpty()),
@@ -56,6 +57,7 @@ export const DefaultAuctionApplication: IAuctionApplication = {
   requestedById: '',
 
   status: 'pending',
+  lockedQty: 0,
 
   decidedById: '',
   decisionNotes: '',
