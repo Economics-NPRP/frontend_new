@@ -633,6 +633,9 @@
             "transfer": {
               "title": "Transfer Applications",
               "tooltip": "Manage permit transfer applications between firms"
+            },
+            "auction": {
+              "title": "Auction"
             }
           },
           "permits": {

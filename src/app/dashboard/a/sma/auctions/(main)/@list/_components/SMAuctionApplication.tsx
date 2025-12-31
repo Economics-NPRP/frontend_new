@@ -1,24 +1,29 @@
 
 import { IAuctionApplication } from "@/schema/models"
-import { Flex, Stack, Card, Text, Button, Group } from "@mantine/core"
+import { Flex, Stack, Card, Text, Container, Group, UnstyledButton } from "@mantine/core"
 import { Id } from "@/components/Id"
 import Image from "next/image"
 import { AUCTION_IMAGE_PLACEHOLDER } from "./constants"
 import { useSMAuctionAction } from "@/hooks"
 
+
+import { SectorBadge } from "@/components/Badge"
+
 import classes from "./styles.module.css"
+import Link from "next/link"
 
 const SMAuctionApplication = ({ application }: { application: IAuctionApplication }) => {
   const { approve, reject, execute } = useSMAuctionAction();
 
   return (
-    <Flex className={classes.root}>
-      <Card className={classes.card}>
-        <Card.Section>
-          <Image src={AUCTION_IMAGE_PLACEHOLDER} className="bg-red-400" alt="Auction Image" width={200} height={150} />
-        </Card.Section>
-        <Text className={classes.status}>{application.status}</Text>
-      </Card>
+  <UnstyledButton
+    component={Link}
+    href={`/dashboard/a/sma/auctions/${application.auctionId}`}
+  >
+    <Card padding={0} className={classes.root}>
+      <Card.Section>
+        <Image src={AUCTION_IMAGE_PLACEHOLDER} className="bg-red-400" alt="Auction Image" width={350} height={350*(9/16)} />
+      </Card.Section>
       <Stack className={classes.info}>
         <Id
           variant="crn"
@@ -26,9 +31,16 @@ const SMAuctionApplication = ({ application }: { application: IAuctionApplicatio
         />
         <Text className={classes.title}>{"Auction Name"}</Text>
         <Text className={classes.desc}>{"Auction Description"}</Text>
+        <SectorBadge
+          sector={'energy'}
+        />
       </Stack>
+      <Container className={`${classes.statusContainer} ${classes[application.status.toLowerCase()]}`}>
+        <Text className={classes.status}>{application.status}</Text>
+      </Container>
       <Stack justify="center">
-        <Group>
+
+        {/* <Group>
           <Button
             color="green"
             onClick={() => approve.mutate({ auctionId: application.auctionId })}
@@ -51,9 +63,10 @@ const SMAuctionApplication = ({ application }: { application: IAuctionApplicatio
           >
             Execute
           </Button>
-        </Group>
+        </Group> */}
       </Stack>
-    </Flex>
+    </Card>
+  </UnstyledButton>
   )
 }
 
