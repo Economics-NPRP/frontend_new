@@ -1,5 +1,5 @@
 'use client';
-import { Stack } from "@mantine/core"
+import { Stack, Text } from "@mantine/core"
 import { useContext, useEffect } from "react";
 import { ListSecondaryMarketApprovalsContext } from "@/contexts";
 import { SMAuctionApplication } from "./_components/SMAuctionApplication";
@@ -14,12 +14,15 @@ const SMAList = () => {
   return (
     <Stack>
       {
-        (list && list.data && Array.isArray(list.data) && list.data.length > 0) ? (
-          list.data.map(application => (
+        (list && list.data && Array.isArray(list.data.results) && list.data.results.length > 0) ? (
+          list.data.results.map(application => (
             <SMAuctionApplication application={application} />
           ))
+        ) : 
+        list.isLoading ? (
+          <Text className="paragraph-md">Loading...</Text>
         ) : (
-          <div>No data available</div>
+          <Text className="paragraph-md">No data available</Text>
         )
       }
     </Stack>

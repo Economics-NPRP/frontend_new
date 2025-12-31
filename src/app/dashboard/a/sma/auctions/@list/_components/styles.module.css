@@ -1,0 +1,18 @@
+.root {
+  > .card {
+    @apply bg-red-400 p-0 gap-0;
+    > .status {
+      @apply h-full w-full bg-yellow-900 text-center uppercase text-slate-100 font-semibold;
+      
+    }
+  }
+  > .info {
+    @apply items-start gap-0;
+    > .title {
+      @apply heading-3;
+    }
+    > .desc {
+      @apply paragraph-md;
+    }
+  }
+}

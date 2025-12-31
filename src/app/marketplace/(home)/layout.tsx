@@ -58,6 +58,9 @@ export default function Home({
 			provider: PaginatedAuctionsProvider,
 			props: {
 				syncWithSearchParams: true,
+				defaultFilters: {
+					ownership: "government"
+				}
 			},
 		},
 		{

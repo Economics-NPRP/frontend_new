@@ -1,0 +1,1 @@
+export const AUCTION_IMAGE_PLACEHOLDER = "https://iea.imgix.net/69f767b9-6676-4345-a1ea-9dc410ae5990/GettyImages-1303511343.png?auto=compress%2Cformat&fit=min&q=80&rect=0%2C0%2C3991%2C2245&w=1220&h=686&fit=crop&fm=jpg&q=70&auto=format";
