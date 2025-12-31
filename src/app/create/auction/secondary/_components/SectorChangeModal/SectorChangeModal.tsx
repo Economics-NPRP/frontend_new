@@ -7,7 +7,7 @@ import { SectorBadge } from '@/components/Badge';
 import {
 	DefaultSectorChangeModalContextData,
 	SectorChangeModalContext,
-} from '@/pages/create/auction/primary/_components/SectorChangeModal';
+} from '@/pages/create/auction/secondary/_components/SectorChangeModal';
 import { SectorType } from '@/schema/models';
 import { Button, Group, Modal, ModalProps, Stack, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';

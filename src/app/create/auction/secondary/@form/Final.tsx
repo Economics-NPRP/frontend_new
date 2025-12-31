@@ -21,8 +21,8 @@ export const FinalStep = () => {
 			</Text>
 			<Switch value={searchParams.get('cycleId')}>
 				<Switch.Case when={undefined}>
-					<Button component={Link} href="/marketplace" className={classes.button}>
-						{t('constants.return.marketplace.label')}
+					<Button component={Link} href="/dashboard/f" className={classes.button}>
+						{t('constants.return.dashboard.label')}
 					</Button>
 				</Switch.Case>
 				<Switch.Else>

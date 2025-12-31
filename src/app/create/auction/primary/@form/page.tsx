@@ -11,10 +11,10 @@ import { Switch } from '@/components/SwitchCase';
 import { MyUserProfileContext } from '@/contexts';
 import { useCreateAuction } from '@/hooks';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
-import { DetailsStep } from '@/pages/create/auction/primary/@form/Details';
-import { FinalStep } from '@/pages/create/auction/primary/@form/Final';
-import { SectorStep } from '@/pages/create/auction/primary/@form/Sector';
-import { SubsectorStep } from '@/pages/create/auction/primary/@form/Subsector';
+import { DetailsStep } from './Details';
+import { FinalStep } from './Final';
+import { SectorStep } from './Sector';
+import { SubsectorStep } from './Subsector';
 import {
 	CreateAuctionDataSchema,
 	CreateAuctionDataSchemaTransformer,
