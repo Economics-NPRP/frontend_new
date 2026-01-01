@@ -635,7 +635,8 @@
               "tooltip": "Manage permit transfer applications between firms"
             },
             "auction": {
-              "title": "Auction"
+              "title": "Auction Application",
+              "description": "Approve, reject or execute this auction"
             }
           },
           "permits": {

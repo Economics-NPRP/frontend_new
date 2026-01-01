@@ -1,0 +1,221 @@
+.root {
+  > .actions {
+    @apply h-12;
+    > .action {
+      @apply flex-1 h-full;
+    }
+  }
+
+  > .section {
+    @apply gap-3 items-stretch flex-nowrap;
+  }
+
+  .details {
+    @apply gap-2;
+
+    > .header {
+      @apply justify-between items-start;
+    }
+
+    > .title {
+      @apply heading-1;
+    }
+
+    > .row {
+      @apply justify-between items-center;
+
+      > .cell {
+        @apply gap-2 items-center;
+      }
+
+      &:has(.id) {
+        @apply my-2;
+      }
+
+      > .owner {
+        @apply gap-2;
+
+        > .avatar {
+          @apply size-10;
+        }
+
+        > .link {
+          @apply text-blue-600 font-semibold;
+          @apply underline underline-offset-4 decoration-1 decoration-dashed decoration-blue-600;
+        }
+      }
+    }
+
+    > .description {
+      @apply paragraph-md text-justify;
+    }
+
+    > .cycle {
+      @apply px-6 py-4 gap-4;
+      @apply flex flex-row items-center justify-between flex-nowrap;
+      @apply transition-colors duration-300;
+      @apply border border-gray-200 rounded-lg; /* Simplified border for now */
+
+      > .left {
+        @apply gap-0 items-start;
+
+        > .title {
+          @apply display-md-sb;
+        }
+
+        > .description {
+          @apply paragraph-sm;
+        }
+      }
+
+      > .icon {
+        @apply text-gray-200;
+      }
+
+      > .right {
+        @apply pointer-events-none;
+        @apply gap-1 justify-end;
+      }
+
+      &:hover {
+        @apply bg-gray-50;
+      }
+    }
+  }
+
+  .properties {
+    @apply gap-3 items-stretch flex-nowrap mt-6;
+
+    > .divider {
+      .label {
+        @apply display-xs-13-g6 uppercase;
+
+        &::before {
+          @apply flex-[unset] w-4;
+        }
+      }
+    }
+
+    > .table {
+      @apply gap-0;
+      @apply border border-gray-200 rounded-lg overflow-hidden;
+
+      > .row {
+        @apply p-4 gap-4;
+        @apply border-b border-gray-200 bg-white;
+        @apply grid grid-cols-2;
+
+        &:last-child {
+          @apply border-b-0;
+        }
+
+        > .cell {
+          @apply gap-3 items-center;
+
+          > .icon {
+            @apply text-gray-500;
+          }
+
+          > .key {
+            @apply paragraph-sm-g6 flex-1;
+          }
+
+          > .value {
+            @apply paragraph-sm font-medium;
+          }
+        }
+      }
+    }
+  }
+
+  .content {
+    @apply gap-6 items-start;
+
+    > .card {
+      @apply w-1/3 min-w-[320px];
+      @apply items-stretch gap-0;
+      @apply bg-white;
+      @apply transition-shadow duration-500;
+
+      > .container {
+        @apply border border-solid border-gray-300;
+        > .image {
+          @apply h-[320px];
+          @apply relative;
+          @apply overflow-hidden;
+
+          img {
+            @apply object-cover object-center;
+            @apply transition-transform duration-700;
+          }
+        }
+      }
+
+      > .row {
+        @apply flex-nowrap gap-0;
+        @apply bg-dark-600;
+        @apply border border-t-0 border-solid border-gray-300;
+
+        > .section {
+          @apply flex-[50%];
+          @apply p-2 gap-0;
+          @apply flex-nowrap items-center justify-center;
+          @apply border-0 border-r border-solid border-dark-400;
+
+          &:last-child {
+            @apply border-0;
+          }
+
+          .subtext {
+            @apply paragraph-sm-w text-center;
+          }
+
+          .price {
+            @apply gap-2 flex-nowrap;
+
+            > .badge {
+              @apply bg-dark-400;
+              @apply text-dark-100;
+            }
+
+            > .icon {
+              @apply size-6;
+              @apply flex items-center justify-center;
+              @apply bg-dark-400 text-dark-100;
+              @apply rounded-sm;
+            }
+
+            > .value {
+              @apply numeric-lg-w;
+            }
+          }
+        }
+      }
+
+      > .countdown {
+        @apply items-center px-6 py-4 gap-2;
+        @apply border border-t-0 border-solid border-gray-300;
+
+        background-image: repeating-linear-gradient(
+          135deg,
+          rgba(0, 0, 0, 0.01),
+          rgba(0, 0, 0, 0.01) 20px,
+          #0000 20px,
+          #0000 40px
+        );
+
+        > .title {
+          @apply display-md-sb text-center;
+        }
+
+        > .subtext {
+          @apply paragraph-sm text-center;
+        }
+      }
+    }
+
+    > .details {
+      @apply flex-1;
+    }
+  }
+}

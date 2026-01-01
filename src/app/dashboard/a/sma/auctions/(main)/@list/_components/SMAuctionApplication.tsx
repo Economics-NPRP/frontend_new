@@ -1,10 +1,9 @@
 
 import { IAuctionApplication } from "@/schema/models"
-import { Flex, Stack, Card, Text, Container, Group, UnstyledButton } from "@mantine/core"
+import { Stack, Card, Text, Container, UnstyledButton } from "@mantine/core"
 import { Id } from "@/components/Id"
 import Image from "next/image"
 import { AUCTION_IMAGE_PLACEHOLDER } from "./constants"
-import { useSMAuctionAction } from "@/hooks"
 
 
 import { SectorBadge } from "@/components/Badge"
@@ -13,7 +12,6 @@ import classes from "./styles.module.css"
 import Link from "next/link"
 
 const SMAuctionApplication = ({ application }: { application: IAuctionApplication }) => {
-  const { approve, reject, execute } = useSMAuctionAction();
 
   return (
   <UnstyledButton
