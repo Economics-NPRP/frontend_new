@@ -22,3 +22,5 @@ export * from './UserData';
 export * from './UserType';
 export * from './OnboardingData';
 export * from './PermitsFilter';
+// export * from './AuctionApplicationData'
+export * from './AuctionApplicationStatus'

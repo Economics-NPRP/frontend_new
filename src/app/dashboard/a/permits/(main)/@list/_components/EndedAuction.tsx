@@ -6,6 +6,7 @@ import { Id } from "@/components/Id"
 import { IconRefresh, IconCalendar, IconCheck, IconDots, IconX } from "@tabler/icons-react"
 import { useTranslations } from "next-intl"
 import { DateTime } from "luxon"
+import {ChartIcon} from "./ChartIcon"
 
 export type EndedAuctionProps = {
   id: string;
@@ -23,30 +24,35 @@ export type EndedAuctionProps = {
 
 const EndedAuction = (props: EndedAuctionProps) => {
   const t = useTranslations()
+  const chartIconData = {
+    accepted: props.pieChartData.accepted,
+    rejected: props.pieChartData.rejected,
+    pending: props.pieChartData.pending,
+  }
 
   return (
     <Anchor style={{ textDecoration: 'none' }} href={`/dashboard/a/permits/${props.id}`}>
       <Group className={classes.root}>
-        <Flex flex={1} align={"center"} justify={"space-between"} className={classes.left}>
+        <Flex flex={1.5} align={"center"} justify={"space-between"} className={classes.left}>
           <Stack gap={0} className={classes.text}>
             <Id
               value={props.id}
               variant="auction"
             />
-            <Title order={2} className={classes.name}>{props.name.split(" - ")[0]}</Title>
+            <Title order={3} className={classes.name}>{props.name.split(" - ")[0]}</Title>
             <Text className={classes.description}>{props.description}</Text>
             <Text className={classes.winners}>
               <Text span className={classes.winnerCount}>{props.winningBids}</Text>
               <Text span>{t("dashboard.permits.endedAuctions.winningBids")}</Text>
             </Text>
           </Stack>
-          <Group className={classes.chart}>
-            <Text fw={600} className={classes.chartText}>{t("dashboard.permits.endedAuctions.chart")}</Text>
+          <Group justify="center" className={classes.chart}>
             <PieChart
+              className="relative"
               data={[
                 { name: 'Accepted', value: props.pieChartData.accepted, color: "#10b981" },
-                { name: 'Rejected', value: props.pieChartData.rejected, color: "#f43f5e" },
                 { name: 'Pending', value: props.pieChartData.pending, color: "#fbbf24" },
+                { name: 'Rejected', value: props.pieChartData.rejected, color: "#f43f5e" },
               ]}
               withTooltip
               tooltipAnimationDuration={200}
@@ -79,6 +85,22 @@ const EndedAuction = (props: EndedAuctionProps) => {
                 },
               }}
               size={100}
+            />
+            <ChartIcon
+              data={chartIconData}
+              status="accepted"
+              radius={8}
+            />
+            <ChartIcon
+              data={chartIconData}
+              status="pending"
+              name={props.name}
+              radius={8}
+            />
+            <ChartIcon
+              data={chartIconData}
+              status="rejected"
+              radius={8}
             />
           </Group>
         </Flex>

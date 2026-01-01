@@ -6,7 +6,7 @@ import { useContextSelector } from 'use-context-selector';
 
 import { DateTimePicker } from '@/pages/create/_components/DateTimePicker';
 import { CreateLayoutContext } from '@/pages/create/_components/Providers';
-import { ICreateAuctionStepProps } from '@/pages/create/auction/@form/page';
+import { ICreateAuctionStepProps } from '@/pages/create/auction/primary/@form/page';
 import { Alert, List, NumberInput, Select, Stack, Text, TextInput, Title } from '@mantine/core';
 import { IconExclamationCircle } from '@tabler/icons-react';
 
@@ -91,9 +91,9 @@ export const DetailsStep = ({ form }: ICreateAuctionStepProps) => {
 					stepHoldInterval={(t) => Math.max(1000 / t ** 2, 100)}
 					min={0}
 					required
-					//	TODO: uncomment when backend has emissions
-					// key={form.key('emissions')}
-					// {...form.getInputProps('emissions')}
+				//	TODO: uncomment when backend has emissions
+				// key={form.key('emissions')}
+				// {...form.getInputProps('emissions')}
 				/>
 				<NumberInput
 					label={t('create.auction.details.minBid.label')}
@@ -122,9 +122,9 @@ export const DetailsStep = ({ form }: ICreateAuctionStepProps) => {
 					stepHoldInterval={(t) => Math.max(1000 / t ** 2, 100)}
 					min={0}
 					required
-					//	TODO: uncomment when backend has min increment
-					// key={form.key('minIncrement')}
-					// {...form.getInputProps('minIncrement')}
+				//	TODO: uncomment when backend has min increment
+				// key={form.key('minIncrement')}
+				// {...form.getInputProps('minIncrement')}
 				/>
 				<DateTimePicker
 					label={t('create.auction.details.startDatetime.label')}

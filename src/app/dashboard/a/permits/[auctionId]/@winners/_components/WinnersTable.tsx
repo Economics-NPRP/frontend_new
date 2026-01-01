@@ -194,6 +194,26 @@ const WinnersTable = ({ bids }: WinnersTableProps) => {
     }
   }
 
+  const parseBids = () => {
+    if (!bids || !bids.data) return [];
+    return bids.data.results.map((bid) => {
+      return {
+        id: bid.bidderId,
+        bidId: bid.id,
+        companyName: bid.bidder.name,
+        owner: bid.bidder.email,
+        bids: {
+          total: bid.permits || 0,
+          approved: 0 || 0,
+          pending: bid.permits || 0,
+          rejected: 0,
+          locked: 0,
+          expired: 0
+        }
+      }
+    })
+  }
+
   return (
     <Stack className={classes.winnersTable}>
       <Stack className={classes.header}>
@@ -303,13 +323,13 @@ const WinnersTable = ({ bids }: WinnersTableProps) => {
       {/* Table would go here */}
       <Stack ref={listContainer} gap={0} className={classes.table}>
         {
-          demoData.map((bid) => (
+          parseBids().map((bid) => (
             <PermitsWon select={handleAppendSelectedBid} className={classes.row} key={bid.id} bid={bid} loading={bids.isLoading} />
           ))
         }
       </Stack>
       <Group className={classes.footer}>
-        {bids.isSuccess && (
+        {(bids.isSuccess || true) && (
           <TablePagination context={bids} tableContainerRef={listContainer} />
         )}
       </Group>

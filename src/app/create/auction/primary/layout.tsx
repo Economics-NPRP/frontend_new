@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
 import { withProviders } from '@/helpers';
-import { SectorChangeModalProvider } from '@/pages/create/auction/_components/SectorChangeModal';
+import { SectorChangeModalProvider } from '@/pages/create/auction/primary/_components/SectorChangeModal';
 
 export const metadata: Metadata = {
 	title: 'Create New Auction',

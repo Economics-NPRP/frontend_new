@@ -24,9 +24,11 @@ export interface StatCardProps extends BoxComponentProps {
 	loading?: boolean;
 	large?: boolean;
 	mid?: boolean;
+	truncate?: boolean;
 }
 export const StatCard = ({
 	tooltip,
+	truncate=true,
 	icon,
 	title,
 	type,
@@ -103,10 +105,10 @@ export const StatCard = ({
 					/>
 				)}
 			</Group>
-			{comparison !== 'none' && <Text className={classes.comparison}>
+			{comparison !== 'none' && <Text className={classes.comparison + ' ' + (truncate ? classes.truncateText : '')}>
 				{t('components.statCard.comparison', { comparison })}
 			</Text>}
-			{subtitle && <Text className={classes.comparison}>
+			{subtitle && <Text className={classes.comparison + ' ' + (truncate ? classes.truncateText : '')}>
 				{subtitle}
 			</Text>}
 			{icon && <Container className={classes.icon}>{icon}</Container>}

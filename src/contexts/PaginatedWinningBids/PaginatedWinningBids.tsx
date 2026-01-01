@@ -49,6 +49,14 @@ export const PaginatedWinningBidsProvider = ({
 	const myUser = useContext(MyUserProfileContext);
 	const isAdmin = useMemo(() => myUser?.data?.type === 'admin', [myUser?.data?.type]);
 
+	console.log('PaginatedWinningBidsProvider Debug:', {
+		auctionId,
+		areBidsAvailable,
+		isAdmin,
+		userType: myUser?.data?.type,
+		disabled: !areBidsAvailable && !isAdmin
+	});
+
 	const [, setPage] = useQueryState(
 		'page',
 		parseAsInteger.withDefault(props.defaultPage || DefaultData.page),

@@ -23,7 +23,9 @@ import {
 	IconUserShield,
 	IconUsers,
 	IconFileCheck,
-	IconFileSearch
+	IconFileSearch,
+	IconTransfer,
+	IconHammer
 } from '@tabler/icons-react';
 
 export const DefaultDashboardSidebarContextData: IDashboardSidebarContext = {
@@ -208,32 +210,23 @@ export const SidebarLinks: Record<
 			label: t('constants.pages.dashboard.admin.sma.title'),
 			subHrefs: [
 				{
-					id: 'home',
-					label: t('constants.pages.dashboard.admin.sma.auction-applications.title'),
+					id: 'auctions',
+					label: t('constants.pages.dashboard.admin.sma.auctions.title'),
 					tooltip: expanded
-						? t('constants.pages.dashboard.admin.sma.auction-applications.tooltip')
-						: t('constants.pages.dashboard.admin.sma.auction-applications.title'),
-					icon: <IconBuildingSkyscraper size={16} />,
-					href: '/dashboard/a/sma/auction-applications',
+						? t('constants.pages.dashboard.admin.sma.auctions.tooltip')
+						: t('constants.pages.dashboard.admin.sma.auctions.title'),
+					icon: <IconHammer size={16} />,
+					href: '/dashboard/a/sma/auctions',
 				},
 				{
-					id: 'audit',
-					label: t('constants.pages.dashboard.admin.sma.audit.title'),
+					id: 'transfers',
+					label: t('constants.pages.dashboard.admin.sma.transfer.title'),
+					icon: <IconTransfer size={16} />,
 					tooltip: expanded
-						? t('constants.pages.dashboard.admin.sma.audit.tooltip')
-						: t('constants.pages.dashboard.admin.sma.audit.title'),
-					icon: <IconUserSearch size={16} />,
-					href: '/dashboard/a/sma/audit',
-				},
-				{
-					id: 'payments',
-					label: t('constants.pages.dashboard.admin.firms.payments.title'),
-					icon: <IconCreditCard size={16} />,
-					tooltip: expanded
-						? t('constants.pages.dashboard.admin.firms.payments.tooltip')
-						: t('constants.pages.dashboard.admin.firms.payments.title'),
-					href: '/dashboard/a/firms/payments',
-				},
+						? t('constants.pages.dashboard.admin.sma.transfer.tooltip')
+						: t('constants.pages.dashboard.admin.sma.transfer.title'),
+					href: '/dashboard/a/sma/transfer',
+				}
 			],
 		}
 	],
@@ -327,7 +320,7 @@ export const SidebarLinks: Record<
 					tooltip: expanded
 						? t('constants.pages.dashboard.firm.economic.sell.tooltip')
 						: t('constants.pages.dashboard.firm.economic.sell.title'),
-					href: '/create/auction',
+					href: '/create/auction/secondary',
 				},
 			],
 		},

@@ -14,13 +14,13 @@
   @apply hover:shadow hover:z-10;
   > .text {
     @apply py-6 px-4;
-    > .name {
+    .name {
       @apply heading-2;
     }
-    > .owner {
+    .owner > .name, .owner > .icon {
       @apply paragraph-md;
     }
-    > .total {
+    .total {
       > .value {
         @apply heading-2;
       }

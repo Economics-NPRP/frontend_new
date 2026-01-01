@@ -19,7 +19,6 @@ const getDefaultData: (...errors: Array<string>) => ServerData<IAuctionData> = (
 type IFunctionSignature = (data: ICreateAuctionOutput) => Promise<ServerData<IAuctionData>>;
 export const createAuction: IFunctionSignature = cache(async (data) => {
 	const t = await getTranslations();
-
 	const cookieStore = await cookies();
 	const access = cookieStore.get('ets_access_token')?.value;
 	const refresh = cookieStore.get('ets_refresh_token')?.value;
@@ -28,7 +27,7 @@ export const createAuction: IFunctionSignature = cache(async (data) => {
 	if (!cookieHeaders) return getDefaultData(t('lib.notLoggedIn'));
 	const querySettings: RequestInit = {
 		method: 'POST',
-		body: JSON.stringify(toSnakeCase(data)),
+		body: JSON.stringify(toSnakeCase(data.isPrimaryMarket ? data : toSecondaryMarketData(data))),
 		headers: {
 			'Content-Type': 'application/json',
 			Cookie: cookieHeaders,
@@ -45,15 +44,24 @@ export const createAuction: IFunctionSignature = cache(async (data) => {
 	};
 
 	// const path = data.type === 'open' ? '/api/v1/auctions/o/' : '/api/v1/auctions/s/';
-	const path = data.type === 'open' ? '/v1/auctions/o/' : '/v1/auctions/s/';
+	let path;
+	data = camelCase(data) as ICreateAuctionOutput;
+	console.log("THIS DATA ->", !data.isPrimaryMarket && toSnakeCase(toSecondaryMarketData(data)))
+	if (data.isPrimaryMarket) {
+		path = data.type === 'open' ? '/v1/auctions/o/' : '/v1/auctions/s/';
+	} else {
+		path = data.type === 'open' ? '/v1/auctions/secondary/open/' : '/v1/auctions/secondary/sealed/';
+	}
+	if (!path) return getDefaultData(t('lib.auction.creation.error'));
 	const queryUrl = new URL(path, process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080');
 
 	const response = await fetch(queryUrl, querySettings);
-	console.log("THIS RESPONSE ->", response)
+	console.log("THIS RESPONSE ->", path, response)
 	const rawData = camelCase(await response.json(), 5) as ServerData<IAuctionData>;
 
 	//	If theres an issue, return the default data with errors
-	if (response.status === 403) return getDefaultData(t('lib.auth.adminError'));
+	if (response.status === 403 && data.isPrimaryMarket) return getDefaultData(t('lib.auth.adminError'));
+	if (response.status === 403 && !data.isPrimaryMarket) return getDefaultData(t('lib.auction.creation.secondary.forbidden'));
 	// if (response.status === 409) return getDefaultData(t('lib.auction.exists'));
 	if (response.status === 422)
 		return getDefaultData(t('lib.validationError'), JSON.stringify(rawData.detail) ?? '');
@@ -66,3 +74,16 @@ export const createAuction: IFunctionSignature = cache(async (data) => {
 		ok: true,
 	} as ServerData<IAuctionData>;
 });
+
+function toSecondaryMarketData(data: ICreateAuctionOutput) {
+	return {
+		description: data.description,
+		endDatetime: data.endDatetime,
+		sector: data.sector,
+		startDatetime: data.startDatetime,
+		title: data.title,
+		minBid: data.minBid,
+		permits: data.permits,
+		emissionId: data.emissionId,
+	}
+}

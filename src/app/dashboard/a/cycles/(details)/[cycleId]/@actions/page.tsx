@@ -67,7 +67,7 @@ export default function SubBanners() {
 					heading={t('dashboard.admin.cycles.details.actions.create.heading')}
 					subheading={t('dashboard.admin.cycles.details.actions.create.subheading')}
 					component={Link}
-					href={`/create/auction?cycleId=${cycleId}`}
+					href={`/create/auction/primary?cycleId=${cycleId}`}
 					index={3}
 					disabled={disabled}
 				/>
