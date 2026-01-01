@@ -14,3 +14,4 @@ export * from './usePaginationText';
 export * from './useUnsavedChanges';
 export * from './useAdminHomeData';
 export * from './usePermitAction';
+export * from './useSMAuctionAction';

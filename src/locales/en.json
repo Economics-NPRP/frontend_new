@@ -633,6 +633,10 @@
             "transfer": {
               "title": "Transfer Applications",
               "tooltip": "Manage permit transfer applications between firms"
+            },
+            "auction": {
+              "title": "Auction Application",
+              "description": "Approve, reject or execute this auction"
             }
           },
           "permits": {
@@ -3062,6 +3066,29 @@
           "message": "Permits rejected successfully"
         },
         "error": "Error rejecting permits"
+      }
+    },
+    "sma": {
+      "approve": {
+        "success": {
+          "title": "Auction Approved",
+          "message": "This auction is now available in the secondary market auction marketplace"
+        },
+        "error": "Error Approving Auction"
+      },
+      "reject": {
+        "success": {
+          "title": "Auction Rejected",
+          "message": "This auction will not be shown in the secondary marketplace"
+        },
+        "error": "Error Rejecting Auction"
+      },
+      "execute": {
+        "success": {
+          "title": "Auction Executed",
+          "message": "This auction is executed successfully"
+        },
+        "error": "Error Executing Auction"
       }
     }
   },

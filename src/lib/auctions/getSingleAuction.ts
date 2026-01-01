@@ -42,7 +42,7 @@ export const getSingleAuction: IFunctionSignature = cache(async (uuid) => {
 			})()),
 		},
 	};
-
+	console.log('getSingleAuction Debug:', { uuid });
 	const response = await fetch(
 		await internalUrl(`/api/proxy/v1/auctions/${uuid}`),
 		querySettings,

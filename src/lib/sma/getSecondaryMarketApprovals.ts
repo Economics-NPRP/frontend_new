@@ -7,25 +7,18 @@ import { cache } from 'react';
 import 'server-only';
 
 import { internalUrl } from '@/helpers';
-import { DefaultMyAuctionResultsData, IMyAuctionResultsData, ServerData } from '@/types';
-import { DefaultAuctionApplication, IAuctionApplication } from '@/schema/models/AuctionApplicationData';
+import { IAuctionApplication } from '@/schema/models';
+import { ArrayServerData } from '@/types';
 
-export interface IGetAuctionApplications {
-  status: string;
-  limit: number;
-}
-
-const getDefaultData: (...errors: Array<string>) => ServerData<IAuctionApplication> = (
-  ...errors
-) => ({
-  ...DefaultAuctionApplication,
+const getDefaultData: (...errors: Array<string>) => ArrayServerData<IAuctionApplication> = (...errors) => ({
   ok: false,
   errors: errors,
+  results: [],
+  resultCount: 0,
 });
 
-type IFunctionSignature = (status: string, limit: number) => Promise<ServerData<IAuctionApplication>>;
-
-export const getAuctionApplications: IFunctionSignature = cache(async (status, limit) => {
+type IFunctionSignature = (status?: string, limit?: number) => Promise<ArrayServerData<IAuctionApplication>>;
+export const getSecondaryMarketApprovals: IFunctionSignature = cache(async (status, limit) => {
   const t = await getTranslations();
 
   const cookieStore = await cookies();
@@ -59,20 +52,16 @@ export const getAuctionApplications: IFunctionSignature = cache(async (status, l
     await internalUrl(`/api/proxy/v1/auctions/secondary/approvals${params.toString() ? `?${params.toString()}` : ''}`),
     querySettings,
   );
-  const rawData = camelCase(await response.json(), 5) as ServerData<IAuctionApplication>;
-
+  const rawData = camelCase(await response.json(), 5);
   //	If theres an issue, return the default data with errors
   if (!rawData) return getDefaultData(t('lib.noData'));
-  if (rawData.detail) return getDefaultData(rawData.detail ?? '');
-  if (rawData.errors) return getDefaultData(...rawData.errors);
+  if (!response.ok) return getDefaultData(t('lib.noData'));
 
-  return {
-    ...rawData,
-    ok: true,
-  } as ServerData<IAuctionApplication>;
+  const results = Array.isArray(rawData) ? rawData as IAuctionApplication[] : transformToArray(rawData as Record<string, unknown>);
+
+  return { results, ok: true, resultCount: results.length } as ArrayServerData<IAuctionApplication>;
 });
 
-//	@ts-expect-error - Preload doesn't return anything but signature requires a return
-export const preloadAuctionApplications: IFunctionSignature = async (status, limit) => {
-  void getAuctionApplications(status, limit);
-};
+function transformToArray(obj: Record<string, unknown>): IAuctionApplication[] {
+  return Object.values(obj).filter((value) => typeof value !== 'boolean') as IAuctionApplication[];
+}

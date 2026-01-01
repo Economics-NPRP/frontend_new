@@ -1,0 +1,62 @@
+.root {
+  @apply border border-solid border-slate-300 w-fit flex-1;
+  > .statusContainer {
+    border-top: 1px solid rgb(203, 213, 225);
+    &.approved {
+      background-image: repeating-linear-gradient(45deg,
+        rgb(255, 255, 255) 0px,
+        rgb(255, 255, 255) 7px,
+        rgb(227, 237, 221) 7px,
+        rgb(227, 237, 221) 14px
+      );
+    }
+    &.pending {
+      background-image: repeating-linear-gradient(45deg,
+        rgb(255, 255, 255) 0px,
+        rgb(255, 255, 255) 7px,
+        rgb(237, 233, 221) 7px,
+        rgb(237, 233, 221) 14px
+      );
+    }
+    &.executed {
+      background-image: repeating-linear-gradient(45deg,
+        rgb(255, 255, 255) 0px,
+        rgb(255, 255, 255) 7px,
+        rgb(219, 219, 219) 7px,
+        rgb(219, 219, 219) 14px
+      );
+    }
+    &.rejected {
+      background-image: repeating-linear-gradient(45deg,
+        rgb(255, 255, 255) 0px,
+        rgb(255, 255, 255) 7px,
+        rgb(237, 221, 221) 7px,
+        rgb(237, 221, 221) 14px
+      );
+    }
+    > .status {
+      @apply heading-3 tracking-wider text-center uppercase my-2 bg-white w-fit h-fit px-6 py-1 mx-auto;
+    }
+    &.approved > .status {
+      @apply text-green-950;
+    }
+    &.pending > .status {
+      @apply text-yellow-950;
+    }
+    &.executed > .status {
+      @apply text-slate-950;
+    }
+    &.rejected > .status {
+      @apply text-red-950;
+    }
+  }
+  > .info {
+    @apply items-start gap-0 pt-2 pb-6 px-6;
+    > .title {
+      @apply heading-2;
+    }
+    > .desc {
+      @apply paragraph-md mb-2;
+    }
+  }
+}
