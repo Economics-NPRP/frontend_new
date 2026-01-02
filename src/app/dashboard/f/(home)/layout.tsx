@@ -5,6 +5,9 @@ import { ReactNode } from 'react';
 import { DashboardHero } from '@/pages/dashboard/_components/DashboardHero';
 import { Stack } from '@mantine/core';
 
+import { withProviders } from 'helpers/withProviders';
+import { MyUserProfileProvider } from 'contexts/MyUserProfile';
+
 import classes from './styles.module.css';
 
 export const metadata: Metadata = {
@@ -17,7 +20,7 @@ export interface HomeProps {
 export default function Home({ hero }: HomeProps) {
 	const t = useTranslations();
 
-	return (
+	return withProviders(
 		<Stack className={classes.root}>
 			<DashboardHero
 				title={t('constants.pages.dashboard.firm.home.title')}
@@ -29,6 +32,7 @@ export default function Home({ hero }: HomeProps) {
 				]}
 			/>
 			{hero}
-		</Stack>
+		</Stack>,
+		{ provider: MyUserProfileProvider }
 	);
 }

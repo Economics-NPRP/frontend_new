@@ -24,3 +24,4 @@ export * from './OnboardingData';
 export * from './PermitsFilter';
 export * from './AuctionApplicationData'
 export * from './AuctionApplicationStatus'
+export * from './FirmAuctionFilter';

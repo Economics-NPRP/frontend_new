@@ -7,28 +7,26 @@ import { cache } from 'react';
 import 'server-only';
 
 import { internalUrl } from '@/helpers';
-import { AuctionOwnershipFilter, AuctionTypeFilter, IAuctionData, SectorListFilter, AuctionStatusFilter } from '@/schema/models';
+import { AuctionTypeFilter, IAuctionData } from '@/schema/models';
 import { IOffsetPagination, OffsetPaginatedData, SortDirection } from '@/types';
 
 export interface IGetPaginatedFirmAuctionsOptions extends IOffsetPagination {
 	sortBy?: string | null;
 	sortDirection?: SortDirection | null;
 
-	firmId?: string;
 	ownerId?: string;
-	auctionId?: string;
-	sector?: SectorListFilter;
-	type?: AuctionTypeFilter;
-	status?: AuctionStatusFilter;
+	auctionType?: AuctionTypeFilter;
+	firmId?: string;
+	sector?: Array<string>;
+	auctionStatus?: string;
 	isPrimaryMarket?: boolean;
-	startDateFrom?: string;
-	startDateTo?: string;
-	endDateFrom?: string;
-	endDateTo?: string;
+	startDatetimeFrom?: string;
+	startDatetimeTo?: string;
+	endDatetimeFrom?: string;
+	endDatetimeTo?: string;
 	minPermits?: number;
 	maxPermits?: number;
-	isLive?: boolean;
-	hasEnded?: boolean;
+	auctionId?: string;
 }
 
 const getDefaultData: (...errors: Array<string>) => OffsetPaginatedData<IAuctionData> = (
@@ -47,24 +45,25 @@ const getDefaultData: (...errors: Array<string>) => OffsetPaginatedData<IAuction
 type IFunctionSignature = (
 	options: IGetPaginatedFirmAuctionsOptions,
 ) => Promise<OffsetPaginatedData<IAuctionData>>;
-export const getPaginatedAuctions: IFunctionSignature = cache(
+export const getPaginatedFirmAuctions: IFunctionSignature = cache(
 	async ({
 		page,
 		perPage,
 		sortBy,
 		sortDirection,
 		ownerId,
+		auctionType,
 		firmId,
-		auctionId,
 		sector,
-		type,
-		status,
+		auctionStatus,
 		isPrimaryMarket,
-		startDateFrom,
-		startDateTo,
-		endDateFrom,
-		endDateTo,
+		startDatetimeFrom,
+		startDatetimeTo,
+		endDatetimeFrom,
+		endDatetimeTo,
 		minPermits,
+		maxPermits,
+		auctionId,
 	}) => {
 		const t = await getTranslations();
 
@@ -97,17 +96,20 @@ export const getPaginatedAuctions: IFunctionSignature = cache(
 		if (sortBy) params.append('order_by', sortBy);
 		if (sortDirection) params.append('order_dir', sortDirection);
 		if (ownerId) params.append('owner', ownerId);
-		if (type && type !== 'all') params.append('type', type);
+		if (auctionType && auctionType !== 'all') params.append('auction_type', auctionType);
+
 		if (firmId) params.append('firm_id', firmId);
-		if (auctionId) params.append('auction_id', auctionId);
-		if (sector && sector.length > 0) params.append('sector', sector.join(','));
-		if (status && status !== 'all') params.append('status', status);
-		if (isPrimaryMarket !== undefined) params.append('is_primary_market', isPrimaryMarket.toString());
-		if (startDateFrom) params.append('start_date_from', startDateFrom);
-		if (startDateTo) params.append('start_date_to', startDateTo);
-		if (endDateFrom) params.append('end_date_from', endDateFrom);
-		if (endDateTo) params.append('end_date_to', endDateTo);
-		if (minPermits !== undefined) params.append('min_permits', minPermits.toString());
+		if (sector) sector.forEach((s) => params.append('sector', s));
+		if (auctionStatus && auctionStatus !== 'all') params.append('auction_status', auctionStatus);
+		if (isPrimaryMarket !== undefined)
+			params.append('is_primary_market', isPrimaryMarket.toString());
+		if (startDatetimeFrom) params.append('start_datetime_from', startDatetimeFrom);
+		if (startDatetimeTo) params.append('start_datetime_to', startDatetimeTo);
+		if (endDatetimeFrom) params.append('end_datetime_from', endDatetimeFrom);
+		if (endDatetimeTo) params.append('end_datetime_to', endDatetimeTo);
+		if (minPermits) params.append('min_permits', minPermits.toString());
+		if (maxPermits) params.append('max_permits', maxPermits.toString());
+		if (auctionId) params.append('id', auctionId);
 
 		const response = await fetch(
 			await internalUrl(
@@ -139,6 +141,6 @@ export const getPaginatedAuctions: IFunctionSignature = cache(
 );
 
 //	@ts-expect-error - Preload doesn't return anything but signature requires a return
-export const preloadPaginatedAuctions: IFunctionSignature = async (options) => {
-	void getPaginatedAuctions(options);
+export const preloadPaginatedFirmAuctions: IFunctionSignature = async (options) => {
+	void getPaginatedFirmAuctions(options);
 };

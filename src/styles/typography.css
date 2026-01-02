@@ -5,6 +5,12 @@
 		@apply font-bold;
 		@apply text-dark-600 dark:text-white;
 	}
+	.heading-1-w {
+		@apply font-serif;
+		@apply text-3xl;
+		@apply font-bold;
+		@apply text-white dark:text-dark-600;
+	}
 	.heading-2 {
 		@apply font-serif;
 		@apply text-2xl;

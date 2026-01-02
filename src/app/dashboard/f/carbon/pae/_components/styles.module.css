@@ -1,0 +1,38 @@
+.root {
+  > .header {
+    > .label {
+      > .title {
+        @apply heading-1;
+      }
+      > .subtitle {
+        @apply paragraph-md;
+      }
+    }
+    > .row {
+      @apply mt-2;
+      > .search {
+        @apply w-96;
+      }
+      > .filters > .label {
+        @apply paragraph-sm;
+      }
+      > .settings {
+        > .label {
+          @apply paragraph-sm;
+        }
+      }
+      > .subtitle {
+        > .subtitle {
+          @apply paragraph-md;
+        }
+      }
+    }
+  } 
+  .table {
+    .anchor {
+      @apply truncate;
+      @apply display-sm-sb-d3;
+      @apply underline underline-offset-4 decoration-1 decoration-dashed decoration-gray-600;
+    }
+  }
+}

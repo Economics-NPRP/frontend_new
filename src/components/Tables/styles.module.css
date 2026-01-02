@@ -10,7 +10,7 @@
 
 		> .row {
 			@apply flex-nowrap gap-8 justify-between items-center;
-
+fanch
 			> .label {
 				@apply flex-col gap-0 items-start flex-nowrap;
 

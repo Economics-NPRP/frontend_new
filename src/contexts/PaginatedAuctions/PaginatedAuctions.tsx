@@ -1,7 +1,8 @@
 'use client';
 
-import { parseAsArrayOf, parseAsInteger, parseAsStringLiteral, useQueryState } from 'nuqs';
+import { parseAsArrayOf, parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from 'nuqs';
 import { createContext, useCallback, useMemo } from 'react';
+import { string } from 'valibot';
 
 import { SectorList } from '@/constants/SectorData';
 import {
@@ -70,6 +71,7 @@ export const PaginatedAuctionsProvider = ({
 		sector: parseAsArrayOf(parseAsStringLiteral(SectorList)),
 		joined: parseAsStringLiteral(AuctionJoinedStatusListFilter),
 		ownership: parseAsStringLiteral(AuctionOwnershipListFilter),
+		ownerId: parseAsString,
 
 		defaultValue: defaultFilters || DefaultData.filters,
 		syncWithSearchParams,
@@ -139,7 +141,8 @@ export const PaginatedAuctionsProvider = ({
 					sortBy,
 					sortDirection,
 					type: filters.type,
-					ownership: filters.ownership,
+					ownership: filters.ownership, 
+					ownerId: filters.ownerId || undefined, // Use the UserProfile context to get ownerID
 					isLive: filters.status === 'ongoing',
 					hasEnded: filters.status === 'ended',
 				}),

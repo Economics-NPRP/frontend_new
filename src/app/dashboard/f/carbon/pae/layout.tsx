@@ -1,8 +1,11 @@
 import { Metadata } from 'next';
-import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
 import { Stack } from '@mantine/core';
+
+import { withProviders } from 'helpers/withProviders';
+
+import { PaginatedFirmAuctionsProvider } from 'contexts';
 
 import classes from './styles.module.css';
 
@@ -12,13 +15,15 @@ export const metadata: Metadata = {
 
 export interface PermitsAndEmissionsProps {
   subbanners: ReactNode;
+  auctions: ReactNode;
 }
-export default function PermitsAndEmissionsProps({ subbanners }: PermitsAndEmissionsProps) {
-  const t = useTranslations();
+export default function PermitsAndEmissionsProps({ subbanners, auctions }: PermitsAndEmissionsProps) {
 
-  return (
+  return withProviders(
     <Stack className={classes.root}>
       {subbanners}
-    </Stack>
+      {auctions}
+    </Stack>,
+    { provider: PaginatedFirmAuctionsProvider }
   );
 }
