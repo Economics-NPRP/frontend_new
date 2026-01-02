@@ -1,20 +1,20 @@
 'use client';
 import { Stack, Group, Text, Pill, Select, TextInput, Anchor, Input } from "@mantine/core";
-import { useMemo, useRef, useState, useContext } from "react";
+import { useMemo, useRef, useState } from "react";
 import { IconSearch } from "@tabler/icons-react";
 import { DataTable } from "mantine-datatable";
 import { DateTime } from "luxon";
 import Link from "next/link";
 import { useTranslations, useFormatter } from "next-intl";
 import { useOffsetPaginationText } from "@/hooks";
-import { IPaginatedAuctionsContext, PaginatedAuctionsContext, PaginatedAuctionsProvider, MyUserProfileContext } from "@/contexts";
+import { IPaginatedFirmAuctionsContext, PaginatedFirmAuctionsProvider } from "@/contexts";
 import { TablePagination } from "@/components/Tables/_components/Pagination";
 import { AuctionTypeBadge, AuctionStatusBadge, SectorBadge, CurrencyBadge } from "@/components/Badge";
 import classes from "./styles.module.css";
 import { withProviders } from "helpers/withProviders";
 
 export interface MyAuctionsTableProps {
-  auctions: IPaginatedAuctionsContext;
+  auctions: IPaginatedFirmAuctionsContext;
   className?: string;
 }
 
@@ -31,13 +31,13 @@ const _MyAuctionsTable = ({ auctions, className }: MyAuctionsTableProps) => {
     if (!auctions) return null;
     const output = [];
 
-    switch (auctions.filters.status) {
+    switch (auctions.filters.auctionStatus) {
       case 'upcoming':
         output.push(
           <Pill
             key={'upcoming'}
             className={classes.badge}
-            onRemove={() => auctions.setSingleFilter('status', 'all')}
+            onRemove={() => auctions.setSingleFilter('auctionStatus', 'all')}
             withRemoveButton
           >
             {t('components.auctionsTable.filters.badges.upcoming')}
@@ -49,7 +49,7 @@ const _MyAuctionsTable = ({ auctions, className }: MyAuctionsTableProps) => {
           <Pill
             key={'ongoing'}
             className={classes.badge}
-            onRemove={() => auctions.setSingleFilter('status', 'all')}
+            onRemove={() => auctions.setSingleFilter('auctionStatus', 'all')}
             withRemoveButton
           >
             {t('components.auctionsTable.filters.badges.ongoing')}
@@ -61,7 +61,7 @@ const _MyAuctionsTable = ({ auctions, className }: MyAuctionsTableProps) => {
           <Pill
             key={'ended'}
             className={classes.badge}
-            onRemove={() => auctions.setSingleFilter('status', 'all')}
+            onRemove={() => auctions.setSingleFilter('auctionStatus', 'all')}
             withRemoveButton
           >
             {t('components.auctionsTable.filters.badges.ended')}
@@ -70,13 +70,13 @@ const _MyAuctionsTable = ({ auctions, className }: MyAuctionsTableProps) => {
         break;
     }
 
-    switch (auctions.filters.type) {
+    switch (auctions.filters.auctionType) {
       case 'open':
         output.push(
           <Pill
             key={'open'}
             className={classes.badge}
-            onRemove={() => auctions.setSingleFilter('type', 'all')}
+            onRemove={() => auctions.setSingleFilter('auctionType', 'all')}
             withRemoveButton
           >
             {t('components.auctionsTable.filters.badges.open')}
@@ -88,7 +88,7 @@ const _MyAuctionsTable = ({ auctions, className }: MyAuctionsTableProps) => {
           <Pill
             key={'sealed'}
             className={classes.badge}
-            onRemove={() => auctions.setSingleFilter('type', 'all')}
+            onRemove={() => auctions.setSingleFilter('auctionType', 'all')}
             withRemoveButton
           >
             {t('components.auctionsTable.filters.badges.sealed')}
@@ -104,7 +104,7 @@ const _MyAuctionsTable = ({ auctions, className }: MyAuctionsTableProps) => {
         </Pill>
       );
     return output;
-  }, [auctions, auctions?.filters.status, auctions?.filters.type, t]);
+  }, [auctions, auctions?.filters.auctionStatus, auctions?.filters.auctionType, t]);
 
   return (
     <Stack className={`${classes.root} ${className}`}>
@@ -280,15 +280,6 @@ const _MyAuctionsTable = ({ auctions, className }: MyAuctionsTableProps) => {
   );
 };
 const MyAuctionsTable = (props: MyAuctionsTableProps) => {
-  const firm = useContext(MyUserProfileContext);
-  return withProviders(<_MyAuctionsTable {...props} />, {
-    provider: PaginatedAuctionsProvider,
-    props: {
-      defaultFilters: {
-        ownerId: firm?.id || '',
-        ownership: 'private'
-      }
-    }
-  });
+  return <_MyAuctionsTable {...props} />
 }
 export { MyAuctionsTable };

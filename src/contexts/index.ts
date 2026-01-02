@@ -25,3 +25,4 @@ export * from './SingleAuction';
 export * from './SingleAuctionCycle';
 export * from './SingleFirm';
 export * from './SingleSubsector';
+export * from './PaginatedFirmAuctions'

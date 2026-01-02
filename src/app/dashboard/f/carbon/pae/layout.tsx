@@ -5,7 +5,7 @@ import { Stack } from '@mantine/core';
 
 import { withProviders } from 'helpers/withProviders';
 
-import { PaginatedAuctionsProvider } from 'contexts';
+import { PaginatedFirmAuctionsProvider } from 'contexts';
 
 import classes from './styles.module.css';
 
@@ -23,14 +23,7 @@ export default function PermitsAndEmissionsProps({ subbanners, auctions }: Permi
     <Stack className={classes.root}>
       {subbanners}
       {auctions}
-    </Stack>
-    , {
-      provider: PaginatedAuctionsProvider,
-      props: {
-        defaultFilters: {
-          sector: [],
-          ownership: 'all'
-        }
-      } 
-  });
+    </Stack>,
+    { provider: PaginatedFirmAuctionsProvider }
+  );
 }
