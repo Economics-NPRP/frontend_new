@@ -15,7 +15,7 @@ export interface IGetPaginatedFirmAuctionsOptions extends IOffsetPagination {
 	sortDirection?: SortDirection | null;
 
 	ownerId?: string;
-	type?: AuctionTypeFilter;
+	auctionType?: AuctionTypeFilter;
 	firmId?: string;
 	sector?: Array<string>;
 	auctionStatus?: string;
@@ -52,7 +52,7 @@ export const getPaginatedFirmAuctions: IFunctionSignature = cache(
 		sortBy,
 		sortDirection,
 		ownerId,
-		type,
+		auctionType,
 		firmId,
 		sector,
 		auctionStatus,
@@ -96,11 +96,11 @@ export const getPaginatedFirmAuctions: IFunctionSignature = cache(
 		if (sortBy) params.append('order_by', sortBy);
 		if (sortDirection) params.append('order_dir', sortDirection);
 		if (ownerId) params.append('owner', ownerId);
-		if (type && type !== 'all') params.append('type', type);
+		if (auctionType && auctionType !== 'all') params.append('auction_type', auctionType);
 
 		if (firmId) params.append('firm_id', firmId);
 		if (sector) sector.forEach((s) => params.append('sector', s));
-		if (auctionStatus && auctionStatus !== 'all') params.append('status', auctionStatus);
+		if (auctionStatus && auctionStatus !== 'all') params.append('auction_status', auctionStatus);
 		if (isPrimaryMarket !== undefined)
 			params.append('is_primary_market', isPrimaryMarket.toString());
 		if (startDatetimeFrom) params.append('start_datetime_from', startDatetimeFrom);

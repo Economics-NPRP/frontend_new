@@ -147,7 +147,9 @@ export const PaginatedFirmAuctionsProvider = ({
 					sortBy,
 					sortDirection,
 					...filters,
-					type: filters.auctionType,
+					
+					auctionType: filters.auctionType,
+					auctionStatus: filters.auctionStatus,
 
 					firmId: filters.firmId,
 					isPrimaryMarket: filters.isPrimaryMarket,

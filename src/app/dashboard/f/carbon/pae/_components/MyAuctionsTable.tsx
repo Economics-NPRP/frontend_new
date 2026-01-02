@@ -1,7 +1,7 @@
 'use client';
-import { Stack, Group, Text, Pill, Select, TextInput, Anchor, Input } from "@mantine/core";
+import { Stack, Group, Text, Pill, Select, TextInput, Anchor, Input, Popover, Button, NumberInput, MultiSelect, ScrollArea } from "@mantine/core";
 import { useMemo, useRef, useState } from "react";
-import { IconSearch } from "@tabler/icons-react";
+import { IconSearch, IconFilter } from "@tabler/icons-react";
 import { DataTable } from "mantine-datatable";
 import { DateTime } from "luxon";
 import Link from "next/link";
@@ -10,8 +10,8 @@ import { useOffsetPaginationText } from "@/hooks";
 import { IPaginatedFirmAuctionsContext, PaginatedFirmAuctionsProvider } from "@/contexts";
 import { TablePagination } from "@/components/Tables/_components/Pagination";
 import { AuctionTypeBadge, AuctionStatusBadge, SectorBadge, CurrencyBadge } from "@/components/Badge";
+import { SectorList } from "@/constants/SectorData";
 import classes from "./styles.module.css";
-import { withProviders } from "helpers/withProviders";
 
 export interface MyAuctionsTableProps {
   auctions: IPaginatedFirmAuctionsContext;
@@ -127,6 +127,113 @@ const _MyAuctionsTable = ({ auctions, className }: MyAuctionsTableProps) => {
             <Group className={classes.group}>{filterBadges}</Group>
           </Group>
           <Group className={classes.settings}>
+            {/* Added Filter Dropdown */}
+            <Popover width={320} position="bottom-end" withArrow shadow="md">
+              <Popover.Target>
+                <Group>
+                  <Text className="paragraph-sm" span>{t('components.auctionCatalogue.filters.heading')}</Text>
+                  <Button variant="default">
+                    <IconFilter size={16} />
+                  </Button>
+                </Group>
+              </Popover.Target>
+              <Popover.Dropdown>
+                <ScrollArea.Autosize h={400} type="scroll">
+                  <Stack gap="sm">
+                    <Select
+                      label={t('components.auctionCatalogue.filters.accordion.status.title')}
+                      data={['all', 'upcoming', 'ongoing', 'ended']}
+                      value={auctions.filters.auctionStatus || 'all'}
+                      onChange={(val) => auctions.setSingleFilter('auctionStatus', val || 'all')}
+                    />
+                    <Select
+                      label={t('components.auctionCatalogue.filters.accordion.type.title')}
+                      data={['all', 'open', 'sealed']}
+                      value={auctions.filters.auctionType || 'all'}
+                      onChange={(val) => auctions.setSingleFilter('auctionType', val || 'all')}
+                    />
+                    <MultiSelect
+                      label={t('components.auctionCatalogue.filters.accordion.sector.title')}
+                      data={SectorList}
+                      value={auctions.filters.sector || []}
+                      onChange={(val) => auctions.setArrayFilter('sector', val)}
+                      searchable
+                    />
+                    <Group grow>
+                      <NumberInput
+                        label={t('components.auctionCatalogue.filters.accordion.minPermits.title')}
+                        value={auctions.filters.minPermits}
+                        onChange={(val) => auctions.setSingleFilter('minPermits', val)}
+                        min={0}
+                      />
+                      <NumberInput
+                        label={t('components.auctionCatalogue.filters.accordion.maxPermits.title')}
+                        value={auctions.filters.maxPermits}
+                        onChange={(val) => auctions.setSingleFilter('maxPermits', val)}
+                        min={0}
+                      />
+                    </Group>
+
+                    <TextInput
+                      label={t('components.auctionCatalogue.filters.accordion.startDatetimeFrom.title')}
+                      type="datetime-local"
+                      value={auctions.filters.startDatetimeFrom || ''}
+                      onChange={(e) => auctions.setSingleFilter('startDatetimeFrom', e.currentTarget.value)}
+                    />
+                    <TextInput
+                      label={t('components.auctionCatalogue.filters.accordion.startDatetimeTo.title')}
+                      type="datetime-local"
+                      value={auctions.filters.startDatetimeTo || ''}
+                      onChange={(e) => auctions.setSingleFilter('startDatetimeTo', e.currentTarget.value)}
+                    />
+                    <TextInput
+                      label={t('components.auctionCatalogue.filters.accordion.endDatetimeFrom.title')}
+                      type="datetime-local"
+                      value={auctions.filters.endDatetimeFrom || ''}
+                      onChange={(e) => auctions.setSingleFilter('endDatetimeFrom', e.currentTarget.value)}
+                    />
+                    <TextInput
+                      label={t('components.auctionCatalogue.filters.accordion.endDatetimeTo.title')}
+                      type="datetime-local"
+                      value={auctions.filters.endDatetimeTo || ''}
+                      onChange={(e) => auctions.setSingleFilter('endDatetimeTo', e.currentTarget.value)}
+                    />
+
+                    <Select
+                      label={t('components.auctionCatalogue.filters.accordion.isPrimaryMarket.label')}
+                      data={[
+                        { value: 'all', label: t('components.auctionCatalogue.filters.accordion.isPrimaryMarket.all.title') },
+                        { value: 'true', label: t('components.auctionCatalogue.filters.accordion.isPrimaryMarket.primary.title') },
+                        { value: 'false', label: t('components.auctionCatalogue.filters.accordion.isPrimaryMarket.secondary.title') }
+                      ]}
+                      value={auctions.filters.isPrimaryMarket === undefined ? 'all' : auctions.filters.isPrimaryMarket.toString()}
+                      onChange={(val) => auctions.setSingleFilter('isPrimaryMarket', val === 'all' ? undefined : val === 'true')}
+                    />
+
+                    <TextInput
+                      label={t('components.auctionCatalogue.filters.accordion.auctionId.title')}
+                      value={auctions.filters.auctionId || ''}
+                      onChange={(e) => auctions.setSingleFilter('auctionId', e.currentTarget.value)}
+                    />
+                    <TextInput
+                      label={t('components.auctionCatalogue.filters.accordion.ownerId.title')}
+                      value={auctions.filters.ownerId || ''}
+                      onChange={(e) => auctions.setSingleFilter('ownerId', e.currentTarget.value)}
+                    />
+                    <TextInput
+                      label={t('components.auctionCatalogue.filters.accordion.firmId.title')}
+                      value={auctions.filters.firmId || ''}
+                      onChange={(e) => auctions.setSingleFilter('firmId', e.currentTarget.value)}
+                    />
+
+                    <Button variant="light" color="red" onClick={auctions.resetFilters}>
+                      {t('components.auctionCatalogue.filters.clear.tooltip')}
+                    </Button>
+                  </Stack>
+                </ScrollArea.Autosize>
+              </Popover.Dropdown>
+            </Popover>
+            {/* End Added Filter Dropdown */}
             <Text className={classes.label}>
               {t('constants.pagination.perPage.label')}
             </Text>
@@ -164,6 +271,7 @@ const _MyAuctionsTable = ({ auctions, className }: MyAuctionsTableProps) => {
       {/* Expect - data table props from library are not exposed */}
       <DataTable
         className={classes.table}
+        minHeight={400}
         columns={[
           {
             accessor: 'title',

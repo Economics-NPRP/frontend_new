@@ -1254,6 +1254,58 @@
               "government": "Government",
               "private": "Private Sector"
             }
+          },
+          "minPermits": {
+            "title": "Min Permits",
+            "description": "Minimum number of permits offered in the auction"
+          },
+          "maxPermits": {
+            "title": "Max Permits",
+            "description": "Maximum number of permits offered in the auction"
+          },
+          "startDatetimeFrom": {
+            "title": "Start Date (From)",
+            "description": "Start date for the auction (from)"
+          },
+          "startDatetimeTo": {
+            "title": "Start Date (To)",
+            "description": "Start date for the auction (to)"
+          },
+          "endDatetimeFrom": {
+            "title": "End Date (From)",
+            "description": "End date for the auction (from)"
+          },
+          "endDatetimeTo": {
+            "title": "End Date (To)",
+            "description": "End date for the auction (to)"
+          },
+          "isPrimaryMarket": {
+            "label": "Market",
+            "description": "Filter for auction ownership type",
+            "primary": {
+              "title": "Primary Market",
+              "description": "Auctions where permits are sold for the first time by the government"
+            },
+            "secondary": {
+              "title": "Secondary Market",
+              "description": "Auctions where permits are resold between companies"
+            },
+            "all": {
+              "title": "All Markets",
+              "description": "Both primary and secondary market auctions"
+            }
+          },
+          "auctionId": {
+            "title": "Auction ID",
+            "description": "Unique identifier for the auction"
+          },
+          "ownerId": {
+            "title": "Owner ID",
+            "description": "Unique identifier for the auction owner"
+          },
+          "firmId": {
+            "title": "Company ID",
+            "description": "Unique identifier for the company"
           }
         },
         "clear": {
@@ -2859,7 +2911,7 @@
         "pae": {
           "myAuctions": {
             "title": "Joined Auctions",
-            "description": "View and manage all auctions you joined. Track bids and monitor auction status."
+            "description": "View and manage all auctions you joined. Track bids, monitor auction status, and manage your active listings in one convenient location."
           }
         }
       }
