@@ -113,7 +113,7 @@ export const getPaginatedFirmAuctions: IFunctionSignature = cache(
 
 		const response = await fetch(
 			await internalUrl(
-				`/api/proxy/v1/auctions/${params.toString() ? `?${params.toString()}` : ''}`,
+				`/api/proxy/v1/auctions/firms/auction-overview${params.toString() ? `?${params.toString()}` : ''}`,
 			),
 			querySettings,
 		);

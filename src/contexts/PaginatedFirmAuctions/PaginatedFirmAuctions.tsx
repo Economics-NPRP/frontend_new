@@ -161,7 +161,7 @@ export const PaginatedFirmAuctionsProvider = ({
 					ownerId: filters.ownerId,
 					sector: filters.sector,
 				}),
-				'getPaginatedAuctions',
+				'getPaginatedFirmAuctions',
 			),
 		[filters],
 	);
