@@ -2,7 +2,6 @@
 
 import { parseAsArrayOf, parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from 'nuqs';
 import { createContext, useCallback, useMemo } from 'react';
-import { string } from 'valibot';
 
 import { SectorList } from '@/constants/SectorData';
 import {
