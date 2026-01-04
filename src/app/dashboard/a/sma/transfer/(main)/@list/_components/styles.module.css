@@ -1,0 +1,33 @@
+.request {
+  @apply border border-solid border-slate-300 justify-between items-center;
+  > .firmFrom {
+    @apply gap-0 py-6 px-10 flex-1;
+  }
+  > .permits {
+    @apply px-12 h-full border-x border-solid border-x-slate-300 border-y-0;
+    background-image: 
+      repeating-linear-gradient(-45deg, #fff 0px, #fff 10px, #f1f5f9 10px, #f1f5f9 20px);
+    > .text {
+      @apply gap-2;
+    }
+  }
+  > .firmTo {
+    @apply gap-0 flex-1 justify-center items-center;
+    > .requestedAt {
+      @apply py-0.5 mt-2 px-6 rounded-full bg-dark-600 paragraph-sm-w;
+    }
+  }
+  > .review {
+    @apply h-full px-20 justify-center;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      #262626 0px,
+      #262626 10px,
+      #404040 10px,
+      #404040 20px
+    );
+    > .button {
+      @apply w-24;
+    }
+  }
+}

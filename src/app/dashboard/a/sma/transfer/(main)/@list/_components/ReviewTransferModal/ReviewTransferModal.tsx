@@ -4,7 +4,6 @@ import { Modal, ModalProps, Text, Button, Textarea, useModalsStack, Group, Stack
 import { useTranslations } from 'next-intl';
 import { ReviewTransferModalContext } from './constants';
 import classes from './styles.module.css';
-import { useQueryState } from 'nuqs';
 import { useTransferApproval } from 'hooks/useTransferApproval';
 
 export const ReviewTransferModal = ({ className, ...props }: ModalProps) => {
