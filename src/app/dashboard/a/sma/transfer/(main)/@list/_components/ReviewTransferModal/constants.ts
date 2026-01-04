@@ -2,18 +2,18 @@
 
 import { createContext } from 'react';
 
-export const DefaultReviewPermitsModalContextData: IReviewPermitsModalContext = {
+export const DefaultReviewTransferModalContextData: IReviewTransferModalContext = {
   open: () => { },
   close: () => { },
-  firmId: '',
+  requestId: '',
 };
 
-export interface IReviewPermitsModalContext {
-  open: (firmId: string) => void;
+export interface IReviewTransferModalContext {
+  open: (requestId: string) => void;
   close: () => void;
-  firmId: string;
+  requestId: string;
 }
 
-export const ReviewPermitsModalContext = createContext<IReviewPermitsModalContext>(
-  DefaultReviewPermitsModalContextData,
+export const ReviewTransferModalContext = createContext<IReviewTransferModalContext>(
+  DefaultReviewTransferModalContextData,
 );

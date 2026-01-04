@@ -1,8 +1,10 @@
 import { Stack } from "@mantine/core"
+import Request from "./_components/Request"
+import { DefaultPermitTransfer } from "@/schema/models/TransferRequestData"
 const TransfersList = () => {
   return (
     <Stack>
-      <div>TransfersList</div>
+      <Request request={DefaultPermitTransfer} />
     </Stack>
   )
 }

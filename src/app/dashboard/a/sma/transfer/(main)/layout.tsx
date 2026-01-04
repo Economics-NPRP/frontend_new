@@ -5,6 +5,7 @@ import { DashboardHero } from "@/pages/dashboard/_components/DashboardHero";
 import { IconHammer } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { Metadata } from 'next';
+import { ReviewTransferModalProvider } from "@/pages/dashboard/a/sma/transfer/(main)/@list/_components/ReviewTransferModal";
 
 export const metadata: Metadata = {
   title: {
@@ -36,6 +37,7 @@ export default function TransferRequestsLayout({ list }: { list: ReactNode }) {
       />
       {list}
     </>,
-    { provider: ListSecondaryMarketApprovalsProvider }
+    { provider: ListSecondaryMarketApprovalsProvider },
+    { provider: ReviewTransferModalProvider }
   );
 }

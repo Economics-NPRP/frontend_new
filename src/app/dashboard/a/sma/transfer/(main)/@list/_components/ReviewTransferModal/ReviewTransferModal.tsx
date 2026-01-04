@@ -2,17 +2,15 @@
 import { useState, useContext, PropsWithChildren } from 'react';
 import { Modal, ModalProps, Text, Button, Textarea, useModalsStack, Group, Stack, Title, Flex, Input } from '@mantine/core';
 import { useTranslations } from 'next-intl';
-import { ReviewPermitsModalContext } from './constants';
+import { ReviewTransferModalContext } from './constants';
 import classes from './styles.module.css';
 import { useQueryState } from 'nuqs';
 import { useTransferApproval } from 'hooks/useTransferApproval';
 
-export const ReviewPermitsModal = ({ className, ...props }: ModalProps) => {
+export const ReviewTransferModal = ({ className, ...props }: ModalProps) => {
   const t = useTranslations();
 
-  const [requestId, _] = useQueryState("requestId")
-
-  const { close, firmId } = useContext(ReviewPermitsModalContext);
+  const { close, requestId } = useContext(ReviewTransferModalContext);
 
   const [quantity, setQuantity] = useState(1);
   const [notes, setNotes] = useState('');
@@ -67,19 +65,19 @@ export const ReviewPermitsModal = ({ className, ...props }: ModalProps) => {
           <Button
             color="red"
             variant="outline"
-            onClick={() => reject.mutate({
-              firmId, quantity, notes
+            onClick={() => transferAction.mutate({
+              requestId: requestId || '', decision: "reject", notes
             })}
-            loading={reject.isPending}
+            loading={transferAction.isPending}
           >
             Reject
           </Button>
           <Button
             color="green"
-            onClick={() => accept.mutate({
-              firmId, quantity, notes
+            onClick={() => transferAction.mutate({
+              requestId: requestId || '', decision: "approve", notes
             })}
-            loading={accept.isPending}
+            loading={transferAction.isPending}
           >
             Approve
           </Button>
@@ -89,25 +87,25 @@ export const ReviewPermitsModal = ({ className, ...props }: ModalProps) => {
   );
 };
 
-export const ReviewPermitsModalProvider = ({ children }: PropsWithChildren) => {
+export const ReviewTransferModalProvider = ({ children }: PropsWithChildren) => {
   const stack = useModalsStack(['root']);
-  const [firmId, setFirmId] = useState<string>('');
+  const [requestId, setRequestId] = useState<string>('');
 
   return (
-    <ReviewPermitsModalContext.Provider
+    <ReviewTransferModalContext.Provider
       value={{
-        open: (firmId) => {
-          setFirmId(firmId);
+        open: (requestId) => {
+          setRequestId(requestId);
           stack.open('root');
         },
         close: () => stack.close('root'),
-        firmId,
+        requestId,
       }}
     >
       {children}
       <Modal.Stack>
-        <ReviewPermitsModal {...stack.register('root')} />
+        <ReviewTransferModal {...stack.register('root')} />
       </Modal.Stack>
-    </ReviewPermitsModalContext.Provider>
+    </ReviewTransferModalContext.Provider>
   );
 };

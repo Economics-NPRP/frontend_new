@@ -1,9 +1,15 @@
+'use client'
+import { useContext } from "react"
 import { Flex, Stack, Group, Title, Text, Button } from "@mantine/core"
 import { Id } from "@/components/Id"
 import { IconArrowNarrowRightDashed } from "@tabler/icons-react"
 import { IPermitTransfer } from "@/schema/models/TransferRequestData"
+import { ReviewTransferModalContext } from "@/pages/dashboard/a/sma/transfer/(main)/@list/_components/ReviewTransferModal"
 
 const Request = ({ request }: { request: IPermitTransfer }) => {
+
+  const { open } = useContext(ReviewTransferModalContext)
+
   return (
     <Flex>
       <Stack>
@@ -27,7 +33,7 @@ const Request = ({ request }: { request: IPermitTransfer }) => {
         <Title className="heading-2" order={2}>Receiving Company</Title>
       </Stack>
       <Stack>
-        <Button>Review</Button>
+        <Button onClick={() => open(`${request.id}`)}>Review</Button>
       </Stack>
     </Flex>
   )
