@@ -1,18 +1,15 @@
 'use client';
-import { useState, useContext, PropsWithChildren, useEffect } from 'react';
+import { useState, useContext, PropsWithChildren } from 'react';
 import { Modal, ModalProps, Text, Button, Textarea, useModalsStack, Group, Stack, Title, Flex, Input } from '@mantine/core';
-import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { usePermitAction } from '@/hooks';
 import { ReviewPermitsModalContext } from './constants';
 import classes from './styles.module.css';
 import { SingleAuctionContext } from 'contexts/SingleAuction';
+import { useTransferAction } from 'hooks/useTransferAction';
 
 export const ReviewPermitsModal = ({ className, ...props }: ModalProps) => {
   const t = useTranslations();
-  const params = useParams();
 
-  const auctionId = params.auctionId as string;
   const { close, firmId } = useContext(ReviewPermitsModalContext);
 
   const auction = useContext(SingleAuctionContext);
@@ -32,7 +29,7 @@ export const ReviewPermitsModal = ({ className, ...props }: ModalProps) => {
   const handleIncrement = () => setQuantity(prev => prev + 1);
   const handleDecrement = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
 
-  const { accept, reject } = usePermitAction(auction.data.emissionId, auctionId, close);
+  const { accept } = useTransferAction(auction.data.emissionId, close);
 
   return (
     <Modal
@@ -49,7 +46,7 @@ export const ReviewPermitsModal = ({ className, ...props }: ModalProps) => {
       <Stack gap="md">
         <Title order={3} className={classes.heading}>Review Permits</Title>
         <Text className={classes.description}>
-          {t('dashboard.admin.permits.review.description')}
+          {t('dashboard.firm.permits.review.description')}
         </Text>
         <Text className={classes.text}>{t('dashboard.admin.permits.review.quantity')}</Text>
         <Flex>
@@ -57,7 +54,7 @@ export const ReviewPermitsModal = ({ className, ...props }: ModalProps) => {
           <Input className='w-full' value={quantity} onChange={handleQuantityChange} />
           <Button onClick={handleIncrement} variant='white' className={classes.increment}>+</Button>
         </Flex>
-        <Text className={classes.text}>{t('dashboard.admin.permits.review.note')}</Text>
+        <Text className={classes.text}>{t('dashboard.firm.permits.review.note')}</Text>
         <Textarea
           placeholder="Write your note here..."
           className={classes.notes}
@@ -68,23 +65,13 @@ export const ReviewPermitsModal = ({ className, ...props }: ModalProps) => {
 
         <Group grow>
           <Button
-            color="red"
-            variant="outline"
-            onClick={() => reject.mutate({
-              firmId, quantity, notes
-            })}
-            loading={reject.isPending}
-          >
-            Reject
-          </Button>
-          <Button
             color="green"
             onClick={() => accept.mutate({
               firmId, quantity, notes
             })}
             loading={accept.isPending}
           >
-            Approve
+            Request Approval
           </Button>
         </Group>
       </Stack>

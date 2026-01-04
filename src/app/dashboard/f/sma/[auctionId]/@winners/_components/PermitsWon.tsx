@@ -1,5 +1,5 @@
 "use client"
-import { Group, Grid, Flex, Stack, Container, Title, Text, Anchor, Button, Checkbox } from "@mantine/core"
+import { Group, Flex, Stack, Container, Title, Text, Anchor, Button, Checkbox } from "@mantine/core"
 import { IconUser } from "@tabler/icons-react"
 import { Id } from "@/components/Id"
 import classes from "./styles.module.css"

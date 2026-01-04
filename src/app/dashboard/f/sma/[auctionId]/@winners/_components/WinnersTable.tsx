@@ -1,7 +1,8 @@
 'use client'
-import { Stack, Flex, Text, Group, Pill, Select, Menu, ActionIcon, Container, TextInput, Button, Checkbox, Anchor } from "@mantine/core";
-import { useMediaQuery, useListState } from "@mantine/hooks";
+import { Stack, Flex, Text, Group, Pill, Select, Menu, ActionIcon, TextInput, Button, Checkbox, Anchor } from "@mantine/core";
+import { useListState } from "@mantine/hooks";
 import { useContext, useEffect, useMemo, useRef, useState, useCallback } from "react";
+import { PaginatedWinningBidsContext } from "contexts/PaginatedWinningBids";
 import { IconAdjustments, IconReportAnalytics, IconFilterSearch, IconSearch } from "@tabler/icons-react";
 import { IPaginatedWinningBidsContext } from "contexts/PaginatedWinningBids"
 import { SelectionSummaryContext } from "@/components/Tables/_components/SelectionSummary";
@@ -12,11 +13,9 @@ import { IBidData, PermitsFilterType } from "@/schema/models";
 import { TablePagination } from "@/components/Tables/_components/Pagination";
 import { PermitsWon, demoData } from "./PermitsWon";
 
-type WinnersTableProps = {
-  bids: IPaginatedWinningBidsContext;
-}
+const WinnersTable = () => {
 
-const WinnersTable = ({ bids }: WinnersTableProps) => {
+  const bids = useContext<IPaginatedWinningBidsContext>(PaginatedWinningBidsContext)
 
   const t = useTranslations();
   const format = useFormatter();

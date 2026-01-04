@@ -2,9 +2,8 @@ import { Stack } from "@mantine/core"
 import { withProviders } from "helpers/withProviders"
 import { SingleAuctionProvider } from "contexts/SingleAuction"
 import { PaginatedWinningBidsProvider } from "contexts/PaginatedWinningBids"
-import { MyUserProfileProvider } from "contexts/MyUserProfile"
-import { ReviewPermitsModalProvider } from "@/pages/dashboard/a/permits/[auctionId]/@winners/_components/ReviewPermitsModal"
-import { AuctionPermitsHero } from "@/pages/dashboard/a/permits/[auctionId]/_components/AuctionPermitsHero"
+import { ReviewPermitsModalProvider } from "./@winners/_components/ReviewPermitsModal"
+import { AuctionPermitsHero } from "./_components/AuctionPermitsHero"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -26,7 +25,6 @@ const AuctionPermits = ({ winners, calltoaction }: AuctionPermitsProps) => {
     { provider: ReviewPermitsModalProvider },
     { provider: PaginatedWinningBidsProvider },
     { provider: SingleAuctionProvider },
-    { provider: MyUserProfileProvider },
   )
 }
 

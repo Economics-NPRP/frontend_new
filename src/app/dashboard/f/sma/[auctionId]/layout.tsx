@@ -9,11 +9,11 @@ export const metadata: Metadata = {
   title: 'Permit Distribution',
 };
 
-type AuctionPermitsProps = {
+type SecondaryAuctionPermitsProps = {
   winners: React.ReactNode;
   calltoaction: React.ReactNode;
 }
-const AuctionPermits = ({ winners, calltoaction }: AuctionPermitsProps) => {
+const SecondaryAuctionPermits = ({ winners, calltoaction }: SecondaryAuctionPermitsProps) => {
 
   return withProviders(
     <Stack>
@@ -28,4 +28,4 @@ const AuctionPermits = ({ winners, calltoaction }: AuctionPermitsProps) => {
   )
 }
 
-export default AuctionPermits
+export default SecondaryAuctionPermits

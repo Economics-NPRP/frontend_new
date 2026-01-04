@@ -2949,6 +2949,12 @@
             "subtitle": "Pending"
           }
         }
+      },
+      "permits": {
+        "review": {
+          "note": "Write a note to the administrator",
+          "description": "Request approval or rejection of permits awarded to this firm"
+        }
       }
     },
     "header": {
