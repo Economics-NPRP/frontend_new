@@ -1,21 +1,18 @@
 'use client';
 import { useState, useContext, PropsWithChildren } from 'react';
 import { Modal, ModalProps, Text, Button, Textarea, useModalsStack, Group, Stack, Title, Flex, Input } from '@mantine/core';
-import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { usePermitAction } from '@/hooks';
 import { ReviewPermitsModalContext } from './constants';
 import classes from './styles.module.css';
-import { SingleAuctionContext } from 'contexts/SingleAuction';
+import { useQueryState } from 'nuqs';
+import { useTransferApproval } from 'hooks/useTransferApproval';
 
 export const ReviewPermitsModal = ({ className, ...props }: ModalProps) => {
   const t = useTranslations();
-  const params = useParams();
 
-  const auctionId = params.auctionId as string;
+  const [requestId, _] = useQueryState("requestId")
+
   const { close, firmId } = useContext(ReviewPermitsModalContext);
-
-  const auction = useContext(SingleAuctionContext);
 
   const [quantity, setQuantity] = useState(1);
   const [notes, setNotes] = useState('');
@@ -32,7 +29,7 @@ export const ReviewPermitsModal = ({ className, ...props }: ModalProps) => {
   const handleIncrement = () => setQuantity(prev => prev + 1);
   const handleDecrement = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
 
-  const { accept, reject } = usePermitAction(auction.data.emissionId, auctionId, close);
+  const { transferAction } = useTransferApproval(close);
 
   return (
     <Modal
@@ -47,9 +44,9 @@ export const ReviewPermitsModal = ({ className, ...props }: ModalProps) => {
       {...props}
     >
       <Stack gap="md">
-        <Title order={3} className={classes.heading}>Review Permits</Title>
+        <Title order={3} className={classes.heading}>Review Permit Transfer</Title>
         <Text className={classes.description}>
-          {t('dashboard.admin.permits.review.description')}
+          {t('dashboard.admin.transfer.review.description')}
         </Text>
         <Text className={classes.text}>{t('dashboard.admin.permits.review.quantity')}</Text>
         <Flex>
@@ -57,7 +54,7 @@ export const ReviewPermitsModal = ({ className, ...props }: ModalProps) => {
           <Input className='w-full' value={quantity} onChange={handleQuantityChange} />
           <Button onClick={handleIncrement} variant='white' className={classes.increment}>+</Button>
         </Flex>
-        <Text className={classes.text}>{t('dashboard.admin.permits.review.note')}</Text>
+        <Text className={classes.text}>{t('dashboard.admin.transfer.review.note')}</Text>
         <Textarea
           placeholder="Write your note here..."
           className={classes.notes}

@@ -1,0 +1,94 @@
+.root {
+  .heading {
+    @apply heading-2 text-center mb-0;
+  }
+  .textarea {
+    @apply mt-0;
+  }
+  .increment, .decrement {
+    @apply border border-solid border-dark-600 box-border;
+  }
+  .description {
+    @apply paragraph-sm-15 text-center;
+  }
+  .text {
+    @apply paragraph-md mt-2;
+  }
+  .permits {
+    @apply w-full;
+  }
+	> .inner > .content {
+		@apply p-6;
+		@apply justify-center items-center;
+
+		min-width: calc(100vw - 16px);
+
+		> .body {
+			@apply flex flex-col items-stretch justify-center;
+			@apply gap-8 p-0;
+
+			> .header {
+				@apply gap-0 flex-nowrap;
+
+				> .title {
+					@apply text-center text-pretty heading-2;
+				}
+
+				> .description {
+					@apply text-center paragraph-sm;
+				}
+			}
+
+			.actions {
+				@apply flex-col gap-2 justify-center flex-nowrap;
+
+				> .button {
+					@apply self-stretch;
+
+					&.primary {
+						@apply flex-auto;
+					}
+				}
+			}
+		}
+	}
+}
+
+* {
+	@mixin larger-than $mantine-breakpoint-sm {
+		.root > .inner > .content {
+			@apply min-w-[640px];
+			@apply px-16 py-8;
+
+			> .body {
+				@apply gap-0;
+
+				> .header {
+					@apply gap-1;
+				}
+
+				.actions {
+					@apply flex-row self-center;
+
+					> .button {
+						@apply w-[120px];
+
+						&.primary {
+							@apply w-[unset] flex-auto;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@mixin dark {
+		.root > .inner > .content > .body .actions > .button.secondary {
+			@apply bg-dark-700 border-dark-400 text-white;
+
+			&:hover {
+				@apply bg-dark-600;
+			}
+		}
+	}
+}

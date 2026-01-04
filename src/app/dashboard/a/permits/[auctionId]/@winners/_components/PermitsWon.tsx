@@ -1,32 +1,12 @@
 "use client"
-import { Group, Grid, Flex, Stack, Container, Title, Text, Anchor, Button, Checkbox } from "@mantine/core"
+import { Group, Flex, Stack, Container, Title, Text, Anchor, Button, Checkbox } from "@mantine/core"
 import { IconUser } from "@tabler/icons-react"
 import { Id } from "@/components/Id"
 import classes from "./styles.module.css"
 import { WithSkeleton } from "@/components/WithSkeleton"
-import { IBidData } from "@/schema/models"
 import { useContext } from "react"
 import { ReviewPermitsModalContext } from "./ReviewPermitsModal"
 
-type PermitsWonProps = {
-  bid: {
-    id: string;
-    bidId?: string;
-    companyName: string;
-    owner: string;
-    bids: {
-      total: number;
-      approved: number;
-      pending: number;
-      rejected: number;
-      locked: number;
-      expired: number;
-    }
-  },
-  loading: boolean;
-  className?: string;
-  select: (bid: IBidData | typeof demoData[0], checked: boolean) => void;
-}
 const PermitsWon = ({ bid, loading, select, className }: PermitsWonProps) => {
   const { open } = useContext(ReviewPermitsModalContext);
 

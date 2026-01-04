@@ -634,8 +634,9 @@
             },
             "description": "View all verified firms participating in the platform. Browse key details, manage accounts, and access firm-specific statistics, auction history, and billing status.",
             "transfer": {
-              "title": "Transfer Applications",
-              "tooltip": "Manage permit transfer applications between firms"
+              "title": "Transfer Requests",
+              "tooltip": "Manage permit transfer applications between firms",
+              "description": "Manage permit transfer requests between firms."
             },
             "auction": {
               "title": "Auction Application",
@@ -2878,6 +2879,12 @@
             "text": "View and manage all admin roles on this platform"
           }
         }
+      },
+      "transfer": {
+        "review": {
+          "description": "Approve or reject permit transfers between firms",
+          "note": "Decision notes"
+        }
       }
     },
     "firm": {
@@ -3189,6 +3196,15 @@
           "message": "This auction is executed successfully"
         },
         "error": "Error Executing Auction"
+      }
+    },
+    "transfer": {
+      "accept": {
+        "success": {
+          "title": "Permit Transfer {decision}",
+          "message": "Permit transfer request {decision} successfully"
+        },
+        "error": "Error {decision} Request"
       }
     }
   },
