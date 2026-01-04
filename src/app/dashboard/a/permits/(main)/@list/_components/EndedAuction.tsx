@@ -3,17 +3,19 @@ import { Group, Title, Text, Stack, Flex, Anchor, Box, Divider } from "@mantine/
 import { PieChart } from "@mantine/charts"
 import classes from "./styles.module.css"
 import { Id } from "@/components/Id"
-import { IconRefresh, IconCalendar, IconCheck, IconDots, IconX } from "@tabler/icons-react"
+import { IconRefresh, IconCalendar, IconCheck, IconDots, IconX, IconLicense } from "@tabler/icons-react"
 import { useTranslations } from "next-intl"
 import { DateTime } from "luxon"
 import {ChartIcon} from "./ChartIcon"
 
 export type EndedAuctionProps = {
+  isFirmAuction?: boolean;
   id: string;
   name: string;
   description: string;
   winningBids: number;
-  cycle: string;
+  cycle?: string;
+  permits?: number;
   endDate: string;
   pieChartData: {
     accepted: number;
@@ -24,14 +26,17 @@ export type EndedAuctionProps = {
 
 const EndedAuction = (props: EndedAuctionProps) => {
   const t = useTranslations()
+
   const chartIconData = {
     accepted: props.pieChartData.accepted,
     rejected: props.pieChartData.rejected,
     pending: props.pieChartData.pending,
   }
 
+  const IconCyclePermit = props.isFirmAuction ? IconLicense : IconRefresh
+
   return (
-    <Anchor style={{ textDecoration: 'none' }} href={`/dashboard/a/permits/${props.id}`}>
+    <Anchor style={{ textDecoration: 'none' }} href={`/dashboard/${props.isFirmAuction ? 'f/sma' : 'a/permits'}/${props.id}`}>
       <Group className={classes.root}>
         <Flex flex={1.5} align={"center"} justify={"space-between"} className={classes.left}>
           <Stack gap={0} className={classes.text}>
@@ -106,9 +111,9 @@ const EndedAuction = (props: EndedAuctionProps) => {
         </Flex>
         <Flex flex={1} justify="center" align="center" className={classes.right}>
           <Stack flex={1.2} gap={0} align="center" className={classes.info}>
-            <IconRefresh size={32} className={classes.icon} />
-            <Title className={classes.infoTitle} order={5}>{t("dashboard.permits.endedAuctions.cycle")}</Title>
-            <Text className={classes.infoText} fw={600}>{props.cycle}</Text>
+            <IconCyclePermit size={32} className={classes.icon} />
+            <Title className={classes.infoTitle} order={5}>{t(`dashboard.permits.endedAuctions.${props.isFirmAuction ? "permits" : "cycle"}`)}</Title>
+            <Text className={classes.infoText} fw={600}>{props.isFirmAuction ? props.permits : props.cycle}</Text>
           </Stack>
           <Divider orientation="vertical" my={32} className={classes.divider} />
           <Stack flex={1} gap={0} align="center" className={classes.info}>

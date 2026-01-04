@@ -1,10 +1,11 @@
 'use client';
 
 import { parseAsArrayOf, parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from 'nuqs';
-import { createContext, useCallback, useMemo } from 'react';
+import { createContext, useCallback, useMemo, useContext } from 'react';
 
 import { SectorList } from '@/constants/SectorData';
 import {
+	MyUserProfileContext,
 	SortedOffsetPaginatedQueryProvider,
 	SortedOffsetPaginatedQueryProviderProps,
 } from '@/contexts';
@@ -42,24 +43,28 @@ const DefaultData: IPaginatedAuctionsContext = {
 	...getDefaultSortedOffsetPaginatedContextState<IAuctionData>(1, 12, 'created_at', 'desc'),
 
 	filters: DefaultQueryFiltersData,
-	setAllFilters: () => {},
-	setSingleFilter: () => {},
-	setArrayFilter: () => {},
-	addToFilterArray: () => {},
-	removeFilter: () => {},
-	resetFilters: () => {},
+	setAllFilters: () => { },
+	setSingleFilter: () => { },
+	setArrayFilter: () => { },
+	addToFilterArray: () => { },
+	removeFilter: () => { },
+	resetFilters: () => { },
 };
 const Context = createContext<IPaginatedAuctionsContext>(DefaultData);
 
 export interface PaginatedAuctionsProviderProps extends SortedOffsetPaginatedProviderProps {
 	defaultFilters?: QueryFiltersData;
+	owned?: boolean;
 }
 export const PaginatedAuctionsProvider = ({
 	defaultFilters,
+	owned = false,
 	syncWithSearchParams = false,
 	id = 'paginatedAuctions',
 	...props
 }: PaginatedAuctionsProviderProps) => {
+	const profile = useContext(MyUserProfileContext);
+
 	const [, setPage] = useQueryState(
 		'page',
 		parseAsInteger.withDefault(props.defaultPage || DefaultData.page),
@@ -126,28 +131,30 @@ export const PaginatedAuctionsProvider = ({
 	);
 
 	const queryKey = useMemo(
-		() => ['marketplace', 'paginatedAuctions', JSON.stringify(filters)],
-		[filters],
+		() => ['marketplace', 'paginatedAuctions', JSON.stringify(filters), owned ? profile?.data?.id : null],
+		[filters, owned, profile?.data?.id],
 	);
 	const queryFn = useMemo<
 		SortedOffsetPaginatedQueryProviderProps<IPaginatedAuctionsContext>['queryFn']
 	>(
-		() => (page, perPage, sortBy, sortDirection) => () =>
-			throwError(
+		() => (page, perPage, sortBy, sortDirection) => () => {
+			const effectiveOwnerId = owned ? profile?.data?.id : (filters.ownerId || undefined);
+			return throwError(
 				getPaginatedAuctions({
 					page,
 					perPage,
 					sortBy,
 					sortDirection,
 					type: filters.type,
-					ownership: filters.ownership, 
-					ownerId: filters.ownerId || undefined, // Use the UserProfile context to get ownerID
+					ownership: filters.ownership,
+					ownerId: effectiveOwnerId,
 					isLive: filters.status === 'ongoing',
 					hasEnded: filters.status === 'ended',
 				}),
 				'getPaginatedAuctions',
-			),
-		[filters],
+			);
+		},
+		[filters, owned, profile?.data?.id],
 	);
 
 	return (
@@ -158,6 +165,7 @@ export const PaginatedAuctionsProvider = ({
 			queryFn={queryFn}
 			id={id}
 			syncWithSearchParams={syncWithSearchParams}
+			disabled={owned && !profile?.data?.id}
 			filters={filters}
 			setAllFilters={setAllFilters}
 			setSingleFilter={setSingleFilter}

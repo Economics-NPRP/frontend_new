@@ -1,5 +1,5 @@
 'use client'
-import { Stack, Flex, Text, Group, Pill, Select, Menu, ActionIcon, TextInput, Button, Radio } from "@mantine/core"
+import { Stack, Flex, Text, Group, Pill, Select, Menu, ActionIcon, TextInput, Radio } from "@mantine/core"
 import { IconAdjustments, IconSearch } from "@tabler/icons-react"
 import { generateDescription } from "@/lib/auctions"
 import { useContext, useMemo, useState, useRef } from "react"
@@ -7,23 +7,16 @@ import { useTranslations } from "next-intl"
 import { EndedAuction } from "./EndedAuction"
 import { IPaginatedAuctionsContext, PaginatedAuctionsContext } from "contexts/PaginatedAuctions"
 import { useOffsetPaginationText } from "@/hooks"
-import { AuctionTypeFilter } from "@/schema/models"
 import { TablePagination } from "@/components/Tables/_components/Pagination"
 
 import { IconX, IconDots } from "@tabler/icons-react"
 
 import classes from "./styles.module.css"
-import { IPaginatedFirmAuctionsContext, PaginatedFirmAuctionsContext } from "contexts/PaginatedFirmAuctions"
 
 const EndedAuctionsList = ({ isFirmAuctions=false }:{ isFirmAuctions?: boolean }) => {
 
-  const firmAuctions = useContext<IPaginatedFirmAuctionsContext>(PaginatedFirmAuctionsContext)
-  const regularAuctions = useContext<IPaginatedAuctionsContext>(PaginatedAuctionsContext)
-  
-  const auctions = useMemo(() => (isFirmAuctions ? firmAuctions : regularAuctions), [isFirmAuctions, firmAuctions, regularAuctions])
-  const auctionsType = useMemo(() => (isFirmAuctions ? firmAuctions.filters.auctionType : regularAuctions.filters.type), [isFirmAuctions, firmAuctions, regularAuctions])
-  const auctionsStatus = useMemo(() => (isFirmAuctions ? firmAuctions.filters.auctionStatus : regularAuctions.filters.status), [isFirmAuctions, firmAuctions, regularAuctions])
-  
+  const auctions = useContext<IPaginatedAuctionsContext>(PaginatedAuctionsContext)
+
   const t = useTranslations()
   const listContainer = useRef(null)
   const paginationText = useOffsetPaginationText('auctions', auctions)
@@ -36,7 +29,7 @@ const EndedAuctionsList = ({ isFirmAuctions=false }:{ isFirmAuctions?: boolean }
 
     const output = []
 
-    const type = isFirmAuctions ? (auctions as IPaginatedFirmAuctionsContext).filters?.auctionType : (auctions as IPaginatedAuctionsContext).filters.type
+    const type = auctions.filters.type
 
     switch (type) {
       case 'all':
@@ -44,13 +37,7 @@ const EndedAuctionsList = ({ isFirmAuctions=false }:{ isFirmAuctions?: boolean }
           <Pill
             key={'all'}
             className={classes.badge}
-            onRemove={() => {
-              if (isFirmAuctions) {
-                (auctions as IPaginatedFirmAuctionsContext).setSingleFilter('auctionType', 'all')
-              } else {
-                (auctions as IPaginatedAuctionsContext).setSingleFilter('type', 'all')
-              }
-            }}
+            onRemove={() => auctions.setSingleFilter('type', 'all')}
             withRemoveButton
           >
             All
@@ -62,13 +49,7 @@ const EndedAuctionsList = ({ isFirmAuctions=false }:{ isFirmAuctions?: boolean }
           <Pill
             key={'open'}
             className={classes.badge}
-            onRemove={() => {
-              if (isFirmAuctions) {
-                (auctions as IPaginatedFirmAuctionsContext).setSingleFilter('auctionType', 'all')
-              } else {
-                (auctions as IPaginatedAuctionsContext).setSingleFilter('type', 'all')
-              }
-            }}
+            onRemove={() => auctions.setSingleFilter('type', 'all')}
             withRemoveButton
           >
             Open
@@ -80,13 +61,7 @@ const EndedAuctionsList = ({ isFirmAuctions=false }:{ isFirmAuctions?: boolean }
           <Pill
             key={'sealed'}
             className={classes.badge}
-            onRemove={() => {
-              if (isFirmAuctions) {
-                (auctions as IPaginatedFirmAuctionsContext).setSingleFilter('auctionType', 'all')
-              } else {
-                (auctions as IPaginatedAuctionsContext).setSingleFilter('type', 'all')
-              }
-            }}
+            onRemove={() => auctions.setSingleFilter('type', 'all')}
             withRemoveButton
           >
             Sealed
@@ -102,7 +77,7 @@ const EndedAuctionsList = ({ isFirmAuctions=false }:{ isFirmAuctions?: boolean }
         </Pill>
       )
     return output
-  }, [auctions, auctionsType, auctionsStatus, t])
+  }, [auctions, auctions?.filters?.type, auctions?.filters?.status, t])
 
   return (
     <Stack className={classes.list}>
@@ -137,14 +112,8 @@ const EndedAuctionsList = ({ isFirmAuctions=false }:{ isFirmAuctions?: boolean }
                   Auction Type
                 </Menu.Label>
                 <Radio.Group
-                  value={auctionsType}
-                  onChange={(value) => {
-                    if (isFirmAuctions) {
-                      (auctions as IPaginatedFirmAuctionsContext).setSingleFilter('auctionType', value as AuctionTypeFilter)
-                    } else {
-                      (auctions as IPaginatedAuctionsContext).setSingleFilter('type', value as AuctionTypeFilter)
-                    }
-                  }}
+                  value={auctions?.filters?.type}
+                  onChange={(value) => auctions.setSingleFilter('type', value)}
                 >
                   <Stack className={classes.options}>
                     <Radio value="all" label="All" />
@@ -175,12 +144,14 @@ const EndedAuctionsList = ({ isFirmAuctions=false }:{ isFirmAuctions?: boolean }
         {auctions && auctions.data && auctions.data.results && auctions.data.results.length > 0 && !auctions.isLoading ? (
           auctions.data.results.map((auction) => (
             <EndedAuction
+              isFirmAuction={isFirmAuctions}
               key={auction.id}
               id={auction.id}
               name={auction.title}
               description={auction.description || generateDescription(auction.title, auction.sector)}
               winningBids={auction.biddersCount}
               cycle={auction.cycle?.title || ''}
+              permits={auction.permits || 0}
               endDate={auction.endDatetime}
               pieChartData={{
                 accepted: Math.floor(Math.random() * 20),

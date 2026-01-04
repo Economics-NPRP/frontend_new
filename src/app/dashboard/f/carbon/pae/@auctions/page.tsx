@@ -1,7 +1,7 @@
 'use client'
 import { Stack } from "@mantine/core"
 import { MyAuctionsTable } from "../_components/MyAuctionsTable"
-import { useContext, useEffect, useMemo } from "react"
+import { useContext, useEffect } from "react"
 import { PaginatedFirmAuctionsContext } from "contexts"
 
 const SMAuctionList = () => {

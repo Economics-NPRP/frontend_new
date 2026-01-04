@@ -352,6 +352,9 @@
       "permits": {
         "label": "Return to Permit Management Page"
       },
+      "sma": {
+        "label": "Return to Secondary Market Auctions Page"
+      },
       "firmsList": {
         "label": "Return to List of Companies"
       },
@@ -2975,6 +2978,7 @@
           "value": "{value}"
         },
         "cycle": "Cycle",
+        "permits": "Permits",
         "owner": "Owner",
         "endDate": "Ended at",
         "loading": "Loading ended auctions...",

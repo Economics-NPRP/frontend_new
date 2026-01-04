@@ -9,6 +9,7 @@ import 'server-only';
 import { internalUrl } from '@/helpers';
 import { AuctionTypeFilter, IAuctionData } from '@/schema/models';
 import { IOffsetPagination, OffsetPaginatedData, SortDirection } from '@/types';
+import { IMyUserProfileContext } from 'contexts/MyUserProfile';
 
 export interface IGetPaginatedFirmAuctionsOptions extends IOffsetPagination {
 	sortBy?: string | null;
@@ -63,8 +64,9 @@ export const getPaginatedFirmAuctions: IFunctionSignature = cache(
 		endDatetimeTo,
 		minPermits,
 		maxPermits,
-		auctionId,
+		auctionId
 	}) => {
+		console.log("\n\nOwner:", ownerId)
 		const t = await getTranslations();
 
 		const cookieStore = await cookies();
@@ -95,7 +97,7 @@ export const getPaginatedFirmAuctions: IFunctionSignature = cache(
 		if (perPage) params.append('per_page', perPage.toString());
 		if (sortBy) params.append('order_by', sortBy);
 		if (sortDirection) params.append('order_dir', sortDirection);
-		if (ownerId) params.append('owner', ownerId);
+		if (ownerId) params.append('owner_id', ownerId);
 		if (auctionType && auctionType !== 'all') params.append('auction_type', auctionType);
 
 		if (firmId) params.append('firm_id', firmId);
@@ -109,7 +111,7 @@ export const getPaginatedFirmAuctions: IFunctionSignature = cache(
 		if (endDatetimeTo) params.append('end_datetime_to', endDatetimeTo);
 		if (minPermits) params.append('min_permits', minPermits.toString());
 		if (maxPermits) params.append('max_permits', maxPermits.toString());
-		if (auctionId) params.append('id', auctionId);
+		if (auctionId) params.append('auction_id', auctionId);
 
 		const response = await fetch(
 			await internalUrl(

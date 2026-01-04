@@ -1,0 +1,29 @@
+.root {
+  @apply bg-white;
+  .chart {
+    @apply relative;
+    @apply justify-between items-stretch self-stretch;
+    @apply overflow-hidden flex-nowrap;
+    @apply h-full py-5 px-8 gap-4;
+    @apply bg-white border border-solid border-gray-300 text-dark-600;
+    @apply hover:shadow-xs;
+    @apply transition-all duration-500;
+    > .title {
+      @apply text-white;
+    }
+    @apply bg-dark-600;
+  }
+  .banner {
+    @apply h-1/2;
+  }
+}
+.divider { @apply my-2 border-gray-300; }
+
+.tooltip {
+  @apply py-2 px-3 bg-white;
+  @apply border border-solid border-gray-300;
+  @apply shadow-md;
+}
+.audits {
+  @apply flex flex-col gap-3;
+}

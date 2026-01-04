@@ -3,7 +3,8 @@ import { ReactNode } from 'react';
 
 import { withProviders } from '@/helpers';
 import '@/styles/globals.css';
-import { Stack } from '@mantine/core';
+import { Stack, Divider } from '@mantine/core';
+import { PaginatedAuctionsProvider } from 'contexts/PaginatedAuctions';
 
 export const metadata: Metadata = {
   title: {
@@ -13,13 +14,26 @@ export const metadata: Metadata = {
 };
 export interface SecondaryMarketAuctionsProps {
   subbanners: ReactNode;
+  auctions: ReactNode;
 }
 export default async function FirmDashboardSMALayout({
   subbanners,
+  auctions
 }: SecondaryMarketAuctionsProps) {
   return withProviders(
     <Stack>
       {subbanners}
-    </Stack>
+      <Divider my={16} />
+      {auctions}
+    </Stack>,
+    {
+      provider: PaginatedAuctionsProvider,
+      props: {
+        defaultFilters: {
+          ownership: "private"
+        },
+        owned: true
+      }
+    }
   );
 }

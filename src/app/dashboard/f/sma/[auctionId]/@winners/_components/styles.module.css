@@ -1,0 +1,61 @@
+.winnersTable {
+  > .table {
+    > .row {
+      @apply border border-gray-300 border-solid border-b-0 last:border-b;
+    }
+  }
+  > .footer {
+    @apply justify-center my-8;
+  }
+}
+.permitsWon {
+  @apply bg-white h-32 p-0 z-[1] ;
+  @apply transition-shadow;
+  @apply hover:shadow hover:z-10;
+  > .text {
+    @apply py-6 px-4;
+    .name {
+      @apply heading-2;
+    }
+    .owner > .name, .owner > .icon {
+      @apply paragraph-md;
+    }
+    .total {
+      > .value {
+        @apply heading-2;
+      }
+      > .label {
+        @apply paragraph-sm-15;
+      }
+    }
+  }
+  > .statistics {
+    > .status {
+      > .label {
+        @apply paragraph-md;
+      }
+      > .value {
+        @apply heading-2;
+      }
+      > .unit {
+        @apply paragraph-sm-15;
+      }
+    }
+  }
+  > .buttonContainer {
+    @apply w-full h-full flex justify-center items-center;
+    &.review {
+      @apply bg-gray-700;
+    }
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(0, 0, 0, 0.03) 10px,
+      rgba(0, 0, 0, 0.03) 20px
+    );
+    > .button {
+      @apply w-40;
+    }
+  }
+}
