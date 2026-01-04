@@ -1,13 +1,13 @@
 'use client';
 import { Stack, Group, Text, Pill, Select, TextInput, Anchor, Input, Popover, Button, NumberInput, MultiSelect, ScrollArea } from "@mantine/core";
 import { useMemo, useRef, useState } from "react";
-import { IconSearch, IconFilter } from "@tabler/icons-react";
+import { IconSearch, IconFilter, IconAdjustments } from "@tabler/icons-react";
 import { DataTable } from "mantine-datatable";
 import { DateTime } from "luxon";
 import Link from "next/link";
 import { useTranslations, useFormatter } from "next-intl";
 import { useOffsetPaginationText } from "@/hooks";
-import { IPaginatedFirmAuctionsContext, PaginatedFirmAuctionsProvider } from "@/contexts";
+import { IPaginatedFirmAuctionsContext } from "@/contexts";
 import { TablePagination } from "@/components/Tables/_components/Pagination";
 import { AuctionTypeBadge, AuctionStatusBadge, SectorBadge, CurrencyBadge } from "@/components/Badge";
 import { SectorList } from "@/constants/SectorData";
@@ -127,15 +127,23 @@ const _MyAuctionsTable = ({ auctions, className }: MyAuctionsTableProps) => {
             <Group className={classes.group}>{filterBadges}</Group>
           </Group>
           <Group className={classes.settings}>
+            <Text className={classes.label}>
+              {t('constants.pagination.perPage.label')}
+            </Text>
+            <Select
+              className={classes.dropdown}
+              w={80}
+              value={auctions.perPage.toString()}
+              data={['10', '20', '50', '100']}
+              onChange={(value) => auctions.setPerPage(Number(value))}
+              allowDeselect={false}
+            />
             {/* Added Filter Dropdown */}
             <Popover width={320} position="bottom-end" withArrow shadow="md">
               <Popover.Target>
-                <Group>
-                  <Text className="paragraph-sm" span>{t('components.auctionCatalogue.filters.heading')}</Text>
-                  <Button variant="default">
-                    <IconFilter size={16} />
-                  </Button>
-                </Group>
+                <Button className="px-3">
+                  <IconAdjustments size={16} />
+                </Button>
               </Popover.Target>
               <Popover.Dropdown>
                 <ScrollArea.Autosize h={400} type="scroll">
@@ -234,17 +242,6 @@ const _MyAuctionsTable = ({ auctions, className }: MyAuctionsTableProps) => {
               </Popover.Dropdown>
             </Popover>
             {/* End Added Filter Dropdown */}
-            <Text className={classes.label}>
-              {t('constants.pagination.perPage.label')}
-            </Text>
-            <Select
-              className={classes.dropdown}
-              w={80}
-              value={auctions.perPage.toString()}
-              data={['10', '20', '50', '100']}
-              onChange={(value) => auctions.setPerPage(Number(value))}
-              allowDeselect={false}
-            />
           </Group>
         </Group>
         <Group justify="space-between" className={`${classes.row} ${classes.wrapMobile}`}>

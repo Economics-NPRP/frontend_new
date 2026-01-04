@@ -724,8 +724,8 @@
           "economic": {
             "title": "Economic Activity",
             "auctions": {
-              "title": "List of Auctions",
-              "tooltip": "View all auctions you participated in or own"
+              "title": "Secondary Market Auctions",
+              "tooltip": "View and manage your secondary market auctions"
             },
             "notifications": {
               "title": "Notification Center",
@@ -766,6 +766,10 @@
           },
           "home": {
             "title": "Home"
+          },
+          "sma": {
+            "title": "Secondary Market Auctions",
+            "description": "Some description that descrives big sma things"
           }
         }
       },
@@ -2916,6 +2920,30 @@
           "myAuctions": {
             "title": "Joined Auctions",
             "description": "View and manage all auctions you joined. Track bids, monitor auction status, and manage your active listings in one convenient location."
+          }
+        }
+      },
+      "sma": {
+        "subbanners": {
+          "sold": {
+            "title": "Sold Permits",
+            "tooltip": "Permits Sold through your Secondary Market Auctions",
+            "subtitle": "Sold"
+          },
+          "ended": {
+            "title": "Ended Auctions",
+            "tooltip": "Number of your Ended Secondary Market Auctions",
+            "subtitle": "Ended"
+          },
+          "ongoing": {
+            "title": "Ongoing Auctions",
+            "tooltip": "Number of your Ongoing Secondary Market Auctions",
+            "subtitle": "Ongoing"
+          },
+          "pending": {
+            "title": "Pending Approval",
+            "tooltip": "Number of permit transfers pending Admin Approval",
+            "subtitle": "Pending"
           }
         }
       }

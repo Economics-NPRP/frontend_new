@@ -293,7 +293,7 @@ export const SidebarLinks: Record<
 						? t('constants.pages.dashboard.firm.economic.auctions.tooltip')
 						: t('constants.pages.dashboard.firm.economic.auctions.title'),
 					icon: <IconGavel size={16} />,
-					href: '/dashboard/f/economic/auctions',
+					href: '/dashboard/f/sma',
 				},
 				{
 					id: 'notifications',

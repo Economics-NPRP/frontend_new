@@ -9,7 +9,6 @@ import classes from "./styles.module.css"
 import { useTranslations, useFormatter } from "next-intl";
 import { useOffsetPaginationText } from "@/hooks";
 import { IBidData, PermitsFilterType } from "@/schema/models";
-import { DataTable } from "mantine-datatable";
 import { TablePagination } from "@/components/Tables/_components/Pagination";
 import { PermitsWon, demoData } from "./PermitsWon";
 

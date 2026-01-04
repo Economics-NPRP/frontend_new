@@ -5,7 +5,7 @@ import { generateDescription } from "@/lib/auctions"
 import { useContext, useMemo, useState, useRef } from "react"
 import { useTranslations } from "next-intl"
 import { EndedAuction } from "./EndedAuction"
-import { PaginatedAuctionsContext } from "contexts/PaginatedAuctions"
+import { IPaginatedAuctionsContext, PaginatedAuctionsContext } from "contexts/PaginatedAuctions"
 import { useOffsetPaginationText } from "@/hooks"
 import { AuctionTypeFilter } from "@/schema/models"
 import { TablePagination } from "@/components/Tables/_components/Pagination"
@@ -13,10 +13,17 @@ import { TablePagination } from "@/components/Tables/_components/Pagination"
 import { IconX, IconDots } from "@tabler/icons-react"
 
 import classes from "./styles.module.css"
+import { IPaginatedFirmAuctionsContext, PaginatedFirmAuctionsContext } from "contexts/PaginatedFirmAuctions"
 
-const EndedAuctionsList = () => {
+const EndedAuctionsList = ({ isFirmAuctions=false }:{ isFirmAuctions?: boolean }) => {
 
-  const auctions = useContext(PaginatedAuctionsContext)
+  const firmAuctions = useContext<IPaginatedFirmAuctionsContext>(PaginatedFirmAuctionsContext)
+  const regularAuctions = useContext<IPaginatedAuctionsContext>(PaginatedAuctionsContext)
+  
+  const auctions = useMemo(() => (isFirmAuctions ? firmAuctions : regularAuctions), [isFirmAuctions, firmAuctions, regularAuctions])
+  const auctionsType = useMemo(() => (isFirmAuctions ? firmAuctions.filters.auctionType : regularAuctions.filters.type), [isFirmAuctions, firmAuctions, regularAuctions])
+  const auctionsStatus = useMemo(() => (isFirmAuctions ? firmAuctions.filters.auctionStatus : regularAuctions.filters.status), [isFirmAuctions, firmAuctions, regularAuctions])
+  
   const t = useTranslations()
   const listContainer = useRef(null)
   const paginationText = useOffsetPaginationText('auctions', auctions)
@@ -29,13 +36,21 @@ const EndedAuctionsList = () => {
 
     const output = []
 
-    switch (auctions.filters.type) {
+    const type = isFirmAuctions ? (auctions as IPaginatedFirmAuctionsContext).filters?.auctionType : (auctions as IPaginatedAuctionsContext).filters.type
+
+    switch (type) {
       case 'all':
         output.push(
           <Pill
             key={'all'}
             className={classes.badge}
-            onRemove={() => auctions.setSingleFilter('type', 'all')}
+            onRemove={() => {
+              if (isFirmAuctions) {
+                (auctions as IPaginatedFirmAuctionsContext).setSingleFilter('auctionType', 'all')
+              } else {
+                (auctions as IPaginatedAuctionsContext).setSingleFilter('type', 'all')
+              }
+            }}
             withRemoveButton
           >
             All
@@ -47,19 +62,13 @@ const EndedAuctionsList = () => {
           <Pill
             key={'open'}
             className={classes.badge}
-            onRemove={() => auctions.setSingleFilter('type', 'all')}
-            withRemoveButton
-          >
-            Open
-          </Pill>,
-        )
-        break
-      case 'open':
-        output.push(
-          <Pill
-            key={'open'}
-            className={classes.badge}
-            onRemove={() => auctions.setSingleFilter('type', 'all')}
+            onRemove={() => {
+              if (isFirmAuctions) {
+                (auctions as IPaginatedFirmAuctionsContext).setSingleFilter('auctionType', 'all')
+              } else {
+                (auctions as IPaginatedAuctionsContext).setSingleFilter('type', 'all')
+              }
+            }}
             withRemoveButton
           >
             Open
@@ -71,7 +80,13 @@ const EndedAuctionsList = () => {
           <Pill
             key={'sealed'}
             className={classes.badge}
-            onRemove={() => auctions.setSingleFilter('type', 'all')}
+            onRemove={() => {
+              if (isFirmAuctions) {
+                (auctions as IPaginatedFirmAuctionsContext).setSingleFilter('auctionType', 'all')
+              } else {
+                (auctions as IPaginatedAuctionsContext).setSingleFilter('type', 'all')
+              }
+            }}
             withRemoveButton
           >
             Sealed
@@ -87,7 +102,7 @@ const EndedAuctionsList = () => {
         </Pill>
       )
     return output
-  }, [auctions, auctions?.filters.status, auctions?.filters.type, t])
+  }, [auctions, auctionsType, auctionsStatus, t])
 
   return (
     <Stack className={classes.list}>
@@ -122,9 +137,13 @@ const EndedAuctionsList = () => {
                   Auction Type
                 </Menu.Label>
                 <Radio.Group
-                  value={auctions.filters.type}
+                  value={auctionsType}
                   onChange={(value) => {
-                    auctions.setSingleFilter('type', value as AuctionTypeFilter)
+                    if (isFirmAuctions) {
+                      (auctions as IPaginatedFirmAuctionsContext).setSingleFilter('auctionType', value as AuctionTypeFilter)
+                    } else {
+                      (auctions as IPaginatedAuctionsContext).setSingleFilter('type', value as AuctionTypeFilter)
+                    }
                   }}
                 >
                   <Stack className={classes.options}>
