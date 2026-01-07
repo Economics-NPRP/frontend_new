@@ -21,7 +21,7 @@ const Request = ({ request }: { request: IPermitTransfer }) => {
           value={request.fromFirmId || "67676767676767"}
         />
         <Title className="heading-2" order={2}>Company Name</Title>
-        <Group gap={6}>
+        <Group gap={4}>
           <IconNote className="opacity-50" size={14} />
           <Text className="paragraph-sm">This is the note sent by the requester</Text>
         </Group>
