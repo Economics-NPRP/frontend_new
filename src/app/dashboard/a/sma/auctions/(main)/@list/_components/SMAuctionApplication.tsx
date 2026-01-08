@@ -17,10 +17,11 @@ const SMAuctionApplication = ({ application }: { application: IAuctionApplicatio
   <UnstyledButton
     component={Link}
     href={`/dashboard/a/sma/auctions/${application.auctionId}`}
+    className={classes.root}
   >
-    <Card padding={0} className={classes.root}>
+    <Card padding={0} className={classes.card}>
       <Card.Section>
-        <Image src={AUCTION_IMAGE_PLACEHOLDER} className="bg-red-400" alt="Auction Image" width={350} height={350*(9/16)} />
+        <Image src={AUCTION_IMAGE_PLACEHOLDER} className="w-full object-cover" alt="Auction Image" width={350} height={350*(9/16)} />
       </Card.Section>
       <Stack className={classes.info}>
         <Id
@@ -36,33 +37,6 @@ const SMAuctionApplication = ({ application }: { application: IAuctionApplicatio
       <Container className={`${classes.statusContainer} ${classes[application.status.toLowerCase()]}`}>
         <Text className={classes.status}>{application.status}</Text>
       </Container>
-      <Stack justify="center">
-
-        {/* <Group>
-          <Button
-            color="green"
-            onClick={() => approve.mutate({ auctionId: application.auctionId })}
-            loading={approve.isPending}
-          >
-            Approve
-          </Button>
-          <Button
-            color="red"
-            variant="outline"
-            onClick={() => reject.mutate({ auctionId: application.auctionId })}
-            loading={reject.isPending}
-          >
-            Reject
-          </Button>
-          <Button
-            color="blue"
-            onClick={() => execute.mutate({ auctionId: application.auctionId })}
-            loading={execute.isPending}
-          >
-            Execute
-          </Button>
-        </Group> */}
-      </Stack>
     </Card>
   </UnstyledButton>
   )

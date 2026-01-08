@@ -11,6 +11,7 @@ import {
 	number,
 	object,
 	omit,
+	optional,
 	partialCheck,
 	pick,
 	pipe,
@@ -27,6 +28,7 @@ import { AuctionTypeSchema } from './AuctionType';
 import { DefaultUserData } from './GeneralUserData';
 import { SectorTypeSchema } from './SectorData';
 import { BaseUserDataSchema } from './UserData';
+import { SMApprovalAdminDataSchema } from '@/schema/models/SMApprovalsAdminData';
 
 export const BaseAuctionDataSchema = object({
 	id: UuidSchema(),
@@ -90,12 +92,48 @@ export const CreateAuctionDataSchemaTransformer = pipe(
 		),
 	})),
 );
+// {
+// 	"auctionId": "d8fc4aa7-c541-4dfe-ab32-403313e5ce56",
+// 		"status": "approved",
+// 			"lockedQty": 1,
+// 				"requestedById": "8b5b473c-5860-4bd4-8402-628587b4cd61",
+// 					"requestedAt": "2025-12-31T00:14:24.222167Z",
+// 						"decidedById": "d97bfe40-4ff9-481d-a091-0b01c63ac61d",
+// 							"decidedAt": "2025-12-31T16:58:12.903450Z",
+// 								"decisionNotes": "",
+// 									"lockedAt": "2025-12-31T00:14:24.234945Z",
+// 										"executedById": null,
+// 											"executedAt": null,
+// 												"executionNotes": null,
+// 													"id": 1
+// }
+const BaseSecondaryApproval = object({
+	auctionId: UuidSchema(),
+	status: pipe(string(), trim(), nonEmpty()),
+	lockedQty: PositiveNumberSchema(),
+
+	requestedById: UuidSchema(),
+	requestedAt: nullish(TimestampSchema()),
+
+	decidedById: UuidSchema(),
+	decidedAt: nullish(TimestampSchema()),
+	decisionNotes: nullish(pipe(string(), trim())),
+
+	lockedAt: nullish(TimestampSchema()),
+
+	executedById: nullish(UuidSchema()),
+	executedAt: nullish(TimestampSchema()),
+	executionNotes: nullish(pipe(string(), trim())),
+
+	id: PositiveNumberSchema(),
+})
 
 export const ReadAuctionDataSchema = object({
 	...BaseAuctionDataSchema.entries,
 
 	owner: BaseUserDataSchema,
 	cycle: lazy(() => nullish(BaseAuctionCycleDataSchema)),
+	secondaryApproval: optional(BaseSecondaryApproval)
 	//	TODO: uncomment when backend has subsector data
 	// subsector: lazy(() => ReadSubsectorDataSchema),
 });

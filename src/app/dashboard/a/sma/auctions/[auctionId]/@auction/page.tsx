@@ -325,36 +325,40 @@ const Auction = () => {
   const { approve, reject, execute } = useSMAuctionAction();
 
   useEffect(() => {
-    console.log('Auction context updated:', auction);
+    console.log('Auction context updated:', auction.data.secondaryApproval);
   }, [auction])
 
   return (
     <Stack gap={0} className={classes.root}>
       <Flex gap={16} className={classes.actions}>
-        <Button
-          variant='outline'
-          color="green.7"
-          onClick={() => approve.mutate({ auctionId: auction.id })}
-          loading={approve.isPending}
-          className={classes.action}
-        >
-          <Flex align="center" gap={8}>
-            <IconCheck size={16} />
-            <Text className={classes.label} span>Approve</Text>
-          </Flex>
-        </Button>
-        <Button
-          variant='outline'
-          color="red.7"
-          onClick={() => reject.mutate({ auctionId: auction.id })}
-          loading={reject.isPending}
-          className={classes.action}
-        >
-          <Flex align="center" gap={8}>
-            <IconX size={16} />
-            <Text className={classes.label} span>Reject</Text>
-          </Flex>
-        </Button>
+        {auction.data.secondaryApproval && auction.data.secondaryApproval.status === "pending" && <>
+          <Button
+            variant='outline'
+            color="green.7"
+            onClick={() => approve.mutate({ auctionId: auction.id })}
+            loading={approve.isPending}
+            className={classes.action}
+          >
+            <Flex align="center" gap={8}>
+              <IconCheck size={16} />
+              <Text className={classes.label} span>Approve</Text>
+            </Flex>
+          </Button>
+          <Button
+            variant='outline'
+            color="red.7"
+            onClick={() => reject.mutate({ auctionId: auction.id })}
+            loading={reject.isPending}
+            className={classes.action}
+          >
+            <Flex align="center" gap={8}>
+              <IconX size={16} />
+              <Text className={classes.label} span>Reject</Text>
+            </Flex>
+          </Button>
+        </>
+        }
+        {auction.data.secondaryApproval && auction.data.secondaryApproval.status === "approved" && 
         <Button
           variant='outline'
           color="gray.7"
@@ -366,7 +370,7 @@ const Auction = () => {
             <IconHammerOff size={16} />
             <Text className={classes.label} span>Execute</Text>
           </Flex>
-        </Button>
+        </Button>}
       </Flex>
       <Divider mt={16} mb={24} />
       <Flex className={classes.content}>

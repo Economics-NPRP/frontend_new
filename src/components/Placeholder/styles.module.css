@@ -1,0 +1,11 @@
+.placeholder {
+  @apply flex flex-col items-center justify-center py-12 text-gray-400 gap-3 border border-dashed border-gray-300 w-full;
+
+  .icon {
+    @apply opacity-50;
+  }
+
+  .text {
+    @apply text-base font-medium;
+  }
+}
