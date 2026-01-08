@@ -3,18 +3,18 @@ import { useContext } from "react"
 import { Flex, Stack, Group, Title, Text, Button } from "@mantine/core"
 import { Id } from "@/components/Id"
 import { IconArrowNarrowRightDashed, IconNote } from "@tabler/icons-react"
-import { IPermitTransfer } from "@/schema/models/TransferRequestData"
+import { ISMApprovalAdminData } from "@/schema/models/SMApprovalsAdminData"
 import { ReviewTransferModalContext } from "@/pages/dashboard/a/sma/transfer/(main)/@list/_components/ReviewTransferModal"
 import { DateTime } from "luxon"
 
 import classes from "./styles.module.css"
 
-const Request = ({ request }: { request: IPermitTransfer }) => {
+const Request = ({ request, key }: { request: ISMApprovalAdminData, key:string }) => {
 
   const { open } = useContext(ReviewTransferModalContext)
 
   return (
-    <Flex className={classes.request}>
+    <Flex key={key} className={classes.request}>
       <Stack className={classes.firmFrom}>
         <Id 
           variant="company"

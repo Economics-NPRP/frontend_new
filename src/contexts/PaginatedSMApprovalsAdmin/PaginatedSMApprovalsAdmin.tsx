@@ -5,20 +5,20 @@ import { createContext, useCallback, useContext, useMemo } from 'react';
 import { useQueryState, parseAsInteger, parseAsStringLiteral, parseAsString } from 'nuqs';
 import { useConditionalQueryStates } from '@/hooks';
 import { MyUserProfileContext } from '@/contexts';
-import { AuctionApplicationStatusListFilter } from '@/schema/models';
 import { SMApprovalsFiltersData, DefaultSMApprovalsFiltersData } from '@/schema/models/SMApprovalsAdminFilter';
 import { OffsetPaginatedQueryProvider } from '@/contexts';
 import { throwError } from '@/helpers';
 import { useAuctionAvailability } from '@/hooks';
 import { getPaginatedSMApprovalsAdmin } from '@/lib/sma';
-import { IBidData } from '@/schema/models';
 import {
   OffsetPaginatedContextState,
   OffsetPaginatedProviderProps,
   getDefaultOffsetPaginatedContextState,
 } from '@/types';
+import { ISMApprovalAdminData } from '@/schema/models/SMApprovalsAdminData';
+import { PermitTransferStatusListFilter } from '@/schema/models/PermitTransferStatus';
 
-export interface IPaginatedSMApprovalsContext extends OffsetPaginatedContextState<IBidData> {
+export interface IPaginatedSMApprovalsContext extends OffsetPaginatedContextState<ISMApprovalAdminData> {
   filters: SMApprovalsFiltersData;
   setAllFilters: (filters: SMApprovalsFiltersData) => void;
   setSingleFilter: (key: keyof SMApprovalsFiltersData, value: any) => void;
@@ -26,7 +26,7 @@ export interface IPaginatedSMApprovalsContext extends OffsetPaginatedContextStat
   resetFilters: () => void;
 }
 const DefaultData: IPaginatedSMApprovalsContext = {
-  ...getDefaultOffsetPaginatedContextState<IBidData>(),
+  ...getDefaultOffsetPaginatedContextState<ISMApprovalAdminData>(),
   filters: DefaultSMApprovalsFiltersData,
   setAllFilters: () => { },
   setSingleFilter: () => { },
@@ -44,18 +44,8 @@ export const PaginatedSMApprovalsProvider = ({
   id = 'paginatedSMApprovals',
   ...props
 }: PaginatedSMApprovalsProviderProps) => {
-  const { auctionId } = useParams();
-  const { areBidsAvailable } = useAuctionAvailability();
   const myUser = useContext(MyUserProfileContext);
   const isAdmin = useMemo(() => myUser?.data?.type === 'admin', [myUser?.data?.type]);
-
-  console.log('PaginatedSMApprovalsProvider Debug:', {
-    auctionId,
-    areBidsAvailable,
-    isAdmin,
-    userType: myUser?.data?.type,
-    disabled: !areBidsAvailable && !isAdmin
-  });
 
   const [, setPage] = useQueryState(
     'page',
@@ -67,7 +57,7 @@ export const PaginatedSMApprovalsProvider = ({
     fromFirmId: parseAsString,
     createdFrom: parseAsString,
     createdTo: parseAsString,
-    status: parseAsStringLiteral(AuctionApplicationStatusListFilter),
+    status: parseAsStringLiteral(PermitTransferStatusListFilter),
     syncWithSearchParams,
     defaultValue: defaultFilters || DefaultData.filters,
 
@@ -91,15 +81,15 @@ export const PaginatedSMApprovalsProvider = ({
     (key, value) => {
       setAllFilters({
         ...filters,
-        [key]: (value && value.length > 0) ? [...(Array.isArray(value) ? value : [value])] : DefaultData.filters[key],
+        [key]: value,
       });
     },
     [filters],
   );
 
   const queryKey = useMemo(
-    () => ['marketplace', auctionId as string, 'paginatedWinningBids', JSON.stringify(filters)],
-    [auctionId, filters],
+    () => ['smaApprovals', JSON.stringify(filters)],
+    [filters],
   );
   const queryFn = useMemo(
     () => (page: number, perPage: number) => () =>
@@ -112,11 +102,11 @@ export const PaginatedSMApprovalsProvider = ({
           fromFirmId: filters.fromFirmId || undefined,
           createdFrom: filters.createdFrom || undefined,
           createdTo: filters.createdTo || undefined,
-          status: filters.status || undefined,
+          status: (filters.status !== "all" && filters.status) || undefined,
         }),
-        `getPaginatedSMApprovalsAdmin:${auctionId}`,
+        `getPaginatedSMApprovalsAdmin`,
       ),
-    [auctionId, filters],
+    [filters],
   );
 
   return (
@@ -126,7 +116,7 @@ export const PaginatedSMApprovalsProvider = ({
       queryKey={queryKey}
       queryFn={queryFn}
       id={id}
-      disabled={!areBidsAvailable && !isAdmin}
+      disabled={!isAdmin}
       filters={filters}
       setAllFilters={setAllFilters}
       setSingleFilter={setSingleFilter}
@@ -138,6 +128,6 @@ export const PaginatedSMApprovalsProvider = ({
 };
 
 export {
-  DefaultData as DefaultPaginatedWinningBidsContextData,
-  Context as PaginatedWinningBidsContext,
+  DefaultData as DefaultSMApprovalsContextData,
+  Context as PaginatedSMApprovalsContext,
 };

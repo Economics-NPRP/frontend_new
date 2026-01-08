@@ -1,10 +1,10 @@
 import { InferOutput, object, optional, pipe, string, trim, nonEmpty } from 'valibot';
 
 import { PositiveNumberSchema } from '@/schema/utils';
-import { AuctionApplicationStatusFilterSchema } from '@/schema/models/AuctionApplicationStatus';
+import { PermitTransferStatusFilterSchema } from '@/schema/models/PermitTransferStatus';
 
 export const SMApprovalsFiltersDataSchema = object({
-  status: optional(AuctionApplicationStatusFilterSchema),
+  status: optional(PermitTransferStatusFilterSchema),
   emissionId: optional(PositiveNumberSchema()),
   toFirmId: optional(pipe(string(), trim(), nonEmpty())),
   fromFirmId: optional(pipe(string(), trim(), nonEmpty())),
@@ -15,7 +15,7 @@ export const SMApprovalsFiltersDataSchema = object({
 export type SMApprovalsFiltersData = InferOutput<typeof SMApprovalsFiltersDataSchema>;
 
 export const DefaultSMApprovalsFiltersData: SMApprovalsFiltersData = {
-  status: 'all',
+  status: undefined,
   emissionId: 0,
   toFirmId: '',
   fromFirmId: '',

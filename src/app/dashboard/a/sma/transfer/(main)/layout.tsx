@@ -1,11 +1,12 @@
 import { withProviders } from "@/helpers";
-import { ListSecondaryMarketApprovalsProvider } from "@/contexts";
 import { ReactNode } from "react";
 import { DashboardHero } from "@/pages/dashboard/_components/DashboardHero";
+import { Divider } from "@mantine/core";
 import { IconHammer } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { Metadata } from 'next';
 import { ReviewTransferModalProvider } from "@/pages/dashboard/a/sma/transfer/(main)/@list/_components/ReviewTransferModal";
+import { PaginatedSMApprovalsProvider } from "contexts/PaginatedSMApprovalsAdmin";
 
 export const metadata: Metadata = {
   title: {
@@ -35,9 +36,10 @@ export default function TransferRequestsLayout({ list }: { list: ReactNode }) {
           },
         ]}
       />
+      <Divider my="md" />
       {list}
     </>,
-    { provider: ListSecondaryMarketApprovalsProvider },
-    { provider: ReviewTransferModalProvider }
+    { provider: ReviewTransferModalProvider },
+    { provider: PaginatedSMApprovalsProvider }
   );
 }

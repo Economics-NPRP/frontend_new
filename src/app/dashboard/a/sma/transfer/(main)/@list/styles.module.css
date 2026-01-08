@@ -1,0 +1,63 @@
+.list {
+  @apply flex flex-col gap-4;
+
+  .header {
+    @apply flex flex-col gap-4;
+
+    .row {
+      @apply w-full;
+      &.wrapMobile {
+        @apply flex-wrap gap-y-4;
+      }
+    }
+
+    .group {
+      @apply gap-2;
+    }
+
+    .badge {
+      @apply font-medium;
+    }
+
+    .settings {
+      @apply flex items-center gap-3 ml-auto;
+
+      .label {
+        @apply text-sm text-gray-600 font-normal mr-0;
+      }
+
+      .dropdown {
+        /* handled by component props mostly */
+        @apply w-20;
+      }
+
+      .button {
+        @apply border border-gray-300 hover:bg-dark-900 w-9 h-9;
+      }
+    }
+
+    .subtitle {
+      @apply text-sm text-gray-500;
+    }
+    
+    .options {
+      @apply gap-2;
+    }
+  }
+
+  .placeholder {
+    @apply flex flex-col items-center justify-center py-12 text-gray-400 gap-3 border border-dashed border-gray-300 rounded-lg;
+
+    .icon {
+      @apply opacity-50;
+    }
+
+    .text {
+      @apply text-base font-medium;
+    }
+  }
+
+  .footer {
+    @apply flex justify-center mt-4;
+  }
+}

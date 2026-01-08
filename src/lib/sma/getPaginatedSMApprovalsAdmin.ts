@@ -89,26 +89,30 @@ export const getPaginatedSMApprovalsAdmin: IFunctionSignature = cache(
       ),
       querySettings,
     );
-    const rawData = camelCase(await response.json(), 5) as OffsetPaginatedData<unknown>;
+    const rawData = camelCase(await response.json(), 5) as ISMApprovalAdminData[];
 
-    //	If theres an issue, return the default data with errors
     if (!rawData) return getDefaultData(t('lib.noData'));
-    if (rawData.detail) return getDefaultData(rawData.detail ?? '');
-    if (rawData.errors) return getDefaultData(...rawData.errors);
+    if (response.status > 299 || response.status < 200) {
+      return getDefaultData(t('lib.unknownError'));
+    }
 
     //	Parse results using schema and collect issues
     const errors: Array<string> = [];
-    const results = rawData.results.reduce<Array<ISMApprovalAdminData>>((acc, result) => {
+    console.log("Raw Data:", rawData);
+    const results = rawData.reduce<Array<ISMApprovalAdminData>>((acc, result) => {
       acc.push(result as ISMApprovalAdminData);
       return acc;
     }, []);
 
     return {
-      ...rawData,
       ok: errors.length === 0,
       results,
       errors,
-    };
+      page: page,
+      perPage: perPage,
+      pageCount: Math.ceil(results.length / (perPage || 1)),
+      totalCount: results.length,
+    } as OffsetPaginatedData<ISMApprovalAdminData>;
   },
 );
 
