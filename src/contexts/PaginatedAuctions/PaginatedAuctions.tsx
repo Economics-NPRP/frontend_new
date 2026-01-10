@@ -1,7 +1,7 @@
 'use client';
 
 import { parseAsArrayOf, parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from 'nuqs';
-import { createContext, useCallback, useMemo, useContext } from 'react';
+import { createContext, useCallback, useEffect, useMemo, useContext } from 'react';
 
 import { SectorList } from '@/constants/SectorData';
 import {
@@ -11,7 +11,7 @@ import {
 } from '@/contexts';
 import { throwError } from '@/helpers';
 import { useConditionalQueryStates } from '@/hooks';
-import { getPaginatedAuctions } from '@/lib/auctions';
+import { getPaginatedAuctions, getPaginatedFirmAuctions } from '@/lib/auctions';
 import {
 	AuctionJoinedStatusListFilter,
 	AuctionOwnershipListFilter,
@@ -26,6 +26,7 @@ import {
 	SortedOffsetPaginatedProviderProps,
 	getDefaultSortedOffsetPaginatedContextState,
 } from '@/types';
+import { toEndpointStatus } from 'contexts/PaginatedAuctions/constants';
 
 export interface IPaginatedAuctionsContext extends SortedOffsetPaginatedContextState<IAuctionData> {
 	filters: QueryFiltersData;
@@ -81,8 +82,15 @@ export const PaginatedAuctionsProvider = ({
 		syncWithSearchParams,
 
 		//	Go back to the first page when filters change
-		onValueChange: () => setPage(props.defaultPage || DefaultData.page),
 	});
+
+
+	useEffect(() => {
+		// Only reset page if filters object reference changes, indicating a potential filter update.
+		// NOTE: This might still trigger on initial load if filters are set from URL. 
+		// Ideally we only want to reset page if the filter VALUES change compared to previous.
+		setPage(props.defaultPage || DefaultData.page);
+	}, [filters, setPage, props.defaultPage]);
 
 	const resetFilters = useCallback<IPaginatedAuctionsContext['resetFilters']>(
 		() => setAllFilters(DefaultData.filters),
@@ -140,17 +148,31 @@ export const PaginatedAuctionsProvider = ({
 		() => (page, perPage, sortBy, sortDirection) => () => {
 			const effectiveOwnerId = owned ? profile?.data?.id : (filters.ownerId || undefined);
 			return throwError(
-				getPaginatedAuctions({
-					page,
-					perPage,
-					sortBy,
-					sortDirection,
-					type: filters.type,
-					ownership: filters.ownership,
-					ownerId: effectiveOwnerId,
-					isLive: filters.status === 'ongoing',
-					hasEnded: filters.status === 'ended',
-				}),
+				filters.joined === 'joined' ?
+					getPaginatedFirmAuctions({
+						page,
+						perPage,
+						sortBy,
+						sortDirection,
+						auctionType: filters.type,
+						auctionStatus: filters.status && toEndpointStatus[filters.status],
+						ownerId: effectiveOwnerId,
+						sector: filters.sector
+					})
+					:
+					getPaginatedAuctions({
+						page,
+						perPage,
+						sortBy,
+						sortDirection,
+						type: filters.type,
+						ownership: filters.ownership,
+						ownerId: effectiveOwnerId,
+						sector: filters.sector,
+						isLive: filters.status === 'ongoing',
+						hasEnded: filters.status === 'ended',
+						isPending: filters.status === 'upcoming',
+					}),
 				'getPaginatedAuctions',
 			);
 		},

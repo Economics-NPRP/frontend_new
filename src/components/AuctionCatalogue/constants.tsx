@@ -43,16 +43,16 @@ export const getAuctionFilters: (
 		type: 'radio',
 		options: [
 			{
+				value: 'all',
+				label: t('components.auctionCatalogue.filters.all'),
+			},
+			{
 				value: 'open',
 				label: t('constants.auctionType.open'),
 			},
 			{
 				value: 'sealed',
 				label: t('constants.auctionType.sealed'),
-			},
-			{
-				value: 'all',
-				label: t('components.auctionCatalogue.filters.all'),
 			},
 		],
 	},
@@ -62,6 +62,10 @@ export const getAuctionFilters: (
 		description: t('components.auctionCatalogue.filters.accordion.status.description'),
 		type: 'radio',
 		options: [
+			{
+				value: 'all',
+				label: t('components.auctionCatalogue.filters.all'),
+			},
 			{
 				value: 'upcoming',
 				label: t('constants.auctionStatus.upcoming.label'),
@@ -73,10 +77,6 @@ export const getAuctionFilters: (
 			{
 				value: 'ended',
 				label: t('constants.auctionStatus.ended.label'),
-			},
-			{
-				value: 'all',
-				label: t('components.auctionCatalogue.filters.all'),
 			},
 		],
 	},
@@ -119,17 +119,13 @@ export const getAuctionFilters: (
 		type: 'radio',
 		options: [
 			{
-				value: 'joined',
-				label: t('components.auctionCatalogue.filters.accordion.joined.options.joined'),
-			},
-			{
-				value: 'notJoined',
-				label: t('components.auctionCatalogue.filters.accordion.joined.options.notJoined'),
-			},
-			{
 				value: 'all',
 				label: t('components.auctionCatalogue.filters.all'),
 			},
+			{
+				value: 'joined',
+				label: t('components.auctionCatalogue.filters.accordion.joined.options.joined'),
+			}
 		],
 	}
 ];

@@ -1,4 +1,4 @@
-import { InferOutput, boolean, object, omit, optional, pipe, transform, string } from 'valibot';
+import { InferOutput, boolean, object, omit, optional, pipe, transform, string, nullable } from 'valibot';
 
 import { AuctionJoinedStatusFilterSchema } from './AuctionJoinedStatus';
 import { AuctionOwnershipFilterSchema } from './AuctionOwnership';
@@ -12,7 +12,7 @@ export const QueryFiltersDataSchema = object({
 	sector: optional(SectorListFilterSchema),
 	joined: optional(AuctionJoinedStatusFilterSchema),
 	ownership: optional(AuctionOwnershipFilterSchema),
-	ownerId: optional(string())
+	ownerId: optional(nullable(string()))
 });
 
 export const ComponentFiltersDataSchema = object({

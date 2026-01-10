@@ -175,7 +175,7 @@ export const AuctionCard = ({
 							<Avatar
 								className={classes.avatar}
 								size={'sm'}
-								name={auction.owner && auction.owner.name}
+								name={auction.owner && auction.owner.name || auction.ownerName}
 							/>
 						</WithSkeleton>
 						<WithSkeleton loading={loading} width={160} height={24}>
@@ -185,7 +185,7 @@ export const AuctionCard = ({
 								target="_blank"
 								href={`/marketplace/company/${auction.ownerId}`}
 							>
-								{auction.owner && auction.owner.name}
+								{auction.owner && auction.owner.name || auction.ownerName}
 							</Anchor>
 						</WithSkeleton>
 					</Group>

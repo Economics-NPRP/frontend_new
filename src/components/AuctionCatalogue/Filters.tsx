@@ -59,6 +59,10 @@ const FiltersCore = () => {
 	});
 
 	useEffect(() => {
+		console.log('auctions', paginatedAuctions);
+	}, [paginatedAuctions])
+
+	useEffect(() => {
 		const parsedData = safeParse(
 			QueryToComponentFiltersDataTransformer,
 			paginatedAuctions.filters,

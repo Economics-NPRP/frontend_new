@@ -17,6 +17,7 @@ export interface IGetPaginatedAuctionsOptions extends IOffsetPagination {
 	ownerId?: string;
 	type?: AuctionTypeFilter;
 	ownership?: AuctionOwnershipFilter;
+	sector?: Array<string>;
 	isPending?: boolean;
 	isLive?: boolean;
 	hasEnded?: boolean;
@@ -47,6 +48,7 @@ export const getPaginatedAuctions: IFunctionSignature = cache(
 		ownerId,
 		type,
 		ownership,
+		sector,
 		isPending,
 		isLive,
 		hasEnded,
@@ -85,6 +87,7 @@ export const getPaginatedAuctions: IFunctionSignature = cache(
 		if (type && type !== 'all') params.append('type', type);
 		if (ownership && ownership !== 'all')
 			params.append('is_primary_market', ownership === 'government' ? 'true' : 'false');
+		if (sector && sector.length > 0) params.append('sector', sector[sector.length-1]);
 		if (isPending) params.append('is_pending', isPending.valueOf().toString());
 		if (isLive) params.append('is_live', isLive.valueOf().toString());
 		if (hasEnded) params.append('has_ended', hasEnded.valueOf().toString());

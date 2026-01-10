@@ -28,11 +28,11 @@ import { AuctionTypeSchema } from './AuctionType';
 import { DefaultUserData } from './GeneralUserData';
 import { SectorTypeSchema } from './SectorData';
 import { BaseUserDataSchema } from './UserData';
-import { SMApprovalAdminDataSchema } from '@/schema/models/SMApprovalsAdminData';
 
 export const BaseAuctionDataSchema = object({
 	id: UuidSchema(),
 	ownerId: UuidSchema(),
+	ownerName: optional(pipe(string(), trim(), nonEmpty())),
 	cycleId: UuidSchema(),
 	emissionId: number(),
 	sector: SectorTypeSchema,
